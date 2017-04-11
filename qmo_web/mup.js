@@ -12,7 +12,7 @@ module.exports = {
 
   meteor: {
     // TODO: change app name and path
-    name: 'iurest',
+    name: 'deviurest',
     path: '../qmo_web',
 
     servers: {
@@ -21,8 +21,6 @@ module.exports = {
 
     buildOptions: {
       serverOnly: true,
-      debug: true,
-      cleanAfterBuild: true,
     },
 
     env: {
@@ -35,8 +33,6 @@ module.exports = {
     docker: {
       // change to 'kadirahq/meteord' if your app is not using Meteor 1.4
       image: 'abernix/meteord:base',
-      imagePort: 80, // (default: 80, some images EXPOSE different ports)
-      bind: '127.0.0.1',
     },
 
     // This is the maximum time in seconds it will wait
