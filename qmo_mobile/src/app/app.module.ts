@@ -11,7 +11,7 @@ import { SigninComponent } from '../pages/auth/signin/signin';
 import { TabsPage } from '../pages/customer/tabs/tabs';
 import { OrdersPage } from '../pages/customer/orders/orders';
 import { PaymentsPage } from '../pages/customer/payments/payments';
-import { CallWaiterPage } from '../pages/customer/call-waiter/call-waiter';
+import { WaiterCallPage } from '../pages/customer/waiter-call/waiter-call';
 import { OptionsPage } from '../pages/customer/options/options';
 import { SettingsPage } from '../pages/customer/options/settings/settings';
 import { ChangeEmailPage } from '../pages/customer/options/settings/change-email/change-email';
@@ -37,7 +37,7 @@ export function createTranslateLoader(http: Http) {
     TabsPage,
     OrdersPage,
     PaymentsPage,
-    CallWaiterPage,
+    WaiterCallPage,
     OptionsPage,
     SettingsPage,
     ChangeEmailPage,
@@ -80,7 +80,7 @@ export function createTranslateLoader(http: Http) {
     TabsPage,
     OrdersPage,
     PaymentsPage,
-    CallWaiterPage,
+    WaiterCallPage,
     OptionsPage,
     SettingsPage,
     ChangeEmailPage,
