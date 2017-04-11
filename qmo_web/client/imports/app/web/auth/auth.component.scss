@@ -1,0 +1,129 @@
+#sign-page {
+  //height: 100vh;
+  //background-size: cover;
+  //background: url('/images/background_logo.png') no-repeat center center;
+  //background: url('/images/background1.png') no-repeat center center;
+  padding-top: 64px;
+}
+
+.signup-logo {
+  //width: 50%;
+  margin-bottom: 2vh;
+}
+
+@media (max-width: 600px) {
+  .signup-logo {
+    //width: 80%;
+  }
+}
+
+.bg-primary {
+  background-color: lightslategray;
+  color: #fff;
+}
+
+.flex-align {
+  width: 30%;
+  &.align-start {
+    align-self: flex-start;
+  }
+  &.align-end {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 900px)  and (orientation: portrait) {
+.flex-align {
+    width: 50%;
+  }
+}
+
+@media (max-width: 600px)  and (orientation: portrait) {
+.flex-align {
+    width: 80%;
+  }
+}
+
+@media (max-width: 900px)  and (orientation: landscape) {
+.flex-align {
+    width: 50%;
+  }
+}
+
+@media (max-width: 600px)  and (orientation: landscape) {
+.flex-align {
+    width: 80%;
+  }
+}
+
+.forgot-password {
+  text-align: right;
+}
+
+md-input {
+  width: 100%;
+}
+
+md-input:active {
+  color: #DBDBDB;
+}
+
+md-card-content > form > button[md-raised-button] {
+  width: 100%
+}
+
+button[md-raised-button]{
+  width: 100%;
+  margin-top: 2vh;
+}
+
+.fa{
+  float:left;
+  line-height: inherit;
+}
+
+button[md-button]{
+  width: 100%;
+  margin-top: 2vh;
+}
+
+.a-login{
+  margin-top: 2vh;
+  text-align: center;
+}
+
+.md-button-ripple{
+  color:#dd4b39;
+}
+
+.btn-facebook{
+  background-color: #3b5998;
+  color: #FFF;
+}
+
+.btn-facebook:hover {
+    background: #30487b;
+}
+
+.btn-twitter{
+  background-color: #00aced;
+  color: #FFF;
+}
+
+.btn-twitter:hover {
+    background: #07c;
+}
+
+.btn-google{
+  background-color: #dd4b39;
+  color: #FFF;
+}
+
+.btn-google:hover {
+    background: #a53325;
+}
+
+.error-message{
+  color: #f44336;
+  font-size: 0.8em;
+}

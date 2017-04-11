@@ -1,0 +1,57 @@
+<md-card>
+    <md-card-title>{{'SETTINGS.CHANGE_EMAIL' | translate}}</md-card-title>
+        <md-card-content>
+            <form [formGroup]="_emailEditForm"  novalidate>
+             <table cellspacing="0" style="width: 450px">
+                <tr>
+                    <td style="padding: 0px 0px">
+                        <md-input-container style="width: 100%">
+                            <input mdInput required formControlName="email" placeholder="{{'EMAIL' | translate}}" style="width: 100%" #inputEmail/>
+                            <md-hint align="end">{{inputEmail.value.length}} / 40</md-hint>
+                        </md-input-container>
+                        <div *ngIf="_emailEditForm.controls['email'].hasError('invalidEmailAddress') && _emailEditForm.controls['email'].touched" class="error-message">{{'SIGNUP.REQUIRED_EMAIL' | translate}}</div>
+                        <div *ngIf="_emailEditForm.controls['email'].hasError('minlength') && _emailEditForm.controls['email'].touched" class="error-message">{{'SIGNUP.MIN_LENGTH_EMAIL' | translate}}</div>
+                        <div *ngIf="_emailEditForm.controls['email'].hasError('maxlength') && _emailEditForm.controls['email'].touched" class="error-message">{{'SIGNUP.MAX_LENGTH_EMAIL' | translate}}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 0px 0px">
+                        <md-input-container style="width: 100%">
+                            <input mdInput required formControlName="password" placeholder="{{'PASSWORD' | translate}}" style="width: 100%" #inputPassword type="password"/>
+                            <md-hint align="end">{{inputPassword.value.length}} / 20</md-hint>
+                        </md-input-container>
+                        <div *ngIf="_emailEditForm.controls['password'].hasError('required') && _emailEditForm.controls['password'].touched" class="error-message">{{'SIGNUP.REQUIRED_PASSWORD' | translate}}</div>
+                        <div *ngIf="_emailEditForm.controls['password'].hasError('minlength') && _emailEditForm.controls['password'].touched" class="error-message">{{'SIGNUP.MIN_LENGTH_PASSWORD' | translate}}</div>
+                        <div *ngIf="_emailEditForm.controls['password'].hasError('maxlength') && _emailEditForm.controls['password'].touched" class="error-message">{{'SIGNUP.MAX_LENGTH_PASSWORD' | translate}}</div>
+                    </td>
+                </tr
+                <tr>
+                    <td style="padding: 0px 0px">
+                        <md-input-container style="width: 100%">
+                            <input mdInput required formControlName="new_email" placeholder="{{'SETTINGS.NEW_EMAIL' | translate}}" style="width: 100%" #inputNewEmail/>
+                            <md-hint align="end">{{inputNewEmail.value.length}} / 40</md-hint>
+                        </md-input-container>
+                        <div *ngIf="_emailEditForm.controls['new_email'].hasError('invalidEmailAddress') && _emailEditForm.controls['new_email'].touched" class="error-message">{{'SIGNUP.REQUIRED_EMAIL' | translate}}</div>
+                        <div *ngIf="_emailEditForm.controls['new_email'].hasError('minlength') && _emailEditForm.controls['new_email'].touched" class="error-message">{{'SIGNUP.MIN_LENGTH_EMAIL' | translate}}</div>
+                        <div *ngIf="_emailEditForm.controls['new_email'].hasError('maxlength') && _emailEditForm.controls['new_email'].touched" class="error-message">{{'SIGNUP.MAX_LENGTH_EMAIL' | translate}}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 0px 0px">
+                        <md-input-container style="width: 100%">
+                            <input mdInput required formControlName="confirm_new_email" placeholder="{{'SETTINGS.CONFIRM_NEW_EMAIL' | translate}}" style="width: 100%" #inputConfirmNewEmail/>
+                            <md-hint align="end">{{inputConfirmNewEmail.value.length}} / 40</md-hint>
+                        </md-input-container>
+                        <div *ngIf="_emailEditForm.controls['confirm_new_email'].hasError('invalidEmailAddress') && _emailEditForm.controls['confirm_new_email'].touched" class="error-message">{{'SIGNUP.REQUIRED_EMAIL' | translate}}</div>
+                        <div *ngIf="_emailEditForm.controls['confirm_new_email'].hasError('minlength') && _emailEditForm.controls['confirm_new_email'].touched" class="error-message">{{'SIGNUP.MIN_LENGTH_EMAIL' | translate}}</div>
+                        <div *ngIf="_emailEditForm.controls['confirm_new_email'].hasError('maxlength') && _emailEditForm.controls['confirm_new_email'].touched" class="error-message">{{'SIGNUP.MAX_LENGTH_EMAIL' | translate}}</div>
+                    </td>
+                </tr>
+             </table>
+            </form>
+        </md-card-content>
+        <md-card-actions align="end">
+            <button md-raised-button class="button-secundary" (click)="cancel()">{{'CANCEL' | translate}}</button>
+            <button md-raised-button class="button-primary" type="submit" (click)="changeEmail()">{{'MODIFY' | translate}}</button>
+        </md-card-actions>
+</md-card>

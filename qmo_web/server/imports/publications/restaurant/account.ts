@@ -1,0 +1,14 @@
+import { Meteor } from 'meteor/meteor';
+import { Accounts } from '../../../../both/collections/restaurant/account.collection';
+import { check } from 'meteor/check';
+
+/**
+ * Meteor publication accounts with restaurantId condition and tableId condition
+ * @param {string} _restaurantId
+ * @param {string} _status
+ */
+Meteor.publish( 'getAccountsByTableRestaurant', function( _restaurantId:string, _status:string ){
+    check( _restaurantId, String );
+    check( _status, String );
+    return Accounts.collection.find( { restaurantId: _restaurantId, status: _status } );
+});

@@ -1,0 +1,128 @@
+.ios {
+    .description {
+        bottom: 40px;
+    }
+}
+page-call-waiter {
+
+
+    $color: #fff;
+    
+    .content{
+        text-align: center;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        -o-transform: translateY(-50%);
+        transform: translateY(-50%);
+        position: absolute !important;
+        width:100%;
+        
+    }
+
+    .circle{
+
+        .bounce {
+            width: 20rem;
+            height: 20rem;
+            overflow: hidden;
+            border-radius: 50%;
+            background: #E53935 !important;
+            color: #fff;
+            line-height:20rem;
+            font-size: 3.4rem;
+            margin: 0 auto;
+            vertical-align:middle;
+            animation-name: slide;
+            animation-timing-function: ease;
+            animation-duration: 3s;
+            animation-iteration-count: infinite;
+        
+            @keyframes slide {
+                0%  {
+                    transform: scale(0, 0) translateY(0);
+                }
+                100% {
+                    transform: scale(1) translateY(0);
+                    opacity: 0;
+                }
+            }
+            
+        }
+
+        .circle_action {
+            width: 20rem;
+            background: #E53935;
+            opacity: 0;
+            overflow: hidden;
+            border-radius: 50%;
+            margin-left: auto;
+            margin-right: auto;
+            left: 0;
+            right: 0;
+            vertical-align:middle;
+            position: absolute;
+            //animation: bounce_action 1s .5s;
+            transform: scale(0.85);
+            top: 0px;
+        }
+        
+        .img{
+            transition: opacity 0.2s, visibility 0.8s;
+            position: absolute;
+            margin-left: auto;
+            margin-right: auto;
+            width: 20rem;
+            left: 0;
+            right: 0;
+            display: block;
+            border-radius: 50%;
+        }
+
+        .i1{
+            top: -400px;
+            opacity: 0;
+        }
+        
+        &:hover{
+            .circle_action{
+                height: 20rem;
+                opacity: 1;
+                animation: bounce_action 2.8s ease 1 forwards;
+            }
+            
+            
+            .bounce{
+                opacity: 0;
+                animation-iteration-count: 1;
+            }
+
+            cursor: none;
+            
+            .i1{
+                animation: image 2s ease .5s forwards;
+            }
+        }
+        
+    }
+
+    .description {
+        position: absolute;
+        bottom: 10px; 
+        width: 100%;
+    }
+    
+    @keyframes bounce_action {
+        0% { transform: scale(0, 0) translateY(0) }
+        25% { transform: scale(1) translateY(0); opacity: 0; }
+        50% { transform: scale(0.0) translateY(0) }
+        100% { transform: scale(1) translateY(0); opacity: 0; }
+    }
+    
+    @keyframes image {
+        0% { top: -400px; opacity: 0; }
+        100% { top: 0px; opacity: 1; }
+    }
+    
+}

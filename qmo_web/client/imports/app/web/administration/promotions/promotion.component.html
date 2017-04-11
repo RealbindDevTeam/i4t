@@ -1,0 +1,92 @@
+<md-card>
+  <md-card-title>{{'PROMOTIONS.PROMOTION_CREATION' | translate}}</md-card-title>
+  <md-card-subtitle>{{'PROMOTIONS.PROMOTION_TEXT' | translate}}</md-card-subtitle>
+  <md-card-content>
+    <form [formGroup]="_promotionForm" (ngSubmit)="addPromotion();">
+      <table style="width: 100%" cellspacing="0" style="margin-bottom: 10px">
+        <tr>
+            <td style="width: 40%">
+              <md-input-container style="width: 95%">
+                <input mdInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #inputName>
+                <md-hint align="end">{{inputName.value.length}} / 50</md-hint>
+              </md-input-container>
+            </td>
+            <td style="width: 25%">
+              <input formControlName="image" accept=".png, .jpg, .jpeg" (change)="onChangeImage($event)" style="display: none" type="file" name="file-1[]" id="file-1" class="inputfile inputfile-1" data-multiple-caption="{count} files selected"/>
+              <label for="file-1"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg>
+                  <span *ngIf="!_createImage">{{'CHOOSE_FILE' | translate}}&hellip;</span>
+                  <span *ngIf="_createImage">{{_nameImageFile}}&hellip;</span>
+              </label>
+            </td>                                           
+        </tr>
+        <tr>
+          <td colspan="2">
+            <md-input-container style="width: 100%">
+              <textarea mdInput formControlName="description" placeholder="{{'DESCRIPTION' | translate}}" maxlength="150" #inputDesc></textarea>
+              <md-hint align="end">{{inputDesc.value.length}} / 150</md-hint>
+            </md-input-container>
+          </td>          
+        </tr>
+        <tr>
+          <td colspan="2">
+            <label>{{'PROMOTIONS.RESTAURANT_PROMOTIONS' | translate}}</label> 
+            <p><label *ngIf="!_showRestaurants" class="label-field-void">{{'PROMOTIONS.NO_RESTAURANT_CREATED' | translate}}</label></p>
+            <div *ngIf="_showRestaurants" formGroupName="restaurants" style="padding-top: 20px">
+              <md-checkbox *ngFor="let restaurant of _restaurantList" [formControlName]="restaurant.name" [class.invalid]="!_promotionForm.controls.restaurants.valid" style="padding-right: 15px">{{restaurant.name}}</md-checkbox>
+              <label></label>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <button md-raised-button class="button-secundary" [disabled]="!_promotionForm.valid" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
+      <button md-raised-button class="button-primary" [disabled]="!_promotionForm.valid" type="submit">{{'CREATE' | translate}}</button>
+    </form>    
+  </md-card-content>
+</md-card>
+<md-card class="card-toolbar">
+  <md-card-content>
+    <table class="responsive-table highlight centered">
+      <thead>
+      <tr>
+        <th data-field="dataName">{{'NAME' | translate}}</th>
+        <th data-field="dataDesc">{{'DESCRIPTION' | translate}}</th>
+        <th data-field="dataRest">{{'PROMOTIONS.RESTAURANTS' | translate}}</th>
+        <th data-field="dataModDate">{{'MODIFICATION_DATE' | translate}}</th>
+        <th data-field="dataModDate">{{'IMAGE' | translate}}</th>
+        <th data-field="dataIsActive">{{'STATE' | translate}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let promotion of _promotions | async | paginate: { itemsPerPage: 10, currentPage: p }">
+        <td>{{promotion.name}}</td>
+        <td>
+          <label *ngIf="!promotion.description" class="label-field-void">{{'PROMOTIONS.NO_DESCRIPTION' | translate}}</label>
+          <div>{{promotion.description}}</div>
+        </td>
+        <td>
+          <label *ngIf="promotion.restaurants.length == 0" class="label-field-void">{{'PROMOTIONS.NO_RESTAURANT' | translate}}</label>
+          <div *ngFor="let rst of _restaurants | async">
+            <div *ngFor="let promRest of promotion.restaurants">
+              <div *ngIf="rst._id == promRest">
+                {{rst.name}}
+              </div>              
+            </div>
+          </div>
+        </td>
+        <td>{{promotion.modification_date | date: 'dd/MM/yyyy HH:mm'}}</td>
+        <td>          
+          <label *ngIf="promotion.urlImage == '-'" class="label-field-void">{{'PROMOTIONS.IMAGE_NOT_AVAILABLE' | translate}}</label>
+          <img *ngIf="promotion.urlImage != '-'" class="resize" src="{{promotion.urlImage}}"/>
+        </td>
+        <td><md-slide-toggle [(checked)]="promotion.is_active" (change)="updateStatus(promotion)"></md-slide-toggle></td>
+        <td>
+          <button md-icon-button md-tooltip="Modify" (click)="open(promotion)">
+            <md-icon>create</md-icon>
+          </button>
+        </td>             
+      </tr>
+      </tbody>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </table>
+  </md-card-content>
+</md-card>

@@ -1,0 +1,63 @@
+page-signup{
+    .btn-facebook{
+      background-color: #3b5998;
+      color: #FFF;
+    }
+
+    .btn-facebook:hover {
+        background: #30487b;
+    }
+
+    .btn-twitter{
+      background-color: #00aced;
+      color: #FFF;
+    }
+
+    .btn-twitter:hover {
+        background: #07c;
+    }
+
+    .btn-google{
+      background-color: #dd4b39;
+      color: #FFF;
+    }
+
+    .btn-google:hover {
+        background: #a53325;
+    }
+
+    .button-social{
+      margin-top: 10px;
+    }
+
+    .icon-social{
+      position: absolute;
+      left: 15px;
+    }
+
+    .item {
+      border-color: rgba(0, 0, 0, 0);
+      background-color: rgba(0, 0, 0, 0);
+
+      ion-label{
+        //color: #fff;
+        text-transform: inherit;
+      }
+    }
+
+    .item-inner{
+      border-bottom: 0px solid #fff !important;
+    }
+
+    .error-message{
+      color: #FF0000;
+      width:100%;
+      word-wrap: break-word;
+      padding-left: 9px;
+    }
+
+    #signup-logo {
+      margin-top: 2vh;
+      margin-bottom: 2vh;
+    }
+}

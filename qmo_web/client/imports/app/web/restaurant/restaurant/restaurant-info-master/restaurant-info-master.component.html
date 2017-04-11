@@ -1,0 +1,33 @@
+<md-card>
+    <img md-card-md-image class="display-info" src="{{restaurant.urlImage}}">
+    <md-card-title class="title-res">
+        {{restaurant.name}}
+        <md-card-subtitle >
+            <md-icon md-tooltip="Pais">room</md-icon>                   
+            <span *ngFor="let country of _countries | async" >
+                <template [ngIf]="country._id == restaurant.countryId">                
+                    <md-card-subtitle class="display-info">{{country.name}}</md-card-subtitle>
+                </template>
+            </span>                                    
+            <label> - </label>                  
+            <span *ngFor="let city of _cities | async" >
+                <template [ngIf]="city._id == restaurant.cityId">                
+                    <md-card-subtitle class="display-info">{{city.name}}</md-card-subtitle>
+                </template>
+            </span>
+            {{restaurant.address}}
+        </md-card-subtitle>
+    </md-card-title>
+    <div *ngIf="_showTableInfo" class="table-info">
+        <p class="display-info">{{'RESTAURANT_INFO_MASTER.TABLE_CODE' | translate}}: {{tableQRCode}}</p>
+    </div>
+    <div class="icon-primary">
+        <button md-icon-button md-tooltip="{{'RESTAURANT_INFO_MASTER.INFORMATION' | translate}}" (click)="openInformation( restaurant )"><md-icon class="md-24">description</md-icon></button>
+    </div>
+    <div class="icon-secondary">
+        <button md-icon-button md-tooltip="{{'RESTAURANT_INFO_MASTER.SCHEDULE' | translate}}" (click)="openSchedule( restaurant )"><md-icon class="md-24">today</md-icon></button>
+    </div>
+    <div class="icon-secondary">
+        <button md-icon-button md-tooltip="{{'RESTAURANT_INFO_MASTER.LOCATION' | translate}}" (click)="openLocation( restaurant )"><md-icon class="md-24">map</md-icon></button>
+    </div>
+</md-card>

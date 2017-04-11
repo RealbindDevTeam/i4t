@@ -1,0 +1,18 @@
+<md-card class="card-toolbar">
+    <md-card-title></md-card-title>
+    <md-card-content>
+        <div class="img">
+            <img  src="/images/computador.png">
+        </div>
+
+        <div style="margin: 0 auto; text-align: center">
+            <md-input id="pru" style="font-size: 1.8rem; font-weight: 500;" #input [value]="input.value.toUpperCase()" ></md-input>
+        </div>
+
+    </md-card-content>
+
+    <md-card-actions align="end">
+        <button md-raised-button class="button-secundary" (click)="_dialogRef.close()">{{'CANCEL' | translate}}</button>
+        <button md-raised-button class="button-primary" >{{'VALIDATE' | translate}}</button>
+    </md-card-actions>
+</md-card>

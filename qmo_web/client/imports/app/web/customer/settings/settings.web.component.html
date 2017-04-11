@@ -1,0 +1,102 @@
+<md-card>
+    <md-card-title>{{'SETTINGS.LOGIN' | translate}}</md-card-title>
+    <md-card-content>
+        
+                <table cellspacing="0">
+                    <tr>
+                        <td style="width: 20%" rowspan="3">
+                            <img src="{{_imageProfile}}">
+                        </td>
+                        <td style="width: 40vh">
+                            <label>{{'EMAIL' | translate}}:</label>
+                        </td>
+                        
+                        <td *ngIf="_disabled" style="width: 60vh">
+                            <strong  *ngFor="let user of _userObservable | async">
+                                {{user.emails[0].address}}
+                            </strong>
+                        </td>
+                        <td *ngIf="!_disabled" style="width: 60vh">
+                            {{_email}}
+                        </td>
+                        <td>
+                            <button style="padding-left: 15px" md-raised-button [disabled]="!_disabled" class="button-secundary" (click)="open()">{{'MODIFY' | translate}}</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>{{'PASSWORD' | translate}}:</label>
+                        </td>
+                        <td>
+                            <strong>********</strong>
+                        </td>
+                        <td>
+                            <button md-raised-button [disabled]="!_disabled" class="button-secundary" (click)="openModalChangePassword()">{{'MODIFY' | translate}}</button>
+                        </td>
+                    </tr>
+                    <tr><td></td></tr>
+                </table>
+    </md-card-content>
+</md-card>
+
+<md-card>
+    <md-card-title>{{'SETTINGS.MY_DATA' | translate}}</md-card-title>
+    <md-card-content>
+        <div *ngIf="!_disabled">
+
+            <md-input-container style="width: 100%">
+                <input mdInput placeholder="{{'SETTINGS.USERNAME' | translate}}" style="width: 100%" minlength="1" maxlength="20" [disabled]="!_disabled" [(ngModel)]="_userName" #inputUserName (blur)="validateFields()">
+                </input>
+                <md-hint align="end">{{inputUserName.value.length}} / 20</md-hint>
+            </md-input-container>
+            <div *ngIf="_validate" class="error-message">{{_message}}</div>
+
+            <md-input-container style="width: 100%">
+                <input mdInput placeholder="{{'SETTINGS.FIRST_NAME' | translate}}" style="width: 100%" minlength="1" maxlength="30" [disabled]="!_disabled" [(ngModel)]="_firstName"  #inputFirstName>
+                </input>
+                <md-hint align="end">{{inputFirstName.value.length}} / 30</md-hint>
+            </md-input-container>
+
+             <md-input-container style="width: 100%">
+                <input mdInput placeholder="{{'SETTINGS.LAST_NAME' | translate}}" style="width: 100%" minlength="1" maxlength="30" [disabled]="!_disabled" [(ngModel)]="_lastName" #inputLastName>
+                </input>
+                <md-hint align="end">{{inputLastName.value.length}} / 30</md-hint>
+            </md-input-container>
+
+             <md-input-container style="width: 100%">
+                <input mdInput placeholder="{{'SETTINGS.LANGUAGE' | translate}}" style="width: 100%" minlength="1" maxlength="30" [disabled]="!_disabled" [(ngModel)]="_languageCode"  #inputLanguageCode>
+                </input>
+                <md-hint align="end">{{inputLanguageCode.value.length}} / 30</md-hint>
+            </md-input-container>
+        </div>
+
+        <div *ngIf="_disabled">
+            <div *ngFor="let user of _userObservable | async" >
+                
+                <md-input-container style="width: 100%">
+                    <input mdInput class="demo-full-width" #inputUserName placeholder="{{'SETTINGS.USERNAME' | translate}}" class="demo-full-width" style="width: 100%" minlength="1" maxlength="20"  value="{{user.username}}"/>
+                    <md-hint align="end">{{inputUserName.value.length}} / 20</md-hint>
+                </md-input-container>
+                <div *ngIf="_validate" class="error-message">{{_message}}</div>
+
+                <md-input-container style="width: 100%">
+                    <input mdInput placeholder="{{'SETTINGS.FIRST_NAME' | translate}}" style="width: 100%" minlength="1" maxlength="30" #inputFirstName value="{{user.profile.first_name}}"/>
+                    <md-hint align="end">{{inputFirstName.value.length}} / 30</md-hint>
+                </md-input-container>
+
+                <md-input-container style="width: 100%">
+                    <input mdInput placeholder="{{'SETTINGS.LAST_NAME' | translate}}" style="width: 100%" minlength="1" maxlength="30" #inputLastName value="{{user.profile.last_name}}"/>
+                    <md-hint align="end">{{inputLastName.value.length}} / 30</md-hint>
+                </md-input-container>
+
+                <md-select required #inputLanguageCode placeholder="{{'SETTINGS.LANGUAGE' | translate}}" style="width: 100%;" [(ngModel)]="_lang_code">
+                    <md-option *ngFor="let lang of _languages | async" value="{{lang.language_code}}">{{lang.name}}</md-option>
+                </md-select>
+
+                <button align="end" md-raised-button class="button-primary" style="margin-top: 20px" [disabled]="!_disabled" (click)="editUserDetail(inputUserName, inputFirstName, inputLastName, inputLanguageCode)">{{'UPDATE' | translate}}</button>
+            </div>
+        </div>
+
+
+    </md-card-content>
+</md-card>

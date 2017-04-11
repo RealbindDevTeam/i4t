@@ -1,0 +1,140 @@
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { MeteorObservable } from 'meteor-rxjs';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { TranslateService } from 'ng2-translate';
+import { Meteor } from 'meteor/meteor';
+import { Categories } from '../../../../../../both/collections/administration/category.collection';
+import { Category } from '../../../../../../both/models/administration/category.model';
+import { Sections } from '../../../../../../both/collections/administration/section.collection';
+import { Section } from '../../../../../../both/models/administration/section.model';
+import { CategoriesEditComponent } from './categories-edit/categories-edit.component';
+
+import template from './categories.component.html';
+import style from './categories.component.scss';
+
+@Component({
+    selector: 'category',
+    template,
+    styles: [ style ]
+})
+export class CategoryComponent implements OnInit, OnDestroy{
+
+    private _categoryForm: FormGroup;
+    private _categories: Observable<Category[]>;
+    private _sections: Observable<Section[]>;
+
+    private _categoriesSub: Subscription;
+    private _sectionsSub: Subscription;
+
+    private _selectedValue:string;
+    public _dialogRef: MdDialogRef<any>;
+    
+    /**
+     * CategoryComponent constructor
+     * @param {FormBuilder} _formBuilder
+     * @param {TranslateService} _translate
+     * @param {MdDialog} _dialog
+     */
+    constructor( private _formBuilder: FormBuilder, private _translate: TranslateService, public _dialog: MdDialog ){
+        var _userLang = navigator.language.split( '-' )[0];
+        _translate.setDefaultLang( 'en' );
+        _translate.use( _userLang );           
+        this._selectedValue = "";
+    }
+
+    /**
+     * Implements ngOnInit function
+     */
+    ngOnInit(){
+        this._categoryForm = new FormGroup({
+            name: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 50 ) ] ),
+            description: new FormControl( '', [ Validators.maxLength( 150 ) ] ),
+            isActive: new FormControl( false ),
+            section: new FormControl( '' )  
+        });       
+        this._sections = Sections.find( { } ).zone();
+        this._sectionsSub = MeteorObservable.subscribe( 'sections', Meteor.userId() ).subscribe();                
+        this._categories = Categories.find( { } ).zone();
+        this._categoriesSub = MeteorObservable.subscribe( 'categories', Meteor.userId() ).subscribe();                
+    }
+
+    /**
+     * Function to add Category
+     */
+    addCategory():void{
+        if( !Meteor.userId() ){
+            alert('Please log in to add a restaurant');
+            return;
+        }
+
+        if( this._categoryForm.valid ){
+            Categories.insert({
+                creation_user: Meteor.userId(),
+                creation_date: new Date(),
+                modification_user: '-',
+                modification_date: new Date(),
+                is_active: true,
+                name: this._categoryForm.value.name,
+                description: this._categoryForm.value.description,
+                section: this._categoryForm.value.section
+            });
+            this._categoryForm.reset();
+            this._selectedValue = "";
+        }
+    }
+
+    /**
+     * Function to cancel add Category
+     */
+    cancel():void{
+        this._categoryForm.controls['name'].reset();
+        this._categoryForm.controls['description'].reset();
+        this._selectedValue = "";
+    }
+
+    /**
+     * When user wants edit Category, this function open dialog with Category information
+     * @param {Category} _category 
+     */
+    open( _category: Category ){
+        this._dialogRef = this._dialog.open( CategoriesEditComponent, {
+            disableClose : true,
+            width: '60%'
+        });
+        this._dialogRef.componentInstance._categoryToEdit = _category;
+        this._dialogRef.afterClosed().subscribe( result => {
+            this._dialogRef = null;
+        });
+    }
+
+    /**
+     * This function set section value in the form when the value select change
+     */
+    changeSection( _section ):void {
+        this._categoryForm.controls['section'].setValue( _section );        
+    }
+
+    /**
+     * Function to update Category status
+     * @param {Category} _category
+     */
+    updateStatus( _category:Category ):void{
+        Categories.update( _category._id,{
+            $set: {
+                is_active: !_category.is_active,
+                modification_date: new Date(),
+                modification_user: Meteor.userId()
+            }
+        });
+    }
+
+    /**
+     * Implements ngOnDestroy function
+     */
+    ngOnDestroy(){
+        this._categoriesSub.unsubscribe();
+        this._sectionsSub.unsubscribe();
+    }
+}

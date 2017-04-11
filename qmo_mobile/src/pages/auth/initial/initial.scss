@@ -1,0 +1,31 @@
+
+  page-initial {
+
+    /*portrait*/
+    @media screen and (orientation:portrait){
+      .logo-img{
+        height: 33rem;
+        width: 70%;
+        margin: 0 auto;
+        background-repeat: no-repeat;
+      }
+    }
+
+    /*landscape*/
+    @media screen and (orientation:landscape){
+      .logo-img{
+        height: 20rem;
+        width: 40%;
+        margin: 0 auto;
+        background-repeat: no-repeat;
+      }
+    }
+
+    .button_sign {
+      width: 40%;
+    }
+
+    .button_sign:focus{
+        background-color: #D32F2F;
+    }
+}

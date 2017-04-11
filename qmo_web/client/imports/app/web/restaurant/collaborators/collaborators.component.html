@@ -1,0 +1,100 @@
+<md-card>
+    <md-card-title>{{'COLLABORATORS.COLLABORATORS_SEARCH' | translate}}</md-card-title>
+    <md-card-subtitle>{{'COLLABORATORS.COLLABORATORS_TEXT' | translate}}</md-card-subtitle>
+    <md-card-content style="background: #FFF">
+        <form [formGroup]="_form" (ngSubmit)="collaboratorsSearch();">
+            <table style="width: 100%">
+                <tr>
+                    <th style="width: 10%">
+                        <label>{{'TABLES.RESTAURANT' | translate}}</label>
+                    </th>
+                    <td style="width: 35%">
+                        <md-select formControlName="restaurant" placeholder="{{'TABLES.SELECT_RESTAURANT' | translate}}" style="width: 95%;">
+                            <md-option *ngFor="let rest of _restaurants | async" value="{{rest._id}}">{{rest.name}}</md-option>
+                        </md-select>
+                    </td>
+                    <td style="width: 25%; text-align:center">
+                        <button md-raised-button class="button-primary" type="submit">
+                            <md-icon>search</md-icon>
+                            {{'SEARCH' | translate}}
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </md-card-content>
+</md-card>
+
+<md-card *ngIf="(_userDetails | async)?.length <= 0" md-cell="12" class="demo-card demo-basic">
+    <md-card-content>
+        <div class="card_initial">
+            <div class="card_initial has-image">
+                <div class="card_initial-image-container">
+                    <img class="card_initial-image" 
+                        src="/images/empleados.png"/>
+                </div>
+                <div class="card_initial-copy">
+                    <div class="card_initial-tagline">
+                        {{'COLLABORATORS.MSG_INITIAL' | translate}}
+                    </div>
+                    <div class="card_initial-additional-links">
+                        
+                    </div>
+                </div>
+                <div class="card_initial-button">
+                    <button md-raised-button (click)="openCollaboratorstRegister()">{{'COLLABORATORS.BTN' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </md-card-content>
+</md-card>
+
+<md-card *ngFor="let userdetail of _userDetails | async" class="cards">
+    <div *ngFor="let user of _users | async">
+        <div *ngIf="userdetail.user_id == user._id">
+            <md-card-header style="height: 80px; background: #eee;">
+                <img class="img" *ngIf="!user.profile.image.url" md-list-avatar src="/images/user_default_image.png">
+                <img class="img" *ngIf="user.profile.image.url" md-list-avatar src="user.profile.image.url">
+                <md-list>
+                    <md-list-item>
+                        <h3 md-line> {{user.profile.first_name}} {{user.profile.last_name}} </h3>
+                        <p md-line>
+                            <span> {{user.username}} </span>
+                        </p>
+                    </md-list-item>
+                </md-list>
+            </md-card-header>
+
+            <md-card-content>
+                <button md-mini-fab class="btn_edit"> <md-icon style="color: white;">edit</md-icon></button>
+                <ul class="list">
+                    <li *ngFor="let role of _roles | async">
+                        <template [ngIf]="role._id == userdetail.role_id">
+                            <md-icon md-tooltip="{{'JOB' | translate}}" style="vertical-align: middle">assignment ind</md-icon>
+                            <label> {{ role.name | translate }} </label>
+                        </template>
+                    </li>
+                    <li *ngIf="user.emails">
+                        <md-icon style="vertical-align: middle" md-tooltip="{{'EMAIL' | translate}}">mail outline</md-icon>
+                        <span> {{user.emails[0].address}} </span>
+                    </li>
+                    <li *ngIf="userdetail.phone">
+                        <md-icon style="vertical-align: middle" md-tooltip="{{ 'PHONE' | translate }}">phone</md-icon>
+                        <span> {{userdetail.phone}} </span>
+                    </li>
+                    <li *ngIf="userdetail.birthdate">
+                        <md-icon style="vertical-align: middle" md-tooltip="{{ 'BIRTHDATE' | translate }}">event</md-icon>
+                        <span> {{userdetail.birthdate | date: 'dd/MM/yyyy'}} </span>
+                    </li>
+                    <li>
+                        <md-slide-toggle [(checked)]="userdetail.is_active" (change)="changeUserState()">
+                            {{ 'STATE' | translate }}
+                        </md-slide-toggle>
+                    </li>
+                </ul>
+            </md-card-content>
+        </div>
+    </div>
+</md-card>
+
+<button *ngIf="(_userDetails | async)?.length > 0" class="fixed-action-btn" md-fab (click)="openCollaboratorstRegister()"> <md-icon style="color: white;">add</md-icon></button>

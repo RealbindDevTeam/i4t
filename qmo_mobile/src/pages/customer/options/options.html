@@ -1,0 +1,29 @@
+<ion-header>
+
+  <ion-navbar>
+      <ion-title>
+          <img id="signup-logo" src="assets/img/logo_iurest_mobile_white.png">
+      </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+    <ion-list inset>
+        <ion-item *ngFor="let user of _userObservable | async" style="padding-left: 0px">
+            <ion-avatar item-left>
+                <img src="{{_imageProfile}}">
+            </ion-avatar>
+            <h2>{{user.username}}</h2>
+        </ion-item>
+    </ion-list>
+
+    <ion-list no-lines>
+        <button ion-item (click)="goToSettings()">
+            <ion-icon name="settings" item-left></ion-icon>
+            {{'MOBILE.SETTINGS.TITTLE' | translate}}
+        </button>
+    </ion-list>
+
+</ion-content>

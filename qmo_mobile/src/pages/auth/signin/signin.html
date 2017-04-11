@@ -1,0 +1,29 @@
+<ion-header>
+</ion-header>
+
+<ion-content padding>
+  <div align="center">
+    <img id="signup-logo" src="assets/img/logo_iurest.png">
+  </div>
+  <button ion-button block class="btn-facebook button-social" type="submit" (click)="loginWithFacebook()">
+    <i class="fa fa-facebook icon-social" aria-hidden="true"></i>Facebook
+  </button>
+  <button ion-button block class="btn-twitter button-social" (click)="loginWithTwitter()">
+    <i class="fa fa-twitter icon-social" aria-hidden="true"></i>Twitter
+  </button>
+
+  <form [formGroup]="signinForm" (ngSubmit)="login()" novalidate>
+    <ion-list>
+      <ion-item>
+        <ion-label floating>{{'MOBILE.SIGNIN.EMAIL_USERNAME' | translate}}</ion-label>
+        <ion-input type="text" formControlName="email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>{{'MOBILE.SIGNIN.PASSWORD' | translate}}</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+      </ion-item>
+    </ion-list>
+    <button ion-button block class="button-primary button-social" type="submit" [disabled]="!signinForm.valid">{{'MOBILE.SIGNIN.START_SESSION' | translate}}</button>
+    <button (click)="sendEmailPrompt()" ion-button clear block class="button-secundary button-social">{{'MOBILE.SIGNIN.FORGOT_PASSWORD' | translate}}</button>
+  </form>
+</ion-content>

@@ -1,0 +1,162 @@
+{
+    "MOBILE": {
+        "CANCEL": "Cancelar",
+        "CATEGORY": "Categoria",
+        "CONFIRM_PASSWORD": "Confirmar contraseña",
+        "CREATE": "Crear",
+        "DESCRIPTION": "Descripción",
+        "EMAIL": "Correo electrónico",
+        "HELLO": "Hola",
+        "IMAGE": "Imagen",
+        "MODIFICATION_DATE": "Fecha de modificación",
+        "NAME": "Nombre",
+        "PASSWORD": "Contraseña",
+        "PRICING": "Precio",
+        "STATE": "Estado",
+        "USERNAME": "Nombre usuario",
+        "STRUCTURE": "Estructura",
+        "UPDATE": "Actualizar",
+        "MODIFY": "Modificar",
+        "CHOOSE_FILE": "Seleccionar archivo",
+        "INITIAL": {
+            "SIGNUP": "Registrarse",
+            "SIGNIN": "Iniciar sesión"
+        },
+        "SIGNUP": {
+            "WITH_EMAIL": "Correo electrónico",
+            "ALREADY_ACCOUNT": "Ya tienes una cuenta?",
+            "GO_TO_SIGNIN": "Ingresar",
+            "REQUIRED_USERNAME": "El nombre de usuario no puede estar vacio",
+            "MIN_LENGTH_USERNAME": "El nombre de usuario debe tener minimo 6 caracteres",
+            "MAX_LENGTH_USERNAME": "El nombre de usuario debe tener maximo 20 caracteres",
+            "REQUIRED_EMAIL": "Formato de correo electrónico incorrecto",
+            "MIN_LENGTH_EMAIL": "El correo electronico debe tener minimo 6 caracteres",
+            "MAX_LENGTH_EMAIL": "EL correo electronico debe tener maximo 40 caracteres",
+            "REQUIRED_PASSWORD": "La contraseña no puede estar vacia",
+            "MIN_LENGTH_PASSWORD": "La contraseña debe tener minimo 8 caracteres",
+            "MAX_LENGTH_PASSWORD": "La contraseña debe tener maximo 20 caracteres",
+            "REQUIRED_CONFIRM": "Debe confirmar la contraseña",
+            "PASSWORD_NOT_MATCH": "Las contraseñas no coinciden",
+            "CONFIRM_TITLE": "Usuario creado",
+            "CONFIRM_SUBTITLE": "Ahora puedes disfrutar de iurest",
+            "CONFIRM_BTN": "Aceptar"
+        },
+        "SIGNIN": {
+            "EMAIL_USERNAME": "Correo electronico/Nombre usuario",
+            "PASSWORD": "Contraseña",
+            "KEEP_SIGNED": "No cerrar sesión",
+            "START_SESSION": "Iniciar sesión",
+            "FORGOT_PASSWORD": "Olvidaste la contraseña?",
+            "FORGOT_DIALOG": {
+                "TITLE": "Restablecimiento de contraseña",
+                "SUBTITLE": "Ingresa tu correo electrónico",
+                "SEND": "Enviar",
+                "CANCEL": "Cancelar"
+            }
+        },
+        "RESET_PASWORD": {
+            "TITLE": "Cambiar contraseña",
+            "BTN_RESET": "Cambiar",
+            "EMAIL_SEND": "Se ha enviado un mensaje a tu correo electronico para cambiar la contraseña",
+            "SUCCESS": "Tu contraseña ha sido cambiada, ahora puedes ingresar desde la aplicación móvil o la página web"
+        },
+        "SETTINGS": {
+            "TITTLE": "Ajustes",
+            "LOGIN": "Inicio de sesión",
+            "MY_DATA": "Mis datos",
+            "USERNAME": "Usuario",
+            "FIRST_NAME": "Nombre",
+            "LAST_NAME": "Apellido(s)",
+            "LANGUAGE": "Idioma",
+            "CHANGE_EMAIL": "Cambia tu correo electrónico",
+            "CHANGE_PASSWORD": "Cambia tu contraseña",
+            "NEW_EMAIL": "Nuevo Correo electrónico",
+            "CONFIRM_NEW_EMAIL": "Confirmar nuevo correo electrónico",
+            "NEW_PASSWORD": "Nueva contraseña",
+            "CONFIRM_NEW_PASSWORD": "Confirmación de contraseña",
+            "ERROR_EMAIL_NOT_UPDATE": "Su correo electrónico no se ha actualizado",
+            "ERROR_EMAIL_DOES_NOT_MATCH": "Su correo electrónico no corresponde",
+            "ERROR_EMAILS_DOES_NOT_MATCH": "Los correos electrónicos no coinciden",
+            "MESSAGE_EMAIL_UPDATED": "Su correo electrónico ha sido actualizado",
+            "ERROR_PASS_NOT_UPDATE": "Su contraseña no ha sido actualizada",
+            "MESSAGE_PASS_UPDATED": "Su contraseña ha sido actualizada",
+            "CHANGE_EMAIL_ALERT": {
+                "CONFIRM_TITLE": "Correo electrónico",
+                "CONFIRM_BTN": "Ok",
+                "ERROR_TITLE": "Error"
+            },
+            "CHANGE_PASSWORD_ALERT": {
+                "CONFIRM_TITLE": "Contraseña",
+                "CONFIRM_BTN": "Ok",
+                "ERROR_TITLE": "Error"
+            }
+        },
+        "CODE_TYPE_SELECT": {
+            "TITTLE": "Tipo de código",
+            "CONTENT": "Selecciona el tipo de código para que puedas ordenar lo que deseas",
+            "QR": "Código QR",
+            "ALPHANUMERIC": "Código Alfanumérico"
+        },
+        "ALPHABET_CODE": {
+            "TITTLE": "Código alfanumérico",
+            "CONTENT": "Ingresa el código que se encuentra en la mesa",
+            "ENTER": "Ingresar código"
+        },
+        "ORDERS" : {
+            "TITTLE": "Ordenes",
+            "TITTLE_CONTENT": "Puedes ordenar lo que deseas",
+            "CONTENT": "Aún no tienes ordenes, puedes crear una orden nueva",
+            "TABLE_ORDERS": "Ordenes de la mesa",
+            "ALL_ORDERS": "Todas las ordenes",
+            "MY_ORDERS": "Mis ordenes",
+            "OTHER_ORDERS": "Otras ordenes",
+            "CANCEL": "Cancelar",
+            "CONFIRM": "Confirmar",
+            "CANCEL_ORDER": "Cancelar orden",
+            "IMPOSSIBLE_CANCEL": "La orden no ha podido ser cancelada",
+            "SURE_CANCEL": "Estas seguro que quieres cancelar la orden?",
+            "CONFIRM_ORDER": "Confirmar orden",
+            "IMPOSSIBLE_CONFIRM": "La orden no ha podido ser confirmada",
+            "SURE_CONFIRM": "Estas seguro que quieres confirmar la orden?",
+            "NOT_ITEM_AVAILABLE": "La orden tiene items no disponibles",
+            "YES_ANSWER": "Si",
+            "NO_ANSWER": "No",
+            "ORDER": "Orden #: ",
+            "TOTAL": "Total: ",
+            "STATUS": "Estado: "
+        },
+        "PAYMENTS" : {
+            "TITTLE": "Pagos",
+            "TITTLE_CONTENT": "Tus cuenta",
+            "CONTENT": "Aún no tienes cuentas en estado pendiente"
+        },
+        "CALL_WAITER" : {
+            "TITTLE": "Solicitar mesero",
+            "CONTENT": "Oprime el botón para llamar al mesero"
+        },
+        "SECTIONS" : {
+            "MENU": "Menú",
+            "SELECTION": "Selección",
+            "ALL": "Todo",
+            "CANCEL": "Cancelar",
+            "ADD_TO_ORDER": "Agregar a la orden",
+            "UNAVAILABLE": "No disponible",
+            "QUANTITY": "Cantidad:",
+            "ENTER_NUMBER": "Ingresa número",
+            "OBSERVATIONS": "Observaciones",
+            "ADDITIONS": "Adiciones",
+            "GARNISHES": "Guarniciones",
+            "MODAL_CANCEL": "Cancelar",
+            "MODEL_INDICATION": "Agrega tus comentarios (por ejemplo, sin cebolla...)",
+            "SAVE_OBS":"Guardar",
+            "ITEM_UNAVAILABLE": "En este momento el item no se encuentra disponible para agregar a la orden",
+            "UNIT_PRICE": "Precio unitario: ",
+            "TOTAL": "Precio total: ",
+            "MAX_GARNISH": "Por favor seleccione máximo ",
+            "SELECT_MAX_VALID": "Se han seleccionado mas de ",
+            "LOADING_MSG": "Agregando a la orden ...",
+            "TOAST_MSG": "Item agregado exitosamente",
+            "WAIT_QR": "Espera por favor  ..."
+        }
+    }
+}

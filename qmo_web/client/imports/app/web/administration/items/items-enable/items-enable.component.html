@@ -1,0 +1,22 @@
+<div id="content" class="main">
+    <md-grid-list cols="4" rowHeight="425px">
+            <div *ngFor="let item of _items | async">
+                <md-grid-tile>
+                    <md-card id="card-main" class="cards">
+                        <md-card-header>
+                            <md-card-title>{{item.name}}</md-card-title>
+                            <md-card-subtitle>{{'ITEMS.PRICE' | translate}}: {{item.price}}</md-card-subtitle>
+                        </md-card-header>
+                        <div class="crop">
+                            <img src="{{item.urlImage}}">
+                        </div>
+                        <br/>
+                        <md-card-content>
+                            <p>{{item.description}}</p>
+                            <md-slide-toggle [(checked)]="item.isAvailable" (change)="updateAvailableFlag(item)">Habilitar/Inhabilitar Item</md-slide-toggle>
+                        </md-card-content>
+                    </md-card>
+                </md-grid-tile>
+            </div>
+    </md-grid-list>
+</div>

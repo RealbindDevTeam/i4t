@@ -1,0 +1,114 @@
+<md-card class="card-toolbar">
+  <md-card-content>
+    <form [formGroup]="_collaboratorEditionForm">
+        <md-tab-group [(selectedIndex)]="_selectedIndex">
+            <md-tab [disabled]="!canMove(0)" label="{{'COLLABORATORS_REGISTER.COLLABORATORS_LABEL' | translate}}">
+                <md-card>
+                    <md-card-title>{{'COLLABORATORS_REGISTER.GENERAL_INFO' | translate}}</md-card-title>
+                    <md-card-subtitle>{{'COLLABORATORS_REGISTER.GENERAL_INFO_TEXT' | translate}}</md-card-subtitle>
+                    <md-card-content>
+                        <table style="width: 100%" cellspacing="0">
+                            <tr>
+                                <td style="width: 50%">
+                                    <md-select required formControlName="restaurant_work" placeholder="{{'COLLABORATORS_REGISTER.SELECT_RESTAURANT' | translate}}" style="width: 95%;">
+                                        <md-option *ngFor="let rest of _restaurants | async" value="{{rest._id}}">{{rest.name}}</md-option>
+                                    </md-select>
+                                </td>
+                                <td>
+                                    <md-select required formControlName="role" placeholder="{{'COLLABORATORS_REGISTER.SELECT_ROLE' | translate}}" style="width: 90%;">
+                                        <md-option *ngFor="let rol of _roles | async" value="{{rol._id}}">{{rol.name | translate}}</md-option>
+                                    </md-select>
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="width: 100%" cellspacing="0">
+                            <tr>
+                                <td colspan="3" style="padding-top: 10px;">
+                                    <md-input required formControlName="name" placeholder="{{'NAME' | translate}}" style="width: 95%" minlength="1" maxlength="70" #inputName>
+                                        <md-hint align="end">{{inputName.characterCount}} / 70</md-hint>
+                                    </md-input>
+                                </td>
+                                <td colspan="3" style="padding-top: 10px;">
+                                    <md-input required formControlName="last_name" placeholder="{{'LAST_NAME' | translate}}" style="width: 90%" minlength="1" maxlength="70" #inputAddress>
+                                        <md-hint align="end">{{inputAddress.characterCount}} / 70</md-hint>
+                                    </md-input>
+                                </td>
+                            </tr>
+                        </table>   
+                        <table style="width: 100%" cellspacing="0">
+                            <tr>
+                                <td colspan="1" style="padding-top: 10px; width: 50%">
+                                    <label>{{'BIRTHDATE' | translate}}</label>&nbsp;
+                                    <md-input required formControlName="birthdate_dd" style="width: 20%" placeholder="dd" minlength="1" maxlength="2"></md-input>
+                                    <md-input required formControlName="birthdate_mm" style="width: 20%" placeholder="mm" minlength="1" maxlength="2"></md-input>
+                                    <md-input required formControlName="birthdate_yyyy" style="width: 20%" placeholder="yyyy" minlength="1" maxlength="4"></md-input>
+
+                                    <div *ngIf="_collaboratorRegisterForm.controls['birthdate_dd'].hasError('invalidDayField') && _collaboratorRegisterForm.controls['birthdate_dd'].touched" class="error-message">{{'DATE_VALIDATE.DAY_FORMAT' | translate}}</div>
+                                    <div *ngIf="_collaboratorRegisterForm.controls['birthdate_mm'].hasError('invalidMonthField') && _collaboratorRegisterForm.controls['birthdate_mm'].touched" class="error-message">{{'DATE_VALIDATE.MONTH_FORMAT' | translate}}</div>
+                                    <div *ngIf="_collaboratorRegisterForm.controls['birthdate_yyyy'].hasError('invalidYearField') && _collaboratorRegisterForm.controls['birthdate_yyyy'].touched" class="error-message">{{'DATE_VALIDATE.YEAR_FORMAT' | translate}}</div>
+                                </td>
+                                <td colspan="2" style="padding-top: 10px;">
+                                    <md-input style="width: 90%" formControlName="phone" placeholder="{{'PHONE' | translate}}" #inputPhone>
+                                        <md-hint align="end">{{inputPhone.characterCount}} / 40</md-hint>
+                                    </md-input>
+                                </td>
+                            </tr>
+                        </table>
+                    </md-card-content>
+                    <md-card-actions align="end">
+                        <button md-raised-button (click)="_dialogRef.close()">{{'CANCEL' | translate}}</button>
+                        <button md-raised-button (click)="next()" [disabled]="!canMove(1)">{{'NEXT' | translate}}</button>
+                    </md-card-actions>
+                </md-card>
+            </md-tab>
+            
+            <md-tab [disabled]="!canMove(1)" label="{{'COLLABORATORS_REGISTER.USER_LABEL' | translate}}">
+                <md-card>
+                    <md-card-title>{{'COLLABORATORS_REGISTER.USER_INFO' | translate}}</md-card-title>
+                    <md-card-subtitle>{{'COLLABORATORS_REGISTER.USER_INFO_TEXT' | translate}}</md-card-subtitle>
+                    <md-card-content>
+                        <table style="width: 100%" cellspacing="0">
+                            <tr>
+                                <td>
+                                    <md-input style="width: 60%" required formControlName="username" placeholder="{{'USERNAME' | translate}}"></md-input>
+                                    <div *ngIf="_collaboratorRegisterForm.controls['username'].hasError('required') && _collaboratorRegisterForm.controls['username'].touched" class="error-message">{{'SIGNUP.REQUIRED_USERNAME' | translate}}</div>
+                                    <div *ngIf="_collaboratorRegisterForm.controls['username'].hasError('minlength') && _collaboratorRegisterForm.controls['username'].touched" class="error-message">{{'SIGNUP.MIN_LENGTH_USERNAME' | translate}}</div>
+                                    <div *ngIf="_collaboratorRegisterForm.controls['username'].hasError('maxlength') && _collaboratorRegisterForm.controls['username'].touched" class="error-message">{{'SIGNUP.MAX_LENGTH_USERNAME' | translate}}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <md-input style="width: 60%"  formControlName="email" placeholder="{{'EMAIL' | translate}}" name="email"></md-input>
+                                    <!--div *ngIf="_collaboratorRegisterForm.controls['email'].hasError('invalidEmailAddress') && _collaboratorRegisterForm.controls['email'].touched" class="error-message">{{'SIGNUP.REQUIRED_EMAIL' | translate}}</div-->
+                                    <div *ngIf="_collaboratorRegisterForm.controls['email'].hasError('minlength') && _collaboratorRegisterForm.controls['email'].touched" class="error-message">{{'SIGNUP.MIN_LENGTH_EMAIL' | translate}}</div>
+                                    <div *ngIf="_collaboratorRegisterForm.controls['email'].hasError('maxlength') && _collaboratorRegisterForm.controls['email'].touched" class="error-message">{{'SIGNUP.MAX_LENGTH_EMAIL' | translate}}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <md-input style="width: 60%"  formControlName="password" placeholder="{{'PASSWORD' | translate}}" name="password" required type="password"></md-input>
+                                    <div *ngIf="_collaboratorRegisterForm.controls['password'].hasError('required') && _collaboratorRegisterForm.controls['password'].touched" class="error-message">{{'SIGNUP.REQUIRED_PASSWORD' | translate}}</div>
+                                    <div *ngIf="_collaboratorRegisterForm.controls['password'].hasError('minlength') && _collaboratorRegisterForm.controls['password'].touched" class="error-message">{{'SIGNUP.MIN_LENGTH_PASSWORD' | translate}}</div>
+                                    <div *ngIf="_collaboratorRegisterForm.controls['password'].hasError('maxlength') && _collaboratorRegisterForm.controls['password'].touched" class="error-message">{{'SIGNUP.MAX_LENGTH_PASSWORD' | translate}}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <md-input style="width: 60%"  formControlName="confirmPassword" placeholder="{{'CONFIRM_PASSWORD' | translate}}" name="confirmPassword" required type="password"></md-input>
+                                    <div *ngIf="_collaboratorRegisterForm.controls['confirmPassword'].hasError('required') && _collaboratorRegisterForm.controls['confirmPassword'].touched" class="error-message">{{'SIGNUP.REQUIRED_PASSWORD' | translate}}</div>
+                                    <div *ngIf="_collaboratorRegisterForm.controls['confirmPassword'].hasError('minlength') && _collaboratorRegisterForm.controls['confirmPassword'].touched" class="error-message">{{'SIGNUP.MIN_LENGTH_PASSWORD' | translate}}</div>
+                                    <div *ngIf="_collaboratorRegisterForm.controls['confirmPassword'].hasError('maxlength') && _collaboratorRegisterForm.controls['confirmPassword'].touched" class="error-message">{{'SIGNUP.MAX_LENGTH_PASSWORD' | translate}}</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </md-card-content>
+                    <md-card-actions align="end">
+                        <button md-raised-button class="button-secundary" (click)="previous()" [disabled]="!canMove(0)">{{'BACK' | translate}}</button>
+                        <button md-raised-button class="button-primary" (click)="register()" [disabled]="!canMove(2)">{{'CREATE' | translate}}</button>
+                    </md-card-actions>
+                </md-card>
+            </md-tab>
+        </md-tab-group>
+    </form>
+  </md-card-content>
+</md-card>

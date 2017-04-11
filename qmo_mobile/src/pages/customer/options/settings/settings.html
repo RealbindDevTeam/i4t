@@ -1,0 +1,86 @@
+<ion-header>
+    <ion-navbar>
+    <ion-title>{{'MOBILE.SETTINGS.TITTLE' | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <div id="img-profile">
+        <img src="{{_imageProfile}}">
+    </div>
+    <h4>{{'MOBILE.SETTINGS.LOGIN' | translate}}</h4>
+    
+    <ion-list>
+        <ion-item *ngIf="_disabled">
+            <ion-label stacked>{{'MOBILE.EMAIL' | translate}}</ion-label>
+            <ion-input *ngFor="let user of _userObservable | async" type="text" value="{{user.emails[0].address}}" [disabled]="true"></ion-input>
+            <button ion-button icon-only small item-right class="button-secundary" [disabled]="!_disabled" (click)="openEmail()">
+                <ion-icon name="create"> </ion-icon>
+            </button>
+        </ion-item>
+        <ion-item *ngIf="!_disabled">
+            <ion-label stacked>{{'MOBILE.EMAIL' | translate}}</ion-label>
+            <ion-input type="text" value="{{_email}}" [disabled]="true"></ion-input>
+            <button ion-button icon-only small item-right class="button-secundary" [disabled]="!_disabled">
+                <ion-icon name="create"> </ion-icon>
+            </button>
+        </ion-item>
+
+        <ion-item>
+            <ion-label stacked>{{'MOBILE.PASSWORD' | translate}}</ion-label>
+            <ion-input type="password" value="********" [disabled]="true"></ion-input>
+            <button ion-button icon-only small item-right class="button-secundary" [disabled]="!_disabled" (click)="openPassword()">
+                <ion-icon name="create"></ion-icon>
+            </button>
+        </ion-item>
+    </ion-list>
+    
+    <h4>{{'MOBILE.SETTINGS.MY_DATA' | translate}}</h4>
+    <div *ngIf="!_disabled">
+        <ion-list >
+            <ion-item>
+                <ion-label floating>{{'MOBILE.USERNAME' | translate}}</ion-label>
+                <ion-input type="text" value="{{_userName}}" [disabled]="!_disabled"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label floating>{{'MOBILE.SETTINGS.FIRST_NAME' | translate}}</ion-label>
+                <ion-input type="text" value="{{_firstName}}" [disabled]="!_disabled"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label floating>{{'MOBILE.SETTINGS.LAST_NAME' | translate}}</ion-label>
+                <ion-input type="text" value="{{_lastName}}" [disabled]="!_disabled"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label floating>{{'MOBILE.SETTINGS.LANGUAGE' | translate}}</ion-label>
+                <ion-input type="text" value="{{_languageCode}}" [disabled]="!_disabled"></ion-input>
+            </ion-item>
+        </ion-list>
+        <button ion-button block class="button-primary" [disabled]="!_disabled">{{'UPDATE' | translate}}</button>
+    </div>
+    
+    <div *ngIf="_disabled">
+        <div *ngFor="let user of _userObservable | async">
+            <ion-list>
+                <ion-item>
+                    <ion-label floating>{{'MOBILE.USERNAME' | translate}}</ion-label>
+                    <ion-input #inputUserName value="{{user.username}}" type="text" [disabled]="!_disabled"></ion-input>
+                </ion-item>
+                <div *ngIf="_validate" class="error-message">{{_message}}</div>
+                <ion-item>
+                    <ion-label floating>{{'MOBILE.SETTINGS.FIRST_NAME' | translate}}</ion-label>
+                    <ion-input #inputFirstName value="{{user.profile.first_name}}" type="text"  [disabled]="!_disabled"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>{{'MOBILE.SETTINGS.LAST_NAME' | translate}}</ion-label>
+                    <ion-input #inputLastName value="{{user.profile.last_name}}" type="text" [disabled]="!_disabled"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>{{'MOBILE.SETTINGS.LANGUAGE' | translate}}</ion-label>
+                    <ion-input #inputLanguageCode value="{{user.profile.language_code}}" type="text" [disabled]="!_disabled"></ion-input>
+                </ion-item>
+            </ion-list>
+            <button ion-button block class="button-primary" [disabled]="!_disabled" type="submit" (click)="editUserDetail(inputUserName._value, inputFirstName._value, inputLastName._value, inputLanguageCode._value)">{{'MOBILE.UPDATE' | translate}}</button>
+        </div>
+    </div>
+    
+</ion-content>

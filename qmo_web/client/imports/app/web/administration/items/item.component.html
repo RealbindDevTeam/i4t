@@ -1,0 +1,63 @@
+<md-card *ngIf="(_items | async)?.length <= 0" md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
+    <md-card-content>
+        <div class="card_initial">
+            <div class="card_initial has-image">
+                <div class="card_initial-image-container">
+                    <img class="card_initial-image" 
+                        src="/images/platos.png"/>
+                </div>
+                <div class="card_initial-copy">
+                    <div class="card_initial-tagline">
+                        {{ 'ITEMS.MSG_INITIAL' | translate }}
+                    </div>
+                    <div class="card_initial-additional-links">
+                        
+                    </div>
+                </div>
+                <div class="card_initial-button">
+                    <button md-raised-button (click)="openItemCreation()">{{'ITEMS.CREATE_NEW_ITEM' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </md-card-content>
+</md-card>
+<div id="content" class="main">
+    <md-grid-list cols="3" rowHeight="425px">
+            <div *ngFor="let item of _items | async">
+                <md-grid-tile>
+                    <md-card id="card-main" class="cards">
+                        <md-card-header>
+                            <md-card-title>{{item.name}}</md-card-title>
+                            <md-card-subtitle>{{'ITEMS.PRICE' | translate}}: {{item.price}}</md-card-subtitle>
+                        </md-card-header>
+                        <div class="crop">
+                            <img src="{{item.urlImage}}">
+                        </div>
+                        <md-card-content>
+                            <div style="position: relative">
+                                <button md-tooltip="{{'ITEMS.EDIT_ITEM' | translate}}" md-fab class="btn-position-create" (click)="open(item)"> <md-icon style="color: white;" class="md-24">create</md-icon></button>
+                            </div>
+                            <p>{{item.description}}</p>
+                            <span *ngFor="let sec of _sections | async" >
+                                <template [ngIf]="sec._id == item.sectionId">                           
+                                <md-icon md-tooltip="{{sec.name}}">receipt</md-icon>
+                                </template>
+                            </span>
+                            <span *ngFor="let cat of _categories | async" >
+                                <template [ngIf]="cat._id == item.categoryId">                           
+                                <md-icon md-tooltip="{{cat.name}}">dehaze</md-icon>
+                                </template>
+                            </span>
+                            <span *ngFor="let subcat of _subcategories | async" >
+                                <template [ngIf]="subcat._id == item.subcategoryId">                           
+                                <md-icon md-tooltip="{{subcat.name}}">dehaze</md-icon>
+                                </template>
+                            </span>
+                            <md-slide-toggle md-tooltip="{{'ITEMS.ACTIVE_INACTIVE_ITEM' | translate}}" style="display: inline-block;" [(checked)]="item.is_active" (change)="updateStatus(item)"></md-slide-toggle>
+                        </md-card-content>
+                    </md-card>
+                </md-grid-tile>
+            </div>
+    </md-grid-list>
+</div>
+<button *ngIf="(_items | async)?.length > 0" md-tooltip="{{'ITEMS.CREATE_NEW_ITEM' | translate}}" class="fixed-action-btn" md-fab (click)="openItemCreation()"><md-icon style="color: white;">add</md-icon></button>
