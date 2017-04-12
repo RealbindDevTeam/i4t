@@ -43,9 +43,7 @@ export class WaiterCallPage implements OnInit, OnDestroy {
   }
 
   addWaiterCall(){
-      console.log('Hola mondo...');
       var div_action = document.getElementById('call_action');
-      //div_action.classList.add('hover');
       if (this._userDetail.current_table == "" && this._userDetail.current_restaurant == "") {
         div_action.classList.remove('hover');
         return;
@@ -60,7 +58,7 @@ export class WaiterCallPage implements OnInit, OnDestroy {
             user : usrId,
             waiter_id : ""
         }
-        Meteor.call('waiterCall', false, data);
+        //Meteor.call('waiterCall', false, data);
         div_action.classList.add('hover');
       }
       
