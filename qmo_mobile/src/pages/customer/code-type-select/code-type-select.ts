@@ -32,14 +32,14 @@ export class CodeTypeSelectPage {
   }
 
   goToScann() {
-    this.goToSections('TZSITUX8488');
-    /*BarcodeScanner.scan().then((result) => {
+    //this.goToSections('TZSITUX8488');
+    BarcodeScanner.scan().then((result) => {
       this.goToSections(result.text);
 
     }, (err) => {
       // An error occurred
     });
-    */
+    
 
     this._waitMsg = this.itemNameTraduction('MOBILE.SECTIONS.WAIT_QR');
     let loader = this.loadingCtrl.create({

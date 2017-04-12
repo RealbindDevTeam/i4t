@@ -8,10 +8,18 @@
 
 </ion-header>
 
-
 <ion-content>
-    <div class="content">
-        <div class="circle">
+    <div *ngIf="!_userRestaurant" padding>
+        <div class="img">
+            <img src="assets/img/celular_llamado_mesero.png">
+        </div>
+        <div style="text-align: center">
+            <h1>!Ups¡ No estas en ningun restaurante</h1>
+            <p>Ve a la opción de ordenes e ingresa el código para llamar al mesero</p>
+        </div>
+    </div>
+    <div *ngIf="_userRestaurant" class="main" (click)="addWaiterCall()">
+        <div id="call_action" class="circle">
             <div class="bounce">
                 <ion-icon name="hand"></ion-icon>
             </div>
@@ -19,7 +27,7 @@
             <img class="img i1" src="assets/img/mesero.png">
         </div>
     </div>
-    <div class="description">
+    <div *ngIf="_userRestaurant" class="description" padding>
         <p>{{'MOBILE.CALL_WAITER.CONTENT' | translate}}</p>
     </div>
 
