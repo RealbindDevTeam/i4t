@@ -16,13 +16,13 @@ export class MyApp {
         StatusBar.styleLightContent();
         StatusBar.backgroundColorByHexString('#D50000');
         Splashscreen.hide();
-        this.initializeApp();
+        //this.initializeApp();
       }
     });
 
   }
 
-  initializeApp() {
+  /*initializeApp() {
     this.platform.ready().then(() => {
         OneSignal.startInit("d0d0fcd1-ed5a-4f7c-84e2-271fe9a553aa", "1005647470136");
         OneSignal.inFocusDisplaying(OneSignal.OSInFocusDisplayOption.InAppAlert);
@@ -33,5 +33,5 @@ export class MyApp {
         });
         OneSignal.endInit();
     });
-  }
+  }*/
 }
