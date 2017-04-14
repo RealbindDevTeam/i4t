@@ -46,20 +46,19 @@ export class OrdersPage implements OnInit, OnDestroy {
         this._userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang('en');
         _translate.use(this._userLang);
-
         this._currentUserId = Meteor.userId();
-
         this._statusArray = ['REGISTERED', 'CONFIRMED', 'IN_PROGRESS'];
     }
 
     ngOnInit() {
+        console.log('entra a ngOnInit');
         this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
 
         this._storage.ready().then(() => {
             this._storage.get('trobj').then((val_obj) => {
                 if (val_obj != null) {
-                    this._table_code = val_obj.evalc_tb
-                    this._res_code = val_obj.edoc_rs
+                    this._table_code = val_obj.evalc_tb;
+                    this._res_code = val_obj.edoc_rs;
 
                     if ((this._table_code == null) && (this._res_code == null)) {
                         this._table_code = "";
@@ -115,6 +114,7 @@ export class OrdersPage implements OnInit, OnDestroy {
     }
 
     ionViewWillEnter() {
+        console.log('entra a ionViewWillEnter');
         this.selected = "me";
         this._storage.ready().then(() => {
             this._storage.get('trobj').then((val_obj) => {
@@ -254,29 +254,34 @@ export class OrdersPage implements OnInit, OnDestroy {
         alertConfirm.present();
     }
 
-    goToItemEdit(_orderId: string, _itemId: string) {
-        console.log('>>>' + _orderId + ' >>> ' + _itemId);
-        this._navCtrl.push(ItemEditPage, { order_id: _orderId, item_id: _itemId });
+    goToItemEdit(_order: any, _itemId: string) {
+        let garnishes: any[];
+        let additions: any[];
+        _order.items.forEach((orderItem) => {
+            if (orderItem.itemId === _itemId) {
+                this._navCtrl.push(ItemEditPage, { order_id: _order._id, item_obj: orderItem });
+            }
+        });
     }
 
     ionViewDidEnter() {
     }
 
     ionViewDidLeave() {
-        this._restaurantSub.unsubscribe();
-        this._ordersSub.unsubscribe();
-        this._itemsSub.unsubscribe();
     }
 
     ionViewWillLeave() {
+        if ((this._table_code != "") && (this._res_code != "")) {
+            this._restaurantSub.unsubscribe();
+            this._ordersSub.unsubscribe();
+            this._itemsSub.unsubscribe();
+        }
+        console.log('entra a ionViewWillLeave');
     }
 
     ionViewWillUnload() {
     }
 
     ngOnDestroy() {
-        this._userDetailSub.unsubscribe();
-        this._restaurantSub.unsubscribe();
-        this._ordersSub.unsubscribe();
     }
 }

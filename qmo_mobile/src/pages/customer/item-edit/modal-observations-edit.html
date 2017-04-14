@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      {{'MOBILE.SECTIONS.OBSERVATIONS' | translate}}
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="closeNormal()">
+        <span ion-text style="color: #FFF" showWhen="ios">{{'MOBILE.SECTIONS.MODAL_CANCEL' | translate}}</span>
+        <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <hr showWhen="android"/>
+  <ion-list>
+    <ion-item>
+      <ion-label style="white-space: normal; color: #666 !important" floating>{{'MOBILE.SECTIONS.MODEL_INDICATION' | translate}}</ion-label>
+      <ion-textarea rows="4" maxlength="50" [(ngModel)]="_observations"></ion-textarea>
+    </ion-item>
+    <button ion-button block style="text-transform: inherit" (click)="closeObservations()">{{'MOBILE.SECTIONS.SAVE_OBS' | translate}}</button> 
+  </ion-list>
+</ion-content>

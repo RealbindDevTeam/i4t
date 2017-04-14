@@ -39,7 +39,7 @@
           (click)="presentModal()" style="text-transform: inherit; margin-bottom: 15px">
           <ion-icon name="chatboxes" *ngIf="_observations != ''"></ion-icon>
           {{_observations != '' ? _observations.substring(0, 20)+ '...': 'MOBILE.SECTIONS.OBSERVATIONS' | translate}}
-          </button>
+        </button>
           <form [formGroup]="_newOrderForm">
             <div *ngIf="item.garnishFoodIsAcceped">
               <h3 class="custom-padding">{{'MOBILE.SECTIONS.GARNISHES' | translate}}</h3>
@@ -48,7 +48,7 @@
                 <div *ngFor="let itemGarnish of item.garnishFood">
                   <div *ngFor="let garnish of _garnishes | async">
                     <ion-item class="ion-item-cust" style="padding-left: 0px" *ngIf="itemGarnish ==  garnish._id">
-                      <ion-label>{{garnish.name}} - <span style="color: #666">{{garnish.price}} COP x {{_quantityCount}}</span></ion-label>
+                      <ion-label style="white-space: normal">{{garnish.name}} - <span style="color: #666">{{garnish.price}} COP x {{_quantityCount}}</span></ion-label>
                       <ion-checkbox [formControlName]="garnish.name" (ionChange)="calculateFinalPriceGarnishFood($event, garnish.price)" color="primary"
                         [class.invalid]="!_newOrderForm.controls.garnishFood.valid"></ion-checkbox>
                     </ion-item>
@@ -65,7 +65,7 @@
                 <div *ngFor="let itemAddition of item.additions">
                   <div *ngFor="let addition of _additions | async">
                     <ion-item class="ion-item-cust" style="padding-left: 0px" *ngIf="itemAddition ==  addition._id">
-                      <ion-label>{{addition.name}} - <span style="color: #666">{{addition.price}} COP x {{_quantityCount}}</span></ion-label>
+                      <ion-label style="white-space: normal">{{addition.name}} - <span style="color: #666">{{addition.price}} COP x {{_quantityCount}}</span></ion-label>
                       <ion-checkbox [formControlName]="addition.name" (ionChange)="calculateFinalPriceAddition($event, addition.price)" color="primary"
                         [class.invalid]="!_newOrderForm.controls.additions.valid"></ion-checkbox>
                     </ion-item>

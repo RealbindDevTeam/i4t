@@ -32,7 +32,7 @@ export class CodeTypeSelectPage {
   }
 
   goToScann() {
-    this.goToSections('TZSITUX8488');
+    this.goToSections('VUQXEGF8670');
     /*BarcodeScanner.scan().then((result) => {
       this.goToSections(result.text);
 

@@ -11,6 +11,7 @@ import { Addition } from 'qmo_web/both/models/administration/addition.model';
 import { GarnishFoodCol } from 'qmo_web/both/collections/administration/garnish-food.collection';
 import { GarnishFood } from 'qmo_web/both/models/administration/garnish-food.model';
 import { ModalObservations } from './modal-observations';
+import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 
 /*
   Generated class for the ItemDetail page.
@@ -51,6 +52,10 @@ export class ItemDetailPage implements OnInit, OnDestroy {
   private _loadingMsg: string;
   private _toastMsg: string;
   private _disabledMinusBtn: boolean = true;
+  private _orders;
+  private _ordersSub: Subscription;
+  private _statusArray: string[];
+  private _currentUserId: string;
 
   private _newOrderForm: FormGroup;
   private _garnishFormGroup: FormGroup = new FormGroup({});
@@ -61,6 +66,8 @@ export class ItemDetailPage implements OnInit, OnDestroy {
     this._userLang = navigator.language.split('-')[0];
     _translate.setDefaultLang('en');
     _translate.use(this._userLang);
+    this._currentUserId = Meteor.userId();
+    this._statusArray = ['REGISTERED'];
   }
 
   ionViewDidLoad() { }
@@ -116,6 +123,10 @@ export class ItemDetailPage implements OnInit, OnDestroy {
       });
     });
 
+    this._ordersSub = MeteorObservable.subscribe('getOrdersByTableId', this._res_code, this._table_code, this._statusArray).subscribe(()=>{
+      
+    });
+
     this._newOrderForm = new FormGroup({
       quantity: new FormControl('', [Validators.required]),
       garnishFood: this._garnishFormGroup,
@@ -126,12 +137,10 @@ export class ItemDetailPage implements OnInit, OnDestroy {
   presentModal() {
     let modal = this._modalCtrl.create(ModalObservations, { obs: this._observations });
     modal.onDidDismiss(data => {
-
       if (typeof data != "undefined" || data != null) {
         this._observations = data;
       }
     });
-
     modal.present();
   }
 
@@ -211,6 +220,23 @@ export class ItemDetailPage implements OnInit, OnDestroy {
   addItemToOrder() {
     let arr: any[] = Object.keys(this._newOrderForm.value.garnishFood);
     let _lGarnishFoodToInsert: string[] = [];
+    let _lOrderItemIndex: number = 0;
+
+    let _lOrder = Orders.collection.find({
+      creation_user: this._currentUserId,
+      restaurantId: this._res_code,
+      tableId: this._table_code,
+      status: 'REGISTERED'
+    }).fetch()[0];
+
+    console.log(_lOrder);
+    
+    if(_lOrder){
+      _lOrderItemIndex = _lOrder.orderItemCount + 1;
+    }else {
+      _lOrderItemIndex = 1;
+    }
+
     arr.forEach((gar) => {
       if (this._newOrderForm.value.garnishFood[gar]) {
         let _lGarnishF: GarnishFood = GarnishFoodCol.findOne({ name: gar });
@@ -229,6 +255,7 @@ export class ItemDetailPage implements OnInit, OnDestroy {
     });
 
     let _lOrderItem = {
+      index: _lOrderItemIndex,
       itemId: this._item_code,
       quantity: this._quantityCount,
       observations: this._observations,
@@ -270,6 +297,10 @@ export class ItemDetailPage implements OnInit, OnDestroy {
     toast.present();
   }
 
+  setObservations() {
+
+  }
+
   itemNameTraduction(itemName: string): string {
     var wordTraduced: string;
     this._translate.get(itemName).subscribe((res: string) => {
@@ -282,5 +313,6 @@ export class ItemDetailPage implements OnInit, OnDestroy {
     this._itemSub.unsubscribe();
     this._additionSub.unsubscribe();
     this._garnishSub.unsubscribe();
+    this._ordersSub.unsubscribe();
   }
 }
