@@ -1,0 +1,28 @@
+<md-tab-group>
+  <md-tab label="Ordenes Confirmadas">
+    <div *ngFor="let order of _ordersConfirmed | async; let i = index">
+        <md-toolbar style="background-color: #679436;color: white;margin-bottom: 1%;" (click)="showOrderConfirmedDetail(order,i)">
+            <i class="fa fa-list-alt" aria-hidden="true" style="margin-right: 1%;"></i>
+            <span style="margin-right: 1rem;">Orden # {{order.code}}</span>
+            <span class="app-flex-filler"></span>
+            <span style="float: right;">Estado: {{order.status}}</span>
+        </md-toolbar>
+        <div *ngIf="_ordersConfirmedIndex == i">
+            <span *ngFor="let item of _items | async">
+                <span *ngFor="let it of order.items">
+                    <template [ngIf]="item._id === it.itemId">
+                        <md-card>
+                            <md-card-title>{{item.name}}</md-card-title>
+                            <md-card-title>Cantidad: {{it.quantity}}</md-card-title>       
+                            <md-card-title>{{it.observations}}</md-card-title>                       
+                        </md-card>
+                    </template>
+                </span>
+            </span>
+        </div>
+    </div>
+  </md-tab>
+  <md-tab label="Ordenes en Proceso">
+
+  </md-tab>
+</md-tab-group>

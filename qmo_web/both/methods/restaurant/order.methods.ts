@@ -54,7 +54,8 @@ if (Meteor.isServer) {
                         $set: {
                             modification_user: Meteor.userId(),
                             modification_date: new Date(),
-                            totalPayment: _lTotalPaymentAux
+                            totalPayment: _lTotalPaymentAux,
+                            orderItemCount: _lOrder.orderItemCount + 1
                         }
                     }
                 );
@@ -73,7 +74,8 @@ if (Meteor.isServer) {
                     status: 'REGISTERED',
                     accountId: _lAccount._id,
                     items: [_itemToInsert],
-                    totalPayment: _finalPrice
+                    totalPayment: _finalPrice,
+                    orderItemCount: 1
                 });
             }
         },
@@ -117,7 +119,8 @@ if (Meteor.isServer) {
                         $set: {
                             modification_user: Meteor.userId(),
                             modification_date: new Date(),
-                            totalPayment: _lTotalPaymentAux
+                            totalPayment: _lTotalPaymentAux,
+                            orderItemCount: _lOrder.orderItemCount + 1
                         }
                     }
                 );
@@ -136,7 +139,8 @@ if (Meteor.isServer) {
                     status: 'REGISTERED',
                     accountId: _lAccount._id,
                     items: [_itemToInsert],
-                    totalPayment: _finalPrice
+                    totalPayment: _finalPrice,
+                    orderItemCount: 1
                 });
             }
         }

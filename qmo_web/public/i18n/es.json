@@ -151,7 +151,8 @@
             "PROMOTIONS": "Promociones",
             "GARNISHFOOD": "Guarniciones",
             "ITEMS": "Items",
-            "ITEMS_ENABLE": "Habilitar Items"
+            "ITEMS_ENABLE": "Habilitar Items",
+            "ORDERS_CHEF": "Ordenes"
         },
         "ORDERS": "Ordenes"
     },
