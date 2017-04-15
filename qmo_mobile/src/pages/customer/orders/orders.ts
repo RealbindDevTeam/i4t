@@ -254,14 +254,8 @@ export class OrdersPage implements OnInit, OnDestroy {
         alertConfirm.present();
     }
 
-    goToItemEdit(_order: any, _itemId: string) {
-        let garnishes: any[];
-        let additions: any[];
-        _order.items.forEach((orderItem) => {
-            if (orderItem.itemId === _itemId) {
-                this._navCtrl.push(ItemEditPage, { order_id: _order._id, item_obj: orderItem });
-            }
-        });
+    goToItemEdit(_orderId: string, _itemOrderIndex: string, _itemId: string, _creationUser: string) {
+        this._navCtrl.push(ItemEditPage, { order_id: _orderId, _item_ord_ind: _itemOrderIndex, item_code: _itemId, creation_user: _creationUser });
     }
 
     ionViewDidEnter() {

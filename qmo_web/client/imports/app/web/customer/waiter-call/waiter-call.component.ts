@@ -24,8 +24,7 @@ export class WaiterCallComponent {
     addWaiterCall(){
         var restaurant_id = 'LbkQ3xAEzDjgRf7is';
         var table_id = '4fycTkJX8CKaSW7zP';
-        //var usrId = Meteor.userId();
-        var usrId = Meteor.user().username;
+        var usrId = Meteor.userId();
 
         var data : any = {
             restaurants : restaurant_id,

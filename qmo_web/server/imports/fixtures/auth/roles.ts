@@ -34,12 +34,12 @@ export function loadRoles() {
             is_active: true,
             name: "ROLE.CHEF",
             description: "restaurant chef",
-            menus: []
+            menus: ["6000"]
         },{
             _id: "600",
             is_active: true,
             name: "ROLE.SUPERVISOR",
-            description: "restaurant chef",
+            description: "restaurant supervisor",
             menus: []
         }];
 

@@ -27,9 +27,11 @@ export class ItemEditPage implements OnInit, OnDestroy {
 
   private _userLang: string;
   private _item_code: string = '';
+  private _item_order_index: string = '';
   private _order_code: string = '';
   private _res_code: string = '';
   private _table_code: string = '';
+  private _creation_user: string = '';
   private _items;
   private _itemsSub: Subscription;
   private _item: any[] = [];
@@ -42,10 +44,9 @@ export class ItemEditPage implements OnInit, OnDestroy {
   private _additionSub: Subscription;
   private _garnishes;
   private _garnishSub: Subscription;
-  private _additionsList: any[] = [];
-  private _garnishFoodList: any[];
+  private _createAdditions: any[];
   private _maxGarnishFoodElements: number = 0;
-  private _quantityCount: number = 1;
+  private _quantityCount: number;
   private _lastQuantity: number = 1;
   private _letChange: boolean = true;
   private _disabledMinusBtn: boolean = true;
@@ -59,15 +60,14 @@ export class ItemEditPage implements OnInit, OnDestroy {
   private _ordersSub: Subscription;
   private _order: any;
   private _auxCounter: number = 0;
-
+  private _orderAux;
   private _createdGarnishFood: any[];
   private _orderItem;
   private _orderItemGarnishFood: any[];
+  private _orderAdditions: any[];
   private _actualOrder;
-
   private _garnishArray: any;
   private _additionArray: any[];
-
   private _newOrderForm: FormGroup;
   private _garnishFormGroup: FormGroup = new FormGroup({});
   private _additionsFormGroup: FormGroup = new FormGroup({});
@@ -81,21 +81,22 @@ export class ItemEditPage implements OnInit, OnDestroy {
     this._currentUserId = Meteor.userId();
     this._statusArray = ['REGISTERED', 'CONFIRMED', 'IN_PROGRESS'];
 
-    this._garnishFoodList = [];
     this._createdGarnishFood = [];
+    this._createAdditions = [];
     this._orderItemGarnishFood = [];
+    this._orderAdditions = [];
   }
 
   ionViewDidLoad() {
   }
 
   ngOnInit() {
-
-    this._item_code = this._navParams.get("item_obj");
     this._order_code = this._navParams.get("order_id");
-    //this._garnishArray = this._navParams.get("garnish_arr");
+    this._item_order_index = this._navParams.get("_item_ord_ind");
+    this._item_code = this._navParams.get("item_code");
+    this._creation_user = this._navParams.get("creation_user");
 
-    console.log('GARNISHFOOD=> ' + JSON.stringify(this._item_code));
+    console.log('order: ' + this._order_code + ' > index: ' + this._item_order_index + ' > item: ' + this._item_code + ' > ' + this._creation_user);
 
     this._storage.ready().then(() => {
       this._storage.get('trobj').then((val_obj) => {
@@ -109,14 +110,14 @@ export class ItemEditPage implements OnInit, OnDestroy {
               this._items = Items.find({ _id: this._item_code }).zone();
               this._item = Items.collection.find({ _id: this._item_code }).fetch();
               for (let item of this._item) {
-                this._finalPrice = item.price;
+                //this._finalPrice = item.price;
                 this._unitPrice = item.price;
                 this._showAddBtn = item.isAvailable;
               }
               this._garnishFoodElementsCount = 0;
               this._showGarnishFoodError = false;
               this._maxGarnishFoodElements = 0;
-              this._quantityCount = 1;
+              //this._quantityCount = 1;
               this._disabledAddBtn = false;
               this._letChange = false;
               this._additionsFormGroup.reset();
@@ -126,7 +127,14 @@ export class ItemEditPage implements OnInit, OnDestroy {
 
           this._ordersSub = MeteorObservable.subscribe('getOrdersByTableId', this._res_code, this._table_code, this._statusArray).subscribe(() => {
             MeteorObservable.autorun().subscribe(() => {
-              this._orders = Orders.find({ creation_user: this._currentUserId });
+              this._orders = Orders.find({ _id: this._order_code, creation_user: this._creation_user });
+              this._orderAux = Orders.collection.find({ _id: this._order_code, creation_user: this._creation_user }).fetch()[0];
+              this._orderAux.items.forEach((itemOrder) => {
+                if (itemOrder.itemId === this._item_code && itemOrder.index === this._item_order_index) {
+                  this._quantityCount = itemOrder.quantity;
+                  this._finalPrice = itemOrder.paymentItem; 
+                }
+              });
             });
           });
 
@@ -135,14 +143,15 @@ export class ItemEditPage implements OnInit, OnDestroy {
             this._ngZone.run(() => {
               this._garnishes = GarnishFoodCol.find({});
               this._createdGarnishFood = GarnishFoodCol.collection.find({}).fetch();
-              this._actualOrder = Orders.collection.find({ _id: this._order_code }).fetch()[0];
-              this._actualOrder.items.forEach((itemOrder) => {
-                if (itemOrder.itemId === this._item_code) {
+
+              let _actualOrder;
+              _actualOrder = Orders.collection.find({ _id: this._order_code, creation_user: this._creation_user }).fetch()[0];
+              _actualOrder.items.forEach((itemOrder) => {
+                if (itemOrder.itemId === this._item_code && itemOrder.index === this._item_order_index) {
                   this._orderItemGarnishFood = itemOrder.garnishFood;
                 }
               });
-              console.log('%&%& ' + this._orderItemGarnishFood);
-
+              //console.log('%&%& ' + this._orderItemGarnishFood);
               for (let gar of this._createdGarnishFood) {
                 let garnishExist: any[] = this._orderItemGarnishFood.filter(garnish => garnish === gar._id);
                 if (garnishExist.length > 0) {
@@ -161,18 +170,43 @@ export class ItemEditPage implements OnInit, OnDestroy {
                   }
                 }
               }
-              console.log('formulario de guarniciones');
-              console.log(this._garnishFormGroup);
+              // console.log('formulario de guarniciones');
+              //console.log(this._garnishFormGroup);
             });
           });
 
           this._additionSub = MeteorObservable.subscribe('additionsByRestaurant', this._res_code).subscribe(() => {
-            this._additions = Additions.find({}).zone();
-            this._additionsList = Additions.collection.find({}).fetch();
-            for (let addition of this._additionsList) {
-              let control: FormControl = new FormControl(false);
-              this._additionsFormGroup.addControl(addition.name, control);
-            }
+            this._ngZone.run(() => {
+              this._additions = Additions.find({}).zone();
+              this._createAdditions = Additions.collection.find({}).fetch();
+
+              let _actualOrder;
+              _actualOrder = Orders.collection.find({ _id: this._order_code, creation_user: this._creation_user }).fetch()[0];
+              _actualOrder.items.forEach((itemOrder) => {
+                if (itemOrder.itemId === this._item_code && itemOrder.index === this._item_order_index) {
+                  this._orderAdditions = itemOrder.additions;
+                }
+              });
+
+              for (let add of this._createAdditions) {
+                let additionExist: any[] = this._orderAdditions.filter(addition => addition === add._id);
+                if (additionExist.length > 0) {
+                  if (this._additionsFormGroup.contains(add.name)) {
+                    this._additionsFormGroup.controls[add.name].setValue(true);
+                  } else {
+                    let control: FormControl = new FormControl(true);
+                    this._additionsFormGroup.addControl(add.name, control);
+                  }
+                } else {
+                  if(this._additionsFormGroup.contains(add.name)){
+                    this._additionsFormGroup.controls[add.name].setValue(false);
+                  }else{
+                    let control: FormControl = new FormControl(false);
+                    this._additionsFormGroup.addControl(add.name, control);
+                  }
+                }
+              }
+            });
           });
 
           this._newOrderForm = new FormGroup({
@@ -210,7 +244,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
     }
 
     modal.onDidDismiss(data => {
-      console.log('*** ' + data);
+      //      console.log('*** ' + data);
       if (typeof data != "undefined" || data != null) {
         if (!data.toString().replace(/\s/g, '').length) {
           console.log('el espacio es vacio');
@@ -223,7 +257,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
           this._observations = _actualObs;
         }
       }
-      console.log('las obs son: ' + this._observations);
+      //    console.log('las obs son: ' + this._observations);
     });
     modal.present();
   }
@@ -356,41 +390,9 @@ export class ItemEditPage implements OnInit, OnDestroy {
       duration: 1500,
       position: 'middle'
     });
-
     toast.onDidDismiss(() => {
     });
-
     toast.present();
-  }
-
-  prepareGarnishFoodToEdit(): void {
-    this._createdGarnishFood = GarnishFoodCol.collection.find({}).fetch();
-    this._actualOrder = Orders.collection.findOne({ _id: this._order_code });
-    this._actualOrder.items.forEach((itemOrder) => {
-      if (itemOrder.itemId === this._item_code) {
-        this._orderItemGarnishFood = itemOrder.garnishFood;
-      }
-    });
-    console.log('%&%& ' + this._orderItemGarnishFood);
-
-    for (let gar of this._createdGarnishFood) {
-      let garnishExist = this._orderItemGarnishFood.filter(garnish => garnish === gar._id);
-      if (garnishExist.length > 0) {
-        if (this._garnishFormGroup.contains(gar.name)) {
-          this._garnishFormGroup.controls[gar.name].setValue(true);
-        } else {
-          let control: FormControl = new FormControl(true);
-          this._garnishFormGroup.addControl(gar.name, control);
-        }
-      } else {
-        if (this._garnishFormGroup.contains(gar.name)) {
-          this._garnishFormGroup.controls[gar.name].setValue(false);
-        } else {
-          let control: FormControl = new FormControl(false);
-          this._garnishFormGroup.addControl(gar.name, control);
-        }
-      }
-    }
   }
 
   itemNameTraduction(itemName: string): string {

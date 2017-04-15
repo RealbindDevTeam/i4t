@@ -35,7 +35,6 @@ export class CodeTypeSelectPage {
     this.goToSections('VUQXEGF8670');
     /*BarcodeScanner.scan().then((result) => {
       this.goToSections(result.text);
-
     }, (err) => {
       // An error occurred
     });
@@ -49,7 +48,6 @@ export class CodeTypeSelectPage {
   }
 
   goToSections(qr_code: string) {
-
     MeteorObservable.call('getIdTableByQr', qr_code).subscribe((table_id: string) => {
       if (table_id) {
         this._id_table = table_id;
@@ -76,7 +74,6 @@ export class CodeTypeSelectPage {
         alert(`Failed to get restaurant ${error}`);
       });
     }
-
   }
 
   goToAlphanumericCode() {
