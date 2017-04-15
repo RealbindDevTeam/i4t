@@ -23,7 +23,7 @@
                                         <md-list-item>
                                             <img md-list-avatar style="border-radius: 0;" [src]="item.urlImage">
                                             <h4 md-line>{{item.name}}</h4>
-                                            <p md-line>{{'ORDER_LIST.PRICE' | translate}}: {{or.status}}: {{it.paymentItem}}</p>
+                                            <p md-line>{{'ORDER_LIST.PRICE' | translate}}: {{it.paymentItem}}</p>
                                             <p md-line *ngIf="!item.isAvailable" style="color: #D50000;font-weight: bold;">{{'ORDER_LIST.UNAVAILABLE' | translate}}</p>
                                             <button md-icon-button (click)="showOrderItemDetail(it)">
                                                 <md-icon style="color:#D50000">mode_edit</md-icon>
@@ -150,8 +150,8 @@
                             </div>
                             <h3>{{'ORDER_LIST.TOTAL_PRICE' | translate}}: {{ _finalPrice }}</h3>
                             <md-card-actions>
-                                <button md-button *ngIf="_customerCanEdit && item.isAvailable" [disabled]="!_editOrderItemForm.valid || _showGarnishFoodError" (click)="editOrderItem(item._id)">{{'ORDER_LIST.MODIFY_ITEM' | translate}}</button>
                                 <button md-button *ngIf="_customerCanEdit" [disabled]="!_editOrderItemForm.valid || _showGarnishFoodError" (click)="deleteOrderItem(item._id)">{{'ORDER_LIST.DELETE_ITEM' | translate}}</button>
+                                <button md-button *ngIf="_customerCanEdit && item.isAvailable" [disabled]="!_editOrderItemForm.valid || _showGarnishFoodError" (click)="editOrderItem(item._id)">{{'ORDER_LIST.MODIFY_ITEM' | translate}}</button>
                             </md-card-actions>
                         </div>
                     </md-card-content>

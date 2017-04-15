@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Tables } from '../../../../both/collections/restaurant/table.collection';
 import { UserDetails } from '../../../../both/collections/auth/user-detail.collection';
+import { UserDetail } from '../../../../both/models/auth/user-detail.model';
 import { check } from 'meteor/check';
 
 /**
@@ -46,4 +47,14 @@ Meteor.publish( 'getAllTables', function( ){
 Meteor.publish( 'getTablesByRestaurant', function( _restaurantId:string ) {
     check( _restaurantId, String );
     return Tables.collection.find( { restaurantId: _restaurantId } );
+});
+
+/**
+ * Meteor publication return tables by restaurant Work
+ * @param {string} _userId
+ */
+Meteor.publish( 'getTablesByRestaurantWork', function( _userId: string ){
+    check( _userId, String );
+    let _lUserDetail: UserDetail = UserDetails.findOne( { user_id: _userId } );
+    return Tables.collection.find( { restaurantId: _lUserDetail.restaurant_work } );
 });

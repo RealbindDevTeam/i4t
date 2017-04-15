@@ -83,7 +83,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit(){
-        this._ordersSub = MeteorObservable.subscribe( 'getOrders', this.restaurantId, this.tableQRCode,[ 'REGISTERED','IN_PROCESS','CONFIRMED' ] ).subscribe();
+        this._ordersSub = MeteorObservable.subscribe( 'getOrders', this.restaurantId, this.tableQRCode,[ 'REGISTERED','IN_PROCESS','CONFIRMED', 'PREPARED' ] ).subscribe();
         this._orders = Orders.find( { creation_user: Meteor.userId() } ).zone();
         this._ordersTable = Orders.find( { creation_user: { $not: Meteor.userId() } } ).zone();
         this._itemsSub = MeteorObservable.subscribe( 'itemsByRestaurant', this.restaurantId ).subscribe();

@@ -1,28 +1,88 @@
 <md-tab-group>
   <md-tab label="Ordenes Confirmadas">
-    <div *ngFor="let order of _ordersConfirmed | async; let i = index">
-        <md-toolbar style="background-color: #679436;color: white;margin-bottom: 1%;" (click)="showOrderConfirmedDetail(order,i)">
+    <div style="width: 45%;display: inline-block;margin-top: 1%;">
+        <md-toolbar *ngFor="let order of _ordersConfirmed | async;" style="background-color: #679436;color: white;margin-bottom: 1%;" (click)="showOrderConfirmedDetail(order)">
             <i class="fa fa-list-alt" aria-hidden="true" style="margin-right: 1%;"></i>
             <span style="margin-right: 1rem;">Orden # {{order.code}}</span>
             <span class="app-flex-filler"></span>
-            <span style="float: right;">Estado: {{order.status}}</span>
-        </md-toolbar>
-        <div *ngIf="_ordersConfirmedIndex == i">
-            <span *ngFor="let item of _items | async">
-                <span *ngFor="let it of order.items">
-                    <template [ngIf]="item._id === it.itemId">
-                        <md-card>
-                            <md-card-title>{{item.name}}</md-card-title>
-                            <md-card-title>Cantidad: {{it.quantity}}</md-card-title>       
-                            <md-card-title>{{it.observations}}</md-card-title>                       
-                        </md-card>
-                    </template>
-                </span>
+            <span *ngFor="let table of _tables | async">
+                <template [ngIf]="table._id === order.tableId">
+                    <span style="float: right;">Mesa {{table._number}}</span>
+                </template>
             </span>
-        </div>
+        </md-toolbar>
+    </div>
+    <div style="display: inline-block;width: 54%;vertical-align: top;margin-top: 1%;">
+        <md-card>
+            <md-card-title *ngIf="!_showDetails" style="text-align: center;">Seleccione la orden que desea consultar</md-card-title>
+            <div *ngIf="_showDetails">
+                <div *ngFor="let order of _ordersConfirmedDetail | async;">
+                    <md-card-title style="display: inline-block;">Items de la Orden # {{order.code}}</md-card-title>
+                    <button md-raised-button color="primary" style="float: right;" (click)="setInProcessState(order)">ORDEN EN PROCESO</button>
+                    <md-card-content>
+                        <md-divider></md-divider>
+                        <md-list>
+                            <span *ngFor="let item of _items | async">
+                                <span *ngFor="let it of order.items">
+                                    <template [ngIf]="item._id === it.itemId">
+                                        <md-list-item style="margin-bottom: 1%;margin-top: 1%;">
+                                            <img style="width: 20%;height: 80px;" [src]="item.urlImage">
+                                            <p md-line style="font-size: 20px;font-weight: 400;white-space: normal;color: black;text-align: center;">{{item.name}}</p>
+                                            <p md-line style="font-size: 20px;color: #114b5f;font-weight: bold;text-align: center;">Cantidad: {{it.quantity}}</p>
+                                            <p md-line *ngIf="it.observations" style="text-align: center;">Observaciones: {{it.observations}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                    </template>
+                                </span>
+                            </span>
+                        </md-list>
+                    </md-card-content>
+                </div>
+            </div>
+        </md-card>
     </div>
   </md-tab>
   <md-tab label="Ordenes en Proceso">
-
+    <div style="width: 45%;display: inline-block;margin-top: 1%;">
+        <md-toolbar *ngFor="let order of _ordersInProcess | async;" style="background-color: #679436;color: white;margin-bottom: 1%;" (click)="showOrderInProcessDetail(order)">
+            <i class="fa fa-list-alt" aria-hidden="true" style="margin-right: 1%;"></i>
+            <span style="margin-right: 1rem;">Orden # {{order.code}}</span>
+            <span class="app-flex-filler"></span>
+            <span *ngFor="let table of _tables | async">
+                <template [ngIf]="table._id === order.tableId">
+                    <span style="float: right;">Mesa {{table._number}}</span>
+                </template>
+            </span>
+        </md-toolbar>
+    </div>
+    <div style="display: inline-block;width: 54%;vertical-align: top;margin-top: 1%;">
+        <md-card>
+            <md-card-title *ngIf="!_showDetailsInProcess" style="text-align: center;">Seleccione la orden que desea consultar</md-card-title>
+            <div *ngIf="_showDetailsInProcess">
+                <div *ngFor="let order of _ordersInProcessDetail | async;">
+                    <md-card-title style="display: inline-block;">Items de la Orden # {{order.code}}</md-card-title>
+                    <button md-raised-button color="primary" style="float: right;" (click)="setPreparedState(order)">ORDEN PREPARADA</button>
+                    <md-card-content>
+                        <md-divider></md-divider>
+                        <md-list>
+                            <span *ngFor="let item of _items | async">
+                                <span *ngFor="let it of order.items">
+                                    <template [ngIf]="item._id === it.itemId">
+                                        <md-list-item style="margin-bottom: 1%;margin-top: 1%;">
+                                            <img style="width: 20%;height: 80px;" [src]="item.urlImage">
+                                            <p md-line style="font-size: 20px;font-weight: 400;white-space: normal;color: black;text-align: center;">{{item.name}}</p>
+                                            <p md-line style="font-size: 20px;color: #114b5f;font-weight: bold;text-align: center;">Cantidad: {{it.quantity}}</p>
+                                            <p md-line *ngIf="it.observations" style="text-align: center;">Observaciones: {{it.observations}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                    </template>
+                                </span>
+                            </span>
+                        </md-list>
+                    </md-card-content>
+                </div>
+            </div>
+        </md-card>
+    </div>
   </md-tab>
 </md-tab-group>
