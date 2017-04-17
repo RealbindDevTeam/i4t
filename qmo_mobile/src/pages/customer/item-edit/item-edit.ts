@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { NavController, NavParams, ModalController, LoadingController, ToastController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, LoadingController, ToastController, AlertController } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { TranslateService } from 'ng2-translate';
 import { Subscription, Subject, Observable } from 'rxjs';
@@ -55,7 +55,6 @@ export class ItemEditPage implements OnInit, OnDestroy {
   private _disabledAddBtn: boolean = false;
   private _showGarnishFoodError = false;
   private _loadingMsg: string;
-  private _toastMsg: string;
   private _orders;
   private _ordersSub: Subscription;
   private _order: any;
@@ -73,13 +72,14 @@ export class ItemEditPage implements OnInit, OnDestroy {
   private _additionsFormGroup: FormGroup = new FormGroup({});
 
   constructor(public _navCtrl: NavController, public _navParams: NavParams, public _translate: TranslateService, public _storage: Storage,
-    public _modalCtrl: ModalController, public _loadingCtrl: LoadingController, private toastCtrl: ToastController, private _ngZone: NgZone) {
+    public _modalCtrl: ModalController, public _loadingCtrl: LoadingController, private _toastCtrl: ToastController, private _ngZone: NgZone,
+    public _alertCtrl: AlertController) {
 
     this._userLang = navigator.language.split('-')[0];
     _translate.setDefaultLang('en');
     _translate.use(this._userLang);
     this._currentUserId = Meteor.userId();
-    this._statusArray = ['REGISTERED', 'CONFIRMED', 'IN_PROGRESS'];
+    this._statusArray = ['REGISTERED', 'CONFIRMED', 'IN_PROGRESS', 'PREPARED'];
 
     this._createdGarnishFood = [];
     this._createAdditions = [];
@@ -96,8 +96,6 @@ export class ItemEditPage implements OnInit, OnDestroy {
     this._item_code = this._navParams.get("item_code");
     this._creation_user = this._navParams.get("creation_user");
 
-    console.log('order: ' + this._order_code + ' > index: ' + this._item_order_index + ' > item: ' + this._item_code + ' > ' + this._creation_user);
-
     this._storage.ready().then(() => {
       this._storage.get('trobj').then((val_obj) => {
 
@@ -110,16 +108,12 @@ export class ItemEditPage implements OnInit, OnDestroy {
               this._items = Items.find({ _id: this._item_code }).zone();
               this._item = Items.collection.find({ _id: this._item_code }).fetch();
               for (let item of this._item) {
-                //this._finalPrice = item.price;
                 this._unitPrice = item.price;
                 this._showAddBtn = item.isAvailable;
               }
-              this._garnishFoodElementsCount = 0;
               this._showGarnishFoodError = false;
               this._maxGarnishFoodElements = 0;
-              //this._quantityCount = 1;
               this._disabledAddBtn = false;
-              this._letChange = false;
               this._additionsFormGroup.reset();
               this._garnishFormGroup.reset();
             });
@@ -132,7 +126,8 @@ export class ItemEditPage implements OnInit, OnDestroy {
               this._orderAux.items.forEach((itemOrder) => {
                 if (itemOrder.itemId === this._item_code && itemOrder.index === this._item_order_index) {
                   this._quantityCount = itemOrder.quantity;
-                  this._finalPrice = itemOrder.paymentItem; 
+                  this._finalPrice = itemOrder.paymentItem;
+                  this._garnishFoodElementsCount = itemOrder.garnishFood.length;
                 }
               });
             });
@@ -151,7 +146,6 @@ export class ItemEditPage implements OnInit, OnDestroy {
                   this._orderItemGarnishFood = itemOrder.garnishFood;
                 }
               });
-              //console.log('%&%& ' + this._orderItemGarnishFood);
               for (let gar of this._createdGarnishFood) {
                 let garnishExist: any[] = this._orderItemGarnishFood.filter(garnish => garnish === gar._id);
                 if (garnishExist.length > 0) {
@@ -170,8 +164,6 @@ export class ItemEditPage implements OnInit, OnDestroy {
                   }
                 }
               }
-              // console.log('formulario de guarniciones');
-              //console.log(this._garnishFormGroup);
             });
           });
 
@@ -198,9 +190,9 @@ export class ItemEditPage implements OnInit, OnDestroy {
                     this._additionsFormGroup.addControl(add.name, control);
                   }
                 } else {
-                  if(this._additionsFormGroup.contains(add.name)){
+                  if (this._additionsFormGroup.contains(add.name)) {
                     this._additionsFormGroup.controls[add.name].setValue(false);
-                  }else{
+                  } else {
                     let control: FormControl = new FormControl(false);
                     this._additionsFormGroup.addControl(add.name, control);
                   }
@@ -223,7 +215,6 @@ export class ItemEditPage implements OnInit, OnDestroy {
   presentModal(_actualObs?: string) {
     let modal;
     if (_actualObs) {
-      console.log('viene observacion')
       if (this._observations === null) {
         if (this._auxCounter == 0) {
           modal = this._modalCtrl.create(ModalObservationsEdit, { obs: _actualObs });
@@ -244,10 +235,8 @@ export class ItemEditPage implements OnInit, OnDestroy {
     }
 
     modal.onDidDismiss(data => {
-      //      console.log('*** ' + data);
       if (typeof data != "undefined" || data != null) {
         if (!data.toString().replace(/\s/g, '').length) {
-          console.log('el espacio es vacio');
           this._observations = null;
         } else {
           this._observations = data;
@@ -257,7 +246,6 @@ export class ItemEditPage implements OnInit, OnDestroy {
           this._observations = _actualObs;
         }
       }
-      //    console.log('las obs son: ' + this._observations);
     });
     modal.present();
   }
@@ -335,9 +323,10 @@ export class ItemEditPage implements OnInit, OnDestroy {
     this._maxGarnishFoodElements = _pGarnishFoodQuantity;
   }
 
-  addItemToOrder() {
+  editOrderItem() {
     let arr: any[] = Object.keys(this._newOrderForm.value.garnishFood);
     let _lGarnishFoodToInsert: string[] = [];
+
     arr.forEach((gar) => {
       if (this._newOrderForm.value.garnishFood[gar]) {
         let _lGarnishF: GarnishFood = GarnishFoodCol.findOne({ name: gar });
@@ -355,7 +344,12 @@ export class ItemEditPage implements OnInit, OnDestroy {
       }
     });
 
+    if (this._observations == null) {
+      this._observations = "";
+    }
+
     let _lOrderItem = {
+      index: this._item_order_index,
       itemId: this._item_code,
       quantity: this._quantityCount,
       observations: this._observations,
@@ -364,35 +358,98 @@ export class ItemEditPage implements OnInit, OnDestroy {
       paymentItem: this._finalPrice
     };
 
-    this._loadingMsg = this.itemNameTraduction('MOBILE.SECTIONS.LOADING_MSG');
-    this._toastMsg = this.itemNameTraduction('MOBILE.SECTIONS.TOAST_MSG');
+    let _lOrder = Orders.findOne({ _id: this._order_code });
+    let _lOrderItemToremove = _lOrder.items.filter(o => _lOrderItem.itemId === o.itemId && Number(_lOrderItem.index) === o.index)[0];
+    let _lTotalPayment: number = _lOrder.totalPayment - _lOrderItemToremove.paymentItem;
 
-    let loading = this._loadingCtrl.create({
-      content: this._loadingMsg
-    });
+    Orders.update({ _id: this._order_code }, { $pull: { items: { itemId: this._item_code, index: this._item_order_index } } });
+    Orders.update({ _id: this._order_code },
+      {
+        $set: {
+          totalPayment: _lTotalPayment,
+          modification_user: Meteor.userId(),
+          modification_date: new Date()
+        }
+      }
+    );
 
-    loading.present();
+    let _lNewOrder = Orders.findOne({ _id: this._order_code });
+    let _lNewTotalPaymentAux: number = Number.parseInt(_lNewOrder.totalPayment.toString()) + Number.parseInt(_lOrderItem.paymentItem.toString());
 
-    setTimeout(() => {
-      MeteorObservable.call('AddItemToOrder2', _lOrderItem, this._res_code, this._table_code, this._finalPrice).subscribe(() => {
-        loading.dismiss();
-        this._navCtrl.pop();
-        this.presentToast();
-      }, (error) => {
-        alert(`Error: ${error}`);
-      });
-    }, 1500);
+    Orders.update({ _id: _lNewOrder._id },
+      { $push: { items: _lOrderItem } }
+    );
+
+    Orders.update({ _id: _lNewOrder._id },
+      {
+        $set: {
+          modification_user: Meteor.userId(),
+          modification_date: new Date(),
+          totalPayment: _lNewTotalPaymentAux
+        }
+      }
+    );
+
+    let _toastMsg = this.itemNameTraduction('MOBILE.ITEM_EDIT.TOAST_MSG_EDIT');
+    this._navCtrl.pop();
+    this.presentToast(_toastMsg);
   }
 
-  presentToast() {
-    let toast = this.toastCtrl.create({
-      message: this._toastMsg,
+  presentToast(msg: string) {
+    let toast = this._toastCtrl.create({
+      message: msg,
       duration: 1500,
       position: 'middle'
     });
     toast.onDidDismiss(() => {
     });
     toast.present();
+  }
+
+  deleteOrderItem() {
+    let dialog_title = this.itemNameTraduction('MOBILE.ITEM_EDIT.REMOVE_ITEM');
+    let dialog_subtitle = this.itemNameTraduction('MOBILE.ITEM_EDIT.SURE_REMOVE');
+    let dialog_cancel_btn = this.itemNameTraduction('MOBILE.ITEM_EDIT.NO_ANSWER');
+    let dialog_accept_btn = this.itemNameTraduction('MOBILE.ITEM_EDIT.YES_ANSWER');
+    let alert_not = this.itemNameTraduction('MOBILE.ORDERS.IMPOSSIBLE_CONFIRM');
+    let item_not = this.itemNameTraduction('MOBILE.ORDERS.NOT_ITEM_AVAILABLE');
+
+    let alertConfirm = this._alertCtrl.create({
+      title: dialog_title,
+      message: dialog_subtitle,
+      buttons: [
+        {
+          text: dialog_cancel_btn,
+          role: 'cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: dialog_accept_btn,
+          handler: () => {
+            let _lOrder = Orders.findOne({ _id: this._order_code });
+            let _lOrderItemToremove = _lOrder.items.filter(o => this._item_code === o.itemId && Number(this._item_order_index) === o.index)[0];
+            let _lNewTotalPayment: number = _lOrder.totalPayment - _lOrderItemToremove.paymentItem;
+
+            Orders.update({ _id: _lOrder._id }, { $pull: { items: { itemId: this._item_code, index: this._item_order_index } } });
+            Orders.update({ _id: _lOrder._id },
+              {
+                $set: {
+                  totalPayment: _lNewTotalPayment,
+                  modification_user: Meteor.userId(),
+                  modification_date: new Date()
+                }
+              }
+            );
+
+            let _toastMsg = this.itemNameTraduction('MOBILE.ITEM_EDIT.TOAST_MSG_REMOVE');
+            this._navCtrl.pop();
+            this.presentToast(_toastMsg);
+          }
+        }
+      ]
+    });
+    alertConfirm.present();
   }
 
   itemNameTraduction(itemName: string): string {

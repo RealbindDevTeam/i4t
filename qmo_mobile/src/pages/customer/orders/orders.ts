@@ -47,11 +47,10 @@ export class OrdersPage implements OnInit, OnDestroy {
         _translate.setDefaultLang('en');
         _translate.use(this._userLang);
         this._currentUserId = Meteor.userId();
-        this._statusArray = ['REGISTERED', 'CONFIRMED', 'IN_PROGRESS'];
+        this._statusArray = ['REGISTERED', 'CONFIRMED', 'IN_PROGRESS', 'PREPARED'];
     }
 
     ngOnInit() {
-        console.log('entra a ngOnInit');
         this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
 
         this._storage.ready().then(() => {
@@ -114,7 +113,6 @@ export class OrdersPage implements OnInit, OnDestroy {
     }
 
     ionViewWillEnter() {
-        console.log('entra a ionViewWillEnter');
         this.selected = "me";
         this._storage.ready().then(() => {
             this._storage.get('trobj').then((val_obj) => {
@@ -270,7 +268,6 @@ export class OrdersPage implements OnInit, OnDestroy {
             this._ordersSub.unsubscribe();
             this._itemsSub.unsubscribe();
         }
-        console.log('entra a ionViewWillLeave');
     }
 
     ionViewWillUnload() {

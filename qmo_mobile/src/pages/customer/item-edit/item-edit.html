@@ -96,6 +96,7 @@
 <ion-footer class="ion-footer-custom" padding>
   <ion-label style="float: left; font-size: large; margin-top: 0px">{{'MOBILE.SECTIONS.TOTAL' | translate}}{{_finalPrice}} COP </ion-label>
   <div>
-    <button *ngIf="_showAddBtn" ion-button block style="text-transform: inherit" [disabled]="_disabledAddBtn" (click)="addItemToOrder()">{{'MOBILE.SECTIONS.ADD_TO_ORDER' | translate}}</button>
+    <button style="float:left; width: 45%" ion-button (click)="deleteOrderItem()">{{'MOBILE.ITEM_EDIT.REMOVE' | translate}}</button>
+    <button style="float: right; width: 45%" ion-button (click)="editOrderItem()">{{'MOBILE.ITEM_EDIT.MODIFY' | translate}}</button>
   </div>
 </ion-footer>

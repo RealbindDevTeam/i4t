@@ -102,7 +102,7 @@
             "CONTENT": "Ingresa el código que se encuentra en la mesa",
             "ENTER": "Ingresar código"
         },
-        "ORDERS" : {
+        "ORDERS": {
             "TITTLE": "Ordenes",
             "TITTLE_CONTENT": "Puedes ordenar lo que deseas",
             "CONTENT": "Aún no tienes ordenes, puedes crear una orden nueva",
@@ -125,16 +125,16 @@
             "TOTAL": "Total: ",
             "STATUS": "Estado: "
         },
-        "PAYMENTS" : {
+        "PAYMENTS": {
             "TITTLE": "Pagos",
             "TITTLE_CONTENT": "Tus cuenta",
             "CONTENT": "Aún no tienes cuentas en estado pendiente"
         },
-        "CALL_WAITER" : {
+        "CALL_WAITER": {
             "TITTLE": "Solicitar mesero",
             "CONTENT": "Oprime el botón para llamar al mesero"
         },
-        "SECTIONS" : {
+        "SECTIONS": {
             "MENU": "Menú",
             "SELECTION": "Selección",
             "ALL": "Todo",
@@ -148,7 +148,7 @@
             "GARNISHES": "Guarniciones",
             "MODAL_CANCEL": "Cancelar",
             "MODEL_INDICATION": "Agrega tus comentarios (por ejemplo, sin cebolla...)",
-            "SAVE_OBS":"Guardar",
+            "SAVE_OBS": "Guardar",
             "ITEM_UNAVAILABLE": "En este momento el item no se encuentra disponible para agregar a la orden",
             "UNIT_PRICE": "Precio unitario: ",
             "TOTAL": "Precio total: ",
@@ -157,6 +157,16 @@
             "LOADING_MSG": "Agregando a la orden ...",
             "TOAST_MSG": "Item agregado exitosamente",
             "WAIT_QR": "Espera por favor  ..."
+        },
+        "ITEM_EDIT": {
+            "MODIFY": "Modificar",
+            "REMOVE": "Remover",
+            "REMOVE_ITEM": "Remover Item",
+            "SURE_REMOVE": "Estas seguro que quieres remover el item?",
+            "YES_ANSWER": "Si",
+            "NO_ANSWER": "No",
+            "TOAST_MSG_EDIT":"Item modificado exitosamente",
+            "TOAST_MSG_REMOVE": "Item removido exitosamente"
         }
     }
 }

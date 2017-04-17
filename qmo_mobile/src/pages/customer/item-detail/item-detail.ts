@@ -218,10 +218,7 @@ export class ItemDetailPage implements OnInit, OnDestroy {
   }
 
   addItemToOrder() {
-    let arr: any[] = Object.keys(this._newOrderForm.value.garnishFood);
-    let _lGarnishFoodToInsert: string[] = [];
     let _lOrderItemIndex: number = 0;
-
     let _lOrder = Orders.collection.find({
       creation_user: this._currentUserId,
       restaurantId: this._res_code,
@@ -229,13 +226,14 @@ export class ItemDetailPage implements OnInit, OnDestroy {
       status: 'REGISTERED'
     }).fetch()[0];
 
-    console.log(_lOrder);
-    
     if(_lOrder){
       _lOrderItemIndex = _lOrder.orderItemCount + 1;
     }else {
       _lOrderItemIndex = 1;
     }
+
+    let arr: any[] = Object.keys(this._newOrderForm.value.garnishFood);
+    let _lGarnishFoodToInsert: string[] = [];
 
     arr.forEach((gar) => {
       if (this._newOrderForm.value.garnishFood[gar]) {
