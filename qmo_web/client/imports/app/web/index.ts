@@ -45,6 +45,7 @@ import { OrderCreateComponent } from './customer/orders/order-create/order-creat
 import { OrdersListComponent } from './customer/orders/order-list/order-list.component';
 import { ItemEnableComponent } from './administration/items/items-enable/items-enable.component';
 import { WaiterCallComponent } from './customer/waiter-call/waiter-call.component';
+import { OrderAttentionComponent } from './chef/order-attention/order-attention.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -76,7 +77,8 @@ export const WEB_DECLARATIONS = [
     OrderCreateComponent,
     OrdersListComponent,
     ItemEnableComponent,
-    WaiterCallComponent
+    WaiterCallComponent,
+    OrderAttentionComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [

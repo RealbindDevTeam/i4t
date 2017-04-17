@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Items, ItemImages } from '../../../../both/collections/administration/item.collection';
 import { Sections } from '../../../../both/collections/administration/section.collection';
+import { UserDetails } from '../../../../both/collections/auth/user-detail.collection';
+import { UserDetail } from '../../../../both/models/auth/user-detail.model';
 import { check } from 'meteor/check';
 
 /**
@@ -40,4 +42,19 @@ Meteor.publish('itemsByRestaurant', function (_restaurantId: string) {
 Meteor.publish('itemById', function( _itemId: string) {
     check(_itemId, String);
     return Items.collection.find({_id : _itemId});
+});
+
+/**
+ * Meteor publication return items by restaurant work
+ * @param {string} _userId
+ */
+Meteor.publish('getItemsByRestaurantWork', function( _userId: string ){
+    check( _userId, String );
+    let _lUserDetail: UserDetail = UserDetails.findOne( { user_id: _userId } );
+    let _sections: string[] = [];
+    
+    Sections.collection.find( { restaurants: { $in: [ _lUserDetail.restaurant_work ] } } ).fetch().forEach( ( s ) => {
+        _sections.push( s._id );
+    });
+    return Items.collection.find( { sectionId: { $in: _sections }, is_active: true } );
 });

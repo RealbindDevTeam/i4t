@@ -60,6 +60,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     private _quantityCount: number = 1;
     private _finalPrice:number = 0;
     private _unitPrice: number = 0;
+    private _orderItemIndex: number = -1;
 
     private _showCustomerOrders: boolean = true;
     private _showOtherOrders: boolean = false;
@@ -82,7 +83,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit(){
-        this._ordersSub = MeteorObservable.subscribe( 'getOrders', this.restaurantId, this.tableQRCode,[ 'REGISTERED','IN_PROCESS','CONFIRMED' ] ).subscribe();
+        this._ordersSub = MeteorObservable.subscribe( 'getOrders', this.restaurantId, this.tableQRCode,[ 'REGISTERED','IN_PROCESS','CONFIRMED', 'PREPARED' ] ).subscribe();
         this._orders = Orders.find( { creation_user: Meteor.userId() } ).zone();
         this._ordersTable = Orders.find( { creation_user: { $not: Meteor.userId() } } ).zone();
         this._itemsSub = MeteorObservable.subscribe( 'itemsByRestaurant', this.restaurantId ).subscribe();
@@ -223,6 +224,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     showOrderItemDetail( _pOrderItem:OrderItem ):void{
         this.resetEditionValues();
 
+        this._orderItemIndex = _pOrderItem.index;
         this._quantityCount = _pOrderItem.quantity;
         this._editOrderItemForm.controls['observations'].setValue( _pOrderItem.observations );
         this._orderItemGarnishFood = _pOrderItem.garnishFood;
@@ -428,7 +430,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                 }
             });
 
-            let _lOrderItem: OrderItem = { itemId: _pItemToInsert,
+            let _lOrderItem: OrderItem = { index: this._orderItemIndex,
+                                           itemId: _pItemToInsert,
                                            quantity: this._quantityCount,
                                            observations: this._editOrderItemForm.value.observations,
                                            garnishFood: _lGarnishFoodToInsert,
@@ -437,10 +440,10 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                                          };
 
 
-            let _lOrderItemToremove:OrderItem = this._currentOrder.items.filter( o => _lOrderItem.itemId === o.itemId )[0];
+            let _lOrderItemToremove:OrderItem = this._currentOrder.items.filter( o => _lOrderItem.itemId === o.itemId && _lOrderItem.index === o.index )[0];
             let _lNewTotalPayment:number = this._currentOrder.totalPayment - _lOrderItemToremove.paymentItem;
 
-            Orders.update( { _id: this._currentOrder._id },{ $pull: { items:{ itemId: _lOrderItem.itemId } } } );
+            Orders.update( { _id: this._currentOrder._id },{ $pull: { items:{ itemId: _lOrderItem.itemId, index: _lOrderItem.index } } } );
             Orders.update( { _id: this._currentOrder._id }, 
                            { $set: { totalPayment: _lNewTotalPayment, 
                                      modification_user: Meteor.userId(), 

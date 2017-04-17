@@ -8,9 +8,11 @@ export interface Order extends CollectionObject{
     accountId: string;
     items: OrderItem[];
     totalPayment: number;
+    orderItemCount: number;
 }
 
 export interface OrderItem{
+    index: number;
     itemId: string;
     quantity: number;
     observations: string;

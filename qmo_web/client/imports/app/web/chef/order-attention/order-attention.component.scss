@@ -1,0 +1,59 @@
+.order-content {
+    width: 45%;
+    display: inline-block;
+    margin-top: 1%;
+
+    .order-code {
+        margin-right: 1rem;
+    }
+}
+
+.order {
+    background-color: #679436;
+    color: white;
+    margin-bottom: 1%;
+}
+
+.order-table {
+    float: right;
+}
+
+.order-detail {
+    display: inline-block;
+    width: 54%;
+    vertical-align: top;
+    margin-top: 1%;
+
+    .message{
+        text-align: center;
+    }
+
+    .title {
+        display: inline-block;
+    }
+
+    .list {
+        margin-bottom: 1%;
+        margin-top: 1%;
+
+        .image {
+            width: 20%;
+            height: 80px;
+        }
+
+        .item-name {
+            font-size: 20px;
+            font-weight: 400;
+            white-space: normal;
+            color: black;
+            text-align: center;
+        }
+
+        .item-quantity {
+            font-size: 20px;
+            color: #114b5f;
+            font-weight: bold;
+            text-align: center;
+        }
+    }
+}

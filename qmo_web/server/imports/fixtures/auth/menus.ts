@@ -91,6 +91,12 @@ export function loadMenus() {
                         name: "MENUS.ADMINISTRATION.ITEMS_ENABLE",
                         url: "/app/itemsEnable",
                         icon_name: ""
+                    },{
+                        _id: "2009",
+                        is_active: true,
+                        name: "MENUS.ADMINISTRATION.ORDERS_CHEF",
+                        url: "/app/chefOrders",
+                        icon_name: ""
                     }
                 ]
             },
@@ -99,6 +105,13 @@ export function loadMenus() {
                 is_active: true,
                 name: "MENUS.ORDERS",
                 url: "/app/orders",
+                icon_name: "dns"
+            },
+            {
+                _id: "6000",
+                is_active: true,
+                name: "MENUS.ADMINISTRATION.ORDERS_CHEF",
+                url: "/app/chefOrders",
                 icon_name: "dns"
             }
         ];

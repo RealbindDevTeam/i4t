@@ -18,7 +18,8 @@ import { GarnishFood } from '../../../../../../../both/models/administration/gar
 import { GarnishFoodCol } from '../../../../../../../both/collections/administration/garnish-food.collection';
 import { Addition } from '../../../../../../../both/models/administration/addition.model';
 import { Additions } from '../../../../../../../both/collections/administration/addition.collection';
-import { OrderItem } from '../../../../../../../both/models/restaurant/order.model';
+import { Order, OrderItem } from '../../../../../../../both/models/restaurant/order.model';
+import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
 
 import template from './order-create.component.html';
 import style from './order-create.component.scss';
@@ -44,6 +45,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     private _itemsSub: Subscription;
     private _garnishFoodSub: Subscription;
     private _additionsSub: Subscription;
+    private _ordersSub: Subscription;
 
     private _sections: Observable<Section[]>;
     private _categories: Observable<Category[]>;
@@ -88,6 +90,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         this._categoriesSub = MeteorObservable.subscribe( 'categoriesByRestaurant', this.restaurantId ).subscribe();
         this._subcategoriesSub = MeteorObservable.subscribe( 'subcategoriesByRestaurant', this.restaurantId ).subscribe();
         this._itemsSub = MeteorObservable.subscribe( 'itemsByRestaurant', this.restaurantId ).subscribe();
+        this._ordersSub = MeteorObservable.subscribe( 'getOrders', this.restaurantId, this.tableQRCode,[ 'REGISTERED' ] ).subscribe( () => { } );
         this._garnishFoodSub = MeteorObservable.subscribe( 'garnishFoodByRestaurant', this.restaurantId ).subscribe( () => {
             this._ngZone.run( () => {
                 this._garnishFoodCol = GarnishFoodCol.find( { } ).zone();
@@ -194,6 +197,19 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      */
     AddItemToOrder( _pItemToInsert:string ):void{ 
         if( this._newOrderForm.valid ){
+            let _lOrderItemIndex: number = 0;
+            let _lOrder: Order;
+
+            Orders.collection.find().forEach( (o) => {
+                _lOrder = o;
+            });
+
+            if( _lOrder ){
+                _lOrderItemIndex = _lOrder.orderItemCount + 1;
+            } else {
+                _lOrderItemIndex = 1;
+            }
+
             let arr:any[] = Object.keys( this._newOrderForm.value.garnishFood );
             let _lGarnishFoodToInsert:string[] = [];
 
@@ -214,7 +230,8 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
                 }
             });
 
-            let _lOrderItem: OrderItem = { itemId: _pItemToInsert,
+            let _lOrderItem: OrderItem = { index: _lOrderItemIndex,
+                                           itemId: _pItemToInsert,
                                            quantity: this._quantityCount,
                                            observations: this._newOrderForm.value.observations,
                                            garnishFood: _lGarnishFoodToInsert,
@@ -382,5 +399,6 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         this._itemsSub.unsubscribe();
         this._garnishFoodSub.unsubscribe();
         this._additionsSub.unsubscribe();
+        this._ordersSub.unsubscribe();
     }
 }
