@@ -41,7 +41,7 @@ export class AlphanumericCodePage {
         this._id_table = table_id;
         this.forwardToSections();
       } else {
-        this._error_msg = 'EL CODIGO ES INVALIDO';
+        this._error_msg = 'Invalid code';
       }
     });
   }
