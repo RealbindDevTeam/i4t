@@ -460,5 +460,13 @@
         "TOTAL_PRICE": "Precio Total",
         "MODIFY_ITEM": "Modificar Item",
         "DELETE_ITEM": "Eliminar Item"
+    },
+    "WAITER_CALL" : {
+        "TITTLE": "Solicitar mesero",
+        "CONTENT": "Oprime el botón para llamar al mesero",
+        "THERE_IS_NOT_CODE_REST" : "!Ups¡ No estas en ningún restaurante",
+        "THERE_IS_NOT_CODE_REST_INS" : "Ve a la opción de ordenes e ingresa el código para llamar al mesero",
+        "RECEIVE_CALL" : "Recibimos tu llamado!",
+        "ONE_MOMENT" : "En un momento te atenderemos"
     }
 }

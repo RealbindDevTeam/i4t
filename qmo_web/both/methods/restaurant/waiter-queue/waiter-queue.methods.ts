@@ -28,7 +28,7 @@ if (Meteor.isServer) {
             if( usr_id_enabled ){
               job.done(function (err, result){
               WaiterCallDetails.update({ _id : job.data.waiter_call_detail_id },
-                  { $set : { "waiter_id" : usr_id_enabled }
+                  { $set : { "waiter_id" : usr_id_enabled, "status" : "completed" }
                 });
               });
               UserDetails.update({user_id : usr_id_enabled} , { $set : { "enabled" : false } });
@@ -68,7 +68,8 @@ Meteor.methods({
       waiterCallDetail = WaiterCallDetails.collection.insert({
         restaurant_id : _data.restaurants,
         table_id : _data.tables,
-        user_id : _data.user
+        user_id : _data.user,
+        state : "waiting"
       });
     } else {
       WaiterCallDetails.update({ _id : _data.waiter_call_id }, { $set : { waiter_id : _data.waiter_id }});
