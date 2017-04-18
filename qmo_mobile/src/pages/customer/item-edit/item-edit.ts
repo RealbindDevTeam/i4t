@@ -67,6 +67,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
   private _actualOrder;
   private _garnishArray: any;
   private _additionArray: any[];
+  private _showActionsBtn: boolean = true;
   private _newOrderForm: FormGroup;
   private _garnishFormGroup: FormGroup = new FormGroup({});
   private _additionsFormGroup: FormGroup = new FormGroup({});
@@ -109,7 +110,9 @@ export class ItemEditPage implements OnInit, OnDestroy {
               this._item = Items.collection.find({ _id: this._item_code }).fetch();
               for (let item of this._item) {
                 this._unitPrice = item.price;
-                this._showAddBtn = item.isAvailable;
+                if(!item.isAvailable){
+                  this._showActionsBtn = false;
+                }
               }
               this._showGarnishFoodError = false;
               this._maxGarnishFoodElements = 0;
@@ -130,6 +133,10 @@ export class ItemEditPage implements OnInit, OnDestroy {
                   this._garnishFoodElementsCount = itemOrder.garnishFood.length;
                 }
               });
+              if (this._orderAux.status === 'CONFIRMED' || this._orderAux.status === 'IN_PROGRESS' || this._orderAux === 'PREPARED' || 
+                  this._orderAux.creation_user !== this._currentUserId) {
+                this._showActionsBtn = false;
+              }
             });
           });
 
@@ -152,14 +159,26 @@ export class ItemEditPage implements OnInit, OnDestroy {
                   if (this._garnishFormGroup.contains(gar.name)) {
                     this._garnishFormGroup.controls[gar.name].setValue(true);
                   } else {
-                    let control: FormControl = new FormControl(true);
+                    let control: FormControl;
+                    if (_actualOrder.status === 'CONFIRMED' || _actualOrder.status === 'IN_PROGRESS' || _actualOrder.status === 'PREPARED' ||
+                         this._orderAux.creation_user !== this._currentUserId) {
+                      control = new FormControl({ value: true, disabled: true });
+                    } else {
+                      control = new FormControl({ value: true, disabled: false });
+                    }
                     this._garnishFormGroup.addControl(gar.name, control);
                   }
                 } else {
                   if (this._garnishFormGroup.contains(gar.name)) {
                     this._garnishFormGroup.controls[gar.name].setValue(false);
                   } else {
-                    let control: FormControl = new FormControl(false);
+                    let control: FormControl;
+                    if (_actualOrder.status === 'CONFIRMED' || _actualOrder.status === 'IN_PROGRESS' || _actualOrder.status === 'PREPARED' ||
+                         this._orderAux.creation_user !== this._currentUserId) {
+                      control = new FormControl({ value: false, disabled: true });
+                    }else{
+                      control = new FormControl({ value: false, disabled: false });
+                    }
                     this._garnishFormGroup.addControl(gar.name, control);
                   }
                 }
@@ -186,14 +205,26 @@ export class ItemEditPage implements OnInit, OnDestroy {
                   if (this._additionsFormGroup.contains(add.name)) {
                     this._additionsFormGroup.controls[add.name].setValue(true);
                   } else {
-                    let control: FormControl = new FormControl(true);
+                    let control: FormControl;
+                    if (_actualOrder.status === 'CONFIRMED' || _actualOrder.status === 'IN_PROGRESS' || _actualOrder.status === 'PREPARED' ||
+                        this._orderAux.creation_user !== this._currentUserId) {
+                      control = new FormControl({ value: true, disabled: true });
+                    }else{
+                      control = new FormControl({ value: true, disabled: false });
+                    }
                     this._additionsFormGroup.addControl(add.name, control);
                   }
                 } else {
                   if (this._additionsFormGroup.contains(add.name)) {
                     this._additionsFormGroup.controls[add.name].setValue(false);
                   } else {
-                    let control: FormControl = new FormControl(false);
+                    let control: FormControl;
+                    if (_actualOrder.status === 'CONFIRMED' || _actualOrder.status === 'IN_PROGRESS' || _actualOrder.status === 'PREPARED' ||
+                         this._orderAux.creation_user !== this._currentUserId) {
+                      control = new FormControl({ value: false, disabled: true });
+                    }else{
+                      control = new FormControl({ value: false, disabled: false });
+                    }
                     this._additionsFormGroup.addControl(add.name, control);
                   }
                 }
