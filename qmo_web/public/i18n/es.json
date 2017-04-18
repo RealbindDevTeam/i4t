@@ -151,7 +151,8 @@
             "PROMOTIONS": "Promociones",
             "GARNISHFOOD": "Guarniciones",
             "ITEMS": "Items",
-            "ITEMS_ENABLE": "Habilitar Items"
+            "ITEMS_ENABLE": "Habilitar Items",
+            "ORDERS_CHEF": "Ordenes"
         },
         "ORDERS": "Ordenes"
     },
@@ -468,5 +469,17 @@
         "THERE_IS_NOT_CODE_REST_INS" : "Ve a la opción de ordenes e ingresa el código para llamar al mesero",
         "RECEIVE_CALL" : "Recibimos tu llamado!",
         "ONE_MOMENT" : "En un momento te atenderemos"
+    },
+    "ORDER_ATTENTION": {
+        "ORDERS_CONFIRMED": "Ordenes Confirmadas",
+        "ORDER": "Orden",
+        "TABLE": "Mesa",
+        "MESSAGE": "Seleccione la orden que desea consultar",
+        "TITLE": "Items de la Orden",
+        "ORDER_IN_PROCESS": "ORDEN EN PROCESO",
+        "ITEM_QUANTITY": "Cantidad",
+        "OBSERVATIONS": "Observaciones",
+        "ORDERS_IN_PROCESS": "Ordenes en Proceso",
+        "ORDER_PREPARED": "ORDEN PREPARADA"
     }
 }

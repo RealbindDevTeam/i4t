@@ -22,6 +22,7 @@ import { SectionsPage } from '../pages/customer/sections/sections';
 import { ItemDetailPage } from '../pages/customer/item-detail/item-detail';
 import { ModalObservations } from '../pages/customer/item-detail/modal-observations';
 import { ItemEditPage } from '../pages/customer/item-edit/item-edit';
+import { ModalObservationsEdit } from '../pages/customer/item-edit/modal-observations-edit';
 import { IonicStorageModule } from '@ionic/storage';
 
 export function createTranslateLoader(http: Http) {
@@ -48,7 +49,8 @@ export function createTranslateLoader(http: Http) {
     SectionsPage,
     ItemDetailPage,
     ModalObservations,
-    ItemEditPage
+    ItemEditPage,
+    ModalObservationsEdit
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -91,7 +93,8 @@ export function createTranslateLoader(http: Http) {
     SectionsPage,
     ItemDetailPage,
     ModalObservations,
-    ItemEditPage
+    ItemEditPage,
+    ModalObservationsEdit
   ],
   providers: [
     { provide: ErrorHandler, 

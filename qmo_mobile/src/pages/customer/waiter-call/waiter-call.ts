@@ -34,7 +34,7 @@ export class WaiterCallPage implements OnInit, OnDestroy {
               public _navParams: NavParams,
               public _translate: TranslateService) {
     this._userLang = navigator.language.split('-')[0];
-    _translate.setDefaultLang('en');
+    _translate.setDefaultLang('es');
     _translate.use(this._userLang);
   }
 
@@ -50,7 +50,6 @@ export class WaiterCallPage implements OnInit, OnDestroy {
             this._userRestaurant = false;
           } else {
             this._userRestaurant = true;
-            this._validatedWaterCall = true;
           }
         });
     });
@@ -66,6 +65,8 @@ export class WaiterCallPage implements OnInit, OnDestroy {
           this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, state : "waiting"}).count();
           if ( this._countDetails > 0 ){
             this._validatedWaterCall = true;
+          } else {
+            this._validatedWaterCall = false;
           }
         });
       });

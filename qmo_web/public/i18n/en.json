@@ -151,7 +151,8 @@
             "PROMOTIONS": "Promotions",
             "GARNISHFOOD": "Garnish Food",
             "ITEMS": "Items",
-            "ITEMS_ENABLE": "Items Available"
+            "ITEMS_ENABLE": "Items Available",
+            "ORDERS_CHEF": "Orders"
         },
         "ORDERS": "Orders"
     },
@@ -468,5 +469,17 @@
         "THERE_IS_NOT_CODE_REST_INS" : "Go to the order option and enter the code to call the waiter",
         "RECEIVE_CALL" : "We receive your call!",
         "ONE_MOMENT" : "In a moment we will answer you"
+    },
+    "ORDER_ATTENTION": {
+        "ORDERS_CONFIRMED": "Orders Confirmed",
+        "ORDER": "Order",
+        "TABLE": "Table",
+        "MESSAGE": "Select the order you want to consult",
+        "TITLE": "Order Items",
+        "ORDER_IN_PROCESS": "ORDER IN PROCESS",
+        "ITEM_QUANTITY": "Quantity",
+        "OBSERVATIONS": "Observations",
+        "ORDERS_IN_PROCESS": "Orders In Process",
+        "ORDER_PREPARED": "ORDER PREPARED"
     }
 }

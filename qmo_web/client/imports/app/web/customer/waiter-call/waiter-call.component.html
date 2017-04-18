@@ -1,17 +1,31 @@
 <md-card md-cell="12" class="demo-card demo-basic">
     <md-card-content>
         <div class="card_initial">
-            <div *ngIf="_validatedWaterCall" class="card_initial has-image">
+
+            <div *ngIf="!_userRestaurant" class="card_initial has-image">
+                <div class="card_initial-image-container">
+                    <img class="card_initial-image" src="/images/empleados.png"/>
+                </div>
+                <div class="card_initial-copy">
+                    <div class="card_initial-tagline">
+                        {{'WAITER_CALL.THERE_IS_NOT_CODE_REST' | translate}}
+                    </div>
+                    <div class="card_initial-additional-links">
+                        {{'WAITER_CALL.THERE_IS_NOT_CODE_REST_INS' | translate}}
+                    </div>
+                </div>
+                <div class="card_initial-button">
+                </div>
+            </div>
+
+            <div *ngIf="_userRestaurant && !_validatedWaterCall" class="card_initial has-image">
                 <div class="card_initial-image-container">
                     <img class="card_initial-image" 
                         src="/images/empleados.png"/>
                 </div>
                 <div class="card_initial-copy">
                     <div class="card_initial-tagline">
-                        {{'COLLABORATORS.MSG_INITIAL' | translate}}
-                    </div>
-                    <div class="card_initial-additional-links">
-                        
+                        {{'WAITER_CALL.CONTENT' | translate}}
                     </div>
                 </div>
                 <div class="card_initial-button">
@@ -19,7 +33,7 @@
                 </div>
             </div>
             
-            <div *ngIf="!_validatedWaterCall" class="card_initial has-image">
+            <div *ngIf="_userRestaurant && _validatedWaterCall" class="card_initial has-image">
                 <div class="card_initial-image-container">
                     <svg id="loading" class="img">
                         <g>

@@ -51,28 +51,24 @@ export class WaiterCallComponent {
         this._userDetail  = UserDetails.collection.find({ user_id: Meteor.userId()}).fetch()[0];
         if (this._userDetail.current_table == "" && this._userDetail.current_restaurant == "") {
           this._userRestaurant = false;
-          this._validatedWaterCall = false;
         } else {
           this._userRestaurant = true;
         }
       });
     });
-  }
 
-  /**
-   * ngOnInit Implementation
-   */
-  ngAfterContentInit() {
-    if (this._userRestaurant) {
-      this._waiterCallDetailSubscription = MeteorObservable.subscribe('countWaiterCallDetailByUsrIdAndRestaurantId', Meteor.userId(), this._userDetail.current_restaurant).subscribe( () => {
+    this._waiterCallDetailSubscription = MeteorObservable.subscribe('countWaiterCallDetailByUsrId', Meteor.userId()).subscribe( () => {
         MeteorObservable.autorun().subscribe(() => {
-          this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, state : "waiting"}).count();
+          if ( this._userRestaurant ) {
+            this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, state : "waiting"}).count();
             if ( this._countDetails > 0 ){
               this._validatedWaterCall = true;
+            } else {
+              this._validatedWaterCall = false;
             }
+          }
         });
       });
-    }
   }
 
   /**

@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    <div *ngIf="_userRestaurant && _validatedWaterCall" class="main" (click)="addWaiterCall()">
+    <div *ngIf="_userRestaurant && !_validatedWaterCall" class="main" (click)="addWaiterCall()">
         <div id="call_action" class="circle">
             <div class="bounce">
                 <ion-icon name="hand"></ion-icon>
@@ -74,7 +74,7 @@
             </circle>
         </g>
     </svg>
-    <div *ngIf="_userRestaurant && _countDetails" class="description" padding>
+    <div *ngIf="_userRestaurant && _validatedWaterCall" class="description" padding>
         <h1>{{'MOBILE.WAITER_CALL.RECEIVE_CALL' | translate}}</h1>
         <p>{{'MOBILE.WAITER_CALL.ONE_MOMENT' | translate}}</p>
     </div>

@@ -32,14 +32,13 @@ export class CodeTypeSelectPage {
   }
 
   goToScann() {
-    //this.goToSections('TZSITUX8488');
-    BarcodeScanner.scan().then((result) => {
+    this.goToSections('VUQXEGF8670');
+    /*BarcodeScanner.scan().then((result) => {
       this.goToSections(result.text);
-
     }, (err) => {
       // An error occurred
     });
-    
+    */
 
     this._waitMsg = this.itemNameTraduction('MOBILE.SECTIONS.WAIT_QR');
     let loader = this.loadingCtrl.create({
@@ -49,7 +48,6 @@ export class CodeTypeSelectPage {
   }
 
   goToSections(qr_code: string) {
-
     MeteorObservable.call('getIdTableByQr', qr_code).subscribe((table_id: string) => {
       if (table_id) {
         this._id_table = table_id;
@@ -76,7 +74,6 @@ export class CodeTypeSelectPage {
         alert(`Failed to get restaurant ${error}`);
       });
     }
-
   }
 
   goToAlphanumericCode() {

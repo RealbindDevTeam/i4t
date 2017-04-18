@@ -7,16 +7,6 @@
 </ion-header>
 
 <ion-content padding>
-    <div *ngIf="(_allOrders | async)?.length <= 0">
-        <div class="img">
-            <img src="assets/img/platos-orden.png">
-        </div>
-        <div class="content">
-            <h1>{{'MOBILE.ORDERS.TITTLE_CONTENT' | translate}}</h1>
-            <p>{{'MOBILE.ORDERS.CONTENT' | translate}}</p>
-        </div>
-    </div>
-
     <div *ngIf="(_allOrders | async)?.length > 0">
         <ion-item *ngFor="let _res of _restaurants | async">
             <ion-thumbnail item-left>
@@ -65,7 +55,7 @@
                                 </ion-row>
                             </button>
                             <div *ngIf="_orderIndex == i">
-                                <ion-row *ngIf="order.status != 'CONFIRMED' && order.status != 'CANCELED'" no-padding style="background-color: #679436">
+                                <ion-row *ngIf="order.status != 'CONFIRMED' && order.status != 'CANCELED' && order.items.length > 0" no-padding style="background-color: #679436">
                                     <ion-col>
                                         <button ion-button small clear block text-left class="button-secundary" (click)="cancelOrder(order)">{{'MOBILE.ORDERS.CANCEL' | translate}}</button>
                                     </ion-col>
@@ -81,9 +71,9 @@
                                                     <img src="{{item.urlImage}}">
                                                 </ion-thumbnail>
                                                 <h2 style="white-space: normal;">{{item.name}}</h2>
-                                                <p style="white-space: normal;">{{item.price}} COP</p>
+                                                <p style="white-space: normal;">{{itemId.paymentItem}} COP</p> 
                                                 <p *ngIf="!item.isAvailable" class="unavailable-item"> {{'MOBILE.SECTIONS.UNAVAILABLE' | translate}} </p>
-                                                <button ion-button icon-only clear item-right (click)="goToItemEdit(order._id, item._id)">
+                                                <button ion-button icon-only clear item-right (click)="goToItemEdit(order._id, itemId.index, item._id, order.creation_user)">
                                                     <ion-icon name="create"></ion-icon>
                                                 </button>
                                             </ion-item>
@@ -134,7 +124,7 @@
                                                 <h2 style="white-space: normal;">{{item.name}}</h2>
                                                 <p style="white-space: normal;">{{item.price}} COP</p>
                                                 <p *ngIf="!item.isAvailable" class="unavailable-item"> {{'MOBILE.SECTIONS.UNAVAILABLE' | translate}} </p>
-                                                <button ion-button icon-only clear item-right (click)="goToItemEdit(order._id, item._id)">
+                                                <button ion-button icon-only clear item-right (click)="goToItemEdit(order._id, itemId.index, item._id, order.creation_user)">
                                                     <ion-icon name="create"></ion-icon>
                                                 </button>
                                             </ion-item>
@@ -147,6 +137,15 @@
                 </div>
             </div>
         </ion-list>
+    </div>
+    <div *ngIf="(_allOrders | async)?.length <= 0">
+        <div class="img">
+            <img src="assets/img/platos-orden.png">
+        </div>
+        <div class="content">
+            <h1 style="text-align: center">{{'MOBILE.ORDERS.TITTLE_CONTENT' | translate}}</h1>
+            <p style="text-align: center">{{'MOBILE.ORDERS.CONTENT' | translate}}</p>
+        </div>
     </div>
     <div showWhen="ios" style="height: 40px">
     </div>

@@ -161,6 +161,16 @@
             "LOADING_MSG": "Adding to order ...",
             "TOAST_MSG": "Item was added successfully",
             "WAIT_QR": "Please wait ..."
+        },
+        "ITEM_EDIT":{
+            "MODIFY": "Modify",
+            "REMOVE": "Remove",
+            "REMOVE_ITEM": "Remove Item",
+            "SURE_REMOVE": "Are you sure you want to remove the item?",
+            "YES_ANSWER": "Yes",
+            "NO_ANSWER": "No",
+            "TOAST_MSG_EDIT": "Item was modified successfully",
+            "TOAST_MSG_REMOVE": "Item was removed successfully" 
         }
     }
 }
