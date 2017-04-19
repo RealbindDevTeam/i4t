@@ -62,7 +62,7 @@ export class WaiterCallPage implements OnInit, OnDestroy {
     if (this._userRestaurant) {
       this._waiterCallDetailSubscription = MeteorObservable.subscribe('countWaiterCallDetailByUsrIdAndRestaurantId', Meteor.userId(), this._userDetail.current_restaurant).subscribe( () => {
         MeteorObservable.autorun().subscribe(() => {
-          this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, state : "waiting"}).count();
+          this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : "waiting"}).count();
           if ( this._countDetails > 0 ){
             this._validatedWaterCall = true;
           } else {

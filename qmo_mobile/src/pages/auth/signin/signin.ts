@@ -65,7 +65,6 @@ export class SigninComponent implements OnInit {
                     } else {
                         MeteorObservable.call('getRole').subscribe((role) => {
                             //role 400 customer
-                            console.log('--role: ' + role);
                             if (role == "400") {
                                 //this.addUserDevice();
                                 this.navCtrl.push(TabsPage);

@@ -60,7 +60,7 @@ export class WaiterCallComponent {
     this._waiterCallDetailSubscription = MeteorObservable.subscribe('countWaiterCallDetailByUsrId', Meteor.userId()).subscribe( () => {
         MeteorObservable.autorun().subscribe(() => {
           if ( this._userRestaurant ) {
-            this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, state : "waiting"}).count();
+            this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : "waiting"}).count();
             if ( this._countDetails > 0 ){
               this._validatedWaterCall = true;
             } else {
@@ -87,7 +87,7 @@ export class WaiterCallComponent {
           tables : table_id,
           user : usrId,
           waiter_id : "",
-          state : "waiting"
+          status : "waiting"
         }
         Meteor.call('waiterCall', false, data);
     }

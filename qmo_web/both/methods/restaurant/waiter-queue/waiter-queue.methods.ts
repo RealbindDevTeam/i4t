@@ -41,7 +41,8 @@ if (Meteor.isServer) {
                   restaurants : data_detail.restaurant_id,
                   tables : data_detail.table_id,
                   user : data_detail.user_id,
-                  waiter_id : usr_id_enabled
+                  waiter_id : usr_id_enabled,
+                  status : 'waiting'
                 };
                 job.remove(function (err, result) {
                   if (result) {
@@ -69,7 +70,8 @@ Meteor.methods({
         restaurant_id : _data.restaurants,
         table_id : _data.tables,
         user_id : _data.user,
-        state : "waiting"
+        status : _data.status
+        //status : "waiting"
       });
     } else {
       WaiterCallDetails.update({ _id : _data.waiter_call_id }, { $set : { waiter_id : _data.waiter_id }});
