@@ -156,7 +156,7 @@ export class PromotionComponent implements OnInit, OnDestroy {
     open( _promotion: Promotion ){
         this._dialogRef = this._dialog.open( PromotionEditComponent, {
             disableClose : true,
-            width: '60%'
+            width: '65%'
         });
         this._dialogRef.componentInstance._promotionToEdit = _promotion;
         this._dialogRef.afterClosed().subscribe( result => {

@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { UploadFS } from 'meteor/jalik:ufs';
-import { Promotions, PromotionImages, PromotionImagesStore } from '../../collections/administration/promotion.collection';
+import { Promotions, PromotionImages, PromotionImagesStore, PromotionImagesThumbs } from '../../collections/administration/promotion.collection';
 
 /**
  * Function allow upload promotion images
@@ -60,6 +60,7 @@ export function updatePromotionImage( data:File,
                                       promotionDescription:string, 
                                       promotionIsActive:boolean, 
                                       promotionImageToRemove: string,
+                                      promotionImageThumbToRemove: string,
                                       promotionRestaurants:string[] ): Promise<any> {
   return new Promise( ( resolve, reject ) => {
     const file = {
@@ -88,6 +89,7 @@ export function updatePromotionImage( data:File,
               }
           });
           PromotionImages.remove( { _id: promotionImageToRemove } );
+          PromotionImagesThumbs.remove( { _id: promotionImageThumbToRemove } );
       }
     });
     upload.start();

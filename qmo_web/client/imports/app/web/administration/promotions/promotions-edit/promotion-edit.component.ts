@@ -5,7 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
 import { MdDialogRef } from '@angular/material';
-import { Promotions, PromotionImages } from '../../../../../../../both/collections/administration/promotion.collection';
+import { Promotions } from '../../../../../../../both/collections/administration/promotion.collection';
 import { Promotion } from '../../../../../../../both/models/administration/promotion.model';
 import { updatePromotionImage } from '../../../../../../../both/methods/administration/promotion.methods';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
@@ -29,7 +29,6 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
     private _restaurants: Observable<Restaurant[]>;
 
     private _promotionsSub: Subscription;
-    private _promotionImagesSub: Subscription;
     private _restaurantSub: Subscription;
 
     private _promotionEditImage: string;
@@ -42,11 +41,6 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
     private _promotionRestaurants:string[];
     private _restaurantCreation: Restaurant[];
 
-    private _edition_id: string;
-    private _edition_isActive: boolean;
-    private _edition_name: string;
-    private _edition_description: string;
-    private _edition_promotionImgUrl: string;
     private _edition_restaurants: string[];
     private _nameImageFileEdit: string;
     
@@ -78,10 +72,9 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
             editDesc: [ this._promotionToEdit.description ],
             editIsActive: [ this._promotionToEdit.is_active ],
             editImage: [ '' ],
-            editPromotionImageId: [ this._promotionToEdit.promotionImageId ],
             editRestaurants: this._restaurantsFormGroup
         });
-        this._promotionEditImage = this._promotionToEdit.urlImage;
+        this._promotionEditImage = this._promotionToEdit.urlImageThumb;
         this._promotionRestaurants = this._promotionToEdit.restaurants;
 
         if( this._promotionToEdit.urlImage !== "-" ){
@@ -92,7 +85,6 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
 
         this._promotions = Promotions.find( { } ).zone();
         this._promotionsSub = MeteorObservable.subscribe( 'promotions', Meteor.userId() ).subscribe();
-        this._promotionImagesSub = MeteorObservable.subscribe( 'promotionImages', Meteor.userId() ).subscribe();
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', Meteor.userId() ).subscribe( () => {
             this._ngZone.run( () => {
                 this._restaurants = Restaurants.find( { } );
@@ -134,19 +126,14 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
             });
 
             if( this._editImage ){
-                this._edition_id = this._editForm.value.editId;
-                this._edition_name = this._editForm.value.editName;
-                this._edition_description = this._editForm.value.editDesc;
-                this._edition_isActive = this._editForm.value.editIsActive;
-                this._edition_promotionImgUrl = this._editForm.value.editPromotionImageId;
-
                 updatePromotionImage( this._editPromotionImageToInsert, 
                                       Meteor.userId(), 
                                       this._editForm.value.editId, 
                                       this._editForm.value.editName, 
                                       this._editForm.value.editDesc, 
                                       this._editForm.value.editIsActive, 
-                                      this._editForm.value.editPromotionImageId,
+                                      this._promotionToEdit.promotionImageId,
+                                      this._promotionToEdit.promotionImageThumbId,
                                       this._edition_restaurants )
                                       .then( ( result ) => {
                       
@@ -184,7 +171,6 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
      */
     ngOnDestroy(){
         this._promotionsSub.unsubscribe();
-        this._promotionImagesSub.unsubscribe(); 
         this._restaurantSub.unsubscribe();
     }
 }
