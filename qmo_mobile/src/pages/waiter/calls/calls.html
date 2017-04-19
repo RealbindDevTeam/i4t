@@ -1,0 +1,24 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            <img id="signup-logo" src="assets/img/logo_iurest_mobile_white.png">
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <div *ngFor="let _res of _restaurants | async">
+        <div id="img-header">
+            <div class="img">
+                <img src="{{_res.urlImage}}">
+            </div>
+        </div>
+        <ion-card style="width: 100%; margin: 0 auto">
+            <ion-card-header>
+                {{_res.name}}
+            </ion-card-header>
+            <ion-card-content>
+            </ion-card-content>
+        </ion-card>
+    </div>
+</ion-content>

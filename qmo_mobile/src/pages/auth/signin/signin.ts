@@ -10,6 +10,7 @@ import { UserDevices } from 'qmo_web/both/collections/auth/device.collection';
 import { Device } from 'qmo_web/both/models/auth/device.model';
 import { Meteor } from 'meteor/meteor';
 import { TabsPage } from '../../customer/tabs/tabs';
+import { WaiterTabsPage } from '../../waiter/waiter-tabs/waiter-tabs';
 
 /*
   Generated class for the Signin page.
@@ -64,12 +65,13 @@ export class SigninComponent implements OnInit {
                     } else {
                         MeteorObservable.call('getRole').subscribe((role) => {
                             //role 400 customer
+                            console.log('--role: ' + role);
                             if (role == "400") {
                                 //this.addUserDevice();
                                 this.navCtrl.push(TabsPage);
-
+                            } else if ( role == "200") {
+                                this.navCtrl.push(WaiterTabsPage);
                             } else {
-
                             }
                         }, (error) => {
                             this.error = err;
