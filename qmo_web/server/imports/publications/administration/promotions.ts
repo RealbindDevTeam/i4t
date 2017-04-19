@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { Promotions, PromotionImages } from '../../../../both/collections/administration/promotion.collection';
+import { Promotions, PromotionImages, PromotionImagesThumbs } from '../../../../both/collections/administration/promotion.collection';
 import { check } from 'meteor/check';
 
 /**
@@ -18,4 +18,12 @@ Meteor.publish( 'promotions', function( _userId:string ){
 Meteor.publish('promotionImages', function(_userId:string){
     check(_userId,String);
     return PromotionImages.collection.find({user_id:_userId});
+});
+
+/**
+ * Meteor publication promotionImageThumbs with user Id condition
+ * @param {string} _userId
+ */
+Meteor.publish( 'promotionImageThumbs', function( _userId:string ){
+    return PromotionImagesThumbs.collection.find( { userId:_userId } );
 });

@@ -9,6 +9,8 @@ export interface Promotion extends CollectionObject {
     description?: string;
     promotionImageId: string;
     urlImage: string;
+    promotionImageThumbId: string;
+    urlImageThumb: string;
     restaurants: string[];
 }
 
@@ -29,4 +31,12 @@ export interface PromotionImage {
     uploading: boolean;
     url: string;
     userId: string;
+}
+
+/**
+ * Promotion Image Thumbs model
+ */
+export interface PromotionImageThumb extends PromotionImage {
+    originalStore?: string;
+    originalId?: string;
 }

@@ -5,7 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
-import { Promotions, PromotionImages } from '../../../../../../both/collections/administration/promotion.collection';
+import { Promotions } from '../../../../../../both/collections/administration/promotion.collection';
 import { Promotion } from '../../../../../../both/models/administration/promotion.model';
 import { uploadPromotionImage } from '../../../../../../both/methods/administration/promotion.methods';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
@@ -29,7 +29,6 @@ export class PromotionComponent implements OnInit, OnDestroy {
     private _restaurants: Observable<Restaurant[]>;
 
     private _promotionsSub: Subscription;
-    private _promotionImagesSub: Subscription;    
     private _restaurantSub: Subscription;
     
     private _createImage: boolean;
@@ -41,10 +40,6 @@ export class PromotionComponent implements OnInit, OnDestroy {
     private _filesToUpload: Array<File>;
     private _promotionImageToInsert: File;
 
-    private _create_isActive: boolean;
-    private _create_name: string;
-    private _create_description;
-        
     /**
      * PromotionComponent constructor
      * @param {FormBuilder} _formBuilder
@@ -87,7 +82,6 @@ export class PromotionComponent implements OnInit, OnDestroy {
 
         this._promotions = Promotions.find( { } ).zone();
         this._promotionsSub = MeteorObservable.subscribe( 'promotions', Meteor.userId() ).subscribe();
-        this._promotionImagesSub = MeteorObservable.subscribe( 'promotionImages', Meteor.userId() ).subscribe();
     }
 
     /**
@@ -111,55 +105,34 @@ export class PromotionComponent implements OnInit, OnDestroy {
             });
 
             if( this._createImage ){
-                this._create_isActive = true;
-                this._create_name = this._promotionForm.value.name;
-                this._create_description = this._promotionForm.value.description;
+                uploadPromotionImage( this._promotionImageToInsert, 
+                                      Meteor.userId(), 
+                                      this._promotionForm.value.name, 
+                                      this._promotionForm.value.description, 
+                                      _lRestaurantsToInsert )
+                                      .then( ( result ) => {
 
-                uploadPromotionImage( this._promotionImageToInsert, Meteor.userId() ).then( ( result ) => {
-                    this.insertNewPromotion( result, _lRestaurantsToInsert );
                 }).catch( ( error ) => {
                     alert( 'Upload image error. Only accept .png, .jpg, .jpeg files.' );
                 });                
             } else {
-                this.insertNewPromotion( null, _lRestaurantsToInsert );
+                Promotions.insert({
+                    creation_user: Meteor.userId(),
+                    creation_date: new Date(),
+                    modification_user: '-',
+                    modification_date: new Date(),
+                    is_active: true,
+                    name: this._promotionForm.value.name,
+                    description: this._promotionForm.value.description,
+                    promotionImageId: '-',
+                    urlImage: '-',
+                    promotionImageThumbId: '-',
+                    urlImageThumb: '-',
+                    restaurants: _lRestaurantsToInsert
+                });
             }
         }
         this.cancel();
-    }
-
-    /**
-     * This function insert new promotion
-     * @param {any} _pFile
-     * @param {string[]} _pRestaurants
-     */
-    insertNewPromotion( _pFile:any, _pRestaurants:string[] ):void{
-        if( _pFile != null ){
-            Promotions.insert({
-                creation_user: Meteor.userId(),
-                creation_date: new Date(),
-                modification_user: '-',
-                modification_date: new Date(),
-                is_active: this._create_isActive,
-                name: this._create_name,
-                description: this._create_description,
-                promotionImageId: _pFile._id,
-                urlImage: _pFile.url,
-                restaurants: _pRestaurants
-            });
-        } else {
-            Promotions.insert({
-                creation_user: Meteor.userId(),
-                creation_date: new Date(),
-                modification_user: '-',
-                modification_date: new Date(),
-                is_active: true,
-                name: this._promotionForm.value.name,
-                description: this._promotionForm.value.description,
-                promotionImageId: '-',
-                urlImage: '-',
-                restaurants: _pRestaurants
-            });
-        }
     }
 
     /**
@@ -217,7 +190,6 @@ export class PromotionComponent implements OnInit, OnDestroy {
      */
     ngOnDestroy(){
         this._promotionsSub.unsubscribe();
-        this._promotionImagesSub.unsubscribe();    
         this._restaurantSub.unsubscribe();
     }
 }

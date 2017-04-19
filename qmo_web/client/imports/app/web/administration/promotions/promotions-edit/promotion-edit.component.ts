@@ -7,7 +7,7 @@ import { Meteor } from 'meteor/meteor';
 import { MdDialogRef } from '@angular/material';
 import { Promotions, PromotionImages } from '../../../../../../../both/collections/administration/promotion.collection';
 import { Promotion } from '../../../../../../../both/models/administration/promotion.model';
-import { uploadPromotionImage } from '../../../../../../../both/methods/administration/promotion.methods';
+import { updatePromotionImage } from '../../../../../../../both/methods/administration/promotion.methods';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
 
@@ -140,20 +140,16 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
                 this._edition_isActive = this._editForm.value.editIsActive;
                 this._edition_promotionImgUrl = this._editForm.value.editPromotionImageId;
 
-                uploadPromotionImage( this._editPromotionImageToInsert, Meteor.userId() ).then( ( result ) => {
-                    Promotions.update( this._edition_id,{
-                        $set:{
-                            modification_user: Meteor.userId(),
-                            modification_date: new Date(),
-                            name: this._edition_name,
-                            description: this._edition_description,
-                            is_active: this._edition_isActive,
-                            promotionImageId: result._id,
-                            urlImage: result.url,
-                            restaurants: this._edition_restaurants
-                        }
-                    });
-                    PromotionImages.remove( { _id: this._edition_promotionImgUrl } );  
+                updatePromotionImage( this._editPromotionImageToInsert, 
+                                      Meteor.userId(), 
+                                      this._editForm.value.editId, 
+                                      this._editForm.value.editName, 
+                                      this._editForm.value.editDesc, 
+                                      this._editForm.value.editIsActive, 
+                                      this._editForm.value.editPromotionImageId,
+                                      this._edition_restaurants )
+                                      .then( ( result ) => {
+                      
                 }).catch( ( error ) => {
                     alert('Upload image error. Only accept .png, .jpg, .jpeg files.');
                 }); 
