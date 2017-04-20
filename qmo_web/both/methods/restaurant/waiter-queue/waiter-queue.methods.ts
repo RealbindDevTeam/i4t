@@ -104,7 +104,6 @@ Meteor.methods({
    */
   closeCall : function( _waiter_call_detail_id : string, _waiter_id : string ){
     let job = new Job(_queue, _queue.findOne({ "data.waiter_call_detail_id" : _waiter_call_detail_id }));
-    console.log(job);
     job.remove(function (err, result){
       WaiterCallDetails.update({ _id : _waiter_call_detail_id },
         { $set : { "status" : "closed" }

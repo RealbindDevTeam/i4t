@@ -53,24 +53,19 @@ export class WaiterCallPage implements OnInit, OnDestroy {
           }
         });
     });
-  }
-
-  /**
-   * ionVieWillEnter Implementation
-   */
-  ionViewWillEnter() {
-    if (this._userRestaurant) {
-      this._waiterCallDetailSubscription = MeteorObservable.subscribe('countWaiterCallDetailByUsrIdAndRestaurantId', Meteor.userId(), this._userDetail.current_restaurant).subscribe( () => {
-        MeteorObservable.autorun().subscribe(() => {
-          this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : "waiting"}).count();
+    
+    this._waiterCallDetailSubscription = MeteorObservable.subscribe('countWaiterCallDetailByUsrId', Meteor.userId()).subscribe( () => {
+      MeteorObservable.autorun().subscribe(() => {
+        if (this._userRestaurant) {
+          this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).count();
           if ( this._countDetails > 0 ){
             this._validatedWaterCall = true;
           } else {
             this._validatedWaterCall = false;
           }
-        });
+        }
       });
-    }
+    });
   }
 
   /**

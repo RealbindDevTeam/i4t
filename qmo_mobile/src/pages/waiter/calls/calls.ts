@@ -68,35 +68,27 @@ export class CallsPage implements OnInit, OnDestroy {
 
   /**
    * Function that allows show comfirm dialog
+   * @param { any } _call 
    */
-  showComfirmClose( call : any) {
+  showComfirmClose( _call : any) {
+    let btn_no  = this.itemNameTraduction('MOBILE.ORDERS.NO_ANSWER'); 
+    let btn_yes = this.itemNameTraduction('MOBILE.ORDERS.YES_ANSWER'); 
+    let title   = this.itemNameTraduction('MOBILE.WAITER_CALL.TITLE_PROMPT'); 
+    let content = this.itemNameTraduction('MOBILE.WAITER_CALL.CONTENT_PROMPT'); 
+
     let prompt = this.alertCtrl.create({
-      title: 'Cerrar detalle',
-      message: "Seguro que desea cerrar la solicitud del cliente",
+      title: title,
+      message: content,
       buttons: [
         {
-          text: 'Cancelar',
+          text: btn_no,
           handler: data => {
           }
         },
         {
-          text: 'Aceptar',
+          text: btn_yes,
           handler: data => {
-            //this.closeWaiterCall();
-            let loading = this._loadingCtrl.create({
-              content: 'Prueba loading...',
-              duration: 1000
-            });
-
-            Meteor.call('closeCall', call._id, Meteor.userId(), function(error, result){
-              if (error) {
-                alert('Error');
-              } else {
-                //alert('Proceso cerrado');
-              }
-            });
-            loading.present();
-            //loading.dismiss();
+            this.closeWaiterCall(_call);
           }
         }
       ]
@@ -105,10 +97,51 @@ export class CallsPage implements OnInit, OnDestroy {
   }
 
   /**
-   * Funtion that allows remove a job of the Waiter Calls queue
+   * Function that allows remove a job of the Waiter Calls queue
+   * @param { any } _call 
    */
-  closeWaiterCall(){
-    Meteor.call('closeCall',);
+  closeWaiterCall( _call : any ){
+    let loading_msg = this.itemNameTraduction('MOBILE.WAITER_CALL.LOADING'); 
+    
+    let loading = this._loadingCtrl.create({
+      content: loading_msg
+    });
+    loading.present();
+    setTimeout(() => {
+      MeteorObservable.call('closeCall', _call._id, Meteor.userId()).subscribe(() => {
+        loading.dismiss();
+        this.presentToast();
+      });
+    }, 1500);
+  }
+
+  /**
+   * Function that allow show a toast confirmation
+   */
+  presentToast() {
+    let msg = this.itemNameTraduction('MOBILE.WAITER_CALL.MSG_COMFIRM'); 
+    let toast = this.toastCtrl.create({
+      message: msg,
+      duration: 1500,
+      position: 'middle'
+    });
+
+    toast.onDidDismiss(() => {
+    });
+
+    toast.present();
+  }
+  
+  /**
+   * This function allow translate strings
+   * @param {string} _itemName 
+   */
+  itemNameTraduction(_itemName: string): string {
+    var wordTraduced: string;
+    this._translate.get(_itemName).subscribe((res: string) => {
+        wordTraduced = res;
+    });
+    return wordTraduced;
   }
 
 
