@@ -9,6 +9,9 @@ var _queue = JobCollection('waiterCallQueue');
 var _randomLast : number;
 
 if (Meteor.isServer) {
+    /**
+     * This function startup the Waiter call queue, also allow execute each jobs
+     */
     Meteor.startup(function () {
         _queue.startJobServer();
 
@@ -59,6 +62,11 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
+  /**
+   * This Meteor Method add job in the Waiter call queue
+   * @param {boolean} _priorityHigh
+   * @param {any} _data
+   */
   waiterCall : function( _priorityHigh : boolean, _data : any){
     let priority : string = 'normal';
     let delay : number = 0;
@@ -71,7 +79,6 @@ Meteor.methods({
         table_id : _data.tables,
         user_id : _data.user,
         status : _data.status
-        //status : "waiting"
       });
     } else {
       WaiterCallDetails.update({ _id : _data.waiter_call_id }, { $set : { waiter_id : _data.waiter_id }});
@@ -88,10 +95,31 @@ Meteor.methods({
       .save();
     }
     return
+  },
+
+/**
+   * This Meteor Method allow delete a job in the Waiter call queue
+   * @param {string} _waiter_call_detail_id
+   * @param {string} _waiter_id
+   */
+  closeCall : function( _waiter_call_detail_id : string, _waiter_id : string ){
+    let job = new Job(_queue, _queue.findOne({ "data.waiter_call_detail_id" : _waiter_call_detail_id }));
+    console.log(job);
+    job.remove(function (err, result){
+      WaiterCallDetails.update({ _id : _waiter_call_detail_id },
+        { $set : { "status" : "closed" }
+      });
+      UserDetails.update({user_id : _waiter_id} , { $set : { "enabled" : true } });
+    });
+    return;
   }
   
 });
 
+/**
+ * This function validate waiters enabled
+ * @param {string} _restaurant
+ */
 export function validateWaiterEnabled( _restaurant : string) : string {
   var waiterEnabled = UserDetails.collection.find({ restaurant_work : _restaurant, enabled : true, role_id : "200"});
   if(waiterEnabled.count() > 0){
@@ -109,6 +137,11 @@ export function validateWaiterEnabled( _restaurant : string) : string {
 
 }
 
+
+/**
+ * This function return a random number
+ * @param {string} _restaurant
+ */
 export function getRandomInt(min, max) : number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }

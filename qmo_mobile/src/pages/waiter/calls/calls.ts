@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AlertController } from 'ionic-angular';
+import { AlertController, LoadingController, ToastController  } from 'ionic-angular';
 import { TranslateService } from 'ng2-translate';
 import { MeteorObservable } from "meteor-rxjs";
 import { Subscription } from "rxjs";
@@ -31,13 +31,23 @@ export class CallsPage implements OnInit, OnDestroy {
   private _userLang: string;
   private _user : User;
 
+  /**
+    * CallsPage Constructor
+    * @param { TranslateService } _translate 
+    * @param { AlertController } alertCtrl 
+    */
   constructor(public _translate: TranslateService,
-              public alertCtrl: AlertController) {
+              public alertCtrl: AlertController,
+              public _loadingCtrl: LoadingController,
+              private toastCtrl: ToastController) {
     this._userLang = navigator.language.split('-')[0];
     _translate.setDefaultLang('en');
     _translate.use(this._userLang);
   }
 
+  /**
+   * ngOnInit Implementation
+   */
   ngOnInit(){
     this._userRestaurantSubscription = MeteorObservable.subscribe('getRestaurantByRestaurantWork', Meteor.userId()).subscribe(() => {
       this._restaurants = Restaurants.find({});
@@ -48,8 +58,6 @@ export class CallsPage implements OnInit, OnDestroy {
     this._callsDetailsSubscription = MeteorObservable.subscribe('waiterCallDetailByWaiterId', Meteor.userId()).subscribe(() => {
       this._waiterCallDetail = WaiterCallDetails.find({});
       this._waiterCallDetailCollection = WaiterCallDetails.collection.find({}).fetch()[0];
-      this._user = Users.collection.find({_id: this._waiterCallDetailCollection.user_id });
-      console.log(JSON.stringify(this._user[0]));
     });
 
     this._tableSubscription = MeteorObservable.subscribe('getTablesByRestaurantWork', Meteor.userId()).subscribe(() => {
@@ -58,7 +66,10 @@ export class CallsPage implements OnInit, OnDestroy {
 
   }
 
-  showComfirmClose() {
+  /**
+   * Function that allows show comfirm dialog
+   */
+  showComfirmClose( call : any) {
     let prompt = this.alertCtrl.create({
       title: 'Cerrar detalle',
       message: "Seguro que desea cerrar la solicitud del cliente",
@@ -66,13 +77,26 @@ export class CallsPage implements OnInit, OnDestroy {
         {
           text: 'Cancelar',
           handler: data => {
-            console.log('Cancel clicked');
           }
         },
         {
-          text: 'Ok',
+          text: 'Aceptar',
           handler: data => {
-            console.log('Saved clicked');
+            //this.closeWaiterCall();
+            let loading = this._loadingCtrl.create({
+              content: 'Prueba loading...',
+              duration: 1000
+            });
+
+            Meteor.call('closeCall', call._id, Meteor.userId(), function(error, result){
+              if (error) {
+                alert('Error');
+              } else {
+                //alert('Proceso cerrado');
+              }
+            });
+            loading.present();
+            //loading.dismiss();
           }
         }
       ]
@@ -80,6 +104,17 @@ export class CallsPage implements OnInit, OnDestroy {
     prompt.present();
   }
 
+  /**
+   * Funtion that allows remove a job of the Waiter Calls queue
+   */
+  closeWaiterCall(){
+    Meteor.call('closeCall',);
+  }
+
+
+  /**
+   * NgOnDestroy Implementation
+   */
   ngOnDestroy(){
     this._userRestaurantSubscription.unsubscribe();
     this._userSubscription.unsubscribe();
