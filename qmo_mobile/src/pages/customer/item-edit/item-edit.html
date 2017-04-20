@@ -2,10 +2,7 @@
   <ion-navbar>
   </ion-navbar>
 </ion-header>
-
-
 <ion-content>
-
   <div *ngFor="let item of _items | async">
     <div class="crop">
       <img src="{{item.urlImage}}" style="display:inline-block">
@@ -18,7 +15,7 @@
         </p>
         <div>{{setMaxGarnishFoodElements(item.garnishFoodQuantity)}}</div>
         <div *ngFor="let order of _orders | async">
-          <div *ngFor="let itemId of order.items">
+          <div *ngFor="let itemId of order?.items">
             <div *ngIf="itemId.itemId == item._id && itemId.index == _item_order_index">
               <ion-list>
                 <ion-item style="padding-left: 0px">

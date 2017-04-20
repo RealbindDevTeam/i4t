@@ -1,19 +1,58 @@
 <ion-header>
 
-  <ion-navbar>
-      <ion-title>
-          <img id="signup-logo" src="assets/img/logo_iurest_mobile_white.png">
-      </ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>
+            <img id="signup-logo" src="assets/img/logo_iurest_mobile_white.png">
+        </ion-title>
+    </ion-navbar>
 
 </ion-header>
 
-<ion-content padding align="center">
-    <div class="img">
-        <img  src="assets/img/pagos.png">
-    </div>
-    <div class="content">
-        <h1>{{'MOBILE.PAYMENTS.TITTLE_CONTENT' | translate}}</h1>
-        <p>{{'MOBILE.PAYMENTS.CONTENT' | translate}}</p>
+<ion-content>
+    <ion-list>
+        <ion-list-header>
+            {{'MOBILE.PAYMENTS.BILL' | translate}}
+        </ion-list-header>
+        <ion-item *ngFor="let order of _orders | async">
+            <ion-icon name='list' item-left></ion-icon>
+            {{'MOBILE.PAYMENTS.ORDER' | translate}} {{order.code}}
+            <ion-note item-right>
+                {{order.totalPayment}} COP
+            </ion-note>
+        </ion-item>
+    </ion-list>
+
+
+    <div *ngIf="(_orders | async)?.length <= 0">
+        <div class="img">
+            <img src="assets/img/pagos.png">
+        </div>
+        <div class="content">
+            <h1>{{'MOBILE.PAYMENTS.TITTLE_CONTENT' | translate}}</h1>
+            <p>{{'MOBILE.PAYMENTS.CONTENT' | translate}}</p>
+        </div>
     </div>
 </ion-content>
+
+<ion-footer class="ion-footer-custom" padding>
+    <div>
+        <button class="button-secundary"  style="float:left; width: 45%" ion-button>{{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}</button>
+        <button class="button-secundary"  style="float: right; width: 45%" ion-button>{{'MOBILE.PAYMENTS.VIEW_DETAIL' | translate}}</button>
+    </div>
+    <div>
+        <ion-list style="margin-bottom: 0px">
+            <ion-item style="padding-left: 0px">
+                <ion-label>{{'MOBILE.PAYMENTS.PAYMENT_METHOD' | translate}}</ion-label>
+                <ion-select [(ngModel)]="_paymethod">
+                    <ion-option value="cash">Efectivo</ion-option>
+                    <ion-option value="dcard">Tarjeta Debito</ion-option>
+                    <ion-option value="ccard">Tarjeta Credito</ion-option>  
+                </ion-select>
+            </ion-item>
+        </ion-list>
+    </div>
+    <ion-label style="float: left; font-size: large; margin-top: 0px">{{'MOBILE.PAYMENTS.TOTAL_BILL' | translate}} 100000000 COP </ion-label>
+    <div>
+        <button ion-button block>{{'MOBILE.PAYMENTS.PAY_BTN' | translate}}</button>
+    </div>
+</ion-footer>

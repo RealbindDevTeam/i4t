@@ -22,7 +22,6 @@ import { ItemEditPage } from '../item-edit/item-edit';
 export class OrdersPage implements OnInit, OnDestroy {
 
     private _userLang: string;
-
     private _userDetail;
     private _userDetailSub: Subscription;
     private _orders;
@@ -47,7 +46,7 @@ export class OrdersPage implements OnInit, OnDestroy {
         _translate.setDefaultLang('en');
         _translate.use(this._userLang);
         this._currentUserId = Meteor.userId();
-        this._statusArray = ['REGISTERED', 'CONFIRMED', 'IN_PROGRESS', 'PREPARED'];
+        this._statusArray = ['REGISTERED', 'CONFIRMED', 'IN_PROGRESS', 'PREPARED', 'DELIVERED'];
     }
 
     ngOnInit() {

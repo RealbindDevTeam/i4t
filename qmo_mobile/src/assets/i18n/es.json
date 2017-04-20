@@ -127,8 +127,15 @@
         },
         "PAYMENTS": {
             "TITTLE": "Pagos",
-            "TITTLE_CONTENT": "Tus cuenta",
-            "CONTENT": "Aún no tienes cuentas en estado pendiente"
+            "TITTLE_CONTENT": "Tu cuenta",
+            "CONTENT": "Aún no tienes cuenta",
+            "BILL": "Cuenta de pago",
+            "ORDER": "Orden # ",
+            "VIEW_DETAIL": "Ver detalle",
+            "ADD_ORDER": "Agregar orden",
+            "PAYMENT_METHOD": "Medio de pago",
+            "TOTAL_BILL": "Total cuenta",
+            "PAY_BTN": "Pagar"
         },
         "CALL_WAITER": {
             "TITTLE": "Solicitar mesero",

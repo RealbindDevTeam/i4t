@@ -81,7 +81,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
     _translate.setDefaultLang('en');
     _translate.use(this._userLang);
     this._currentUserId = Meteor.userId();
-    this._statusArray = ['REGISTERED', 'CONFIRMED', 'IN_PROGRESS', 'PREPARED'];
+    this._statusArray = ['REGISTERED', 'CONFIRMED', 'IN_PROGRESS', 'PREPARED', 'DELIVERED'];
 
     this._createdGarnishFood = [];
     this._createAdditions = [];
@@ -135,8 +135,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
                   this._garnishFoodElementsCount = itemOrder.garnishFood.length;
                 }
               });
-              if (this._orderAux.status === 'CONFIRMED' || this._orderAux.status === 'IN_PROGRESS' || this._orderAux === 'PREPARED' || 
-                  this._orderAux.creation_user !== this._currentUserId) {
+              if (this._orderAux.status !== 'REGISTERED' || this._orderAux.creation_user !== this._currentUserId) {
                 this._showActionsBtn = false;
               }
             });
@@ -162,8 +161,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
                     this._garnishFormGroup.controls[gar.name].setValue(true);
                   } else {
                     let control: FormControl;
-                    if (_actualOrder.status === 'CONFIRMED' || _actualOrder.status === 'IN_PROGRESS' || _actualOrder.status === 'PREPARED' ||
-                         this._orderAux.creation_user !== this._currentUserId) {
+                    if (_actualOrder.status !== 'REGISTERED' || this._orderAux.creation_user !== this._currentUserId) {
                       control = new FormControl({ value: true, disabled: true });
                     } else {
                       control = new FormControl({ value: true, disabled: false });
@@ -175,8 +173,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
                     this._garnishFormGroup.controls[gar.name].setValue(false);
                   } else {
                     let control: FormControl;
-                    if (_actualOrder.status === 'CONFIRMED' || _actualOrder.status === 'IN_PROGRESS' || _actualOrder.status === 'PREPARED' ||
-                         this._orderAux.creation_user !== this._currentUserId) {
+                    if (_actualOrder.status !== 'REGISTERED' || this._orderAux.creation_user !== this._currentUserId) {
                       control = new FormControl({ value: false, disabled: true });
                     }else{
                       control = new FormControl({ value: false, disabled: false });
@@ -208,8 +205,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
                     this._additionsFormGroup.controls[add.name].setValue(true);
                   } else {
                     let control: FormControl;
-                    if (_actualOrder.status === 'CONFIRMED' || _actualOrder.status === 'IN_PROGRESS' || _actualOrder.status === 'PREPARED' ||
-                        this._orderAux.creation_user !== this._currentUserId) {
+                    if (_actualOrder.status !== 'REGISTERED' || this._orderAux.creation_user !== this._currentUserId) {
                       control = new FormControl({ value: true, disabled: true });
                     }else{
                       control = new FormControl({ value: true, disabled: false });
@@ -221,8 +217,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
                     this._additionsFormGroup.controls[add.name].setValue(false);
                   } else {
                     let control: FormControl;
-                    if (_actualOrder.status === 'CONFIRMED' || _actualOrder.status === 'IN_PROGRESS' || _actualOrder.status === 'PREPARED' ||
-                         this._orderAux.creation_user !== this._currentUserId) {
+                    if (_actualOrder.status !== 'REGISTERED' || this._orderAux.creation_user !== this._currentUserId) {
                       control = new FormControl({ value: false, disabled: true });
                     }else{
                       control = new FormControl({ value: false, disabled: false });
@@ -494,6 +489,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    console.log('va a salir de page item-edit');
     this._itemsSub.unsubscribe();
     this._additionSub.unsubscribe();
     this._garnishSub.unsubscribe();
