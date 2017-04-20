@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { UploadFS } from 'meteor/jalik:ufs';
-import { ItemImagesStore } from '../../collections/administration/item.collection';
+import { ItemImageThumb } from '../../models/administration/item.model';
+import { Items, ItemImages, ItemImagesThumbs, ItemImagesStore } from '../../collections/administration/item.collection';
 
 /**
  * Function allow upload item images
@@ -8,13 +9,16 @@ import { ItemImagesStore } from '../../collections/administration/item.collectio
  * @param {String} user
  * @return {Promise<any>} uploadItemImage
  */
-export function uploadItemImage(data: File, user:string): Promise<any> {
+export function uploadItemImage( data: File, 
+                                 user: string,
+                                 itemId: string ): Promise<any> {
   return new Promise((resolve, reject) => {
     const file = {
       name: data.name,
       type: data.type,
       size: data.size,
-      userId: user
+      userId: user,
+      itemId: itemId
     };
 
     const upload = new UploadFS.Uploader({

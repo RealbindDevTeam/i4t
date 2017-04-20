@@ -6,8 +6,8 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
-import { Item } from '../../../../../../both/models/administration/item.model';
-import { Items, ItemImagesStore } from '../../../../../../both/collections/administration/item.collection';
+import { Item, ItemImage } from '../../../../../../both/models/administration/item.model';
+import { Items, ItemImages } from '../../../../../../both/collections/administration/item.collection';
 import { ItemEditionComponent } from './items-edition/item-edition.component';
 import { Sections } from '../../../../../../both/collections/administration/section.collection';
 import { Section } from '../../../../../../both/models/administration/section.model';
@@ -27,11 +27,13 @@ import style from './item.component.scss';
 export class ItemComponent implements OnInit, OnDestroy {
 
     private _itemsSub: Subscription;
+    private _itemImagesSub: Subscription;
     private _sectionsSub: Subscription;
     private _categoriesSub: Subscription;
     private _subcategorySub: Subscription;
 
     private _items: Observable<Item[]>;
+    private _itemImages: Observable<ItemImage[]>;
     private _sections: Observable<Section[]>;
     private _categories: Observable<Category[]>;
     private _subcategories: Observable<Subcategory[]>;
@@ -57,6 +59,8 @@ export class ItemComponent implements OnInit, OnDestroy {
     ngOnInit(){
         this._items = Items.find( { } ).zone();
         this._itemsSub = MeteorObservable.subscribe( 'items', Meteor.userId() ).subscribe();
+        this._itemImages = ItemImages.find( { } ).zone();
+        this._itemImagesSub = MeteorObservable.subscribe( 'itemImages', Meteor.userId() ).subscribe();
         this._sections = Sections.find( { } ).zone();
         this._sectionsSub = MeteorObservable.subscribe( 'sections', Meteor.userId() ).subscribe(); 
         this._categories = Categories.find( { } ).zone();
@@ -106,6 +110,7 @@ export class ItemComponent implements OnInit, OnDestroy {
      */
     ngOnDestroy(){
         this._itemsSub.unsubscribe();
+        this._itemImagesSub.unsubscribe();
         this._sectionsSub.unsubscribe();
         this._categoriesSub.unsubscribe();
         this._subcategorySub.unsubscribe();

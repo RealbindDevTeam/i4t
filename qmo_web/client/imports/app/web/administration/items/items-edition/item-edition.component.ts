@@ -6,8 +6,8 @@ import { TranslateService } from 'ng2-translate';
 import { MdDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
-import { Item } from '../../../../../../../both/models/administration/item.model';
-import { Items, ItemImagesStore } from '../../../../../../../both/collections/administration/item.collection';
+import { Item, ItemImage } from '../../../../../../../both/models/administration/item.model';
+import { Items, ItemImages, ItemImagesThumbs } from '../../../../../../../both/collections/administration/item.collection';
 import { uploadItemImage } from '../../../../../../../both/methods/administration/item.methods';
 import { Sections } from '../../../../../../../both/collections/administration/section.collection';
 import { Section } from '../../../../../../../both/models/administration/section.model';
@@ -43,7 +43,8 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
     private _restaurants: Observable<Restaurant[]>;
 
     private _itemsSub: Subscription;
-    private _itemsImagesSub: Subscription;
+    private _itemImagesSub: Subscription;
+    private _itemImageThumbsSub: Subscription;
     private _sectionsSub: Subscription;    
     private _categorySub: Subscription;
     private _subcategorySub: Subscription;
@@ -51,7 +52,6 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
     private _garnishFoodSub: Subscription;
     private _additionSub: Subscription;
 
-    private _itemEditImage: string;
     public _selectedIndex: number = 0;
     private _showGarnishFood: boolean = true;
     private _showAddition: boolean = true;
@@ -76,24 +76,11 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
     private _additionList: Addition[];
     private _edition_addition: string[];
 
-    private _edition_id: string;
-    private _edition_isActive: boolean;
-    private _edition_sectionId: string;
-    private _edition_categoryId: string;
-    private _edition_subcategoryId: string;
-    private _edition_name: string;
-    private _edition_description: string;
-    private _edition_price: number;
-    private _edition_taxPercentage: number;
-    private _edition_isAvailable: boolean;
-    private _edition_itemImgUrl: string;
-    private _edition_observations: string;
-    private _edition_garnishFoodQuantity: number;
-
     private _editImage: boolean = false;
     private _editFilesToUpload: Array<File>;
     private _editItemImageToInsert: File;
     private _nameImageFileEdit: string;
+    private _itemEditImage: string;
 
     /**
      * ItemEditionComponent constructor
@@ -134,7 +121,6 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
             editTaxPercentage: [ this._itemToEdit.taxPercentage ],
             editObservations: [ this._itemToEdit.observations ],
             editImage: [ '' ],
-            editItemImageId: [ this._itemToEdit.itemImageId ],
             editGarnishFoodIsAcceped: [ this._itemToEdit.garnishFoodIsAcceped ],
             editGarnishFoodQuantity: [ this._itemToEdit.garnishFoodQuantity ],
             editGarnishFood: this._garnishFormGroup,
@@ -149,7 +135,6 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         this._selectedCategory = this._itemToEdit.categoryId;
         this._itemSubcategory = this._itemToEdit.subcategoryId;
         this._selectedSubcategory = this._itemToEdit.subcategoryId;
-        this._itemEditImage = this._itemToEdit.urlImage;
         this._itemGarnishFood = this._itemToEdit.garnishFood;
         this._itemAdditions = this._itemToEdit.additions;
         this._garnishFoodQuantity = this._itemToEdit.garnishFoodQuantity;
@@ -157,7 +142,8 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         this._checkedAdditions = this._itemToEdit.additionsIsAccepted;
 
         this._itemsSub = MeteorObservable.subscribe( 'items', Meteor.userId() ).subscribe();
-        this._itemsImagesSub = MeteorObservable.subscribe( 'itemImages', Meteor.userId() ).subscribe();
+        this._itemImagesSub = MeteorObservable.subscribe( 'itemImages', Meteor.userId() ).subscribe();
+        this._itemImageThumbsSub = MeteorObservable.subscribe( 'itemImageThumbs', Meteor.userId() ).subscribe();
         this._sections = Sections.find( { } ).zone();
         this._sectionsSub = MeteorObservable.subscribe( 'sections', Meteor.userId() ).subscribe();
         this._categories = Categories.find( { section: this._itemSection } ).zone();
@@ -214,6 +200,9 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
 
         let _lSection:Section = Sections.collection.findOne( { _id: this._itemSection } );
         this._restaurants = Restaurants.find( { _id: { $in: _lSection.restaurants } } ).zone();
+
+        let _lItemImage:ItemImage = ItemImages.collection.findOne( { itemId: this._itemToEdit._id } );
+        this._itemEditImage = _lItemImage.url;
     }
 
     /**
@@ -374,70 +363,37 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                 }
             });
 
-            if( this._editImage ){
-                this._edition_id = this._itemEditionForm.value.editId;
-                this._edition_isActive = this._itemEditionForm.value.editIsActive;
-                this._edition_sectionId = this._itemEditionForm.value.editSectionId;
-                this._edition_categoryId = this._itemEditionForm.value.editCategoryId;
-                this._edition_subcategoryId = this._itemEditionForm.value.editSubcategoryId;
-                this._edition_name = this._itemEditionForm.value.editName;
-                this._edition_description = this._itemEditionForm.value.editDescription;
-                this._edition_price = this._itemEditionForm.value.editPrice;
-                this._edition_taxPercentage = this._itemEditionForm.value.editTaxPercentage;
-                this._edition_isAvailable = this._itemEditionForm.value.editIsAvailable;
-                this._edition_itemImgUrl = this._itemEditionForm.value.editItemImageId;
-                this._edition_observations = this._itemEditionForm.value.editObservations;
-                this._edition_garnishFoodQuantity = this._itemEditionForm.value.editGarnishFoodQuantity;
+            Items.update( this._itemEditionForm.value.editId, {
+                $set:{
+                    modification_user: Meteor.userId(),
+                    modification_date: new Date(),
+                    is_active: this._itemEditionForm.value.editIsActive,
+                    sectionId: this._itemEditionForm.value.editSectionId,
+                    categoryId: this._itemEditionForm.value.editCategoryId,
+                    subcategoryId: this._itemEditionForm.value.editSubcategoryId,
+                    name: this._itemEditionForm.value.editName,
+                    description: this._itemEditionForm.value.editDescription,
+                    price: this._itemEditionForm.value.editPrice,
+                    taxPercentage: this._itemEditionForm.value.editTaxPercentage,
+                    observations: this._itemEditionForm.value.editObservations,
+                    garnishFoodIsAcceped: this._checkedGarnishFood,
+                    garnishFoodQuantity: this._itemEditionForm.value.editGarnishFoodQuantity,
+                    garnishFood: this._edition_garnishFood,
+                    additionsIsAccepted: this._checkedAdditions,
+                    additions: this._edition_addition,
+                    isAvailable: this._itemEditionForm.value.editIsAvailable
+                }
+            });
 
-                uploadItemImage( this._editItemImageToInsert, Meteor.userId() ).then( ( result ) => {
-                    Items.update( this._edition_id, {
-                        $set:{
-                            modification_user: Meteor.userId(),
-                            modification_date: new Date(),
-                            is_active: this._edition_isActive,
-                            sectionId: this._edition_sectionId,
-                            categoryId: this._edition_categoryId,
-                            subcategoryId: this._edition_subcategoryId,
-                            name: this._edition_name,
-                            description: this._edition_description,
-                            price: this._edition_price,
-                            taxPercentage: this._edition_taxPercentage,
-                            observations: this._edition_observations,
-                            itemImageId: result._id,
-                            urlImage: result.url,
-                            garnishFoodIsAcceped: this._checkedGarnishFood,
-                            garnishFoodQuantity: this._edition_garnishFoodQuantity,
-                            garnishFood: this._edition_garnishFood,
-                            additionsIsAccepted: this._checkedAdditions,
-                            additions: this._edition_addition,
-                            isAvailable: this._edition_isAvailable
-                        }
-                    });
-                    Items.remove( { _id: this._edition_itemImgUrl } );
+            if( this._editImage ){
+                ItemImages.remove( { itemId: this._itemEditionForm.value.editId } );
+                ItemImagesThumbs.remove( { itemId: this._itemEditionForm.value.editId } );
+                uploadItemImage( this._editItemImageToInsert, 
+                                 Meteor.userId(),
+                                 this._itemEditionForm.value.editId ).then( ( result ) => {
+                    
                 }).catch( (error) => {
                     alert( 'Update image error. Only accept .png, .jpg, .jpeg files.' );
-                });
-            } else {
-                Items.update( this._itemEditionForm.value.editId, {
-                    $set:{
-                        modification_user: Meteor.userId(),
-                        modification_date: new Date(),
-                        is_active: this._itemEditionForm.value.editIsActive,
-                        sectionId: this._itemEditionForm.value.editSectionId,
-                        categoryId: this._itemEditionForm.value.editCategoryId,
-                        subcategoryId: this._itemEditionForm.value.editSubcategoryId,
-                        name: this._itemEditionForm.value.editName,
-                        description: this._itemEditionForm.value.editDescription,
-                        price: this._itemEditionForm.value.editPrice,
-                        taxPercentage: this._itemEditionForm.value.editTaxPercentage,
-                        observations: this._itemEditionForm.value.editObservations,
-                        garnishFoodIsAcceped: this._checkedGarnishFood,
-                        garnishFoodQuantity: this._itemEditionForm.value.editGarnishFoodQuantity,
-                        garnishFood: this._edition_garnishFood,
-                        additionsIsAccepted: this._checkedAdditions,
-                        additions: this._edition_addition,
-                        isAvailable: this._itemEditionForm.value.editIsAvailable
-                    }
                 });
             }
             this._dialogRef.close();
@@ -477,6 +433,8 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
      */
     ngOnDestroy(){
         this._itemsSub.unsubscribe();
+        this._itemImagesSub.unsubscribe();
+        this._itemImageThumbsSub.unsubscribe();
         this._sectionsSub.unsubscribe();
         this._categorySub.unsubscribe();
         this._subcategorySub.unsubscribe();
