@@ -82,7 +82,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
     _translate.setDefaultLang('en');
     _translate.use(this._userLang);
     this._currentUserId = Meteor.userId();
-    this._statusArray = ['REGISTERED', 'CONFIRMED', 'IN_PROGRESS', 'PREPARED', 'DELIVERED'];
+    this._statusArray = ['REGISTERED', 'IN_PROCESS', 'PREPARED', 'DELIVERED'];
 
     this._createdGarnishFood = [];
     this._createAdditions = [];

@@ -46,7 +46,7 @@ export class OrdersPage implements OnInit, OnDestroy {
         _translate.setDefaultLang('en');
         _translate.use(this._userLang);
         this._currentUserId = Meteor.userId();
-        this._statusArray = ['REGISTERED', 'CONFIRMED', 'IN_PROGRESS', 'PREPARED', 'DELIVERED'];
+        this._statusArray = ['REGISTERED', 'IN_PROCESS', 'PREPARED', 'DELIVERED'];
     }
 
     ngOnInit() {
@@ -232,7 +232,7 @@ export class OrdersPage implements OnInit, OnDestroy {
                             if (_lItemsIsAvailable) {
                                 Orders.update({ _id: _order._id }, {
                                     $set: {
-                                        status: 'CONFIRMED', modification_user: Meteor.userId(),
+                                        status: 'IN_PROCESS', modification_user: Meteor.userId(),
                                         modification_date: new Date()
                                     }
                                 }
