@@ -33,7 +33,7 @@
         </ion-item>
     </ion-list-->
 
-    <div  *ngFor="let _call of _waiterCallDetail | async">
+    <div *ngFor="let _call of _waiterCallDetail | async">
         <div *ngFor="let _table of _tables | async">
             <ion-card *ngIf="_table._id === _call.table_id">
                 <ion-grid >

@@ -48,6 +48,7 @@ import { WaiterCallComponent } from './customer/waiter-call/waiter-call.componen
 import { OrderAttentionComponent } from './chef/order-attention/order-attention.component';
 import { OrdersToDeliveryComponent } from './waiter/orders-to-delivery/orders-to-delivery.component';
 import { CallsComponent } from './waiter/calls/calls.component';
+import { CallCloseConfirmComponent } from './waiter/calls/call-close-confirm/call-close-confirm.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -100,7 +101,8 @@ export const MODAL_DIALOG_DECLARATIONS = [
     RestaurantLocationComponent,
     RestaurantLocationInfoComponent,
     RestaurantInfoDetailComponent,
-    RestaurantScheduleComponent
+    RestaurantScheduleComponent,
+    CallCloseConfirmComponent
     /*
     CollaboratorsEditionComponent,
     */

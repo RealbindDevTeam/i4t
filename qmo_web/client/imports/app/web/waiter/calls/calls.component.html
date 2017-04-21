@@ -1,1 +1,53 @@
-hola
+<md-card class="call-card">
+    <md-card class="card_image">
+        <md-list>
+            <md-list-item *ngFor="let _res of _restaurants | async">
+                <img md-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{_res.urlImage}}">
+                <h2 md-line style="font-size: 1.5rem;"> {{_res.name}} </h2>
+                <p md-line style="font-size: 1rem;">
+                    <md-icon style="vertical-align: middle">location_on</md-icon>
+                    <span> {{_res.address}} </span>
+                </p>
+                <p md-line style="font-size: 1rem;">
+                    <md-icon style="vertical-align: middle">phone</md-icon>
+                    <span class="detail-message">{{_res.phone}} </span>
+                </p>
+            </md-list-iztem>
+        </md-list>
+    </md-card>
+</md-card>
+
+<md-card class="call-card" style="padding: 0">
+    <div *ngFor="let _call of _waiterCallDetail | async">
+        <div *ngFor="let _table of _tables | async">
+            <md-card *ngIf="_table._id === _call.table_id" class="cards">
+                <md-card-header style="height: 80px; background: #eee;">
+                    <img class="img" md-list-avatar src="/images/user_default_image.png">
+                    <md-list>
+                        <md-list-item>
+                            <h3 md-line> Fernando Arévalo</h3>
+                            <p md-line>
+                                <span> fercho23 </span>
+                            </p>
+                        </md-list-item>
+                    </md-list>
+                </md-card-header>
+
+                <md-card-content>
+                    <button md-mini-fab class="btn_edit" (click)="showConfirm(_call)"> 
+                        <md-icon style="color: white;">check</md-icon>
+                    </button>
+                    <ul class="list">
+                        <li>
+                            <md-icon style="vertical-align: middle" md-tooltip="{{'EMAIL' | translate}}">mail outline</md-icon>
+                            <span>Mesa {{_table._number}}</span>
+                        </li>
+                    </ul>
+                </md-card-content>
+                <md-card-footer></md-card-footer>
+            </md-card>
+        </div>
+    </div>
+</md-card>
+
+<md-spinner></md-spinner>
