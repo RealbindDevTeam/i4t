@@ -68,6 +68,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
   private _garnishArray: any;
   private _additionArray: any[];
   private _showActionsBtn: boolean = true;
+  private _showCancelBtn: boolean = true;
   private _newOrderForm: FormGroup;
   private _garnishFormGroup: FormGroup = new FormGroup({});
   private _additionsFormGroup: FormGroup = new FormGroup({});
@@ -112,6 +113,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
                 this._unitPrice = item.price;
                 if(!item.isAvailable){
                   this._showActionsBtn = false;
+                  this._showCancelBtn = false;
                 }
               }
               this._showGarnishFoodError = false;

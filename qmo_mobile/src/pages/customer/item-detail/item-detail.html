@@ -40,7 +40,7 @@
           <ion-icon name="chatboxes" *ngIf="_observations != ''"></ion-icon>
           {{_observations != '' ? _observations.substring(0, 20)+ '...': 'MOBILE.SECTIONS.OBSERVATIONS' | translate}}
         </button>
-          <form [formGroup]="_newOrderForm">
+          <form [formGroup]="_newOrderForm" *ngIf="item.isAvailable">
             <div *ngIf="item.garnishFoodIsAcceped">
               <h3 class="custom-padding">{{'MOBILE.SECTIONS.GARNISHES' | translate}}</h3>
               <p>{{'MOBILE.SECTIONS.MAX_GARNISH' | translate}} {{item.garnishFoodQuantity}}</p>
