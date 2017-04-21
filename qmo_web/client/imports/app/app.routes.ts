@@ -25,6 +25,8 @@ import { RestaurantEditionComponent } from './web/restaurant/restaurant/restaura
 import { ItemEnableComponent } from './web/administration/items/items-enable/items-enable.component';
 import { WaiterCallComponent } from './web/customer/waiter-call/waiter-call.component';
 import { OrderAttentionComponent } from './web/chef/order-attention/order-attention.component';
+import { OrdersToDeliveryComponent } from "./web/waiter/orders-to-delivery/orders-to-delivery.component";
+import { CallsComponent } from "./web/waiter/calls/calls.component";
 
 export const routes: Route[] = [
     { path: 'app', component: LayoutComponent, children: [
@@ -48,7 +50,9 @@ export const routes: Route[] = [
         { path : 'orders', component: OrdersComponent },
         { path : 'itemsEnable', component: ItemEnableComponent },
         { path : 'waiter-call', component: WaiterCallComponent },
-        { path : 'chefOrders', component: OrderAttentionComponent }
+        { path : 'chefOrders', component: OrderAttentionComponent },
+        { path : 'orders-to-delivery', component: OrdersToDeliveryComponent },
+        { path : 'calls', component: CallsComponent }
         ]
     },
     { path: '', component: LandingPageComponent },

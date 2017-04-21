@@ -101,6 +101,13 @@ export function loadMenus() {
                 ]
             },
             {
+                _id: "3000",
+                is_active: true,
+                name: "MENUS.WAITER_CALL",
+                url: "/app/waiter-call",
+                icon_name: "record_voice_over"
+            },
+            {
                 _id: "5000",
                 is_active: true,
                 name: "MENUS.ORDERS",

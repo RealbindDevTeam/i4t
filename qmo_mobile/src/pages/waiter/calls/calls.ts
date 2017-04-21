@@ -34,12 +34,14 @@ export class CallsPage implements OnInit, OnDestroy {
   /**
     * CallsPage Constructor
     * @param { TranslateService } _translate 
-    * @param { AlertController } alertCtrl 
+    * @param { AlertController } _alertCtrl 
+    * @param { LoadingController } _loadingCtrl 
+    * @param { ToastController } _toastCtrl 
     */
   constructor(public _translate: TranslateService,
-              public alertCtrl: AlertController,
+              public _alertCtrl: AlertController,
               public _loadingCtrl: LoadingController,
-              private toastCtrl: ToastController) {
+              private _toastCtrl: ToastController) {
     this._userLang = navigator.language.split('-')[0];
     _translate.setDefaultLang('en');
     _translate.use(this._userLang);
@@ -76,7 +78,7 @@ export class CallsPage implements OnInit, OnDestroy {
     let title   = this.itemNameTraduction('MOBILE.WAITER_CALL.TITLE_PROMPT'); 
     let content = this.itemNameTraduction('MOBILE.WAITER_CALL.CONTENT_PROMPT'); 
 
-    let prompt = this.alertCtrl.create({
+    let prompt = this._alertCtrl.create({
       title: title,
       message: content,
       buttons: [
@@ -120,7 +122,7 @@ export class CallsPage implements OnInit, OnDestroy {
    */
   presentToast() {
     let msg = this.itemNameTraduction('MOBILE.WAITER_CALL.MSG_COMFIRM'); 
-    let toast = this.toastCtrl.create({
+    let toast = this._toastCtrl.create({
       message: msg,
       duration: 1500,
       position: 'middle'

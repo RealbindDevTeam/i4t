@@ -28,7 +28,7 @@ export function loadRoles() {
             is_active: true,
             name: "ROLE.CUSTOMER",
             description: "restaurant customer",
-            menus: ["5000"]
+            menus: ["5000","3000"]
         },{
             _id: "500",
             is_active: true,

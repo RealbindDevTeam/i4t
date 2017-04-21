@@ -25,6 +25,7 @@ import { ItemEditPage } from '../pages/customer/item-edit/item-edit';
 import { ModalObservationsEdit } from '../pages/customer/item-edit/modal-observations-edit';
 import { WaiterTabsPage } from '../pages/waiter/waiter-tabs/waiter-tabs';
 import { CallsPage } from '../pages/waiter/calls/calls';
+import { OrdersToDeliveryPage } from '../pages/waiter/orders-to-delivery/orders-to-delivery';
 import { IonicStorageModule } from '@ionic/storage';
 
 export function createTranslateLoader(http: Http) {
@@ -54,7 +55,8 @@ export function createTranslateLoader(http: Http) {
     ItemEditPage,
     ModalObservationsEdit,
     WaiterTabsPage,
-    CallsPage
+    CallsPage,
+    OrdersToDeliveryPage
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -100,7 +102,8 @@ export function createTranslateLoader(http: Http) {
     ItemEditPage,
     ModalObservationsEdit,
     WaiterTabsPage,
-    CallsPage
+    CallsPage,
+    OrdersToDeliveryPage
   ],
   providers: [
     { provide: ErrorHandler, 

@@ -154,7 +154,8 @@
             "ITEMS_ENABLE": "Items Available",
             "ORDERS_CHEF": "Orders"
         },
-        "ORDERS": "Orders"
+        "ORDERS": "Orders",
+        "WAITER_CALL" : "Waiter call"
     },
     "PROMOTIONS": {
         "PROMOTION_CREATION": "Promotions creation",
