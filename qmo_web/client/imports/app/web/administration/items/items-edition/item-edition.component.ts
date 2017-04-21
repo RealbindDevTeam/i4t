@@ -6,7 +6,7 @@ import { TranslateService } from 'ng2-translate';
 import { MdDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
-import { Item, ItemImage } from '../../../../../../../both/models/administration/item.model';
+import { Item, ItemImage, ItemImageThumb } from '../../../../../../../both/models/administration/item.model';
 import { Items, ItemImages, ItemImagesThumbs } from '../../../../../../../both/collections/administration/item.collection';
 import { uploadItemImage } from '../../../../../../../both/methods/administration/item.methods';
 import { Sections } from '../../../../../../../both/collections/administration/section.collection';
@@ -386,8 +386,12 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
             });
 
             if( this._editImage ){
-                ItemImages.remove( { itemId: this._itemEditionForm.value.editId } );
-                ItemImagesThumbs.remove( { itemId: this._itemEditionForm.value.editId } );
+                let _lItemImage:ItemImage = ItemImages.findOne( { itemId: this._itemEditionForm.value.editId } );
+                let _lItemImageThumb: ItemImageThumb =  ItemImagesThumbs.findOne( { itemId: this._itemEditionForm.value.editId } );
+
+                ItemImages.remove( { _id: _lItemImage._id } );
+                ItemImagesThumbs.remove( { _id: _lItemImageThumb._id } );
+
                 uploadItemImage( this._editItemImageToInsert, 
                                  Meteor.userId(),
                                  this._itemEditionForm.value.editId ).then( ( result ) => {

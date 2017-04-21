@@ -62,13 +62,6 @@ export const PromotionImageThumbsStore = new UploadFS.store.GridFS({
 });
 
 /**
- * When promotion image thumb is created, this function associate thumb with promotion
- */
-PromotionImageThumbsStore.onFinishUpload = function( file ) {
-    Promotions.update( { promotionImageId: file.originalId }, { $set: { promotionImageThumbId: file._id, urlImageThumb: file.url } } );
-};
-
-/**
  * Promotion Images Collection
  */
 export const PromotionImages = new MongoObservable.Collection<PromotionImage>('promotionImages');
@@ -101,5 +94,17 @@ export const PromotionImagesStore = new UploadFS.store.GridFS({
     insert: loggedIn,
     update: loggedIn,
     remove: loggedIn
-  })
+  }),
+  transformWrite(from, to, fileId, file) {
+    // Resize to 500x500
+    const gm = require('gm');
+ 
+    gm(from, file.name)
+      .resize(500, 500, "!")
+      .gravity('Center')
+      .extent(500, 500)
+      .quality(75)
+      .stream()
+      .pipe(to);
+  }
 });

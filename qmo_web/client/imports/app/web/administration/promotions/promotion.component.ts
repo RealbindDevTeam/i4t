@@ -5,8 +5,8 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
-import { Promotions } from '../../../../../../both/collections/administration/promotion.collection';
-import { Promotion } from '../../../../../../both/models/administration/promotion.model';
+import { Promotions, PromotionImagesThumbs } from '../../../../../../both/collections/administration/promotion.collection';
+import { Promotion, PromotionImageThumb } from '../../../../../../both/models/administration/promotion.model';
 import { uploadPromotionImage } from '../../../../../../both/methods/administration/promotion.methods';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
@@ -27,9 +27,11 @@ export class PromotionComponent implements OnInit, OnDestroy {
 
     private _promotions: Observable<Promotion[]>;
     private _restaurants: Observable<Restaurant[]>;
+    private _promotionThumbs: Observable<PromotionImageThumb[]>;
 
     private _promotionsSub: Subscription;
     private _restaurantSub: Subscription;
+    private _promotionThumbsSubsription: Subscription;
     
     private _createImage: boolean;
     private _restaurantList:Restaurant[];
@@ -82,6 +84,8 @@ export class PromotionComponent implements OnInit, OnDestroy {
 
         this._promotions = Promotions.find( { } ).zone();
         this._promotionsSub = MeteorObservable.subscribe( 'promotions', Meteor.userId() ).subscribe();
+        this._promotionThumbsSubsription = MeteorObservable.subscribe( 'promotionImageThumbs', Meteor.userId() ).subscribe();
+        this._promotionThumbs = PromotionImagesThumbs.find( { } ).zone();
     }
 
     /**
@@ -104,32 +108,28 @@ export class PromotionComponent implements OnInit, OnDestroy {
                 }            
             });
 
+            let _lNewPromotion = Promotions.collection.insert({
+                creation_user: Meteor.userId(),
+                creation_date: new Date(),
+                modification_user: '-',
+                modification_date: new Date(),
+                is_active: true,
+                name: this._promotionForm.value.name,
+                description: this._promotionForm.value.description,
+                restaurants: _lRestaurantsToInsert
+            });
+
             if( this._createImage ){
                 uploadPromotionImage( this._promotionImageToInsert, 
                                       Meteor.userId(), 
-                                      this._promotionForm.value.name, 
-                                      this._promotionForm.value.description, 
-                                      _lRestaurantsToInsert )
+                                      _lNewPromotion )
                                       .then( ( result ) => {
 
                 }).catch( ( error ) => {
                     alert( 'Upload image error. Only accept .png, .jpg, .jpeg files.' );
                 });                
             } else {
-                Promotions.insert({
-                    creation_user: Meteor.userId(),
-                    creation_date: new Date(),
-                    modification_user: '-',
-                    modification_date: new Date(),
-                    is_active: true,
-                    name: this._promotionForm.value.name,
-                    description: this._promotionForm.value.description,
-                    promotionImageId: '-',
-                    urlImage: '-',
-                    promotionImageThumbId: '-',
-                    urlImageThumb: '-',
-                    restaurants: _lRestaurantsToInsert
-                });
+                
             }
         }
         this.cancel();
@@ -191,5 +191,6 @@ export class PromotionComponent implements OnInit, OnDestroy {
     ngOnDestroy(){
         this._promotionsSub.unsubscribe();
         this._restaurantSub.unsubscribe();
+        this._promotionThumbsSubsription.unsubscribe();
     }
 }

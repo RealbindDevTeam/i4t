@@ -7,10 +7,6 @@ export interface Promotion extends CollectionObject {
     is_active: boolean;
     name: string;
     description?: string;
-    promotionImageId: string;
-    urlImage: string;
-    promotionImageThumbId: string;
-    urlImageThumb: string;
     restaurants: string[];
 }
 
@@ -31,6 +27,7 @@ export interface PromotionImage {
     uploading: boolean;
     url: string;
     userId: string;
+    promotionId: string;
 }
 
 /**

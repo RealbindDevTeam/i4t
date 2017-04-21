@@ -5,9 +5,9 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
 import { MdDialogRef } from '@angular/material';
-import { Promotions } from '../../../../../../../both/collections/administration/promotion.collection';
-import { Promotion } from '../../../../../../../both/models/administration/promotion.model';
-import { updatePromotionImage } from '../../../../../../../both/methods/administration/promotion.methods';
+import { Promotions, PromotionImagesThumbs } from '../../../../../../../both/collections/administration/promotion.collection';
+import { Promotion, PromotionImageThumb } from '../../../../../../../both/models/administration/promotion.model';
+import { uploadPromotionImage } from '../../../../../../../both/methods/administration/promotion.methods';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
 
@@ -27,9 +27,11 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
 
     private _promotions: Observable<Promotion[]>;
     private _restaurants: Observable<Restaurant[]>;
+    private _promotionThumb: Observable<PromotionImageThumb[]>;
 
     private _promotionsSub: Subscription;
     private _restaurantSub: Subscription;
+    private _promotionThumbsSub: Subscription;
 
     private _promotionEditImage: string;
     private _showImage: boolean = true;
@@ -74,17 +76,11 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
             editImage: [ '' ],
             editRestaurants: this._restaurantsFormGroup
         });
-        this._promotionEditImage = this._promotionToEdit.urlImageThumb;
         this._promotionRestaurants = this._promotionToEdit.restaurants;
-
-        if( this._promotionToEdit.urlImage !== "-" ){
-            this._showImage = true;
-        } else {
-            this._showImage = false;
-        }
 
         this._promotions = Promotions.find( { } ).zone();
         this._promotionsSub = MeteorObservable.subscribe( 'promotions', Meteor.userId() ).subscribe();
+        this._promotionThumbsSub = MeteorObservable.subscribe( 'promotionImageThumbs', Meteor.userId() ).subscribe();
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', Meteor.userId() ).subscribe( () => {
             this._ngZone.run( () => {
                 this._restaurants = Restaurants.find( { } );
@@ -105,6 +101,15 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
                 }
             });
         });
+
+        let _lPromotionThumb: PromotionImageThumb = PromotionImagesThumbs.findOne( { promotionId: this._promotionToEdit._id } );
+
+        this._promotionEditImage = _lPromotionThumb.url;
+        if( _lPromotionThumb ){
+            this._showImage = true;
+        } else {
+            this._showImage = false;
+        }
     }
 
     /**
@@ -125,32 +130,31 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
                 }            
             });
 
+            Promotions.update( this._editForm.value.editId, {
+                $set:{
+                    modification_user: Meteor.userId(),
+                    modification_date: new Date(),
+                    name: this._editForm.value.editName,
+                    description: this._editForm.value.editDesc,
+                    is_active: this._editForm.value.editIsActive,
+                    restaurants: this._edition_restaurants
+                }
+            });
+
             if( this._editImage ){
-                updatePromotionImage( this._editPromotionImageToInsert, 
+                let _lPromotionImageThumb: PromotionImageThumb = PromotionImagesThumbs.findOne( { promotionId: this._editPromotionImageToInsert } );
+                PromotionImagesThumbs.remove( { _id: _lPromotionImageThumb._id } );
+
+                uploadPromotionImage( this._editPromotionImageToInsert, 
                                       Meteor.userId(), 
-                                      this._editForm.value.editId, 
-                                      this._editForm.value.editName, 
-                                      this._editForm.value.editDesc, 
-                                      this._editForm.value.editIsActive, 
-                                      this._promotionToEdit.promotionImageId,
-                                      this._promotionToEdit.promotionImageThumbId,
-                                      this._edition_restaurants )
+                                      this._editForm.value.editId )
                                       .then( ( result ) => {
                       
                 }).catch( ( error ) => {
                     alert('Upload image error. Only accept .png, .jpg, .jpeg files.');
                 }); 
             } else {
-                Promotions.update( this._editForm.value.editId, {
-                    $set:{
-                        modification_user: Meteor.userId(),
-                        modification_date: new Date(),
-                        name: this._editForm.value.editName,
-                        description: this._editForm.value.editDesc,
-                        is_active: this._editForm.value.editIsActive,
-                        restaurants: this._edition_restaurants
-                    }
-                });
+                
             }
             this._dialogRef.close();
         }
