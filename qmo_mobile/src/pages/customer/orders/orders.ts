@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { App, NavController, NavParams, AlertController } from 'ionic-angular';
+import { App, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { TranslateService } from 'ng2-translate';
 import { Subscription, Subject, Observable } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -41,7 +41,7 @@ export class OrdersPage implements OnInit, OnDestroy {
     alert_not: string;
 
     constructor(public _navCtrl: NavController, public _navParams: NavParams, public _app: App, public _translate: TranslateService,
-        public _storage: Storage, public alertCtrl: AlertController) {
+        public _storage: Storage, public alertCtrl: AlertController, public _loadingCtrl: LoadingController) {
         this._userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang('en');
         _translate.use(this._userLang);
@@ -251,8 +251,17 @@ export class OrdersPage implements OnInit, OnDestroy {
         alertConfirm.present();
     }
 
-    goToItemEdit(_orderId: string, _itemOrderIndex: string, _itemId: string, _creationUser: string) {
-        this._navCtrl.push(ItemEditPage, { order_id: _orderId, _item_ord_ind: _itemOrderIndex, item_code: _itemId, creation_user: _creationUser });
+    goToItemEdit(_order: any, _itemId: any) {
+        let loader = this._loadingCtrl.create({
+            duration: 300
+        });
+        loader.present();
+        this._navCtrl.push(ItemEditPage, { order_id: _order._id, 
+                                           item_ord_ind: _itemId.index, 
+                                           item_code: _itemId.itemId, 
+                                           creation_user: _order.creation_user,
+                                           res_code: this._res_code,
+                                           table_code: this._table_code});
     }
 
     ionViewDidEnter() {

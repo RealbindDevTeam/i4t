@@ -73,7 +73,7 @@
                                                 <h2 style="white-space: normal;">{{item.name}}</h2>
                                                 <p style="white-space: normal;">{{itemId.paymentItem}} COP</p> 
                                                 <p *ngIf="!item.isAvailable" class="unavailable-item"> {{'MOBILE.SECTIONS.UNAVAILABLE' | translate}} </p>
-                                                <button ion-button icon-only clear item-right (click)="goToItemEdit(order._id, itemId.index, item._id, order.creation_user)">
+                                                <button ion-button icon-only clear item-right (click)="goToItemEdit(order, itemId)">
                                                     <ion-icon *ngIf="order.status === 'REGISTERED'" name="create"></ion-icon>
                                                     <ion-icon *ngIf="order.status !== 'REGISTERED'" name="eye"></ion-icon> 
                                                 </button>
@@ -125,7 +125,7 @@
                                                 <h2 style="white-space: normal;">{{item.name}}</h2>
                                                 <p style="white-space: normal;">{{item.price}} COP</p>
                                                 <p *ngIf="!item.isAvailable" class="unavailable-item"> {{'MOBILE.SECTIONS.UNAVAILABLE' | translate}} </p>
-                                                <button ion-button icon-only clear item-right (click)="goToItemEdit(order._id, itemId.index, item._id, order.creation_user)">
+                                                <button ion-button icon-only clear item-right (click)="goToItemEdit(order, itemId)">
                                                     <ion-icon name="eye"></ion-icon>
                                                 </button>
                                             </ion-item>
