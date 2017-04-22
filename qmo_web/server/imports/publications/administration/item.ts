@@ -46,6 +46,40 @@ Meteor.publish('itemsByRestaurant', function (_restaurantId: string) {
 });
 
 /**
+ * Meteor publication return item images with restaurant condition
+ */
+Meteor.publish('itemImagesByRestaurant', function (_restaurantId: string) {
+    let _sections: string[] = [];
+    let _items: string [] = [];
+    check(_restaurantId, String);
+
+    Sections.collection.find( { restaurants: { $in: [_restaurantId] } } ).fetch().forEach((s) => {
+        _sections.push( s._id );
+    });
+    Items.collection.find( { sectionId: { $in: _sections }, is_active: true } ).fetch().forEach((i) => {
+        _items.push( i._id );
+    });
+    return ItemImages.collection.find( { itemId: { $in: _items } } );
+});
+
+/**
+ * Meteor publication return item thumbs images with restaurant condition
+ */
+Meteor.publish('itemImageThumbsByRestaurant', function (_restaurantId: string) {
+    let _sections: string[] = [];
+    let _items: string [] = [];
+    check(_restaurantId, String);
+
+    Sections.collection.find( { restaurants: { $in: [_restaurantId] } } ).fetch().forEach((s) => {
+        _sections.push( s._id );
+    });
+    Items.collection.find( { sectionId: { $in: _sections }, is_active: true } ).fetch().forEach((i) => {
+        _items.push( i._id );
+    });
+    return ItemImagesThumbs.collection.find( { itemId: { $in: _items } } );
+});
+
+/**
  * Meteor publication return item by id
  */
 Meteor.publish('itemById', function( _itemId: string) {
