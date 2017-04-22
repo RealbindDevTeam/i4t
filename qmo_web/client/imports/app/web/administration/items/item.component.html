@@ -31,7 +31,11 @@
                             <md-card-subtitle>{{'ITEMS.PRICE' | translate}}: {{item.price}}</md-card-subtitle>
                         </md-card-header>
                         <div class="crop">
-                            <img src="{{item.urlImage}}">
+                            <span *ngFor="let image of _itemImages | async">
+                                <template [ngIf]="image.itemId == item._id">
+                                    <img src="{{image.url}}">
+                                </template>
+                            </span>
                         </div>
                         <md-card-content>
                             <div style="position: relative">

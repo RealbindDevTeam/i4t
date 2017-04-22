@@ -13,8 +13,6 @@ export interface Item extends CollectionObject {
     price: number;
     taxPercentage?: number;
     observations: boolean;
-    itemImageId: string;
-    urlImage: string;
     garnishFoodIsAcceped: boolean;
     garnishFoodQuantity: number;   
     garnishFood: string[];
@@ -40,4 +38,13 @@ export interface ItemImage {
     uploading: boolean;
     url: string;
     userId: string;
+    itemId: string;
+}
+
+/**
+ * Item Image Thumbs model
+ */
+export interface ItemImageThumb extends ItemImage {
+    originalStore?: string;
+    originalId?: string;
 }

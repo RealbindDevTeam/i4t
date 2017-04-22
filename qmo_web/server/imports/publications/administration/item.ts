@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { Items, ItemImages } from '../../../../both/collections/administration/item.collection';
+import { Items, ItemImages, ItemImagesThumbs } from '../../../../both/collections/administration/item.collection';
 import { Sections } from '../../../../both/collections/administration/section.collection';
 import { UserDetails } from '../../../../both/collections/auth/user-detail.collection';
 import { UserDetail } from '../../../../both/models/auth/user-detail.model';
@@ -20,7 +20,16 @@ Meteor.publish('items', function (_userId: string) {
  */
 Meteor.publish('itemImages', function (_userId: string) {
     check(_userId, String);
-    return ItemImages.collection.find({ user_id: _userId });
+    return ItemImages.collection.find({ userId: _userId });
+});
+
+/**
+ * Meteor publication itemImageThumbs with user Id condition
+ * @param {string} _userId
+ */
+Meteor.publish('itemImageThumbs', function (_userId: string) {
+    check(_userId, String);
+    return ItemImagesThumbs.collection.find({ userId: _userId });
 });
 
 /**
