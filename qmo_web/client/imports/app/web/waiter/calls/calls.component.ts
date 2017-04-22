@@ -22,18 +22,19 @@ import style from './calls.component.scss';
 export class CallsComponent {
 
     private _userRestaurantSubscription : Subscription;
-    private _userSubscription : Subscription;
-    private _callsDetailsSubscription : Subscription;
-    private _tableSubscription : Subscription;
+    private _userSubscription           : Subscription;
+    private _callsDetailsSubscription   : Subscription;
+    private _tableSubscription          : Subscription;
 
-    private _mdDialogRef: MdDialogRef<any>;
+    private _mdDialogRef : MdDialogRef<any>;
 
-    private _restaurants : any;
-    private _waiterCallDetail : any;
-    private _tables : any;
+    private _restaurants                : any;
+    private _waiterCallDetail           : any;
+    private _tables                     : any;
     private _waiterCallDetailCollection : any;
 
-    private _userLang: string;
+    private _userLang : string;
+    private _loading  : boolean;
 
     /**
      * Constructor Implementation
@@ -71,13 +72,19 @@ export class CallsComponent {
      * @param {any} _call
      */
     showConfirm( _call : any ) {
-        console.log(_call);
         this._mdDialogRef = this._mdDialog.open(CallCloseConfirmComponent, {
             disableClose : true 
         });
-        this._mdDialogRef.componentInstance._callParam = _call;
         this._mdDialogRef.afterClosed().subscribe(result => {
             this._mdDialogRef = result;
+            if(result.success){
+                this._loading = true;
+                setTimeout(() => {
+                    MeteorObservable.call('closeCall', _call._id, Meteor.userId()).subscribe(() => {
+                        this._loading = false;
+                    });
+                }, 1500);
+            }
         });
     }
 

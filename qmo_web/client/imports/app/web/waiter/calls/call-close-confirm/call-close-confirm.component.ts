@@ -12,8 +12,6 @@ import style from './call-close-confirm.component.scss';
 })
 export class CallCloseConfirmComponent{
 
-    public _callParam : any;
-
     /**
      * CallCloseConfirmComponent constructor
      * @param {MdDialogRef<any>} _dialogRef
@@ -23,19 +21,10 @@ export class CallCloseConfirmComponent{
     }
 
     /**
-     * Function that allows remove a job of the Waiter Calls queue
+     * Function that returns true to Parent component
      */
     closeWaiterCall(){
-        console.log('--> ' + this._callParam)
-        if (this._callParam){
-            setTimeout(() => {
-                this._zone.run(() => {
-                    MeteorObservable.call('closeCall', this._callParam._id, Meteor.userId()).subscribe(() => {
-                    });
-                });
-            }, 1500);
-            this._dialogRef.close({success : true});
-        }
+        this._dialogRef.close({success : true});
     }
 
     /**
