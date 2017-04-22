@@ -17,7 +17,7 @@ Meteor.publish( 'promotions', function( _userId:string ){
  */
 Meteor.publish('promotionImages', function(_userId:string){
     check(_userId,String);
-    return PromotionImages.collection.find({user_id:_userId});
+    return PromotionImages.collection.find( { userId: _userId } );
 });
 
 /**
@@ -25,5 +25,5 @@ Meteor.publish('promotionImages', function(_userId:string){
  * @param {string} _userId
  */
 Meteor.publish( 'promotionImageThumbs', function( _userId:string ){
-    return PromotionImagesThumbs.collection.find( { userId:_userId } );
+    return PromotionImagesThumbs.collection.find( { userId: _userId } );
 });

@@ -5,8 +5,8 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
 import { MdDialogRef } from '@angular/material';
-import { Promotions, PromotionImagesThumbs } from '../../../../../../../both/collections/administration/promotion.collection';
-import { Promotion, PromotionImageThumb } from '../../../../../../../both/models/administration/promotion.model';
+import { Promotions, PromotionImages, PromotionImagesThumbs } from '../../../../../../../both/collections/administration/promotion.collection';
+import { Promotion, PromotionImage, PromotionImageThumb } from '../../../../../../../both/models/administration/promotion.model';
 import { uploadPromotionImage } from '../../../../../../../both/methods/administration/promotion.methods';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
@@ -31,6 +31,7 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
 
     private _promotionsSub: Subscription;
     private _restaurantSub: Subscription;
+    private _promotionImagesSub: Subscription;
     private _promotionThumbsSub: Subscription;
 
     private _promotionEditImage: string;
@@ -80,6 +81,7 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
 
         this._promotions = Promotions.find( { } ).zone();
         this._promotionsSub = MeteorObservable.subscribe( 'promotions', Meteor.userId() ).subscribe();
+        this._promotionImagesSub = MeteorObservable.subscribe( 'promotionImages', Meteor.userId() ).subscribe();
         this._promotionThumbsSub = MeteorObservable.subscribe( 'promotionImageThumbs', Meteor.userId() ).subscribe();
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', Meteor.userId() ).subscribe( () => {
             this._ngZone.run( () => {
@@ -142,7 +144,9 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
             });
 
             if( this._editImage ){
-                let _lPromotionImageThumb: PromotionImageThumb = PromotionImagesThumbs.findOne( { promotionId: this._editPromotionImageToInsert } );
+                let _lPromotionImage: PromotionImage = PromotionImages.findOne( { promotionId: this._editForm.value.editId } );
+                PromotionImages.remove( { _id: _lPromotionImage._id } );
+                let _lPromotionImageThumb: PromotionImageThumb = PromotionImagesThumbs.findOne( { promotionId: this._editForm.value.editId } );
                 PromotionImagesThumbs.remove( { _id: _lPromotionImageThumb._id } );
 
                 uploadPromotionImage( this._editPromotionImageToInsert, 
@@ -152,9 +156,7 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
                       
                 }).catch( ( error ) => {
                     alert('Upload image error. Only accept .png, .jpg, .jpeg files.');
-                }); 
-            } else {
-                
+                });
             }
             this._dialogRef.close();
         }
@@ -176,5 +178,7 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
     ngOnDestroy(){
         this._promotionsSub.unsubscribe();
         this._restaurantSub.unsubscribe();
+        this._promotionImagesSub.unsubscribe();
+        this._promotionThumbsSub.unsubscribe();
     }
 }
