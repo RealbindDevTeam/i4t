@@ -3,9 +3,9 @@ import { CollectionObject } from '../collection-object.model';
 export interface Country extends CollectionObject {
     is_active: boolean;
     name: string;
-    language_code: string;
-    region?: string;
-    country_code: string;
+    alfaCode2: string;
+    alfaCode3: string;
+    numericCode: string;
     indicative: string;
-    currencies: string[];
+    currencyId: string;
 }
