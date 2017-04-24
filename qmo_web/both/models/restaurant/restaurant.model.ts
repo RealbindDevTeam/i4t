@@ -8,7 +8,6 @@ export interface Restaurant extends CollectionObject {
     cityId: string;
     name: string;
     address: string;
-    indicative: string;
     phone: string;
     webPage: string;
     email: string;
@@ -16,7 +15,6 @@ export interface Restaurant extends CollectionObject {
     invoice_code: string;
     tip_percentage: number;
     tax_percentage: number;
-    currencies: string[];
     paymentMethods: string[];     
     restaurantImageId: string;
     urlImage: string;

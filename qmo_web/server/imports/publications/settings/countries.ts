@@ -5,7 +5,7 @@ import { Restaurants } from '../../../../both/collections/restaurant/restaurant.
 /**
  * Meteor publication countries
  */
-Meteor.publish( 'countries', () => Countries.find() );
+Meteor.publish( 'countries', () => Countries.find( { is_active: true } ) );
 
 
 /**

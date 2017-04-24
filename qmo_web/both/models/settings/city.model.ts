@@ -1,6 +1,8 @@
-import { CollectionObject } from '../collection-object.model';
-
-export interface City extends CollectionObject {
+/**
+ * City Model
+ */
+export interface City {
+    _id?: string;
     is_active: boolean;
     name: string;
     country?: string;
