@@ -18,7 +18,7 @@
 </md-card>
 
 <md-card class="call-card" style="padding: 0">
-    <div *ngFor="let _call of _waiterCallDetail | async">
+    <div *ngFor="let _call of _waiterCallDetail | async" style="float: left; width: 330px; ">
         <div *ngFor="let _table of _tables | async">
             <md-card *ngIf="_table._id === _call.table_id" class="cards">
                 <md-card-header style="height: 80px; background: #eee;">
@@ -38,7 +38,7 @@
                         <md-icon style="color: white;">check</md-icon>
                     </button>
                     <ul class="list">
-                        <li>
+                        <li style="font-size: 1.2rem;">
                             <md-icon style="vertical-align: middle" md-tooltip="{{'EMAIL' | translate}}">mail outline</md-icon>
                             <span>Mesa {{_table._number}}</span>
                         </li>

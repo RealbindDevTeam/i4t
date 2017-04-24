@@ -150,6 +150,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                                 role_id: this._collaboratorRegisterForm.value.role,
                                 is_active: true,
                                 restaurant_work: this._collaboratorRegisterForm.value.restaurant_work,
+                                jobs: 0,
                                 penalties: [],
                                 current_restaurant: "",
                                 current_table: '',
