@@ -58,18 +58,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _restaurantCurrency: string = '';
     private _countryIndicative: string;
 
-    private _create_countryId: string;
-    private _create_cityId: string;
-    private _create_name: string;
-    private _create_address: string;
-    private _create_phone: string;
-    private _create_webpage: string;
-    private _create_email: string;
-    private _create_invoice_code: string;
-    private _create_tip_percentage: number;
-    private _create_tax_percentage: number;
-    private _create_paymentMethods: string[];
-
     private _schedule: RestaurantSchedule;
     private _taxPercentage: number = 0;
     private _tipPercentage: number = 0;
@@ -107,8 +95,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             webPage: new FormControl( '', [ Validators.minLength( 1 ), Validators.maxLength( 40 ) ] ),
             email: new FormControl( '', [ Validators.minLength( 1 ), Validators.maxLength( 40 ) ] ),
             invoiceCode: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 20 ) ] ),
-            tipPercentage: new FormControl( '', [ Validators.required ] ),
-            taxPercentage: new FormControl( '', [ Validators.required ] ),
             image: new FormControl( '' ),
             paymentMethods: this._paymentsFormGroup,
         });
@@ -220,8 +206,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                 return false;
             }
         case 2:
-            if( this._restaurantForm.controls['invoiceCode'].valid && this._restaurantForm.controls['tipPercentage'].valid
-                && this._restaurantForm.controls['taxPercentage'].valid ){
+            if( this._restaurantForm.controls['invoiceCode'].valid ){
                 return true;
             } else {
                 return false;
@@ -258,17 +243,13 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     cancel():void{
         if( this._selectedCountryValue !== "" ){ this._selectedCountryValue = ""; }
         if( this._selectedCityValue !== "" ){ this._selectedCityValue = ""; }    
-        this._restaurantForm.controls['currencies'].reset();
         this._restaurantForm.controls['paymentMethods'].reset();
         this._restaurantForm.controls['name'].reset();
         this._restaurantForm.controls['address'].reset();
-        this._restaurantForm.controls['indicative'].reset();
         this._restaurantForm.controls['phone'].reset();
         this._restaurantForm.controls['webPage'].reset();
         this._restaurantForm.controls['email'].reset();
-        this._restaurantForm.controls['invoiceCode'].reset();
-        this._restaurantForm.controls['tipPercentage'].reset();
-        this._restaurantForm.controls['taxPercentage'].reset();           
+        this._restaurantForm.controls['invoiceCode'].reset();       
        
         this._router.navigate( [ 'app/restaurant' ] );
     }
@@ -292,79 +273,42 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             }
         });
 
-        if( this._createImage ){
-            this._create_countryId = this._restaurantForm.value.country;
-            this._create_cityId = this._restaurantForm.value.city;
-            this._create_name = this._restaurantForm.value.name;
-            this._create_address = this._restaurantForm.value.address;
-            this._create_phone = this._restaurantForm.value.phone;
-            this._create_webpage = this._restaurantForm.value.webPage;
-            this._create_email = this._restaurantForm.value.email;
-            this._create_invoice_code = this._restaurantForm.value.invoiceCode;
-            this._create_tip_percentage = this._restaurantForm.value.tipPercentage;
-            this._create_tax_percentage = this._restaurantForm.value.taxPercentage;
-            this._create_paymentMethods = _lPaymentMethodsToInsert;
+        let _lNewRestaurant = Restaurants.collection.insert({
+            creation_user: Meteor.userId(),
+            creation_date: new Date(),
+            modification_user: '-',
+            modification_date: new Date(),
+            countryId: this._restaurantForm.value.country,
+            cityId: this._restaurantForm.value.city,
+            name: this._restaurantForm.value.name,
+            address: this._restaurantForm.value.address,
+            phone: this._restaurantForm.value.phone,
+            webPage: this._restaurantForm.value.webPage,
+            email: this._restaurantForm.value.email,
+            restaurant_code: this.generateRestaurantCode(),
+            invoice_code: this._restaurantForm.value.invoiceCode,
+            tip_percentage: this._tipPercentage,
+            tax_percentage: this._taxPercentage,
+            paymentMethods: this._restaurantForm.value.paymentMethods,
+            location: {
+                    lat: 0,
+                    lng: 0
+            },
+            schedule: this._schedule,            
+            tables_quantity: 0,
+            orderNumberCount: 0,
+            max_jobs: 5                
+        });
 
-            uploadRestaurantImage( this._restaurantImageToInsert, Meteor.userId() ).then( ( result ) => {
-                Restaurants.insert({
-                    creation_user: Meteor.userId(),
-                    creation_date: new Date(),
-                    modification_user: '-',
-                    modification_date: new Date(),
-                    countryId: this._create_countryId,
-                    cityId: this._create_cityId,
-                    name: this._create_name,
-                    address: this._create_address,
-                    phone: this._create_phone,
-                    restaurant_code: this.generateRestaurantCode(),
-                    webPage: this._create_webpage,
-                    email: this._create_email,
-                    invoice_code: this._create_invoice_code,
-                    tip_percentage: this._create_tip_percentage,
-                    tax_percentage: this._create_tax_percentage,
-                    paymentMethods: this._create_paymentMethods,
-                    restaurantImageId: result._id,
-                    urlImage: result.url,
-                    location: {
-                        lat: 0,
-                        lng: 0
-                    },
-                    schedule: this._schedule,
-                    tables_quantity: 0,
-                    orderNumberCount: 0                
-                });
+        if( this._createImage ){
+            uploadRestaurantImage( this._restaurantImageToInsert, 
+                                   Meteor.userId(), 
+                                   _lNewRestaurant ).then( ( result ) => {
+
             }).catch( ( error ) => {
                 alert('Upload image error. Only accept .png, .jpg, .jpeg files.');
             });                   
-        } else {
-            Restaurants.insert({
-                creation_user: Meteor.userId(),
-                creation_date: new Date(),
-                modification_user: '-',
-                modification_date: new Date(),
-                countryId: this._restaurantForm.value.country,
-                cityId: this._restaurantForm.value.city,
-                name: this._restaurantForm.value.name,
-                address: this._restaurantForm.value.address,
-                phone: this._restaurantForm.value.phone,
-                webPage: this._restaurantForm.value.webPage,
-                email: this._restaurantForm.value.email,
-                restaurant_code: this.generateRestaurantCode(),
-                invoice_code: this._restaurantForm.value.invoiceCode,
-                tip_percentage: this._restaurantForm.value.tipPercentage,
-                tax_percentage: this._restaurantForm.value.taxPercentage,
-                paymentMethods: this._restaurantForm.value.paymentMethods,
-                restaurantImageId: '-',
-                urlImage: '-',
-                location: {
-                        lat: 0,
-                        lng: 0
-                },
-                schedule: this._schedule,            
-                tables_quantity: 0,
-                orderNumberCount: 0                
-            });
-        }            
+        }         
         this.cancel();
     }
 
@@ -442,6 +386,22 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             }
         }
         return _lCode;
+    }
+
+    /**
+     * Get tax percentage slider value
+     * @param {any} _event 
+     */
+    onTaxPercentageChange( _event:any ):void{
+        this._taxPercentage = _event.value;
+    }
+
+    /**
+     * Get tip percentage slider value
+     * @param {any} _event 
+     */
+    onTipPercentageChange( _event:any ):void{
+        this._tipPercentage = _event.value;
     }
 
     /**

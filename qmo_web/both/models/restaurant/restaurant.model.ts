@@ -15,13 +15,12 @@ export interface Restaurant extends CollectionObject {
     invoice_code: string;
     tip_percentage: number;
     tax_percentage: number;
-    paymentMethods: string[];     
-    restaurantImageId: string;
-    urlImage: string;
+    paymentMethods: string[];
     location?: RestaurantLocation;
     schedule: RestaurantSchedule;
     tables_quantity: number;
     orderNumberCount: number;
+    max_jobs?: number;
 }
 
 /**
@@ -41,6 +40,7 @@ export interface RestaurantImage {
     uploading: boolean;
     url: string;
     userId: string;
+    restaurantId: string;
 }
 
 /**
