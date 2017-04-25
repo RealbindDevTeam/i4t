@@ -8,5 +8,6 @@ export interface WaiterCallDetail extends CollectionObject {
     table_id : string;
     user_id : string;
     waiter_id? : string;
+    turn? : number;
     status : string;
 }

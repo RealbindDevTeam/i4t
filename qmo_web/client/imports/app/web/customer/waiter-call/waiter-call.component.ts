@@ -23,6 +23,7 @@ export class WaiterCallComponent {
 
   private _userDetail : any;
   private _userDetails : any;
+  private _waiterCallDetail : any;
 
   private _countDetails : number;
   private _userRestaurant : boolean;
@@ -63,12 +64,15 @@ export class WaiterCallComponent {
             this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).count();
             if ( this._countDetails > 0 ){
               this._validatedWaterCall = true;
+              //this._waiterCallDetail = WaiterCallDetails.find({});
             } else {
               this._validatedWaterCall = false;
             }
           }
         });
       });
+
+
   }
 
   /**

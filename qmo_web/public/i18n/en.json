@@ -475,7 +475,8 @@
         "LOADING" : "Please wait...",
         "MSG_COMFIRM" : "Request closed",
         "NO_ANSWER" : "No",
-        "YES_ANSWER" : "Yes"
+        "YES_ANSWER" : "Yes",
+        "TURN" : "Turn"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Orders Confirmed",

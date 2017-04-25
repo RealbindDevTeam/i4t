@@ -140,7 +140,9 @@
             "TITLE_PROMPT" : "Cerrar solicitud",
             "CONTENT_PROMPT" : "¿Deseas cerrar la solicitud del cliente?",
             "LOADING" : "Por favor espera...",
-            "MSG_COMFIRM" : "Solicitud cerrada"
+            "MSG_COMFIRM" : "Solicitud cerrada",
+            "TURN" :"Turno",
+            "TABLE" :"Mesa"
         },
         "SECTIONS": {
             "MENU": "Menú",

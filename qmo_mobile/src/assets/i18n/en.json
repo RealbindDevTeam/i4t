@@ -140,7 +140,9 @@
             "TITLE_PROMPT" : "Request close",
             "CONTENT_PROMPT" : "¿Want you close the client request?",
             "LOADING" : "Please wait...",
-            "MSG_COMFIRM" : "Request closed"
+            "MSG_COMFIRM" : "Request closed",
+            "TURN" :"Turn",
+            "TABLE" :"Table"
         },
         "SECTIONS": {
             "MENU": "Menu",

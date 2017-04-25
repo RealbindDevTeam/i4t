@@ -39,8 +39,12 @@
                     </button>
                     <ul class="list">
                         <li style="font-size: 1.2rem;">
-                            <md-icon style="vertical-align: middle" md-tooltip="{{'EMAIL' | translate}}">mail outline</md-icon>
-                            <span>Mesa {{_table._number}}</span>
+                            <md-icon style="vertical-align: middle" md-tooltip="{{'EMAIL' | translate}}">notifications active</md-icon>
+                            <span>{{ 'TABLES.TABLE' | translate }} {{_table._number}}</span>
+                        </li>
+                        <li style="font-size: 1.2rem;">
+                            <md-icon style="vertical-align: middle">bookmark border</md-icon>
+                            <span> {{ 'WAITER_CALL.TURN' | translate }} {{_call.turn}}</span>
                         </li>
                     </ul>
                 </md-card-content>

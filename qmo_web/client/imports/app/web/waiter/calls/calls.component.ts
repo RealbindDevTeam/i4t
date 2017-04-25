@@ -57,12 +57,12 @@ export class CallsComponent {
         this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe();
 
         this._callsDetailsSubscription = MeteorObservable.subscribe('waiterCallDetailByWaiterId', Meteor.userId()).subscribe(() => {
-        this._waiterCallDetail = WaiterCallDetails.find({});
-        this._waiterCallDetailCollection = WaiterCallDetails.collection.find({}).fetch()[0];
+            this._waiterCallDetail = WaiterCallDetails.find({});
+            this._waiterCallDetailCollection = WaiterCallDetails.collection.find({}).fetch()[0];
         });
 
         this._tableSubscription = MeteorObservable.subscribe('getTablesByRestaurantWork', Meteor.userId()).subscribe(() => {
-        this._tables = Tables.find({});
+            this._tables = Tables.find({});
         });
 
     }
