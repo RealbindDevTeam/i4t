@@ -56,7 +56,6 @@ export class SectionComponent implements OnInit, OnDestroy {
     ngOnInit(){
         this._sectionForm = new FormGroup({
             name: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 50 ) ] ),
-            description: new FormControl( '', [ Validators.maxLength( 150 ) ] ),
             restaurants: this._restaurantsFormGroup
         });
 
@@ -104,8 +103,7 @@ export class SectionComponent implements OnInit, OnDestroy {
                 modification_date: new Date(),
                 restaurants: this._create_restaurants,
                 is_active: true,
-                name: this._sectionForm.value.name,
-                description: this._sectionForm.value.description
+                name: this._sectionForm.value.name
             });
             this._sectionForm.reset();
             this._create_restaurants = [];

@@ -6,6 +6,5 @@ import { CollectionObject } from '../collection-object.model';
 export interface Category extends CollectionObject{
     is_active: boolean;
     name: string;
-    description?: string;
     section: string;
 }

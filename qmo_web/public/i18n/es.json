@@ -79,27 +79,35 @@
     "SECTIONS": {
         "SECTION_CREATION": "Creación de Secciones",
         "SECTION_TEXT": "Crea las secciones del menú de cada restaurante",
-        "NO_DESCRIPTION": "No se ha ingresado descripcion de la seccion",
         "SECTION_EDIT": "Edicion de la Seccion",
         "RESTAURANTS": "Restaurantes",
         "NO_RESTAURANT": "No se ha seleccionado restaurante",
         "RESTAURANT_SECTION": "Seleccione los restaurantes en donde se encontrara disponible la seccion",
-        "NO_RESTAURANT_CREATED": "No se encuentran restaurantes creados en la plataforma"
+        "NO_RESTAURANT_CREATED": "No se encuentran restaurantes creados en la plataforma",
+        "MODIFY": "MODIFICAR",
+        "ACTIVATE": "ACTIVAR",
+        "INACTIVATE": "INACTIVAR"
     },
     "CATEGORIES": {
         "CATEGORIES_CREATION": "Creación de categorias",
         "SECCION_SELECTION": "Seleccione seccion",
         "CATEGORIES_TEXT": "Crea las categorias de tu menú y selecciona la seccion a la que pertenece",
-        "NO_DESCRIPTION": "No se ha ingresado descripcion de la categoria",
         "CATEGORY_EDIT": "Edicion de la categoria",
-        "SECTION": "Seccion"
+        "SECTION": "Seccion",
+        "MODIFY": "MODIFICAR",
+        "ACTIVATE": "ACTIVAR",
+        "INACTIVATE": "INACTIVAR"
     },
     "SUBCATEGORIES": {
         "SUBCATEGORY_CREATION": "Creación de subcategorias",
         "CATEGORY_SELECTION": "Seleccione categoria",
         "SUBCATEGORY_TEXT": "Crea las subcategorias de tu menú y selecciona la categoria a la que pertenece",
         "NO_DESCRIPTION": "No se ha ingresado descripcion de la subcategoria",
-        "SUBCATEGORY_EDIT": "Edicion de la subcategoria"
+        "SUBCATEGORY_EDIT": "Edicion de la subcategoria",
+        "CATEGORY": "Categoria",
+        "MODIFY": "MODIFICAR",
+        "ACTIVATE": "ACTIVAR",
+        "INACTIVATE": "INACTIVAR"
     },
     "ADDITIONS": {
         "ADDITION_CREATION": "Creación de adiciones",
