@@ -113,11 +113,11 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         this._restaurantCountryValue = this._restaurantToEdit.countryId;
         this._selectedCityValue = this._restaurantToEdit.cityId;
         this._restaurantCityValue = this._restaurantToEdit.cityId;
-        //this._restaurantEditImage = this._restaurantToEdit.urlImage;
         this._taxPercentage = this._restaurantToEdit.tax_percentage;
         this._tipPercentage = this._restaurantToEdit.tip_percentage;
         this._restaurantPaymentMethods = this._restaurantToEdit.paymentMethods;
         this._scheduleToEdit = this._restaurantToEdit.schedule;
+        this._countryIndicative = this._restaurantToEdit.indicative;
 
         this._hoursSub = MeteorObservable.subscribe( 'hours' ).subscribe( () => {
             this._ngZone.run( () => {
@@ -125,7 +125,10 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             });
         });
 
-        this._currencySub = MeteorObservable.subscribe( 'currencies' ).subscribe();
+        this._currencySub = MeteorObservable.subscribe( 'currencies' ).subscribe( () => {
+            let find: Currency[] = Currencies.collection.find().fetch().filter( c => c._id === this._restaurantToEdit.currencyId );
+            this._restaurantCurrency = find[0].code + ' - ' + this.itemNameTraduction( find[0].name );
+        });
 
         this._paymentMethodsSub = MeteorObservable.subscribe( 'paymentMethods' ).subscribe( () => {
             this._ngZone.run( () => {
@@ -154,14 +157,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
 
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', Meteor.userId() ).subscribe();     
         this._countries = Countries.find( { } ).zone();
-        this._countriesSub = MeteorObservable.subscribe( 'countries' ).subscribe( () => {
-            this._ngZone.run( () => {
-                let _lCountry: Country = Countries.findOne( { _id: this._restaurantToEdit.countryId } );
-                this._countryIndicative = _lCountry.indicative;
-                let find: Currency[] = Currencies.collection.find().fetch().filter( c => c._id === _lCountry.currencyId );
-                this._restaurantCurrency = find[0].code + ' - ' + this.itemNameTraduction( find[0].name );
-            });
-        });
+        this._countriesSub = MeteorObservable.subscribe( 'countries' ).subscribe();
         this._cities = Cities.find( { } ).zone();
         this._citiesSub = MeteorObservable.subscribe( 'cities' ).subscribe();
         this._restaurantImagesSub = MeteorObservable.subscribe( 'restaurantImages', Meteor.userId() ).subscribe();

@@ -57,6 +57,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _selectedCityValue: string;
     private _restaurantCurrency: string = '';
     private _countryIndicative: string;
+    private _restaurantCurrencyId: string = '';
 
     private _schedule: RestaurantSchedule;
     private _taxPercentage: number = 0;
@@ -281,7 +282,9 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             countryId: this._restaurantForm.value.country,
             cityId: this._restaurantForm.value.city,
             name: this._restaurantForm.value.name,
+            currencyId: this._restaurantCurrencyId,
             address: this._restaurantForm.value.address,
+            indicative: this._countryIndicative,
             phone: this._restaurantForm.value.phone,
             webPage: this._restaurantForm.value.webPage,
             email: this._restaurantForm.value.email,
@@ -289,7 +292,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             invoice_code: this._restaurantForm.value.invoiceCode,
             tip_percentage: this._tipPercentage,
             tax_percentage: this._taxPercentage,
-            paymentMethods: this._restaurantForm.value.paymentMethods,
+            paymentMethods: _lPaymentMethodsToInsert,
             location: {
                     lat: 0,
                     lng: 0
@@ -341,6 +344,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         Currencies.find( { _id: _lCountry.currencyId } ).fetch().forEach( (cu) => {
             _lCurrency = cu;
         });    
+        this._restaurantCurrencyId = _lCurrency._id;
         this._restaurantCurrency = _lCurrency.code + ' - ' + this.itemNameTraduction( _lCurrency.name );
         this._countryIndicative = _lCountry.indicative;
     }

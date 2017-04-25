@@ -7,7 +7,9 @@ export interface Restaurant extends CollectionObject {
     countryId: string;
     cityId: string;
     name: string;
+    currencyId: string;
     address: string;
+    indicative: string;
     phone: string;
     webPage: string;
     email: string;
