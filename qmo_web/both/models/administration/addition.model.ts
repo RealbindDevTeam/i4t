@@ -6,13 +6,19 @@ import { CollectionObject } from '../collection-object.model';
 export interface Addition extends CollectionObject{
     is_active: boolean;
     name: string;
-    prices: AdditionPrices[];
+    restaurants: AdditionRestaurant[];
+    prices: AdditionPrice[];
 }
 
 /**
  * AdditionInformation model
  */
-export interface AdditionPrices {
+export interface AdditionRestaurant {
     restaurantId: string;
+    price: number;
+}
+
+export interface AdditionPrice {
+    currencyId: string;
     price: number;
 }

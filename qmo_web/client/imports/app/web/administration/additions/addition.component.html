@@ -19,7 +19,7 @@
       </div>
       <div>
         <p *ngIf="!_showCurrencies">Por favor selecciona el(los) restaurante(s) donde se encontrara disponible la adicion</p>
-        <p *ngIf="_showCurrencies"> Por favor ingresa el precio de la adicion:</p>
+        <p *ngIf="_showCurrencies"> Por favor ingresa el precio de la adicion (En caso de no tener valor ingresa 0 ):</p>
         <div *ngIf="_showCurrencies" formGroupName="currencies">
           <div *ngFor="let currency of _currencies | async">
             <div *ngFor="let cur of _restaurantCurrencies">
@@ -39,16 +39,30 @@
 <md-card *ngFor="let addition of _additions | async" style="width: 44%;display: inline-block;vertical-align: top;margin-left: 1%;">
   <md-card-title>{{addition.name}}</md-card-title>
   <md-card-content>
-    <p *ngIf="addition.prices.length === 0">{{'ADDITIONS.NO_RESTAURANT' | translate}}</p>
+    <p *ngIf="addition.restaurants.length === 0">{{'ADDITIONS.NO_RESTAURANT' | translate}}</p>
     <div *ngFor="let rst of _restaurants | async">
-      <div *ngFor="let additionPrice of addition.prices">
-        <div *ngIf="rst._id === additionPrice.restaurantId">
-          <div><md-icon>store</md-icon> {{rst.name}} - {{additionPrice.price}}</div>
+      <div *ngFor="let additionRest of addition.restaurants">
+        <div *ngIf="rst._id === additionRest.restaurantId">
+          <div>
+            <md-icon>store</md-icon>
+            {{rst.name}}
+          </div>
         </div>              
       </div>
     </div>
+    <div style="margin-top: 1%;display: inline-flex;">
+      <div *ngFor="let cur of _currencies | async">
+        <div *ngFor="let additionPrices of addition.prices">
+          <div *ngIf="cur._id === additionPrices.currencyId">
+            <div style="font-size: x-large;color: green;margin-top: 2%;width: 100%;">
+              {{additionPrices.price}} {{cur.code}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </md-card-content>
-  <md-card-actions>
+  <md-card-actions style="margin-top: -2%;">
     <button md-raised-button (click)="open(addition)">{{'ADDITIONS.MODIFY' | translate}}</button>
     <button md-raised-button *ngIf="addition.is_active" style="background-color: red;color: white;" (click)="updateStatus(addition)">{{'ADDITIONS.INACTIVATE' | translate}}</button>
     <button md-raised-button *ngIf="!addition.is_active" style="background-color: green;color: white;" (click)="updateStatus(addition)">{{'ADDITIONS.ACTIVATE' | translate}}</button>

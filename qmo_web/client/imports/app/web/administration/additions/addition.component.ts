@@ -6,7 +6,7 @@ import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Additions } from '../../../../../../both/collections/administration/addition.collection';
-import { Addition, AdditionPrices } from '../../../../../../both/models/administration/addition.model';
+import { Addition, AdditionRestaurant, AdditionPrice } from '../../../../../../both/models/administration/addition.model';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { Currency } from '../../../../../../both/models/general/currency.model';
@@ -95,19 +95,24 @@ export class AdditionComponent implements OnInit, OnDestroy{
 
         if( this._additionForm.valid ){
             let arrCur:any[] = Object.keys( this._additionForm.value.currencies );
-            let _lAdditionPricesToInsert: AdditionPrices[] = [];
+            let _lAdditionRestaurantsToInsert: AdditionRestaurant[] = [];
+            let _lAdditionPricesToInsert: AdditionPrice[] = [];
 
             arrCur.forEach( ( cur ) => {
                 let find: Restaurant[] = this._restaurantList.filter( r => r.currencyId === cur );
                 for( let res of find ){
                     if( this._additionForm.value.restaurants[ res.name ] ){
-                        let _lAdditionPrice: AdditionPrices = { restaurantId: '', price: 0 };
+                        let _lAdditionRestaurant: AdditionRestaurant = { restaurantId: '', price: 0 };
                         let restau:Restaurant = Restaurants.findOne( { name: res.name } );
-                        _lAdditionPrice.restaurantId = restau._id;
-                        _lAdditionPrice.price = this._additionForm.value.currencies[ cur ];
-                        _lAdditionPricesToInsert.push( _lAdditionPrice );
+                        _lAdditionRestaurant.restaurantId = restau._id;
+                        _lAdditionRestaurant.price = this._additionForm.value.currencies[ cur ];
+                        _lAdditionRestaurantsToInsert.push( _lAdditionRestaurant );
                     }
                 }
+                let _lAdditionPrice: AdditionPrice = { currencyId: '', price: 0 };
+                _lAdditionPrice.currencyId = cur;
+                _lAdditionPrice.price = this._additionForm.value.currencies[ cur ];
+                _lAdditionPricesToInsert.push( _lAdditionPrice );
             });
 
             Additions.insert({
@@ -117,6 +122,7 @@ export class AdditionComponent implements OnInit, OnDestroy{
                 modification_date: new Date(),
                 is_active: true,
                 name: this._additionForm.value.name,
+                restaurants: _lAdditionRestaurantsToInsert,
                 prices: _lAdditionPricesToInsert
             });
         }
