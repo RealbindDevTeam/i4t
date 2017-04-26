@@ -85,7 +85,7 @@ if (Meteor.isServer) {
       let delay : number = 0;
       var waiterCallDetail : string;
       if (_priorityHigh) {
-        priority = 'critical', delay = 1*50000;
+        priority = 'critical', delay = 10000;
         WaiterCallDetails.update({ _id : _data.waiter_call_id }, { $set : { waiter_id : _data.waiter_id }});
         waiterCallDetail = _data.waiter_call_id;
       } else {
@@ -159,27 +159,28 @@ if (Meteor.isServer) {
      * @param {string} _maxJobs
      */
     validateWaiterEnabled ( _restaurant : string, _maxJobs : string ) : UserDetail {
-      let usr_id      : UserDetail = null;
+      let usr     : UserDetail = null;
       let position    : number   = 0;
       let _randomLast : string;
         
-      let waiterEnabled = UserDetails.collection.find({ restaurant_work : _restaurant, enabled : true, role_id : "200", jobs : {$lt : _maxJobs} });
-      if( waiterEnabled.count() > 0 ) {
+      let waiterEnableds = UserDetails.collection.find({ restaurant_work : _restaurant, enabled : true, role_id : "200", jobs : {$lt : _maxJobs} });
+      var count =  waiterEnableds.count();
+
+      if( count > 0 ) {
         let restaurantTurn = RestaurantTurns.collection.findOne({ "restaurant_id" : _restaurant },
           {
             sort : {"creation_date":-1}
           }
         );
-
         if( restaurantTurn ){
           _randomLast = restaurantTurn.last_waiter_id;
         }
         do {
-          position = Meteor.call('getRandomInt', 0, waiterEnabled.count() - 1);
-          usr_id = waiterEnabled.fetch()[position];
+          position = Meteor.call('getRandomInt', 0, count - 1);
+          usr = waiterEnableds.fetch()[position];
         }
-        while( usr_id.user_id === _randomLast && waiterEnabled.count() > 0);
-        return usr_id;
+        while( usr.user_id == _randomLast && count > 1);
+        return usr;
       } else {
         return null;
       }

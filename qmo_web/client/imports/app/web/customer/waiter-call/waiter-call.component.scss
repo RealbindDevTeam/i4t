@@ -25,3 +25,9 @@
     30% {opacity:1;transform:scale(1);}
     100% {opacity:1;transform:scale(1);}
 }
+
+.card_image {
+    background-image: url(/images/background_waiter.png); 
+    background-repeat: no-repeat; 
+    background-size: 100% 100%;
+}

@@ -4,6 +4,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Subscription, Subject, Observable } from 'rxjs';
 import { Job, JobCollection } from 'meteor/vsivsi:job-collection';
+import { Restaurants } from "../../../../../../both/collections/restaurant/restaurant.collection";
 import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 import { WaiterCallDetails } from '../../../../../../both/collections/restaurant/waiter-call-detail.collection';
@@ -18,15 +19,17 @@ import style from './waiter-call.component.scss';
 })
 export class WaiterCallComponent {
 
-  private _userDetailSubscription : Subscription;
+  private _userRestaurantSubscription   : Subscription;
+  private _userDetailSubscription       : Subscription;
   private _waiterCallDetailSubscription : Subscription;
 
-  private _userDetail : any;
-  private _userDetails : any;
+  private _restaurants      : any;
+  private _userDetail       : any;
+  private _userDetails      : any;
   private _waiterCallDetail : any;
 
-  private _countDetails : number;
-  private _userRestaurant : boolean;
+  private _countDetails       : number;
+  private _userRestaurant     : boolean;
   private _validatedWaterCall : boolean;
 
 
@@ -46,6 +49,10 @@ export class WaiterCallComponent {
    * ngOnInit Implementation
    */
   ngOnInit() {
+    this._userRestaurantSubscription = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
+      this._restaurants = Restaurants.find({});
+    });
+
     this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe( () => {
       MeteorObservable.autorun().subscribe(() => {
         this._userDetails = UserDetails.find({ user_id: Meteor.userId() });
@@ -101,6 +108,7 @@ export class WaiterCallComponent {
    * ngOnDestroy implementation
    */
   ngOnDestroy(){
+    this._userRestaurantSubscription.unsubscribe();
     this._waiterCallDetailSubscription.unsubscribe();
     this._userDetailSubscription.unsubscribe();
   }
