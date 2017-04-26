@@ -6,20 +6,77 @@ if (Meteor.isServer) {
     Meteor.methods({
         getRole: function () {
             let role: string;
-            let userDetail = UserDetails.collection.findOne({user_id: this.userId});
+            let userDetail = UserDetails.collection.findOne({ user_id: this.userId });
             role = userDetail.role_id;
             return role;
-        }
-    });
-
-    Meteor.methods({
+        },
+        validateAdmin: function () {
+            let role: string;
+            let userDetail = UserDetails.collection.findOne({ user_id: this.userId });
+            role = userDetail.role_id;
+            if (role === '100') {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        validateWaiter: function () {
+            let role: string;
+            let userDetail = UserDetails.collection.findOne({ user_id: this.userId });
+            role = userDetail.role_id;
+            if (role === '200') {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        validateCashier: function () {
+            let role: string;
+            let userDetail = UserDetails.collection.findOne({ user_id: this.userId });
+            role = userDetail.role_id;
+            if (role === '300') {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        validateCustomer: function () {
+            let role: string;
+            let userDetail = UserDetails.collection.findOne({ user_id: this.userId });
+            role = userDetail.role_id;
+            if (role === '400') {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        validateChef: function () {
+            let role: string;
+            let userDetail = UserDetails.collection.findOne({ user_id: this.userId });
+            role = userDetail.role_id;
+            if (role === '500') {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        validateAdminOrSupervisor: function () {
+            let role: string;
+            let userDetail = UserDetails.collection.findOne({ user_id: this.userId });
+            role = userDetail.role_id;
+            if (role === '100' || role === '600') {
+                return true;
+            } else {
+                return false;
+            }
+        },
         getDetailsCount: function () {
             let count: number;
-            count = UserDetails.collection.find({user_id: this.userId}).count();
+            count = UserDetails.collection.find({ user_id: this.userId }).count();
             return count;
         }
     });
 }
 
 
-    
+

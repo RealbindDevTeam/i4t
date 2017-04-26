@@ -1,5 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { TranslateService } from 'ng2-translate';
+import { MeteorObservable } from 'meteor-rxjs';
+import { Subscription, Subject, Observable } from 'rxjs';
+import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 
 /*
   Generated class for the Payments page.
@@ -11,12 +15,35 @@ import { NavController, NavParams } from 'ionic-angular';
   selector: 'page-payments',
   templateUrl: 'payments.html'
 })
-export class PaymentsPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+export class PaymentsPage implements OnInit, OnDestroy {
+
+  private _userLang: string;
+  private _currentUserId: string;
+  private _orders;
+  private _ordersSub: Subscription;
+  private _paymethod: string = "cash";
+
+  constructor(public _navCtrl: NavController, public _navParams: NavParams, public _translate: TranslateService) {
+    this._userLang = navigator.language.split('-')[0];
+    _translate.setDefaultLang('en');
+    _translate.use(this._userLang);
+    this._currentUserId = Meteor.userId();
+  }
 
   ionViewDidLoad() {
-    
+  }
+
+  ngOnInit() {
+    console.log('Entra a ngOnInit ');
+    this._ordersSub = MeteorObservable.subscribe('getOrdersByAccount', Meteor.userId()).subscribe(() => {
+      this._orders = Orders.find({status: 'DELIVERED'}); 
+    });
+  }
+
+  ngOnDestroy() { 
+    console.log('Entra a ngOnDestroy');
+    this._ordersSub.unsubscribe();
   }
 
 }

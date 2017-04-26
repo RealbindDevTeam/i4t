@@ -8,7 +8,7 @@ import { HttpModule, Http } from '@angular/http';
 import { MdSnackBar } from '@angular/material';
 import { TranslateModule, TranslateStaticLoader, TranslateLoader } from 'ng2-translate';
 import { Ng2PaginationModule } from 'ng2-pagination';
-import { routes } from './app.routes';
+import { routes, ROUTES_PROVIDERS } from './app.routes';
 import { Ng2PageScrollModule } from 'ng2-page-scroll';
 import { AgmCoreModule } from 'angular2-google-maps/core';
 
@@ -20,6 +20,13 @@ import { SharedModule } from './shared/shared.module';
 import { NavigationModule } from './web/navigation/navigation.module';
 import { ColorService } from './shared/services/color.service';
 import { AppConfigOptions } from './app.config.options';
+
+import { CustomerGuard } from './web/auth/navigation/customer-guard.service';
+import { AdminGuard } from './web/auth/navigation/admin-guard.service';
+import { WaiterGuard } from './web/auth/navigation/waiter-guard.service';
+import { SupervisorGuard } from './web/auth/navigation/supervisor-guard.service';
+import { ChefGuard } from './web/auth/navigation/chef-guard.service';
+import { CashierGuard } from './web/auth/navigation/cashier-guard.service';
 
 const defaultOptions: AppConfigOptions = {
   appTitle : 'QMO',
@@ -62,7 +69,14 @@ moduleDefinition = {
     providers: [
       ColorService,
       MdSnackBar,
-      {provide : 'AppConfigOptions', useValue : defaultOptions}
+      {provide : 'AppConfigOptions', useValue : defaultOptions},
+      ...ROUTES_PROVIDERS,
+      CustomerGuard,
+      AdminGuard,
+      WaiterGuard,
+      SupervisorGuard,
+      ChefGuard,
+      CashierGuard
     ],
     bootstrap: [
       AppComponent

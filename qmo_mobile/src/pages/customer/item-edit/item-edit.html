@@ -2,10 +2,7 @@
   <ion-navbar>
   </ion-navbar>
 </ion-header>
-
-
 <ion-content>
-
   <div *ngFor="let item of _items | async">
     <div class="crop">
       <img src="{{item.urlImage}}" style="display:inline-block">
@@ -18,7 +15,7 @@
         </p>
         <div>{{setMaxGarnishFoodElements(item.garnishFoodQuantity)}}</div>
         <div *ngFor="let order of _orders | async">
-          <div *ngFor="let itemId of order.items">
+          <div *ngFor="let itemId of order?.items">
             <div *ngIf="itemId.itemId == item._id && itemId.index == _item_order_index">
               <ion-list>
                 <ion-item style="padding-left: 0px">
@@ -45,7 +42,7 @@
                 {{_observations != null ? _observations.substring(0, 20)+ '...': 'MOBILE.SECTIONS.OBSERVATIONS' | translate}}
                 </button>
 
-                <button [disabled]="!_showActionsBtn"ion-button clear block icon-left class="button-secundary btn-size-custom" *ngIf="item.observations && item.isAvailable && (itemId.observations != '')"
+                <button [disabled]="!_showActionsBtn" ion-button clear block icon-left class="button-secundary btn-size-custom" *ngIf="item.observations && item.isAvailable && (itemId.observations != '')"
                   (click)="presentModal(itemId.observations)" style="text-transform: inherit; margin-bottom: 15px">
                   <ion-icon name="chatboxes" *ngIf="_observations != null || (itemId.observations != '' && _auxCounter == 0)"></ion-icon>
                   {{_observations != null ? _observations.substring(0, 20)+ '...': (_auxCounter == 0 ? itemId.observations.substring(0, 20)+
@@ -93,10 +90,10 @@
     </ion-card>
   </div>
 </ion-content>
-<ion-footer class="ion-footer-custom" padding>
+<ion-footer *ngIf="_showFooter" class="ion-footer-custom" padding> 
   <ion-label style="float: left; font-size: large; margin-top: 0px">{{'MOBILE.SECTIONS.TOTAL' | translate}}{{_finalPrice}} COP </ion-label>
   <div>
-    <button *ngIf="_showActionsBtn || !_showCancelBtn" style="float:left; width: 45%" ion-button (click)="deleteOrderItem()">{{'MOBILE.ITEM_EDIT.REMOVE' | translate}}</button>
-    <button *ngIf="_showActionsBtn" style="float: right; width: 45%" ion-button (click)="editOrderItem()">{{'MOBILE.ITEM_EDIT.MODIFY' | translate}}</button>
+    <button *ngIf="_showActionsBtn " style="float:left; width: 45%" ion-button (click)="deleteOrderItem()">{{'MOBILE.ITEM_EDIT.REMOVE' | translate}}</button>
+    <button *ngIf="_showActionsBtn && _showCancelBtn" [disabled]="_disabledAddBtn" style="float: right; width: 45%" ion-button (click)="editOrderItem()">{{'MOBILE.ITEM_EDIT.MODIFY' | translate}}</button>
   </div>
 </ion-footer>
