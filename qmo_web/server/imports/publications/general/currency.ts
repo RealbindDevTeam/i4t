@@ -4,6 +4,4 @@ import { Currencies } from '../../../../both/collections/general/currency.collec
 /**
  * Meteor publication currencies
  */
-Meteor.publish( 'currencies', function publishCurrencies(){
-    return Currencies.find( { } );
-});
+Meteor.publish( 'currencies', () => Currencies.find( { isActive: true } ) );

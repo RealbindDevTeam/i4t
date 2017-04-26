@@ -4,6 +4,4 @@ import { PaymentMethods } from '../../../../both/collections/general/paymentMeth
 /**
  * Meteor publication paymentMethods
  */
-Meteor.publish( 'paymentMethods', function publishPaymentMethods(){
-    return PaymentMethods.find( { } );
-});
+Meteor.publish( 'paymentMethods', () => PaymentMethods.find( { isActive: true } ) );

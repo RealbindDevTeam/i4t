@@ -1,11 +1,13 @@
-import { CollectionObject } from '../collection-object.model';
-
-export interface Country extends CollectionObject {
+/**
+ * Country Model
+ */
+export interface Country {
+    _id?: string;
     is_active: boolean;
     name: string;
-    language_code: string;
-    region?: string;
-    country_code: string;
+    alfaCode2: string;
+    alfaCode3: string;
+    numericCode: string;
     indicative: string;
-    currencies: string[];
+    currencyId: string;
 }

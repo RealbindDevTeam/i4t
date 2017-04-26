@@ -58,7 +58,6 @@ export class SectionEditComponent implements OnInit, OnDestroy {
         this._editForm = this._formBuilder.group({
             editId: [ this._sectionToEdit._id ],
             editName: [ this._sectionToEdit.name, Validators.required ],
-            editDesc: [ this._sectionToEdit.description ],
             editIsActive: [ this._sectionToEdit.is_active ],
             editRestaurants: this._restaurantsFormGroup
         });
@@ -112,7 +111,6 @@ export class SectionEditComponent implements OnInit, OnDestroy {
                     modification_user: Meteor.userId(),
                     modification_date: new Date(),
                     name: this._editForm.value.editName,
-                    description: this._editForm.value.editDesc,
                     is_active: this._editForm.value.editIsActive,
                     restaurants: this._edition_restaurants
                 }

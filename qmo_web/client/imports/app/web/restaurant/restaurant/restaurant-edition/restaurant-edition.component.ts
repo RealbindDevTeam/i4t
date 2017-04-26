@@ -8,8 +8,8 @@ import { Meteor } from 'meteor/meteor';
 import { Router, ActivatedRoute } from '@angular/router';
 import { uploadRestaurantImage } from '../../../../../../../both/methods/restaurant/restaurant.methods';
 import { MouseEvent } from "angular2-google-maps/core";
-import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
-import { Restaurant, RestaurantSchedule } from '../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants, RestaurantImages } from '../../../../../../../both/collections/restaurant/restaurant.collection';
+import { Restaurant, RestaurantSchedule, RestaurantImage } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Hours } from '../../../../../../../both/collections/general/hours.collection';
 import { Hour } from '../../../../../../../both/models/general/hour.model';
 import { Currency } from '../../../../../../../both/models/general/currency.model';
@@ -33,7 +33,6 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
 
     private _restaurantToEdit: Restaurant;
     private _restaurantEditionForm: FormGroup;
-    private _currenciesFormGroup: FormGroup = new FormGroup({});
     private _paymentsFormGroup: FormGroup = new FormGroup({});
 
     private _restaurantSub: Subscription;
@@ -47,12 +46,10 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     private _hours: Observable<Hour[]>;
     private _countries: Observable<Country[]>;
     private _cities: Observable<City[]>;
+    private _currencies: Observable<Currency[]>;
 
-    private _currencies: Currency[] = [];
-    private _currenciesList: Currency[] = [];
     private _paymentMethods: PaymentMethod[] = [];
     private _paymentMethodsList: PaymentMethod[] = [];
-    private _restaurantCurrencies: string[] = [];
     private _restaurantPaymentMethods: string[] = [];
 
     private _filesToUpload: Array<File>;
@@ -68,23 +65,14 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     private _restaurantCountryValue: string;
     private _restaurantCityValue: string;
 
-    private _edition_id: string;
-    private _edition_countryId: string;
-    private _edition_cityId: string;
-    private _edition_name: string;
-    private _edition_address: string;
-    private _edition_indicative: string;
-    private _edition_phone: string;
-    private _edition_webpage: string;
-    private _edition_email: string;
-    private _edition_invoice_code: string;
-    private _edition_tip_percentage: number;
-    private _edition_tax_percentage: number;
-    private _edition_currencies: string[];
-    private _edition_paymentMethods: string[];
+    private _restaurantCurrency: string = '';
+    private _countryIndicative: string;
+
     private _edition_schedule: RestaurantSchedule;
 
     private _scheduleToEdit: RestaurantSchedule;
+    private _taxPercentage: number = 0;
+    private _tipPercentage: number = 0;
 
     /**
      * RestaurantEditionComponent Constructor
@@ -113,15 +101,11 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             city: [ this._restaurantToEdit.cityId ],
             name: [ this._restaurantToEdit.name ],
             address: [ this._restaurantToEdit.address ],
-            indicative: [ this._restaurantToEdit.indicative ],
             phone: [ this._restaurantToEdit.phone ],
             webPage: [ this._restaurantToEdit.webPage ],
             email: [ this._restaurantToEdit.email ],
             invoiceCode: [ this._restaurantToEdit.invoice_code ],
-            tipPercentage: [ this._restaurantToEdit.tip_percentage ],
-            taxPercentage: [ this._restaurantToEdit.tax_percentage ],
             editImage: [ '' ],
-            currencies: this._currenciesFormGroup,
             paymentMethods: this._paymentsFormGroup,
         });
 
@@ -129,10 +113,11 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         this._restaurantCountryValue = this._restaurantToEdit.countryId;
         this._selectedCityValue = this._restaurantToEdit.cityId;
         this._restaurantCityValue = this._restaurantToEdit.cityId;
-        this._restaurantEditImage = this._restaurantToEdit.urlImage;
-        this._restaurantCurrencies = this._restaurantToEdit.currencies;
+        this._taxPercentage = this._restaurantToEdit.tax_percentage;
+        this._tipPercentage = this._restaurantToEdit.tip_percentage;
         this._restaurantPaymentMethods = this._restaurantToEdit.paymentMethods;
         this._scheduleToEdit = this._restaurantToEdit.schedule;
+        this._countryIndicative = this._restaurantToEdit.indicative;
 
         this._hoursSub = MeteorObservable.subscribe( 'hours' ).subscribe( () => {
             this._ngZone.run( () => {
@@ -141,28 +126,8 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         });
 
         this._currencySub = MeteorObservable.subscribe( 'currencies' ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._currencies = Currencies.collection.find( { } ).fetch();
-                for ( let cur of this._currencies ) {
-                    let currencyTranslated:Currency = {
-                        _id: cur._id,
-                        isActive: cur.isActive,
-                        name: this.itemNameTraduction( cur.name )
-                    };                 
-
-                    let find = this._restaurantCurrencies.filter( c => c === currencyTranslated._id);
-
-                    if( find.length > 0 ){
-                        let control: FormControl = new FormControl( true );
-                        this._currenciesFormGroup.addControl( currencyTranslated.name, control );
-                        this._currenciesList.push( currencyTranslated );
-                    } else {                        
-                        let control: FormControl = new FormControl( false );
-                        this._currenciesFormGroup.addControl( currencyTranslated.name, control );
-                        this._currenciesList.push( currencyTranslated );
-                    }
-                }
-            });
+            let find: Currency[] = Currencies.collection.find().fetch().filter( c => c._id === this._restaurantToEdit.currencyId );
+            this._restaurantCurrency = find[0].code + ' - ' + this.itemNameTraduction( find[0].name );
         });
 
         this._paymentMethodsSub = MeteorObservable.subscribe( 'paymentMethods' ).subscribe( () => {
@@ -196,6 +161,9 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         this._cities = Cities.find( { } ).zone();
         this._citiesSub = MeteorObservable.subscribe( 'cities' ).subscribe();
         this._restaurantImagesSub = MeteorObservable.subscribe( 'restaurantImages', Meteor.userId() ).subscribe();
+
+        let _lRestaurantImage: RestaurantImage = RestaurantImages.findOne( { restaurantId: this._restaurantToEdit._id } );
+        this._restaurantEditImage = _lRestaurantImage.url;
     }
 
     /**
@@ -207,16 +175,6 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             return;
         }
 
-        let arr:any[] = Object.keys( this._restaurantEditionForm.value.currencies );
-        let _lCurrenciesToInsert: string[] = [];
-
-        arr.forEach( ( cur ) => {
-            if( this._restaurantEditionForm.value.currencies[ cur ] ){
-                let _lCurr:Currency = this._currenciesList.filter( c => c.name === cur )[0];
-                _lCurrenciesToInsert.push( _lCurr._id );
-            }
-        });
-
         let arrPay:any[] = Object.keys( this._restaurantEditionForm.value.paymentMethods );
         let _lPaymentMethodsToInsert: string[] = [];
 
@@ -227,68 +185,35 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             }
         });
 
-        if( this._editImage ){
-            this._edition_id = this._restaurantEditionForm.value.editId;
-            this._edition_countryId = this._restaurantEditionForm.value.country;
-            this._edition_cityId = this._restaurantEditionForm.value.city;
-            this._edition_name = this._restaurantEditionForm.value.name;
-            this._edition_address = this._restaurantEditionForm.value.address;
-            this._edition_indicative = this._restaurantEditionForm.value.indicative;
-            this._edition_phone = this._restaurantEditionForm.value.phone;
-            this._edition_webpage = this._restaurantEditionForm.value.webPage;
-            this._edition_email = this._restaurantEditionForm.value.email;
-            this._edition_invoice_code = this._restaurantEditionForm.value.invoiceCode;
-            this._edition_tip_percentage = this._restaurantEditionForm.value.tipPercentage;
-            this._edition_tax_percentage = this._restaurantEditionForm.value.taxPercentage;
-            this._edition_currencies = _lCurrenciesToInsert;
-            this._edition_paymentMethods = _lPaymentMethodsToInsert;
+        Restaurants.update( this._restaurantEditionForm.value.editId, {
+            $set: {
+                modification_user: Meteor.userId(),
+                modification_date: new Date(),
+                countryId: this._restaurantEditionForm.value.country,
+                cityId: this._restaurantEditionForm.value.city,
+                name: this._restaurantEditionForm.value.name,
+                address: this._restaurantEditionForm.value.address,
+                phone: this._restaurantEditionForm.value.phone,
+                webPage: this._restaurantEditionForm.value.webPage,
+                email: this._restaurantEditionForm.value.email,
+                invoice_code: this._restaurantEditionForm.value.invoiceCode,
+                tip_percentage: this._tipPercentage,
+                tax_percentage: this._taxPercentage,
+                paymentMethods: _lPaymentMethodsToInsert,
+                schedule: this._edition_schedule
+            }
+        });
 
-            uploadRestaurantImage( this._restaurantImageToEdit, Meteor.userId() ).then( ( result ) => {
-                Restaurants.update( this._edition_id, {
-                    $set: {
-                        modification_user: Meteor.userId(),
-                        modification_date: new Date(),
-                        countryId: this._edition_countryId,
-                        cityId: this._edition_cityId,
-                        name: this._edition_name,
-                        address: this._edition_address,
-                        indicative: this._edition_indicative,
-                        phone: this._edition_phone,
-                        webPage: this._edition_webpage,
-                        email: this._edition_email,
-                        invoice_code: this._edition_invoice_code,
-                        tip_percentage: this._edition_tip_percentage,
-                        tax_percentage: this._edition_tax_percentage,
-                        currencies: this._edition_currencies,
-                        paymentMethods: this._edition_paymentMethods,
-                        restaurantImageId: result._id,
-                        urlImage: result.url,
-                        schedule: this._edition_schedule
-                    }
-                });
+        if( this._editImage ){
+            let _lRestaurantImage: RestaurantImage = RestaurantImages.findOne( { restaurantId: this._restaurantEditionForm.value.editId } );
+            RestaurantImages.remove( { _id: _lRestaurantImage._id } );
+
+            uploadRestaurantImage( this._restaurantImageToEdit, 
+                                   Meteor.userId(),
+                                   this._restaurantEditionForm.value.editId ).then( ( result ) => {
+
             }).catch( ( error ) => {
                 alert('Upload image error. Only accept .png, .jpg, .jpeg files.');
-            });
-        } else {
-            Restaurants.update( this._restaurantEditionForm.value.editId, {
-                $set: {
-                    modification_user: Meteor.userId(),
-                    modification_date: new Date(),
-                    countryId: this._restaurantEditionForm.value.country,
-                    cityId: this._restaurantEditionForm.value.city,
-                    name: this._restaurantEditionForm.value.name,
-                    address: this._restaurantEditionForm.value.address,
-                    indicative: this._restaurantEditionForm.value.indicative,
-                    phone: this._restaurantEditionForm.value.phone,
-                    webPage: this._restaurantEditionForm.value.webPage,
-                    email: this._restaurantEditionForm.value.email,
-                    invoice_code: this._restaurantEditionForm.value.invoiceCode,
-                    tip_percentage: this._restaurantEditionForm.value.tipPercentage,
-                    tax_percentage: this._restaurantEditionForm.value.taxPercentage,
-                    currencies: _lCurrenciesToInsert,
-                    paymentMethods: _lPaymentMethodsToInsert,
-                    schedule: this._edition_schedule
-                }
             });
         }
         this.cancel();
@@ -340,16 +265,11 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                 return false;
             }
         case 2:
-            if( this._restaurantEditionForm.controls['invoiceCode'].valid && this._restaurantEditionForm.controls['tipPercentage'].valid
-                && this._restaurantEditionForm.controls['taxPercentage'].valid ){
+            if( this._restaurantEditionForm.controls['invoiceCode'].valid ){
                 return true;
             } else {
                 return false;
             }
-        case 3:
-            return true;
-        case 4:
-            return true;
         default:
             return true;
         }
@@ -374,6 +294,36 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         if( this.canMove( this.selectedIndex - 1 ) ) {
             this.selectedIndex --;
         }
+    }
+
+    /**
+     * Function to change country
+     * @param {string} _country
+     */
+    changeCountry( _country ){
+        this._selectedCountryValue = _country;
+        this._restaurantEditionForm.controls['country'].setValue( _country );
+        this._cities = Cities.find( { country: _country } ).zone();
+        
+        let _lCountry: Country;
+        Countries.find( { _id: _country } ).fetch().forEach( (c) => {
+            _lCountry = c;
+        }); 
+        let _lCurrency: Currency;
+        Currencies.find( { _id: _lCountry.currencyId } ).fetch().forEach( (cu) => {
+            _lCurrency = cu;
+        });    
+        this._restaurantCurrency = _lCurrency.code + ' - ' + this.itemNameTraduction( _lCurrency.name );
+        this._countryIndicative = _lCountry.indicative;
+    }
+
+    /**
+     * Function to change city
+     * @param {string} _city
+     */
+    changeCity( _city ){
+        this._selectedCityValue = _city;
+        this._restaurantEditionForm.controls['city'].setValue( _city );
     }
 
     /**
@@ -405,6 +355,22 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
      */
     receiveSchedule( _event:any ):void{
         this._edition_schedule = _event;
+    }
+
+    /**
+     * Get tax percentage slider value
+     * @param {any} _event 
+     */
+    onTaxPercentageChange( _event:any ):void{
+        this._taxPercentage = _event.value;
+    }
+
+    /**
+     * Get tip percentage slider value
+     * @param {any} _event 
+     */
+    onTipPercentageChange( _event:any ):void{
+        this._tipPercentage = _event.value;
     }
 
     /**

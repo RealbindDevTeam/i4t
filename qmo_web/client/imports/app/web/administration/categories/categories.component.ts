@@ -50,8 +50,6 @@ export class CategoryComponent implements OnInit, OnDestroy{
     ngOnInit(){
         this._categoryForm = new FormGroup({
             name: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 50 ) ] ),
-            description: new FormControl( '', [ Validators.maxLength( 150 ) ] ),
-            isActive: new FormControl( false ),
             section: new FormControl( '' )  
         });       
         this._sections = Sections.find( { } ).zone();
@@ -77,7 +75,6 @@ export class CategoryComponent implements OnInit, OnDestroy{
                 modification_date: new Date(),
                 is_active: true,
                 name: this._categoryForm.value.name,
-                description: this._categoryForm.value.description,
                 section: this._categoryForm.value.section
             });
             this._categoryForm.reset();
@@ -90,7 +87,6 @@ export class CategoryComponent implements OnInit, OnDestroy{
      */
     cancel():void{
         this._categoryForm.controls['name'].reset();
-        this._categoryForm.controls['description'].reset();
         this._selectedValue = "";
     }
 

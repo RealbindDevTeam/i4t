@@ -30,7 +30,6 @@ import style from './restaurant-register.component.scss';
 export class RestaurantRegisterComponent implements OnInit, OnDestroy {
 
     private _restaurantForm: FormGroup;
-    private _currenciesFormGroup: FormGroup = new FormGroup({});
     private _paymentsFormGroup: FormGroup = new FormGroup({});
 
     private _restaurantSub: Subscription;
@@ -44,9 +43,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _hours: Observable<Hour[]>;
     private _countries: Observable<Country[]>;
     private _cities: Observable<City[]>;
-    
-    private _currencies: Currency[];
-    private _currenciesList: Currency[];
+
     private _paymentMethods: PaymentMethod[];
     private _paymentMethodsList: PaymentMethod[];
     
@@ -58,22 +55,13 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
 
     private _selectedCountryValue: string;
     private _selectedCityValue: string;
-
-    private _create_countryId: string;
-    private _create_cityId: string;
-    private _create_name: string;
-    private _create_address: string;
-    private _create_indicative: string;
-    private _create_phone: string;
-    private _create_webpage: string;
-    private _create_email: string;
-    private _create_invoice_code: string;
-    private _create_tip_percentage: number;
-    private _create_tax_percentage: number;
-    private _create_currencies: string[];
-    private _create_paymentMethods: string[];
+    private _restaurantCurrency: string = '';
+    private _countryIndicative: string;
+    private _restaurantCurrencyId: string = '';
 
     private _schedule: RestaurantSchedule;
+    private _taxPercentage: number = 0;
+    private _tipPercentage: number = 0;
 
     /**
      * RestaurantRegisterComponent constructor
@@ -89,8 +77,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._selectedCountryValue = "";
         this._selectedCityValue = "";
         this._nameImageFile = "";
-        this._currencies = [];
-        this._currenciesList = [];
         this._paymentMethods = [];
         this._paymentMethodsList = [];
         this._filesToUpload = [];
@@ -106,37 +92,17 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             city: new FormControl( '', [ Validators.required ] ),
             name: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 70 ) ] ),
             address: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 90 ) ] ),
-            indicative: new FormControl( '', [ Validators.maxLength( 3 ) ] ),
-            phone: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 40 ) ] ),
+            phone: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 30 ) ] ),
             webPage: new FormControl( '', [ Validators.minLength( 1 ), Validators.maxLength( 40 ) ] ),
             email: new FormControl( '', [ Validators.minLength( 1 ), Validators.maxLength( 40 ) ] ),
             invoiceCode: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 20 ) ] ),
-            tipPercentage: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 3 ) ] ),
-            taxPercentage: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 3 ) ] ),
             image: new FormControl( '' ),
-            currencies: this._currenciesFormGroup,
             paymentMethods: this._paymentsFormGroup,
         });
 
         this._hoursSub = MeteorObservable.subscribe( 'hours' ).subscribe( () => {
             this._ngZone.run( () => {
                 this._hours = Hours.find( {}, { sort: { hour: 1 } } );
-            });
-        });
-
-        this._currencySub = MeteorObservable.subscribe( 'currencies' ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._currencies = Currencies.collection.find( { } ).fetch();
-                for ( let cur of this._currencies ) {
-                    let currencyTranslated:Currency = {
-                        _id: cur._id,
-                        isActive: cur.isActive,
-                        name: this.itemNameTraduction( cur.name )
-                    };                 
-                    this._currenciesList.push( currencyTranslated );
-                    let control: FormControl = new FormControl( false );
-                    this._currenciesFormGroup.addControl( currencyTranslated.name, control );
-                }
             });
         });
 
@@ -161,6 +127,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._countriesSub = MeteorObservable.subscribe( 'countries' ).subscribe();
         this._citiesSub = MeteorObservable.subscribe( 'cities' ).subscribe();
         this._restaurantImagesSub = MeteorObservable.subscribe( 'restaurantImages', Meteor.userId() ).subscribe();
+        this._currencySub = MeteorObservable.subscribe( 'currencies' ).subscribe();
 
         this._schedule = {
             monday: {
@@ -240,16 +207,11 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                 return false;
             }
         case 2:
-            if( this._restaurantForm.controls['invoiceCode'].valid && this._restaurantForm.controls['tipPercentage'].valid
-                && this._restaurantForm.controls['taxPercentage'].valid ){
+            if( this._restaurantForm.controls['invoiceCode'].valid ){
                 return true;
             } else {
                 return false;
             }
-        case 3:
-            return true;
-        case 4:
-            return true;
         default:
             return true;
         }
@@ -282,17 +244,13 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     cancel():void{
         if( this._selectedCountryValue !== "" ){ this._selectedCountryValue = ""; }
         if( this._selectedCityValue !== "" ){ this._selectedCityValue = ""; }    
-        this._restaurantForm.controls['currencies'].reset();
         this._restaurantForm.controls['paymentMethods'].reset();
         this._restaurantForm.controls['name'].reset();
         this._restaurantForm.controls['address'].reset();
-        this._restaurantForm.controls['indicative'].reset();
         this._restaurantForm.controls['phone'].reset();
         this._restaurantForm.controls['webPage'].reset();
         this._restaurantForm.controls['email'].reset();
-        this._restaurantForm.controls['invoiceCode'].reset();
-        this._restaurantForm.controls['tipPercentage'].reset();
-        this._restaurantForm.controls['taxPercentage'].reset();           
+        this._restaurantForm.controls['invoiceCode'].reset();       
        
         this._router.navigate( [ 'app/restaurant' ] );
     }
@@ -306,16 +264,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             return;
         }
 
-        let arr:any[] = Object.keys( this._restaurantForm.value.currencies );
-        let _lCurrenciesToInsert: string[] = [];
-
-        arr.forEach( ( cur ) => {
-            if( this._restaurantForm.value.currencies[ cur ] ){
-                let _lCurr:Currency = this._currenciesList.filter( c => c.name === cur )[0];
-                _lCurrenciesToInsert.push( _lCurr._id );
-            }
-        });
-
         let arrPay:any[] = Object.keys( this._restaurantForm.value.paymentMethods );
         let _lPaymentMethodsToInsert: string[] = [];
 
@@ -326,85 +274,44 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             }
         });
 
-        if( this._createImage ){
-            this._create_countryId = this._restaurantForm.value.country;
-            this._create_cityId = this._restaurantForm.value.city;
-            this._create_name = this._restaurantForm.value.name;
-            this._create_address = this._restaurantForm.value.address;
-            this._create_indicative = this._restaurantForm.value.indicative;
-            this._create_phone = this._restaurantForm.value.phone;
-            this._create_webpage = this._restaurantForm.value.webPage;
-            this._create_email = this._restaurantForm.value.email;
-            this._create_invoice_code = this._restaurantForm.value.invoiceCode;
-            this._create_tip_percentage = this._restaurantForm.value.tipPercentage;
-            this._create_tax_percentage = this._restaurantForm.value.taxPercentage;
-            this._create_currencies = _lCurrenciesToInsert;
-            this._create_paymentMethods = _lPaymentMethodsToInsert;
+        let _lNewRestaurant = Restaurants.collection.insert({
+            creation_user: Meteor.userId(),
+            creation_date: new Date(),
+            modification_user: '-',
+            modification_date: new Date(),
+            countryId: this._restaurantForm.value.country,
+            cityId: this._restaurantForm.value.city,
+            name: this._restaurantForm.value.name,
+            currencyId: this._restaurantCurrencyId,
+            address: this._restaurantForm.value.address,
+            indicative: this._countryIndicative,
+            phone: this._restaurantForm.value.phone,
+            webPage: this._restaurantForm.value.webPage,
+            email: this._restaurantForm.value.email,
+            restaurant_code: this.generateRestaurantCode(),
+            invoice_code: this._restaurantForm.value.invoiceCode,
+            tip_percentage: this._tipPercentage,
+            tax_percentage: this._taxPercentage,
+            paymentMethods: _lPaymentMethodsToInsert,
+            location: {
+                    lat: 0,
+                    lng: 0
+            },
+            schedule: this._schedule,            
+            tables_quantity: 0,
+            orderNumberCount: 0,
+            max_jobs: 5                
+        });
 
-            uploadRestaurantImage( this._restaurantImageToInsert, Meteor.userId() ).then( ( result ) => {
-                Restaurants.insert({
-                    creation_user: Meteor.userId(),
-                    creation_date: new Date(),
-                    modification_user: '-',
-                    modification_date: new Date(),
-                    countryId: this._create_countryId,
-                    cityId: this._create_cityId,
-                    name: this._create_name,
-                    address: this._create_address,
-                    indicative: this._create_indicative,
-                    phone: this._create_phone,
-                    restaurant_code: this.generateRestaurantCode(),
-                    webPage: this._create_webpage,
-                    email: this._create_email,
-                    invoice_code: this._create_invoice_code,
-                    tip_percentage: this._create_tip_percentage,
-                    tax_percentage: this._create_tax_percentage,
-                    currencies: this._create_currencies,
-                    paymentMethods: this._create_paymentMethods,
-                    restaurantImageId: result._id,
-                    urlImage: result.url,
-                    location: {
-                        lat: 0,
-                        lng: 0
-                    },
-                    schedule: this._schedule,
-                    tables_quantity: 0,
-                    orderNumberCount: 0                
-                });
+        if( this._createImage ){
+            uploadRestaurantImage( this._restaurantImageToInsert, 
+                                   Meteor.userId(), 
+                                   _lNewRestaurant ).then( ( result ) => {
+
             }).catch( ( error ) => {
                 alert('Upload image error. Only accept .png, .jpg, .jpeg files.');
             });                   
-        } else {
-            Restaurants.insert({
-                creation_user: Meteor.userId(),
-                creation_date: new Date(),
-                modification_user: '-',
-                modification_date: new Date(),
-                countryId: this._restaurantForm.value.country,
-                cityId: this._restaurantForm.value.city,
-                name: this._restaurantForm.value.name,
-                address: this._restaurantForm.value.address,
-                indicative: this._restaurantForm.value.indicative,
-                phone: this._restaurantForm.value.phone,
-                webPage: this._restaurantForm.value.webPage,
-                email: this._restaurantForm.value.email,
-                restaurant_code: this.generateRestaurantCode(),
-                invoice_code: this._restaurantForm.value.invoiceCode,
-                tip_percentage: this._restaurantForm.value.tipPercentage,
-                tax_percentage: this._restaurantForm.value.taxPercentage,
-                currencies: this._restaurantForm.value.currencies,
-                paymentMethods: this._restaurantForm.value.paymentMethods,
-                restaurantImageId: '-',
-                urlImage: '-',
-                location: {
-                        lat: 0,
-                        lng: 0
-                },
-                schedule: this._schedule,            
-                tables_quantity: 0,
-                orderNumberCount: 0                
-            });
-        }            
+        }         
         this.cancel();
     }
 
@@ -428,6 +335,18 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._selectedCountryValue = _country;
         this._restaurantForm.controls['country'].setValue( _country );
         this._cities = Cities.find( { country: _country } ).zone();
+        
+        let _lCountry: Country;
+        Countries.find( { _id: _country } ).fetch().forEach( (c) => {
+            _lCountry = c;
+        });
+        let _lCurrency: Currency;
+        Currencies.find( { _id: _lCountry.currencyId } ).fetch().forEach( (cu) => {
+            _lCurrency = cu;
+        });    
+        this._restaurantCurrencyId = _lCurrency._id;
+        this._restaurantCurrency = _lCurrency.code + ' - ' + this.itemNameTraduction( _lCurrency.name );
+        this._countryIndicative = _lCountry.indicative;
     }
 
     /**
@@ -471,6 +390,22 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             }
         }
         return _lCode;
+    }
+
+    /**
+     * Get tax percentage slider value
+     * @param {any} _event 
+     */
+    onTaxPercentageChange( _event:any ):void{
+        this._taxPercentage = _event.value;
+    }
+
+    /**
+     * Get tip percentage slider value
+     * @param {any} _event 
+     */
+    onTipPercentageChange( _event:any ):void{
+        this._tipPercentage = _event.value;
     }
 
     /**

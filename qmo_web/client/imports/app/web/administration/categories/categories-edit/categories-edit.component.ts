@@ -50,7 +50,6 @@ export class CategoriesEditComponent implements OnInit, OnDestroy {
         this._editForm = this._formBuilder.group({
             editId: [ this._categoryToEdit._id ],
             editName: [ this._categoryToEdit.name, Validators.required ],
-            editDesc: [ this._categoryToEdit.description ],
             editIsActive: [ this._categoryToEdit.is_active ],
             editSection: [ this._categoryToEdit.section ]
         });
@@ -76,7 +75,6 @@ export class CategoriesEditComponent implements OnInit, OnDestroy {
                     modification_user: Meteor.userId(),
                     modification_date: new Date(),
                     name: this._editForm.value.editName,
-                    description: this._editForm.value.editDesc,
                     is_active: this._editForm.value.editIsActive,
                     structure: this._editForm.value.editStructure
                 }
