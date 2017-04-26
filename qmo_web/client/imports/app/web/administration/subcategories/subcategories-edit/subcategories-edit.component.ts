@@ -47,7 +47,6 @@ export class SubcategoryEditComponent implements OnInit, OnDestroy {
         this._editForm = this._formBuilder.group({
             editId: [ this._subcategoryToEdit._id ],
             editName: [ this._subcategoryToEdit.name, Validators.required ],
-            editDesc: [ this._subcategoryToEdit.description ],
             editActive: [ this._subcategoryToEdit.is_active ],
             editCategory: [ this._subcategoryToEdit.category ]
         });
@@ -81,7 +80,6 @@ export class SubcategoryEditComponent implements OnInit, OnDestroy {
                     modification_user: Meteor.userId(),
                     modification_date: new Date(),
                     name: this._editForm.value.editName,
-                    description: this._editForm.value.editDesc,
                     is_active: this._editForm.value.editActive,
                     category: this._editForm.value.editCategory
                 }

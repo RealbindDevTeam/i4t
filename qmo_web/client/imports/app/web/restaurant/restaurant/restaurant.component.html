@@ -29,7 +29,11 @@
         <md-card-title>{{restaurant.name}}</md-card-title>
         <md-card-subtitle>{{restaurant.address}}</md-card-subtitle>
     </md-card-header>
-    <img md-card-image src="{{restaurant.urlImage}}">
+    <span *ngFor="let resImg of _restaurantImages | async" >
+        <template [ngIf]="restaurant._id == resImg.restaurantId">
+            <img md-card-image style="margin-top: 0;" src="{{resImg.url}}">
+        </template>
+    </span>
     <md-card-content>
         <div style="position: relative">
             <button md-tooltip="{{'RESTAURANT.LOCATION' | translate}}" md-mini-fab class="btn-position-location" (click)="openLocation(restaurant)"> <md-icon style="color: white;" class="md-24">map</md-icon></button>
@@ -45,7 +49,7 @@
                 <md-icon md-tooltip="{{'RESTAURANT.COUNTRY' | translate}}">room</md-icon>                   
                 <span *ngFor="let country of countries | async" >
                     <template [ngIf]="country._id == restaurant.countryId">                
-                        <label>{{country.name }}</label>
+                        <label>{{country.name | translate}}</label>
                     </template>
                 </span>                                    
                 <label> - </label>                  

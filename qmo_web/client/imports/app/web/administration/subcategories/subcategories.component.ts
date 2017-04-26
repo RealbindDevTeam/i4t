@@ -47,7 +47,6 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
     ngOnInit(){
         this._subcategoryForm = new FormGroup({
             name: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 50 ) ] ),
-            description: new FormControl( '', [ Validators.maxLength( 150 ) ] ),
             category: new FormControl( '' )  
         });       
         this._categories = Categories.find( { } ).zone();
@@ -73,7 +72,6 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
                 modification_date: new Date(),
                 is_active: true,
                 name: this._subcategoryForm.value.name,
-                description: this._subcategoryForm.value.description,
                 category: this._subcategoryForm.value.category
             });
             this._subcategoryForm.reset();
@@ -93,7 +91,6 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
      */
     cancel():void{
         this._subcategoryForm.controls['name'].reset();
-        this._subcategoryForm.controls['description'].reset();
         this._selectedValue = "";
     }
 

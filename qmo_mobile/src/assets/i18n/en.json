@@ -128,8 +128,15 @@
         },
         "PAYMENTS": {
             "TITTLE": "Payments",
-            "TITTLE_CONTENT": "Your accounts",
-            "CONTENT": "You do not have pending accounts yet"
+            "TITTLE_CONTENT": "Your bill",
+            "CONTENT": "You do not have bill yet",
+            "BILL": "Bill Payment",
+            "ORDER": "Order # ",
+            "VIEW_DETAIL": "View detail",
+            "ADD_ORDER": "Add order",
+            "PAYMENT_METHOD": "Payment method",
+            "TOTAL_BILL": "Total bill",
+            "PAY_BTN": "Pay"
         },
         "WAITER_CALL": {
             "TITTLE": "Call waiter",
@@ -169,7 +176,7 @@
             "TOAST_MSG": "Item was added successfully",
             "WAIT_QR": "Please wait ..."
         },
-        "ITEM_EDIT":{
+        "ITEM_EDIT": {
             "MODIFY": "Modify",
             "REMOVE": "Remove",
             "REMOVE_ITEM": "Remove Item",
@@ -177,7 +184,7 @@
             "YES_ANSWER": "Yes",
             "NO_ANSWER": "No",
             "TOAST_MSG_EDIT": "Item was modified successfully",
-            "TOAST_MSG_REMOVE": "Item was removed successfully" 
+            "TOAST_MSG_REMOVE": "Item was removed successfully"
         }
     }
 }

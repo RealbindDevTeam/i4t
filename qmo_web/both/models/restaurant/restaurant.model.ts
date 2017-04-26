@@ -7,6 +7,7 @@ export interface Restaurant extends CollectionObject {
     countryId: string;
     cityId: string;
     name: string;
+    currencyId: string;
     address: string;
     indicative: string;
     phone: string;
@@ -16,10 +17,7 @@ export interface Restaurant extends CollectionObject {
     invoice_code: string;
     tip_percentage: number;
     tax_percentage: number;
-    currencies: string[];
-    paymentMethods: string[];     
-    restaurantImageId: string;
-    urlImage: string;
+    paymentMethods: string[];
     location?: RestaurantLocation;
     schedule: RestaurantSchedule;
     tables_quantity: number;
@@ -44,6 +42,7 @@ export interface RestaurantImage {
     uploading: boolean;
     url: string;
     userId: string;
+    restaurantId: string;
 }
 
 /**

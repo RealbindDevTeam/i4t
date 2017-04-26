@@ -6,7 +6,7 @@ import { TranslateService } from 'ng2-translate';
 import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
 import { Item } from '../../../../../../../both/models/administration/item.model';
-import { Items, ItemImagesStore } from '../../../../../../../both/collections/administration/item.collection';
+import { Items } from '../../../../../../../both/collections/administration/item.collection';
 import { uploadItemImage } from '../../../../../../../both/methods/administration/item.methods';
 import { Sections } from '../../../../../../../both/collections/administration/section.collection';
 import { Section } from '../../../../../../../both/models/administration/section.model';
@@ -41,7 +41,6 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
     private _restaurants: Observable<Restaurant[]>;
 
     private _itemsSub: Subscription;
-    private _itemsImagesSub: Subscription;
     private _sectionsSub: Subscription;    
     private _categorySub: Subscription;
     private _subcategorySub: Subscription;
@@ -69,18 +68,6 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
     private _selectedSectionValue: string;
     private _selectedCategoryValue: string;
     private _selectedSubcategoryValue: string;
-
-    private _create_sectionId: string;
-    private _create_categoryId: string;
-    private _create_subcategoryId: string;
-    private _create_name: string;
-    private _create_description: string;
-    private _create_price: number;
-    private _create_taxPercentage: number;
-    private _create_observations: boolean;
-    private _create_garnishFoodIsAcceped: boolean;
-    private _create_garnishFoodQuantity: number;
-    private _create_additionsIsAccepted: boolean;
 
     /**
      * ItemComponent constructor
@@ -127,7 +114,6 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', Meteor.userId() ).subscribe();
         this._garnishFoodSub = MeteorObservable.subscribe( 'garnishFood', Meteor.userId() ).subscribe();   
         this._itemsSub = MeteorObservable.subscribe( 'items', Meteor.userId() ).subscribe();
-        this._itemsImagesSub = MeteorObservable.subscribe( 'itemImages', Meteor.userId() ).subscribe();
         this._additionSub = MeteorObservable.subscribe( 'additions', Meteor.userId() ).subscribe();
     }
 
@@ -230,64 +216,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
                 }
             });
 
-            if( this._createImage ){
-                this._create_sectionId = this._itemForm.value.section;
-                this._create_categoryId = this._itemForm.value.category;
-                this._create_subcategoryId = this._itemForm.value.subcategory;
-                this._create_name = this._itemForm.value.name;
-                this._create_description = this._itemForm.value.description;
-                this._create_price = this._itemForm.value.price;
-                this._create_taxPercentage = this._itemForm.value.taxPercentage;
-                this._create_observations = this._itemForm.value.observations;
-                this._create_garnishFoodIsAcceped = this._itemForm.value.garnishFoodIsAcceped;
-                this._create_garnishFoodQuantity = this._itemForm.value.garnishFoodQuantity;
-                this._create_additionsIsAccepted = this._itemForm.value.additionsIsAccepted;
-
-                uploadItemImage( this._itemImageToInsert, Meteor.userId() ).then( ( result ) => {
-                    this.insertNewItem( result, _lGarnishFoodToInsert, _lAdditionsToInsert );
-                }).catch( ( error ) => {
-                    alert( 'Upload image error. Only accept .png, .jpg, .jpeg files.' );
-                });   
-            } else {
-                this.insertNewItem( null, _lGarnishFoodToInsert, _lAdditionsToInsert );
-            }
-        }
-        this.cancel();
-    }
-
-    /**
-     * This function insert new item
-     * @param {any} _pFile
-     * @param {string[]} _pGarnishFood
-     * @param {string[]} _pAdditions
-     */
-    insertNewItem( _pFile:any, _pGarnishFood:string[], _pAdditions:string[] ):void{
-        if( _pFile != null ){
-            Items.insert({
-                creation_user: Meteor.userId(),
-                creation_date: new Date(),
-                modification_user: '-',
-                modification_date: new Date(),
-                is_active: true,
-                sectionId: this._create_sectionId,
-                categoryId: this._create_categoryId,
-                subcategoryId: this._create_subcategoryId,
-                name: this._create_name,
-                description: this._create_description,
-                price: this._create_price,
-                taxPercentage: this._create_taxPercentage,
-                observations: this._create_observations,
-                itemImageId: _pFile._id,
-                urlImage: _pFile.url,
-                garnishFoodIsAcceped: this._create_garnishFoodIsAcceped,
-                garnishFoodQuantity: this._create_garnishFoodQuantity,
-                garnishFood: _pGarnishFood,
-                additionsIsAccepted: this._create_additionsIsAccepted,
-                additions: _pAdditions,
-                isAvailable: true
-            });
-        } else {
-            Items.insert({
+            let _lNewItem = Items.collection.insert({
                 creation_user: Meteor.userId(),
                 creation_date: new Date(),
                 modification_user: '-',
@@ -301,16 +230,25 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
                 price: this._itemForm.value.price,
                 taxPercentage: this._itemForm.value.taxPercentage,
                 observations: this._itemForm.value.observations,
-                itemImageId: '-',
-                urlImage: '-',
                 garnishFoodIsAcceped: this._itemForm.value.garnishFoodIsAcceped,
                 garnishFoodQuantity: this._itemForm.value.garnishFoodQuantity,
-                garnishFood: _pGarnishFood,
+                garnishFood: _lGarnishFoodToInsert,
                 additionsIsAccepted: this._itemForm.value.additionsIsAccepted,
-                additions: _pAdditions,
+                additions: _lAdditionsToInsert,
                 isAvailable: true
-            });
+            });  
+
+            if( this._createImage ){
+                uploadItemImage( this._itemImageToInsert, 
+                                 Meteor.userId(),
+                                 _lNewItem ).then( ( result ) => {
+
+                }).catch( ( error ) => {
+                    alert( 'Upload image error. Only accept .png, .jpg, .jpeg files.' );
+                });   
+            }
         }
+        this.cancel();
     }
 
     /**
@@ -437,7 +375,6 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
         this._restaurantSub.unsubscribe();    
         this._garnishFoodSub.unsubscribe();
         this._itemsSub.unsubscribe();
-        this._itemsImagesSub.unsubscribe();
         this._additionSub.unsubscribe();
     }
 }

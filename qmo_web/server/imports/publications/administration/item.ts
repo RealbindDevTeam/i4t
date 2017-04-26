@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { Items, ItemImages } from '../../../../both/collections/administration/item.collection';
+import { Items, ItemImages, ItemImagesThumbs } from '../../../../both/collections/administration/item.collection';
 import { Sections } from '../../../../both/collections/administration/section.collection';
 import { UserDetails } from '../../../../both/collections/auth/user-detail.collection';
 import { UserDetail } from '../../../../both/models/auth/user-detail.model';
@@ -20,7 +20,16 @@ Meteor.publish('items', function (_userId: string) {
  */
 Meteor.publish('itemImages', function (_userId: string) {
     check(_userId, String);
-    return ItemImages.collection.find({ user_id: _userId });
+    return ItemImages.collection.find({ userId: _userId });
+});
+
+/**
+ * Meteor publication itemImageThumbs with user Id condition
+ * @param {string} _userId
+ */
+Meteor.publish('itemImageThumbs', function (_userId: string) {
+    check(_userId, String);
+    return ItemImagesThumbs.collection.find({ userId: _userId });
 });
 
 /**
@@ -34,6 +43,40 @@ Meteor.publish('itemsByRestaurant', function (_restaurantId: string) {
         _sections.push(s._id);
     });
     return Items.collection.find({ sectionId: { $in: _sections }, is_active: true });
+});
+
+/**
+ * Meteor publication return item images with restaurant condition
+ */
+Meteor.publish('itemImagesByRestaurant', function (_restaurantId: string) {
+    let _sections: string[] = [];
+    let _items: string [] = [];
+    check(_restaurantId, String);
+
+    Sections.collection.find( { restaurants: { $in: [_restaurantId] } } ).fetch().forEach((s) => {
+        _sections.push( s._id );
+    });
+    Items.collection.find( { sectionId: { $in: _sections }, is_active: true } ).fetch().forEach((i) => {
+        _items.push( i._id );
+    });
+    return ItemImages.collection.find( { itemId: { $in: _items } } );
+});
+
+/**
+ * Meteor publication return item thumbs images with restaurant condition
+ */
+Meteor.publish('itemImageThumbsByRestaurant', function (_restaurantId: string) {
+    let _sections: string[] = [];
+    let _items: string [] = [];
+    check(_restaurantId, String);
+
+    Sections.collection.find( { restaurants: { $in: [_restaurantId] } } ).fetch().forEach((s) => {
+        _sections.push( s._id );
+    });
+    Items.collection.find( { sectionId: { $in: _sections }, is_active: true } ).fetch().forEach((i) => {
+        _items.push( i._id );
+    });
+    return ItemImagesThumbs.collection.find( { itemId: { $in: _items } } );
 });
 
 /**

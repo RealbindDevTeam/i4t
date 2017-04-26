@@ -67,8 +67,9 @@ export class ItemEditPage implements OnInit, OnDestroy {
   private _actualOrder;
   private _garnishArray: any;
   private _additionArray: any[];
-  private _showActionsBtn: boolean = true;
-  private _showCancelBtn: boolean = true;
+  private _showActionsBtn: boolean = false;
+  private _showCancelBtn: boolean = false;
+  private _showFooter: boolean = false;
   private _newOrderForm: FormGroup;
   private _garnishFormGroup: FormGroup = new FormGroup({});
   private _additionsFormGroup: FormGroup = new FormGroup({});
@@ -81,168 +82,162 @@ export class ItemEditPage implements OnInit, OnDestroy {
     _translate.setDefaultLang('en');
     _translate.use(this._userLang);
     this._currentUserId = Meteor.userId();
-    this._statusArray = ['REGISTERED', 'CONFIRMED', 'IN_PROGRESS', 'PREPARED'];
+    this._statusArray = ['REGISTERED', 'IN_PROCESS', 'PREPARED', 'DELIVERED'];
 
     this._createdGarnishFood = [];
     this._createAdditions = [];
     this._orderItemGarnishFood = [];
     this._orderAdditions = [];
+
+    this._order_code = this._navParams.get("order_id");
+    this._item_order_index = this._navParams.get("item_ord_ind");
+    this._item_code = this._navParams.get("item_code");
+    this._creation_user = this._navParams.get("creation_user");
+    this._table_code = this._navParams.get("table_code");
+    this._res_code = this._navParams.get("res_code"); 
   }
 
   ionViewDidLoad() {
   }
 
   ngOnInit() {
-    this._order_code = this._navParams.get("order_id");
-    this._item_order_index = this._navParams.get("_item_ord_ind");
-    this._item_code = this._navParams.get("item_code");
-    this._creation_user = this._navParams.get("creation_user");
 
-    this._storage.ready().then(() => {
-      this._storage.get('trobj').then((val_obj) => {
+    this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this._res_code).subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        this._items = Items.find({ _id: this._item_code }).zone();
+        this._item = Items.collection.find({ _id: this._item_code }).fetch();
+        for (let item of this._item) {
+          this._unitPrice = item.price;
+          this._showFooter = true;
+          if (item.isAvailable) {
+            this._showActionsBtn = true;
+            this._showCancelBtn = true;
+          } else {
+            this._showActionsBtn = false;
+            this._showCancelBtn = false;
+          }
+        }
+        this._showGarnishFoodError = false;
+        this._maxGarnishFoodElements = 0;
+        this._disabledAddBtn = false;
+        this._additionsFormGroup.reset();
+        this._garnishFormGroup.reset();
+      });
+    });
 
-        if (val_obj != null) {
-          this._table_code = val_obj.evalc_tb;
-          this._res_code = val_obj.edoc_rs;
-
-          this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this._res_code).subscribe(() => {
-            MeteorObservable.autorun().subscribe(() => {
-              this._items = Items.find({ _id: this._item_code }).zone();
-              this._item = Items.collection.find({ _id: this._item_code }).fetch();
-              for (let item of this._item) {
-                this._unitPrice = item.price;
-                if(!item.isAvailable){
-                  this._showActionsBtn = false;
-                  this._showCancelBtn = false;
-                }
-              }
-              this._showGarnishFoodError = false;
-              this._maxGarnishFoodElements = 0;
-              this._disabledAddBtn = false;
-              this._additionsFormGroup.reset();
-              this._garnishFormGroup.reset();
-            });
-          });
-
-          this._ordersSub = MeteorObservable.subscribe('getOrdersByTableId', this._res_code, this._table_code, this._statusArray).subscribe(() => {
-            MeteorObservable.autorun().subscribe(() => {
-              this._orders = Orders.find({ _id: this._order_code, creation_user: this._creation_user });
-              this._orderAux = Orders.collection.find({ _id: this._order_code, creation_user: this._creation_user }).fetch()[0];
-              this._orderAux.items.forEach((itemOrder) => {
-                if (itemOrder.itemId === this._item_code && itemOrder.index === this._item_order_index) {
-                  this._quantityCount = itemOrder.quantity;
-                  this._finalPrice = itemOrder.paymentItem;
-                  this._garnishFoodElementsCount = itemOrder.garnishFood.length;
-                }
-              });
-              if (this._orderAux.status === 'CONFIRMED' || this._orderAux.status === 'IN_PROGRESS' || this._orderAux === 'PREPARED' || 
-                  this._orderAux.creation_user !== this._currentUserId) {
-                this._showActionsBtn = false;
-              }
-            });
-          });
-
-          this._garnishSub = MeteorObservable.subscribe('garnishFoodByRestaurant', this._res_code).subscribe(() => {
-
-            this._ngZone.run(() => {
-              this._garnishes = GarnishFoodCol.find({});
-              this._createdGarnishFood = GarnishFoodCol.collection.find({}).fetch();
-
-              let _actualOrder;
-              _actualOrder = Orders.collection.find({ _id: this._order_code, creation_user: this._creation_user }).fetch()[0];
-              _actualOrder.items.forEach((itemOrder) => {
-                if (itemOrder.itemId === this._item_code && itemOrder.index === this._item_order_index) {
-                  this._orderItemGarnishFood = itemOrder.garnishFood;
-                }
-              });
-              for (let gar of this._createdGarnishFood) {
-                let garnishExist: any[] = this._orderItemGarnishFood.filter(garnish => garnish === gar._id);
-                if (garnishExist.length > 0) {
-                  if (this._garnishFormGroup.contains(gar.name)) {
-                    this._garnishFormGroup.controls[gar.name].setValue(true);
-                  } else {
-                    let control: FormControl;
-                    if (_actualOrder.status === 'CONFIRMED' || _actualOrder.status === 'IN_PROGRESS' || _actualOrder.status === 'PREPARED' ||
-                         this._orderAux.creation_user !== this._currentUserId) {
-                      control = new FormControl({ value: true, disabled: true });
-                    } else {
-                      control = new FormControl({ value: true, disabled: false });
-                    }
-                    this._garnishFormGroup.addControl(gar.name, control);
-                  }
-                } else {
-                  if (this._garnishFormGroup.contains(gar.name)) {
-                    this._garnishFormGroup.controls[gar.name].setValue(false);
-                  } else {
-                    let control: FormControl;
-                    if (_actualOrder.status === 'CONFIRMED' || _actualOrder.status === 'IN_PROGRESS' || _actualOrder.status === 'PREPARED' ||
-                         this._orderAux.creation_user !== this._currentUserId) {
-                      control = new FormControl({ value: false, disabled: true });
-                    }else{
-                      control = new FormControl({ value: false, disabled: false });
-                    }
-                    this._garnishFormGroup.addControl(gar.name, control);
-                  }
-                }
-              }
-            });
-          });
-
-          this._additionSub = MeteorObservable.subscribe('additionsByRestaurant', this._res_code).subscribe(() => {
-            this._ngZone.run(() => {
-              this._additions = Additions.find({}).zone();
-              this._createAdditions = Additions.collection.find({}).fetch();
-
-              let _actualOrder;
-              _actualOrder = Orders.collection.find({ _id: this._order_code, creation_user: this._creation_user }).fetch()[0];
-              _actualOrder.items.forEach((itemOrder) => {
-                if (itemOrder.itemId === this._item_code && itemOrder.index === this._item_order_index) {
-                  this._orderAdditions = itemOrder.additions;
-                }
-              });
-
-              for (let add of this._createAdditions) {
-                let additionExist: any[] = this._orderAdditions.filter(addition => addition === add._id);
-                if (additionExist.length > 0) {
-                  if (this._additionsFormGroup.contains(add.name)) {
-                    this._additionsFormGroup.controls[add.name].setValue(true);
-                  } else {
-                    let control: FormControl;
-                    if (_actualOrder.status === 'CONFIRMED' || _actualOrder.status === 'IN_PROGRESS' || _actualOrder.status === 'PREPARED' ||
-                        this._orderAux.creation_user !== this._currentUserId) {
-                      control = new FormControl({ value: true, disabled: true });
-                    }else{
-                      control = new FormControl({ value: true, disabled: false });
-                    }
-                    this._additionsFormGroup.addControl(add.name, control);
-                  }
-                } else {
-                  if (this._additionsFormGroup.contains(add.name)) {
-                    this._additionsFormGroup.controls[add.name].setValue(false);
-                  } else {
-                    let control: FormControl;
-                    if (_actualOrder.status === 'CONFIRMED' || _actualOrder.status === 'IN_PROGRESS' || _actualOrder.status === 'PREPARED' ||
-                         this._orderAux.creation_user !== this._currentUserId) {
-                      control = new FormControl({ value: false, disabled: true });
-                    }else{
-                      control = new FormControl({ value: false, disabled: false });
-                    }
-                    this._additionsFormGroup.addControl(add.name, control);
-                  }
-                }
-              }
-            });
-          });
-
-          this._newOrderForm = new FormGroup({
-            quantity: new FormControl('', [Validators.required]),
-            garnishFood: this._garnishFormGroup,
-            additions: this._additionsFormGroup
-          });
-          //
+    this._ordersSub = MeteorObservable.subscribe('getOrdersByTableId', this._res_code, this._table_code, this._statusArray).subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        this._orders = Orders.find({ _id: this._order_code, creation_user: this._creation_user });
+        this._orderAux = Orders.collection.find({ _id: this._order_code, creation_user: this._creation_user }).fetch()[0];
+        this._orderAux.items.forEach((itemOrder) => {
+          if (itemOrder.itemId === this._item_code && itemOrder.index === this._item_order_index) {
+            this._quantityCount = itemOrder.quantity;
+            this._finalPrice = itemOrder.paymentItem;
+            this._garnishFoodElementsCount = itemOrder.garnishFood.length;
+          }
+        });
+        if (this._orderAux.status === 'REGISTERED' && this._orderAux.creation_user === this._currentUserId) {
+          this._showActionsBtn = true;
+        } else {
+          this._showActionsBtn = false;
         }
       });
     });
+
+    this._garnishSub = MeteorObservable.subscribe('garnishFoodByRestaurant', this._res_code).subscribe(() => {
+
+      this._ngZone.run(() => {
+        this._garnishes = GarnishFoodCol.find({});
+        this._createdGarnishFood = GarnishFoodCol.collection.find({}).fetch();
+
+        let _actualOrder;
+        _actualOrder = Orders.collection.find({ _id: this._order_code, creation_user: this._creation_user }).fetch()[0];
+        _actualOrder.items.forEach((itemOrder) => {
+          if (itemOrder.itemId === this._item_code && itemOrder.index === this._item_order_index) {
+            this._orderItemGarnishFood = itemOrder.garnishFood;
+          }
+        });
+        for (let gar of this._createdGarnishFood) {
+          let garnishExist: any[] = this._orderItemGarnishFood.filter(garnish => garnish === gar._id);
+          if (garnishExist.length > 0) {
+            if (this._garnishFormGroup.contains(gar.name)) {
+              this._garnishFormGroup.controls[gar.name].setValue(true);
+            } else {
+              let control: FormControl;
+              if (_actualOrder.status !== 'REGISTERED' || this._orderAux.creation_user !== this._currentUserId) {
+                control = new FormControl({ value: true, disabled: true });
+              } else {
+                control = new FormControl({ value: true, disabled: false });
+              }
+              this._garnishFormGroup.addControl(gar.name, control);
+            }
+          } else {
+            if (this._garnishFormGroup.contains(gar.name)) {
+              this._garnishFormGroup.controls[gar.name].setValue(false);
+            } else {
+              let control: FormControl;
+              if (_actualOrder.status !== 'REGISTERED' || this._orderAux.creation_user !== this._currentUserId) {
+                control = new FormControl({ value: false, disabled: true });
+              } else {
+                control = new FormControl({ value: false, disabled: false });
+              }
+              this._garnishFormGroup.addControl(gar.name, control);
+            }
+          }
+        }
+      });
+    });
+
+    this._additionSub = MeteorObservable.subscribe('additionsByRestaurant', this._res_code).subscribe(() => {
+      this._ngZone.run(() => {
+        this._additions = Additions.find({}).zone();
+        this._createAdditions = Additions.collection.find({}).fetch();
+
+        let _actualOrder;
+        _actualOrder = Orders.collection.find({ _id: this._order_code, creation_user: this._creation_user }).fetch()[0];
+        _actualOrder.items.forEach((itemOrder) => {
+          if (itemOrder.itemId === this._item_code && itemOrder.index === this._item_order_index) {
+            this._orderAdditions = itemOrder.additions;
+          }
+        });
+
+        for (let add of this._createAdditions) {
+          let additionExist: any[] = this._orderAdditions.filter(addition => addition === add._id);
+          if (additionExist.length > 0) {
+            if (this._additionsFormGroup.contains(add.name)) {
+              this._additionsFormGroup.controls[add.name].setValue(true);
+            } else {
+              let control: FormControl;
+              if (_actualOrder.status !== 'REGISTERED' || this._orderAux.creation_user !== this._currentUserId) {
+                control = new FormControl({ value: true, disabled: true });
+              } else {
+                control = new FormControl({ value: true, disabled: false });
+              }
+              this._additionsFormGroup.addControl(add.name, control);
+            }
+          } else {
+            if (this._additionsFormGroup.contains(add.name)) {
+              this._additionsFormGroup.controls[add.name].setValue(false);
+            } else {
+              let control: FormControl;
+              if (_actualOrder.status !== 'REGISTERED' || this._orderAux.creation_user !== this._currentUserId) {
+                control = new FormControl({ value: false, disabled: true });
+              } else {
+                control = new FormControl({ value: false, disabled: false });
+              }
+              this._additionsFormGroup.addControl(add.name, control);
+            }
+          }
+        }
+      });
+    });
+
+    this._newOrderForm = new FormGroup({
+      quantity: new FormControl('', [Validators.required]),
+      garnishFood: this._garnishFormGroup,
+      additions: this._additionsFormGroup
+    });
+    //
   }
 
   presentModal(_actualObs?: string) {

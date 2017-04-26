@@ -1,4 +1,5 @@
 import { Route } from '@angular/router';
+import { NgZone } from '@angular/core';
 import { LayoutComponent } from './web/navigation/layout/layout.component';
 import { DashboardComponent } from './web/dashboard/dashboard.component';
 import { SectionComponent } from './web/administration/sections/section.component';
@@ -27,6 +28,14 @@ import { WaiterCallComponent } from './web/customer/waiter-call/waiter-call.comp
 import { OrderAttentionComponent } from './web/chef/order-attention/order-attention.component';
 import { OrdersToDeliveryComponent } from "./web/waiter/orders-to-delivery/orders-to-delivery.component";
 import { CallsComponent } from "./web/waiter/calls/calls.component";
+import { NotFoundWebComponent } from './web/auth/notfound.web.component';
+import { MeteorObservable } from 'meteor-rxjs';
+import { CustomerGuard } from './web/auth/navigation/customer-guard.service';
+import { AdminGuard } from './web/auth/navigation/admin-guard.service';
+import { WaiterGuard } from './web/auth/navigation/waiter-guard.service';
+import { SupervisorGuard } from './web/auth/navigation/supervisor-guard.service';
+import { ChefGuard } from './web/auth/navigation/chef-guard.service';
+import { CashierGuard } from './web/auth/navigation/cashier-guard.service';
 
 export const routes: Route[] = [
     { path: 'app', component: LayoutComponent, children: [
@@ -59,5 +68,13 @@ export const routes: Route[] = [
     { path: 'signin', component: SigninWebComponent },
     { path: 'signup', component: SignupWebComponent },
     { path: 'reset-password/:tk', component: ResetPasswordWebComponent },
-    { path: 'go-to-store', component: GoToStoreComponent }
+    { path: 'go-to-store', component: GoToStoreComponent },
+    { path: '404', component: NotFoundWebComponent },
+    { path: '**', redirectTo: '/404' }
+];
+
+export const ROUTES_PROVIDERS = [{
+    provide: 'canActivateForLoggedIn',
+    useValue: () => !!Meteor.userId()
+}
 ];

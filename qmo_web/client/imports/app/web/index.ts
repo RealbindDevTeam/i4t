@@ -49,6 +49,7 @@ import { OrderAttentionComponent } from './chef/order-attention/order-attention.
 import { OrdersToDeliveryComponent } from './waiter/orders-to-delivery/orders-to-delivery.component';
 import { CallsComponent } from './waiter/calls/calls.component';
 import { CallCloseConfirmComponent } from './waiter/calls/call-close-confirm/call-close-confirm.component';
+import { NotFoundWebComponent } from './auth/notfound.web.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -83,7 +84,8 @@ export const WEB_DECLARATIONS = [
     WaiterCallComponent,
     OrderAttentionComponent,
     OrdersToDeliveryComponent,
-    CallsComponent
+    CallsComponent,
+    NotFoundWebComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [
