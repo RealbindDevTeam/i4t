@@ -59,10 +59,10 @@ export class AdditionEditComponent implements OnInit, OnDestroy {
             editId: [ this._additionToEdit._id ],
             editName: [ this._additionToEdit.name, Validators.required ],
             editIsActive: [ this._additionToEdit.is_active ],
-            editPrice: [ this._additionToEdit.price, Validators.required ],
+            //editPrice: [ this._additionToEdit.price, Validators.required ],
             editRestaurants: this._restaurantsFormGroup
         });
-        this._additionRestaurants = this._additionToEdit.restaurants;
+        //this._additionRestaurants = this._additionToEdit.restaurants;
 
         this._additions = Additions.find( { } ).zone();
         this._additionSub = MeteorObservable.subscribe( 'additions', Meteor.userId() ).subscribe();
@@ -106,7 +106,7 @@ export class AdditionEditComponent implements OnInit, OnDestroy {
                 }            
             });
 
-            Additions.update( this._editForm.value.editId,{
+            /*Additions.update( this._editForm.value.editId,{
                 $set: {
                     modification_user: Meteor.userId(),
                     modification_date: new Date(),
@@ -116,7 +116,7 @@ export class AdditionEditComponent implements OnInit, OnDestroy {
                     price: this._editForm.value.editPrice,
                     restaurants: this._edition_restaurants
                 }
-            });
+            });*/
             this._dialogRef.close();          
         }
     }

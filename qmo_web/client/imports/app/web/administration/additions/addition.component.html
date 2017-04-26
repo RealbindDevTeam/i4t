@@ -3,74 +3,54 @@
   <md-card-subtitle>{{'ADDITIONS.ADDITIONS_TEXT' | translate}}</md-card-subtitle>
   <md-card-content>
     <form [formGroup]="_additionForm" (ngSubmit)="addAddition();">
-      <table style="width: 100%" cellspacing="0" style="margin-bottom: 10px">
-        <tr>
-            <td style="width: 40%">
-              <md-input-container style="width: 95%">
-                <input mdInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #inputName>
-                <md-hint align="end">{{inputName.value.length}} / 50</md-hint>
-              </md-input-container>
-            </td>
-            <td style="width: 24%">
-              <md-input-container style="width: 90%">
-                <input mdInput required formControlName="price" placeholder="{{'PRICING' | translate}}" minlength="1" maxlength="20" #inputPrice>
-                <md-hint align="end">{{inputPrice.value.length}} / 20</md-hint>
-                <span md-prefix>$&nbsp;</span>
-              </md-input-container>
-            </td>                                       
-        </tr>
-        <tr>
-          <td colspan="2">
-            <label>{{'ADDITIONS.RESTAURANT_ADDITION' | translate}}</label> 
-            <p><label *ngIf="!_showRestaurants" class="label-field-void">{{'ADDITIONS.NO_RESTAURANT_CREATED' | translate}}</label></p>
-            <div *ngIf="_showRestaurants" formGroupName="restaurants" style="padding-top: 20px">
-              <md-checkbox *ngFor="let restaurant of _restaurantList" [formControlName]="restaurant.name" [class.invalid]="!_additionForm.controls.restaurants.valid" style="padding-right: 15px">{{restaurant.name}}</md-checkbox>
-              <label></label>
+      <div>
+        <md-input-container style="width: 40%">
+          <input mdInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #inputName>
+          <md-hint align="end">{{inputName.value.length}} / 50</md-hint>
+        </md-input-container>
+      </div>
+      <div>
+        <p>{{'ADDITIONS.RESTAURANT_ADDITION' | translate}}</p> 
+        <p *ngIf="!_showRestaurants">{{'ADDITIONS.NO_RESTAURANT_CREATED' | translate}}</p>
+        <div *ngIf="_showRestaurants" formGroupName="restaurants">
+          <md-checkbox *ngFor="let restaurant of _restaurantList" [formControlName]="restaurant.name" [class.invalid]="!_additionForm.controls.restaurants.valid" style="padding-right: 15px" (change)="onCheckRestaurant(restaurant.name, $event)">{{restaurant.name}}</md-checkbox>
+          <label></label>
+        </div>
+      </div>
+      <div>
+        <p *ngIf="!_showCurrencies">Por favor selecciona el(los) restaurante(s) donde se encontrara disponible la adicion</p>
+        <p *ngIf="_showCurrencies"> Por favor ingresa el precio de la adicion:</p>
+        <div *ngIf="_showCurrencies" formGroupName="currencies">
+          <div *ngFor="let currency of _currencies | async">
+            <div *ngFor="let cur of _restaurantCurrencies">
+                <md-input-container *ngIf="currency._id === cur" style="width: 25%;">
+                  <input mdInput required [formControlName]="cur" [class.invalid]="!_additionForm.controls.currencies.valid" type="number" placeholder="Precio de la Adicion" min="1" [step]="currency.decimal">
+                  <span mdSuffix>{{currency.code}}</span>
+                </md-input-container>
             </div>
-          </td>
-        </tr>
-      </table>
+          </div>
+        </div>
+      </div>
       <button md-raised-button class="button-secundary" [disabled]="!_additionForm.valid" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
       <button md-raised-button class="button-primary" [disabled]="!_additionForm.valid" type="submit">{{'CREATE' | translate}}</button>
     </form>    
   </md-card-content>
 </md-card>
-<md-card class="card-toolbar">
+<md-card *ngFor="let addition of _additions | async" style="width: 44%;display: inline-block;vertical-align: top;margin-left: 1%;">
+  <md-card-title>{{addition.name}}</md-card-title>
   <md-card-content>
-    <table class="responsive-table highlight centered">
-      <thead>
-      <tr>
-        <th data-field="dataName">{{'NAME' | translate}}</th>
-        <th data-field="dataPrice">{{'PRICING' | translate}}</th>
-        <th data-field="dataRest">{{'ADDITIONS.RESTAURANTS' | translate}}</th>
-        <th data-field="dataModDate">{{'MODIFICATION_DATE' | translate}}</th>
-        <th data-field="dataIsActive">{{'STATE' | translate}}</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let addition of _additions | async | paginate: { itemsPerPage: 10, currentPage: p }">
-        <td>{{addition.name}}</td>
-        <td>{{addition.price}}</td>
-        <td>
-          <label *ngIf="addition.restaurants.length == 0" class="label-field-void">{{'ADDITIONS.NO_RESTAURANT' | translate}}</label>
-          <div *ngFor="let rst of _restaurants | async">
-            <div *ngFor="let addRest of addition.restaurants">
-              <div *ngIf="rst._id == addRest">
-                {{rst.name}}
-              </div>              
-            </div>
-          </div>
-        </td>
-        <td>{{addition.modification_date | date: 'dd/MM/yyyy HH:mm'}}</td>
-        <td><md-slide-toggle [(checked)]="addition.is_active" (change)="updateStatus(addition)"></md-slide-toggle></td>
-        <td>
-          <button md-icon-button md-tooltip="Modify" (click)="open(addition)">
-            <md-icon>create</md-icon>
-          </button>
-        </td>              
-      </tr>
-      </tbody>
-      <pagination-controls (pageChange)="p = $event"></pagination-controls>
-    </table>
+    <p *ngIf="addition.prices.length === 0">{{'ADDITIONS.NO_RESTAURANT' | translate}}</p>
+    <div *ngFor="let rst of _restaurants | async">
+      <div *ngFor="let additionPrice of addition.prices">
+        <div *ngIf="rst._id === additionPrice.restaurantId">
+          <div><md-icon>store</md-icon> {{rst.name}} - {{additionPrice.price}}</div>
+        </div>              
+      </div>
+    </div>
   </md-card-content>
+  <md-card-actions>
+    <button md-raised-button (click)="open(addition)">{{'ADDITIONS.MODIFY' | translate}}</button>
+    <button md-raised-button *ngIf="addition.is_active" style="background-color: red;color: white;" (click)="updateStatus(addition)">{{'ADDITIONS.INACTIVATE' | translate}}</button>
+    <button md-raised-button *ngIf="!addition.is_active" style="background-color: green;color: white;" (click)="updateStatus(addition)">{{'ADDITIONS.ACTIVATE' | translate}}</button>
+  </md-card-actions>
 </md-card>

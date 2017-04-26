@@ -3,12 +3,14 @@ import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
+import { Meteor } from 'meteor/meteor';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Additions } from '../../../../../../both/collections/administration/addition.collection';
-import { Addition } from '../../../../../../both/models/administration/addition.model';
+import { Addition, AdditionPrices } from '../../../../../../both/models/administration/addition.model';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
-import { Meteor } from 'meteor/meteor';
+import { Currency } from '../../../../../../both/models/general/currency.model';
+import { Currencies } from '../../../../../../both/collections/general/currency.collection';
 import { AdditionEditComponent } from './additions-edit/addition-edit.component';
 
 import template from './addition.component.html';
@@ -23,16 +25,21 @@ export class AdditionComponent implements OnInit, OnDestroy{
 
     private _additionForm: FormGroup;
     private _restaurantsFormGroup: FormGroup = new FormGroup({});
+    private _currenciesFormGroup: FormGroup = new FormGroup({});
 
     private _additions: Observable<Addition[]>;
     private _restaurants: Observable<Restaurant[]>;
+    private _currencies: Observable<Currency[]>;
 
     private _additionsSub: Subscription;
     private _restaurantSub: Subscription;
+    private _currenciesSub: Subscription;
     
     private _restaurantList:Restaurant[];
     public _dialogRef: MdDialogRef<any>;
     private _showRestaurants: boolean = true;
+    private _restaurantCurrencies: string [] = [];
+    private _showCurrencies: boolean = false;
 
     /**
      * AdditionComponent constructor
@@ -53,9 +60,8 @@ export class AdditionComponent implements OnInit, OnDestroy{
     ngOnInit(){
         this._additionForm = new FormGroup({
             name: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 50 ) ] ),
-            isActive: new FormControl( false ),
-            price: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 20 ) ] ),
-            restaurants: this._restaurantsFormGroup         
+            restaurants: this._restaurantsFormGroup,
+            currencies: this._currenciesFormGroup 
         });        
 
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', Meteor.userId() ).subscribe( () => {
@@ -74,6 +80,8 @@ export class AdditionComponent implements OnInit, OnDestroy{
 
         this._additions = Additions.find( { } ).zone();
         this._additionsSub = MeteorObservable.subscribe( 'additions', Meteor.userId() ).subscribe();
+        this._currenciesSub = MeteorObservable.subscribe( 'currencies' ).subscribe();
+        this._currencies = Currencies.find( { } ).zone();
     }
 
     /**
@@ -86,14 +94,20 @@ export class AdditionComponent implements OnInit, OnDestroy{
         }
 
         if( this._additionForm.valid ){
-            let arr:any[] = Object.keys( this._additionForm.value.restaurants );
-            let _lRestaurantsToInsert:string[] = [];
+            let arrCur:any[] = Object.keys( this._additionForm.value.currencies );
+            let _lAdditionPricesToInsert: AdditionPrices[] = [];
 
-            arr.forEach( ( rest ) => {
-                if( this._additionForm.value.restaurants[ rest ] ){
-                    let restau:Restaurant = Restaurants.findOne( { name: rest } );
-                    _lRestaurantsToInsert.push( restau._id );               
-                }            
+            arrCur.forEach( ( cur ) => {
+                let find: Restaurant[] = this._restaurantList.filter( r => r.currencyId === cur );
+                for( let res of find ){
+                    if( this._additionForm.value.restaurants[ res.name ] ){
+                        let _lAdditionPrice: AdditionPrices = { restaurantId: '', price: 0 };
+                        let restau:Restaurant = Restaurants.findOne( { name: res.name } );
+                        _lAdditionPrice.restaurantId = restau._id;
+                        _lAdditionPrice.price = this._additionForm.value.currencies[ cur ];
+                        _lAdditionPricesToInsert.push( _lAdditionPrice );
+                    }
+                }
             });
 
             Additions.insert({
@@ -103,8 +117,7 @@ export class AdditionComponent implements OnInit, OnDestroy{
                 modification_date: new Date(),
                 is_active: true,
                 name: this._additionForm.value.name,
-                price: this._additionForm.value.price,
-                restaurants: _lRestaurantsToInsert
+                prices: _lAdditionPricesToInsert
             });
         }
         this.cancel();
@@ -129,6 +142,8 @@ export class AdditionComponent implements OnInit, OnDestroy{
      */
     cancel():void{
         this._additionForm.reset();    
+        this._showCurrencies = false; 
+        this._restaurantCurrencies = [];
     }
 
     /**
@@ -147,10 +162,52 @@ export class AdditionComponent implements OnInit, OnDestroy{
     }
 
     /**
+     * This function allow create addition price with diferent currencies
+     * @param {string} _pRestaurantName 
+     * @param {any} _pEvent 
+     */
+    onCheckRestaurant( _pRestaurantName: string, _pEvent:any ):void{
+        let _lRestaurant: Restaurant = this._restaurantList.filter( r => r.name === _pRestaurantName )[0];
+        if( _pEvent.checked ){
+            if( this._restaurantCurrencies.indexOf( _lRestaurant.currencyId ) <= -1 ){
+                let _lCurrency: Currency = Currencies.findOne( { _id: _lRestaurant.currencyId } );
+                let _initValue: string = '';
+                if( _lCurrency.decimal !== 0 ){
+                    for( let i = 0; i < ( _lCurrency.decimal ).toString().slice( ( _lCurrency.decimal.toString().indexOf( '.' ) ), ( _lCurrency.decimal.toString().length ) ).length - 1; i++ ){
+                        _initValue += '0';
+                    }
+                    _initValue = '.' + _initValue;
+                }
+                let control: FormControl = new FormControl( _initValue, [ Validators.required, Validators.minLength( 1 ) ] );
+                this._currenciesFormGroup.addControl( _lRestaurant.currencyId, control );
+                this._restaurantCurrencies.push( _lRestaurant.currencyId );
+            }
+        } else {
+            let _aux:number = 0;
+            let arr:any[] = Object.keys( this._additionForm.value.restaurants );
+             arr.forEach( ( rest ) => {
+                if( this._additionForm.value.restaurants[ rest ] ){
+                    _aux ++;             
+                }            
+            });
+            if( _aux === 0 ){
+                this._restaurantCurrencies = [];
+            }
+        }
+
+        if( this._restaurantCurrencies.length > 0 ){
+            this._showCurrencies = true;            
+        } else {
+            this._showCurrencies = false;            
+        }
+    }
+
+    /**
      * Implements ngOnDestroy function
      */
     ngOnDestroy(){
         this._additionsSub.unsubscribe();
         this._restaurantSub.unsubscribe();
+        this._currenciesSub.unsubscribe();
     }
 }

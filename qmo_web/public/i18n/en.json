@@ -114,12 +114,12 @@
         "RESTAURANTS": "Restaurants",
         "RESTAURANT_ADDITION": "Select the restaurants where the addition is available",
         "ADDITIONS_TEXT": "Create the additions of your menu and select the restaurants where they will be seen",
-        "NO_DESCRIPTION": "No description of the addition",
         "NO_RESTAURANT": "No restaurant selected",
-        "IMAGE_NOT_AVAILABLE": "Image not available",
         "ADDITION_EDIT": "Addition edition",
-        "UPDATE_IMAGE": "Update addition image",
-        "NO_RESTAURANT_CREATED": "There are no restaurants created on the platform"
+        "NO_RESTAURANT_CREATED": "There are no restaurants created on the platform",
+        "MODIFY": "MODIFY",
+        "ACTIVATE": "ACTIVATE",
+        "INACTIVATE": "INACTIVATE"
     },
     "SETTINGS": {
         "TITTLE": "Settings",
