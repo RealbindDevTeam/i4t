@@ -5,7 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { Meteor } from 'meteor/meteor';
 
 @Injectable()
-export class CustomerGuard implements CanActivate {
+export class CashierGuard implements CanActivate {
 
     private auxIs: boolean;
     private auxRole: any;
@@ -15,7 +15,7 @@ export class CustomerGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         return MeteorObservable.call('getRole').map((role) => {
-            if (role == "400") {
+            if (role == "300") {
                 return true;
             }
             this.router.navigate(['/404']);

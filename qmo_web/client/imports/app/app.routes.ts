@@ -29,31 +29,36 @@ import { OrderAttentionComponent } from './web/chef/order-attention/order-attent
 import { NotFoundWebComponent } from './web/auth/notfound.web.component';
 import { MeteorObservable } from 'meteor-rxjs';
 import { CustomerGuard } from './web/auth/navigation/customer-guard.service';
+import { AdminGuard } from './web/auth/navigation/admin-guard.service';
+import { WaiterGuard } from './web/auth/navigation/waiter-guard.service';
+import { SupervisorGuard } from './web/auth/navigation/supervisor-guard.service';
+import { ChefGuard } from './web/auth/navigation/chef-guard.service';
+import { CashierGuard } from './web/auth/navigation/cashier-guard.service';
 
 export const routes: Route[] = [
     {
-        path: 'app', component: LayoutComponent, children: [
+        path: 'app', component: LayoutComponent, canActivateChild: ['canActivateForLoggedIn'], children: [
             //{ path : '', redirectTo : 'dashboard', pathMatch: 'full' },
-            { path: 'dashboard', component: DashboardComponent},
+            { path: 'dashboard', component: DashboardComponent, canActivate: [AdminGuard] },
             { path: 'settings', component: SettingsWebComponent },
-            { path: 'collaborators', component: CollaboratorsComponent, canActivate: ['validAdminOrSupervisor'] }, //sup-adm
-            { path: 'collaborators-register', component: CollaboratorsRegisterComponent, canActivate: ['validAdminOrSupervisor'] },  //sup-adm
-            { path: 'sections', component: SectionComponent, canActivate: ['validAdminOrSupervisor'] }, //sup-adm
-            { path: 'categories', component: CategoryComponent, canActivate: ['validAdminOrSupervisor'] }, //sup-adm
-            { path: 'subcategories', component: SubcategoryComponent, canActivate: ['validAdminOrSupervisor'] }, //sup-adm
-            { path: 'additions', component: AdditionComponent, canActivate: ['validAdminOrSupervisor'] }, //sup-adm
-            { path: 'promotions', component: PromotionComponent, canActivate: ['validAdminOrSupervisor'] }, //sup-adm
-            { path: 'garnishFood', component: GarnishFoodComponent, canActivate: ['validAdminOrSupervisor'] }, //sup-adm
-            { path: 'items', component: ItemComponent, canActivate: ['validAdminOrSupervisor'] }, //sup-adm
-            { path: 'itemsCreation', component: ItemCreationComponent, canActivate: ['validAdminOrSupervisor'] }, //sup-adm
-            { path: 'restaurant', component: RestaurantComponent, canActivate: ['validAdminOrSupervisor'] }, //sup-adm
-            { path: 'restaurantRegister', component: RestaurantRegisterComponent, canActivate: ['validAdmin'] }, //adm
-            { path: 'restaurantEdition', component: RestaurantEditionComponent, canActivate: ['validAdmin'] }, //adm
-            { path: 'tables', component: TableComponent, canActivate: ['validAdminOrSupervisor'] }, //sup-adm
+            { path: 'collaborators', component: CollaboratorsComponent, canActivate: [SupervisorGuard] }, //sup-adm
+            { path: 'collaborators-register', component: CollaboratorsRegisterComponent, canActivate: [SupervisorGuard] },  //sup-adm
+            { path: 'sections', component: SectionComponent, canActivate: [SupervisorGuard] }, //sup-adm
+            { path: 'categories', component: CategoryComponent, canActivate: [SupervisorGuard] }, //sup-adm
+            { path: 'subcategories', component: SubcategoryComponent, canActivate: [SupervisorGuard] }, //sup-adm
+            { path: 'additions', component: AdditionComponent, canActivate: [SupervisorGuard] }, //sup-adm
+            { path: 'promotions', component: PromotionComponent, canActivate: [SupervisorGuard] }, //sup-adm
+            { path: 'garnishFood', component: GarnishFoodComponent, canActivate: [SupervisorGuard] }, //sup-adm
+            { path: 'items', component: ItemComponent, canActivate: [SupervisorGuard] }, //sup-adm
+            { path: 'itemsCreation', component: ItemCreationComponent, canActivate: [SupervisorGuard] }, //sup-adm
+            { path: 'restaurant', component: RestaurantComponent, canActivate: [SupervisorGuard] }, //sup-adm
+            { path: 'restaurantRegister', component: RestaurantRegisterComponent, canActivate: [AdminGuard] }, //adm
+            { path: 'restaurantEdition', component: RestaurantEditionComponent, canActivate: [AdminGuard] }, //adm
+            { path: 'tables', component: TableComponent, canActivate: [SupervisorGuard] }, //sup-adm
             { path: 'orders', component: OrdersComponent, canActivate: [CustomerGuard] },
-            { path: 'itemsEnable', component: ItemEnableComponent, canActivate: ['validChef'] },
+            { path: 'itemsEnable', component: ItemEnableComponent, canActivate: [ChefGuard] },
             { path: 'waiter-call', component: WaiterCallComponent, canActivate: [CustomerGuard] },
-            { path: 'chefOrders', component: OrderAttentionComponent, canActivate: ['validChef'] }
+            { path: 'chefOrders', component: OrderAttentionComponent, canActivate: [ChefGuard] }
         ]
     },
     { path: '', component: LandingPageComponent },
@@ -68,41 +73,5 @@ export const routes: Route[] = [
 export const ROUTES_PROVIDERS = [{
     provide: 'canActivateForLoggedIn',
     useValue: () => !!Meteor.userId()
-},
-{
-    provide: 'validAdmin',
-    useValue: () => {
-        return MeteorObservable.call('validateAdmin');
-    }
-},
-{
-    provide: 'validWaiter',
-    useValue: () => {
-        return MeteorObservable.call('validateWaiter');
-    }
-},
-{
-    provide: 'validCashier',
-    useValue: () => {
-        return MeteorObservable.call('validateCashier');
-    }
-},
-{
-    provide: 'validCustomer',
-    useValue: () => {
-        return MeteorObservable.call('validateCustomer');
-    }
-},
-{
-    provide: 'validChef',
-    useValue: () => {
-        return MeteorObservable.call('validateChef');
-    }
-},
-{
-    provide: 'validAdminOrSupervisor',
-    useValue: () => {
-        return MeteorObservable.call('validateAdminOrSupervisor');
-    }
 }
 ];
