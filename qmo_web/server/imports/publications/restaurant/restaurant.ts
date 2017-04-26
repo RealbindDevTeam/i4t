@@ -24,6 +24,16 @@ Meteor.publish( 'restaurantImages', function( _userId:string ) {
 });
 
 /**
+ * Meteor publication restaurantImages with user Id condition
+ * @param {string} _userId 
+ */
+Meteor.publish( 'restaurantImagesByRestaurantWork', function( _userId : string ) {
+    check( _userId, String );
+    var user_detail = UserDetails.collection.findOne({ user_id: _userId });
+    return RestaurantImages.collection.find( { restaurantId: user_detail.restaurant_work } );
+});
+
+/**
  * Meteor publications restaurantByCurrentUser
  * @param {string} _userId
  */

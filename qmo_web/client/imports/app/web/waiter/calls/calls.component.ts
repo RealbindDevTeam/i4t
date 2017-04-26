@@ -4,7 +4,7 @@ import { TranslateService } from 'ng2-translate';
 import { MeteorObservable } from "meteor-rxjs";
 import { Subscription } from "rxjs";
 
-import { Restaurants } from "../../../../../../both/collections/restaurant/restaurant.collection";
+import { Restaurants, RestaurantImages } from "../../../../../../both/collections/restaurant/restaurant.collection";
 import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
 import { WaiterCallDetails } from '../../../../../../both/collections/restaurant/waiter-call-detail.collection';
 import { User } from '../../../../../../both/models/auth/user.model';
@@ -25,6 +25,7 @@ export class CallsComponent {
     private _userSubscription           : Subscription;
     private _callsDetailsSubscription   : Subscription;
     private _tableSubscription          : Subscription;
+    private _imgRestaurantSubscription  : Subscription;
 
     private _mdDialogRef : MdDialogRef<any>;
 
@@ -32,6 +33,7 @@ export class CallsComponent {
     private _waiterCallDetail           : any;
     private _tables                     : any;
     private _waiterCallDetailCollection : any;
+    private _imgRestaurant              : any;
 
     private _userLang : string;
     private _loading  : boolean;
@@ -52,6 +54,10 @@ export class CallsComponent {
     ngOnInit(){
         this._userRestaurantSubscription = MeteorObservable.subscribe('getRestaurantByRestaurantWork', Meteor.userId()).subscribe(() => {
             this._restaurants = Restaurants.find({});
+        });
+        
+        this._imgRestaurantSubscription = MeteorObservable.subscribe('restaurantImagesByRestaurantWork', Meteor.userId()).subscribe(() => {
+            this._imgRestaurant = RestaurantImages.find({});
         });
 
         this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe();

@@ -6,7 +6,7 @@ import { Subscription } from "rxjs";
 
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
 import { UserDetail } from 'qmo_web/both/models/auth/user-detail.model';
-import { Restaurants } from 'qmo_web/both/collections/restaurant/restaurant.collection';
+import { Restaurants, RestaurantImages } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-call-detail.collection';
 import { User } from 'qmo_web/both/models/auth/user.model';
@@ -19,17 +19,19 @@ import { Users } from 'qmo_web/both/collections/auth/user.collection';
 export class CallsPage implements OnInit, OnDestroy {
 
   private _userRestaurantSubscription : Subscription;
-  private _userSubscription : Subscription;
-  private _callsDetailsSubscription : Subscription;
-  private _tableSubscription : Subscription;
+  private _userSubscription           : Subscription;
+  private _callsDetailsSubscription   : Subscription;
+  private _tableSubscription          : Subscription;
+  private _imgRestaurantSubscription  : Subscription;
 
-  private _restaurants : any;
-  private _waiterCallDetail : any;
-  private _tables : any;
+  private _restaurants                : any;
+  private _waiterCallDetail           : any;
+  private _tables                     : any;
   private _waiterCallDetailCollection : any;
+  private _imgRestaurant              : any;
 
-  private _userLang: string;
-  private _user : User;
+  private _user     : User;
+  private _userLang : string;
 
   /**
     * CallsPage Constructor
@@ -53,6 +55,10 @@ export class CallsPage implements OnInit, OnDestroy {
   ngOnInit(){
     this._userRestaurantSubscription = MeteorObservable.subscribe('getRestaurantByRestaurantWork', Meteor.userId()).subscribe(() => {
       this._restaurants = Restaurants.find({});
+    });
+
+    this._imgRestaurantSubscription = MeteorObservable.subscribe('restaurantImagesByRestaurantWork', Meteor.userId()).subscribe(() => {
+        this._imgRestaurant = RestaurantImages.find({});
     });
 
     this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe();
