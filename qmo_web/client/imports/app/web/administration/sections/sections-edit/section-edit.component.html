@@ -2,40 +2,25 @@
   <md-card-title>{{'SECTIONS.SECTION_EDIT' | translate}}</md-card-title>
   <md-card-content>
     <form [formGroup]="_editForm" (ngSubmit)="editSection();">
-        <table style="width: 100%" cellspacing="0">
-          <tr>
-            <td>
-              <md-input-container style="width: 100%">
-                <input mdInput required formControlName="editName" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #editInputName>
-                <md-hint align="end">{{editInputName.value.length}} / 50</md-hint>
-              </md-input-container>
-            </td>            
-            <td>
-              <md-slide-toggle formControlName="editIsActive">{{'STATE' | translate}}</md-slide-toggle>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <md-input-container style="width: 100%">
-                <textarea mdInput formControlName="editDesc" placeholder="{{'DESCRIPTION' | translate}}" maxlength="150" #editInputDesc></textarea>
-                <md-hint align="end">{{editInputDesc.value.length}} / 150</md-hint>
-              </md-input-container>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-                <label>{{'SECTIONS.RESTAURANT_SECTION' | translate}}</label>
-                <div formGroupName="editRestaurants" style="padding-top: 20px">
-                    <md-checkbox [formControlName]="restaurant.name" [class.invalid]="!_editForm.controls.editRestaurants.valid" *ngFor="let restaurant of _restaurantsList" style="padding-right: 15px">{{restaurant.name}}</md-checkbox>
-                    <label></label>
-                </div>
-            </td>
-          </tr> 
-        </table>
-        <div style="padding-top: 10px">
-          <button md-raised-button class="button-secundary" type="button" (click)="_dialogRef.close()">{{'CANCEL' | translate}}</button>
-          <button md-raised-button class="button-primary" [disabled]="!_editForm.valid"  type="submit">{{'UPDATE' | translate}}</button>
+      <div>
+        <md-input-container style="width: 52%">
+          <input mdInput required formControlName="editName" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #editInputName>
+          <md-hint align="end">{{editInputName.value.length}} / 50</md-hint>
+        </md-input-container>
+        <md-slide-toggle formControlName="editIsActive" style="width: 40%;display: inline-block;margin-left: 2%;">{{'STATE' | translate}}</md-slide-toggle>
+      </div>
+      <div>
+        <p>{{'SECTIONS.RESTAURANT_SECTION' | translate}}</p>
+        <div formGroupName="editRestaurants">
+            <md-checkbox [formControlName]="restaurant.name" [class.invalid]="!_editForm.controls.editRestaurants.valid" *ngFor="let restaurant of _restaurantsList" style="padding-right: 15px">{{restaurant.name}}</md-checkbox>
+            <label></label>
         </div>
+      </div>
+      <br/>
+      <div>
+        <button md-raised-button class="button-secundary" type="button" (click)="_dialogRef.close()">{{'CANCEL' | translate}}</button>
+        <button md-raised-button class="button-primary" [disabled]="!_editForm.valid"  type="submit">{{'UPDATE' | translate}}</button>
+      </div>
   </form>
   </md-card-content>
 </md-card>

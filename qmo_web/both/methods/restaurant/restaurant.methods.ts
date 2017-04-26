@@ -17,13 +17,16 @@ import * as QRious from 'qrious';
  * @param {string} user
  * @return {Promise<any>} uploadRestaurantImage
  */
-export function uploadRestaurantImage(data: File, user: string): Promise<any> {
+export function uploadRestaurantImage( data: File, 
+                                       user: string,
+                                       restaurantId: string): Promise<any> {
     return new Promise((resolve, reject) => {
         const file = {
             name: data.name,
             type: data.type,
             size: data.size,
-            userId: user
+            userId: user,
+            restaurantId: restaurantId
         };
 
         const upload = new UploadFS.Uploader({

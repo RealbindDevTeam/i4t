@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router, NavigationExtras } from "@angular/router";
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
-import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
+import { Restaurant, RestaurantImage } from '../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants, RestaurantImages } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { Country } from '../../../../../../both/models/settings/country.model';
 import { Countries } from '../../../../../../both/collections/settings/country.collection';
 import { City } from '../../../../../../both/models/settings/city.model';
@@ -26,17 +26,20 @@ import style from './restaurant.component.scss';
     template,
     styles: [ style ]
 })
-export class RestaurantComponent implements OnInit, AfterViewInit, OnDestroy {
+export class RestaurantComponent implements OnInit, OnDestroy {
 
     private restaurants: Observable<Restaurant[]>;
     private countries: Observable<Country[]>;
     private cities: Observable<City[]>;
     private _hours: Observable<Hour[]>;
+    private _restaurantImages: Observable<RestaurantImage[]>;
     
     private restaurantSub: Subscription;              
     private countriesSub: Subscription;
     private citiesSub: Subscription;
     private _hoursSub: Subscription;
+    private _restaurantImagesSub: Subscription;
+
     private _empty : boolean;
 
     public _dialogRef: MdDialogRef<any>;
@@ -68,16 +71,8 @@ export class RestaurantComponent implements OnInit, AfterViewInit, OnDestroy {
         this._hoursSub = MeteorObservable.subscribe( 'hours' ).subscribe( () => {
             this._hours = Hours.find( {} ); 
         }); 
-    }
-
-    ngAfterViewInit() {
-        /*let prue : number;
-        prue = Restaurants.collection.find({}).count();
-        if (prue > 0) {
-            this._empty = true;
-        } else {
-            this._empty = false;
-        }*/
+        this._restaurantImagesSub = MeteorObservable.subscribe( 'restaurantImages', Meteor.userId() ).subscribe();
+        this._restaurantImages = RestaurantImages.find( { } ).zone();
     }
 
     /**
@@ -138,5 +133,6 @@ export class RestaurantComponent implements OnInit, AfterViewInit, OnDestroy {
         this.countriesSub.unsubscribe();
         this.citiesSub.unsubscribe();
         this._hoursSub.unsubscribe();
+        this._restaurantImagesSub.unsubscribe();
     }
 }
