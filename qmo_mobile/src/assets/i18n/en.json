@@ -18,6 +18,7 @@
         "UPDATE": "Update",
         "MODIFY": "Modify",
         "CHOOSE_FILE": "Choose a file",
+        "CLOSE" : "Close",
         "INITIAL": {
             "SIGNUP": "Sign Up",
             "SIGNIN": "Log In"

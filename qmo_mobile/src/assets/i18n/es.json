@@ -18,6 +18,7 @@
         "UPDATE": "Actualizar",
         "MODIFY": "Modificar",
         "CHOOSE_FILE": "Seleccionar archivo",
+        "CLOSE" : "Cerrar",
         "INITIAL": {
             "SIGNUP": "Registrarse",
             "SIGNIN": "Iniciar sesión"

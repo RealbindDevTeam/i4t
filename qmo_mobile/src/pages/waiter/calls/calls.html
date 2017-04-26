@@ -7,22 +7,6 @@
 </ion-header>
 
 <ion-content>
-    <!--div *ngFor="let _res of _restaurants | async">
-        <div id="img-header">
-            <div class="img">
-                <img src="{{_res.urlImage}}">
-            </div>
-        </div>
-        <ion-card style="margin: 0 auto">
-            <ion-card-header>
-                {{_res.name}}
-            </ion-card-header>
-            <ion-card-content>
-                <p>{{_res.address}} • {{_res.phone}}</p>
-            </ion-card-content>
-        </ion-card>
-    </div-->
-
     <ion-list *ngFor="let _res of _restaurants | async" style="margin: 0 auto; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);">
         <ion-item style="background-image: url(assets/img/background_waiter.png);" class="img-header">
             <ion-avatar item-left>
@@ -32,26 +16,28 @@
             <p>{{_res.address}} • {{_res.phone}}</p>
         </ion-item>
     </ion-list>
-
+    
     <div *ngFor="let _call of _waiterCallDetail | async">
         <div *ngFor="let _table of _tables | async">
             <ion-card *ngIf="_table._id === _call.table_id">
-                <ion-grid >
-                    <ion-row>
-                        <ion-col>
-                            <ion-icon name='hand' style="font-size: 5rem; color: #9E9E9E"></ion-icon>
-                        </ion-col>
-                        <ion-col>
-                            <span style="font-size: 2rem;">{{ 'MOBILE.WAITER_CALL.TABLE' | translate }} {{_table._number}}</span>
-                            <span style="font-size: 2rem;">{{ 'MOBILE.WAITER_CALL.TURN' | translate }} {{_call.turn}}</span>
-                        </ion-col>
-                        <ion-col>
-                            <button ion-button item-right (click)="showComfirmClose(_call)" style="height: 36px; font-size: 1.6rem; background-color: #679436;">Cerrar</button>
-                        </ion-col>
-                    </ion-row>
-                </ion-grid>
+                <!--ion-card-header>
+                </ion-card-header-->
+                <ion-card-content>
+                    <div class="item-block">
+                        <!--img class="img-cards" src="assets/img/user_default_image.png"-->
+                        <ion-icon name='hand' style="font-size: 2.6em;margin-right: 16px;"></ion-icon>
+                        <div class="header-title">
+                            <span>
+                                {{ 'MOBILE.WAITER_CALL.TABLE' | translate }} {{_table._number}} - {{ 'MOBILE.WAITER_CALL.TURN' | translate }} {{_call.turn}}
+                            </span>
+                            <button ion-button item-right (click)="showComfirmClose(_call)" 
+                                    style="height: 36px; font-size: 0.5rem; background-color: #679436;">
+                                {{'MOBILE.CLOSE' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </ion-card-content>
             </ion-card>
         </div>
     </div>
-    
 </ion-content>

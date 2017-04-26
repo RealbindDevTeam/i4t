@@ -46,3 +46,37 @@
     background-repeat: no-repeat; 
     background-size: 100% 100%;
 }
+
+.img-cards{
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.header-title {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    overflow: hidden;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 4.4rem;
+    border: 0;
+    font-weight: normal;
+    line-height: normal;
+    text-align: initial;
+    text-decoration: none;
+    color: inherit;
+    
+    span {
+        font-size: 1.8rem;
+        font-weight: 500;
+    }
+}
