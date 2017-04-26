@@ -93,3 +93,12 @@ export interface RestaurantSchedule {
         closing_time: string
     }
 };
+
+/**
+ * RestaurantTurn model
+ */
+export interface RestaurantTurn extends CollectionObject {
+    restaurant_id : string,
+    turn : number,
+    last_waiter_id : string,
+}

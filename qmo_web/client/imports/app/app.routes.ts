@@ -26,6 +26,8 @@ import { RestaurantEditionComponent } from './web/restaurant/restaurant/restaura
 import { ItemEnableComponent } from './web/administration/items/items-enable/items-enable.component';
 import { WaiterCallComponent } from './web/customer/waiter-call/waiter-call.component';
 import { OrderAttentionComponent } from './web/chef/order-attention/order-attention.component';
+import { OrdersToDeliveryComponent } from "./web/waiter/orders-to-delivery/orders-to-delivery.component";
+import { CallsComponent } from "./web/waiter/calls/calls.component";
 import { NotFoundWebComponent } from './web/auth/notfound.web.component';
 import { MeteorObservable } from 'meteor-rxjs';
 import { CustomerGuard } from './web/auth/navigation/customer-guard.service';
@@ -36,29 +38,30 @@ import { ChefGuard } from './web/auth/navigation/chef-guard.service';
 import { CashierGuard } from './web/auth/navigation/cashier-guard.service';
 
 export const routes: Route[] = [
-    {
-        path: 'app', component: LayoutComponent, canActivateChild: ['canActivateForLoggedIn'], children: [
-            //{ path : '', redirectTo : 'dashboard', pathMatch: 'full' },
-            { path: 'dashboard', component: DashboardComponent, canActivate: [AdminGuard] },
-            { path: 'settings', component: SettingsWebComponent },
-            { path: 'collaborators', component: CollaboratorsComponent, canActivate: [SupervisorGuard] }, //sup-adm
-            { path: 'collaborators-register', component: CollaboratorsRegisterComponent, canActivate: [SupervisorGuard] },  //sup-adm
-            { path: 'sections', component: SectionComponent, canActivate: [SupervisorGuard] }, //sup-adm
-            { path: 'categories', component: CategoryComponent, canActivate: [SupervisorGuard] }, //sup-adm
-            { path: 'subcategories', component: SubcategoryComponent, canActivate: [SupervisorGuard] }, //sup-adm
-            { path: 'additions', component: AdditionComponent, canActivate: [SupervisorGuard] }, //sup-adm
-            { path: 'promotions', component: PromotionComponent, canActivate: [SupervisorGuard] }, //sup-adm
-            { path: 'garnishFood', component: GarnishFoodComponent, canActivate: [SupervisorGuard] }, //sup-adm
-            { path: 'items', component: ItemComponent, canActivate: [SupervisorGuard] }, //sup-adm
-            { path: 'itemsCreation', component: ItemCreationComponent, canActivate: [SupervisorGuard] }, //sup-adm
-            { path: 'restaurant', component: RestaurantComponent, canActivate: [SupervisorGuard] }, //sup-adm
-            { path: 'restaurantRegister', component: RestaurantRegisterComponent, canActivate: [AdminGuard] }, //adm
-            { path: 'restaurantEdition', component: RestaurantEditionComponent, canActivate: [AdminGuard] }, //adm
-            { path: 'tables', component: TableComponent, canActivate: [SupervisorGuard] }, //sup-adm
-            { path: 'orders', component: OrdersComponent, canActivate: [CustomerGuard] },
-            { path: 'itemsEnable', component: ItemEnableComponent, canActivate: [ChefGuard] },
-            { path: 'waiter-call', component: WaiterCallComponent, canActivate: [CustomerGuard] },
-            { path: 'chefOrders', component: OrderAttentionComponent, canActivate: [ChefGuard] }
+    { path: 'app', component: LayoutComponent, children: [
+        { path : '', redirectTo : 'dashboard', pathMatch: 'full' },
+        { path : 'dashboard', component : DashboardComponent },
+        { path : 'settings', component: SettingsWebComponent },
+        { path : 'collaborators', component: CollaboratorsComponent },
+        { path : 'collaborators-register', component: CollaboratorsRegisterComponent },
+        { path : 'sections', component : SectionComponent },
+        { path : 'categories', component : CategoryComponent },
+        { path : 'subcategories', component: SubcategoryComponent },
+        { path : 'additions', component: AdditionComponent },
+        { path : 'promotions', component: PromotionComponent },
+        { path : 'garnishFood', component: GarnishFoodComponent },
+        { path : 'items', component: ItemComponent },
+        { path : 'itemsCreation', component: ItemCreationComponent },
+        { path : 'restaurant', component: RestaurantComponent },
+        { path : 'restaurantRegister', component: RestaurantRegisterComponent },
+        { path : 'restaurantEdition', component: RestaurantEditionComponent },
+        { path : 'tables', component: TableComponent },
+        { path : 'orders', component: OrdersComponent },
+        { path : 'itemsEnable', component: ItemEnableComponent },
+        { path : 'waiter-call', component: WaiterCallComponent },
+        { path : 'chefOrders', component: OrderAttentionComponent },
+        { path : 'orders-to-delivery', component: OrdersToDeliveryComponent },
+        { path : 'calls', component: CallsComponent }
         ]
     },
     { path: '', component: LandingPageComponent },

@@ -46,6 +46,9 @@ import { OrdersListComponent } from './customer/orders/order-list/order-list.com
 import { ItemEnableComponent } from './administration/items/items-enable/items-enable.component';
 import { WaiterCallComponent } from './customer/waiter-call/waiter-call.component';
 import { OrderAttentionComponent } from './chef/order-attention/order-attention.component';
+import { OrdersToDeliveryComponent } from './waiter/orders-to-delivery/orders-to-delivery.component';
+import { CallsComponent } from './waiter/calls/calls.component';
+import { CallCloseConfirmComponent } from './waiter/calls/call-close-confirm/call-close-confirm.component';
 import { NotFoundWebComponent } from './auth/notfound.web.component';
 
 export const WEB_DECLARATIONS = [
@@ -80,6 +83,8 @@ export const WEB_DECLARATIONS = [
     ItemEnableComponent,
     WaiterCallComponent,
     OrderAttentionComponent,
+    OrdersToDeliveryComponent,
+    CallsComponent,
     NotFoundWebComponent
 ];
 
@@ -98,7 +103,8 @@ export const MODAL_DIALOG_DECLARATIONS = [
     RestaurantLocationComponent,
     RestaurantLocationInfoComponent,
     RestaurantInfoDetailComponent,
-    RestaurantScheduleComponent
+    RestaurantScheduleComponent,
+    CallCloseConfirmComponent
     /*
     CollaboratorsEditionComponent,
     */

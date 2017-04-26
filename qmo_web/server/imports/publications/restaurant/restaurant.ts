@@ -33,3 +33,14 @@ Meteor.publish('getRestaurantByCurrentUser', function( _userId: string){
     var user_detail = UserDetails.collection.findOne({ user_id: _userId });
     return Restaurants.collection.find({_id: user_detail.current_restaurant});
 });
+
+/**
+ * Meteor publications restaurantByRestaurantWork
+ * @param {string} _userId
+ */
+
+Meteor.publish('getRestaurantByRestaurantWork', function( _userId: string){
+    check( _userId, String);
+    var user_detail = UserDetails.collection.findOne({ user_id: _userId });
+    return Restaurants.collection.find({_id: user_detail.restaurant_work});
+});

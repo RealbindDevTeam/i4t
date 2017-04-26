@@ -18,6 +18,7 @@
         "UPDATE": "Actualizar",
         "MODIFY": "Modificar",
         "CHOOSE_FILE": "Seleccionar archivo",
+        "CLOSE" : "Cerrar",
         "INITIAL": {
             "SIGNUP": "Registrarse",
             "SIGNIN": "Iniciar sesión"
@@ -137,9 +138,19 @@
             "TOTAL_BILL": "Total cuenta",
             "PAY_BTN": "Pagar"
         },
-        "CALL_WAITER": {
+        "WAITER_CALL": {
             "TITTLE": "Solicitar mesero",
-            "CONTENT": "Oprime el botón para llamar al mesero"
+            "CONTENT": "Oprime el botón para llamar al mesero",
+            "THERE_IS_NOT_CODE_REST" : "!Ups¡ No estas en ningún restaurante",
+            "THERE_IS_NOT_CODE_REST_INS" : "Ve a la opción de ordenes e ingresa el código para llamar al mesero",
+            "RECEIVE_CALL" : "Recibimos tu llamado!",
+            "ONE_MOMENT" : "En un momento te atenderemos",
+            "TITLE_PROMPT" : "Cerrar solicitud",
+            "CONTENT_PROMPT" : "¿Deseas cerrar la solicitud del cliente?",
+            "LOADING" : "Por favor espera...",
+            "MSG_COMFIRM" : "Solicitud cerrada",
+            "TURN" :"Turno",
+            "TABLE" :"Mesa"
         },
         "SECTIONS": {
             "MENU": "Menú",

@@ -1,0 +1,43 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            <img id="signup-logo" src="assets/img/logo_iurest_mobile_white.png">
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-list *ngFor="let _res of _restaurants | async" style="margin: 0 auto; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);">
+        <ion-item style="background-image: url(assets/img/background_waiter.png);" class="img-header">
+            <ion-avatar item-left>
+                <img src="{{_res.urlImage}}">
+            </ion-avatar>
+            <h2>{{_res.name}}</h2>
+            <p>{{_res.address}} • {{_res.phone}}</p>
+        </ion-item>
+    </ion-list>
+    
+    <div *ngFor="let _call of _waiterCallDetail | async">
+        <div *ngFor="let _table of _tables | async">
+            <ion-card *ngIf="_table._id === _call.table_id">
+                <!--ion-card-header>
+                </ion-card-header-->
+                <ion-card-content>
+                    <div class="item-block">
+                        <!--img class="img-cards" src="assets/img/user_default_image.png"-->
+                        <ion-icon name='hand' style="font-size: 2.6em;margin-right: 16px;"></ion-icon>
+                        <div class="header-title">
+                            <span>
+                                {{ 'MOBILE.WAITER_CALL.TABLE' | translate }} {{_table._number}} - {{ 'MOBILE.WAITER_CALL.TURN' | translate }} {{_call.turn}}
+                            </span>
+                            <button ion-button item-right (click)="showComfirmClose(_call)" 
+                                    style="height: 36px; font-size: 0.5rem; background-color: #679436;">
+                                {{'MOBILE.CLOSE' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+        </div>
+    </div>
+</ion-content>

@@ -28,6 +28,7 @@ import './imports/publications/auth/collaborators';
 import './imports/publications/auth/user-details';
 import './imports/publications/restaurant/account';
 import './imports/publications/restaurant/order';
+import './imports/publications/restaurant/waiter-call';
 
 import { loadRoles } from './imports/fixtures/auth/roles';
 import { loadMenus } from './imports/fixtures/auth/menus';

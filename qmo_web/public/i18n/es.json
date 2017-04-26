@@ -162,7 +162,8 @@
             "ITEMS_ENABLE": "Habilitar Items",
             "ORDERS_CHEF": "Ordenes"
         },
-        "ORDERS": "Ordenes"
+        "ORDERS": "Ordenes",
+        "WAITER_CALL" : "Llamar mesero"
     },
     "PROMOTIONS": {
         "PROMOTION_CREATION": "Creación de promociones",
@@ -576,6 +577,21 @@
         "TOTAL_PRICE": "Precio Total",
         "MODIFY_ITEM": "Modificar Item",
         "DELETE_ITEM": "Eliminar Item"
+    },
+    "WAITER_CALL" : {
+        "TITTLE": "Solicitar mesero",
+        "CONTENT": "Oprime el botón para llamar al mesero",
+        "THERE_IS_NOT_CODE_REST" : "!Ups¡ No estas en ningún restaurante",
+        "THERE_IS_NOT_CODE_REST_INS" : "Ve a la opción de ordenes e ingresa el código para llamar al mesero",
+        "RECEIVE_CALL" : "Recibimos tu llamado!",
+        "ONE_MOMENT" : "En un momento te atenderemos",
+        "TITLE_PROMPT" : "Cerrar solicitud",
+        "CONTENT_PROMPT" : "¿Deseas cerrar la solicitud del cliente?",
+        "LOADING" : "Por favor espera...",
+        "MSG_COMFIRM" : "Solicitud cerrada",
+        "NO_ANSWER" : "No",
+        "YES_ANSWER" : "Si",
+        "TURN" : "Turno"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Ordenes Confirmadas",

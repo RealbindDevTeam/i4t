@@ -1,6 +1,6 @@
 import { MongoObservable } from 'meteor-rxjs';
 import { UploadFS } from 'meteor/jalik:ufs';
-import { Restaurant, RestaurantImage } from '../../models/restaurant/restaurant.model';
+import { Restaurant, RestaurantImage, RestaurantTurn } from '../../models/restaurant/restaurant.model';
 import { Meteor } from 'meteor/meteor';
 
 /**
@@ -54,4 +54,19 @@ export const RestaurantImagesStore = new UploadFS.store.GridFS({
     update: loggedIn,
     remove: loggedIn
   })
+});
+
+/**
+ * Restaurants Collection
+ */
+
+export const RestaurantTurns =  new MongoObservable.Collection<RestaurantTurn>('restaurant_turns');
+
+/**
+ * Allow Restaurant Turns collection insert and update functions
+ */
+RestaurantTurns.allow({
+    insert: loggedIn,
+    update: loggedIn,
+    remove: loggedIn
 });

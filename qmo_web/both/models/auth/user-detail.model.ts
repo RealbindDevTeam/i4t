@@ -6,6 +6,7 @@ export interface UserDetail extends CollectionObject{
     is_active: boolean;
 
     restaurant_work?: string;
+    jobs?: number;
     penalties?: UserDetailPenalty[];
     current_restaurant?: string;
     current_table?: string;

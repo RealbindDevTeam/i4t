@@ -53,6 +53,8 @@ export class SigninClass implements OnInit {
                                     this.roamWeb('app/orders');
                                 } else if( role == "500" ){
                                     this.roamWeb('app/chefOrders');
+                                } else if ( role == "200") {
+                                    this.roamWeb('app/calls');
                                 }
                             }, (error) => {
                                 this.error = err;

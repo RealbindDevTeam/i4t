@@ -18,6 +18,7 @@
         "UPDATE": "Update",
         "MODIFY": "Modify",
         "CHOOSE_FILE": "Choose a file",
+        "CLOSE" : "Close",
         "INITIAL": {
             "SIGNUP": "Sign Up",
             "SIGNIN": "Log In"
@@ -137,9 +138,19 @@
             "TOTAL_BILL": "Total bill",
             "PAY_BTN": "Pay"
         },
-        "CALL_WAITER": {
+        "WAITER_CALL": {
             "TITTLE": "Call waiter",
-            "CONTENT": "Press the button to call the waiter"
+            "CONTENT": "Press the button to call the waiter",
+            "THERE_IS_NOT_CODE_REST" : "!Ups¡ You are not in any restaurant",
+            "THERE_IS_NOT_CODE_REST_INS" : "Go to the order option and enter the code to call the waiter",
+            "RECEIVE_CALL" : "We receive your call!",
+            "ONE_MOMENT" : "In a moment we will answer you",
+            "TITLE_PROMPT" : "Request close",
+            "CONTENT_PROMPT" : "¿Want you close the client request?",
+            "LOADING" : "Please wait...",
+            "MSG_COMFIRM" : "Request closed",
+            "TURN" :"Turn",
+            "TABLE" :"Table"
         },
         "SECTIONS": {
             "MENU": "Menu",
