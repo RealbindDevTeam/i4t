@@ -27,6 +27,7 @@ import { WaiterTabsPage } from '../pages/waiter/waiter-tabs/waiter-tabs';
 import { CallsPage } from '../pages/waiter/calls/calls';
 import { OrdersToDeliveryPage } from '../pages/waiter/orders-to-delivery/orders-to-delivery';
 import { IonicStorageModule } from '@ionic/storage';
+import { ItemCardComponent } from '../pages/customer/sections/item-card';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateStaticLoader(http, 'assets/i18n', '.json');
@@ -56,7 +57,8 @@ export function createTranslateLoader(http: Http) {
     ModalObservationsEdit,
     WaiterTabsPage,
     CallsPage,
-    OrdersToDeliveryPage
+    OrdersToDeliveryPage,
+    ItemCardComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -103,7 +105,8 @@ export function createTranslateLoader(http: Http) {
     ModalObservationsEdit,
     WaiterTabsPage,
     CallsPage,
-    OrdersToDeliveryPage
+    OrdersToDeliveryPage,
+    ItemCardComponent
   ],
   providers: [
     { provide: ErrorHandler, 

@@ -18,30 +18,23 @@
     </p>
   </ion-item>
 
-  <hr showWhen="android"/>
+  <hr showWhen="android" />
   <ion-list style="margin-bottom: 0px">
     <ion-item>
       <ion-label>{{'MOBILE.SECTIONS.SELECTION' | translate}}</ion-label>
-      <ion-select [(ngModel)]="selected" interface="action-sheet" (ionChange)="validateSection(selected)" cancelText="{{'MOBILE.SECTIONS.CANCEL'| translate}}" class="custom-select">
+      <ion-select [(ngModel)]="selected" interface="action-sheet" (ionChange)="validateSection(selected)" cancelText="{{'MOBILE.SECTIONS.CANCEL'| translate}}"
+        class="custom-select">
         <ion-option value="all" selected="true">{{'MOBILE.SECTIONS.ALL' | translate}}</ion-option>
         <ion-option *ngFor="let section of _sections | async" value="{{section._id}}">{{section.name}}</ion-option>
-      </ion-select>
+        </ion-select>
     </ion-item>
   </ion-list>
-  <hr showWhen="android"/>
+  <hr showWhen="android" />
 
   <div *ngFor="let section of _sections | async">
     <div *ngFor="let item of _items | async">
-      <div *ngFor="let imageThumb of _imageThumbs | async">
-        <button ion-item *ngIf="(item.sectionId == section._id) && item.categoryId == '' && item.subcategoryId == ''" (click)="goToDetail(item._id)">
-          <ion-thumbnail item-left>
-            <img *ngIf="imageThumb.itemId == item._id"  src="{{imageThumb.url}}">
-          </ion-thumbnail>
-          <h2 style="white-space: normal">{{item.name}}</h2>
-          <p class="custom-paragraph">{{item.description}}</p>
-          <p>{{item.price}} COP</p>
-          <p *ngIf="!item.isAvailable" class="unavailable-item"> {{'MOBILE.SECTIONS.UNAVAILABLE' | translate}} </p>
-        </button>
+      <div *ngIf="(item.sectionId == section._id) && item.categoryId == '' && item.subcategoryId == ''" (click)="goToDetail(item._id)">
+        <item-card [itemIdIn]="item" [resCode]="_res_code"></item-card>
       </div>
     </div>
   </div>
@@ -49,34 +42,23 @@
   <ion-item-group *ngFor="let category of _categories | async">
     <ion-item-divider color="light" style="text-align: center; font-weight: bold">{{category.name}}</ion-item-divider>
     <div *ngFor="let item of _items | async">
-      <button ion-item *ngIf="(item.categoryId == category._id) && item.subcategoryId == ''" (click)="goToDetail(item._id)">
-        <ion-thumbnail item-left>
-          <img src="{{item.urlImage}}">
-        </ion-thumbnail>
-        <h2 style="white-space: normal">{{item.name}}</h2>
-        <p class="custom-paragraph">{{item.description}}</p>
-        <p>{{item.price}} COP</p>
-        <p *ngIf="!item.isAvailable" class="unavailable-item"> {{'MOBILE.SECTIONS.UNAVAILABLE' | translate}} </p>
-      </button>
+      <div *ngIf="(item.categoryId == category._id) && item.subcategoryId == ''" (click)="goToDetail(item._id)">
+        <item-card [itemIdIn]="item" [resCode]="_res_code"></item-card>
+      </div>
     </div>
     <div *ngFor="let subcategory of _subcategories | async">
       <div *ngIf="subcategory.category == category._id">
         <ion-item-divider class="custom-item-divider">{{subcategory.name}}</ion-item-divider>
         <div *ngFor="let item of _items | async">
-          <button ion-item *ngIf="item.subcategoryId == subcategory._id" (click)="goToDetail(item._id)">
-            <ion-thumbnail item-left>
-              <img src="{{item.urlImage}}">
-            </ion-thumbnail>
-            <h2 style="white-space: normal">{{item.name}}</h2>
-            <p class="custom-paragraph">{{item.description}}</p>
-            <p>{{item.price}} COP</p>
-            <p *ngIf="!item.isAvailable" class="unavailable-item"> {{'MOBILE.SECTIONS.UNAVAILABLE' | translate}} </p>
-          </button>
+          <div *ngIf="item.subcategoryId == subcategory._id" (click)="goToDetail(item._id)">
+            <item-card [itemIdIn]="item" [resCode]="_res_code"></item-card>
+          </div>
         </div>
       </div>
     </div>
   </ion-item-group>
 </ion-content>
+
 <ion-footer>
   <ion-fab right bottom>
     <button style="bottom: 0px" ion-fab color="light" mini (click)="goTop()"><ion-icon name="arrow-up"></ion-icon></button>
