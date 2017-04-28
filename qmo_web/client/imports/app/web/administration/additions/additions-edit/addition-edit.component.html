@@ -2,35 +2,34 @@
     <md-card-title>{{'ADDITIONS.ADDITION_EDIT' | translate}}</md-card-title>
     <md-card-content>
         <form [formGroup]="_editForm" (ngSubmit)="editAddition();">
-            <table style="width: 100%" cellspacing="0">
-                <tr>
-                    <td style="width: 40%">
-                        <md-input-container style="width: 95%">
-                            <input mdInput required formControlName="editName" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #editInputName>
-                            <md-hint align="end">{{editInputName.value.length}} / 50</md-hint>
-                        </md-input-container>
-                    </td>
-                    <td style="width: 32%">
-                        <md-input-container style="width: 90%">
-                            <input mdInput formControlName="editPrice" placeholder="{{'PRICING' | translate}}" minlength="1" maxlength="20" #editInputPrice>
-                            <md-hint align="end">{{editInputPrice.value.length}} / 20</md-hint>
-                            <span md-prefix>$&nbsp;</span>
-                        </md-input-container>
-                    </td>
-                    <td>
-                        <md-slide-toggle formControlName="editIsActive">{{'STATE' | translate}}</md-slide-toggle>
-                    </td>
-                </tr>        
-                <tr>
-                    <td colspan="3">
-                        <label>{{'ADDITIONS.RESTAURANT_ADDITION' | translate}}: </label>
-                        <div formGroupName="editRestaurants" style="padding-top: 20px">
-                            <md-checkbox [formControlName]="restaurant.name" [class.invalid]="!_editForm.controls.editRestaurants.valid" *ngFor="let restaurant of _restaurantsList" style="padding-right: 15px">{{restaurant.name}}</md-checkbox>
-                            <label></label>
+            <div>
+                <md-input-container style="width: 45%">
+                    <input mdInput required formControlName="editName" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #editInputName>
+                    <md-hint align="end">{{editInputName.value.length}} / 50</md-hint>
+                </md-input-container>
+                <md-slide-toggle formControlName="editIsActive" style="width: 40%;display: inline-block;margin-left: 3%;" >{{'STATE' | translate}}</md-slide-toggle>
+                <div>
+                    <p>{{'ADDITIONS.RESTAURANT_ADDITION' | translate}}: </p>
+                    <div formGroupName="editRestaurants">
+                        <md-checkbox [formControlName]="restaurant.name" [class.invalid]="!_editForm.controls.editRestaurants.valid" *ngFor="let restaurant of _restaurantsList" style="padding-right: 15px">{{restaurant.name}}</md-checkbox>
+                        <label></label>
+                    </div>
+                </div>
+                <div>
+                    <p *ngIf="!_showCurrencies">Por favor selecciona el(los) restaurante(s) donde se encontrara disponible la adicion</p>
+                    <p *ngIf="_showCurrencies"> Por favor ingresa el precio de la adicion (En caso de no tener valor ingresa 0 ):</p>
+                    <div *ngIf="_showCurrencies" formGroupName="editCurrencies">
+                        <div *ngFor="let currency of _currencies | async">
+                            <div *ngFor="let cur of _restaurantCurrencies">
+                                <md-input-container *ngIf="currency._id === cur" style="width: 30%;">
+                                <input mdInput required [formControlName]="cur" [class.invalid]="!_editForm.controls.editCurrencies.valid" type="number" placeholder="Precio de la Adicion" min="1" [step]="currency.decimal">
+                                <span mdSuffix>{{currency.code}} - {{currency.name | translate}} </span>
+                                </md-input-container>
+                            </div>
                         </div>
-                    </td>
-                </tr>    
-            </table>
+                    </div>
+                </div>
+            </div>
             <div style="padding-top: 10px">
                 <button md-raised-button class="button-secundary" type="button"  (click)="_dialogRef.close()">{{'CANCEL' | translate}}</button>
                 <button md-raised-button class="button-primary" [disabled]="!_editForm.valid" type="submit">{{'UPDATE' | translate}}</button>

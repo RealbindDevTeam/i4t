@@ -29,8 +29,6 @@ import style from './restaurant.component.scss';
 export class RestaurantComponent implements OnInit, OnDestroy {
 
     private restaurants: Observable<Restaurant[]>;
-    private countries: Observable<Country[]>;
-    private cities: Observable<City[]>;
     private _hours: Observable<Hour[]>;
     private _restaurantImages: Observable<RestaurantImage[]>;
     
@@ -63,8 +61,6 @@ export class RestaurantComponent implements OnInit, OnDestroy {
     ngOnInit(){
         this._empty = false;
         this.restaurants = Restaurants.find({}).zone();
-        this.countries = Countries.find({}).zone();
-        this.cities = Cities.find({}).zone();
         this.restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();        
         this.countriesSub = MeteorObservable.subscribe('countries').subscribe();
         this.citiesSub = MeteorObservable.subscribe('cities').subscribe();      
@@ -123,6 +119,27 @@ export class RestaurantComponent implements OnInit, OnDestroy {
             }
         };
         this.router.navigate(['app/restaurantEdition'], navigationExtras);
+    }
+
+    getRestaurantImage( _pRestaurantId: string ):string{
+        let _lRestaurantImage: RestaurantImage = RestaurantImages.find().fetch().filter( (r) => r.restaurantId === _pRestaurantId )[0];
+        if( _lRestaurantImage ){
+            return _lRestaurantImage.url
+        }
+    }
+
+    getRestaurantCountry( _pCountryId: string ):string{
+        let _lCountry: Country = Countries.find().fetch().filter( c => c._id === _pCountryId )[0];
+        if( _lCountry ){
+            return _lCountry.name;
+        }
+    }
+
+    getRestaurantCity( _pCityId: string ):string{
+        let _lCity: City = Cities.find().fetch().filter( c => c._id === _pCityId )[0];
+        if( _lCity ){
+            return _lCity.name;
+        }
     }
     
     /**

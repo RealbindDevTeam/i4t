@@ -193,11 +193,14 @@ export class AdditionComponent implements OnInit, OnDestroy{
             let arr:any[] = Object.keys( this._additionForm.value.restaurants );
              arr.forEach( ( rest ) => {
                 if( this._additionForm.value.restaurants[ rest ] ){
-                    _aux ++;             
+                    let _lRes: Restaurant = this._restaurantList.filter( r => r.name === rest )[0];
+                    if( _lRestaurant.currencyId === _lRes.currencyId ){
+                        _aux ++;             
+                    }
                 }            
             });
             if( _aux === 0 ){
-                this._restaurantCurrencies = [];
+                this._restaurantCurrencies.splice( this._restaurantCurrencies.indexOf( _lRestaurant.currencyId ), 1 );
             }
         }
 
@@ -206,6 +209,18 @@ export class AdditionComponent implements OnInit, OnDestroy{
         } else {
             this._showCurrencies = false;            
         }
+    }
+
+    showAdditionPrices( _pAdditionPrices:AdditionPrice[] ):string{
+        let _lPrices: string = '';
+        _pAdditionPrices.forEach( ( ap ) => {
+            let _lCurrency: Currency = Currencies.findOne( { _id: ap.currencyId } );
+            if( _lCurrency ){
+                let price: string = ap.price + ' ' + _lCurrency.code + ' / '
+                _lPrices += price;
+            }
+        });
+        return _lPrices;
     }
 
     /**

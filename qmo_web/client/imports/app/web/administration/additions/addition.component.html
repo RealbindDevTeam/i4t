@@ -23,9 +23,9 @@
         <div *ngIf="_showCurrencies" formGroupName="currencies">
           <div *ngFor="let currency of _currencies | async">
             <div *ngFor="let cur of _restaurantCurrencies">
-                <md-input-container *ngIf="currency._id === cur" style="width: 25%;">
+                <md-input-container *ngIf="currency._id === cur" style="width: 30%;">
                   <input mdInput required [formControlName]="cur" [class.invalid]="!_additionForm.controls.currencies.valid" type="number" placeholder="Precio de la Adicion" min="1" [step]="currency.decimal">
-                  <span mdSuffix>{{currency.code}}</span>
+                  <span mdSuffix>{{currency.code}} - {{currency.name | translate}} </span>
                 </md-input-container>
             </div>
           </div>
@@ -50,17 +50,7 @@
         </div>              
       </div>
     </div>
-    <div style="margin-top: 1%;display: inline-flex;">
-      <div *ngFor="let cur of _currencies | async">
-        <div *ngFor="let additionPrices of addition.prices">
-          <div *ngIf="cur._id === additionPrices.currencyId">
-            <div style="font-size: x-large;color: green;margin-top: 2%;width: 100%;">
-              {{additionPrices.price}} {{cur.code}}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div style="margin-top: 2%;font-size: x-large;color: green;margin-bottom: -3%;">{{showAdditionPrices(addition.prices)}}</div>
   </md-card-content>
   <md-card-actions style="margin-top: -2%;">
     <button md-raised-button (click)="open(addition)">{{'ADDITIONS.MODIFY' | translate}}</button>

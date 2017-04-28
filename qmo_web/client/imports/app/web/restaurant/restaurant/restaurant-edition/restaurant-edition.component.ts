@@ -126,8 +126,10 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         });
 
         this._currencySub = MeteorObservable.subscribe( 'currencies' ).subscribe( () => {
-            let find: Currency[] = Currencies.collection.find().fetch().filter( c => c._id === this._restaurantToEdit.currencyId );
-            this._restaurantCurrency = find[0].code + ' - ' + this.itemNameTraduction( find[0].name );
+            let find: Currency[] = Currencies.find().fetch().filter( c => c._id === this._restaurantToEdit.currencyId );
+            if( find ){
+                this._restaurantCurrency = find[0].code + ' - ' + this.itemNameTraduction( find[0].name );
+            }
         });
 
         this._paymentMethodsSub = MeteorObservable.subscribe( 'paymentMethods' ).subscribe( () => {
