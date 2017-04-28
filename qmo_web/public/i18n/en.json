@@ -190,7 +190,13 @@
         "GARNISHFOOD_TEXT": "Create garnish food of your menu and select the restaurants where they will be seen",
         "NO_DESCRIPTION": "No description of the garnish food",
         "NO_RESTAURANT": "No restaurant selected",
-        "NO_RESTAURANT_CREATED": "There are no restaurants created on the platform"
+        "NO_RESTAURANT_CREATED": "There are no restaurants created on the platform",
+        "MODIFY": "MODIFY",
+        "ACTIVATE": "ACTIVATE",
+        "INACTIVATE": "INACTIVATE",
+        "SELECT_RESTAURANTS": "Please select the restaurant (s) where the garnish food is available",
+        "GARNISHFOOD_PRICES": "Please enter the garnish food price (In case of no value enter 0)",
+        "GARNISHFOOD_PRICE": "Garnish Food Price"
     },
     "RESTAURANT_REGISTER": {
         "SELECT_COUNTRY": "Select Country",

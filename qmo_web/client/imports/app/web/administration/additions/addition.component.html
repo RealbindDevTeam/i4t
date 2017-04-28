@@ -23,7 +23,7 @@
           <div *ngFor="let currency of _currencies | async">
             <div *ngFor="let cur of _restaurantCurrencies">
                 <md-input-container *ngIf="currency._id === cur" style="width: 30%;">
-                  <input mdInput required [formControlName]="cur" [class.invalid]="!_additionForm.controls.currencies.valid" type="number" placeholder="{{'ADDITIONS.ADITION_PRICE' | translate}}" min="1" [step]="currency.decimal">
+                  <input mdInput required [formControlName]="cur" [class.invalid]="!_additionForm.controls.currencies.valid" type="number" placeholder="{{'ADDITIONS.ADITION_PRICE' | translate}}" min="0" [step]="currency.decimal">
                   <span mdSuffix>{{currency.code}} - {{currency.name | translate}} </span>
                 </md-input-container>
             </div>

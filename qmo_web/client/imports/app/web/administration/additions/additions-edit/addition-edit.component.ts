@@ -77,7 +77,7 @@ export class AdditionEditComponent implements OnInit, OnDestroy {
         if( this._additionToEdit.prices.length > 0 ){
             this._showCurrencies = true;
             this._additionToEdit.prices.forEach( (p) => {
-                let control: FormControl = new FormControl( p.price, [ Validators.required, Validators.minLength( 1 ) ] );
+                let control: FormControl = new FormControl( p.price, [ Validators.required ] );
                 this._currenciesFormGroup.addControl( p.currencyId, control );
                 this._restaurantCurrencies.push( p.currencyId );
             });
@@ -174,7 +174,7 @@ export class AdditionEditComponent implements OnInit, OnDestroy {
                 if( this._currenciesFormGroup.contains( _lRestaurant.currencyId ) ){
                     this._currenciesFormGroup.controls[ _lRestaurant.currencyId ].setValue( _initValue );
                 } else {
-                    let control: FormControl = new FormControl( _initValue, [ Validators.required, Validators.minLength( 1 ) ] );
+                    let control: FormControl = new FormControl( _initValue, [ Validators.required ] );
                     this._currenciesFormGroup.addControl( _lRestaurant.currencyId, control );
                 }
                 this._restaurantCurrencies.push( _lRestaurant.currencyId );

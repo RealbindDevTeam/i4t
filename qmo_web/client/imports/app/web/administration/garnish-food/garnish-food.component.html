@@ -3,74 +3,57 @@
   <md-card-subtitle>{{'GARNISHFOOD.GARNISHFOOD_TEXT' | translate}}</md-card-subtitle>
   <md-card-content>
     <form [formGroup]="_garnishFoodForm" (ngSubmit)="addGarnishFood();">
-      <table style="width: 100%" cellspacing="0" style="margin-bottom: 10px">
-        <tr>
-            <td style="width: 40%">
-              <md-input-container style="width: 95%">
-                <input mdInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #inputName>
-                <md-hint align="end">{{inputName.value.length}} / 50</md-hint>
-              </md-input-container>
-            </td>
-            <td style="width: 24%">
-              <md-input-container style="width: 90%">
-                <input mdInput required formControlName="price" placeholder="{{'PRICING' | translate}}" minlength="1" maxlength="20" #inputPrice>
-                <md-hint align="end">{{inputPrice.value.length}} / 20</md-hint>
-                <span md-prefix>$&nbsp;</span>
-              </md-input-container>
-            </td>                                          
-        </tr>
-        <tr>
-          <td colspan="2">
-            <label>{{'GARNISHFOOD.RESTAURANT_GARNISHFOOD' | translate}}</label>
-            <p><label *ngIf="!_showRestaurants" class="label-field-void">{{'GARNISHFOOD.NO_RESTAURANT_CREATED' | translate}}</label></p>            
-            <div *ngIf="_showRestaurants" formGroupName="restaurants" style="padding-top: 20px">
-              <md-checkbox [formControlName]="restaurant.name" [class.invalid]="!_garnishFoodForm.controls.restaurants.valid" *ngFor="let restaurant of _restaurants" style="padding-right: 15px">{{restaurant.name}}</md-checkbox>
-              <label></label>
+      <div>
+        <md-input-container style="width: 40%">
+          <input mdInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #inputName>
+          <md-hint align="end">{{inputName.value.length}} / 50</md-hint>
+        </md-input-container>
+      </div>
+      <div>
+        <p>{{'GARNISHFOOD.RESTAURANT_GARNISHFOOD' | translate}}</p>
+        <p *ngIf="!_showRestaurants">{{'GARNISHFOOD.NO_RESTAURANT_CREATED' | translate}}</p>            
+        <div *ngIf="_showRestaurants" formGroupName="restaurants">
+          <md-checkbox [formControlName]="restaurant.name" [class.invalid]="!_garnishFoodForm.controls.restaurants.valid" *ngFor="let restaurant of _restaurants" style="padding-right: 15px" (change)="onCheckRestaurant(restaurant.name, $event)">{{restaurant.name}}</md-checkbox>
+        </div>
+      </div>
+      <div>
+        <p *ngIf="!_showCurrencies">{{'GARNISHFOOD.SELECT_RESTAURANTS' | translate}}</p>
+        <p *ngIf="_showCurrencies">{{'GARNISHFOOD.GARNISHFOOD_PRICES' | translate}}</p>
+        <div *ngIf="_showCurrencies" formGroupName="currencies">
+          <div *ngFor="let currency of _currencies | async">
+            <div *ngFor="let cur of _restaurantCurrencies">
+                <md-input-container *ngIf="currency._id === cur" style="width: 35%;">
+                  <input mdInput required [formControlName]="cur" [class.invalid]="!_garnishFoodForm.controls.currencies.valid" type="number" placeholder="{{'GARNISHFOOD.GARNISHFOOD_PRICE' | translate}}" min="0" [step]="currency.decimal">
+                  <span mdSuffix>{{currency.code}} - {{currency.name | translate}} </span>
+                </md-input-container>
             </div>
-          </td>
-        </tr>
-      </table>
-      <button md-raised-button class="button-secundary" [disabled]="!_garnishFoodForm.valid" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
+          </div>
+        </div>
+      </div>
+      <button md-raised-button class="button-secundary" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
       <button md-raised-button class="button-primary" [disabled]="!_garnishFoodForm.valid" type="submit">{{'CREATE' | translate}}</button>
     </form>    
   </md-card-content>
 </md-card>
-<md-card class="card-toolbar">
+<md-card *ngFor="let garnishFood of _garnishFoodCol | async" style="width: 44%;display: inline-block;vertical-align: top;margin-left: 1%;">
+  <md-card-title>{{garnishFood.name}}</md-card-title>
   <md-card-content>
-    <table class="responsive-table highlight centered">
-      <thead>
-      <tr>
-        <th data-field="dataName">{{'NAME' | translate}}</th>
-        <th data-field="dataPrice">{{'PRICING' | translate}}</th>
-        <th data-field="dataRest">{{'GARNISHFOOD.RESTAURANTS' | translate}}</th>
-        <th data-field="dataModDate">{{'MODIFICATION_DATE' | translate}}</th>
-        <th data-field="dataIsActive">{{'STATE' | translate}}</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let garnishFood of _garnishFoodCol | async | paginate: { itemsPerPage: 10, currentPage: p }">
-        <td>{{garnishFood.name}}</td>
-        <td>{{garnishFood.price}}</td>
-        <td>
-          <label *ngIf="garnishFood.restaurants.length == 0" class="label-field-void">{{'GARNISHFOOD.NO_RESTAURANT' | translate}}</label>
-          <div *ngFor="let rst of _restaurantList | async">
-            <div *ngFor="let garnRest of garnishFood.restaurants">
-              <div *ngIf="rst._id == garnRest">
-                {{rst.name}}
-              </div>              
-            </div>
+    <p *ngIf="garnishFood.restaurants.length === 0">{{'GARNISHFOOD.NO_RESTAURANT' | translate}}</p>
+    <div *ngFor="let rst of _restaurantList | async">
+      <div *ngFor="let garnishFoodRest of garnishFood.restaurants">
+        <div *ngIf="rst._id === garnishFoodRest.restaurantId">
+          <div>
+            <md-icon>store</md-icon>
+            {{rst.name}}
           </div>
-        </td>
-        <td>{{garnishFood.modification_date | date: 'dd/MM/yyyy HH:mm'}}</td>
-        <td><md-slide-toggle [(checked)]="garnishFood.is_active" (change)="updateStatus(garnishFood)"></md-slide-toggle></td>
-        <td>
-          <button md-icon-button md-tooltip="Modify" (click)="open(garnishFood)">
-            <md-icon>create</md-icon>
-          </button>
-        </td>             
-      </tr>
-      </tbody>
-      <pagination-controls (pageChange)="p = $event"></pagination-controls>
-    </table>
+        </div>              
+      </div>
+    </div>
+    <div style="margin-top: 2%;font-size: x-large;color: green;margin-bottom: -3%;">{{showGarnishFoodPrices(garnishFood.prices)}}</div>
   </md-card-content>
+  <md-card-actions style="margin-top: -2%;">
+    <button md-raised-button (click)="open(garnishFood)">{{'GARNISHFOOD.MODIFY' | translate}}</button>
+    <button md-raised-button *ngIf="garnishFood.is_active" style="background-color: red;color: white;" (click)="updateStatus(garnishFood)">{{'GARNISHFOOD.INACTIVATE' | translate}}</button>
+    <button md-raised-button *ngIf="!garnishFood.is_active" style="background-color: green;color: white;" (click)="updateStatus(garnishFood)">{{'GARNISHFOOD.ACTIVATE' | translate}}</button>
+  </md-card-actions>
 </md-card>

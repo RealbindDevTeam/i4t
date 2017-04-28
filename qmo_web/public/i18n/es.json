@@ -190,7 +190,13 @@
         "GARNISHFOOD_TEXT": "Crea las guarniciones de tu menú y selecciona los restaurantes donde se verán",
         "NO_DESCRIPTION": "No se ha ingresado descripcion de la guarnicion",
         "NO_RESTAURANT": "No se ha seleccionado restaurante",
-        "NO_RESTAURANT_CREATED": "No se encuentran restaurantes creados en la plataforma"
+        "NO_RESTAURANT_CREATED": "No se encuentran restaurantes creados en la plataforma",
+        "MODIFY": "MODIFICAR",
+        "ACTIVATE": "ACTIVAR",
+        "INACTIVATE": "INACTIVAR",
+        "SELECT_RESTAURANTS": "Por favor selecciona el(los) restaurante(s) donde se encontrara disponible la guarnicion",
+        "GARNISHFOOD_PRICES": "Por favor ingresa el precio de la guarnicion (En caso de no tener valor ingresa 0 )",
+        "GARNISHFOOD_PRICE": "Precio de la Guarnicion"
     },
     "RESTAURANT_REGISTER": {
         "SELECT_COUNTRY": "Seleccione Pais",

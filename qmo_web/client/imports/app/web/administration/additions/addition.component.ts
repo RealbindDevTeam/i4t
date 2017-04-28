@@ -186,7 +186,7 @@ export class AdditionComponent implements OnInit, OnDestroy{
                     }
                     _initValue = '.' + _initValue;
                 }
-                let control: FormControl = new FormControl( _initValue, [ Validators.required, Validators.minLength( 1 ) ] );
+                let control: FormControl = new FormControl( _initValue, [ Validators.required ] );
                 this._currenciesFormGroup.addControl( _lRestaurant.currencyId, control );
                 this._restaurantCurrencies.push( _lRestaurant.currencyId );
             }
@@ -213,6 +213,10 @@ export class AdditionComponent implements OnInit, OnDestroy{
         }
     }
 
+    /**
+     * Function to show Addition Prices
+     * @param {AdditionPrice[]} _pAdditionPrices
+     */
     showAdditionPrices( _pAdditionPrices:AdditionPrice[] ):string{
         let _lPrices: string = '';
         _pAdditionPrices.forEach( ( ap ) => {

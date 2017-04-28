@@ -18,6 +18,9 @@ export interface AdditionRestaurant {
     price: number;
 }
 
+/**
+ * AdditionPrice model
+ */
 export interface AdditionPrice {
     currencyId: string;
     price: number;

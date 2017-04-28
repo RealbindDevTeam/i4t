@@ -6,7 +6,22 @@ import { CollectionObject } from '../collection-object.model';
 export interface GarnishFood extends CollectionObject {
     is_active: boolean;
     name: string;
-    description?: string;
+    restaurants: GarnishFoodRestaurant[];
+    prices: GarnishFoodPrice[];
+}
+
+/**
+ * GarnishFoodRestaurant model
+ */
+export interface GarnishFoodRestaurant {
+    restaurantId: string;
     price: number;
-    restaurants: string[];
+}
+
+/**
+ * GarnishFoodPrice model
+ */
+export interface GarnishFoodPrice {
+    currencyId: string;
+    price: number;
 }
