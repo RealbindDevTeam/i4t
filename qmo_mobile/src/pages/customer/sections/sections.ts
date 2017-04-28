@@ -18,7 +18,7 @@ import { Categories } from 'qmo_web/both/collections/administration/category.col
 import { Subcategory } from 'qmo_web/both/models/administration/subcategory.model';
 import { Subcategories } from 'qmo_web/both/collections/administration/subcategory.collection';
 import { Item } from 'qmo_web/both/models/administration/item.model';
-import { Items } from 'qmo_web/both/collections/administration/item.collection';
+import { Items, ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
 import { ItemDetailPage } from '../item-detail/item-detail';
 import { Storage } from '@ionic/storage';
 
@@ -47,6 +47,8 @@ export class SectionsPage implements OnInit, OnDestroy {
   private _subcategorySub: Subscription;
   private _items;
   private _itemSub: Subscription;
+  private _imageThumbs;
+  private _imageThumbSub: Subscription;
 
   private _res_code: string = '';
   private _table_code: string = '';
@@ -93,6 +95,9 @@ export class SectionsPage implements OnInit, OnDestroy {
     });
     this._itemSub = MeteorObservable.subscribe('itemsByRestaurant', this._res_code).subscribe(() => {
       this._items = Items.find({});
+    });
+    this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByRestaurant', this._res_code).subscribe(() => {
+      this._imageThumbs = ItemImagesThumbs.find({});
     });
   }
 

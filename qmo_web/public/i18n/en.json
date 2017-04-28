@@ -389,7 +389,8 @@
         "CODE": "Code: ",
         "GENERATE_PDF": "Generate Pdf",
         "MSG_TOOLTIP": "You must select an establishment",
-        "SEARCH_TABLES": "Select the restaurant to show the associated tables"
+        "SEARCH_TABLES": "Select the restaurant to show the associated tables",
+        "MSG_INITIAL": "Create the tables with the asociated QR Code"
     },
     "GO_TO_STORE": {
         "TITTLE" : "What do you ",

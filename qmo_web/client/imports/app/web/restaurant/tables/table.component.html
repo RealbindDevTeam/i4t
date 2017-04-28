@@ -39,14 +39,8 @@
                 </div>
                 <div class="card_initial-copy">
                     <div class="card_initial-tagline">
-                        {{'COLLABORATORS.MSG_INITIAL' | translate}}
+                        {{'TABLES.MSG_INITIAL' | translate}}
                     </div>
-                    <div class="card_initial-additional-links">
-                        
-                    </div>
-                </div>
-                <div class="card_initial-button">
-                    <button md-raised-button (click)="openCollaboratorstRegister()">{{'COLLABORATORS.BTN' | translate}}</button>
                 </div>
             </div>
         </div>
@@ -74,7 +68,7 @@
 </div>
 <br/>
 <div *ngIf="show_cards">
-    <md-card id="qr-card" *ngFor="let table of tables | async" style="display: inline-block; margin-right: 20px;">
+    <md-card id="qr-card" *ngFor="let table of tables | async" style="display: inline-block; margin-right: 20px; width:250px">
         <md-card-header>
             <md-card-title *ngFor="let rest of restaurants | async">
                 <div *ngIf="rest._id == table.restaurantId">
@@ -86,7 +80,8 @@
             </md-card-subtitle>
         </md-card-header>
         <md-card-content>
-            <label>#{{table._number}}</label>
+            <br/>
+            <label style="margin-left: 8px">#{{table._number}}</label>
             <div align="center">
                 <img style="width:100px;height:100px;" src='{{table.QR_URI}}'></img>
             </div>

@@ -2,6 +2,8 @@ import { MongoObservable } from 'meteor-rxjs';
 import { UploadFS } from 'meteor/jalik:ufs';
 import { Item, ItemImage, ItemImageThumb } from '../../models/administration/item.model';
 
+
+
 /**
  * Function to validate if user exists
  */
@@ -49,8 +51,8 @@ export const ItemImageThumbsStore = new UploadFS.store.GridFS({
   }),
   transformWrite(from, to, fileId, file) {
     // Resize to 100x100
-    var require: any;
-    const gm = require('gm');
+    //var require: any;
+     let gm = require('gm');
  
     gm(from, file.name)
       .resize(100, 100, "!")
@@ -99,7 +101,7 @@ export const ItemImagesStore = new UploadFS.store.GridFS({
   }),
   transformWrite(from, to, fileId, file) {
     // Resize to 500x500
-    var require: any;
+    //var require: any;
     const gm = require('gm');
  
     gm(from, file.name)
