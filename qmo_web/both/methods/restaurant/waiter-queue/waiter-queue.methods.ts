@@ -7,7 +7,7 @@ import { WaiterCallDetails } from '../../../collections/restaurant/waiter-call-d
 import { Restaurant, RestaurantTurn } from '../../../models/restaurant/restaurant.model';
 import { Restaurants, RestaurantTurns } from '../../../collections/restaurant/restaurant.collection';
 
-var _queue = JobCollection('waiterCallQueue');
+//var _queue = JobCollection('waiterCallQueue');
 
 if (Meteor.isServer) {
 
@@ -15,7 +15,7 @@ if (Meteor.isServer) {
    * This function startup the Waiter call queue, also allow execute each jobs
    * Validate state of Jobs Queue: console.log("JobServer started: " + _queue.startJobServer());
    */
-  Meteor.startup(function () {
+  /*Meteor.startup(function () {
       
     _queue.startJobServer();
 
@@ -72,7 +72,7 @@ if (Meteor.isServer) {
         }
         callback();
       });
-  });
+  });*/
   
   Meteor.methods({
     /**
@@ -80,7 +80,7 @@ if (Meteor.isServer) {
      * @param {boolean} _priorityHigh
      * @param {any} _data
      */
-    waiterCall : function( _priorityHigh : boolean, _data : any){
+    /*waiterCall : function( _priorityHigh : boolean, _data : any){
       let priority : string = 'normal';
       let delay : number = 0;
       var waiterCallDetail : string;
@@ -134,13 +134,13 @@ if (Meteor.isServer) {
         .save();
       }
       return
-    },
+    },*/
     /**
      * This Meteor Method allow delete a job in the Waiter call queue
      * @param {string} _waiter_call_detail_id
      * @param {string} _waiter_id
      */
-    closeCall : function( _waiter_call_detail_id : string, _waiter_id : string ){
+    /*closeCall : function( _waiter_call_detail_id : string, _waiter_id : string ){
       let job = new Job(_queue, _queue.findOne({ "data.waiter_call_detail_id" : _waiter_call_detail_id }));
       job.remove(function (err, result){
         WaiterCallDetails.update({ _id : _waiter_call_detail_id },
@@ -151,7 +151,7 @@ if (Meteor.isServer) {
         UserDetails.update({user_id : _waiter_id} , { $set : { "enabled" : true, "jobs" : jobs } });
       });
       return;
-    },
+    },*/
   
     /**
      * This function validate waiters enabled
