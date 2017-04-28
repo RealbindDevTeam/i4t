@@ -119,7 +119,10 @@
         "NO_RESTAURANT_CREATED": "No se encuentran restaurantes creados en la plataforma",
         "MODIFY": "MODIFICAR",
         "ACTIVATE": "ACTIVAR",
-        "INACTIVATE": "INACTIVAR"
+        "INACTIVATE": "INACTIVAR",
+        "SELECT_RESTAURANTS": "Por favor selecciona el(los) restaurante(s) donde se encontrara disponible la adicion",
+        "ADDITION_PRICES": "Por favor ingresa el precio de la adicion (En caso de no tener valor ingresa 0 )",
+        "ADITION_PRICE": "Precio de la Adicion"
     },
     "SETTINGS": {
         "TITTLE": "Ajustes",

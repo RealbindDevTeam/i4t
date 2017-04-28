@@ -11,18 +11,17 @@
                 <div>
                     <p>{{'ADDITIONS.RESTAURANT_ADDITION' | translate}}: </p>
                     <div formGroupName="editRestaurants">
-                        <md-checkbox [formControlName]="restaurant.name" [class.invalid]="!_editForm.controls.editRestaurants.valid" *ngFor="let restaurant of _restaurantsList" style="padding-right: 15px">{{restaurant.name}}</md-checkbox>
-                        <label></label>
+                        <md-checkbox [formControlName]="restaurant.name" [class.invalid]="!_editForm.controls.editRestaurants.valid" *ngFor="let restaurant of _restaurantsList" style="padding-right: 15px" (change)="onCheckRestaurant(restaurant.name, $event)">{{restaurant.name}}</md-checkbox>
                     </div>
                 </div>
                 <div>
-                    <p *ngIf="!_showCurrencies">Por favor selecciona el(los) restaurante(s) donde se encontrara disponible la adicion</p>
-                    <p *ngIf="_showCurrencies"> Por favor ingresa el precio de la adicion (En caso de no tener valor ingresa 0 ):</p>
+                    <p *ngIf="!_showCurrencies">{{'ADDITIONS.SELECT_RESTAURANTS' | translate}}</p>
+                    <p *ngIf="_showCurrencies">{{'ADDITIONS.ADDITION_PRICES' | translate}}</p>
                     <div *ngIf="_showCurrencies" formGroupName="editCurrencies">
                         <div *ngFor="let currency of _currencies | async">
                             <div *ngFor="let cur of _restaurantCurrencies">
                                 <md-input-container *ngIf="currency._id === cur" style="width: 30%;">
-                                <input mdInput required [formControlName]="cur" [class.invalid]="!_editForm.controls.editCurrencies.valid" type="number" placeholder="Precio de la Adicion" min="1" [step]="currency.decimal">
+                                <input mdInput required [formControlName]="cur" [class.invalid]="!_editForm.controls.editCurrencies.valid" type="number" placeholder="{{'ADDITIONS.ADITION_PRICE' | translate}}" min="1" [step]="currency.decimal">
                                 <span mdSuffix>{{currency.code}} - {{currency.name | translate}} </span>
                                 </md-input-container>
                             </div>

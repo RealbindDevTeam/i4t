@@ -14,24 +14,23 @@
         <p *ngIf="!_showRestaurants">{{'ADDITIONS.NO_RESTAURANT_CREATED' | translate}}</p>
         <div *ngIf="_showRestaurants" formGroupName="restaurants">
           <md-checkbox *ngFor="let restaurant of _restaurantList" [formControlName]="restaurant.name" [class.invalid]="!_additionForm.controls.restaurants.valid" style="padding-right: 15px" (change)="onCheckRestaurant(restaurant.name, $event)">{{restaurant.name}}</md-checkbox>
-          <label></label>
         </div>
       </div>
       <div>
-        <p *ngIf="!_showCurrencies">Por favor selecciona el(los) restaurante(s) donde se encontrara disponible la adicion</p>
-        <p *ngIf="_showCurrencies"> Por favor ingresa el precio de la adicion (En caso de no tener valor ingresa 0 ):</p>
+        <p *ngIf="!_showCurrencies">{{'ADDITIONS.SELECT_RESTAURANTS' | translate}}</p>
+        <p *ngIf="_showCurrencies">{{'ADDITIONS.ADDITION_PRICES' | translate}}</p>
         <div *ngIf="_showCurrencies" formGroupName="currencies">
           <div *ngFor="let currency of _currencies | async">
             <div *ngFor="let cur of _restaurantCurrencies">
                 <md-input-container *ngIf="currency._id === cur" style="width: 30%;">
-                  <input mdInput required [formControlName]="cur" [class.invalid]="!_additionForm.controls.currencies.valid" type="number" placeholder="Precio de la Adicion" min="1" [step]="currency.decimal">
+                  <input mdInput required [formControlName]="cur" [class.invalid]="!_additionForm.controls.currencies.valid" type="number" placeholder="{{'ADDITIONS.ADITION_PRICE' | translate}}" min="1" [step]="currency.decimal">
                   <span mdSuffix>{{currency.code}} - {{currency.name | translate}} </span>
                 </md-input-container>
             </div>
           </div>
         </div>
       </div>
-      <button md-raised-button class="button-secundary" [disabled]="!_additionForm.valid" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
+      <button md-raised-button class="button-secundary" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
       <button md-raised-button class="button-primary" [disabled]="!_additionForm.valid" type="submit">{{'CREATE' | translate}}</button>
     </form>    
   </md-card-content>

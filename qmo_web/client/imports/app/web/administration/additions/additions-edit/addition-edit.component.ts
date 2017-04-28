@@ -119,25 +119,37 @@ export class AdditionEditComponent implements OnInit, OnDestroy {
         }
 
         if( this._editForm.valid ){
-            let arr:any[] = Object.keys( this._editForm.value.editRestaurants );
-            arr.forEach( ( rest ) => {
-                if( this._editForm.value.editRestaurants[ rest ] ) {
-                    let restau:Restaurant = Restaurants.findOne( { name: rest } );
-                    this._edition_restaurants.push( restau._id );               
-                }            
+            let arrCur:any[] = Object.keys( this._editForm.value.editCurrencies );
+            let _lAdditionRestaurantsToInsert: AdditionRestaurant[] = [];
+            let _lAdditionPricesToInsert: AdditionPrice[] = [];
+
+            arrCur.forEach( ( cur ) => {
+                let find: Restaurant[] = this._restaurantsList.filter( r => r.currencyId === cur );
+                for( let res of find ){
+                    if( this._editForm.value.editRestaurants[ res.name ] ){
+                        let _lAdditionRestaurant: AdditionRestaurant = { restaurantId: '', price: 0 };
+                        let restau:Restaurant = Restaurants.findOne( { name: res.name } );
+                        _lAdditionRestaurant.restaurantId = restau._id;
+                        _lAdditionRestaurant.price = this._editForm.value.editCurrencies[ cur ];
+                        _lAdditionRestaurantsToInsert.push( _lAdditionRestaurant );
+                    }
+                }
+                let _lAdditionPrice: AdditionPrice = { currencyId: '', price: 0 };
+                _lAdditionPrice.currencyId = cur;
+                _lAdditionPrice.price = this._editForm.value.editCurrencies[ cur ];
+                _lAdditionPricesToInsert.push( _lAdditionPrice );
             });
 
-            /*Additions.update( this._editForm.value.editId,{
+            Additions.update( this._editForm.value.editId,{
                 $set: {
                     modification_user: Meteor.userId(),
                     modification_date: new Date(),
                     name: this._editForm.value.editName,
-                    description: this._editForm.value.editDesc,
                     is_active: this._editForm.value.editIsActive,
-                    price: this._editForm.value.editPrice,
-                    restaurants: this._edition_restaurants
+                    restaurants: _lAdditionRestaurantsToInsert,
+                    prices: _lAdditionPricesToInsert
                 }
-            });*/
+            });
             this._dialogRef.close();          
         }
     }
@@ -180,6 +192,9 @@ export class AdditionEditComponent implements OnInit, OnDestroy {
             });
             if( _aux === 0 ){
                 this._restaurantCurrencies.splice( this._restaurantCurrencies.indexOf( _lRestaurant.currencyId ), 1 );
+                if( this._currenciesFormGroup.contains( _lRestaurant.currencyId ) ){
+                    this._currenciesFormGroup.removeControl( _lRestaurant.currencyId );
+                }
             }
         }
 
