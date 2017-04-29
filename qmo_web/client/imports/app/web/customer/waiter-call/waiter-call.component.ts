@@ -1,4 +1,4 @@
-import { Component, ViewContainerRef, OnInit, OnDestroy, AfterContentInit } from '@angular/core';
+import { Component, ViewContainerRef, OnInit, OnDestroy, AfterContentInit, NgZone } from '@angular/core';
 import { Meteor } from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
@@ -17,9 +17,8 @@ import style from './waiter-call.component.scss';
     template,
     styles: [ style ]
 })
-export class WaiterCallComponent {
+export class WaiterCallComponent implements OnInit, OnDestroy {
 
-  private _userRestaurantSubscription   : Subscription;
   private _userDetailSubscription       : Subscription;
   private _waiterCallDetailSubscription : Subscription;
 
@@ -32,14 +31,14 @@ export class WaiterCallComponent {
   private _userRestaurant     : boolean;
   private _validatedWaterCall : boolean;
 
-
   /**
    * WaiterCallPage Constructor
    * @param { TranslateService } _translate 
    * @param { ViewContainerRef } _viewContainerRef 
    */
   constructor (protected _translate: TranslateService, 
-               public _viewContainerRef: ViewContainerRef) {
+               public _viewContainerRef: ViewContainerRef,
+               private _ngZone: NgZone) {
     var _userLang = navigator.language.split('-')[0];
     _translate.setDefaultLang('en');
     _translate.use(_userLang);
@@ -49,35 +48,30 @@ export class WaiterCallComponent {
    * ngOnInit Implementation
    */
   ngOnInit() {
-    this._userRestaurantSubscription = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
-      this._restaurants = Restaurants.find({});
-    });
+    this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
+    this._waiterCallDetailSubscription = MeteorObservable.subscribe('countWaiterCallDetailByUsrId', Meteor.userId()).subscribe();
 
-    this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe( () => {
-      MeteorObservable.autorun().subscribe(() => {
-        this._userDetails = UserDetails.find({ user_id: Meteor.userId() });
-        this._userDetail  = UserDetails.collection.findOne({ user_id: Meteor.userId()});
+    MeteorObservable.autorun().subscribe(() => {
+      this._userDetails = UserDetails.find({ user_id: Meteor.userId() });
+      this._userDetail  = UserDetails.collection.findOne({ user_id: Meteor.userId()});
+      if(this._userDetail){
         if (this._userDetail.current_table == "" && this._userDetail.current_restaurant == "") {
           this._userRestaurant = false;
         } else {
           this._userRestaurant = true;
         }
-      });
+        if ( this._userRestaurant ) {
+          this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).count();
+          if ( this._countDetails > 0 ){
+            this._validatedWaterCall = true;
+          } else {
+            this._validatedWaterCall = false;
+          }
+        }
+      }
     });
 
-    this._waiterCallDetailSubscription = MeteorObservable.subscribe('countWaiterCallDetailByUsrId', Meteor.userId()).subscribe( () => {
-        MeteorObservable.autorun().subscribe(() => {
-          if ( this._userRestaurant ) {
-            this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).count();
-            if ( this._countDetails > 0 ){
-              this._validatedWaterCall = true;
-              //this._waiterCallDetail = WaiterCallDetails.find({});
-            } else {
-              this._validatedWaterCall = false;
-            }
-          }
-        });
-      });
+
   }
 
   /**
@@ -101,7 +95,7 @@ export class WaiterCallComponent {
         /*
         Meteor.call('waiterCall', false, data);
         */
-        //Meteor.call('findQueueByRestaurant', restaurant_id, data);
+        Meteor.call('findQueueByRestaurant', restaurant_id, data);
     }
   }
 
@@ -109,7 +103,6 @@ export class WaiterCallComponent {
    * ngOnDestroy implementation
    */
   ngOnDestroy(){
-    this._userRestaurantSubscription.unsubscribe();
     this._waiterCallDetailSubscription.unsubscribe();
     this._userDetailSubscription.unsubscribe();
   }

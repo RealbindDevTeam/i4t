@@ -11,69 +11,6 @@ import { Restaurants, RestaurantTurns } from '../../../collections/restaurant/re
 
 if (Meteor.isServer) {
 
-  /**
-   * This function startup the Waiter call queue, also allow execute each jobs
-   * Validate state of Jobs Queue: console.log("JobServer started: " + _queue.startJobServer());
-   */
-  /*Meteor.startup(function () {
-      
-    _queue.startJobServer();
-
-    var workers = _queue.processJobs(
-      'waiterCall',
-      {
-        concurrency: 1,
-        payload: 1,
-        pollInterval: 1*1000,
-        prefetch: 1
-      },
-      function (job, callback) {
-        var data_detail = WaiterCallDetails.collection.findOne({ _id : job.data.waiter_call_detail_id });
-        var restaurant = Restaurants.collection.findOne({ _id : data_detail.restaurant_id });
-        
-        var usr_id_enabled : UserDetail = Meteor.call('validateWaiterEnabled', data_detail.restaurant_id, restaurant.max_jobs);
-        if( usr_id_enabled ){
-          job.done(function (err, result){
-            //Storage of turns the restaurants by date
-            var toDate = new Date().toLocaleDateString();
-            RestaurantTurns.update({restaurant_id : data_detail.restaurant_id , creation_date : { $gte : new Date(toDate)}}, 
-              {$set : { last_waiter_id : usr_id_enabled.user_id , modification_user: 'SYSTEM', modification_date: new Date(),  }
-            });
-            //Waiter call detail update in completed state
-            WaiterCallDetails.update({ _id : job.data.waiter_call_detail_id },
-              { $set : { "waiter_id" : usr_id_enabled.user_id, "status" : "completed"}
-              });
-            });
-
-            //Waiter update of current jobs and state
-            let usr_jobs : number = usr_id_enabled.jobs + 1 ;
-            if ( usr_jobs < restaurant.max_jobs ) {
-              UserDetails.update({user_id : usr_id_enabled.user_id} , { $set : { "jobs" : usr_jobs } });
-            } else if ( usr_jobs == restaurant.max_jobs ){
-              UserDetails.update({user_id : usr_id_enabled.user_id} , { $set : { "enabled" : false, "jobs" : usr_jobs } });
-            }
-        } else {
-          _queue.getJob(job._doc._id, function (err, job) {
-            job.cancel();
-            var data  : any = {
-              waiter_call_id : job._doc.data.waiter_call_detail_id,
-              restaurants : data_detail.restaurant_id,
-              tables : data_detail.table_id,
-              user : data_detail.user_id,
-              waiter_id : usr_id_enabled,
-              status : 'waiting'
-            };
-            job.remove(function (err, result) {
-              if (result) {
-                Meteor.call('waiterCall', true, data);
-              }
-            });
-          });
-        }
-        callback();
-      });
-  });*/
-  
   Meteor.methods({
     /**
      * This Meteor Method add job in the Waiter call queue
@@ -101,29 +38,23 @@ if (Meteor.isServer) {
         });
       } 
       if(waiterCallDetail){
-        console.log('--> ' + _queue);
         var job = new Job(
           _queue,
           'waiterCall',
           { waiter_call_detail_id : waiterCallDetail }
         );
 
-        job.priority(priority)
+        job
+        .priority(priority)
         .delay(delay)
         .save();
-
-        job.save(function (err, result) {
-          if (!err && result) {
-            console.log("New job saved with Id: " + result);
-          }
-        });
       }
       return;
     },
 
     /**
      * This Meteor method allow get new turn to the client
-     * @param _data 
+     * @param { any } _data 
      */
     turnCreate ( _data : any ) : number {
       var newTurn : number = 1;
@@ -149,6 +80,59 @@ if (Meteor.isServer) {
           });
       }
       return newTurn;
+    },
+
+    /**
+     * This function startup the Waiter call queue, also allow execute each jobs
+     * Validate state of Jobs Queue: console.log("JobServer started: " + _queue.startJobServer());
+     * @param { any } _queue
+     */
+    processJobs : function (job, _queue, callback) {
+      console.log('Llega');
+      console.log('--> ' + JSON.stringify(job._doc));
+      var data_detail = WaiterCallDetails.collection.findOne({ _id : job._doc.data.waiter_call_detail_id });
+      var restaurant = Restaurants.collection.findOne({ _id : data_detail.restaurant_id });
+      
+      var usr_id_enabled : UserDetail = Meteor.call('validateWaiterEnabled', data_detail.restaurant_id, restaurant.max_jobs);
+      if( usr_id_enabled ){
+        job.done(function (err, result){
+          //Storage of turns the restaurants by date
+          var toDate = new Date().toLocaleDateString();
+          RestaurantTurns.update({restaurant_id : data_detail.restaurant_id , creation_date : { $gte : new Date(toDate)}}, 
+            {$set : { last_waiter_id : usr_id_enabled.user_id , modification_user: 'SYSTEM', modification_date: new Date(),  }
+          });
+          //Waiter call detail update in completed state
+          WaiterCallDetails.update({ _id : job._doc.data.waiter_call_detail_id },
+            { $set : { "waiter_id" : usr_id_enabled.user_id, "status" : "completed"}
+            });
+          });
+
+          //Waiter update of current jobs and state
+          let usr_jobs : number = usr_id_enabled.jobs + 1 ;
+          if ( usr_jobs < restaurant.max_jobs ) {
+            UserDetails.update({user_id : usr_id_enabled.user_id} , { $set : { "jobs" : usr_jobs } });
+          } else if ( usr_jobs == restaurant.max_jobs ){
+            UserDetails.update({user_id : usr_id_enabled.user_id} , { $set : { "enabled" : false, "jobs" : usr_jobs } });
+          }
+      } else {
+        _queue.getJob(job._doc._id, function (err, job) {
+          job.cancel();
+          var data  : any = {
+            waiter_call_id : job._doc.data.waiter_call_detail_id,
+            restaurants : data_detail.restaurant_id,
+            tables : data_detail.table_id,
+            user : data_detail.user_id,
+            waiter_id : usr_id_enabled,
+            status : 'waiting'
+          };
+          job.remove(function (err, result) {
+            if (result) {
+              Meteor.call('waiterCall', true, data);
+            }
+          });
+        });
+      }
+      callback();
     },
 
     /**
