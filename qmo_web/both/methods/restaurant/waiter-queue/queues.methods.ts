@@ -13,67 +13,53 @@ import { Queues } from '../../../collections/general/queue.collection';
 if (Meteor.isServer) {
 
   Meteor.methods({
+      
     /**
-     * This Meteor Method add job in the Waiter call queue
-     * @param {boolean} _priorityHigh
-     * @param {any} _data
+     * This Meteor Method allow find the queue corresponding to current restaurant of the user
+     * @param { string } _restaurantId
      */
-    queueValidate( _queue : string ) {
+    findQueueByRestaurant : function ( _restaurantId : string, _data : any ) {
+        let restaurant = Restaurants.collection.findOne({_id : _restaurantId});
+        let queue = restaurant.queue;
+        let valEmpty : boolean = Number.isInteger(restaurant.queue.length);
+        let queueName : string = "";
 
-        var queueNew : QueueName;
-        var queues   : Queue = Queues.collection.findOne();
-        //console.log(queues.queues);
-
-        if(queues){
-            console.log("Existe Collection");
-            let toArray = Queues.collection.findOne({
-                queues : { $in : [ _queue ] }
-            });
-
-            console.log(toArray);
-
-        } else {
-            queueNew = {
-                name : _queue
+        if (valEmpty && restaurant.queue.length > 0){
+            let position = Meteor.call('getRandomInt', 0, restaurant.queue.length - 1);
+            if ( restaurant.queue[position] !== "" ) {
+                queueName = "queue" + position;
+                Meteor.call("queueValidate", queueName, function(err, result){
+                    if(err){
+                        throw new Error("Error on Queue validating");
+                    } else {
+                        Meteor.call('waiterCall', queueName, false, _data);
+                    }
+                });
             }
+        }
+    },
+
+    /**
+     * This Meteor Method validate if exist queue in the collection
+     * @param { string } _queue
+     */
+    queueValidate : function ( _queue : string ) {
+        let queueNew        : QueueName = { name : _queue };;
+        let queues          : Queue = Queues.collection.findOne({});
+        if(queues){
+            let doc = Queues.collection.findOne({ queues : { $elemMatch: { name : _queue } } });
+            if(!doc){
+                Queues.update({ _id : queues._id }, 
+                    { $addToSet : { queues :  queueNew }
+                });
+            }
+            let queueCollection = JobCollection(queueNew.name);
+        } else {
             Queues.insert({
                  queues : [queueNew]
             });
+            let queueCollection = JobCollection(queueNew.name);
         }
-
-
-        //var queue: any;
-        //let col = new Mongo.Collection( '' );
-        //var collection = col.rawCollection();
-//
-        //console.log('prueba');
-        //console.log(collection);
-//
-        //let col2 = new Mongo.Collection( 'cities' );
-        //var collection2 = col2.rawCollection();
-//
-        //console.log('cities');
-        //console.log(collection2);        
-
-        //let countPrueba = col.find().count();
-        //console.log('--> ' + countPrueba);
-
-       /*if( collection.s.name !== '' ){
-            console.log('existe');
-            queue = _queue
-        } else {
-            console.log('No existe');            
-            queue = JobCollection(_queue);
-        }
-
-        var job = new Job(
-            queue,
-            'waiterCall',
-            { waiter_call_detail_id : '-------' }
-        )
-        //.priority(priority)
-        //.delay(delay)
-        .save();*/
     }
   });
 }

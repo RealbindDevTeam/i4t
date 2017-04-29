@@ -80,7 +80,7 @@ if (Meteor.isServer) {
      * @param {boolean} _priorityHigh
      * @param {any} _data
      */
-    /*waiterCall : function( _priorityHigh : boolean, _data : any){
+    waiterCall : function( _queue : string, _priorityHigh : boolean, _data : any){
       let priority : string = 'normal';
       let delay : number = 0;
       var waiterCallDetail : string;
@@ -89,30 +89,7 @@ if (Meteor.isServer) {
         WaiterCallDetails.update({ _id : _data.waiter_call_id }, { $set : { waiter_id : _data.waiter_id }});
         waiterCallDetail = _data.waiter_call_id;
       } else {
-        var toDate = new Date().toLocaleDateString();
-        let newTurn : number = 1; //= restaurantTurn.turn + 1;
-
-        var restaurantTurn : RestaurantTurn = RestaurantTurns.collection.findOne({
-          restaurant_id : _data.restaurants,
-          creation_date : { $gte : new Date(toDate)}
-        });
-
-        if(restaurantTurn){
-          newTurn = restaurantTurn.turn + 1;
-          RestaurantTurns.update(
-            {_id : restaurantTurn._id}, 
-            {$set : { turn : newTurn, modification_user: 'SYSTEM', modification_date: new Date(),  }
-          });
-        } else {
-          RestaurantTurns.insert({
-            restaurant_id : _data.restaurants,
-            turn : newTurn,
-            last_waiter_id : "",
-            creation_user: 'SYSTEM',
-            creation_date: new Date(),
-          });
-        }
-
+        let newTurn = Meteor.call('turnCreate', _data);
         waiterCallDetail = WaiterCallDetails.collection.insert({
           restaurant_id : _data.restaurants,
           table_id : _data.tables,
@@ -123,18 +100,57 @@ if (Meteor.isServer) {
           creation_date : new Date(),
         });
       } 
-      
       if(waiterCallDetail){
-        Job(_queue,
+        console.log('--> ' + _queue);
+        var job = new Job(
+          _queue,
           'waiterCall',
           { waiter_call_detail_id : waiterCallDetail }
-        )
-        .priority(priority)
+        );
+
+        job.priority(priority)
         .delay(delay)
         .save();
+
+        job.save(function (err, result) {
+          if (!err && result) {
+            console.log("New job saved with Id: " + result);
+          }
+        });
       }
-      return
-    },*/
+      return;
+    },
+
+    /**
+     * This Meteor method allow get new turn to the client
+     * @param _data 
+     */
+    turnCreate ( _data : any ) : number {
+      var newTurn : number = 1;
+      var toDate = new Date().toLocaleDateString();
+      var restaurantTurn : RestaurantTurn = RestaurantTurns.collection.findOne({
+          restaurant_id : _data.restaurants,
+          creation_date : { $gte : new Date(toDate)}
+      });
+
+      if(restaurantTurn){
+        newTurn = restaurantTurn.turn + 1;
+        RestaurantTurns.update(
+          {_id : restaurantTurn._id}, 
+            {$set : { turn : newTurn, modification_user: 'SYSTEM', modification_date: new Date(),  }
+        });
+      } else {
+          RestaurantTurns.insert({
+            restaurant_id : _data.restaurants,
+            turn : newTurn,
+            last_waiter_id : "",
+            creation_user: 'SYSTEM',
+            creation_date: new Date(),
+          });
+      }
+      return newTurn;
+    },
+
     /**
      * This Meteor Method allow delete a job in the Waiter call queue
      * @param {string} _waiter_call_detail_id

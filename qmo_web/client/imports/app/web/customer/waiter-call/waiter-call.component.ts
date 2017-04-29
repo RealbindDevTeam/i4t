@@ -56,7 +56,7 @@ export class WaiterCallComponent {
     this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe( () => {
       MeteorObservable.autorun().subscribe(() => {
         this._userDetails = UserDetails.find({ user_id: Meteor.userId() });
-        this._userDetail  = UserDetails.collection.find({ user_id: Meteor.userId()}).fetch()[0];
+        this._userDetail  = UserDetails.collection.findOne({ user_id: Meteor.userId()});
         if (this._userDetail.current_table == "" && this._userDetail.current_restaurant == "") {
           this._userRestaurant = false;
         } else {
@@ -78,8 +78,6 @@ export class WaiterCallComponent {
           }
         });
       });
-
-
   }
 
   /**
@@ -100,7 +98,10 @@ export class WaiterCallComponent {
           waiter_id : "",
           status : "waiting"
         }
+        /*
         Meteor.call('waiterCall', false, data);
+        */
+        //Meteor.call('findQueueByRestaurant', restaurant_id, data);
     }
   }
 

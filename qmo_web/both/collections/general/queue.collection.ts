@@ -12,7 +12,7 @@ function loggedIn(){
 /**
  * Queues Collection
  */
-export const Queues = new MongoObservable.Collection<Queue>('queue');
+export const Queues = new MongoObservable.Collection<Queue>('queues');
 
 /**
  * Allow Queues collection insert and update functions
