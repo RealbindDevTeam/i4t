@@ -6,6 +6,7 @@ import { Subscription } from "rxjs";
 
 import { Restaurants, RestaurantImages } from "../../../../../../both/collections/restaurant/restaurant.collection";
 import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
+import { WaiterCallDetail } from '../../../../../../both/models/restaurant/waiter-call-detail.model';
 import { WaiterCallDetails } from '../../../../../../both/collections/restaurant/waiter-call-detail.collection';
 import { User } from '../../../../../../both/models/auth/user.model';
 import { Users } from '../../../../../../both/collections/auth/user.collection';
@@ -77,7 +78,7 @@ export class CallsComponent {
      * This function show a modal dialog to confirm the operation
      * @param {any} _call
      */
-    showConfirm( _call : any ) {
+    showConfirm( _call : WaiterCallDetail ) {
         this._mdDialogRef = this._mdDialog.open(CallCloseConfirmComponent, {
             disableClose : true 
         });
@@ -86,7 +87,7 @@ export class CallsComponent {
             if(result.success){
                 this._loading = true;
                 setTimeout(() => {
-                    MeteorObservable.call('closeCall', _call._id, Meteor.userId()).subscribe(() => {
+                    MeteorObservable.call('closeCall', _call, Meteor.userId()).subscribe(() => {
                         this._loading = false;
                     });
                 }, 1500);

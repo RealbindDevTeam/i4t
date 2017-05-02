@@ -30,6 +30,7 @@ export class WaiterCallComponent implements OnInit, OnDestroy {
   private _countDetails       : number;
   private _userRestaurant     : boolean;
   private _validatedWaterCall : boolean;
+  private _loading            : boolean;
 
   /**
    * WaiterCallPage Constructor
@@ -92,10 +93,13 @@ export class WaiterCallComponent implements OnInit, OnDestroy {
           waiter_id : "",
           status : "waiting"
         }
-        /*
-        Meteor.call('waiterCall', false, data);
-        */
-        Meteor.call('findQueueByRestaurant', restaurant_id, data);
+        
+        this._loading = true;
+        setTimeout(() => {
+          MeteorObservable.call('findQueueByRestaurant', data).subscribe(() => {
+            this._loading = false;
+          });
+        }, 1500);
     }
   }
 
