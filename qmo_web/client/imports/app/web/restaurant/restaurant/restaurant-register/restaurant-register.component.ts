@@ -4,8 +4,9 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Router } from '@angular/router';
+import { Meteor } from 'meteor/meteor';
 import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
-import { Restaurant, RestaurantSchedule } from '../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurant, RestaurantSchedule, RestaurantFinancialElement } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Hours } from '../../../../../../../both/collections/general/hours.collection';
 import { Hour } from '../../../../../../../both/models/general/hour.model';
 import { Currency } from '../../../../../../../both/models/general/currency.model';
@@ -17,7 +18,10 @@ import { Country } from '../../../../../../../both/models/settings/country.model
 import { City } from '../../../../../../../both/models/settings/city.model';
 import { Cities } from '../../../../../../../both/collections/settings/city.collection';
 import { uploadRestaurantImage, createRestaurantCode } from '../../../../../../../both/methods/restaurant/restaurant.methods';
-import { Meteor } from 'meteor/meteor';
+import { FinancialBase } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-base';
+import { FinancialCheckBox } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-checkbox';
+import { FinancialDropDown } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-dropdown';
+import { FinancialTextBox } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-textbox';
 
 import template from './restaurant-register.component.html';
 import style from './restaurant-register.component.scss';
@@ -62,6 +66,9 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _schedule: RestaurantSchedule;
     private _taxPercentage: number = 0;
     private _tipPercentage: number = 0;
+
+    private _financialElements: FinancialBase<any>[] = [];
+    private _showFinancialElements: boolean = false;
 
     /**
      * RestaurantRegisterComponent constructor
@@ -274,7 +281,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             }
         });
 
-        let _lNewRestaurant = Restaurants.collection.insert({
+        let _lNewRestaurant;
+        /*let _lNewRestaurant = Restaurants.collection.insert({
             creation_user: Meteor.userId(),
             creation_date: new Date(),
             modification_user: '-',
@@ -301,7 +309,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             tables_quantity: 0,
             orderNumberCount: 0,
             max_jobs: 5                
-        });
+        });*/
 
         if( this._createImage ){
             uploadRestaurantImage( this._restaurantImageToInsert, 
@@ -347,6 +355,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._restaurantCurrencyId = _lCurrency._id;
         this._restaurantCurrency = _lCurrency.code + ' - ' + this.itemNameTraduction( _lCurrency.name );
         this._countryIndicative = _lCountry.indicative;
+        this.createFinancialForm( _lCountry.financialInformation );
     }
 
     /**
@@ -406,6 +415,34 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      */
     onTipPercentageChange( _event:any ):void{
         this._tipPercentage = _event.value;
+    }
+
+    createFinancialForm( _pFinancialInformation: RestaurantFinancialElement[] ):void{
+        _pFinancialInformation.forEach( (element) => {
+            if( element.controlType === 'textbox' ){
+                this._financialElements.push( new FinancialTextBox( {
+                                                                        key: element.key,
+                                                                        label: element.label,
+                                                                        value: element.value,
+                                                                        required: element.required,
+                                                                        order: element.order
+                                                                    }
+                                                                  ) 
+                                            );
+            } else if( element.controlType === 'checkbox' ){
+                this._financialElements.push( new FinancialCheckBox( {
+                                                                        key: element.key,
+                                                                        label: element.label,
+                                                                        value: element.value,
+                                                                        required: element.required,
+                                                                        order: element.order
+                                                                     } 
+                                                                   )
+                                            );
+            }
+        });
+        this._financialElements.sort( ( a, b ) => a.order - b.order );
+        this._showFinancialElements = true;
     }
 
     /**

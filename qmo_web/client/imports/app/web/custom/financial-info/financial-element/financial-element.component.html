@@ -1,0 +1,11 @@
+<div [formGroup]="form">
+  <div [ngSwitch]="element.controlType">
+    <md-input-container *ngSwitchCase="'textbox'" style="width: 25%">
+        <input mdInput [formControlName]="element.key" [id]="element.key" [type]="element.type" [placeholder]="element.label">
+    </md-input-container>
+    <md-select *ngSwitchCase="'dropdown'" [formControlName]="element.key">
+        <md-option *ngFor="let opt of element.options" [value]="opt.key">{{opt.value}}</md-option>
+    </md-select>
+    <md-checkbox *ngSwitchCase="'checkbox'" [formControlName]="element.key">{{element.label}}</md-checkbox>
+  </div> 
+</div>

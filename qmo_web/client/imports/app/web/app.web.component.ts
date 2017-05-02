@@ -3,20 +3,21 @@ import {NavigationService} from './navigation/navigation.service';
 import {Router, Event, NavigationStart, NavigationEnd} from '@angular/router';
 import 'hammerjs';
 import { OrderNavigationService } from './customer/orders/order-navigation/order-navigation.service';
+import { FinancialControlService } from './custom/financial-info/financial-control.service';
 
 import template from './app.web.component.html';
 import style from './app.web.component.scss';
  
 @Component({
   selector: 'app',
-  providers: [ OrderNavigationService ],
+  providers: [ OrderNavigationService, FinancialControlService ],
   template,
   styles: [ style ]
 })
 export class AppComponent implements OnInit{
   private pageTitle: string;
 
-  constructor(private _navigation: NavigationService, private _router: Router, private _elementRef: ElementRef, private _orderNavigationService: OrderNavigationService) {}
+  constructor(private _navigation: NavigationService, private _router: Router, private _elementRef: ElementRef, private _orderNavigationService: OrderNavigationService, private _financialControlService: FinancialControlService) {}
   
   ngOnInit(){
     this._router.events.subscribe((event: Event) => {

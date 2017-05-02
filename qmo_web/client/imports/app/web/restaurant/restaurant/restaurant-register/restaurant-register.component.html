@@ -91,6 +91,8 @@
                                 <label></label>
                             </div>
                         </div>
+                        <p>-------------------------------------------</p>
+                        <iu-financialform *ngIf="_showFinancialElements" [financialElements]="_financialElements" ></iu-financialform>
                     </md-card-content>
                     <md-card-actions align="end">
                         <button md-raised-button (click)="previous()" [disabled]="!canMove(0)">{{'BACK' | translate}}</button>
