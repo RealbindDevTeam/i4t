@@ -10,4 +10,5 @@ export interface Country {
     numericCode: string;
     indicative: string;
     currencyId: string;
+    queue: string[];
 }
