@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { App, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { TranslateService } from 'ng2-translate';
-import { Subscription, Subject, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
-import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 import { Items } from 'qmo_web/both/collections/administration/item.collection';
-import { Table } from 'qmo_web/both/models/restaurant/table.model';
 import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
 import { Restaurants } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';

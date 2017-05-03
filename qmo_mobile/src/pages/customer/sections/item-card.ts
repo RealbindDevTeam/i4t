@@ -1,5 +1,5 @@
 
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
 import { Item } from 'qmo_web/both/models/administration/item.model';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
   templateUrl: 'item-card.html'
 })
 
-export class ItemCardComponent {
+export class ItemCardComponent implements OnInit, OnDestroy {
 
   @Input()
   itemIdIn: Item;
@@ -33,16 +33,20 @@ export class ItemCardComponent {
   }
 
   getItemThumb(_itemId: string): string {
-    let _imageThumb
+    let _imageThumb;
     _imageThumb = ItemImagesThumbs.find().fetch().filter((i) => i.itemId === _itemId)[0];
     if (_imageThumb) {
       return _imageThumb.url;
     }
   }
 
-  goToDetail(_itemId: string){
+  goToDetail(_itemId: string) {
     console.log('envia itemId' + _itemId);
     this.itemIdOut.emit(_itemId);
   }
 
+  ngOnDestroy() {
+    console.log('ngOnDestroy de item-card');
+    this._imageThumbSub.unsubscribe();
+  }
 }

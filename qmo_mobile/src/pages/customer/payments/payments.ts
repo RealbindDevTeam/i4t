@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { TranslateService } from 'ng2-translate';
 import { MeteorObservable } from 'meteor-rxjs';
-import { Subscription, Subject, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 
 /*

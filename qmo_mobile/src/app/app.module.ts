@@ -2,7 +2,7 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from 'ng2-translate/ng2-translate';
-import { HttpModule, Http } from '@angular/http';
+import { Http } from '@angular/http';
 import { MyApp } from './app.component';
 import { InitialComponent } from '../pages/auth/initial/initial';
 import { SignupComponent } from '../pages/auth/signup/signup';
@@ -28,6 +28,7 @@ import { CallsPage } from '../pages/waiter/calls/calls';
 import { OrdersToDeliveryPage } from '../pages/waiter/orders-to-delivery/orders-to-delivery';
 import { IonicStorageModule } from '@ionic/storage';
 import { ItemCardComponent } from '../pages/customer/sections/item-card';
+import { OrderDetailComponent } from '../pages/customer/orders/order-detail';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateStaticLoader(http, 'assets/i18n', '.json');
@@ -58,7 +59,8 @@ export function createTranslateLoader(http: Http) {
     WaiterTabsPage,
     CallsPage,
     OrdersToDeliveryPage,
-    ItemCardComponent
+    ItemCardComponent,
+    OrderDetailComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -106,7 +108,8 @@ export function createTranslateLoader(http: Http) {
     WaiterTabsPage,
     CallsPage,
     OrdersToDeliveryPage,
-    ItemCardComponent
+    ItemCardComponent,
+    OrderDetailComponent
   ],
   providers: [
     { provide: ErrorHandler, 

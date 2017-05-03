@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { CallsPage } from '../calls/calls';
 import { OrdersToDeliveryPage } from '../orders-to-delivery/orders-to-delivery';

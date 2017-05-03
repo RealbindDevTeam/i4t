@@ -119,6 +119,7 @@ export class SectionsPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    console.log('ngOnDestroy de sections');
     this._sectionsSub.unsubscribe();
     this._restaurantSub.unsubscribe();
     this._citySub.unsubscribe();

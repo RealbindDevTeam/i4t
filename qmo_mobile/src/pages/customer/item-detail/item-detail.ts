@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { NavController, NavParams, ModalController, LoadingController, ToastController } from 'ionic-angular';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { TranslateService } from 'ng2-translate';
 import { MeteorObservable } from 'meteor-rxjs';
-import { Subscription, Subject, Observable } from 'rxjs';
-import { Items } from 'qmo_web/both/collections/administration/item.collection';
-import { Item } from 'qmo_web/both/models/administration/item.model'
+import { Subscription } from 'rxjs';
+import { Items, ItemImages } from 'qmo_web/both/collections/administration/item.collection';
 import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
 import { Addition } from 'qmo_web/both/models/administration/addition.model';
 import { GarnishFoodCol } from 'qmo_web/both/collections/administration/garnish-food.collection';
@@ -52,10 +51,9 @@ export class ItemDetailPage implements OnInit, OnDestroy {
   private _loadingMsg: string;
   private _toastMsg: string;
   private _disabledMinusBtn: boolean = true;
-  private _orders;
-  private _ordersSub: Subscription;
   private _statusArray: string[];
   private _currentUserId: string;
+  private _itemImageSub: Subscription;
 
   private _newOrderForm: FormGroup;
   private _garnishFormGroup: FormGroup = new FormGroup({});
@@ -123,9 +121,7 @@ export class ItemDetailPage implements OnInit, OnDestroy {
       });
     });
 
-    this._ordersSub = MeteorObservable.subscribe('getOrdersByTableId', this._res_code, this._table_code, this._statusArray).subscribe(()=>{
-      
-    });
+    this._itemImageSub = MeteorObservable.subscribe('itemImagesByRestaurant', this._res_code).subscribe();
 
     this._newOrderForm = new FormGroup({
       quantity: new FormControl('', [Validators.required]),
@@ -226,9 +222,9 @@ export class ItemDetailPage implements OnInit, OnDestroy {
       status: 'REGISTERED'
     }).fetch()[0];
 
-    if(_lOrder){
+    if (_lOrder) {
       _lOrderItemIndex = _lOrder.orderItemCount + 1;
-    }else {
+    } else {
       _lOrderItemIndex = 1;
     }
 
@@ -307,10 +303,17 @@ export class ItemDetailPage implements OnInit, OnDestroy {
     return wordTraduced;
   }
 
+  getItemImage(_itemId: string): string {
+    let _itemImage;
+    _itemImage = ItemImages.find().fetch().filter((i) => i.itemId === _itemId)[0];
+    if (_itemImage) {
+      return _itemImage.url;
+    }
+  }
+
   ngOnDestroy() {
     this._itemSub.unsubscribe();
     this._additionSub.unsubscribe();
     this._garnishSub.unsubscribe();
-    this._ordersSub.unsubscribe();
   }
 }

@@ -1,10 +1,8 @@
 import { Component, NgZone } from '@angular/core';
-import { ViewController, NavController, AlertController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import { TranslateService } from 'ng2-translate';
 import { SignupComponent } from '../signup/signup';
 import { SigninComponent } from '../signin/signin';
-import { TstPage } from '../../tst/tst';
-import { Meteor } from 'meteor/meteor';
 
 @Component({
     selector: 'page-initial',
@@ -26,7 +24,7 @@ export class InitialComponent {
         this.navCtrl.push(SignupComponent);
     }
 
-    goToSignIn(){
+    goToSignIn() {
         this.navCtrl.push(SigninComponent);
     }
 }

@@ -72,7 +72,6 @@ export class ChangeEmailPage {
 
     changeEmail() : void {
         let user = Meteor.user();
-        let message : string;
         let resp : boolean;
         if(this._emailEditForm.valid){
             resp = this.confirmUser();

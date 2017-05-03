@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
-import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
 import { SectionsPage } from '../sections/sections';
 
@@ -16,7 +14,6 @@ export class AlphanumericCodePage {
 
   private _userLang: string;
   private _ordersForm: FormGroup;
-  private _tablesSub: Subscription;
   private _id_table: string;
   private _error_msg: string;
 

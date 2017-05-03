@@ -6,7 +6,7 @@
 <ion-content>
   <div *ngFor="let item of _items | async">
     <div class="crop">
-      <img src="{{item.urlImage}}" style="display:inline-block">
+      <img src="{{getItemImage(item._id)}}" style="display:inline-block">
     </div>
     <ion-card class="ion-card-custom">
       <ion-card-content>

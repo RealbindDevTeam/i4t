@@ -27,32 +27,14 @@
                     </ion-select>
             </ion-item>
         </ion-list>
-        <hr showWhen="android"/>
+        <hr showWhen="android" />
         <ion-list>
             <div *ngFor="let order of _orders | async; let i = index">
                 <div *ngIf="order.creation_user == _currentUserId">
                     <ion-card class="custom-padding-card">
                         <ion-list>
                             <button ion-item style="background-color: #679436;" (click)="showDetail(i)">
-                                <ion-row center>
-                                    <ion-col col-2>
-                                        <div>
-                                            <i class="fa fa-list-alt fa-2x" style="color: white"></i>
-                                        </div>
-                                    </ion-col>
-                                    <ion-col>
-                                        <div style="color: white">                                       
-                                            {{'MOBILE.ORDERS.ORDER' | translate}}{{order.code}} <br/>
-                                            {{'MOBILE.ORDERS.TOTAL' | translate}}{{order.totalPayment}} COP<br/>
-                                            {{'MOBILE.ORDERS.STATUS' | translate}}{{order.status}} <br/>
-                                        </div>
-                                    </ion-col>
-                                    <ion-col showWhen="android">
-                                        <div>
-                                            <ion-icon name="arrow-round-down" style="color: white; float: right"></ion-icon>
-                                        </div>
-                                    </ion-col>
-                                </ion-row>
+                                <order-detail [order]="order"></order-detail>
                             </button>
                             <div *ngIf="_orderIndex == i">
                                 <ion-row *ngIf="order?.status === 'REGISTERED' && order?.items?.length > 0" no-padding style="background-color: #679436">
@@ -71,7 +53,7 @@
                                                     <img src="{{item.urlImage}}">
                                                 </ion-thumbnail>
                                                 <h2 style="white-space: normal;">{{item.name}}</h2>
-                                                <p style="white-space: normal;">{{itemId.paymentItem}} COP</p> 
+                                                <p style="white-space: normal;">{{itemId.paymentItem}} COP</p>
                                                 <p *ngIf="!item.isAvailable" class="unavailable-item"> {{'MOBILE.SECTIONS.UNAVAILABLE' | translate}} </p>
                                                 <button ion-button icon-only clear item-right (click)="goToItemEdit(order, itemId)">
                                                     <ion-icon *ngIf="order.status === 'REGISTERED'" name="create"></ion-icon>
@@ -94,26 +76,8 @@
                     <ion-card class="custom-padding-card">
                         <ion-list>
                             <button ion-item style="background-color: #114B5F" (click)="showDetail(i)">
-                            <ion-row center>
-                                 <ion-col col-2>
-                                    <div>
-                                        <i class="fa fa-list-alt fa-2x" style="color: white"></i>
-                                    </div>
-                                </ion-col>
-                                <ion-col>
-                                    <div style="color: white">    
-                                        {{'MOBILE.ORDERS.ORDER' | translate}}{{order.code}} <br/>
-                                        {{'MOBILE.ORDERS.TOTAL' | translate}}{{order.totalPayment}} COP<br/>
-                                        {{'MOBILE.ORDERS.STATUS' | translate}}{{order.status}} <br/>
-                                    </div>
-                                </ion-col>
-                                <ion-col showWhen="android"> 
-                                    <div>
-                                        <ion-icon name="arrow-round-down" style="color: white; float: right"></ion-icon>
-                                    </div>
-                                </ion-col>
-                            </ion-row>
-                        </button>
+                            <order-detail [order]="order"></order-detail>
+                            </button>
                             <div *ngIf="_orderIndex == i">
                                 <div *ngFor="let itemId of order.items">
                                     <div *ngFor="let item of _items | async">

@@ -3,14 +3,9 @@ import { AlertController, LoadingController, ToastController  } from 'ionic-angu
 import { TranslateService } from 'ng2-translate';
 import { MeteorObservable } from "meteor-rxjs";
 import { Subscription } from "rxjs";
-
-import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
-import { UserDetail } from 'qmo_web/both/models/auth/user-detail.model';
 import { Restaurants, RestaurantImages } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-call-detail.collection';
-import { User } from 'qmo_web/both/models/auth/user.model';
-import { Users } from 'qmo_web/both/collections/auth/user.collection';
 
 @Component({
   selector : 'calls-page',
@@ -30,7 +25,6 @@ export class CallsPage implements OnInit, OnDestroy {
   private _waiterCallDetailCollection : any;
   private _imgRestaurant              : any;
 
-  private _user     : User;
   private _userLang : string;
 
   /**

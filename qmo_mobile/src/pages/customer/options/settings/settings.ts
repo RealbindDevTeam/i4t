@@ -2,13 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { TranslateService } from 'ng2-translate';
 import { MeteorObservable } from 'meteor-rxjs';
-import { Subscription, Subject, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { ChangeEmailPage } from './change-email/change-email';
 import { ChangePasswordPage } from './change-password/change-password';
 
 import { Users } from 'qmo_web/both/collections/auth/user.collection';
-import { User } from 'qmo_web/both/models/auth/user.model';
 
 @Component({
   selector: 'page-settings',
