@@ -26,6 +26,7 @@
     "SEARCH" : "Consultar",
     "JOB" : "Cargo",
     "VALIDATE" : "Validar",
+    "CLOSE": "Cerrar",
     "DATE_VALIDATE" : {
         "DAY_FORMAT" : "Formato del día incorrecto",
         "MONTH_FORMAT" : "Formato del mes incorrecto",
@@ -591,7 +592,11 @@
         "MSG_COMFIRM" : "Solicitud cerrada",
         "NO_ANSWER" : "No",
         "YES_ANSWER" : "Si",
-        "TURN" : "Turno"
+        "TURN" : "Turno",
+        "TABLE" :"Mesa",
+        "CALL_LABEL_SEND_ORDER" : "Entrega de orden",
+        "CALL_LABEL_CUSTOMER" : "Llamado de cliente",
+        "CALL_LABEL_CUSTOMER_PAYMENT" : "Pago de cliente"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Ordenes Confirmadas",

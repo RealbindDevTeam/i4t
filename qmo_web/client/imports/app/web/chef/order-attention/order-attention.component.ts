@@ -32,6 +32,7 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     private _tables: Observable<Table[]>;
 
     private _showDetails: boolean = false;
+    private _loading: boolean;
     private _showDetailsInProcess: boolean = false;
 
     /**
@@ -103,6 +104,43 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
                        }
                      );
         this._showDetailsInProcess = false;
+
+        var restaurant_id = _pOrder.restaurantId;
+        var table_id = _pOrder.tableId;
+
+        var data : any = {
+          restaurants : restaurant_id,
+          tables : table_id,
+          user : Meteor.userId(),
+          waiter_id : "",
+          status : "PREPARED",
+          type : "SEND_ORDER",
+        }
+        
+        this._loading = true;
+        setTimeout(() => {
+          MeteorObservable.call('findQueueByRestaurant', data).subscribe(() => {
+            this._loading = false;
+          });
+        }, 1500);
+    }
+
+    testCallWaiter(){
+        var data : any = {
+          restaurants : "f8K8LKssLhSLEtnQk",
+          tables : "TqS6yiAp7rd4rrc43",
+          user : Meteor.userId(),
+          waiter_id : "",
+          status : "PREPARED",
+          type : "SEND_ORDER",
+        }
+        
+        this._loading = true;
+        setTimeout(() => {
+          MeteorObservable.call('findQueueByRestaurant', data).subscribe(() => {
+            this._loading = false;
+          });
+        }, 1500);
     }
 
     /**

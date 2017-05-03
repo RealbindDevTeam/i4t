@@ -47,7 +47,8 @@ if (Meteor.isServer) {
           creation_user : _data.user,
           creation_date : new Date(),
           queue : _queue,
-          job_id : job._doc._id
+          job_id : job._doc._id,
+          type : _data.type
         });
       } 
       return;
