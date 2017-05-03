@@ -29,6 +29,7 @@ import { OrdersToDeliveryPage } from '../pages/waiter/orders-to-delivery/orders-
 import { IonicStorageModule } from '@ionic/storage';
 import { ItemCardComponent } from '../pages/customer/sections/item-card';
 import { OrderDetailComponent } from '../pages/customer/orders/order-detail';
+import { OrderItemDetailComponent } from '../pages/customer/orders/order-item-detail';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateStaticLoader(http, 'assets/i18n', '.json');
@@ -60,7 +61,8 @@ export function createTranslateLoader(http: Http) {
     CallsPage,
     OrdersToDeliveryPage,
     ItemCardComponent,
-    OrderDetailComponent
+    OrderDetailComponent,
+    OrderItemDetailComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -109,11 +111,14 @@ export function createTranslateLoader(http: Http) {
     CallsPage,
     OrdersToDeliveryPage,
     ItemCardComponent,
-    OrderDetailComponent
+    OrderDetailComponent,
+    OrderItemDetailComponent
   ],
   providers: [
-    { provide: ErrorHandler, 
-      useClass: IonicErrorHandler }
+    {
+      provide: ErrorHandler,
+      useClass: IonicErrorHandler
+    }
   ]
 })
 export class AppModule { }
