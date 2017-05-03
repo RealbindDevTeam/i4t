@@ -91,7 +91,8 @@ export class WaiterCallComponent implements OnInit, OnDestroy {
           tables : table_id,
           user : usrId,
           waiter_id : "",
-          status : "waiting"
+          status : "waiting",
+          type : "CALL_OF_CUSTOMER",
         }
         
         this._loading = true;
