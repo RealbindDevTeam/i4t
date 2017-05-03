@@ -14,4 +14,14 @@ export class IurestFinancialElementComponent {
   
     @Input() element: FinancialBase<any>;
     @Input() form: FormGroup;
+
+    onChangeValue(){
+      console.log('pruebasassss');
+      console.log(JSON.stringify(this.form.value));
+    }
+
+    receiveSliderValue( _event:any ):void {
+      console.log('recibe valor de slider');
+      console.log(_event);
+    }
 }

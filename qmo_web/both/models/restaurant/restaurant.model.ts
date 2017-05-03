@@ -115,4 +115,8 @@ export interface RestaurantFinancialElement {
     order?: number;
     controlType?: string;
     options?: { key: string, value: string }[];
+    percentageValue?: number;
+    minValue?: number;
+    maxValue?: number;
+    stepValue?: number;
 }

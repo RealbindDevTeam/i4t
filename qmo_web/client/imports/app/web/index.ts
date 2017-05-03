@@ -53,6 +53,7 @@ import { NotFoundWebComponent } from './auth/notfound.web.component';
 import { FinancialControlService } from './custom/financial-info/financial-control.service';
 import { IurestFinancialFormComponent } from './custom/financial-info/financial-form/financial-form.component';
 import { IurestFinancialElementComponent } from './custom/financial-info/financial-element/financial-element.component';
+import { IurestSliderComponent } from './custom/slider/slider.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -90,7 +91,8 @@ export const WEB_DECLARATIONS = [
     CallsComponent,
     NotFoundWebComponent,
     IurestFinancialFormComponent,
-    IurestFinancialElementComponent
+    IurestFinancialElementComponent,
+    IurestSliderComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [

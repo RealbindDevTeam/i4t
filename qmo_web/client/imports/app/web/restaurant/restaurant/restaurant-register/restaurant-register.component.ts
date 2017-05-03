@@ -22,6 +22,8 @@ import { FinancialBase } from '../../../../../../../both/shared-components/resta
 import { FinancialCheckBox } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-checkbox';
 import { FinancialDropDown } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-dropdown';
 import { FinancialTextBox } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-textbox';
+import { FinancialText } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-text';
+import { FinancialSlider } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-slider';
 
 import template from './restaurant-register.component.html';
 import style from './restaurant-register.component.scss';
@@ -65,7 +67,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
 
     private _schedule: RestaurantSchedule;
     private _taxPercentage: number = 0;
-    private _tipPercentage: number = 0;
+    private _tipPercentage: number = 10;
 
     private _financialElements: FinancialBase<any>[] = [];
     private _showFinancialElements: boolean = false;
@@ -418,31 +420,51 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     }
 
     createFinancialForm( _pFinancialInformation: RestaurantFinancialElement[] ):void{
-        _pFinancialInformation.forEach( (element) => {
-            if( element.controlType === 'textbox' ){
-                this._financialElements.push( new FinancialTextBox( {
-                                                                        key: element.key,
-                                                                        label: element.label,
-                                                                        value: element.value,
-                                                                        required: element.required,
-                                                                        order: element.order
-                                                                    }
-                                                                  ) 
-                                            );
-            } else if( element.controlType === 'checkbox' ){
-                this._financialElements.push( new FinancialCheckBox( {
-                                                                        key: element.key,
-                                                                        label: element.label,
-                                                                        value: element.value,
-                                                                        required: element.required,
-                                                                        order: element.order
+        if( _pFinancialInformation.length > 0 ){
+            _pFinancialInformation.forEach( ( element ) => {
+                if( element.controlType === 'textbox' ){
+                    this._financialElements.push( new FinancialTextBox( {
+                                                                            key: element.key,
+                                                                            label: element.label,
+                                                                            value: element.value,
+                                                                            required: element.required,
+                                                                            order: element.order
+                                                                        }
+                                                                    ) 
+                                                );
+                } else if( element.controlType === 'checkbox' ){
+                    this._financialElements.push( new FinancialCheckBox( {
+                                                                            key: element.key,
+                                                                            label: element.label,
+                                                                            value: element.value,
+                                                                            required: element.required,
+                                                                            order: element.order
+                                                                        } 
+                                                                    )
+                                                );
+                } else if( element.controlType === 'text' ){
+                    this._financialElements.push( new FinancialText( { 
+                                                                        key: element.key, 
+                                                                        label: element.label, 
+                                                                        order: element.order 
                                                                      } 
                                                                    )
-                                            );
-            }
-        });
-        this._financialElements.sort( ( a, b ) => a.order - b.order );
-        this._showFinancialElements = true;
+                                                );
+                } else if ( element.controlType === 'slider' ){
+                    this._financialElements.push( new FinancialSlider( {
+                                                                          key: element.key,
+                                                                          label: element.label,
+                                                                          order: element.order,
+                                                                          percentageValue: element.percentageValue,
+                                                                          minValue: element.minValue,
+                                                                          maxValue: element.maxValue,
+                                                                          stepValue: element.stepValue
+                    } ) );
+                }
+            });
+            this._financialElements.sort( ( a, b ) => a.order - b.order );
+            this._showFinancialElements = true;
+        }
     }
 
     /**

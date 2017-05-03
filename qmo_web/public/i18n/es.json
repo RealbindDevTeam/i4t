@@ -26,6 +26,7 @@
     "SEARCH" : "Consultar",
     "JOB" : "Cargo",
     "VALIDATE" : "Validar",
+    "TIP_PERCENTAGE": "Porcentaje de propina",
     "DATE_VALIDATE" : {
         "DAY_FORMAT" : "Formato del día incorrecto",
         "MONTH_FORMAT" : "Formato del mes incorrecto",
@@ -220,7 +221,7 @@
         "GENERAL_INFO_TEXT": "Por favor ingresa la informacion del restaurante. Dicha informacion sera visualizada por las personas en internet y te dara mayor visivilidad",
         "FINANCIAL_LABEL": "Financiera",
         "FINANCIAL_INFO": "Informacion Financiera del Restaurante",
-        "FINANCIAL_INFO_TEXT": "Por favor ingresa la informacion financiera del restaurante. Esto le permitira a Iurest ayudarte con las cuentas y gastos del negocio",
+        "FINANCIAL_INFO_TEXT": "La informacion financiera del restaurante sera establecida de acuerdo al pais al cual pertenece. Esto le permitira a Iurest ayudarte con las cuentas y gastos de tu negocio",
         "ADD_LOCATION": "Ingrese la ubicacion del establecimiento",
         "SCHEDULE_LABEL": "Horario",
         "SCHEDULE_INFO": "Horario de atencion",
@@ -613,5 +614,18 @@
         "OBSERVATIONS": "Observaciones",
         "ORDERS_IN_PROCESS": "Ordenes en Proceso",
         "ORDER_PREPARED": "ORDEN PREPARADA"
+    },
+    "FINANCIAL_INFO": {
+        "COLOMBIA": {
+            "INC": "De acuerdo a la ley Colombiana, los restaurantes deben discriminar en la cuenta de cobro, tiquete de registradora, factura o documento equivalente, el Impuesto Nacional al Consumo (INC), por lo tanto, Iurest realizara el calculo del INC equivalente al 8% al momento de solicitar el valor total de la cuenta por parte del cliente.",
+            "BUSINESS_NAME": "Ingresa Apellidos y Nombres (si es persona natural) o Razon Social (si es persona juridica):",
+            "BUSINESS_NAME_LABEL": "Nombres - Razon Social",
+            "NIT": "Ingresa NIT de quien vende los Bienes o Servicios. Por favor incluya digito de verificacion:",
+            "NIT_LABEL": "NIT",
+            "DIAN_NUMERATION": "Ingresa numeracion autorizada por la DIAN:",
+            "DIAN_NUMERATION_FROM": "Desde",
+            "DIAN_NUMERATION_TO": "Hasta",
+            "ENTER_TIP_PERCENTAGE": "Ingresa el porcentaje de la propina sugerida ( 0% - 100% ). Puedes ingresar el valor o utilizar el Slider"            
+        }
     }
 }

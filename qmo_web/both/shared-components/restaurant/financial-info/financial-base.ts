@@ -8,6 +8,10 @@ export class FinancialBase<T> {
     required: boolean;
     order: number;
     controlType: string;
+    percentageValue: number;
+    minValue: number;
+    maxValue: number;
+    stepValue: number; 
 
     /**
      * FinancialBase Constructor
@@ -19,7 +23,11 @@ export class FinancialBase<T> {
                             label?: string,
                             required?: boolean,
                             order?: number,
-                            controlType?: string
+                            controlType?: string,
+                            percentageValue?: number,
+                            minValue?: number,
+                            maxValue?: number,
+                            stepValue?: number 
                           } = {} ) {
         this.value = options.value;
         this.key = options.key || '';
@@ -27,5 +35,9 @@ export class FinancialBase<T> {
         this.required = !!options.required;
         this.order = options.order === undefined ? 1 : options.order;
         this.controlType = options.controlType || '';
+        this.percentageValue = options.percentageValue === undefined ? 0 : options.percentageValue;
+        this.minValue = options.minValue === undefined ? 0 : options.minValue;
+        this.maxValue = options.maxValue === undefined ? 0 : options.maxValue;
+        this.stepValue = options.stepValue === undefined ? 1 : options.stepValue;
     }
 }
