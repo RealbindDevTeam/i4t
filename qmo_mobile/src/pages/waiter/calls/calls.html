@@ -26,14 +26,21 @@
                 </ion-card-header-->
                 <ion-card-content>
                     <div class="item-block">
-                        <img class="img-cards" src="assets/img/chef.png">
+                        <img *ngIf="_call.type == 'SEND_ORDER'" class="img-cards" src="assets/img/chef.png">
+                        <img *ngIf="_call.type == 'CALL_OF_CUSTOMER'" class="img-cards" src="assets/img/llamar_mesero.png">
+                        <img *ngIf="_call.type == 'PAYMENT'" class="img-cards" src="assets/img/pago.png">
                         <!--ion-icon name='hand' style="font-size: 2.6em;margin-right: 16px;"></ion-icon-->
                         <div class="header-title">
-                            <span>
-                                {{ 'MOBILE.WAITER_CALL.TABLE' | translate }} {{_table._number}} - Consulta
-                            </span>
+                            <div class="label">
+                                <span>
+                                    {{ 'MOBILE.WAITER_CALL.TABLE' | translate }} {{_table._number}}
+                                </span>
+                                <p *ngIf="_call.type == 'SEND_ORDER'">{{ 'MOBILE.WAITER_CALL.CALL_LABEL_SEND_ORDER' | translate }}</p>
+                                <p *ngIf="_call.type == 'CALL_OF_CUSTOMER'">{{ 'MOBILE.WAITER_CALL.CALL_LABEL_CUSTOMER' | translate }}</p>
+                                <p *ngIf="_call.type == 'PAYMENT'">{{ 'MOBILE.WAITER_CALL.CALL_LABEL_CUSTOMER_PAYMENT' | translate }}</p>
+                            </div>
                             <button ion-button item-right (click)="showComfirmClose(_call)" 
-                                    style="height: 36px; font-size: 0.5rem; background-color: #679436;">
+                                    style="height: 36px; font-size: 1.2rem; background-color: #679436;">
                                 {{'MOBILE.CLOSE' | translate}}
                             </button>
                         </div>
