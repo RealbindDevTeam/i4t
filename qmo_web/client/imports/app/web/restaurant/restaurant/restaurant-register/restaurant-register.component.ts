@@ -66,11 +66,9 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _restaurantCurrencyId: string = '';
 
     private _schedule: RestaurantSchedule;
-    private _taxPercentage: number = 0;
-    private _tipPercentage: number = 10;
-
     private _financialElements: FinancialBase<any>[] = [];
     private _showFinancialElements: boolean = false;
+    private _restaurantFinancialInformation: Object = {};
 
     /**
      * RestaurantRegisterComponent constructor
@@ -104,7 +102,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             phone: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 30 ) ] ),
             webPage: new FormControl( '', [ Validators.minLength( 1 ), Validators.maxLength( 40 ) ] ),
             email: new FormControl( '', [ Validators.minLength( 1 ), Validators.maxLength( 40 ) ] ),
-            invoiceCode: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 20 ) ] ),
             image: new FormControl( '' ),
             paymentMethods: this._paymentsFormGroup,
         });
@@ -216,11 +213,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                 return false;
             }
         case 2:
-            if( this._restaurantForm.controls['invoiceCode'].valid ){
-                return true;
-            } else {
-                return false;
-            }
+            return true;
         default:
             return true;
         }
@@ -404,21 +397,9 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Get tax percentage slider value
-     * @param {any} _event 
+     * Create Financial form from restaurant template
+     * @param {RestaurantFinancialElement[]} _pFinancialInformation 
      */
-    onTaxPercentageChange( _event:any ):void{
-        this._taxPercentage = _event.value;
-    }
-
-    /**
-     * Get tip percentage slider value
-     * @param {any} _event 
-     */
-    onTipPercentageChange( _event:any ):void{
-        this._tipPercentage = _event.value;
-    }
-
     createFinancialForm( _pFinancialInformation: RestaurantFinancialElement[] ):void{
         if( _pFinancialInformation.length > 0 ){
             _pFinancialInformation.forEach( ( element ) => {
@@ -465,6 +446,14 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             this._financialElements.sort( ( a, b ) => a.order - b.order );
             this._showFinancialElements = true;
         }
+    }
+
+    /**
+     * Set Restaurant Financial Information
+     * @param {Object} _event 
+     */
+    setRestaurantFinancialInfo( _event: Object ):void{
+        this._restaurantFinancialInformation = _event;
     }
 
     /**

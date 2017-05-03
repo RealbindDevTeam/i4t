@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FinancialBase } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-base';
 
@@ -14,14 +14,32 @@ export class IurestFinancialElementComponent {
   
     @Input() element: FinancialBase<any>;
     @Input() form: FormGroup;
+    @Output() financialInformation = new EventEmitter();
 
+    private financialInfo = {};
+
+    /**
+     * Function to build JSON with financial information
+     */
     onChangeValue(){
-      console.log('pruebasassss');
-      console.log(JSON.stringify(this.form.value));
+      let _lJsonValues = JSON.parse( JSON.stringify( this.form.value ) );
+      let arr:any[] = Object.keys( _lJsonValues );
+      arr.forEach( ( a ) => {
+            if( _lJsonValues[ a ] ){
+                this.financialInfo[ a ] = _lJsonValues[ a ];
+            }
+        });
+      this.financialInformation.emit( this.financialInfo );
     }
 
-    receiveSliderValue( _event:any ):void {
-      console.log('recibe valor de slider');
-      console.log(_event);
+    /**
+     * Receive slider value and insert in JSON with financial information
+     * @param {string} _event 
+     */
+    receiveSliderValue( _event:string ):void {
+      let _lValues:string[] = [];
+      _lValues = _event.split(":");
+      this.financialInfo[ _lValues[ 0 ] ] = _lValues[ 1 ];
+      this.financialInformation.emit( this.financialInfo );
     }
 }

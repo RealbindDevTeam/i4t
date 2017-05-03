@@ -22,15 +22,15 @@ export class IurestSliderComponent implements OnInit {
      * ngOnInit Implementation
      */
     ngOnInit(){
-        this.sliderValue.emit( this.percentageValue );
+        this.sliderValue.emit( ( this.label + ':' + this.percentageValue ) );
     }
 
     /**
-     * Get percentage value
+     * Get percentage value from slider
      * @param {any} _event 
      */
     onPercentageChange( _event:any ):void{
-        this.percentageValue = _event.value;
-        this.sliderValue.emit( this.percentageValue );
+        this.percentageValue = _event;
+        this.sliderValue.emit( ( this.label + ':' + this.percentageValue ) );
     }
 }
