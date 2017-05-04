@@ -1,8 +1,7 @@
 import { FinancialBase } from './financial-base';
 
-export class FinancialSlider extends FinancialBase<string> {
+export class FinancialSlider extends FinancialBase<number> {
     controlType = 'slider';
-    percentageValue: number;
     minValue: number;
     maxValue: number;
     stepValue: number; 
@@ -13,7 +12,6 @@ export class FinancialSlider extends FinancialBase<string> {
      */
     constructor( options: {} = {} ){
         super( options );
-        this.percentageValue = options[ 'percentageValue' ] || '';
         this.minValue = options[ 'minValue' ] || '';
         this.maxValue = options[ 'maxValue' ] || '';
         this.stepValue = options[ 'stepValue' ] || '';        

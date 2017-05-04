@@ -14,10 +14,7 @@ export interface Restaurant extends CollectionObject {
     webPage: string;
     email: string;
     restaurant_code: string;
-    invoice_code?: string; // -- eliminar
-    tip_percentage?: number; // -- eliminar
-    tax_percentage?: number; // -- eliminar
-    financialInformation: RestaurantFinancialElement[];
+    financialInformation: Object;
     paymentMethods: string[];
     location?: RestaurantLocation;
     schedule: RestaurantSchedule;
@@ -115,7 +112,6 @@ export interface RestaurantFinancialElement {
     order?: number;
     controlType?: string;
     options?: { key: string, value: string }[];
-    percentageValue?: number;
     minValue?: number;
     maxValue?: number;
     stepValue?: number;

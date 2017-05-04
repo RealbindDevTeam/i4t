@@ -69,6 +69,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _financialElements: FinancialBase<any>[] = [];
     private _showFinancialElements: boolean = false;
     private _restaurantFinancialInformation: Object = {};
+    private _financialInformation: RestaurantFinancialElement[] = [];
 
     /**
      * RestaurantRegisterComponent constructor
@@ -213,7 +214,21 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                 return false;
             }
         case 2:
-            return true;
+            let _lElementsValidated: boolean = true;
+            if( this._showFinancialElements ){
+                this._financialInformation.forEach( ( element ) => {
+                    if( element.required !== undefined && element.required === true ){
+                        let _lObjects: string[] = [];
+                        _lObjects = Object.keys( this._restaurantFinancialInformation );
+                        if( _lObjects.filter( e => e === element.key ).length === 0 ){
+                            _lElementsValidated = false;
+                        }
+                    }
+                });
+                return _lElementsValidated;
+            } else {
+                return true;
+            }
         default:
             return true;
         }
@@ -251,9 +266,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._restaurantForm.controls['address'].reset();
         this._restaurantForm.controls['phone'].reset();
         this._restaurantForm.controls['webPage'].reset();
-        this._restaurantForm.controls['email'].reset();
-        this._restaurantForm.controls['invoiceCode'].reset();       
-       
+        this._restaurantForm.controls['email'].reset();    
+        this._restaurantFinancialInformation = {};
         this._router.navigate( [ 'app/restaurant' ] );
     }
 
@@ -276,8 +290,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             }
         });
 
-        let _lNewRestaurant;
-        /*let _lNewRestaurant = Restaurants.collection.insert({
+        let _lNewRestaurant = Restaurants.collection.insert({
             creation_user: Meteor.userId(),
             creation_date: new Date(),
             modification_user: '-',
@@ -292,9 +305,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             webPage: this._restaurantForm.value.webPage,
             email: this._restaurantForm.value.email,
             restaurant_code: this.generateRestaurantCode(),
-            invoice_code: this._restaurantForm.value.invoiceCode,
-            tip_percentage: this._tipPercentage,
-            tax_percentage: this._taxPercentage,
+            financialInformation: this._restaurantFinancialInformation,
             paymentMethods: _lPaymentMethodsToInsert,
             location: {
                     lat: 0,
@@ -304,7 +315,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             tables_quantity: 0,
             orderNumberCount: 0,
             max_jobs: 5                
-        });*/
+        });
 
         if( this._createImage ){
             uploadRestaurantImage( this._restaurantImageToInsert, 
@@ -337,7 +348,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     changeCountry( _country ){
         this._selectedCountryValue = _country;
         this._restaurantForm.controls['country'].setValue( _country );
-        this._cities = Cities.find( { country: _country } ).zone();
         
         let _lCountry: Country;
         Countries.find( { _id: _country } ).fetch().forEach( (c) => {
@@ -350,7 +360,12 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._restaurantCurrencyId = _lCurrency._id;
         this._restaurantCurrency = _lCurrency.code + ' - ' + this.itemNameTraduction( _lCurrency.name );
         this._countryIndicative = _lCountry.indicative;
-        this.createFinancialForm( _lCountry.financialInformation );
+
+        this._showFinancialElements = false;
+        this._financialElements = [];
+        this._financialInformation = _lCountry.financialInformation;
+        this.createFinancialForm( this._financialInformation );
+        this._cities = Cities.find( { country: _country } ).zone();
     }
 
     /**
@@ -436,7 +451,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                                                                           key: element.key,
                                                                           label: element.label,
                                                                           order: element.order,
-                                                                          percentageValue: element.percentageValue,
+                                                                          value: element.value,
                                                                           minValue: element.minValue,
                                                                           maxValue: element.maxValue,
                                                                           stepValue: element.stepValue
