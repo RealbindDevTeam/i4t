@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import template from './slider.component.html';
 import style from './slider.component.scss';
@@ -8,7 +8,7 @@ import style from './slider.component.scss';
     template,
     styles: [ style ]
 })
-export class IurestSliderComponent implements OnInit {
+export class IurestSliderComponent {
 
     @Input() percentageValue: number;
     @Input() label: string;
@@ -17,13 +17,6 @@ export class IurestSliderComponent implements OnInit {
     @Input() stepValue: number;    
 
     @Output() sliderValue = new EventEmitter();
-
-    /**
-     * ngOnInit Implementation
-     */
-    ngOnInit(){
-        this.sliderValue.emit( ( this.label + ':' + this.percentageValue ) );
-    }
 
     /**
      * Get percentage value from slider

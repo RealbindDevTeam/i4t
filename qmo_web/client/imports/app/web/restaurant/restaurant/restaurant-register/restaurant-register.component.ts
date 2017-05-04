@@ -363,6 +363,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
 
         this._showFinancialElements = false;
         this._financialElements = [];
+        this._restaurantFinancialInformation = {};
         this._financialInformation = _lCountry.financialInformation;
         this.createFinancialForm( this._financialInformation );
         this._cities = Cities.find( { country: _country } ).zone();

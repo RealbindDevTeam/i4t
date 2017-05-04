@@ -80,7 +80,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     private _financialElements: FinancialBase<any>[] = [];
     private _showFinancialElements: boolean = false;
     private _restaurantFinancialInformation: Object = {};
-
+    private _financialInformation: RestaurantFinancialElement[] = [];
 
     /**
      * RestaurantEditionComponent Constructor
@@ -172,7 +172,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         let _lRestaurantImage: RestaurantImage = RestaurantImages.findOne( { restaurantId: this._restaurantToEdit._id } );
         this._restaurantEditImage = _lRestaurantImage.url;
         let _lCountry: Country = Countries.findOne( { _id: this._restaurantToEdit.countryId } );
-        this.createFinancialForm( _lCountry.financialInformation );
+        this.createFinancialFormEditMode( _lCountry.financialInformation, this._restaurantToEdit.financialInformation );
     }
 
     /**
@@ -205,7 +205,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                 phone: this._restaurantEditionForm.value.phone,
                 webPage: this._restaurantEditionForm.value.webPage,
                 email: this._restaurantEditionForm.value.email,
-                financialInformation: {},
+                financialInformation: this._restaurantFinancialInformation,
                 paymentMethods: _lPaymentMethodsToInsert,
                 schedule: this._edition_schedule
             }
@@ -272,7 +272,21 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                 return false;
             }
         case 2:
-            return true;
+            let _lElementsValidated: boolean = true;
+            if( this._showFinancialElements ){
+                this._financialInformation.forEach( ( element ) => {
+                    if( element.required !== undefined && element.required === true ){
+                        let _lObjects: string[] = [];
+                        _lObjects = Object.keys( this._restaurantFinancialInformation );
+                        if( _lObjects.filter( e => e === element.key ).length === 0 ){
+                            _lElementsValidated = false;
+                        }
+                    }
+                });
+                return _lElementsValidated;
+            } else {
+                return true;
+            }
         default:
             return true;
         }
@@ -318,7 +332,12 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         });    
         this._restaurantCurrency = _lCurrency.code + ' - ' + this.itemNameTraduction( _lCurrency.name );
         this._countryIndicative = _lCountry.indicative;
-        this.createFinancialForm( _lCountry.financialInformation );
+
+        this._showFinancialElements = false;
+        this._financialElements = [];
+        this._restaurantFinancialInformation = {};
+        this._financialInformation = _lCountry.financialInformation;
+        this.createFinancialForm( this._financialInformation );
     }
 
     /**
@@ -419,6 +438,64 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
      */
     setRestaurantFinancialInfo( _event: Object ):void{
         this._restaurantFinancialInformation = _event;
+    }
+
+    /**
+     * Create Financial form from restaurant template in edit mode
+     * @param {RestaurantFinancialElement[]} _pFinancialInformation 
+     */
+    createFinancialFormEditMode( _pFinancialInformation: RestaurantFinancialElement[], _pRestaurantFinancialInfo: Object ):void{
+        if( _pFinancialInformation.length > 0 ){
+            _pFinancialInformation.forEach( ( element ) => {
+                let _lValue: any;
+                if( element.required !== undefined && element.required === true ){
+                    let _lkey: string = Object.keys( _pRestaurantFinancialInfo ).filter( e => e === element.key )[0];
+                    _lValue = _pRestaurantFinancialInfo[_lkey];
+                }
+                if( element.controlType === 'textbox' ){
+                    this._financialElements.push( new FinancialTextBox( {
+                                                                            key: element.key,
+                                                                            label: element.label,
+                                                                            value: _lValue === undefined ? element.value : _lValue,
+                                                                            required: element.required,
+                                                                            order: element.order
+                                                                        }
+                                                                    ) 
+                                                );
+                } else if( element.controlType === 'checkbox' ){
+                    this._financialElements.push( new FinancialCheckBox( {
+                                                                            key: element.key,
+                                                                            label: element.label,
+                                                                            value: _lValue === undefined ? element.value : _lValue,
+                                                                            required: element.required,
+                                                                            order: element.order
+                                                                        } 
+                                                                    )
+                                                );
+                } else if( element.controlType === 'text' ){
+                    this._financialElements.push( new FinancialText( { 
+                                                                        key: element.key, 
+                                                                        label: element.label, 
+                                                                        order: element.order 
+                                                                     } 
+                                                                   )
+                                                );
+                } else if ( element.controlType === 'slider' ){
+                    this._financialElements.push( new FinancialSlider( {
+                                                                          key: element.key,
+                                                                          label: element.label,
+                                                                          order: element.order,
+                                                                          value: _lValue === undefined ? element.value : _lValue,
+                                                                          minValue: element.minValue,
+                                                                          maxValue: element.maxValue,
+                                                                          stepValue: element.stepValue
+                    } ) );
+                }
+            });
+            this._financialElements.sort( ( a, b ) => a.order - b.order );
+            this._showFinancialElements = true;
+            this._restaurantFinancialInformation = _pRestaurantFinancialInfo;
+        }
     }
 
     /**
