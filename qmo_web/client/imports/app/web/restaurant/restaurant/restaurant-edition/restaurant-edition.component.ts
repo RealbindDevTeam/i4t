@@ -8,8 +8,8 @@ import { Meteor } from 'meteor/meteor';
 import { Router, ActivatedRoute } from '@angular/router';
 import { uploadRestaurantImage } from '../../../../../../../both/methods/restaurant/restaurant.methods';
 import { MouseEvent } from "angular2-google-maps/core";
-import { Restaurants, RestaurantImages } from '../../../../../../../both/collections/restaurant/restaurant.collection';
-import { Restaurant, RestaurantSchedule, RestaurantImage, RestaurantFinancialElement } from '../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants, RestaurantImages, RestaurantImageThumbs } from '../../../../../../../both/collections/restaurant/restaurant.collection';
+import { Restaurant, RestaurantSchedule, RestaurantImage, RestaurantFinancialElement, RestaurantImageThumb } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Hours } from '../../../../../../../both/collections/general/hours.collection';
 import { Hour } from '../../../../../../../both/models/general/hour.model';
 import { Currency } from '../../../../../../../both/models/general/currency.model';
@@ -48,6 +48,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     private _citiesSub: Subscription;
     private _paymentMethodsSub: Subscription;
     private _restaurantImagesSub: Subscription;
+    private _restaurantImageThumbsSub: Subscription;
 
     private _hours: Observable<Hour[]>;
     private _countries: Observable<Country[]>;
@@ -168,11 +169,20 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         this._cities = Cities.find( { } ).zone();
         this._citiesSub = MeteorObservable.subscribe( 'cities' ).subscribe();
         this._restaurantImagesSub = MeteorObservable.subscribe( 'restaurantImages', Meteor.userId() ).subscribe();
-
-        let _lRestaurantImage: RestaurantImage = RestaurantImages.findOne( { restaurantId: this._restaurantToEdit._id } );
-        this._restaurantEditImage = _lRestaurantImage.url;
+        this._restaurantImageThumbsSub = MeteorObservable.subscribe( 'restaurantImageThumbs', Meteor.userId() ).subscribe();
+        
         let _lCountry: Country = Countries.findOne( { _id: this._restaurantToEdit.countryId } );
         this.createFinancialFormEditMode( _lCountry.financialInformation, this._restaurantToEdit.financialInformation );
+    }
+
+    /**
+     * Get Restaurant Image Thumb
+     */
+    getRestaurantImage():string{
+        let _lRestaurantImage: RestaurantImageThumb = RestaurantImageThumbs.find().fetch().filter( (r) => r.restaurantId === this._restaurantToEdit._id )[0];
+        if( _lRestaurantImage ){
+            return _lRestaurantImage.url
+        }
     }
 
     /**
@@ -213,7 +223,9 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
 
         if( this._editImage ){
             let _lRestaurantImage: RestaurantImage = RestaurantImages.findOne( { restaurantId: this._restaurantEditionForm.value.editId } );
+            let _lRestaurantImageThumb: RestaurantImageThumb = RestaurantImageThumbs.findOne( { restaurantId: this._restaurantEditionForm.value.editId } );
             RestaurantImages.remove( { _id: _lRestaurantImage._id } );
+            RestaurantImageThumbs.remove( { _id: _lRestaurantImage._id } );
 
             uploadRestaurantImage( this._restaurantImageToEdit, 
                                    Meteor.userId(),
@@ -509,5 +521,6 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         this._citiesSub.unsubscribe();
         this._paymentMethodsSub.unsubscribe();
         this._restaurantImagesSub.unsubscribe();
+        this._restaurantImageThumbsSub.unsubscribe();
     }
 }

@@ -44,6 +44,14 @@ export interface RestaurantImage {
 }
 
 /**
+ * Restaurant Image Thumbs model
+ */
+export interface RestaurantImageThumb extends RestaurantImage {
+    originalStore?: string;
+    originalId?: string;
+}
+
+/**
  * RestaurantLocation model
  */
 interface RestaurantLocation {

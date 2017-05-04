@@ -121,6 +121,10 @@ export class RestaurantComponent implements OnInit, OnDestroy {
         this.router.navigate(['app/restaurantEdition'], navigationExtras);
     }
 
+    /**
+     * Get Restaurant Image
+     * @param {string} _pRestaurantId
+     */
     getRestaurantImage( _pRestaurantId: string ):string{
         let _lRestaurantImage: RestaurantImage = RestaurantImages.find().fetch().filter( (r) => r.restaurantId === _pRestaurantId )[0];
         if( _lRestaurantImage ){
@@ -128,6 +132,10 @@ export class RestaurantComponent implements OnInit, OnDestroy {
         }
     }
 
+    /**
+     * Get Restaurant Country
+     * @param {string} _pCountryId
+     */
     getRestaurantCountry( _pCountryId: string ):string{
         let _lCountry: Country = Countries.find().fetch().filter( c => c._id === _pCountryId )[0];
         if( _lCountry ){
@@ -135,6 +143,10 @@ export class RestaurantComponent implements OnInit, OnDestroy {
         }
     }
 
+    /**
+     * Get Restaurant City
+     * @param {string} _pCityId 
+     */
     getRestaurantCity( _pCityId: string ):string{
         let _lCity: City = Cities.find().fetch().filter( c => c._id === _pCityId )[0];
         if( _lCity ){
