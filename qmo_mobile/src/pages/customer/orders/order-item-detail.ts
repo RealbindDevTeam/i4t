@@ -21,15 +21,18 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
     @Input()
     resCode: string;
 
-    @Output()
-    itemIdOut: EventEmitter<string> = new EventEmitter<string>();
+    @Output('gotoedititem')
+    itemIdOut: EventEmitter<any> = new EventEmitter<any>();
 
     private _imageThumbs;
     private _imageThumbSub: Subscription;
     private _items;
     private _itemsSub: Subscription;
+    private _currentOrderUserId: string;
 
-    constructor() { }
+    constructor() {
+        this._currentOrderUserId = Meteor.userId();
+     }
 
     ngOnInit() {
         this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this.resCode).subscribe(() => {
@@ -47,8 +50,15 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
         }
     }
 
+    goToItemEdit(itemId, orderItemIndex){
+        let arrValue: any[] = [];
+        arrValue[0] = itemId;
+        arrValue[1] = orderItemIndex;
+        this.itemIdOut.emit(arrValue);
+    }
+
     ngOnDestroy() {
-        console.log('ngOnDestroy de item-card');
         this._imageThumbSub.unsubscribe();
+        this._itemsSub.unsubscribe();
     }
 }

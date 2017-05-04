@@ -249,14 +249,16 @@ export class OrdersPage implements OnInit, OnDestroy {
         alertConfirm.present();
     }
 
-    goToItemEdit(_order: any, _itemId: any) {
+    goToItemEdit(event, _order: any) {
         let loader = this._loadingCtrl.create({
             duration: 300
         });
         loader.present();
+        let objaux: any[] = [];
+        objaux = event;
         this._navCtrl.push(ItemEditPage, { order_id: _order._id, 
-                                           item_ord_ind: _itemId.index, 
-                                           item_code: _itemId.itemId, 
+                                           item_ord_ind: objaux[1], 
+                                           item_code: objaux[0], 
                                            creation_user: _order.creation_user,
                                            res_code: this._res_code,
                                            table_code: this._table_code});
