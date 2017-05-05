@@ -12,5 +12,6 @@ export interface Country {
     numericCode: string;
     indicative: string;
     currencyId: string;
+    itemsWithDifferentTax: boolean;
     financialInformation: RestaurantFinancialElement[];
 }

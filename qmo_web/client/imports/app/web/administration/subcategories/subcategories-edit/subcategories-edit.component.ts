@@ -20,6 +20,7 @@ import style from './subcategories-edit.component.scss';
 })
 export class SubcategoryEditComponent implements OnInit, OnDestroy {
 
+    private _user = Meteor.userId();
     public _subcategoryToEdit: Subcategory;
     private _editForm: FormGroup;
 
@@ -52,9 +53,9 @@ export class SubcategoryEditComponent implements OnInit, OnDestroy {
         });
         this._subcategoryCategory = this._subcategoryToEdit.category;
         this._categories = Categories.find( { } ).zone();
-        this._categoriesSub = MeteorObservable.subscribe( 'categories', Meteor.userId() ).subscribe();
+        this._categoriesSub = MeteorObservable.subscribe( 'categories', this._user ).subscribe();
         this._subcategories = Subcategories.find( { } ).zone();
-        this._subcategorySub = MeteorObservable.subscribe( 'subcategories', Meteor.userId() ).subscribe();
+        this._subcategorySub = MeteorObservable.subscribe( 'subcategories', this._user ).subscribe();
     }
 
     /**
@@ -77,7 +78,7 @@ export class SubcategoryEditComponent implements OnInit, OnDestroy {
         if( this._editForm.valid ){
             Subcategories.update( this._editForm.value.editId,{
                 $set: {
-                    modification_user: Meteor.userId(),
+                    modification_user: this._user,
                     modification_date: new Date(),
                     name: this._editForm.value.editName,
                     is_active: this._editForm.value.editActive,

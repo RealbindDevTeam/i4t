@@ -20,6 +20,7 @@ import style from './categories-edit.component.scss';
 })
 export class CategoriesEditComponent implements OnInit, OnDestroy {
 
+    private _user = Meteor.userId();
     public _categoryToEdit: Category;
     private _editForm: FormGroup;
 
@@ -55,9 +56,9 @@ export class CategoriesEditComponent implements OnInit, OnDestroy {
         });
         this._categorySection = this._categoryToEdit.section;
         this._categories = Categories.find( { } ).zone();
-        this._categoriesSub = MeteorObservable.subscribe( 'categories', Meteor.userId() ).subscribe();
+        this._categoriesSub = MeteorObservable.subscribe( 'categories', this._user ).subscribe();
         this._sections = Sections.find( { } ).zone();
-        this._sectionsSub = MeteorObservable.subscribe( 'sections', Meteor.userId() ).subscribe();
+        this._sectionsSub = MeteorObservable.subscribe( 'sections', this._user ).subscribe();
     }
 
     /**
@@ -72,7 +73,7 @@ export class CategoriesEditComponent implements OnInit, OnDestroy {
         if( this._editForm.valid ){
             Categories.update( this._editForm.value.editId,{
                 $set: {
-                    modification_user: Meteor.userId(),
+                    modification_user: this._user,
                     modification_date: new Date(),
                     name: this._editForm.value.editName,
                     is_active: this._editForm.value.editIsActive,

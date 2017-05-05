@@ -16,6 +16,7 @@ export interface Addition extends CollectionObject{
 export interface AdditionRestaurant {
     restaurantId: string;
     price: number;
+    additionTax?: number;
 }
 
 /**
@@ -24,4 +25,5 @@ export interface AdditionRestaurant {
 export interface AdditionPrice {
     currencyId: string;
     price: number;
+    additionTax?: number;
 }

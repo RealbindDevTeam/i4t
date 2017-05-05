@@ -23,6 +23,7 @@ import style from './addition.component.scss';
 })
 export class AdditionComponent implements OnInit, OnDestroy{
 
+    private _user = Meteor.userId();
     private _additionForm: FormGroup;
     private _restaurantsFormGroup: FormGroup = new FormGroup({});
     private _currenciesFormGroup: FormGroup = new FormGroup({});
@@ -64,7 +65,7 @@ export class AdditionComponent implements OnInit, OnDestroy{
             currencies: this._currenciesFormGroup 
         });        
 
-        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', Meteor.userId() ).subscribe( () => {
+        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
             this._ngZone.run( () => {
                 this._restaurants = Restaurants.find( { } );
                 this._restaurantList = Restaurants.collection.find({}).fetch();
@@ -79,7 +80,7 @@ export class AdditionComponent implements OnInit, OnDestroy{
         });
 
         this._additions = Additions.find( { } ).zone();
-        this._additionsSub = MeteorObservable.subscribe( 'additions', Meteor.userId() ).subscribe();
+        this._additionsSub = MeteorObservable.subscribe( 'additions', this._user ).subscribe();
         this._currenciesSub = MeteorObservable.subscribe( 'currencies' ).subscribe();
         this._currencies = Currencies.find( { } ).zone();
     }
@@ -116,7 +117,7 @@ export class AdditionComponent implements OnInit, OnDestroy{
             });
 
             Additions.insert({
-                creation_user: Meteor.userId(),
+                creation_user: this._user,
                 creation_date: new Date(),
                 modification_user: '-',
                 modification_date: new Date(),
@@ -138,7 +139,7 @@ export class AdditionComponent implements OnInit, OnDestroy{
             $set: {
                 is_active: !_addition.is_active,
                 modification_date: new Date(),
-                modification_user: Meteor.userId()
+                modification_user: this._user
             }
         });
     }

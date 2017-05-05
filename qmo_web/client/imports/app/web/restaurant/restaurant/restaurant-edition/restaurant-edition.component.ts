@@ -37,6 +37,7 @@ import style from './restaurant-edition.component.scss';
 })
 export class RestaurantEditionComponent implements OnInit, OnDestroy {
 
+    private _user = Meteor.userId();
     private _restaurantToEdit: Restaurant;
     private _restaurantEditionForm: FormGroup;
     private _paymentsFormGroup: FormGroup = new FormGroup({});
@@ -104,26 +105,23 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit(){
-        this._restaurantEditionForm = this._formBuilder.group({
-            editId: [ this._restaurantToEdit._id ],
-            country: [ this._restaurantToEdit.countryId ],
-            city: [ this._restaurantToEdit.cityId ],
-            name: [ this._restaurantToEdit.name ],
-            address: [ this._restaurantToEdit.address ],
-            phone: [ this._restaurantToEdit.phone ],
-            webPage: [ this._restaurantToEdit.webPage ],
-            email: [ this._restaurantToEdit.email ],
-            editImage: [ '' ],
-            paymentMethods: this._paymentsFormGroup,
+        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe();
+
+        this._countries = Countries.find( { } ).zone();
+        this._countriesSub = MeteorObservable.subscribe( 'countries' ).subscribe( () => {
+            let _lCountry: Country = Countries.findOne( { _id: this._restaurantToEdit.countryId } );
+            this.createFinancialFormEditMode( _lCountry.financialInformation, this._restaurantToEdit.financialInformation );
         });
 
-        this._selectedCountryValue = this._restaurantToEdit.countryId;
-        this._restaurantCountryValue = this._restaurantToEdit.countryId;
-        this._selectedCityValue = this._restaurantToEdit.cityId;
-        this._restaurantCityValue = this._restaurantToEdit.cityId;
-        this._restaurantPaymentMethods = this._restaurantToEdit.paymentMethods;
-        this._scheduleToEdit = this._restaurantToEdit.schedule;
-        this._countryIndicative = this._restaurantToEdit.indicative;
+        this._cities = Cities.find( { } ).zone();
+        this._citiesSub = MeteorObservable.subscribe( 'cities' ).subscribe();
+        
+        this._restaurantImagesSub = MeteorObservable.subscribe( 'restaurantImages', this._user ).subscribe();
+        this._restaurantImageThumbsSub = MeteorObservable.subscribe( 'restaurantImageThumbs', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._restaurantEditImage = RestaurantImageThumbs.findOne( { restaurantId: this._restaurantToEdit._id } ).url;
+            });
+        });
 
         this._hoursSub = MeteorObservable.subscribe( 'hours' ).subscribe( () => {
             this._ngZone.run( () => {
@@ -132,10 +130,10 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         });
 
         this._currencySub = MeteorObservable.subscribe( 'currencies' ).subscribe( () => {
-            let find: Currency[] = Currencies.find().fetch().filter( c => c._id === this._restaurantToEdit.currencyId );
-            if( find ){
-                this._restaurantCurrency = find[0].code + ' - ' + this.itemNameTraduction( find[0].name );
-            }
+            this._ngZone.run( () => {
+                let find: Currency = Currencies.findOne( { _id: this._restaurantToEdit.currencyId } );
+                this._restaurantCurrency = find.code + ' - ' + this.itemNameTraduction( find.name );
+            });
         });
 
         this._paymentMethodsSub = MeteorObservable.subscribe( 'paymentMethods' ).subscribe( () => {
@@ -163,26 +161,26 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             });
         });
 
-        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', Meteor.userId() ).subscribe();     
-        this._countries = Countries.find( { } ).zone();
-        this._countriesSub = MeteorObservable.subscribe( 'countries' ).subscribe();
-        this._cities = Cities.find( { } ).zone();
-        this._citiesSub = MeteorObservable.subscribe( 'cities' ).subscribe();
-        this._restaurantImagesSub = MeteorObservable.subscribe( 'restaurantImages', Meteor.userId() ).subscribe();
-        this._restaurantImageThumbsSub = MeteorObservable.subscribe( 'restaurantImageThumbs', Meteor.userId() ).subscribe();
-        
-        let _lCountry: Country = Countries.findOne( { _id: this._restaurantToEdit.countryId } );
-        this.createFinancialFormEditMode( _lCountry.financialInformation, this._restaurantToEdit.financialInformation );
-    }
+        this._restaurantEditionForm = this._formBuilder.group({
+            editId: [ this._restaurantToEdit._id ],
+            country: [ this._restaurantToEdit.countryId ],
+            city: [ this._restaurantToEdit.cityId ],
+            name: [ this._restaurantToEdit.name ],
+            address: [ this._restaurantToEdit.address ],
+            phone: [ this._restaurantToEdit.phone ],
+            webPage: [ this._restaurantToEdit.webPage ],
+            email: [ this._restaurantToEdit.email ],
+            editImage: [ '' ],
+            paymentMethods: this._paymentsFormGroup,
+        });
 
-    /**
-     * Get Restaurant Image Thumb
-     */
-    getRestaurantImage():string{
-        let _lRestaurantImage: RestaurantImageThumb = RestaurantImageThumbs.find().fetch().filter( (r) => r.restaurantId === this._restaurantToEdit._id )[0];
-        if( _lRestaurantImage ){
-            return _lRestaurantImage.url
-        }
+        this._selectedCountryValue = this._restaurantToEdit.countryId;
+        this._restaurantCountryValue = this._restaurantToEdit.countryId;
+        this._selectedCityValue = this._restaurantToEdit.cityId;
+        this._restaurantCityValue = this._restaurantToEdit.cityId;
+        this._restaurantPaymentMethods = this._restaurantToEdit.paymentMethods;
+        this._scheduleToEdit = this._restaurantToEdit.schedule;
+        this._countryIndicative = this._restaurantToEdit.indicative;
     }
 
     /**

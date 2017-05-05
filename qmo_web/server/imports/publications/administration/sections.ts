@@ -1,7 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import { Sections } from '../../../../both/collections/administration/section.collection';
-import { Tables } from '../../../../both/collections/restaurant/table.collection';
-import { UserDetails } from '../../../../both/collections/auth/user-detail.collection';
 import { check } from 'meteor/check';
 
 /**

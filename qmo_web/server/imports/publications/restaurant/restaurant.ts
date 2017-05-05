@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import { Restaurants, RestaurantImages, RestaurantImageThumbs } from '../../../../both/collections/restaurant/restaurant.collection';
 import { UserDetails } from '../../../../both/collections/auth/user-detail.collection';
 import { check } from 'meteor/check';
-import { Tables } from '../../../../both/collections/restaurant/table.collection';
 import { Accounts } from '../../../../both/collections/restaurant/account.collection';
 
 /**

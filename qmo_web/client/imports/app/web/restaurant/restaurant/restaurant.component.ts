@@ -28,6 +28,7 @@ import style from './restaurant.component.scss';
 })
 export class RestaurantComponent implements OnInit, OnDestroy {
 
+    private _user = Meteor.userId();
     private restaurants: Observable<Restaurant[]>;
     private _hours: Observable<Hour[]>;
     private _restaurantImages: Observable<RestaurantImage[]>;
@@ -61,13 +62,13 @@ export class RestaurantComponent implements OnInit, OnDestroy {
     ngOnInit(){
         this._empty = false;
         this.restaurants = Restaurants.find({}).zone();
-        this.restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();        
+        this.restaurantSub = MeteorObservable.subscribe('restaurants', this._user ).subscribe();        
         this.countriesSub = MeteorObservable.subscribe('countries').subscribe();
         this.citiesSub = MeteorObservable.subscribe('cities').subscribe();      
         this._hoursSub = MeteorObservable.subscribe( 'hours' ).subscribe( () => {
             this._hours = Hours.find( {} ); 
         }); 
-        this._restaurantImagesSub = MeteorObservable.subscribe( 'restaurantImages', Meteor.userId() ).subscribe();
+        this._restaurantImagesSub = MeteorObservable.subscribe( 'restaurantImages', this._user ).subscribe();
         this._restaurantImages = RestaurantImages.find( { } ).zone();
     }
 
@@ -126,7 +127,7 @@ export class RestaurantComponent implements OnInit, OnDestroy {
      * @param {string} _pRestaurantId
      */
     getRestaurantImage( _pRestaurantId: string ):string{
-        let _lRestaurantImage: RestaurantImage = RestaurantImages.find().fetch().filter( (r) => r.restaurantId === _pRestaurantId )[0];
+        let _lRestaurantImage: RestaurantImage = RestaurantImages.findOne( { restaurantId: _pRestaurantId } );
         if( _lRestaurantImage ){
             return _lRestaurantImage.url
         }
@@ -137,7 +138,7 @@ export class RestaurantComponent implements OnInit, OnDestroy {
      * @param {string} _pCountryId
      */
     getRestaurantCountry( _pCountryId: string ):string{
-        let _lCountry: Country = Countries.find().fetch().filter( c => c._id === _pCountryId )[0];
+        let _lCountry: Country = Countries.findOne( { _id: _pCountryId } );
         if( _lCountry ){
             return _lCountry.name;
         }
@@ -148,7 +149,7 @@ export class RestaurantComponent implements OnInit, OnDestroy {
      * @param {string} _pCityId 
      */
     getRestaurantCity( _pCityId: string ):string{
-        let _lCity: City = Cities.find().fetch().filter( c => c._id === _pCityId )[0];
+        let _lCity: City = Cities.findOne( { _id: _pCityId } );
         if( _lCity ){
             return _lCity.name;
         }

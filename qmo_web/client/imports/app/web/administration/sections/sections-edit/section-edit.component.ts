@@ -20,6 +20,7 @@ import style from './section-edit.component.scss';
 })
 export class SectionEditComponent implements OnInit, OnDestroy {
 
+    private _user = Meteor.userId();
     public _sectionToEdit: Section;
     private _editForm: FormGroup;
     private _restaurantsFormGroup: FormGroup = new FormGroup({});
@@ -63,9 +64,9 @@ export class SectionEditComponent implements OnInit, OnDestroy {
         });
         this._sectionRestaurants = this._sectionToEdit.restaurants;
         this._sections = Sections.find( { } ).zone();
-        this._sectionsSub = MeteorObservable.subscribe( 'sections', Meteor.userId() ).subscribe();
+        this._sectionsSub = MeteorObservable.subscribe( 'sections', this._user ).subscribe();
 
-        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', Meteor.userId() ).subscribe( () => {
+        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
             this._ngZone.run( () => {
                 this._restaurants = Restaurants.find( { } );
                 this._createdRestaurants = Restaurants.collection.find({}).fetch();
@@ -108,7 +109,7 @@ export class SectionEditComponent implements OnInit, OnDestroy {
             
             Sections.update( this._editForm.value.editId,{ 
                 $set: {
-                    modification_user: Meteor.userId(),
+                    modification_user: this._user,
                     modification_date: new Date(),
                     name: this._editForm.value.editName,
                     is_active: this._editForm.value.editIsActive,
