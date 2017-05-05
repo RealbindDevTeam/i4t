@@ -2,6 +2,8 @@ import { MongoObservable } from 'meteor-rxjs';
 import { UploadFS } from 'meteor/jalik:ufs';
 import { Item, ItemImage, ItemImageThumb } from '../../models/administration/item.model';
 
+
+
 /**
  * Function to validate if user exists
  */

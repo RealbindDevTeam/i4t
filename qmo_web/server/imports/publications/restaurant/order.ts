@@ -64,14 +64,11 @@ Meteor.publish('getOrdersByAccount', function (_userId: string) {
                                                    tableId: _lUserDetail.current_table,
                                                    status: 'OPEN'});
         if(_lAccount){
-            console.log('Existe cuenta');
             return Orders.find({restaurantId: _lAccount.restaurantId, tableId: _lAccount.tableId, status: 'DELIVERED'});
         }else{
-            console.log('No existe cuenta');
             return Orders.find({restaurantId: "", tableId: "", status: ""});
         }
     }else{
-        console.log('No existe tableId y restauranteId');
         return Orders.find({restaurantId: "", tableId: "", status: ""});
     }
 });

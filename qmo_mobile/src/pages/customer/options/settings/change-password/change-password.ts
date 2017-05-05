@@ -10,7 +10,6 @@ import { TranslateService } from 'ng2-translate'
 export class ChangePasswordPage {
 
     private _changePasswordForm: FormGroup;
-    private _user : Meteor.User;
     private _error : string;
 
     constructor(public _navCtrl: NavController, 

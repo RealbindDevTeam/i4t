@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { NavController, NavParams, ModalController, LoadingController, ToastController, AlertController } from 'ionic-angular';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { TranslateService } from 'ng2-translate';
-import { Subscription, Subject, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Items } from 'qmo_web/both/collections/administration/item.collection';
 import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
@@ -37,7 +37,6 @@ export class ItemEditPage implements OnInit, OnDestroy {
   private _item: any[] = [];
   private _finalPrice: number;
   private _unitPrice: number;
-  private _showAddBtn: boolean = true;
   private _currentUserId: string;
   private _statusArray: string[];
   private _additions;
@@ -54,19 +53,13 @@ export class ItemEditPage implements OnInit, OnDestroy {
   private _garnishFoodElementsCount: number = 0;
   private _disabledAddBtn: boolean = false;
   private _showGarnishFoodError = false;
-  private _loadingMsg: string;
   private _orders;
   private _ordersSub: Subscription;
-  private _order: any;
   private _auxCounter: number = 0;
   private _orderAux;
   private _createdGarnishFood: any[];
-  private _orderItem;
   private _orderItemGarnishFood: any[];
   private _orderAdditions: any[];
-  private _actualOrder;
-  private _garnishArray: any;
-  private _additionArray: any[];
   private _showActionsBtn: boolean = false;
   private _showCancelBtn: boolean = false;
   private _showFooter: boolean = false;
@@ -94,7 +87,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
     this._item_code = this._navParams.get("item_code");
     this._creation_user = this._navParams.get("creation_user");
     this._table_code = this._navParams.get("table_code");
-    this._res_code = this._navParams.get("res_code"); 
+    this._res_code = this._navParams.get("res_code");
   }
 
   ionViewDidLoad() {
@@ -439,8 +432,6 @@ export class ItemEditPage implements OnInit, OnDestroy {
     let dialog_subtitle = this.itemNameTraduction('MOBILE.ITEM_EDIT.SURE_REMOVE');
     let dialog_cancel_btn = this.itemNameTraduction('MOBILE.ITEM_EDIT.NO_ANSWER');
     let dialog_accept_btn = this.itemNameTraduction('MOBILE.ITEM_EDIT.YES_ANSWER');
-    let alert_not = this.itemNameTraduction('MOBILE.ORDERS.IMPOSSIBLE_CONFIRM');
-    let item_not = this.itemNameTraduction('MOBILE.ORDERS.NOT_ITEM_AVAILABLE');
 
     let alertConfirm = this._alertCtrl.create({
       title: dialog_title,

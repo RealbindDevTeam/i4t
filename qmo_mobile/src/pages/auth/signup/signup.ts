@@ -6,15 +6,10 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { CustomValidators } from '../../../validators/custom-validator';
 import { UserProfile, UserProfileImage } from 'qmo_web/both/models/auth/user-profile.model';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
-import { SignupClass } from 'qmo_web/both/shared-components/auth/signup.class';
 import { SigninComponent } from '../signin/signin';
 import { Accounts } from 'meteor/accounts-base';
 import { Meteor } from 'meteor/meteor';
-import { CodeTypeSelectPage } from '../../customer/orders/new-order/code-type-select/code-type-select';
 import { InitialComponent } from '../initial/initial';
-
-
-import template from './signup.mobile.component.html';
 
 @Component({
     selector: 'page-signup',

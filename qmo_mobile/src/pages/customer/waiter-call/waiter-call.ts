@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LoadingController, NavController, NavParams } from 'ionic-angular';
 import { TranslateService } from 'ng2-translate';
-import { Subscription, Subject, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
 import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-call-detail.collection';
-import { WaiterCallDetail } from 'qmo_web/both/models/restaurant/waiter-call-detail.collection';
 
 @Component({
   selector: 'page-waiter-call',

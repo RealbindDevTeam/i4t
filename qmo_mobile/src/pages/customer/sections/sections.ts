@@ -1,24 +1,15 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NavController, NavParams, Content } from 'ionic-angular';
-import { Subscription, Subject, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
-import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
 import { Restaurants } from 'qmo_web/both/collections/restaurant/restaurant.collection';
-import { Table } from 'qmo_web/both/models/restaurant/table.model';
-import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
-import { City } from 'qmo_web/both/models/settings/city.model';
 import { Cities } from 'qmo_web/both/collections/settings/city.collection';
-import { Country } from 'qmo_web/both/models/settings/country.model';
 import { Countries } from 'qmo_web/both/collections/settings/country.collection';
-import { Section } from 'qmo_web/both/models/administration/section.model';
 import { Sections } from 'qmo_web/both/collections/administration/section.collection';
-import { Category } from 'qmo_web/both/models/administration/category.model';
 import { Categories } from 'qmo_web/both/collections/administration/category.collection';
-import { Subcategory } from 'qmo_web/both/models/administration/subcategory.model';
 import { Subcategories } from 'qmo_web/both/collections/administration/subcategory.collection';
-import { Item } from 'qmo_web/both/models/administration/item.model';
-import { Items } from 'qmo_web/both/collections/administration/item.collection';
+import { Items, ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
 import { ItemDetailPage } from '../item-detail/item-detail';
 import { Storage } from '@ionic/storage';
 
@@ -33,8 +24,6 @@ export class SectionsPage implements OnInit, OnDestroy {
   private _userLang: string;
   private _sections;
   private _sectionsSub: Subscription;
-  private _userDetail;
-  private _userDetailSub: Subscription;
   private _restaurants;
   private _restaurantSub: Subscription;
   private _cities;
@@ -47,11 +36,13 @@ export class SectionsPage implements OnInit, OnDestroy {
   private _subcategorySub: Subscription;
   private _items;
   private _itemSub: Subscription;
+  private _imageThumbs;
+  private _imageThumbSub: Subscription;
 
   private _res_code: string = '';
   private _table_code: string = '';
-  private selected: string = 'all';
-  private _showFabTop: boolean = true;
+  private selected: string;
+  private _item_code: string;
 
   constructor(public _navCtrl: NavController, public _navParams: NavParams, public _translate: TranslateService, public _storage: Storage) {
     this._userLang = navigator.language.split('-')[0];
@@ -69,6 +60,8 @@ export class SectionsPage implements OnInit, OnDestroy {
     this._storage.ready().then(() => {
       this._storage.set('trobj', trobj);
     });
+
+    this.selected = 'all';
   }
 
   ngOnInit() {
@@ -94,6 +87,9 @@ export class SectionsPage implements OnInit, OnDestroy {
     this._itemSub = MeteorObservable.subscribe('itemsByRestaurant', this._res_code).subscribe(() => {
       this._items = Items.find({});
     });
+    this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByRestaurant', this._res_code).subscribe(() => {
+      this._imageThumbs = ItemImagesThumbs.find({});
+    });
   }
 
   validateSection(section_selected) {
@@ -116,7 +112,14 @@ export class SectionsPage implements OnInit, OnDestroy {
     this._navCtrl.push(ItemDetailPage, { item_id: _itemId, res_id: this._res_code, table_id: this._table_code });
   }
 
+  getItem(event){
+    this._item_code = event;
+    console.log(this._item_code);
+    this._navCtrl.push(ItemDetailPage, { item_id: this._item_code, res_id: this._res_code, table_id: this._table_code });
+  }
+
   ngOnDestroy() {
+    console.log('ngOnDestroy de sections');
     this._sectionsSub.unsubscribe();
     this._restaurantSub.unsubscribe();
     this._citySub.unsubscribe();
