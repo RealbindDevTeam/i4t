@@ -67,6 +67,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     public _selectedIndex: number = 0;
     private _restaurantEditImage: string;
 
+    private _queue : string[] = [];
     private _selectedCountryValue: string = "";
     private _selectedCityValue: string = "";
 
@@ -181,6 +182,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         this._restaurantPaymentMethods = this._restaurantToEdit.paymentMethods;
         this._scheduleToEdit = this._restaurantToEdit.schedule;
         this._countryIndicative = this._restaurantToEdit.indicative;
+        this._queue = this._restaurantToEdit.queue;
     }
 
     /**
@@ -215,7 +217,8 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                 email: this._restaurantEditionForm.value.email,
                 financialInformation: this._restaurantFinancialInformation,
                 paymentMethods: _lPaymentMethodsToInsert,
-                schedule: this._edition_schedule
+                schedule: this._edition_schedule,
+                queue : this._queue,
             }
         });
 
@@ -342,6 +345,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         });    
         this._restaurantCurrency = _lCurrency.code + ' - ' + this.itemNameTraduction( _lCurrency.name );
         this._countryIndicative = _lCountry.indicative;
+        this._queue = _lCountry.queue;
 
         this._showFinancialElements = false;
         this._financialElements = [];

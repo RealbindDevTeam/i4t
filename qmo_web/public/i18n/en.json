@@ -27,6 +27,7 @@
     "JOB" : "Job tittle",
     "VALIDATE" : "Validate",
     "TIP_PERCENTAGE": "Tip percentage",
+    "CLOSE": "Close",
     "DATE_VALIDATE" : {
         "DAY_FORMAT" : "Day format incorrect",
         "MONTH_FORMAT" : "Month format incorrect",
@@ -598,7 +599,11 @@
         "MSG_COMFIRM" : "Request closed",
         "NO_ANSWER" : "No",
         "YES_ANSWER" : "Yes",
-        "TURN" : "Turn"
+        "TURN" : "Turn",
+        "TABLE" :"Table",
+        "CALL_LABEL_SEND_ORDER" : "Order to deliver",
+        "CALL_LABEL_CUSTOMER" : "Customer's call",
+        "CALL_LABEL_CUSTOMER_PAYMENT" : "Customer's payment"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Orders Confirmed",

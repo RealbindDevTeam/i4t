@@ -13,5 +13,6 @@ export interface Country {
     indicative: string;
     currencyId: string;
     itemsWithDifferentTax: boolean;
+    queue: string[];
     financialInformation: RestaurantFinancialElement[];
 }

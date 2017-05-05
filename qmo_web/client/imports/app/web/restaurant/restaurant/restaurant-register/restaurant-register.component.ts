@@ -59,6 +59,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _nameImageFile: string;
     public _selectedIndex: number = 0;
 
+    private _queues : string[] = [];
     private _selectedCountryValue: string;
     private _selectedCityValue: string;
     private _restaurantCurrency: string = '';
@@ -314,7 +315,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             schedule: this._schedule,            
             tables_quantity: 0,
             orderNumberCount: 0,
-            max_jobs: 5                
+            max_jobs: 5,
+            queue : this._queues,
         });
 
         if( this._createImage ){
@@ -360,6 +362,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._restaurantCurrencyId = _lCurrency._id;
         this._restaurantCurrency = _lCurrency.code + ' - ' + this.itemNameTraduction( _lCurrency.name );
         this._countryIndicative = _lCountry.indicative;
+        this._queues = _lCountry.queue;
 
         this._showFinancialElements = false;
         this._financialElements = [];

@@ -21,6 +21,7 @@ export interface Restaurant extends CollectionObject {
     tables_quantity: number;
     orderNumberCount: number;
     max_jobs?: number;
+    queue: string[];
 }
 
 /**

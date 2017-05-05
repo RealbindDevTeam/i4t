@@ -8,6 +8,7 @@ import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collectio
 import { UserDetail } from 'qmo_web/both/models/auth/user-detail.model';
 import { Restaurants, RestaurantImages } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
+import { WaiterCallDetail } from 'qmo_web/both/models/restaurant/waiter-call-detail.model';
 import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-call-detail.collection';
 import { User } from 'qmo_web/both/models/auth/user.model';
 import { Users } from 'qmo_web/both/collections/auth/user.collection';
@@ -108,7 +109,7 @@ export class CallsPage implements OnInit, OnDestroy {
    * Function that allows remove a job of the Waiter Calls queue
    * @param { any } _call 
    */
-  closeWaiterCall( _call : any ){
+  closeWaiterCall( _call : WaiterCallDetail ){
     let loading_msg = this.itemNameTraduction('MOBILE.WAITER_CALL.LOADING'); 
     
     let loading = this._loadingCtrl.create({
@@ -116,7 +117,7 @@ export class CallsPage implements OnInit, OnDestroy {
     });
     loading.present();
     setTimeout(() => {
-      MeteorObservable.call('closeCall', _call._id, Meteor.userId()).subscribe(() => {
+      MeteorObservable.call('closeCall', _call, Meteor.userId()).subscribe(() => {
         loading.dismiss();
         this.presentToast();
       });
