@@ -26,6 +26,8 @@
     "SEARCH" : "Search",
     "JOB" : "Job tittle",
     "VALIDATE" : "Validate",
+    "TIP_PERCENTAGE": "Tip percentage",
+    "CLOSE": "Close",
     "DATE_VALIDATE" : {
         "DAY_FORMAT" : "Day format incorrect",
         "MONTH_FORMAT" : "Month format incorrect",
@@ -119,7 +121,10 @@
         "NO_RESTAURANT_CREATED": "There are no restaurants created on the platform",
         "MODIFY": "MODIFY",
         "ACTIVATE": "ACTIVATE",
-        "INACTIVATE": "INACTIVATE"
+        "INACTIVATE": "INACTIVATE",
+        "SELECT_RESTAURANTS": "Please select the restaurant (s) where the addition is available",
+        "ADDITION_PRICES": "Please enter the addition price (In case of no value enter 0)",
+        "ADITION_PRICE": "Adition Price"
     },
     "SETTINGS": {
         "TITTLE": "Settings",
@@ -187,7 +192,13 @@
         "GARNISHFOOD_TEXT": "Create garnish food of your menu and select the restaurants where they will be seen",
         "NO_DESCRIPTION": "No description of the garnish food",
         "NO_RESTAURANT": "No restaurant selected",
-        "NO_RESTAURANT_CREATED": "There are no restaurants created on the platform"
+        "NO_RESTAURANT_CREATED": "There are no restaurants created on the platform",
+        "MODIFY": "MODIFY",
+        "ACTIVATE": "ACTIVATE",
+        "INACTIVATE": "INACTIVATE",
+        "SELECT_RESTAURANTS": "Please select the restaurant (s) where the garnish food is available",
+        "GARNISHFOOD_PRICES": "Please enter the garnish food price (In case of no value enter 0)",
+        "GARNISHFOOD_PRICE": "Garnish Food Price"
     },
     "RESTAURANT_REGISTER": {
         "SELECT_COUNTRY": "Select Country",
@@ -202,16 +213,13 @@
         "SELECT_OPENING_HOUR": "Select Opening Hour",
         "SELECT_CLOSING_HOUR": "Select Closing Hour",
         "ADD_PAYMENTMETHODS_RESTURANT": "Select payment methods accepted by the restaurant",
-        "INVOICE_CODE": "Invoice code",
-        "TIP_PERCENTAGE": "Tip percentage",
-        "TAX_PERCENTAGE": "Tax percentage",
         "ADD_RESTAURANT_IMAGE": "Add Restaurant Image",
         "GENERAL_LABEL": "General", 
         "GENERAL_INFO": "General information about the restaurant",
         "GENERAL_INFO_TEXT": "Please enter the information of the restaurant. This information will be displayed by people on the internet and will give you greater visibility",
         "FINANCIAL_LABEL": "Financial",
         "FINANCIAL_INFO": "Restaurant Financial Information",
-        "FINANCIAL_INFO_TEXT": "Please enter the financial information of the restaurant. This will allow Iurest to help you with business accounts and expenses",
+        "FINANCIAL_INFO_TEXT": "The financial information of the restaurant will be established according to the country to which it belongs. This will allow Iurest to help you with the accounts and expenses of your business.",
         "ADD_LOCATION": "Enter the location of the establishment",
         "SCHEDULE_LABEL": "Schedule",
         "SCHEDULE_INFO": "Hours of operation",
@@ -592,7 +600,11 @@
         "MSG_COMFIRM" : "Request closed",
         "NO_ANSWER" : "No",
         "YES_ANSWER" : "Yes",
-        "TURN" : "Turn"
+        "TURN" : "Turn",
+        "TABLE" :"Table",
+        "CALL_LABEL_SEND_ORDER" : "Order to deliver",
+        "CALL_LABEL_CUSTOMER" : "Customer's call",
+        "CALL_LABEL_CUSTOMER_PAYMENT" : "Customer's payment"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Orders Confirmed",
@@ -605,5 +617,18 @@
         "OBSERVATIONS": "Observations",
         "ORDERS_IN_PROCESS": "Orders In Process",
         "ORDER_PREPARED": "ORDER PREPARED"
+    },
+    "FINANCIAL_INFO": {
+        "COLOMBIA": {
+            "INC": "According to Colombian law, restaurants must discriminate in the collection account, cash register, invoice or equivalent document, the National Consumption Tax (INC), therefore, Iurest will calculate the INC equivalent to 8% at Time to request the total value of the account by the customer.",
+            "BUSINESS_NAME": "Enter Surname and First Name (if natural person) or Social Reason (if legal person):",
+            "BUSINESS_NAME_LABEL": "Names - Social Reason",
+            "NIT": "Enter NIT of who sells the Goods or Services. Please include verification digit:",
+            "NIT_LABEL": "NIT",
+            "DIAN_NUMERATION": "Enter numbers authorized by DIAN:",
+            "DIAN_NUMERATION_FROM": "From",
+            "DIAN_NUMERATION_TO": "To",
+            "ENTER_TIP_PERCENTAGE": "Enter the percentage of the suggested tip ( 0% - 100% ). You can enter the value or use the Slider"              
+        }
     }
 }

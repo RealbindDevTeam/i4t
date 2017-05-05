@@ -1,0 +1,13 @@
+<div [formGroup]="form">
+  <div [ngSwitch]="element.controlType">
+    <p *ngSwitchCase="'text'" [id]="element.key">{{element.label | translate}}</p>
+    <md-input-container *ngSwitchCase="'textbox'" style="width: 25%" (change)="onChangeValue()">
+        <input mdInput [formControlName]="element.key" [id]="element.key" [type]="element.type" placeholder="{{element.label | translate}}">
+    </md-input-container>
+    <md-select *ngSwitchCase="'dropdown'" [formControlName]="element.key">
+        <md-option *ngFor="let opt of element.options" [value]="opt.key">{{opt.value}}</md-option>
+    </md-select>
+    <md-checkbox *ngSwitchCase="'checkbox'" [formControlName]="element.key">{{element.label | translate}}</md-checkbox>
+    <iu-slider *ngSwitchCase="'slider'" [id]="element.key" [percentageValue]="element.value" [label]="element.label" [minValue]="element.minValue" [maxValue]="element.maxValue" [stepValue]="element.stepValue" (sliderValue)="receiveSliderValue($event)"></iu-slider>
+  </div> 
+</div>

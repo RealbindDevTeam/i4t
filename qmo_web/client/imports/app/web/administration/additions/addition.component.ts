@@ -23,6 +23,7 @@ import style from './addition.component.scss';
 })
 export class AdditionComponent implements OnInit, OnDestroy{
 
+    private _user = Meteor.userId();
     private _additionForm: FormGroup;
     private _restaurantsFormGroup: FormGroup = new FormGroup({});
     private _currenciesFormGroup: FormGroup = new FormGroup({});
@@ -64,7 +65,7 @@ export class AdditionComponent implements OnInit, OnDestroy{
             currencies: this._currenciesFormGroup 
         });        
 
-        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', Meteor.userId() ).subscribe( () => {
+        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
             this._ngZone.run( () => {
                 this._restaurants = Restaurants.find( { } );
                 this._restaurantList = Restaurants.collection.find({}).fetch();
@@ -79,7 +80,7 @@ export class AdditionComponent implements OnInit, OnDestroy{
         });
 
         this._additions = Additions.find( { } ).zone();
-        this._additionsSub = MeteorObservable.subscribe( 'additions', Meteor.userId() ).subscribe();
+        this._additionsSub = MeteorObservable.subscribe( 'additions', this._user ).subscribe();
         this._currenciesSub = MeteorObservable.subscribe( 'currencies' ).subscribe();
         this._currencies = Currencies.find( { } ).zone();
     }
@@ -116,7 +117,7 @@ export class AdditionComponent implements OnInit, OnDestroy{
             });
 
             Additions.insert({
-                creation_user: Meteor.userId(),
+                creation_user: this._user,
                 creation_date: new Date(),
                 modification_user: '-',
                 modification_date: new Date(),
@@ -138,7 +139,7 @@ export class AdditionComponent implements OnInit, OnDestroy{
             $set: {
                 is_active: !_addition.is_active,
                 modification_date: new Date(),
-                modification_user: Meteor.userId()
+                modification_user: this._user
             }
         });
     }
@@ -150,6 +151,8 @@ export class AdditionComponent implements OnInit, OnDestroy{
         this._additionForm.reset();    
         this._showCurrencies = false; 
         this._restaurantCurrencies = [];
+        this._restaurantsFormGroup.reset();
+        this._currenciesFormGroup.reset();
     }
 
     /**
@@ -184,7 +187,7 @@ export class AdditionComponent implements OnInit, OnDestroy{
                     }
                     _initValue = '.' + _initValue;
                 }
-                let control: FormControl = new FormControl( _initValue, [ Validators.required, Validators.minLength( 1 ) ] );
+                let control: FormControl = new FormControl( _initValue, [ Validators.required ] );
                 this._currenciesFormGroup.addControl( _lRestaurant.currencyId, control );
                 this._restaurantCurrencies.push( _lRestaurant.currencyId );
             }
@@ -193,11 +196,14 @@ export class AdditionComponent implements OnInit, OnDestroy{
             let arr:any[] = Object.keys( this._additionForm.value.restaurants );
              arr.forEach( ( rest ) => {
                 if( this._additionForm.value.restaurants[ rest ] ){
-                    _aux ++;             
+                    let _lRes: Restaurant = this._restaurantList.filter( r => r.name === rest )[0];
+                    if( _lRestaurant.currencyId === _lRes.currencyId ){
+                        _aux ++;             
+                    }
                 }            
             });
             if( _aux === 0 ){
-                this._restaurantCurrencies = [];
+                this._restaurantCurrencies.splice( this._restaurantCurrencies.indexOf( _lRestaurant.currencyId ), 1 );
             }
         }
 
@@ -206,6 +212,22 @@ export class AdditionComponent implements OnInit, OnDestroy{
         } else {
             this._showCurrencies = false;            
         }
+    }
+
+    /**
+     * Function to show Addition Prices
+     * @param {AdditionPrice[]} _pAdditionPrices
+     */
+    showAdditionPrices( _pAdditionPrices:AdditionPrice[] ):string{
+        let _lPrices: string = '';
+        _pAdditionPrices.forEach( ( ap ) => {
+            let _lCurrency: Currency = Currencies.findOne( { _id: ap.currencyId } );
+            if( _lCurrency ){
+                let price: string = ap.price + ' ' + _lCurrency.code + ' / '
+                _lPrices += price;
+            }
+        });
+        return _lPrices;
     }
 
     /**

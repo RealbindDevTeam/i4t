@@ -8,8 +8,8 @@ import { Meteor } from 'meteor/meteor';
 import { Router, ActivatedRoute } from '@angular/router';
 import { uploadRestaurantImage } from '../../../../../../../both/methods/restaurant/restaurant.methods';
 import { MouseEvent } from "angular2-google-maps/core";
-import { Restaurants, RestaurantImages } from '../../../../../../../both/collections/restaurant/restaurant.collection';
-import { Restaurant, RestaurantSchedule, RestaurantImage } from '../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants, RestaurantImages, RestaurantImageThumbs } from '../../../../../../../both/collections/restaurant/restaurant.collection';
+import { Restaurant, RestaurantSchedule, RestaurantImage, RestaurantFinancialElement, RestaurantImageThumb } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Hours } from '../../../../../../../both/collections/general/hours.collection';
 import { Hour } from '../../../../../../../both/models/general/hour.model';
 import { Currency } from '../../../../../../../both/models/general/currency.model';
@@ -20,6 +20,12 @@ import { Countries } from '../../../../../../../both/collections/settings/countr
 import { Country } from '../../../../../../../both/models/settings/country.model'; 
 import { City } from '../../../../../../../both/models/settings/city.model';
 import { Cities } from '../../../../../../../both/collections/settings/city.collection';
+import { FinancialBase } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-base';
+import { FinancialCheckBox } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-checkbox';
+import { FinancialDropDown } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-dropdown';
+import { FinancialTextBox } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-textbox';
+import { FinancialText } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-text';
+import { FinancialSlider } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-slider';
 
 import template from './restaurant-edition.component.html';
 import style from './restaurant-edition.component.scss';
@@ -31,6 +37,7 @@ import style from './restaurant-edition.component.scss';
 })
 export class RestaurantEditionComponent implements OnInit, OnDestroy {
 
+    private _user = Meteor.userId();
     private _restaurantToEdit: Restaurant;
     private _restaurantEditionForm: FormGroup;
     private _paymentsFormGroup: FormGroup = new FormGroup({});
@@ -42,6 +49,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     private _citiesSub: Subscription;
     private _paymentMethodsSub: Subscription;
     private _restaurantImagesSub: Subscription;
+    private _restaurantImageThumbsSub: Subscription;
 
     private _hours: Observable<Hour[]>;
     private _countries: Observable<Country[]>;
@@ -59,6 +67,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     public _selectedIndex: number = 0;
     private _restaurantEditImage: string;
 
+    private _queue : string[] = [];
     private _selectedCountryValue: string = "";
     private _selectedCityValue: string = "";
 
@@ -71,8 +80,10 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     private _edition_schedule: RestaurantSchedule;
 
     private _scheduleToEdit: RestaurantSchedule;
-    private _taxPercentage: number = 0;
-    private _tipPercentage: number = 0;
+    private _financialElements: FinancialBase<any>[] = [];
+    private _showFinancialElements: boolean = false;
+    private _restaurantFinancialInformation: Object = {};
+    private _financialInformation: RestaurantFinancialElement[] = [];
 
     /**
      * RestaurantEditionComponent Constructor
@@ -95,29 +106,23 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit(){
-        this._restaurantEditionForm = this._formBuilder.group({
-            editId: [ this._restaurantToEdit._id ],
-            country: [ this._restaurantToEdit.countryId ],
-            city: [ this._restaurantToEdit.cityId ],
-            name: [ this._restaurantToEdit.name ],
-            address: [ this._restaurantToEdit.address ],
-            phone: [ this._restaurantToEdit.phone ],
-            webPage: [ this._restaurantToEdit.webPage ],
-            email: [ this._restaurantToEdit.email ],
-            invoiceCode: [ this._restaurantToEdit.invoice_code ],
-            editImage: [ '' ],
-            paymentMethods: this._paymentsFormGroup,
+        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe();
+
+        this._countries = Countries.find( { } ).zone();
+        this._countriesSub = MeteorObservable.subscribe( 'countries' ).subscribe( () => {
+            let _lCountry: Country = Countries.findOne( { _id: this._restaurantToEdit.countryId } );
+            this.createFinancialFormEditMode( _lCountry.financialInformation, this._restaurantToEdit.financialInformation );
         });
 
-        this._selectedCountryValue = this._restaurantToEdit.countryId;
-        this._restaurantCountryValue = this._restaurantToEdit.countryId;
-        this._selectedCityValue = this._restaurantToEdit.cityId;
-        this._restaurantCityValue = this._restaurantToEdit.cityId;
-        this._taxPercentage = this._restaurantToEdit.tax_percentage;
-        this._tipPercentage = this._restaurantToEdit.tip_percentage;
-        this._restaurantPaymentMethods = this._restaurantToEdit.paymentMethods;
-        this._scheduleToEdit = this._restaurantToEdit.schedule;
-        this._countryIndicative = this._restaurantToEdit.indicative;
+        this._cities = Cities.find( { } ).zone();
+        this._citiesSub = MeteorObservable.subscribe( 'cities' ).subscribe();
+        
+        this._restaurantImagesSub = MeteorObservable.subscribe( 'restaurantImages', this._user ).subscribe();
+        this._restaurantImageThumbsSub = MeteorObservable.subscribe( 'restaurantImageThumbs', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._restaurantEditImage = RestaurantImageThumbs.findOne( { restaurantId: this._restaurantToEdit._id } ).url;
+            });
+        });
 
         this._hoursSub = MeteorObservable.subscribe( 'hours' ).subscribe( () => {
             this._ngZone.run( () => {
@@ -126,8 +131,10 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         });
 
         this._currencySub = MeteorObservable.subscribe( 'currencies' ).subscribe( () => {
-            let find: Currency[] = Currencies.collection.find().fetch().filter( c => c._id === this._restaurantToEdit.currencyId );
-            this._restaurantCurrency = find[0].code + ' - ' + this.itemNameTraduction( find[0].name );
+            this._ngZone.run( () => {
+                let find: Currency = Currencies.findOne( { _id: this._restaurantToEdit.currencyId } );
+                this._restaurantCurrency = find.code + ' - ' + this.itemNameTraduction( find.name );
+            });
         });
 
         this._paymentMethodsSub = MeteorObservable.subscribe( 'paymentMethods' ).subscribe( () => {
@@ -155,15 +162,27 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             });
         });
 
-        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', Meteor.userId() ).subscribe();     
-        this._countries = Countries.find( { } ).zone();
-        this._countriesSub = MeteorObservable.subscribe( 'countries' ).subscribe();
-        this._cities = Cities.find( { } ).zone();
-        this._citiesSub = MeteorObservable.subscribe( 'cities' ).subscribe();
-        this._restaurantImagesSub = MeteorObservable.subscribe( 'restaurantImages', Meteor.userId() ).subscribe();
+        this._restaurantEditionForm = this._formBuilder.group({
+            editId: [ this._restaurantToEdit._id ],
+            country: [ this._restaurantToEdit.countryId ],
+            city: [ this._restaurantToEdit.cityId ],
+            name: [ this._restaurantToEdit.name ],
+            address: [ this._restaurantToEdit.address ],
+            phone: [ this._restaurantToEdit.phone ],
+            webPage: [ this._restaurantToEdit.webPage ],
+            email: [ this._restaurantToEdit.email ],
+            editImage: [ '' ],
+            paymentMethods: this._paymentsFormGroup,
+        });
 
-        let _lRestaurantImage: RestaurantImage = RestaurantImages.findOne( { restaurantId: this._restaurantToEdit._id } );
-        this._restaurantEditImage = _lRestaurantImage.url;
+        this._selectedCountryValue = this._restaurantToEdit.countryId;
+        this._restaurantCountryValue = this._restaurantToEdit.countryId;
+        this._selectedCityValue = this._restaurantToEdit.cityId;
+        this._restaurantCityValue = this._restaurantToEdit.cityId;
+        this._restaurantPaymentMethods = this._restaurantToEdit.paymentMethods;
+        this._scheduleToEdit = this._restaurantToEdit.schedule;
+        this._countryIndicative = this._restaurantToEdit.indicative;
+        this._queue = this._restaurantToEdit.queue;
     }
 
     /**
@@ -196,17 +215,18 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                 phone: this._restaurantEditionForm.value.phone,
                 webPage: this._restaurantEditionForm.value.webPage,
                 email: this._restaurantEditionForm.value.email,
-                invoice_code: this._restaurantEditionForm.value.invoiceCode,
-                tip_percentage: this._tipPercentage,
-                tax_percentage: this._taxPercentage,
+                financialInformation: this._restaurantFinancialInformation,
                 paymentMethods: _lPaymentMethodsToInsert,
-                schedule: this._edition_schedule
+                schedule: this._edition_schedule,
+                queue : this._queue,
             }
         });
 
         if( this._editImage ){
             let _lRestaurantImage: RestaurantImage = RestaurantImages.findOne( { restaurantId: this._restaurantEditionForm.value.editId } );
+            let _lRestaurantImageThumb: RestaurantImageThumb = RestaurantImageThumbs.findOne( { restaurantId: this._restaurantEditionForm.value.editId } );
             RestaurantImages.remove( { _id: _lRestaurantImage._id } );
+            RestaurantImageThumbs.remove( { _id: _lRestaurantImage._id } );
 
             uploadRestaurantImage( this._restaurantImageToEdit, 
                                    Meteor.userId(),
@@ -265,10 +285,20 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                 return false;
             }
         case 2:
-            if( this._restaurantEditionForm.controls['invoiceCode'].valid ){
-                return true;
+            let _lElementsValidated: boolean = true;
+            if( this._showFinancialElements ){
+                this._financialInformation.forEach( ( element ) => {
+                    if( element.required !== undefined && element.required === true ){
+                        let _lObjects: string[] = [];
+                        _lObjects = Object.keys( this._restaurantFinancialInformation );
+                        if( _lObjects.filter( e => e === element.key ).length === 0 ){
+                            _lElementsValidated = false;
+                        }
+                    }
+                });
+                return _lElementsValidated;
             } else {
-                return false;
+                return true;
             }
         default:
             return true;
@@ -315,6 +345,13 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         });    
         this._restaurantCurrency = _lCurrency.code + ' - ' + this.itemNameTraduction( _lCurrency.name );
         this._countryIndicative = _lCountry.indicative;
+        this._queue = _lCountry.queue;
+
+        this._showFinancialElements = false;
+        this._financialElements = [];
+        this._restaurantFinancialInformation = {};
+        this._financialInformation = _lCountry.financialInformation;
+        this.createFinancialForm( this._financialInformation );
     }
 
     /**
@@ -358,19 +395,121 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Get tax percentage slider value
-     * @param {any} _event 
+     * Create Financial form from restaurant template
+     * @param {RestaurantFinancialElement[]} _pFinancialInformation 
      */
-    onTaxPercentageChange( _event:any ):void{
-        this._taxPercentage = _event.value;
+    createFinancialForm( _pFinancialInformation: RestaurantFinancialElement[] ):void{
+        if( _pFinancialInformation.length > 0 ){
+            _pFinancialInformation.forEach( ( element ) => {
+                if( element.controlType === 'textbox' ){
+                    this._financialElements.push( new FinancialTextBox( {
+                                                                            key: element.key,
+                                                                            label: element.label,
+                                                                            value: element.value,
+                                                                            required: element.required,
+                                                                            order: element.order
+                                                                        }
+                                                                    ) 
+                                                );
+                } else if( element.controlType === 'checkbox' ){
+                    this._financialElements.push( new FinancialCheckBox( {
+                                                                            key: element.key,
+                                                                            label: element.label,
+                                                                            value: element.value,
+                                                                            required: element.required,
+                                                                            order: element.order
+                                                                        } 
+                                                                    )
+                                                );
+                } else if( element.controlType === 'text' ){
+                    this._financialElements.push( new FinancialText( { 
+                                                                        key: element.key, 
+                                                                        label: element.label, 
+                                                                        order: element.order 
+                                                                     } 
+                                                                   )
+                                                );
+                } else if ( element.controlType === 'slider' ){
+                    this._financialElements.push( new FinancialSlider( {
+                                                                          key: element.key,
+                                                                          label: element.label,
+                                                                          order: element.order,
+                                                                          value: element.value,
+                                                                          minValue: element.minValue,
+                                                                          maxValue: element.maxValue,
+                                                                          stepValue: element.stepValue
+                    } ) );
+                }
+            });
+            this._financialElements.sort( ( a, b ) => a.order - b.order );
+            this._showFinancialElements = true;
+        }
     }
 
     /**
-     * Get tip percentage slider value
-     * @param {any} _event 
+     * Set Restaurant Financial Information
+     * @param {Object} _event 
      */
-    onTipPercentageChange( _event:any ):void{
-        this._tipPercentage = _event.value;
+    setRestaurantFinancialInfo( _event: Object ):void{
+        this._restaurantFinancialInformation = _event;
+    }
+
+    /**
+     * Create Financial form from restaurant template in edit mode
+     * @param {RestaurantFinancialElement[]} _pFinancialInformation 
+     */
+    createFinancialFormEditMode( _pFinancialInformation: RestaurantFinancialElement[], _pRestaurantFinancialInfo: Object ):void{
+        if( _pFinancialInformation.length > 0 ){
+            _pFinancialInformation.forEach( ( element ) => {
+                let _lValue: any;
+                if( element.required !== undefined && element.required === true ){
+                    let _lkey: string = Object.keys( _pRestaurantFinancialInfo ).filter( e => e === element.key )[0];
+                    _lValue = _pRestaurantFinancialInfo[_lkey];
+                }
+                if( element.controlType === 'textbox' ){
+                    this._financialElements.push( new FinancialTextBox( {
+                                                                            key: element.key,
+                                                                            label: element.label,
+                                                                            value: _lValue === undefined ? element.value : _lValue,
+                                                                            required: element.required,
+                                                                            order: element.order
+                                                                        }
+                                                                    ) 
+                                                );
+                } else if( element.controlType === 'checkbox' ){
+                    this._financialElements.push( new FinancialCheckBox( {
+                                                                            key: element.key,
+                                                                            label: element.label,
+                                                                            value: _lValue === undefined ? element.value : _lValue,
+                                                                            required: element.required,
+                                                                            order: element.order
+                                                                        } 
+                                                                    )
+                                                );
+                } else if( element.controlType === 'text' ){
+                    this._financialElements.push( new FinancialText( { 
+                                                                        key: element.key, 
+                                                                        label: element.label, 
+                                                                        order: element.order 
+                                                                     } 
+                                                                   )
+                                                );
+                } else if ( element.controlType === 'slider' ){
+                    this._financialElements.push( new FinancialSlider( {
+                                                                          key: element.key,
+                                                                          label: element.label,
+                                                                          order: element.order,
+                                                                          value: _lValue === undefined ? element.value : _lValue,
+                                                                          minValue: element.minValue,
+                                                                          maxValue: element.maxValue,
+                                                                          stepValue: element.stepValue
+                    } ) );
+                }
+            });
+            this._financialElements.sort( ( a, b ) => a.order - b.order );
+            this._showFinancialElements = true;
+            this._restaurantFinancialInformation = _pRestaurantFinancialInfo;
+        }
     }
 
     /**
@@ -384,5 +523,6 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         this._citiesSub.unsubscribe();
         this._paymentMethodsSub.unsubscribe();
         this._restaurantImagesSub.unsubscribe();
+        this._restaurantImageThumbsSub.unsubscribe();
     }
 }

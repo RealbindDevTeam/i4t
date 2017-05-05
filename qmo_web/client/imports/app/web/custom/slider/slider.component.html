@@ -1,0 +1,5 @@
+<md-input-container class="input">
+    <input mdInput type="number" placeholder="{{label | translate}}" [min]="minValue" [max]="maxValue" [(ngModel)]="percentageValue" [ngModelOptions]="{standalone: true}" (ngModelChange)="onPercentageChange($event)">
+    <span mdSuffix>%</span>
+</md-input-container>
+<md-slider class="slider" [min]="minValue" [max]="maxValue" [step]="stepValue" thumb-label="true" tick-interval="true" (input)="onPercentageChange($event.value)" [value]="percentageValue"></md-slider>

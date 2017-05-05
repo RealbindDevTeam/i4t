@@ -50,6 +50,10 @@ import { OrdersToDeliveryComponent } from './waiter/orders-to-delivery/orders-to
 import { CallsComponent } from './waiter/calls/calls.component';
 import { CallCloseConfirmComponent } from './waiter/calls/call-close-confirm/call-close-confirm.component';
 import { NotFoundWebComponent } from './auth/notfound.web.component';
+import { FinancialControlService } from './custom/financial-info/financial-control.service';
+import { IurestFinancialFormComponent } from './custom/financial-info/financial-form/financial-form.component';
+import { IurestFinancialElementComponent } from './custom/financial-info/financial-element/financial-element.component';
+import { IurestSliderComponent } from './custom/slider/slider.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -85,7 +89,10 @@ export const WEB_DECLARATIONS = [
     OrderAttentionComponent,
     OrdersToDeliveryComponent,
     CallsComponent,
-    NotFoundWebComponent
+    NotFoundWebComponent,
+    IurestFinancialFormComponent,
+    IurestFinancialElementComponent,
+    IurestSliderComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [
@@ -111,5 +118,6 @@ export const MODAL_DIALOG_DECLARATIONS = [
 ];
 
 export const SERVICES_DECLARATIONS = [
-    OrderNavigationService
+    OrderNavigationService,
+    FinancialControlService
 ]; 

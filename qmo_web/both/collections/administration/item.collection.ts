@@ -52,7 +52,7 @@ export const ItemImageThumbsStore = new UploadFS.store.GridFS({
   transformWrite(from, to, fileId, file) {
     // Resize to 100x100
     //var require: any;
-     let gm = require('gm');
+    const gm = require('gm');
  
     gm(from, file.name)
       .resize(100, 100, "!")

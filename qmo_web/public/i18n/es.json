@@ -26,6 +26,8 @@
     "SEARCH" : "Consultar",
     "JOB" : "Cargo",
     "VALIDATE" : "Validar",
+    "TIP_PERCENTAGE": "Porcentaje de propina",
+    "CLOSE": "Cerrar",
     "DATE_VALIDATE" : {
         "DAY_FORMAT" : "Formato del día incorrecto",
         "MONTH_FORMAT" : "Formato del mes incorrecto",
@@ -119,7 +121,10 @@
         "NO_RESTAURANT_CREATED": "No se encuentran restaurantes creados en la plataforma",
         "MODIFY": "MODIFICAR",
         "ACTIVATE": "ACTIVAR",
-        "INACTIVATE": "INACTIVAR"
+        "INACTIVATE": "INACTIVAR",
+        "SELECT_RESTAURANTS": "Por favor selecciona el(los) restaurante(s) donde se encontrara disponible la adicion",
+        "ADDITION_PRICES": "Por favor ingresa el precio de la adicion (En caso de no tener valor ingresa 0 )",
+        "ADITION_PRICE": "Precio de la Adicion"
     },
     "SETTINGS": {
         "TITTLE": "Ajustes",
@@ -187,7 +192,13 @@
         "GARNISHFOOD_TEXT": "Crea las guarniciones de tu menú y selecciona los restaurantes donde se verán",
         "NO_DESCRIPTION": "No se ha ingresado descripcion de la guarnicion",
         "NO_RESTAURANT": "No se ha seleccionado restaurante",
-        "NO_RESTAURANT_CREATED": "No se encuentran restaurantes creados en la plataforma"
+        "NO_RESTAURANT_CREATED": "No se encuentran restaurantes creados en la plataforma",
+        "MODIFY": "MODIFICAR",
+        "ACTIVATE": "ACTIVAR",
+        "INACTIVATE": "INACTIVAR",
+        "SELECT_RESTAURANTS": "Por favor selecciona el(los) restaurante(s) donde se encontrara disponible la guarnicion",
+        "GARNISHFOOD_PRICES": "Por favor ingresa el precio de la guarnicion (En caso de no tener valor ingresa 0 )",
+        "GARNISHFOOD_PRICE": "Precio de la Guarnicion"
     },
     "RESTAURANT_REGISTER": {
         "SELECT_COUNTRY": "Seleccione Pais",
@@ -202,16 +213,13 @@
         "SELECT_OPENING_HOUR": "Seleccione Hora de Apertura",
         "SELECT_CLOSING_HOUR": "Seleccione Hora de Cierre",
         "ADD_PAYMENTMETHODS_RESTURANT": "Selecciona los medios de pago aceptados por el restaurante",
-        "INVOICE_CODE": "Código de factura",
-        "TIP_PERCENTAGE": "Porcentaje de propina",
-        "TAX_PERCENTAGE": "Porcentaje de impuestos",
         "ADD_RESTAURANT_IMAGE": "Agregar imagen del restaurante",
         "GENERAL_LABEL": "General", 
         "GENERAL_INFO": "Informacion General del Restaurante",
         "GENERAL_INFO_TEXT": "Por favor ingresa la informacion del restaurante. Dicha informacion sera visualizada por las personas en internet y te dara mayor visivilidad",
         "FINANCIAL_LABEL": "Financiera",
         "FINANCIAL_INFO": "Informacion Financiera del Restaurante",
-        "FINANCIAL_INFO_TEXT": "Por favor ingresa la informacion financiera del restaurante. Esto le permitira a Iurest ayudarte con las cuentas y gastos del negocio",
+        "FINANCIAL_INFO_TEXT": "La informacion financiera del restaurante sera establecida de acuerdo al pais al cual pertenece. Esto le permitira a Iurest ayudarte con las cuentas y gastos de tu negocio",
         "ADD_LOCATION": "Ingrese la ubicacion del establecimiento",
         "SCHEDULE_LABEL": "Horario",
         "SCHEDULE_INFO": "Horario de atencion",
@@ -592,7 +600,11 @@
         "MSG_COMFIRM" : "Solicitud cerrada",
         "NO_ANSWER" : "No",
         "YES_ANSWER" : "Si",
-        "TURN" : "Turno"
+        "TURN" : "Turno",
+        "TABLE" :"Mesa",
+        "CALL_LABEL_SEND_ORDER" : "Entrega de orden",
+        "CALL_LABEL_CUSTOMER" : "Llamado de cliente",
+        "CALL_LABEL_CUSTOMER_PAYMENT" : "Pago de cliente"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Ordenes Confirmadas",
@@ -605,5 +617,18 @@
         "OBSERVATIONS": "Observaciones",
         "ORDERS_IN_PROCESS": "Ordenes en Proceso",
         "ORDER_PREPARED": "ORDEN PREPARADA"
+    },
+    "FINANCIAL_INFO": {
+        "COLOMBIA": {
+            "INC": "De acuerdo a la ley Colombiana, los restaurantes deben discriminar en la cuenta de cobro, tiquete de registradora, factura o documento equivalente, el Impuesto Nacional al Consumo (INC), por lo tanto, Iurest realizara el calculo del INC equivalente al 8% al momento de solicitar el valor total de la cuenta por parte del cliente.",
+            "BUSINESS_NAME": "Ingresa Apellidos y Nombres (si es persona natural) o Razon Social (si es persona juridica):",
+            "BUSINESS_NAME_LABEL": "Nombres - Razon Social",
+            "NIT": "Ingresa NIT de quien vende los Bienes o Servicios. Por favor incluya digito de verificacion:",
+            "NIT_LABEL": "NIT",
+            "DIAN_NUMERATION": "Ingresa numeracion autorizada por la DIAN:",
+            "DIAN_NUMERATION_FROM": "Desde",
+            "DIAN_NUMERATION_TO": "Hasta",
+            "ENTER_TIP_PERCENTAGE": "Ingresa el porcentaje de la propina sugerida ( 0% - 100% ). Puedes ingresar el valor o utilizar el Slider"            
+        }
     }
 }

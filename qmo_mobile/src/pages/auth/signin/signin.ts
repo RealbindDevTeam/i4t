@@ -7,7 +7,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
 import { Meteor } from 'meteor/meteor';
 import { TabsPage } from '../../customer/tabs/tabs';
-import { WaiterTabsPage } from '../../waiter/waiter-tabs/waiter-tabs';
+import { CallsPage } from '../../waiter/calls/calls';
 
 /*
   Generated class for the Signin page.
@@ -64,7 +64,7 @@ export class SigninComponent implements OnInit {
                                 //this.addUserDevice();
                                 this.navCtrl.push(TabsPage);
                             } else if ( role == "200") {
-                                this.navCtrl.push(WaiterTabsPage);
+                                this.navCtrl.push(CallsPage);
                             } else {
                             }
                         }, (error) => {

@@ -23,32 +23,23 @@
     <div *ngFor="let _call of _waiterCallDetail | async" style="float: left; width: 330px; ">
         <div *ngFor="let _table of _tables | async">
             <md-card *ngIf="_table._id === _call.table_id" class="cards">
-                <md-card-header style="height: 80px; background: #eee;">
-                    <img class="img" md-list-avatar src="/images/user_default_image.png">
-                    <md-list>
-                        <md-list-item>
-                            <h3 md-line> Fernando Arévalo</h3>
-                            <p md-line>
-                                <span> fercho23 </span>
-                            </p>
-                        </md-list-item>
-                    </md-list>
-                </md-card-header>
-
-                <md-card-content>
-                    <button md-mini-fab class="btn_edit" (click)="showConfirm(_call)"> 
-                        <md-icon style="color: white;">check</md-icon>
-                    </button>
-                    <ul class="list">
-                        <li style="font-size: 1.2rem;">
-                            <md-icon style="vertical-align: middle" md-tooltip="{{'EMAIL' | translate}}">notifications active</md-icon>
-                            <span>{{ 'TABLES.TABLE' | translate }} {{_table._number}}</span>
-                        </li>
-                        <li style="font-size: 1.2rem;">
-                            <md-icon style="vertical-align: middle">bookmark border</md-icon>
-                            <span> {{ 'WAITER_CALL.TURN' | translate }} {{_call.turn}}</span>
-                        </li>
-                    </ul>
+                <md-card-content style="padding: 12px">
+                    <div class="item-block">
+                        <img *ngIf="_call.type == 'SEND_ORDER'" class="img-list" src="/images/chef.png"/>
+                        <img *ngIf="_call.type == 'CALL_OF_CUSTOMER'" class="img-list" src="/images/llamar_mesero.png"/>
+                        <img *ngIf="_call.type == 'PAYMENT'" class="img-list" src="/images/pago.png"/>
+                        <div class="header-title">
+                            <div class="label">
+                                <span>{{ 'TABLES.TABLE' | translate }} {{_table._number}} </span>
+                                <p style="margin-bottom: 0px; margin-top: 0px;" *ngIf="_call.type == 'SEND_ORDER'">{{ 'WAITER_CALL.CALL_LABEL_SEND_ORDER' | translate }}</p>
+                                <p style="margin-bottom: 0px; margin-top: 0px;" *ngIf="_call.type == 'CALL_OF_CUSTOMER'">{{ 'WAITER_CALL.CALL_LABEL_CUSTOMER' | translate }}</p>
+                                <p style="margin-bottom: 0px; margin-top: 0px;" *ngIf="_call.type == 'PAYMENT'">{{ 'WAITER_CALL.CALL_LABEL_CUSTOMER_PAYMENT' | translate }}</p>
+                            </div>
+                            <button md-raised-button (click)="showConfirm(_call)" style="background-color: #679436; color: #eee">
+                                {{ 'CLOSE' | translate }}
+                            </button>
+                        </div>
+                    </div>
                 </md-card-content>
                 <md-card-footer></md-card-footer>
             </md-card>

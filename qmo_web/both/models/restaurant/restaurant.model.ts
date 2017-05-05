@@ -14,15 +14,14 @@ export interface Restaurant extends CollectionObject {
     webPage: string;
     email: string;
     restaurant_code: string;
-    invoice_code: string;
-    tip_percentage: number;
-    tax_percentage: number;
+    financialInformation: Object;
     paymentMethods: string[];
     location?: RestaurantLocation;
     schedule: RestaurantSchedule;
     tables_quantity: number;
     orderNumberCount: number;
     max_jobs?: number;
+    queue: string[];
 }
 
 /**
@@ -43,6 +42,14 @@ export interface RestaurantImage {
     url: string;
     userId: string;
     restaurantId: string;
+}
+
+/**
+ * Restaurant Image Thumbs model
+ */
+export interface RestaurantImageThumb extends RestaurantImage {
+    originalStore?: string;
+    originalId?: string;
 }
 
 /**
@@ -101,4 +108,20 @@ export interface RestaurantTurn extends CollectionObject {
     restaurant_id : string,
     turn : number,
     last_waiter_id : string,
+}
+
+/**
+ * RestaurantFinancialElement Model
+ */
+export interface RestaurantFinancialElement {
+    value?: any;
+    key?: string;
+    label?: string;
+    required?: boolean;
+    order?: number;
+    controlType?: string;
+    options?: { key: string, value: string }[];
+    minValue?: number;
+    maxValue?: number;
+    stepValue?: number;
 }

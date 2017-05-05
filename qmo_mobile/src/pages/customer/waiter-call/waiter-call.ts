@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { LoadingController, NavController, NavParams } from 'ionic-angular';
 import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -31,7 +31,8 @@ export class WaiterCallPage implements OnInit, OnDestroy {
     */
   constructor(public _navCtrl: NavController, 
               public _navParams: NavParams,
-              public _translate: TranslateService) {
+              public _translate: TranslateService,
+              public _loadingCtrl: LoadingController) {
     this._userLang = navigator.language.split('-')[0];
     _translate.setDefaultLang('es');
     _translate.use(this._userLang);
@@ -82,10 +83,36 @@ export class WaiterCallPage implements OnInit, OnDestroy {
         restaurants : restaurant_id,
         tables : table_id,
         user : usrId,
-        waiter_id : ""
+        waiter_id : "",
+        status : "waiting",
+        type : "CALL_OF_CUSTOMER",
       }
-      Meteor.call('waiterCall', false, data);
+        
+      let loading_msg = this.itemNameTraduction('MOBILE.WAITER_CALL.LOADING'); 
+    
+      let loading = this._loadingCtrl.create({
+        content: loading_msg
+      });
+      loading.present();
+      setTimeout(() => {
+        //MeteorObservable.call('waiterCall', false, data).subscribe(() => {
+        MeteorObservable.call('findQueueByRestaurant', data).subscribe(() => {
+          loading.dismiss();
+        });
+      }, 1500);
     }
+  }
+  
+  /**
+   * This function allow translate strings
+   * @param {string} _itemName 
+   */
+  itemNameTraduction(_itemName: string): string {
+    var wordTraduced: string;
+    this._translate.get(_itemName).subscribe((res: string) => {
+        wordTraduced = res;
+    });
+    return wordTraduced;
   }
 
   /**
@@ -95,5 +122,4 @@ export class WaiterCallPage implements OnInit, OnDestroy {
     this._waiterCallDetailSubscription.unsubscribe();
     this._userDetailSubscription.unsubscribe();
   }
-
 }

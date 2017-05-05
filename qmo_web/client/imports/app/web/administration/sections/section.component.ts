@@ -21,6 +21,7 @@ import style from './section.component.scss';
 })
 export class SectionComponent implements OnInit, OnDestroy {
 
+    private _user = Meteor.userId();
     private _sectionForm: FormGroup;    
     private _restaurantsFormGroup: FormGroup = new FormGroup({});
 
@@ -59,7 +60,7 @@ export class SectionComponent implements OnInit, OnDestroy {
             restaurants: this._restaurantsFormGroup
         });
 
-        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', Meteor.userId() ).subscribe( () => {
+        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
             this._ngZone.run(() => {
                 this._restaurants = Restaurants.find( { } );
                 this._restaurantList = Restaurants.collection.find({}).fetch();
@@ -74,7 +75,7 @@ export class SectionComponent implements OnInit, OnDestroy {
         });
 
         this._sections = Sections.find( { } ).zone();        
-        this._sectionSub = MeteorObservable.subscribe( 'sections', Meteor.userId() ).subscribe();
+        this._sectionSub = MeteorObservable.subscribe( 'sections', this._user ).subscribe();
     }
 
     /**
@@ -97,7 +98,7 @@ export class SectionComponent implements OnInit, OnDestroy {
             });
 
             Sections.insert({
-                creation_user: Meteor.userId(),
+                creation_user: this._user,
                 creation_date: new Date(),
                 modification_user: '-',
                 modification_date: new Date(),
@@ -119,7 +120,7 @@ export class SectionComponent implements OnInit, OnDestroy {
             $set: {
                 is_active: !_section.is_active,
                 modification_date: new Date(),
-                modification_user: Meteor.userId()
+                modification_user: this._user
             }
         });
     }

@@ -39,6 +39,8 @@ import { loadCountries } from './imports/fixtures/settings/countries';
 import { loadCities } from './imports/fixtures/settings/cities';
 import { loadLanguages } from './imports/fixtures/settings/languages';
 
+import { createdbindexes } from './imports/indexes/indexdb';
+
 Meteor.startup(() => {
     loadMenus();
     loadRoles();
@@ -48,4 +50,5 @@ Meteor.startup(() => {
     loadCountries();
     loadCities();
     loadLanguages();
+    createdbindexes();
 });

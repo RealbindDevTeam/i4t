@@ -1,34 +1,8 @@
 .cards{
-    display: inline-block; 
-    margin-right: 10px; 
+    margin-right: 10px;
     width: 320px; 
     vertical-align: top; 
-    padding: 0px
-}
-
-.btn-position-create{
-    position: absolute;
-    top: -50px;
-    right: 10px;
-}
-
-.fixed-action-btn {
-    position: fixed;
-	bottom: 30px;
-	right: 35px;
-	width: 56px;
-}
-
-.btn_edit{
-    position: absolute;
-    top: 50px;
-    right: 15px;
-}
-
-.list{
-    list-style-type:none;
-    margin-top: 10px;
-    padding-left: 25px;
+    padding: 0px;
 }
 
 .img {
@@ -50,3 +24,71 @@
     background-repeat: no-repeat; 
     background-size: 100% 100%;
 }
+
+.item-block {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    overflow: hidden;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 4.4rem;
+    border: 0;
+    font-weight: normal;
+    line-height: normal;
+    text-align: initial;
+    text-decoration: none;
+    color: inherit;
+}
+
+.img-list {
+    width: 45px;
+    height: 45px;
+    margin-right: 12px;
+}
+
+.header-title {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    overflow: hidden;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 0;
+    width: 100%;
+    min-height: 4.4rem;
+    border: 0;
+    font-weight: normal;
+    line-height: normal;
+    text-align: initial;
+    text-decoration: none;
+    color: inherit;
+}
+
+.label {
+    display: block;
+    overflow: hidden;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    margin: 0;
+    font-size: inherit;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    span{
+        font-size: 1.5rem;
+    }
+}
+

@@ -29,11 +29,7 @@
         <md-card-title>{{restaurant.name}}</md-card-title>
         <md-card-subtitle>{{restaurant.address}}</md-card-subtitle>
     </md-card-header>
-    <span *ngFor="let resImg of _restaurantImages | async" >
-        <template [ngIf]="restaurant._id == resImg.restaurantId">
-            <img md-card-image style="margin-top: 0;" src="{{resImg.url}}">
-        </template>
-    </span>
+    <img md-card-image style="margin-top: 0;" src="{{ getRestaurantImage(restaurant._id) }}">
     <md-card-content>
         <div style="position: relative">
             <button md-tooltip="{{'RESTAURANT.LOCATION' | translate}}" md-mini-fab class="btn-position-location" (click)="openLocation(restaurant)"> <md-icon style="color: white;" class="md-24">map</md-icon></button>
@@ -46,23 +42,15 @@
         </div>
         <ul class="list">
             <li>
-                <md-icon md-tooltip="{{'RESTAURANT.COUNTRY' | translate}}">room</md-icon>                   
-                <span *ngFor="let country of countries | async" >
-                    <template [ngIf]="country._id == restaurant.countryId">                
-                        <label>{{country.name | translate}}</label>
-                    </template>
-                </span>                                    
+                <md-icon md-tooltip="{{'RESTAURANT.COUNTRY' | translate}}">room</md-icon>
+                <label>{{ getRestaurantCountry(restaurant.countryId) | translate }}</label>                                                
                 <label> - </label>                  
-                <span *ngFor="let city of cities | async" >
-                    <template [ngIf]="city._id == restaurant.cityId">                
-                        <label>{{city.name }}</label>
-                    </template>
-                </span>
+                <label>{{ getRestaurantCity(restaurant.cityId) | translate }}</label>
             </li>
             <li>
                 <md-icon md-tooltip="{{'RESTAURANT.PHONE' | translate}}">call</md-icon>
                 <label>{{restaurant.indicative}}</label>
-                <label> - </label>
+                <label> </label>
                 <label>{{restaurant.phone}}</label>
             </li>
             <li *ngIf="restaurant.webPage">

@@ -150,7 +150,10 @@
             "LOADING" : "Please wait...",
             "MSG_COMFIRM" : "Request closed",
             "TURN" :"Turn",
-            "TABLE" :"Table"
+            "TABLE" :"Table",
+            "CALL_LABEL_SEND_ORDER" : "Order to deliver",
+            "CALL_LABEL_CUSTOMER" : "Customer's call",
+            "CALL_LABEL_CUSTOMER_PAYMENT" : "Customer's payment"
         },
         "SECTIONS": {
             "MENU": "Menu",
