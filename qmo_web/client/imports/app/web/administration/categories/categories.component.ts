@@ -21,6 +21,7 @@ import style from './categories.component.scss';
 })
 export class CategoryComponent implements OnInit, OnDestroy{
 
+    private _user = Meteor.userId();
     private _categoryForm: FormGroup;
     private _categories: Observable<Category[]>;
     private _sections: Observable<Section[]>;
@@ -53,9 +54,9 @@ export class CategoryComponent implements OnInit, OnDestroy{
             section: new FormControl( '' )  
         });       
         this._sections = Sections.find( { } ).zone();
-        this._sectionsSub = MeteorObservable.subscribe( 'sections', Meteor.userId() ).subscribe();                
+        this._sectionsSub = MeteorObservable.subscribe( 'sections', this._user ).subscribe();                
         this._categories = Categories.find( { } ).zone();
-        this._categoriesSub = MeteorObservable.subscribe( 'categories', Meteor.userId() ).subscribe();                
+        this._categoriesSub = MeteorObservable.subscribe( 'categories', this._user ).subscribe();                
     }
 
     /**
@@ -69,7 +70,7 @@ export class CategoryComponent implements OnInit, OnDestroy{
 
         if( this._categoryForm.valid ){
             Categories.insert({
-                creation_user: Meteor.userId(),
+                creation_user: this._user,
                 creation_date: new Date(),
                 modification_user: '-',
                 modification_date: new Date(),
@@ -121,7 +122,7 @@ export class CategoryComponent implements OnInit, OnDestroy{
             $set: {
                 is_active: !_category.is_active,
                 modification_date: new Date(),
-                modification_user: Meteor.userId()
+                modification_user: this._user
             }
         });
     }

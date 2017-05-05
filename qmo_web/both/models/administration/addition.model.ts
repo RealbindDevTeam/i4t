@@ -16,9 +16,14 @@ export interface Addition extends CollectionObject{
 export interface AdditionRestaurant {
     restaurantId: string;
     price: number;
+    additionTax?: number;
 }
 
+/**
+ * AdditionPrice model
+ */
 export interface AdditionPrice {
     currencyId: string;
     price: number;
+    additionTax?: number;
 }

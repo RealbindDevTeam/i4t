@@ -1,3 +1,5 @@
+import { RestaurantFinancialElement } from '../restaurant/restaurant.model';
+
 /**
  * Country Model
  */
@@ -10,5 +12,7 @@ export interface Country {
     numericCode: string;
     indicative: string;
     currencyId: string;
+    itemsWithDifferentTax: boolean;
     queue: string[];
+    financialInformation: RestaurantFinancialElement[];
 }

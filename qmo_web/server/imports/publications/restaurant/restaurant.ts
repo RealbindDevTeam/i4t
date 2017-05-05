@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import { Restaurants, RestaurantImages } from '../../../../both/collections/restaurant/restaurant.collection';
+import { Restaurants, RestaurantImages, RestaurantImageThumbs } from '../../../../both/collections/restaurant/restaurant.collection';
 import { UserDetails } from '../../../../both/collections/auth/user-detail.collection';
 import { check } from 'meteor/check';
-import { Tables } from '../../../../both/collections/restaurant/table.collection';
 import { Accounts } from '../../../../both/collections/restaurant/account.collection';
 
 /**
@@ -53,4 +52,13 @@ Meteor.publish('getRestaurantByRestaurantWork', function( _userId: string){
     check( _userId, String);
     var user_detail = UserDetails.collection.findOne({ user_id: _userId });
     return Restaurants.collection.find({_id: user_detail.restaurant_work});
+});
+
+/**
+ * Meteor publication restaurantImageThumbs with user Id condition
+ * @param {string} _userId 
+ */
+Meteor.publish( 'restaurantImageThumbs', function( _userId:string ) {
+    check( _userId, String );
+    return RestaurantImageThumbs.collection.find( { userId: _userId } );
 });

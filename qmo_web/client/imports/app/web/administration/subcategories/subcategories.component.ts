@@ -20,6 +20,7 @@ import style from './subcategories.component.scss';
 })
 export class SubcategoryComponent implements OnInit, OnDestroy{
 
+    private _user = Meteor.userId();
     private _subcategoryForm: FormGroup;
 
     private _subcategories: Observable<Subcategory[]>;
@@ -50,9 +51,9 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
             category: new FormControl( '' )  
         });       
         this._categories = Categories.find( { } ).zone();
-        this._categoriesSub = MeteorObservable.subscribe( 'categories', Meteor.userId() ).subscribe();
+        this._categoriesSub = MeteorObservable.subscribe( 'categories', this._user ).subscribe();
         this._subcategories = Subcategories.find( { } ).zone();
-        this._subcategorySub = MeteorObservable.subscribe( 'subcategories', Meteor.userId() ).subscribe();
+        this._subcategorySub = MeteorObservable.subscribe( 'subcategories', this._user ).subscribe();
     }
 
     /**
@@ -66,7 +67,7 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
 
         if( this._subcategoryForm.valid ){
             Subcategories.insert({
-                creation_user: Meteor.userId(),
+                creation_user: this._user,
                 creation_date: new Date(),
                 modification_user: '-',
                 modification_date: new Date(),
@@ -103,7 +104,7 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
             $set: {
                 is_active: !_subcategory.is_active,
                 modification_date: new Date(),
-                modification_user: Meteor.userId()
+                modification_user: this._user
             }
         });
     }
