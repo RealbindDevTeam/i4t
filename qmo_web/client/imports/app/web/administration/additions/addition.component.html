@@ -13,7 +13,7 @@
         <p>{{'ADDITIONS.RESTAURANT_ADDITION' | translate}}</p> 
         <p *ngIf="!_showRestaurants">{{'ADDITIONS.NO_RESTAURANT_CREATED' | translate}}</p>
         <div *ngIf="_showRestaurants" formGroupName="restaurants">
-          <md-checkbox *ngFor="let restaurant of _restaurantList" [formControlName]="restaurant.name" [class.invalid]="!_additionForm.controls.restaurants.valid" style="padding-right: 15px" (change)="onCheckRestaurant(restaurant.name, $event)">{{restaurant.name}}</md-checkbox>
+          <md-checkbox *ngFor="let restaurant of _restaurantList" [formControlName]="restaurant.name" [class.invalid]="!_additionForm.controls.restaurants.valid" class="checkbox" (change)="onCheckRestaurant(restaurant.name, $event)">{{restaurant.name}}</md-checkbox>
         </div>
       </div>
       <div>
@@ -47,7 +47,7 @@
 <md-card *ngFor="let addition of _additions | async" class="cards">
   <md-card-title class="card-title">{{addition.name}}</md-card-title>
   <md-card-subtitle class="card-subtitle">
-    <label class="prices">{{'ADDITIONS.PRICES' | translate}}</label>-
+    <label class="prices">{{'ADDITIONS.PRICES' | translate}}</label>&emsp;-&emsp;
     <label class="taxes">{{'ADDITIONS.TAXES' | translate}}</label>
   </md-card-subtitle>
   <md-card-content>
