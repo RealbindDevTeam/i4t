@@ -3,33 +3,42 @@
     <md-card-content>
         <form [formGroup]="_editForm" (ngSubmit)="editGarnishFood();">
             <div>
-                <md-input-container style="width: 45%">
+                <md-input-container class="name">
                     <input mdInput required formControlName="editName" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #editInputName>
                     <md-hint align="end">{{editInputName.value.length}} / 50</md-hint>
                 </md-input-container>
-                <md-slide-toggle formControlName="editIsActive">{{'STATE' | translate}}</md-slide-toggle>                
+                <md-slide-toggle formControlName="editIsActive" class="toogle">{{'STATE' | translate}}</md-slide-toggle>                
                 <div>
                     <p>{{'GARNISHFOOD.RESTAURANT_GARNISHFOOD' | translate}}</p>
                     <div formGroupName="editRestaurants">
-                        <md-checkbox [formControlName]="restaurant.name" [class.invalid]="!_editForm.controls.editRestaurants.valid" *ngFor="let restaurant of _restaurantsList" style="padding-right: 15px" (change)="onCheckRestaurant(restaurant.name, $event)">{{restaurant.name}}</md-checkbox>
+                        <md-checkbox [formControlName]="restaurant.name" [class.invalid]="!_editForm.controls.editRestaurants.valid" *ngFor="let restaurant of _restaurantsList" class="checkbox" (change)="onCheckRestaurant(restaurant.name, $event)">{{restaurant.name}}</md-checkbox>
                     </div>
                 </div>
                 <div>
                     <p *ngIf="!_showCurrencies">{{'GARNISHFOOD.SELECT_RESTAURANTS' | translate}}</p>
                     <p *ngIf="_showCurrencies">{{'GARNISHFOOD.GARNISHFOOD_PRICES' | translate}}</p>
-                    <div *ngIf="_showCurrencies" formGroupName="editCurrencies">
-                        <div *ngFor="let currency of _currencies | async">
+                    <p *ngIf="_showTaxes">{{'GARNISHFOOD.GARNISHFOOD_TAXES' | translate}}</p>
+                    <div *ngFor="let currency of _currencies | async">
+                        <div *ngIf="_showCurrencies" formGroupName="editCurrencies" class="currencies">
                             <div *ngFor="let cur of _restaurantCurrencies">
-                                <md-input-container *ngIf="currency._id === cur" style="width: 30%;">
+                                <md-input-container *ngIf="currency._id === cur" class="currency">
                                 <input mdInput required [formControlName]="cur" [class.invalid]="!_editForm.controls.editCurrencies.valid" type="number" placeholder="{{'GARNISHFOOD.GARNISHFOOD_PRICE' | translate}}" min="0" [step]="currency.decimal">
                                 <span mdSuffix>{{currency.code}} - {{currency.name | translate}} </span>
                                 </md-input-container>
                             </div>
                         </div>
+                        <div *ngIf="_showTaxes" formGroupName="editTaxes" class="taxes">
+                            <div *ngFor="let tax of _restaurantTaxes">
+                            <md-input-container *ngIf="currency._id === tax" class="tax">
+                                <input mdInput required [formControlName]="tax" [class.invalid]="!_editForm.controls.editTaxes.valid" type="number" placeholder="{{'GARNISHFOOD.TAXES' | translate}}" min="0" max="100">
+                                <span mdSuffix>% {{currency.code}} - {{currency.name | translate}} </span>
+                            </md-input-container>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div style="padding-top: 10px">
+            <div class="actions">
                 <button md-raised-button class="button-secundary" type="button" (click)="_dialogRef.close()">{{'CANCEL' | translate}}</button>
                 <button md-raised-button class="button-primary" [disabled]="!_editForm.valid" type="submit">{{'UPDATE' | translate}}</button>
             </div>

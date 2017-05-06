@@ -31,7 +31,6 @@ export class AdditionEditComponent implements OnInit, OnDestroy {
     private _currenciesFormGroup: FormGroup = new FormGroup({});    
     private _taxesFormGroup: FormGroup = new FormGroup({});
 
-
     private _additions: Observable<Addition[]>;
     private _restaurants: Observable<Restaurant[]>;
     private _currencies: Observable<Currency[]>;
@@ -122,7 +121,7 @@ export class AdditionEditComponent implements OnInit, OnDestroy {
                     }                 
                 }
                 this._countriesSub = MeteorObservable.subscribe( 'getCountriesByRestaurantsId', _lRestaurantsId ).subscribe();
-                this._currenciesSub = MeteorObservable.subscribe( 'getCountriesByRestaurantsId', _lRestaurantsId ).subscribe();
+                this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', _lRestaurantsId ).subscribe();
                 this._currencies = Currencies.find( { } ).zone();
             });
         });

@@ -5,6 +5,7 @@ import { Categories } from '../../../both/collections/administration/category.co
 import { Subcategories } from '../../../both/collections/administration/subcategory.collection';
 import { Additions } from '../../../both/collections/administration/addition.collection';
 import { Items } from '../../../both/collections/administration/item.collection';
+import { GarnishFoodCol } from '../../../both/collections/administration/garnish-food.collection';
 
 export function createdbindexes(){
 
@@ -41,4 +42,10 @@ export function createdbindexes(){
 
     // Item Collection Indexes
     Items.collection._ensureIndex( { additionsIsAccepted: 1 } );
+    Items.collection._ensureIndex( { garnishFoodIsAcceped: 1 } );
+
+    // GarnishFood Collection Indexes
+    GarnishFoodCol.collection._ensureIndex( { creation_user: 1 } );
+    GarnishFoodCol.collection._ensureIndex( { restaurants: 1 } );
+    
 }
