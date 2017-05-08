@@ -104,28 +104,28 @@ export class AdditionComponent implements OnInit, OnDestroy{
             return;
         }
 
-        if( this._additionForm.valid ){
-            let arrCur:any[] = Object.keys( this._additionForm.value.currencies );
-            let _lAdditionRestaurantsToInsert: AdditionRestaurant[] = [];
-            let _lAdditionPricesToInsert: AdditionPrice[] = [];
+        let arrCur:any[] = Object.keys( this._additionForm.value.currencies );
+        let _lAdditionRestaurantsToInsert: AdditionRestaurant[] = [];
+        let _lAdditionPricesToInsert: AdditionPrice[] = [];
 
-            arrCur.forEach( ( cur ) => {
-                let find: Restaurant[] = this._restaurantList.filter( r => r.currencyId === cur );
-                for( let res of find ){
-                    if( this._additionForm.value.restaurants[ res.name ] ){
-                        let restau:Restaurant = Restaurants.findOne( { name: res.name } );
-                        let _lAdditionRestaurant: AdditionRestaurant = { restaurantId: '', price: 0 };
+        arrCur.forEach( ( cur ) => {
+            let find: Restaurant[] = this._restaurantList.filter( r => r.currencyId === cur );
+            for( let res of find ){
+                if( this._additionForm.value.restaurants[ res.name ] ){
+                    let restau:Restaurant = Restaurants.findOne( { name: res.name } );
+                    let _lAdditionRestaurant: AdditionRestaurant = { restaurantId: '', price: 0 };
 
-                        _lAdditionRestaurant.restaurantId = restau._id;
-                        _lAdditionRestaurant.price = this._additionForm.value.currencies[ cur ];
+                    _lAdditionRestaurant.restaurantId = restau._id;
+                    _lAdditionRestaurant.price = this._additionForm.value.currencies[ cur ];
 
-                        if( this._additionForm.value.taxes[ cur ] !== undefined ){
-                            _lAdditionRestaurant.additionTax = this._additionForm.value.taxes[ cur ];
-                        }
-
-                        _lAdditionRestaurantsToInsert.push( _lAdditionRestaurant );
+                    if( this._additionForm.value.taxes[ cur ] !== undefined ){
+                        _lAdditionRestaurant.additionTax = this._additionForm.value.taxes[ cur ];
                     }
+
+                    _lAdditionRestaurantsToInsert.push( _lAdditionRestaurant );
                 }
+            }
+            if( cur !== null && this._additionForm.value.currencies[ cur ] !== null ){
                 let _lAdditionPrice: AdditionPrice = { currencyId: '', price: 0 };
                 _lAdditionPrice.currencyId = cur;
                 _lAdditionPrice.price = this._additionForm.value.currencies[ cur ];
@@ -133,19 +133,19 @@ export class AdditionComponent implements OnInit, OnDestroy{
                     _lAdditionPrice.additionTax = this._additionForm.value.taxes[ cur ];
                 }
                 _lAdditionPricesToInsert.push( _lAdditionPrice );
-            });
+            }
+        });
 
-            Additions.insert({
-                creation_user: this._user,
-                creation_date: new Date(),
-                modification_user: '-',
-                modification_date: new Date(),
-                is_active: true,
-                name: this._additionForm.value.name,
-                restaurants: _lAdditionRestaurantsToInsert,
-                prices: _lAdditionPricesToInsert
-            });
-        }
+        Additions.insert({
+            creation_user: this._user,
+            creation_date: new Date(),
+            modification_user: '-',
+            modification_date: new Date(),
+            is_active: true,
+            name: this._additionForm.value.name,
+            restaurants: _lAdditionRestaurantsToInsert,
+            prices: _lAdditionPricesToInsert
+        });
         this.cancel();
     }
 
@@ -208,14 +208,14 @@ export class AdditionComponent implements OnInit, OnDestroy{
                     for( let i = 0; i < ( _lCurrency.decimal ).toString().slice( ( _lCurrency.decimal.toString().indexOf( '.' ) ), ( _lCurrency.decimal.toString().length ) ).length - 1; i++ ){
                         _initValue += '0';
                     }
-                    _initValue = '.' + _initValue;
+                    _initValue = '0.' + _initValue;
                 }
                 let control: FormControl = new FormControl( _initValue, [ Validators.required ] );
                 this._currenciesFormGroup.addControl( _lRestaurant.currencyId, control );
                 this._restaurantCurrencies.push( _lRestaurant.currencyId );
 
                 if( _lCountry.itemsWithDifferentTax === true ){
-                    let control: FormControl = new FormControl( '', [ Validators.required ] );
+                    let control: FormControl = new FormControl( '0', [ Validators.required ] );
                     this._taxesFormGroup.addControl( _lRestaurant.currencyId, control );
                     this._restaurantTaxes.push( _lRestaurant.currencyId );
                 }

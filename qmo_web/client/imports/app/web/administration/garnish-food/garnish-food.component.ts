@@ -105,29 +105,28 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
             return;
         }
 
-        if( this._garnishFoodForm.valid ){
-            console.log('formulario valido');
-            let arrCur:any[] = Object.keys( this._garnishFoodForm.value.currencies );
-            let _lGarnishFoodRestaurantsToInsert: GarnishFoodRestaurant[] = [];
-            let _lGarnishFoodPricesToInsert: GarnishFoodPrice[] = [];
+        let arrCur:any[] = Object.keys( this._garnishFoodForm.value.currencies );
+        let _lGarnishFoodRestaurantsToInsert: GarnishFoodRestaurant[] = [];
+        let _lGarnishFoodPricesToInsert: GarnishFoodPrice[] = [];
 
-            arrCur.forEach( ( cur ) => {
-                let find: Restaurant[] = this._restaurants.filter( r => r.currencyId === cur );
-                for( let res of find ){
-                    if( this._garnishFoodForm.value.restaurants[ res.name ] ){
-                        let restau:Restaurant = Restaurants.findOne( { name: res.name } );
-                        let _lGarnishFoodRestaurant: GarnishFoodRestaurant = { restaurantId: '', price: 0 };
-                        
-                        _lGarnishFoodRestaurant.restaurantId = restau._id;
-                        _lGarnishFoodRestaurant.price = this._garnishFoodForm.value.currencies[ cur ];
+        arrCur.forEach( ( cur ) => {
+            let find: Restaurant[] = this._restaurants.filter( r => r.currencyId === cur );
+            for( let res of find ){
+                if( this._garnishFoodForm.value.restaurants[ res.name ] ){
+                    let restau:Restaurant = Restaurants.findOne( { name: res.name } );
+                    let _lGarnishFoodRestaurant: GarnishFoodRestaurant = { restaurantId: '', price: 0 };
+                    
+                    _lGarnishFoodRestaurant.restaurantId = restau._id;
+                    _lGarnishFoodRestaurant.price = this._garnishFoodForm.value.currencies[ cur ];
 
-                        if( this._garnishFoodForm.value.taxes[ cur ] !== undefined ){
-                            _lGarnishFoodRestaurant.garnishFoodTax = this._garnishFoodForm.value.taxes[ cur ];
-                        }
-
-                        _lGarnishFoodRestaurantsToInsert.push( _lGarnishFoodRestaurant );
+                    if( this._garnishFoodForm.value.taxes[ cur ] !== undefined ){
+                        _lGarnishFoodRestaurant.garnishFoodTax = this._garnishFoodForm.value.taxes[ cur ];
                     }
+
+                    _lGarnishFoodRestaurantsToInsert.push( _lGarnishFoodRestaurant );
                 }
+            }
+            if( cur !== null && this._garnishFoodForm.value.currencies[ cur ] !== null ){
                 let _lGarnishFoodPrice: GarnishFoodPrice = { currencyId: '', price: 0 };
                 _lGarnishFoodPrice.currencyId = cur;
                 _lGarnishFoodPrice.price = this._garnishFoodForm.value.currencies[ cur ];
@@ -135,20 +134,19 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
                     _lGarnishFoodPrice.garnishFoodTax = this._garnishFoodForm.value.taxes[ cur ];
                 }
                 _lGarnishFoodPricesToInsert.push( _lGarnishFoodPrice );
-            });
-            console.log('empieza a insertar');
+            }
+        });
 
-            GarnishFoodCol.insert({
-                creation_user: this._user,
-                creation_date: new Date(),
-                modification_user: '-',
-                modification_date: new Date(),
-                is_active: true,
-                name: this._garnishFoodForm.value.name,
-                restaurants: _lGarnishFoodRestaurantsToInsert,
-                prices: _lGarnishFoodPricesToInsert
-            });
-        }
+        GarnishFoodCol.insert({
+            creation_user: this._user,
+            creation_date: new Date(),
+            modification_user: '-',
+            modification_date: new Date(),
+            is_active: true,
+            name: this._garnishFoodForm.value.name,
+            restaurants: _lGarnishFoodRestaurantsToInsert,
+            prices: _lGarnishFoodPricesToInsert
+        });
         this.cancel();
     }
 
@@ -211,14 +209,14 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
                     for( let i = 0; i < ( _lCurrency.decimal ).toString().slice( ( _lCurrency.decimal.toString().indexOf( '.' ) ), ( _lCurrency.decimal.toString().length ) ).length - 1; i++ ){
                         _initValue += '0';
                     }
-                    _initValue = '.' + _initValue;
+                    _initValue = '0.' + _initValue;
                 }
                 let control: FormControl = new FormControl( _initValue, [ Validators.required ] );
                 this._currenciesFormGroup.addControl( _lRestaurant.currencyId, control );
                 this._restaurantCurrencies.push( _lRestaurant.currencyId );
 
                 if( _lCountry.itemsWithDifferentTax === true ){
-                    let control: FormControl = new FormControl( '', [ Validators.required ] );
+                    let control: FormControl = new FormControl( '0', [ Validators.required ] );
                     this._taxesFormGroup.addControl( _lRestaurant.currencyId, control );
                     this._restaurantTaxes.push( _lRestaurant.currencyId );
                 }
