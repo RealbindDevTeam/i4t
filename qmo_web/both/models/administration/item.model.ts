@@ -9,14 +9,11 @@ export interface Item extends CollectionObject {
     categoryId?: string;
     subcategoryId?: string;
     name: string;
-    description: string;
-    price: number;
-    taxPercentage?: number;
+    restaurants: ItemRestaurant[];
+    prices: ItemPrice[];
     observations: boolean;
-    garnishFoodIsAcceped: boolean;
     garnishFoodQuantity: number;   
     garnishFood: string[];
-    additionsIsAccepted: boolean;
     additions: string[];
     isAvailable: boolean;
 }
@@ -47,4 +44,22 @@ export interface ItemImage {
 export interface ItemImageThumb extends ItemImage {
     originalStore?: string;
     originalId?: string;
+}
+
+/**
+ * Item Restaurant model
+ */
+export interface ItemRestaurant {
+    restaurantId: string;
+    price: number;
+    itemTax?: number;
+}
+
+/**
+ * Item Price model
+ */
+export interface ItemPrice {
+    currencyId: string;
+    price: number;
+    itemTax?: number;
 }
