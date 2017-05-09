@@ -41,4 +41,8 @@
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.1" />
     <plugin name="phonegap-plugin-barcodescanner" spec="6.0.5" />
     <plugin name="cordova-sqlite-storage" spec="~2.0.2" />
+    <plugin name="cordova-plugin-facebook4" spec="~1.7.4">
+        <variable name="APP_ID" value="1743125776004465" />
+        <variable name="APP_NAME" value="QMO" />
+    </plugin>
 </widget>
