@@ -114,10 +114,8 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
             taxes: this._taxesFormGroup,
             observations: new FormControl( false ),
             image: new FormControl( '' ),
-            garnishFoodIsAcceped: new FormControl( false ),
             garnishFoodQuantity: new FormControl( '0' ),
             garnishFood: this._garnishFormGroup,
-            additionsIsAccepted: new FormControl( false ),
             additions: this._additionsFormGroup
         });
 
@@ -222,6 +220,38 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
         }
 
         if( this._itemForm.valid ){
+            let arrCur:any[] = Object.keys( this._itemForm.value.currencies );
+            let _lItemRestaurantsToInsert: ItemRestaurant[] = [];
+            let _lItemPricesToInsert: ItemPrice[] = [];
+
+            arrCur.forEach( ( cur ) => {
+                let find: Restaurant[] = this._restaurantList.filter( r => r.currencyId === cur );
+                for( let res of find ){
+                    if( this._itemForm.value.restaurants[ res.name ] ){
+                        let rest: Restaurant = Restaurants.findOne( { name: res.name } );
+                        let _lItemRestaurant: ItemRestaurant = { restaurantId: '', price: 0 };
+
+                        _lItemRestaurant.restaurantId = rest._id;
+                        _lItemRestaurant.price = this._itemForm.value.currencies[ cur ];
+
+                        if( this._itemForm.value.taxes[ cur ] !== undefined ){
+                            _lItemRestaurant.itemTax = this._itemForm.value.taxes[ cur ];
+                        }
+
+                        _lItemRestaurantsToInsert.push( _lItemRestaurant );
+                    }
+                }
+                if( cur !== null && this._itemForm.value.currencies[ cur ] !== null  ){
+                    let _lItemPrice: ItemPrice = { currencyId: '', price: 0 };
+                    _lItemPrice.currencyId = cur;
+                    _lItemPrice.price = this._itemForm.value.currencies[ cur ];
+                    if( this._itemForm.value.taxes[ cur ] !== undefined ){
+                        _lItemPrice.itemTax = this._itemForm.value.taxes[ cur ];
+                    }
+                    _lItemPricesToInsert.push( _lItemPrice );
+                }
+            });
+
             let arr:any[] = Object.keys( this._itemForm.value.garnishFood );
             let _lGarnishFoodToInsert:string[] = [];
 
@@ -252,18 +282,16 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
                 categoryId: this._itemForm.value.category,
                 subcategoryId: this._itemForm.value.subcategory,
                 name: this._itemForm.value.name,
-                restaurants: [],
-                prices: [],
+                restaurants: _lItemRestaurantsToInsert,
+                prices: _lItemPricesToInsert,
                 observations: this._itemForm.value.observations,
-                garnishFoodIsAcceped: this._itemForm.value.garnishFoodIsAcceped,
                 garnishFoodQuantity: this._itemForm.value.garnishFoodQuantity,
                 garnishFood: _lGarnishFoodToInsert,
-                additionsIsAccepted: this._itemForm.value.additionsIsAccepted,
                 additions: _lAdditionsToInsert,
                 isAvailable: true
             });  
 
-            /*if( this._createImage ){
+            if( this._createImage ){
                 uploadItemImage( this._itemImageToInsert, 
                                  Meteor.userId(),
                                  _lNewItem ).then( ( result ) => {
@@ -271,7 +299,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
                 }).catch( ( error ) => {
                     alert( 'Upload image error. Only accept .png, .jpg, .jpeg files.' );
                 });   
-            }*/
+            }
         }
         this.cancel();
     }

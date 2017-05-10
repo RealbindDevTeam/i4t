@@ -51,20 +51,20 @@
                                 </div>
                             </div>
                             <div class="restaurants">
-                                <p *ngIf="!_showRestaurants">No se encuentran restaurantes creados</p>
+                                <p *ngIf="!_showRestaurants">{{'ITEMS.NO_RESTAURANTS' | translate}}</p>
                                 <div *ngIf="_showRestaurants" formGroupName="restaurants">
                                     <md-checkbox *ngFor="let restaurant of _restaurantList" [formControlName]="restaurant.name" [class.invalid]="!_itemForm.controls.restaurants.valid" class="checkbox" (change)="onCheckRestaurant(restaurant.name, $event)">{{restaurant.name}}</md-checkbox>
                                 </div>
                             </div>
                             <div>
-                                <p *ngIf="!_showCurrencies">No se han seleccionado restaurantes</p>
-                                <p *ngIf="_showCurrencies" class="label">Por favor ingrese el precio del item. </p>
-                                <p *ngIf="_showTaxes" class="label">Ingrese los impuestos en caso de que aplique.</p>
+                                <p *ngIf="!_showCurrencies">{{'ITEMS.NO_RESTAURANTS_SELECTED' | translate}}</p>
+                                <p *ngIf="_showCurrencies" class="label">{{'ITEMS.ENTER_PRICE' | translate}}</p>
+                                <p *ngIf="_showTaxes" class="label">{{'ITEMS.ENTER_TAX' | translate}}</p>
                                 <div *ngFor="let currency of _currencies | async">
                                     <div *ngIf="_showCurrencies" formGroupName="currencies" class="currencies">
                                         <div *ngFor="let cur of _restaurantCurrencies">
                                             <md-input-container *ngIf="currency._id === cur" class="currency">
-                                                <input mdInput required [formControlName]="cur" [class.invalid]="!_itemForm.controls.currencies.valid" type="number" placeholder="Precio del Item" min="0" [step]="currency.decimal">
+                                                <input mdInput required [formControlName]="cur" [class.invalid]="!_itemForm.controls.currencies.valid" type="number" placeholder="{{'ITEMS.ITEM_PRICE' | translate}}" min="0" [step]="currency.decimal">
                                                 <span mdSuffix>{{currency.code}} - {{currency.name | translate}} </span>
                                             </md-input-container>
                                         </div>
@@ -72,7 +72,7 @@
                                     <div *ngIf="_showTaxes" formGroupName="taxes" class="taxes">
                                         <div *ngFor="let tax of _restaurantTaxes">
                                             <md-input-container *ngIf="currency._id === tax" class="tax">
-                                                <input mdInput required [formControlName]="tax" [class.invalid]="!_itemForm.controls.taxes.valid" type="number" placeholder="Impuestos" min="0" max="100">
+                                                <input mdInput required [formControlName]="tax" [class.invalid]="!_itemForm.controls.taxes.valid" type="number" placeholder="{{'ITEMS.TAXES' | translate}}" min="0" max="100">
                                                 <span mdSuffix>% {{currency.code}} - {{currency.name | translate}} </span>
                                             </md-input-container>
                                         </div>
@@ -86,22 +86,24 @@
                         </md-card-actions>
                      </md-card>
                  </md-tab>
-                 <md-tab [disabled]="!canMove(2)" label="Adiciones y Guarniciones">
+                 <md-tab [disabled]="!canMove(2)" label="{{'ITEMS.ADDITION_GARNISHFOOD' | translate}}">
                     <md-card>
-                        <md-card-title>Adiciones y Guarniciones para el Item</md-card-title>
-                        <md-card-subtitle>Por favor selecciona las guarniciones y las adiciones que estaran disponibles para el item (En caso de que aplique)</md-card-subtitle>
+                        <md-card-title>{{'ITEMS.ADDITION_GARNISHFOOD_TITLE' | translate}}</md-card-title>
+                        <md-card-subtitle>{{'ITEMS.ADDITION_GARNISHFOOD_SUBTITLE' | translate}}</md-card-subtitle>
                         <md-card-content>
+                            <p *ngIf="!_showGarnishFood">{{'ITEMS.NOT_GARNISHFOOD' | translate}}</p>
                             <div *ngIf="_showGarnishFood">
-                                <p>Seleccione las Guarniciones y la cantidad de Guarniciones permitidas para el Item:</p>
+                                <p>{{'ITEMS.GARNISHFOOD_TEXT' | translate}}</p>
+                                <md-input-container style="width: 25%;margin-top: 2%;">
+                                    <input mdInput required type="number" formControlName="garnishFoodQuantity" placeholder="{{'ITEMS.GARNISHFOOD_ALLOWED' | translate}}" min="0" #inputGarnishQuantity>
+                                </md-input-container>
                                 <div formGroupName="garnishFood">
                                     <md-checkbox *ngFor="let garnish of _garnishFood" [formControlName]="garnish.name" [class.invalid]="!_itemForm.controls.garnishFood.valid" class="checkbox">{{garnish.name}}</md-checkbox>
                                 </div>
-                                <md-input-container style="width: 25%;margin-top: 2%;">
-                                    <input mdInput required type="number" formControlName="garnishFoodQuantity" placeholder="Guarniciones Permitidas" #inputGarnishQuantity>
-                                </md-input-container>
                             </div>
+                            <p *ngIf="!_showAdditions">{{'ITEMS.NOT_ADDITIONS' | translate}}</p>
                             <div *ngIf="_showAdditions">
-                                <p>Seleccione las Adiciones para el Item:</p>
+                                <p>{{'ITEMS.ADDITIONS_TEXT' | translate}}:</p>
                                 <div formGroupName="additions">
                                     <md-checkbox *ngFor="let addition of _additions" [formControlName]="addition.name" [class.invalid]="!_itemForm.controls.additions.valid" class="checkbox">{{addition.name}}</md-checkbox>
                                 </div>
