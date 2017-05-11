@@ -463,14 +463,14 @@
         "GARNISHFOOD_ALLOWED": "Garnish Food Permitted",
         "SECTIONS_CATEGORIES_TEXT_EDIT": "Edit the section, category and subcategory of the item",
         "GENERAL_TEXT_EDIT": "Edit the general information of the item",
-        "IMAGE_TEXT_EDIT": "Edit the image of the item so that it is seen by your customers",
         "UPDATE_IMAGE": "Update item image",
         "GARNISHFOOD_TEXT_EDIT": "Edit the garments that will be available for the item (If applicable)",
         "OBSERVATIONS": "Enable observations for the item",
         "ITEM_GARNISHFOOD_QUANTITY": "Number of garnish food allowed for item",
         "ADDITIONS_TEXT": "Please select the additions that will be available for the item (If applicable)",
         "NOT_ADDITIONS": "No additions created for the establishment",
-        "MSG_INITIAL" : "Implement an orderly and easy way to view your menu"
+        "MSG_INITIAL" : "Implement an orderly and easy way to view your menu",
+        "ADD_IMAGE": "Add item image"
     },
     "ROLE" : {
         "ADMINISTRATOR" : "Administrator",

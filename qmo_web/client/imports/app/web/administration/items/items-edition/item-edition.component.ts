@@ -48,7 +48,6 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
     private _sections: Observable<Section[]>;
     private _categories: Observable<Category[]>;
     private _subcategories: Observable<Subcategory[]>;
-    private _restaurants: Observable<Restaurant[]>;
     private _currencies: Observable<Currency[]>;
 
     private _itemsSub: Subscription;
@@ -66,10 +65,10 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
     public _selectedIndex: number = 0;
     private _showGarnishFood: boolean = true;
     private _showAddition: boolean = true;
-    //private _checkedGarnishFood: boolean = false;
     private _garnishFoodQuantity: number = 0;
     private _showRestaurants = false;
-    //private _checkedAdditions: boolean = false;
+    private _showCurrencies: boolean = false;
+    private _showTaxes: boolean = false;
 
     private _itemSection: string;
     private _itemCategory: string;
@@ -80,21 +79,22 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
 
     private _garnishFoodList: GarnishFood[];
     private _itemGarnishFood: string[];
-    private _garnishFoodCreation: GarnishFood[];
     private _restaurantsGarnishFood: string[];
     private _edition_garnishFood: string[];
-    private _additionCreation: Addition[];
     private _itemAdditions: string[];
     private _additionList: Addition[];
     private _edition_addition: string[];
     private _restaurantList:Restaurant[] = [];
     private _itemRestaurants: ItemRestaurant[] = [];
+    private _restaurantCurrencies: string [] = [];
+    private _restaurantTaxes: string [] = [];
 
     private _editImage: boolean = false;
     private _editFilesToUpload: Array<File>;
     private _editItemImageToInsert: File;
     private _nameImageFileEdit: string;
     private _itemEditImage: string;
+    private _restaurantsSelectedCount: number = 0;
 
     /**
      * ItemEditionComponent constructor
@@ -108,12 +108,10 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
         this._itemGarnishFood = [];
-        this._garnishFoodCreation = [];
         this._garnishFoodList = [];
         this._editFilesToUpload = [];
         this._restaurantsGarnishFood = []; 
         this._edition_garnishFood = [];
-        this._additionCreation = [];
         this._itemAdditions = [];
         this._additionList = [];
         this._edition_addition = [];
@@ -135,14 +133,10 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
             editRestaurants: this._restaurantsFormGroup,
             editCurrencies: this._currenciesFormGroup,
             editTaxes: this._taxesFormGroup,
-            //editPrice: [ this._itemToEdit.price ],
-            //editTaxPercentage: [ this._itemToEdit.taxPercentage ],
             editObservations: [ this._itemToEdit.observations ],
             editImage: [ '' ],
-            //editGarnishFoodIsAcceped: [ this._itemToEdit.garnishFoodIsAcceped ],
             editGarnishFoodQuantity: [ this._itemToEdit.garnishFoodQuantity ],
             editGarnishFood: this._garnishFormGroup,
-            //editAdditionsIsAccepted: [ this._itemToEdit.additionsIsAccepted ],
             editAdditions: this._additionsFormGroup,
             editIsAvailable: [ this._itemToEdit.isAvailable ]
         });
@@ -153,15 +147,39 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         this._selectedCategory = this._itemToEdit.categoryId;
         this._itemSubcategory = this._itemToEdit.subcategoryId;
         this._selectedSubcategory = this._itemToEdit.subcategoryId;
+
         this._itemGarnishFood = this._itemToEdit.garnishFood;
         this._itemAdditions = this._itemToEdit.additions;
         this._garnishFoodQuantity = this._itemToEdit.garnishFoodQuantity;
-        //this._checkedGarnishFood = this._itemToEdit.garnishFoodIsAcceped;
-        //this._checkedAdditions = this._itemToEdit.additionsIsAccepted;
+        this._itemRestaurants = this._itemToEdit.restaurants;
+
+        this._restaurantsSelectedCount = this._itemToEdit.restaurants.length;
+        if( this._itemToEdit.restaurants.length > 0 ){ this._showRestaurants = true }
+
+        if( this._itemToEdit.prices.length > 0 ){
+            this._showCurrencies = true;
+            this._itemToEdit.prices.forEach( (p) => {
+                let control: FormControl = new FormControl( p.price, [ Validators.required ] );
+                this._currenciesFormGroup.addControl( p.currencyId, control );
+                this._restaurantCurrencies.push( p.currencyId );
+
+                if( p.itemTax !== undefined ){
+                    this._showTaxes = true;
+                    let controlTax: FormControl = new FormControl( p.itemTax, [ Validators.required ] );
+                    this._taxesFormGroup.addControl( p.currencyId, controlTax );
+                    this._restaurantTaxes.push( p.currencyId );
+                }
+            });
+        }
 
         this._itemsSub = MeteorObservable.subscribe( 'items', this._user ).subscribe();
         this._itemImagesSub = MeteorObservable.subscribe( 'itemImages', this._user ).subscribe();
-        this._itemImageThumbsSub = MeteorObservable.subscribe( 'itemImageThumbs', this._user ).subscribe();
+        this._itemImageThumbsSub = MeteorObservable.subscribe( 'itemImageThumbs', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                let _lItemImage:ItemImageThumb = ItemImagesThumbs.findOne( { itemId: this._itemToEdit._id } );
+                this._itemEditImage = _lItemImage.url;
+            });
+        });
         this._sectionsSub = MeteorObservable.subscribe( 'sections', this._user ).subscribe( () => {
             this._ngZone.run( () => {
                 this._sections = Sections.find( { is_active: true } ).zone();
@@ -179,7 +197,6 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         });
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
             this._ngZone.run( () => {
-                this._restaurants = Restaurants.find( { } ).zone();
                 Restaurants.collection.find( { } ).fetch().forEach( ( rest ) => {
                     _restaurantsId.push( rest._id );
                     let restaurant:Restaurant = rest;    
@@ -202,8 +219,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         });
         this._garnishFoodSub = MeteorObservable.subscribe( 'garnishFood', this._user ).subscribe( () => {
             this._ngZone.run( () => {
-                this._garnishFoodCreation = GarnishFoodCol.collection.find().fetch();
-                for( let gar of this._garnishFoodCreation ){
+                GarnishFoodCol.collection.find().fetch().forEach( ( gar ) => {
                     let garnishF:GarnishFood = gar;
                     let find = this._itemGarnishFood.filter( g => g == garnishF._id );
 
@@ -216,18 +232,14 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                         this._garnishFormGroup.addControl( garnishF.name, control );
                         this._garnishFoodList.push( garnishF );
                     }
-                }
+                });
 
-                if( this._garnishFoodList.length === 0 ){
-                    this._showGarnishFood = false;
-                }
+                if( this._garnishFoodList.length === 0 ){ this._showGarnishFood = false; }
             });
         });
-
         this._additionSub = MeteorObservable.subscribe( 'additions', this._user ).subscribe( () => {
             this._ngZone.run( () => {
-                this._additionCreation = Additions.collection.find().fetch();
-                for( let add of this._additionCreation ){
+                Additions.collection.find().fetch().forEach( ( add ) => {
                     let addition:Addition = add;
                     let findAdd = this._itemAdditions.filter( d => d == addition._id );
 
@@ -240,18 +252,11 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                         this._additionsFormGroup.addControl( addition.name, control );
                         this._additionList.push( addition );
                     }
-                }
-                if( this._additionList.length === 0 ){
-                    this._showAddition = false;
-                }
+                });
+
+                if( this._additionList.length === 0 ){ this._showAddition = false; }
             });
         });
-
-        let _lSection:Section = Sections.collection.findOne( { _id: this._itemSection } );
-        this._restaurants = Restaurants.find( { _id: { $in: _lSection.restaurants } } ).zone();
-
-        let _lItemImage:ItemImage = ItemImages.collection.findOne( { itemId: this._itemToEdit._id } );
-        this._itemEditImage = _lItemImage.url;
     }
 
     /**
@@ -284,8 +289,8 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                 return false;
             }
         case 2:
-            if( this._itemEditionForm.controls['editName'].valid
-                && this._itemEditionForm.controls['editDescription'].valid ){
+            if( this._itemEditionForm.controls['editName'].valid && this._itemEditionForm.controls['editDescription'].valid 
+                && this._restaurantsSelectedCount > 0 ){
                     return true
                 } else {
                     return false;
@@ -375,28 +380,6 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
             });
             this._additionList = Additions.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).fetch();
         }
-
-        //this._restaurants = Restaurants.find( { _id: { $in: _lSection.restaurants } } ).zone();
-        /*Restaurants.collection.find( { _id: { $in: _lSection.restaurants } } ).fetch().forEach( (r) => {
-            this._restaurantsGarnishFood.push( r._id );
-        } );*/
-        /*this._garnishFoodList = GarnishFoodCol.collection.find( { restaurants: { $in: this._restaurantsGarnishFood } } ).fetch();
-        for( let gar of this._garnishFoodList ){
-            let control: FormControl = new FormControl( false );
-            this._garnishFormGroup.addControl( gar.name, control );
-        }
-        if( this._garnishFoodList.length === 0 ){
-            this._showGarnishFood = false;
-        }
-
-        this._additionList = Additions.collection.find( { restaurants: { $in: this._restaurantsGarnishFood } } ).fetch();
-        for( let add of this._additionList ){
-            let control: FormControl = new FormControl( false );
-            this._additionsFormGroup.addControl( add.name, control );
-        }
-        if( this._additionList.length === 0 ){
-            this._showAddition = false;
-        }*/
     }
 
     /**
@@ -438,6 +421,38 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         }
 
         if( this._itemEditionForm.valid ){
+            let arrCur:any[] = Object.keys( this._itemEditionForm.value.editCurrencies );
+            let _lItemRestaurantsToInsert: ItemRestaurant[] = [];
+            let _lItemPricesToInsert: ItemPrice[] = [];
+
+            arrCur.forEach( ( cur ) => {
+                let find: Restaurant[] = this._restaurantList.filter( r => r.currencyId === cur );
+                for( let res of find ){
+                    if( this._itemEditionForm.value.restaurants[ res.name ] ){
+                        let rest: Restaurant = Restaurants.findOne( { name: res.name } );
+                        let _lItemRestaurant: ItemRestaurant = { restaurantId: '', price: 0 };
+
+                        _lItemRestaurant.restaurantId = rest._id;
+                        _lItemRestaurant.price = this._itemEditionForm.value.editCurrencies[ cur ];
+
+                        if( this._itemEditionForm.value.editTaxes[ cur ] !== undefined ){
+                            _lItemRestaurant.itemTax = this._itemEditionForm.value.editTaxes[ cur ];
+                        }
+
+                        _lItemRestaurantsToInsert.push( _lItemRestaurant );
+                    }
+                }
+                if( cur !== null && this._itemEditionForm.value.editCurrencies[ cur ] !== null  ){
+                    let _lItemPrice: ItemPrice = { currencyId: '', price: 0 };
+                    _lItemPrice.currencyId = cur;
+                    _lItemPrice.price = this._itemEditionForm.value.editCurrencies[ cur ];
+                    if( this._itemEditionForm.value.editTaxes[ cur ] !== undefined ){
+                        _lItemPrice.itemTax = this._itemEditionForm.value.editTaxes[ cur ];
+                    }
+                    _lItemPricesToInsert.push( _lItemPrice );
+                }
+            });
+            
             let arr:any[] = Object.keys( this._itemEditionForm.value.editGarnishFood );
 
             arr.forEach( ( gar ) => {
@@ -457,7 +472,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
 
             Items.update( this._itemEditionForm.value.editId, {
                 $set:{
-                    modification_user: Meteor.userId(),
+                    modification_user: this._user,
                     modification_date: new Date(),
                     is_active: this._itemEditionForm.value.editIsActive,
                     sectionId: this._itemEditionForm.value.editSectionId,
@@ -465,13 +480,11 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                     subcategoryId: this._itemEditionForm.value.editSubcategoryId,
                     name: this._itemEditionForm.value.editName,
                     description: this._itemEditionForm.value.editDescription,
-                    //price: this._itemEditionForm.value.editPrice,
-                    //taxPercentage: this._itemEditionForm.value.editTaxPercentage,
+                    restaurants: _lItemRestaurantsToInsert,
+                    prices: _lItemPricesToInsert,
                     observations: this._itemEditionForm.value.editObservations,
-                    //garnishFoodIsAcceped: this._checkedGarnishFood,
                     garnishFoodQuantity: this._itemEditionForm.value.editGarnishFoodQuantity,
                     garnishFood: this._edition_garnishFood,
-                    //additionsIsAccepted: this._checkedAdditions,
                     additions: this._edition_addition,
                     isAvailable: this._itemEditionForm.value.editIsAvailable
                 }
@@ -497,32 +510,58 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Function to control garnish food elements
-     
-    changeGarnishFoodCheck(){
-        if( this._checkedGarnishFood === false ){
-            this._checkedGarnishFood = true;
-            this._garnishFoodQuantity = 1;
-            this._itemEditionForm.controls['editGarnishFoodQuantity'].enable();
-        } else {
-            this._checkedGarnishFood = false;
-            this._itemEditionForm.controls['editGarnishFoodQuantity'].setValue( '0' );
-            this._garnishFormGroup.reset();
-        }
-    }*/
+     * This function allow create item price with diferent currencies
+     * @param {string} _pRestaurantName 
+     * @param {any} _pEvent 
+     */
+    onCheckRestaurant( _pRestaurantName: string, _pEvent:any ):void{
+        let _lRestaurant: Restaurant = this._restaurantList.filter( r => r.name === _pRestaurantName )[0];
+        if( _pEvent.checked ){
+            this._restaurantsSelectedCount++;
+            let _lCountry: Country = Countries.findOne( { _id: _lRestaurant.countryId } );
+            if( this._restaurantCurrencies.indexOf( _lRestaurant.currencyId ) <= -1 ){
+                let _lCurrency: Currency = Currencies.findOne( { _id: _lRestaurant.currencyId } );
+                let _initValue: string = '';
+                if( _lCurrency.decimal !== 0 ){
+                    for( let i = 0; i < ( _lCurrency.decimal ).toString().slice( ( _lCurrency.decimal.toString().indexOf( '.' ) ), ( _lCurrency.decimal.toString().length ) ).length - 1; i++ ){
+                        _initValue += '0';
+                    }
+                    _initValue = '0.' + _initValue;
+                }
+                let control: FormControl = new FormControl( _initValue, [ Validators.required ] );
+                this._currenciesFormGroup.addControl( _lRestaurant.currencyId, control );
+                this._restaurantCurrencies.push( _lRestaurant.currencyId );
 
-    /**
-     * Function to control addition elements
-     
-    changeAdditionCheck(){
-        if( this._checkedAdditions === false ){
-            this._checkedAdditions = true;
-            this._itemEditionForm.controls['editAdditions'].enable();
+                if( _lCountry.itemsWithDifferentTax === true ){
+                    let control: FormControl = new FormControl( '0', [ Validators.required ] );
+                    this._taxesFormGroup.addControl( _lRestaurant.currencyId, control );
+                    this._restaurantTaxes.push( _lRestaurant.currencyId );
+                }
+            }
         } else {
-            this._checkedAdditions = false;
-            this._additionsFormGroup.reset();
+            this._restaurantsSelectedCount--;
+            let _aux:number = 0;
+            let _auxTax:number = 0;
+            let arr:any[] = Object.keys( this._itemEditionForm.value.editRestaurants );
+             arr.forEach( ( rest ) => {
+                if( this._itemEditionForm.value.editRestaurants[ rest ] ){
+                    let _lRes: Restaurant = this._restaurantList.filter( r => r.name === rest )[0];
+                    if( _lRestaurant.currencyId === _lRes.currencyId ){
+                        _aux ++;             
+                    }
+                    let _lCountry: Country = Countries.findOne( { _id: _lRes.countryId } );
+                    if( _lCountry.itemsWithDifferentTax === true ){
+                        _auxTax ++;
+                    }
+                }            
+            });
+
+            if( _aux === 0 ){ this._restaurantCurrencies.splice( this._restaurantCurrencies.indexOf( _lRestaurant.currencyId ), 1 ); }
+            if( _auxTax === 0 ){ this._restaurantTaxes.splice( this._restaurantTaxes.indexOf( _lRestaurant.currencyId ), 1 ); }
         }
-    }*/
+        this._restaurantCurrencies.length > 0 ? this._showCurrencies = true : this._showCurrencies = false;
+        this._restaurantTaxes.length > 0 ? this._showTaxes = true : this._showTaxes = false;
+    }
 
     /**
      * Implements ngOnDestroy function

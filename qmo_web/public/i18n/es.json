@@ -463,14 +463,14 @@
         "GARNISHFOOD_ALLOWED": "Guarniciones Permitidas",
         "SECTIONS_CATEGORIES_TEXT_EDIT": "Edita la seccion, categoria y subcategoria del item",
         "GENERAL_TEXT_EDIT": "Edita la informacion general del item",
-        "IMAGE_TEXT_EDIT": "Edita la imagen del item para que sea vista por tus clientes",
         "UPDATE_IMAGE": "Actualizar imagen del item",
         "GARNISHFOOD_TEXT_EDIT": "Edita las guarniciones que estaran disponibles para el item (En caso de que aplique)",
         "OBSERVATIONS": "Habilitar observaciones para el ítem",
         "ITEM_GARNISHFOOD_QUANTITY": "Cantidad de Guarniciones Permitidas para el item",
         "ADDITIONS_TEXT": "Ingrese las Adiciones permitidas para el Item",
         "NOT_ADDITIONS": "No se encuentran Adiciones creadas para el Restaurante",
-        "MSG_INITIAL" : "Implementa una manera ordenada y facil de visualizar tu menú"
+        "MSG_INITIAL" : "Implementa una manera ordenada y facil de visualizar tu menú",
+        "ADD_IMAGE": "Agrega la imagen del Item"
     },
     "ROLE" : {
         "ADMINISTRATOR" : "Administrador",
