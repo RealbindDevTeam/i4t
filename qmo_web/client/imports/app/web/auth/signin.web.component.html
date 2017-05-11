@@ -11,11 +11,9 @@
             <button md-raised-button class="btn-twitter" type="submit" (click)="loginWithTwiteer()">
                 <i class="fa fa-twitter" aria-hidden="true"></i>Twitter
             </button>
-<!--
             <button md-raised-button class="btn-google" type="submit" (click)="loginWithGoogle()">
                 <i class="fa fa-google" aria-hidden="true"></i>Google
             </button>
--->
             <hr/>
             <form [formGroup]="signinForm" (ngSubmit)="login()" novalidate>
                 <div>
