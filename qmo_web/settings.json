@@ -2,5 +2,24 @@
   "oneSignal": {
     "apiKey": "ZWE4MTM3ZjMtOTk5Ni00ZmExLWFhZWEtMjAyNThjMjk1YmUw",    
     "appId": "d0d0fcd1-ed5a-4f7c-84e2-271fe9a553aa"
+  },
+  "facebook": {
+    "appId": "1743125776004465",
+    "secret": "be71d1908bb31c04e3435b047e011b42"
+  },
+  "public": {
+    "facebook": {
+      "permissions": [
+        "basic_info", 
+        "user_interests", 
+        "user_activities", 
+        "read_friendlists"
+      ],
+      "profileFields": [
+        "name",
+        "gender",
+        "location"
+      ]   
+    }
   }
 }

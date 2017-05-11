@@ -124,8 +124,7 @@ export class SigninComponent implements OnInit {
                     current_table: ''
                 });
             }
-            //this.router.navigate(['app/orders']);
-            //this.roamWeb('app/orders');
+            this.navCtrl.push(TabsPage);
         }, (error) => {
             this.error;
         });
