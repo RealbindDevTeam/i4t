@@ -9,6 +9,7 @@ export interface Item extends CollectionObject {
     categoryId?: string;
     subcategoryId?: string;
     name: string;
+    description: string;
     restaurants: ItemRestaurant[];
     prices: ItemPrice[];
     observations: boolean;

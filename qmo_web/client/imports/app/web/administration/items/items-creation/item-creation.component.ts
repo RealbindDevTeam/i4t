@@ -58,8 +58,6 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
     private _currenciesSub: Subscription;
     private _countriesSub: Subscription;
 
-    private _restaurantsId: string[] = [];
-    private _restaurantSectionsIds: string[]= [];
     private _restaurantList:Restaurant[] = [];
     private _restaurantCurrencies: string [] = [];
     private _restaurantTaxes: string [] = [];
@@ -103,6 +101,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
      * Implements ngOnInit function
      */
     ngOnInit(){
+        let _restaurantsId: string[] = [];        
         this._itemForm = new FormGroup({
             section: new FormControl( '', [ Validators.required ] ),
             category: new FormControl( '' ),
@@ -129,10 +128,10 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
             this._ngZone.run( () => {
                 Restaurants.collection.find({}).fetch().forEach( ( res ) => {
-                    this._restaurantsId.push( res._id );
+                    _restaurantsId.push( res._id );
                 });
-                this._countriesSub = MeteorObservable.subscribe( 'getCountriesByRestaurantsId', this._restaurantsId ).subscribe();
-                this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', this._restaurantsId ).subscribe();
+                this._countriesSub = MeteorObservable.subscribe( 'getCountriesByRestaurantsId', _restaurantsId ).subscribe();
+                this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', _restaurantsId ).subscribe();
                 this._currencies = Currencies.find( { } ).zone();
             });
         });
@@ -282,6 +281,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
                 categoryId: this._itemForm.value.category,
                 subcategoryId: this._itemForm.value.subcategory,
                 name: this._itemForm.value.name,
+                description: this._itemForm.value.description,
                 restaurants: _lItemRestaurantsToInsert,
                 prices: _lItemPricesToInsert,
                 observations: this._itemForm.value.observations,
@@ -309,6 +309,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
      * @param {string} _section
      */
     changeSection( _section ):void{
+        let _restaurantSectionsIds: string[]= [];
         this._selectedSectionValue = _section;
         this._itemForm.controls['section'].setValue( _section );
         
@@ -322,27 +323,27 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
             Restaurants.collection.find( { _id: { $in: _lSection.restaurants } } ).fetch().forEach( (r) => {
                 let control: FormControl = new FormControl( false );
                 this._restaurantsFormGroup.addControl( r.name, control );
-                this._restaurantSectionsIds.push( r._id );
+                _restaurantSectionsIds.push( r._id );
                 this._restaurantList.push( r );
             });
         }
 
-        if( GarnishFoodCol.find( { 'restaurants.restaurantId': { $in: this._restaurantSectionsIds } } ).zone().isEmpty ){
+        if( GarnishFoodCol.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).zone().isEmpty ){
             this._showGarnishFood = true;
-            GarnishFoodCol.collection.find( { 'restaurants.restaurantId': { $in: this._restaurantSectionsIds } } ).fetch().forEach( ( gar ) => {
+            GarnishFoodCol.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).fetch().forEach( ( gar ) => {
                 let control: FormControl = new FormControl( false );
                 this._garnishFormGroup.addControl( gar.name, control );
             });
-            this._garnishFood = GarnishFoodCol.collection.find( { 'restaurants.restaurantId': { $in: this._restaurantSectionsIds } } ).fetch();
+            this._garnishFood = GarnishFoodCol.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).fetch();
         }
 
-        if( Additions.find( { 'restaurants.restaurantId': { $in: this._restaurantSectionsIds } } ).zone().isEmpty ){
+        if( Additions.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).zone().isEmpty ){
             this._showAdditions = true;
-            Additions.collection.find( { 'restaurants.restaurantId': { $in: this._restaurantSectionsIds } } ).fetch().forEach( ( ad ) => {
+            Additions.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).fetch().forEach( ( ad ) => {
                 let control: FormControl = new FormControl( false );
                 this._additionsFormGroup.addControl( ad.name, control );
             });
-            this._additions = Additions.collection.find( { 'restaurants.restaurantId': { $in: this._restaurantSectionsIds } } ).fetch();
+            this._additions = Additions.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).fetch();
         }
     }
 
@@ -409,9 +410,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
         this._itemForm.controls['category'].setValue( _category );
         this._subcategories = Subcategories.find( { category: _category, is_active: true } ).zone();
 
-        if( this._subcategories.isEmpty ){
-            this._selectedSubcategoryValue = "";
-        }
+        if( this._subcategories.isEmpty ){ this._selectedSubcategoryValue = "";}
     }
 
     /**
