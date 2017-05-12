@@ -428,7 +428,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
             arrCur.forEach( ( cur ) => {
                 let find: Restaurant[] = this._restaurantList.filter( r => r.currencyId === cur );
                 for( let res of find ){
-                    if( this._itemEditionForm.value.restaurants[ res.name ] ){
+                    if( this._itemEditionForm.value.editRestaurants[ res.name ] ){
                         let rest: Restaurant = Restaurants.findOne( { name: res.name } );
                         let _lItemRestaurant: ItemRestaurant = { restaurantId: '', price: 0 };
 
