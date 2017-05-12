@@ -470,7 +470,9 @@
         "ADDITIONS_TEXT": "Ingrese las Adiciones permitidas para el Item",
         "NOT_ADDITIONS": "No se encuentran Adiciones creadas para el Restaurante",
         "MSG_INITIAL" : "Implementa una manera ordenada y facil de visualizar tu menú",
-        "ADD_IMAGE": "Agrega la imagen del Item"
+        "ADD_IMAGE": "Agrega la imagen del Item",
+        "ACTIVATE": "ACTIVAR",
+        "INACTIVATE": "INACTIVAR"
     },
     "ROLE" : {
         "ADMINISTRATOR" : "Administrador",

@@ -6,7 +6,7 @@
 
 .btn-position-create{
     position: absolute;
-    top: -60px;
+    top: -45px;
     right: 10px;
 }
 
@@ -26,6 +26,34 @@
         display: inline-block; 
         margin-right: 20px; 
         vertical-align: top;
+
+        .card-item-price{
+            margin-top: 2%;
+            font-size: x-large;
+            color: green;
+            margin-bottom: -3%;
+        }
+
+        .card-item-tax{
+            margin-top: 4%;
+            font-size: initial;
+            color: goldenrod;
+            margin-bottom: -3%;
+        }
+
+        .card-actions{
+            margin-top: -2%;
+
+            .inactivate{
+                background-color: red;
+                color: white;
+            }
+
+            .activate{
+                background-color: green;
+                color: white;
+            }
+        }
     }
 
     .crop {

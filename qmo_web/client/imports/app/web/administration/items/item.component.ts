@@ -6,15 +6,11 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
-import { Item, ItemImage } from '../../../../../../both/models/administration/item.model';
+import { Item, ItemImage, ItemPrice } from '../../../../../../both/models/administration/item.model';
 import { Items, ItemImages } from '../../../../../../both/collections/administration/item.collection';
 import { ItemEditionComponent } from './items-edition/item-edition.component';
-import { Sections } from '../../../../../../both/collections/administration/section.collection';
-import { Section } from '../../../../../../both/models/administration/section.model';
-import { Category } from '../../../../../../both/models/administration/category.model';
-import { Categories } from '../../../../../../both/collections/administration/category.collection';
-import { Subcategory } from '../../../../../../both/models/administration/subcategory.model';
-import { Subcategories } from '../../../../../../both/collections/administration/subcategory.collection';
+import { Currency } from '../../../../../../both/models/general/currency.model';
+import { Currencies } from '../../../../../../both/collections/general/currency.collection';
 
 import template from './item.component.html';
 import style from './item.component.scss';
@@ -28,15 +24,10 @@ export class ItemComponent implements OnInit, OnDestroy {
 
     private _itemsSub: Subscription;
     private _itemImagesSub: Subscription;
-    private _sectionsSub: Subscription;
-    private _categoriesSub: Subscription;
-    private _subcategorySub: Subscription;
+    private _currenciesSub: Subscription;
 
     private _items: Observable<Item[]>;
     private _itemImages: Observable<ItemImage[]>;
-    private _sections: Observable<Section[]>;
-    private _categories: Observable<Category[]>;
-    private _subcategories: Observable<Subcategory[]>;
 
     public _dialogRef: MdDialogRef<any>;
 
@@ -61,13 +52,8 @@ export class ItemComponent implements OnInit, OnDestroy {
         this._itemsSub = MeteorObservable.subscribe( 'items', Meteor.userId() ).subscribe();
         this._itemImages = ItemImages.find( { } ).zone();
         this._itemImagesSub = MeteorObservable.subscribe( 'itemImages', Meteor.userId() ).subscribe();
-        this._sections = Sections.find( { } ).zone();
-        this._sectionsSub = MeteorObservable.subscribe( 'sections', Meteor.userId() ).subscribe(); 
-        this._categories = Categories.find( { } ).zone();
-        this._categoriesSub = MeteorObservable.subscribe( 'categories', Meteor.userId() ).subscribe();
-        this._subcategories = Subcategories.find( { } ).zone();
-        this._subcategorySub = MeteorObservable.subscribe( 'subcategories', Meteor.userId() ).subscribe();
-    }
+        this._currenciesSub = MeteorObservable.subscribe( 'currencies' ).subscribe();
+   }
 
     /**
      * This function open item creation wizard
@@ -106,13 +92,45 @@ export class ItemComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Function to show Item Prices
+     * @param {ItemPrice} _pItemPrices
+     */
+    showItemPrices( _pItemPrices: ItemPrice[] ):string{
+        let _lPrices: string = '';
+        _pItemPrices.forEach( ( ip ) => {
+            let _lCurrency: Currency = Currencies.findOne( { _id: ip.currencyId } );
+            if( _lCurrency ){
+                let price: string = ip.price + ' ' + _lCurrency.code + ' / '
+                _lPrices += price;
+            }
+        });
+        return _lPrices;
+    }
+
+    /**
+     * Function to show Item Taxes
+     * @param {ItemPrice[]} _pItemPrices
+     */
+    showItemTaxes( _pItemPrices:ItemPrice[] ):string{
+        let _lTaxes: string = '';
+        _pItemPrices.forEach( ( ip ) => {
+            if( ip.itemTax ){
+                let _lCurrency: Currency = Currencies.findOne( { _id: ip.currencyId } );
+                if( _lCurrency ){
+                    let tax: string = ip.itemTax + ' ' + _lCurrency.code + ' / '
+                    _lTaxes += tax;
+                }
+            }
+        });
+        return _lTaxes;
+    }
+
+    /**
      * Implements ngOnDestroy function
      */
     ngOnDestroy(){
         this._itemsSub.unsubscribe();
         this._itemImagesSub.unsubscribe();
-        this._sectionsSub.unsubscribe();
-        this._categoriesSub.unsubscribe();
-        this._subcategorySub.unsubscribe();
+        this._currenciesSub.unsubscribe();
     }
 }
