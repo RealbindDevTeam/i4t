@@ -10,8 +10,8 @@ import { Category } from '../../../../../../../both/models/administration/catego
 import { Categories } from '../../../../../../../both/collections/administration/category.collection';
 import { Subcategory } from '../../../../../../../both/models/administration/subcategory.model';
 import { Subcategories } from '../../../../../../../both/collections/administration/subcategory.collection';
-import { Item } from '../../../../../../../both/models/administration/item.model';
-import { Items } from '../../../../../../../both/collections/administration/item.collection';
+import { Item, ItemImage } from '../../../../../../../both/models/administration/item.model';
+import { Items, ItemImages } from '../../../../../../../both/collections/administration/item.collection';
 import { OrderMenu } from '../order-navigation/order-menu';
 import { OrderNavigationService } from '../order-navigation/order-navigation.service';
 import { GarnishFood } from '../../../../../../../both/models/administration/garnish-food.model';
@@ -46,6 +46,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     private _garnishFoodSub: Subscription;
     private _additionsSub: Subscription;
     private _ordersSub: Subscription;
+    private _itemImagesSub: Subscription;
 
     private _sections: Observable<Section[]>;
     private _categories: Observable<Category[]>;
@@ -90,6 +91,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         this._categoriesSub = MeteorObservable.subscribe( 'categoriesByRestaurant', this.restaurantId ).subscribe();
         this._subcategoriesSub = MeteorObservable.subscribe( 'subcategoriesByRestaurant', this.restaurantId ).subscribe();
         this._itemsSub = MeteorObservable.subscribe( 'itemsByRestaurant', this.restaurantId ).subscribe();
+        this._itemImagesSub = MeteorObservable.subscribe( 'itemImagesByRestaurant', this.restaurantId ).subscribe();
         this._ordersSub = MeteorObservable.subscribe( 'getOrders', this.restaurantId, this.tableQRCode,[ 'REGISTERED' ] ).subscribe( () => { } );
         this._garnishFoodSub = MeteorObservable.subscribe( 'garnishFoodByRestaurant', this.restaurantId ).subscribe( () => {
             this._ngZone.run( () => {
@@ -184,11 +186,19 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      */
     showItemInformation( _pItem:Item ):void {
         this._itemDetail = Items.find( { _id: _pItem._id } ).zone();
-        this._finalPrice = _pItem.price;
+        this._finalPrice = this.getItemPrice( _pItem );
         this._showItemDetails = true;
-        this._unitPrice = _pItem.price;
+        this._unitPrice = this.getItemPrice( _pItem );
         this.resetItemDetailVariables();
         this.viewItemDetail( false );
+    }
+
+    /**
+     * Return Item price by current restaurant
+     * @param {Item} _pItem 
+     */
+    getItemPrice( _pItem:Item ): number{
+        return _pItem.restaurants.filter( r => r.restaurantId === this.restaurantId )[0].price;
     }
 
     /**
@@ -390,6 +400,33 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Get Item Image
+     * @param {string} _pRestaurantId
+     */
+    getItemImage( _pItemId: string ):string{
+        let _lItemImage: ItemImage = ItemImages.findOne( { itemId: _pItemId } );
+        if( _lItemImage ){
+            return _lItemImage.url;
+        }
+    }
+
+    /**
+     * Return addition information
+     * @param {Addition} _pAddition
+     */
+    getAdditionInformation( _pAddition:Addition ):string {
+        return _pAddition.name + ' - ' + _pAddition.restaurants.filter( r => r.restaurantId === this.restaurantId )[0].price + ' ';
+    }
+
+    /**
+     * Return garnish food information
+     * @param {GarnishFood} _pGarnishFood
+     */
+    getGarnishFoodInformation( _pGarnishFood:GarnishFood ):string{
+        return _pGarnishFood.name + ' - ' + _pGarnishFood.restaurants.filter( r => r.restaurantId === this.restaurantId )[0].price + ' ';
+    }
+
+    /**
      * ngOnDestroy implementation
      */
     ngOnDestroy(){
@@ -400,5 +437,6 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         this._garnishFoodSub.unsubscribe();
         this._additionsSub.unsubscribe();
         this._ordersSub.unsubscribe();
+        this._itemImagesSub.unsubscribe();
     }
 }

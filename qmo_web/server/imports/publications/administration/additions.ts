@@ -18,7 +18,7 @@ Meteor.publish('additions', function (_userId: string) {
  */
 Meteor.publish('additionsByRestaurant', function (_restaurantId: string) {
     check(_restaurantId, String);
-    return Additions.collection.find({ restaurants: { $in: [_restaurantId] }, is_active: true });
+    return Additions.collection.find({ 'restaurants.restaurantId': { $in: [_restaurantId] }, is_active: true });
 });
 
 /**
