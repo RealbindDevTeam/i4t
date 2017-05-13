@@ -1,0 +1,21 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>
+            <!--img id="signup-logo" src="assets/img/logo_iurest_mobile_white.png"-->
+            {{ 'MOBILE.PAYMENTS.PAY_DETAIL_TITTLE' | translate }}
+        </ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+    <ion-item-group *ngFor="let order of _orders">
+        <ion-item-divider color="light">
+            {{ 'MOBILE.PAYMENTS.PAY_ORDER' | translate }} No. {{order._id}}
+            <ion-icon item-right> {{order.totalPayment}} </ion-icon>
+        </ion-item-divider>
+        <ion-item>Angola</ion-item>
+        <ion-item>Argentina</ion-item>
+    </ion-item-group>
+</ion-content>

@@ -136,7 +136,9 @@
             "ADD_ORDER": "Agregar orden",
             "PAYMENT_METHOD": "Medio de pago",
             "TOTAL_BILL": "Total cuenta",
-            "PAY_BTN": "Pagar"
+            "PAY_BTN": "Pagar",
+            "PAY_DETAIL_TITTLE":"Detalle del pago",
+            "PAY_ORDER":"Orden"
         },
         "WAITER_CALL": {
             "TITTLE": "Solicitar mesero",
