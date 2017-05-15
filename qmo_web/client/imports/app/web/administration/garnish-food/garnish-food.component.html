@@ -10,16 +10,9 @@
         </md-input-container>
       </div>
       <div>
-        <p>{{'GARNISHFOOD.RESTAURANT_GARNISHFOOD' | translate}}</p>
-        <p *ngIf="!_showRestaurants">{{'GARNISHFOOD.NO_RESTAURANT_CREATED' | translate}}</p>            
-        <div *ngIf="_showRestaurants" formGroupName="restaurants">
-          <md-checkbox [formControlName]="restaurant.name" [class.invalid]="!_garnishFoodForm.controls.restaurants.valid" *ngFor="let restaurant of _restaurants" class="checkbox" (change)="onCheckRestaurant(restaurant.name, $event)">{{restaurant.name}}</md-checkbox>
-        </div>
-      </div>
-      <div>
-        <p *ngIf="!_showCurrencies">{{'GARNISHFOOD.SELECT_RESTAURANTS' | translate}}</p>
-        <p *ngIf="_showCurrencies">{{'GARNISHFOOD.GARNISHFOOD_PRICES' | translate}}</p>
-        <p *ngIf="_showTaxes">{{'GARNISHFOOD.GARNISHFOOD_TAXES' | translate}}</p>
+        <p *ngIf="!_showCurrencies">{{'GARNISHFOOD.NO_RESTAURANT_CREATED' | translate}}</p>
+        <p *ngIf="_showCurrencies" class="message">{{'GARNISHFOOD.GARNISHFOOD_PRICES' | translate}}</p>
+        <p *ngIf="_showTaxes" class="message">{{'GARNISHFOOD.GARNISHFOOD_TAXES' | translate}}</p>
         <div *ngFor="let currency of _currencies | async">
           <div *ngIf="_showCurrencies" formGroupName="currencies" class="currencies">
             <div *ngFor="let cur of _restaurantCurrencies">
@@ -51,17 +44,6 @@
     <label class="taxes">{{'GARNISHFOOD.TAXES' | translate}}</label>
   </md-card-subtitle>
   <md-card-content>
-    <p *ngIf="garnishFood.restaurants.length === 0">{{'GARNISHFOOD.NO_RESTAURANT' | translate}}</p>
-    <div *ngFor="let rst of _restaurantList | async">
-      <div *ngFor="let garnishFoodRest of garnishFood.restaurants">
-        <div *ngIf="rst._id === garnishFoodRest.restaurantId">
-          <div>
-            <md-icon>store</md-icon>
-            {{rst.name}}
-          </div>
-        </div>              
-      </div>
-    </div>
     <div class="card-garnishfood-price">{{showGarnishFoodPrices(garnishFood.prices)}}</div>
     <div class="card-garnishfood-tax">{{showGarnishFoodTaxes(garnishFood.prices)}}</div>    
   </md-card-content>

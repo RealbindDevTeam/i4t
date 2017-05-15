@@ -27,12 +27,10 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
     private _garnishFoodForm: FormGroup;
-    private _restaurantsFormGroup: FormGroup = new FormGroup({});
     private _currenciesFormGroup: FormGroup = new FormGroup({});
     private _taxesFormGroup: FormGroup = new FormGroup({});
 
     private _garnishFoodCol: Observable<GarnishFood[]>;
-    private _restaurantList: Observable<Restaurant[]>;
     private _currencies: Observable<Currency[]>;
 
     private _garnishFoodSub: Subscription;    
@@ -42,7 +40,6 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
 
     private _restaurants: Restaurant[];            
     public _dialogRef: MdDialogRef<any>;    
-    private _showRestaurants: boolean = true;
     private _restaurantCurrencies: string[] = [];
     private _showCurrencies: boolean = false;
     private _restaurantTaxes: string [] = [];
@@ -69,26 +66,48 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
         let _lRestaurantsId: string[] = [];
         this._garnishFoodForm = new FormGroup({
             name: new FormControl( '', [ Validators.required, Validators.minLength(1), Validators.maxLength(50) ] ),
-            restaurants: this._restaurantsFormGroup,
             currencies: this._currenciesFormGroup,
             taxes: this._taxesFormGroup
         });
 
         this._restaurantsSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
             this._ngZone.run( () => {
-                this._restaurantList = Restaurants.find( { } ).zone();
                 this._restaurants = Restaurants.collection.find( { } ).fetch();
-                for ( let res of this._restaurants ) {
+                Restaurants.collection.find({}).fetch().forEach( ( res ) =>{
                     _lRestaurantsId.push( res._id );
-                    let control: FormControl = new FormControl( false );
-                    this._restaurantsFormGroup.addControl( res.name, control );
-                }
-                if( this._restaurants.length === 0){
-                    this._showRestaurants = false;
-                }
+                });
                 this._countriesSub = MeteorObservable.subscribe( 'getCountriesByRestaurantsId', _lRestaurantsId ).subscribe();
-                this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', _lRestaurantsId ).subscribe();
-                this._currencies = Currencies.find( { } ).zone();
+                this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', _lRestaurantsId ).subscribe( () => {
+                    this._ngZone.run( () => {
+                        Restaurants.collection.find({}).fetch().forEach( ( restaurant ) => {
+                            let _lCountry: Country = Countries.findOne( { _id: restaurant.countryId } );
+                            if( this._restaurantCurrencies.indexOf( restaurant.currencyId ) <= -1 ){
+                                let _lCurrency: Currency = Currencies.findOne( { _id: restaurant.currencyId } );
+                                let _initValue: string = '';
+                                if( _lCurrency.decimal !== 0 ){
+                                    for( let i = 0; i < ( _lCurrency.decimal ).toString().slice( ( _lCurrency.decimal.toString().indexOf( '.' ) ), ( _lCurrency.decimal.toString().length ) ).length - 1; i++ ){
+                                        _initValue += '0';
+                                    }
+                                    _initValue = '0.' + _initValue;
+                                } else {
+                                    _initValue = '0';
+                                }
+                                let control: FormControl = new FormControl( _initValue, [ Validators.required ] );
+                                this._currenciesFormGroup.addControl( restaurant.currencyId, control );
+                                this._restaurantCurrencies.push( restaurant.currencyId );
+
+                                if( _lCountry.itemsWithDifferentTax === true ){
+                                    let control: FormControl = new FormControl( '0', [ Validators.required ] );
+                                    this._taxesFormGroup.addControl( restaurant.currencyId, control );
+                                    this._restaurantTaxes.push( restaurant.currencyId );
+                                }
+                            }
+                        });
+                        this._restaurantCurrencies.length > 0 ? this._showCurrencies = true : this._showCurrencies = false;
+                        this._restaurantTaxes.length > 0 ? this._showTaxes = true : this._showTaxes = false;
+                        this._currencies = Currencies.find( { } ).zone();
+                    });
+                });
             });
         });
 
@@ -112,19 +131,17 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
         arrCur.forEach( ( cur ) => {
             let find: Restaurant[] = this._restaurants.filter( r => r.currencyId === cur );
             for( let res of find ){
-                if( this._garnishFoodForm.value.restaurants[ res.name ] ){
-                    let restau:Restaurant = Restaurants.findOne( { name: res.name } );
-                    let _lGarnishFoodRestaurant: GarnishFoodRestaurant = { restaurantId: '', price: 0 };
-                    
-                    _lGarnishFoodRestaurant.restaurantId = restau._id;
-                    _lGarnishFoodRestaurant.price = this._garnishFoodForm.value.currencies[ cur ];
+                let restau:Restaurant = Restaurants.findOne( { name: res.name } );
+                let _lGarnishFoodRestaurant: GarnishFoodRestaurant = { restaurantId: '', price: 0 };
+                
+                _lGarnishFoodRestaurant.restaurantId = restau._id;
+                _lGarnishFoodRestaurant.price = this._garnishFoodForm.value.currencies[ cur ];
 
-                    if( this._garnishFoodForm.value.taxes[ cur ] !== undefined ){
-                        _lGarnishFoodRestaurant.garnishFoodTax = this._garnishFoodForm.value.taxes[ cur ];
-                    }
-
-                    _lGarnishFoodRestaurantsToInsert.push( _lGarnishFoodRestaurant );
+                if( this._garnishFoodForm.value.taxes[ cur ] !== undefined ){
+                    _lGarnishFoodRestaurant.garnishFoodTax = this._garnishFoodForm.value.taxes[ cur ];
                 }
+
+                _lGarnishFoodRestaurantsToInsert.push( _lGarnishFoodRestaurant );
             }
             if( cur !== null && this._garnishFoodForm.value.currencies[ cur ] !== null ){
                 let _lGarnishFoodPrice: GarnishFoodPrice = { currencyId: '', price: 0 };
@@ -171,7 +188,6 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
         this._garnishFoodForm.reset();
         this._showCurrencies = false;
         this._restaurantCurrencies = [];
-        this._restaurantsFormGroup.reset();
         this._currenciesFormGroup.reset();
         this._taxesFormGroup.reset();
         this._showTaxes = false;
@@ -191,57 +207,6 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
         this._dialogRef.afterClosed().subscribe( result => {
             this._dialogRef = null;
         });
-    }
-
-    /**
-     * This function allow create garnish food price with diferent currencies
-     * @param {string} _pRestaurantName 
-     * @param {any} _pEvent 
-     */
-    onCheckRestaurant( _pRestaurantName: string, _pEvent:any ):void{
-        let _lRestaurant: Restaurant = this._restaurants.filter( r => r.name === _pRestaurantName )[0];
-        if( _pEvent.checked ){
-            let _lCountry: Country = Countries.findOne( { _id: _lRestaurant.countryId } );
-            if( this._restaurantCurrencies.indexOf( _lRestaurant.currencyId ) <= -1 ){
-                let _lCurrency: Currency = Currencies.findOne( { _id: _lRestaurant.currencyId } );
-                let _initValue: string = '';
-                if( _lCurrency.decimal !== 0 ){
-                    for( let i = 0; i < ( _lCurrency.decimal ).toString().slice( ( _lCurrency.decimal.toString().indexOf( '.' ) ), ( _lCurrency.decimal.toString().length ) ).length - 1; i++ ){
-                        _initValue += '0';
-                    }
-                    _initValue = '0.' + _initValue;
-                }
-                let control: FormControl = new FormControl( _initValue, [ Validators.required ] );
-                this._currenciesFormGroup.addControl( _lRestaurant.currencyId, control );
-                this._restaurantCurrencies.push( _lRestaurant.currencyId );
-
-                if( _lCountry.itemsWithDifferentTax === true ){
-                    let control: FormControl = new FormControl( '0', [ Validators.required ] );
-                    this._taxesFormGroup.addControl( _lRestaurant.currencyId, control );
-                    this._restaurantTaxes.push( _lRestaurant.currencyId );
-                }
-            }
-        } else {
-            let _aux:number = 0;
-            let _auxTax:number = 0;
-            let arr:any[] = Object.keys( this._garnishFoodForm.value.restaurants );
-             arr.forEach( ( rest ) => {
-                if( this._garnishFoodForm.value.restaurants[ rest ] ){
-                    let _lRes: Restaurant = this._restaurants.filter( r => r.name === rest )[0];
-                    if( _lRestaurant.currencyId === _lRes.currencyId ){
-                        _aux ++;             
-                    }
-                    let _lCountry: Country = Countries.findOne( { _id: _lRes.countryId } );
-                    if( _lCountry.itemsWithDifferentTax === true ){
-                        _auxTax ++;
-                    }
-                }            
-            });
-            if( _aux === 0 ){ this._restaurantCurrencies.splice( this._restaurantCurrencies.indexOf( _lRestaurant.currencyId ), 1 ); }
-            if( _auxTax === 0 ){ this._restaurantTaxes.splice( this._restaurantTaxes.indexOf( _lRestaurant.currencyId ), 1 ); }
-        }
-        this._restaurantCurrencies.length > 0 ? this._showCurrencies = true : this._showCurrencies = false;
-        this._restaurantTaxes.length > 0 ? this._showTaxes = true : this._showTaxes = false;
     }
 
     /**

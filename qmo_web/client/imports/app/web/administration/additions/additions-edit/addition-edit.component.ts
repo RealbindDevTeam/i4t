@@ -39,9 +39,6 @@ export class AdditionEditComponent implements OnInit, OnDestroy {
     private _countriesSub: Subscription;
 
     private _restaurantsList: Restaurant[];
-    private _edition_restaurants: string[];
-    private _additionPrices: AdditionPrice[];
-
     private _restaurantCurrencies: string [] = [];
     private _showCurrencies: boolean = false;
     private _restaurantTaxes: string [] = [];
@@ -57,9 +54,7 @@ export class AdditionEditComponent implements OnInit, OnDestroy {
         var userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang('en');
         _translate.use(userLang);  
-        this._edition_restaurants = [];
         this._restaurantsList = [];
-        this._additionPrices = [];
     }
 
     /**

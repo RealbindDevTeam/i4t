@@ -199,9 +199,9 @@
         "ACTIVATE": "ACTIVATE",
         "INACTIVATE": "INACTIVATE",
         "SELECT_RESTAURANTS": "Please select the restaurant (s) where the garnish food is available",
-        "GARNISHFOOD_PRICES": "Please enter the garnish food price (In case of no value enter 0)",
+        "GARNISHFOOD_PRICES": "Please enter the garnish food price ( In case of no value enter 0 ). ",
         "GARNISHFOOD_PRICE": "Garnish Food Price",
-        "GARNISHFOOD_TAXES": "Please enter the addition tax( In case of no value enter 0 )",
+        "GARNISHFOOD_TAXES": "Enter the garnish food tax( In case of no value enter 0 ).",
         "TAXES": "Taxes",
         "PRICES": "Prices"
     },

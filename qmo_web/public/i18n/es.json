@@ -199,9 +199,9 @@
         "ACTIVATE": "ACTIVAR",
         "INACTIVATE": "INACTIVAR",
         "SELECT_RESTAURANTS": "Por favor selecciona el(los) restaurante(s) donde se encontrara disponible la guarnicion",
-        "GARNISHFOOD_PRICES": "Por favor ingresa el precio de la guarnicion (En caso de no tener valor ingresa 0 )",
+        "GARNISHFOOD_PRICES": "Por favor ingresa el precio de la guarnicion ( En caso de no tener valor ingresa 0 ). ",
         "GARNISHFOOD_PRICE": "Precio de la Guarnicion",
-        "GARNISHFOOD_TAXES": "Por favor ingresa los impuestos( En caso de no tener valor ingresa 0 )",
+        "GARNISHFOOD_TAXES": "Ingresa los impuestos( En caso de no tener valor ingresa 0 ).",
         "TAXES": "Impuestos",
         "PRICES": "Precios"
     },
