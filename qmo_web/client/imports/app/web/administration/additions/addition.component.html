@@ -10,16 +10,9 @@
         </md-input-container>
       </div>
       <div>
-        <p>{{'ADDITIONS.RESTAURANT_ADDITION' | translate}}</p> 
-        <p *ngIf="!_showRestaurants">{{'ADDITIONS.NO_RESTAURANT_CREATED' | translate}}</p>
-        <div *ngIf="_showRestaurants" formGroupName="restaurants">
-          <md-checkbox *ngFor="let restaurant of _restaurantList" [formControlName]="restaurant.name" [class.invalid]="!_additionForm.controls.restaurants.valid" class="checkbox" (change)="onCheckRestaurant(restaurant.name, $event)">{{restaurant.name}}</md-checkbox>
-        </div>
-      </div>
-      <div>
-        <p *ngIf="!_showCurrencies">{{'ADDITIONS.SELECT_RESTAURANTS' | translate}}</p>
-        <p *ngIf="_showCurrencies">{{'ADDITIONS.ADDITION_PRICES' | translate}}</p>
-        <p *ngIf="_showTaxes">{{'ADDITIONS.ADDITION_TAXES' | translate}}</p>
+        <p *ngIf="!_showCurrencies">{{'ADDITIONS.NO_RESTAURANT_CREATED' | translate}}</p>
+        <p *ngIf="_showCurrencies" class="message">{{'ADDITIONS.ADDITION_PRICES' | translate}}</p>
+        <p *ngIf="_showTaxes" class="message">{{'ADDITIONS.ADDITION_TAXES' | translate}}</p>
         <div *ngFor="let currency of _currencies | async">
           <div *ngIf="_showCurrencies" formGroupName="currencies" class="currencies">
             <div *ngFor="let cur of _restaurantCurrencies">
@@ -51,17 +44,6 @@
     <label class="taxes">{{'ADDITIONS.TAXES' | translate}}</label>
   </md-card-subtitle>
   <md-card-content>
-    <p *ngIf="addition.restaurants.length === 0">{{'ADDITIONS.NO_RESTAURANT' | translate}}</p>
-    <div *ngFor="let rst of _restaurants | async">
-      <div *ngFor="let additionRest of addition.restaurants">
-        <div *ngIf="rst._id === additionRest.restaurantId">
-          <div>
-            <md-icon>store</md-icon>
-            {{rst.name}}
-          </div>
-        </div>              
-      </div>
-    </div>
     <div class="card-addition-price">{{showAdditionPrices(addition.prices)}}</div>
     <div class="card-addition-tax">{{showAdditionTaxes(addition.prices)}}</div>    
   </md-card-content>

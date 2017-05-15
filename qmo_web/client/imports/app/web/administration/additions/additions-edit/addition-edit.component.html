@@ -9,15 +9,9 @@
                 </md-input-container>
                 <md-slide-toggle formControlName="editIsActive" class="toogle" >{{'STATE' | translate}}</md-slide-toggle>
                 <div>
-                    <p>{{'ADDITIONS.RESTAURANT_ADDITION' | translate}}: </p>
-                    <div formGroupName="editRestaurants">
-                        <md-checkbox [formControlName]="restaurant.name" [class.invalid]="!_editForm.controls.editRestaurants.valid" *ngFor="let restaurant of _restaurantsList" class="checkbox" (change)="onCheckRestaurant(restaurant.name, $event)">{{restaurant.name}}</md-checkbox>
-                    </div>
-                </div>
-                <div>
-                    <p *ngIf="!_showCurrencies">{{'ADDITIONS.SELECT_RESTAURANTS' | translate}}</p>
-                    <p *ngIf="_showCurrencies">{{'ADDITIONS.ADDITION_PRICES' | translate}}</p>
-                    <p *ngIf="_showTaxes">{{'ADDITIONS.ADDITION_TAXES' | translate}}</p>
+                    <p *ngIf="!_showCurrencies">{{'ADDITIONS.NO_RESTAURANT_CREATED' | translate}}</p>
+                    <p *ngIf="_showCurrencies" class="message">{{'ADDITIONS.ADDITION_PRICES' | translate}}</p>
+                    <p *ngIf="_showTaxes" class="message">{{'ADDITIONS.ADDITION_TAXES' | translate}}</p>
                     <div *ngFor="let currency of _currencies | async">
                         <div *ngIf="_showCurrencies" formGroupName="editCurrencies" class="currencies">
                             <div *ngFor="let cur of _restaurantCurrencies">

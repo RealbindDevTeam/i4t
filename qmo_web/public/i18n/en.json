@@ -122,10 +122,9 @@
         "MODIFY": "MODIFY",
         "ACTIVATE": "ACTIVATE",
         "INACTIVATE": "INACTIVATE",
-        "SELECT_RESTAURANTS": "Please select the restaurant (s) where the addition is available",
-        "ADDITION_PRICES": "Please enter the addition price ( In case of no value enter 0 )",
+        "ADDITION_PRICES": "Please enter the addition price ( In case of no value enter 0 ). ",
         "ADITION_PRICE": "Adition Price",
-        "ADDITION_TAXES": "Please enter the addition tax( In case of no value enter 0 )",
+        "ADDITION_TAXES": "Enter the addition tax( In case of no value enter 0 ).",
         "TAXES": "Taxes",
         "PRICES": "Prices"
     },

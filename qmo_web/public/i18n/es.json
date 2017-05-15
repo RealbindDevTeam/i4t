@@ -122,10 +122,9 @@
         "MODIFY": "MODIFICAR",
         "ACTIVATE": "ACTIVAR",
         "INACTIVATE": "INACTIVAR",
-        "SELECT_RESTAURANTS": "Por favor selecciona el(los) restaurante(s) donde se encontrara disponible la adicion",
-        "ADDITION_PRICES": "Por favor ingresa el precio de la adicion ( En caso de no tener valor ingresa 0 )",
+        "ADDITION_PRICES": "Por favor ingresa el precio de la adicion ( En caso de no tener valor ingresa 0 ). ",
         "ADITION_PRICE": "Precio de la Adicion",
-        "ADDITION_TAXES": "Por favor ingresa los impuestos( En caso de no tener valor ingresa 0 )",
+        "ADDITION_TAXES": "Ingresa los impuestos( En caso de no tener valor ingresa 0 ).",
         "TAXES": "Impuestos",
         "PRICES": "Precios"
     },
