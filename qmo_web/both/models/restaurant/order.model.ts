@@ -20,7 +20,3 @@ export interface OrderItem{
     additions: string[];
     paymentItem: number;
 }
-
-export interface OrderDetails{
-    
-}

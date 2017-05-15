@@ -6,16 +6,39 @@
             {{ 'MOBILE.PAYMENTS.PAY_DETAIL_TITTLE' | translate }}
         </ion-title>
     </ion-navbar>
-
 </ion-header>
 
 <ion-content>
-    <ion-item-group *ngFor="let order of _orders">
+    <ion-item-group *ngFor="let order of _orders | async">
         <ion-item-divider color="light">
-            {{ 'MOBILE.PAYMENTS.PAY_ORDER' | translate }} No. {{order._id}}
-            <ion-icon item-right> {{order.totalPayment}} </ion-icon>
+            <h1>{{ 'MOBILE.PAYMENTS.PAY_ORDER' | translate }} # {{order.orderItemCount}}</h1>
+            <h1 item-right> {{order.totalPayment}} COP</h1>
         </ion-item-divider>
-        <ion-item>Angola</ion-item>
-        <ion-item>Argentina</ion-item>
+        <div *ngFor="let itemId of order.items">
+            <payment-item-detail [order]="order" [orderItem]="itemId" [resCode]="order.restaurantId"></payment-item-detail>
+        </div>
     </ion-item-group>
 </ion-content>
+
+<ion-footer class="ion-footer-custom" padding>
+    <ion-item>
+        <h2>SubTotal:</h2>
+        <h2>INC (8%):</h2>
+        <h2>Total:</h2>
+        <div item-right style="text-align: end;">
+            <p>{{ipoComBaseValue}} COP</p>
+            <p>{{ipoComValue}} COP</p>
+            <h2>{{subTotal}} COP</h2>
+        </div>
+    </ion-item>
+    <ion-item>
+        <h2>Propina:</h2>
+        <div item-right style="text-align: end;">
+            <p>{{tipTotal}} COP</p>
+        </div>
+    </ion-item>
+    <ion-item>
+        <h1 style="font-size: 1.9rem;">TOTAL A PAGAR: </h1>
+        <h1 style="font-size: 1.9rem;" item-right>{{totalValue}} COP</h1>
+    </ion-item>
+</ion-footer>

@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { NavParams } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs'
 import { TranslateService } from 'ng2-translate';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
-import { Order } from 'qmo_web/both/models/restaurant/order.model';
 /*
   Generated class for the Payment-Details page.
 
@@ -16,38 +16,39 @@ import { Order } from 'qmo_web/both/models/restaurant/order.model';
 })
 
 export class PaymentDetailsPage implements OnInit, OnDestroy {
-
-    //private _ordersSubscription : Subscription;
-    private _orders   : any;
-    private _userLang : string;
     
-    constructor(public _translate: TranslateService){
+    @Input() totalValue      : number = 0;
+    @Input() ipoComValue     : number = 0;
+    @Input() ipoComBaseValue : number = 0;
+    @Input() tipTotal        : number = 0;
+    @Input() subTotal        : number = 0;
+
+    private _ordersSubscription : Subscription;
+    private _userLang           : string;
+    private _ipoCom             : number = 0.08;
+    private _tipPorcentage      : number = 0;
+    private _orders             : any;
+
+    constructor(public _translate: TranslateService,
+                public _navParams: NavParams,){
         this._userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang('en');
         _translate.use(this._userLang);
     }
 
     ngOnInit(){
-        /*this._ordersSubscription = MeteorObservable.subscribe('').subscribe( () => {
-            this._orders = Orders.collection.find({});
-        });*/
-        this._orders = [
-            { _id : '0',
-             totalPayment : '10000',
-             items : []},
-            { _id : '1',
-              totalPayment : '10000',
-              items : []},
-            { _id : '2',
-              totalPayment : '10000',
-              items : []},
-            { _id : '3',
-              totalPayment : '10000',
-              items : []},
-        ]
+        this._ordersSubscription  = MeteorObservable.subscribe('getOrdersByAccount', Meteor.userId()).subscribe();
+        this._orders         = Orders.find({}).zone();
+        this.totalValue      = this._navParams.get("total_value");
+        this._tipPorcentage  = this._navParams.get("tip");
+        this.tipTotal        = this.totalValue * this._tipPorcentage;
+        this.subTotal        = this.totalValue - this.tipTotal;
+
+        this.ipoComValue     = this.subTotal * this._ipoCom;
+        this.ipoComBaseValue = this.subTotal - this.ipoComValue;
     }
 
     ngOnDestroy(){
-        //this._ordersSubscription.unsubscribe();
+        this._ordersSubscription.unsubscribe();
     }
 }
