@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs'
 import { TranslateService } from 'ng2-translate';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 /*
   Generated class for the Payment-Details page.

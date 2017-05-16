@@ -1,6 +1,5 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Order, OrderItem } from 'qmo_web/both/models/restaurant/order.model';
-import { ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
 import { Item } from 'qmo_web/both/models/administration/item.model';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
@@ -31,12 +30,6 @@ export class PaymentItemDetailComponent implements OnInit, OnDestroy {
         this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this.resCode).subscribe(() => {
             this._items = Items.find({_id: this.orderItem.itemId});
         });
-    }
-
-    goToItemEdit(itemId, orderItemIndex){
-        let arrValue: any[] = [];
-        arrValue[0] = itemId;
-        arrValue[1] = orderItemIndex;
     }
 
     ngOnDestroy() {
