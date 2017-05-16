@@ -108,6 +108,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
             subcategory: new FormControl( '' ),
             name: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 55 ) ] ),
             description: new FormControl( '', [ Validators.required, Validators.minLength( 1 ),Validators.maxLength( 200 ) ] ),
+            cookingTime: new FormControl( '', [ Validators.required ] ),
             restaurants: this._restaurantsFormGroup,
             currencies: this._currenciesFormGroup,
             taxes: this._taxesFormGroup,
@@ -171,7 +172,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
             }
         case 2:
             if( this._itemForm.controls['name'].valid && this._itemForm.controls['description'].valid && 
-                this._restaurantsSelectedCount > 0 ){
+                this._itemForm.controls['cookingTime'].valid && this._restaurantsSelectedCount > 0 ){
                     return true
                 } else {
                     return false;
@@ -281,6 +282,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
                 categoryId: this._itemForm.value.category,
                 subcategoryId: this._itemForm.value.subcategory,
                 name: this._itemForm.value.name,
+                time: this._itemForm.value.cookingTime,
                 description: this._itemForm.value.description,
                 restaurants: _lItemRestaurantsToInsert,
                 prices: _lItemPricesToInsert,

@@ -27,8 +27,11 @@
                  </md-tab>
                  <md-tab [disabled]="!canMove(1)" label="{{'ITEMS.GENERAL' | translate}}">
                      <md-card>
-                        <md-card-title>{{'ITEMS.GENERAL_INFORMATION' | translate}}</md-card-title>
-                        <md-card-subtitle>{{'ITEMS.GENERAL_TEXT_EDIT' | translate}}</md-card-subtitle>
+                         <md-card-title-group>
+                            <img md-card-sm-image src="{{_itemEditImage}}">
+                            <md-card-title>{{'ITEMS.GENERAL_INFORMATION' | translate}}</md-card-title>
+                            <md-card-subtitle>{{'ITEMS.GENERAL_TEXT_EDIT' | translate}}</md-card-subtitle>
+                        </md-card-title-group>
                         <md-card-content>
                             <div>
                                 <md-input-container class="name">
@@ -50,6 +53,20 @@
                                         <span *ngIf="_editImage">{{_nameImageFileEdit}}&hellip;</span>
                                     </label>
                                 </div>
+                            </div>
+                            <div>
+                                <md-select formControlName="editCookingTime" placeholder="{{'ITEMS.COOKING_TIME' | translate}}" [(ngModel)]="_selectedTime" style="width: 30%;margin-top: 2%;">
+                                    <md-option value="5 min aprox">5 min aprox</md-option>
+                                    <md-option value="15 min aprox">15 min aprox</md-option>
+                                    <md-option value="30 min aprox">30 min aprox</md-option>
+                                    <md-option value="45 min aprox">45 min aprox</md-option>
+                                    <md-option value="1 h aprox">1 h aprox</md-option>
+                                    <md-option value="1 h 15 min aprox">1 h 15 min aprox</md-option>
+                                    <md-option value="1 h 30 min aprox">1 h 30 min aprox</md-option>
+                                    <md-option value="1 h 45 min aprox">1 h 45 min aprox</md-option>
+                                    <md-option value="2 h aprox">2 h aprox</md-option>
+                                    <md-option value="+ 2 h aprox">+ 2 h aprox</md-option>                                                                        
+                                </md-select>
                             </div>
                             <div class="restaurants">
                                 <p *ngIf="!_showRestaurants">{{'ITEMS.NO_RESTAURANTS' | translate}}</p>

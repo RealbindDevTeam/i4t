@@ -471,7 +471,8 @@
         "MSG_INITIAL" : "Implement an orderly and easy way to view your menu",
         "ADD_IMAGE": "Add item image",
         "ACTIVATE": "ACTIVATE",
-        "INACTIVATE": "INACTIVATE"
+        "INACTIVATE": "INACTIVATE",
+        "COOKING_TIME": "Approximate Cooking Time"
     },
     "ROLE" : {
         "ADMINISTRATOR" : "Administrator",

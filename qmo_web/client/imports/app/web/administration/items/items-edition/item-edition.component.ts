@@ -76,6 +76,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
     private _selectedCategory: string = "";
     private _selectedSection: string = "";
     private _selectedSubcategory: string = "";
+    private _selectedTime: string;
 
     private _garnishFoodList: GarnishFood[];
     private _itemGarnishFood: string[];
@@ -122,6 +123,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
      */
     ngOnInit(){
         let _restaurantsId: string[] = [];        
+        let _currenciesId: string[] = [];
         this._itemEditionForm = this._formBuilder.group({
             editId: [ this._itemToEdit._id ],
             editIsActive: [ this._itemToEdit.is_active ],
@@ -130,6 +132,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
             editSubcategoryId: [ this._itemToEdit.subcategoryId ],
             editName: [ this._itemToEdit.name ],
             editDescription: [ this._itemToEdit.description ],
+            editCookingTime: [ this._itemToEdit.time ],
             editRestaurants: this._restaurantsFormGroup,
             editCurrencies: this._currenciesFormGroup,
             editTaxes: this._taxesFormGroup,
@@ -147,6 +150,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         this._selectedCategory = this._itemToEdit.categoryId;
         this._itemSubcategory = this._itemToEdit.subcategoryId;
         this._selectedSubcategory = this._itemToEdit.subcategoryId;
+        this._selectedTime = this._itemToEdit.time;
 
         this._itemGarnishFood = this._itemToEdit.garnishFood;
         this._itemAdditions = this._itemToEdit.additions;
@@ -155,22 +159,6 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
 
         this._restaurantsSelectedCount = this._itemToEdit.restaurants.length;
         if( this._itemToEdit.restaurants.length > 0 ){ this._showRestaurants = true }
-
-        if( this._itemToEdit.prices.length > 0 ){
-            this._showCurrencies = true;
-            this._itemToEdit.prices.forEach( (p) => {
-                let control: FormControl = new FormControl( p.price, [ Validators.required ] );
-                this._currenciesFormGroup.addControl( p.currencyId, control );
-                this._restaurantCurrencies.push( p.currencyId );
-
-                if( p.itemTax !== undefined ){
-                    this._showTaxes = true;
-                    let controlTax: FormControl = new FormControl( p.itemTax, [ Validators.required ] );
-                    this._taxesFormGroup.addControl( p.currencyId, controlTax );
-                    this._restaurantTaxes.push( p.currencyId );
-                }
-            });
-        }
 
         this._itemsSub = MeteorObservable.subscribe( 'items', this._user ).subscribe();
         this._itemImagesSub = MeteorObservable.subscribe( 'itemImages', this._user ).subscribe();
@@ -199,22 +187,40 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
             this._ngZone.run( () => {
                 Restaurants.collection.find( { } ).fetch().forEach( ( rest ) => {
                     _restaurantsId.push( rest._id );
-                    let restaurant:Restaurant = rest;    
-                    let find = this._itemRestaurants.filter( r => r.restaurantId === restaurant._id );
+                    _currenciesId.push( rest.currencyId );
+                    let find = this._itemRestaurants.filter( r => r.restaurantId === rest._id );
 
                     if( find.length > 0 ){
                         let control: FormControl = new FormControl( true );                                          
-                        this._restaurantsFormGroup.addControl( restaurant.name, control );  
-                        this._restaurantList.push( restaurant );
+                        this._restaurantsFormGroup.addControl( rest.name, control );  
+                        this._restaurantList.push( rest );
                     } else {
                         let control: FormControl = new FormControl( false );                                          
-                        this._restaurantsFormGroup.addControl( restaurant.name, control );  
-                        this._restaurantList.push( restaurant );
+                        this._restaurantsFormGroup.addControl( rest.name, control );  
+                        this._restaurantList.push( rest );
                     }
                 });
                 this._countriesSub = MeteorObservable.subscribe( 'getCountriesByRestaurantsId', _restaurantsId ).subscribe();
-                this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', _restaurantsId ).subscribe();
-                this._currencies = Currencies.find( { } ).zone();
+                this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', _restaurantsId ).subscribe( () => {
+                    this._ngZone.run( () => {
+                        if( this._itemToEdit.prices.length > 0 ){
+                            this._showCurrencies = true;
+                            this._itemToEdit.prices.forEach( (p) => {
+                                let control: FormControl = new FormControl( p.price, [ Validators.required ] );
+                                this._currenciesFormGroup.addControl( p.currencyId, control );
+                                this._restaurantCurrencies.push( p.currencyId );
+
+                                if( p.itemTax !== undefined ){
+                                    this._showTaxes = true;
+                                    let controlTax: FormControl = new FormControl( p.itemTax, [ Validators.required ] );
+                                    this._taxesFormGroup.addControl( p.currencyId, controlTax );
+                                    this._restaurantTaxes.push( p.currencyId );
+                                }
+                            });
+                        }
+                        this._currencies = Currencies.find( { _id: { $in: _currenciesId } } ).zone();
+                    });
+                });
             });
         });
         this._garnishFoodSub = MeteorObservable.subscribe( 'garnishFood', this._user ).subscribe( () => {
@@ -290,7 +296,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
             }
         case 2:
             if( this._itemEditionForm.controls['editName'].valid && this._itemEditionForm.controls['editDescription'].valid 
-                && this._restaurantsSelectedCount > 0 ){
+                && this._itemEditionForm.controls['editCookingTime'].valid && this._restaurantsSelectedCount > 0 ){
                     return true
                 } else {
                     return false;
@@ -480,6 +486,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                     subcategoryId: this._itemEditionForm.value.editSubcategoryId,
                     name: this._itemEditionForm.value.editName,
                     description: this._itemEditionForm.value.editDescription,
+                    time: this._itemEditionForm.value.editCookingTime,
                     restaurants: _lItemRestaurantsToInsert,
                     prices: _lItemPricesToInsert,
                     observations: this._itemEditionForm.value.editObservations,
@@ -528,13 +535,21 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                     }
                     _initValue = '0.' + _initValue;
                 }
-                let control: FormControl = new FormControl( _initValue, [ Validators.required ] );
-                this._currenciesFormGroup.addControl( _lRestaurant.currencyId, control );
+                if( this._currenciesFormGroup.contains( _lRestaurant.currencyId ) ){
+                    this._currenciesFormGroup.controls[ _lRestaurant.currencyId ].setValue( _initValue );
+                } else {
+                    let control: FormControl = new FormControl( _initValue, [ Validators.required ] );
+                    this._currenciesFormGroup.addControl( _lRestaurant.currencyId, control );
+                }
                 this._restaurantCurrencies.push( _lRestaurant.currencyId );
 
                 if( _lCountry.itemsWithDifferentTax === true ){
-                    let control: FormControl = new FormControl( '0', [ Validators.required ] );
-                    this._taxesFormGroup.addControl( _lRestaurant.currencyId, control );
+                    if( this._taxesFormGroup.contains( _lRestaurant.currencyId ) ){
+                        this._taxesFormGroup.controls[ _lRestaurant.currencyId ].setValue( '0' );
+                    } else {
+                        let control: FormControl = new FormControl( '0', [ Validators.required ] );
+                        this._taxesFormGroup.addControl( _lRestaurant.currencyId, control );
+                    }
                     this._restaurantTaxes.push( _lRestaurant.currencyId );
                 }
             }

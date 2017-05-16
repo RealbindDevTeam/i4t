@@ -51,6 +51,20 @@
                                     </label>
                                 </div>
                             </div>
+                            <div>
+                                <md-select formControlName="cookingTime" placeholder="{{'ITEMS.COOKING_TIME' | translate}}" style="width: 30%;margin-top: 2%;">
+                                    <md-option value="5 min aprox">5 min aprox</md-option>
+                                    <md-option value="15 min aprox">15 min aprox</md-option>
+                                    <md-option value="30 min aprox">30 min aprox</md-option>
+                                    <md-option value="45 min aprox">45 min aprox</md-option>
+                                    <md-option value="1 h aprox">1 h aprox</md-option>
+                                    <md-option value="1 h 15 min aprox">1 h 15 min aprox</md-option>
+                                    <md-option value="1 h 30 min aprox">1 h 30 min aprox</md-option>
+                                    <md-option value="1 h 45 min aprox">1 h 45 min aprox</md-option>
+                                    <md-option value="2 h aprox">2 h aprox</md-option>
+                                    <md-option value="+ 2 h aprox">+ 2 h aprox</md-option>                                                                        
+                                </md-select>
+                            </div>
                             <div class="restaurants">
                                 <p *ngIf="!_showRestaurants">{{'ITEMS.NO_RESTAURANTS' | translate}}</p>
                                 <div *ngIf="_showRestaurants" formGroupName="restaurants">
