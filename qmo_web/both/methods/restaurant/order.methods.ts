@@ -29,7 +29,7 @@ if (Meteor.isServer) {
                 restaurantId: _restaurantId,
                 tableId: _lTable._id,
                 accountId: _lAccount._id,
-                status: 'REGISTERED'
+                status: 'ORDER_STATUS.REGISTERED'
             });
 
             if (_lOrder) {
@@ -39,7 +39,7 @@ if (Meteor.isServer) {
                     restaurantId: _restaurantId,
                     tableId: _lTable._id,
                     accountId: _lAccount._id,
-                    status: 'REGISTERED'
+                    status: 'ORDER_STATUS.REGISTERED'
                 },
                     { $push: { items: _itemToInsert } }
                 );
@@ -48,7 +48,7 @@ if (Meteor.isServer) {
                     restaurantId: _restaurantId,
                     tableId: _lTable._id,
                     accountId: _lAccount._id,
-                    status: 'REGISTERED'
+                    status: 'ORDER_STATUS.REGISTERED'
                 },
                     {
                         $set: {
@@ -71,7 +71,7 @@ if (Meteor.isServer) {
                     restaurantId: _restaurantId,
                     tableId: _lTable._id,
                     code: _orderCount,
-                    status: 'REGISTERED',
+                    status: 'ORDER_STATUS.REGISTERED',
                     accountId: _lAccount._id,
                     items: [_itemToInsert],
                     totalPayment: _finalPrice,
@@ -94,7 +94,7 @@ if (Meteor.isServer) {
                 restaurantId: _restaurantId,
                 tableId: _lTable._id,
                 accountId: _lAccount._id,
-                status: 'REGISTERED'
+                status: 'ORDER_STATUS.REGISTERED'
             });
 
             if (_lOrder) {
@@ -104,7 +104,7 @@ if (Meteor.isServer) {
                     restaurantId: _restaurantId,
                     tableId: _lTable._id,
                     accountId: _lAccount._id,
-                    status: 'REGISTERED'
+                    status: 'ORDER_STATUS.REGISTERED'
                 },
                     { $push: { items: _itemToInsert } }
                 );
@@ -113,7 +113,7 @@ if (Meteor.isServer) {
                     restaurantId: _restaurantId,
                     tableId: _lTable._id,
                     accountId: _lAccount._id,
-                    status: 'REGISTERED'
+                    status: 'ORDER_STATUS.REGISTERED'
                 },
                     {
                         $set: {
@@ -136,7 +136,7 @@ if (Meteor.isServer) {
                     restaurantId: _restaurantId,
                     tableId: _lTable._id,
                     code: _orderCount,
-                    status: 'REGISTERED',
+                    status: 'ORDER_STATUS.REGISTERED',
                     accountId: _lAccount._id,
                     items: [_itemToInsert],
                     totalPayment: _finalPrice,

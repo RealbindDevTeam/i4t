@@ -20,6 +20,7 @@ import { Addition } from '../../../../../../../both/models/administration/additi
 import { Additions } from '../../../../../../../both/collections/administration/addition.collection';
 import { Order, OrderItem } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
+import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
 
 import template from './order-create.component.html';
 import style from './order-create.component.scss';
@@ -33,6 +34,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
 
     @Input() restaurantId: string;
     @Input() tableQRCode: string;
+    @Input() restaurantCurrency: string;
     @Output() finishOrdenCreation = new EventEmitter();
 
     private _newOrderForm: FormGroup;
@@ -47,6 +49,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     private _additionsSub: Subscription;
     private _ordersSub: Subscription;
     private _itemImagesSub: Subscription;
+    private _currenciesSub: Subscription;
 
     private _sections: Observable<Section[]>;
     private _categories: Observable<Category[]>;
@@ -65,6 +68,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     private _unitPrice: number = 0;
     private _lastQuantity: number = 1;
     private _quantityCount: number = 1;
+    private _currencyCode: string;
 
     private _orderMenus: OrderMenu[] = [];
     private orderMenuSetup: OrderMenu [] = [];
@@ -92,7 +96,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         this._subcategoriesSub = MeteorObservable.subscribe( 'subcategoriesByRestaurant', this.restaurantId ).subscribe();
         this._itemsSub = MeteorObservable.subscribe( 'itemsByRestaurant', this.restaurantId ).subscribe();
         this._itemImagesSub = MeteorObservable.subscribe( 'itemImagesByRestaurant', this.restaurantId ).subscribe();
-        this._ordersSub = MeteorObservable.subscribe( 'getOrders', this.restaurantId, this.tableQRCode,[ 'REGISTERED' ] ).subscribe( () => { } );
+        this._ordersSub = MeteorObservable.subscribe( 'getOrders', this.restaurantId, this.tableQRCode,[ 'ORDER_STATUS.REGISTERED' ] ).subscribe( () => { } );
         this._garnishFoodSub = MeteorObservable.subscribe( 'garnishFoodByRestaurant', this.restaurantId ).subscribe( () => {
             this._ngZone.run( () => {
                 this._garnishFoodCol = GarnishFoodCol.find( { } ).zone();
@@ -145,6 +149,11 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
                 this._navigation.orderMenus.subscribe( orderMenus => {
                     this._orderMenus = orderMenus;
                 });
+            });
+        });
+        this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId',[ this.restaurantId ] ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._currencyCode = Currencies.findOne( { _id: this.restaurantCurrency } ).code + ' ';
             });
         });
         this._items = Items.find( { } ).zone();
@@ -208,11 +217,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     AddItemToOrder( _pItemToInsert:string ):void{ 
         if( this._newOrderForm.valid ){
             let _lOrderItemIndex: number = 0;
-            let _lOrder: Order;
-
-            Orders.collection.find().forEach( (o) => {
-                _lOrder = o;
-            });
+            let _lOrder: Order = Orders.collection.find( { creation_user: Meteor.userId() } ).fetch()[0] ;
 
             if( _lOrder ){
                 _lOrderItemIndex = _lOrder.orderItemCount + 1;
@@ -308,7 +313,8 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * @param {any} _event 
      * @param {number} _price 
      */
-    calculateFinalPriceGarnishFood( _event:any, _price:number ):void{
+    calculateFinalPriceGarnishFood( _event:any, _pGarnishFood:GarnishFood ):void{
+        let _price = _pGarnishFood.restaurants.filter( r => r.restaurantId === this.restaurantId )[0].price;
         if( _event.checked ){
             this._finalPrice =  ( Number.parseInt( this._finalPrice.toString() ) + ( Number.parseInt( _price.toString() ) * this._quantityCount ) );
             this._garnishFoodElementsCount += 1;
@@ -325,7 +331,8 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * @param {any} _event 
      * @param {number} _price 
      */
-    calculateFinalPriceAddition( _event:any, _price:number ):void{
+    calculateFinalPriceAddition( _event:any, _pAddition:Addition ):void{
+        let _price = _pAddition.restaurants.filter( r => r.restaurantId === this.restaurantId )[0].price;
         if( _event.checked ){
             this._finalPrice =  ( Number.parseInt( this._finalPrice.toString() ) + ( Number.parseInt( _price.toString() ) * this._quantityCount ) );
         } else {
@@ -438,5 +445,6 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         this._additionsSub.unsubscribe();
         this._ordersSub.unsubscribe();
         this._itemImagesSub.unsubscribe();
+        this._currenciesSub.unsubscribe();
     }
 }

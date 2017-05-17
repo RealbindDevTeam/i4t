@@ -28,6 +28,13 @@
     "VALIDATE" : "Validar",
     "TIP_PERCENTAGE": "Porcentaje de propina",
     "CLOSE": "Cerrar",
+    "ORDER_STATUS": {
+        "REGISTERED": "Registrado",
+        "IN_PROCESS": "En Proceso",
+        "PREPARED": "Preparado",
+        "CANCELED": "Cancelado",
+        "CLOSED": "Cerrado"
+    },
     "DATE_VALIDATE" : {
         "DAY_FORMAT" : "Formato del día incorrecto",
         "MONTH_FORMAT" : "Formato del mes incorrecto",
@@ -566,7 +573,8 @@
         "SELECT_ADDITIONS": "Por favor seleccione las adiciones que desee",
         "TOTAL_PRICE": "Precio Total",
         "ADD_ITEM": "Agregar Item a la Orden",
-        "SHOW_ALL": "Mostrar todos"
+        "SHOW_ALL": "Mostrar todos",
+        "COOKING_TIME": "Tiempo de Cocción"
     },
     "ORDER_LIST": {
         "TABLE_ORDERS": "Órdenes de la mesa",
@@ -592,7 +600,14 @@
         "SELECT_ADDITIONS": "Por favor seleccione las adiciones que desee",
         "TOTAL_PRICE": "Precio Total",
         "MODIFY_ITEM": "Modificar Item",
-        "DELETE_ITEM": "Eliminar Item"
+        "DELETE_ITEM": "Eliminar Item",
+        "DELETE_ORDER": "Esta seguro de eliminar el item de la orden?",
+        "CANCEL_ORDER_CONFIRM": "Esta seguro de cancelar la orden?",
+        "ORDER_CANT_CANCEL": "La orden No se puede cancelar.",
+        "CONFIRM_ORDER_MESSAGE": "Esta seguro de confirmar la orden?",
+        "ORDER_ITEMS_UNAVAILABLE": "La orden presenta items que no se encuentran disponibles. Verifica tu order por favor.",
+        "ORDER_CANT_CONFIRM": "La orden no se puede confirmar",
+        "COOKING_TIME": "Tiempo de Cocción"
     },
     "WAITER_CALL" : {
         "TITTLE": "Solicitar mesero",
@@ -637,5 +652,12 @@
             "DIAN_NUMERATION_TO": "Hasta",
             "ENTER_TIP_PERCENTAGE": "Ingresa el porcentaje de la propina sugerida ( 0% - 100% ). Puedes ingresar el valor o utilizar el Slider"            
         }
+    },
+    "ORDERS": {
+        "MSG_INITIAL": "Ingresa el código que se encuentra en la mesa",
+        "CANCEL": "Cancelar",
+        "ENTER": "Ingresar código",
+        "CODE_NOT_FOUND": "Código no encontrado",
+        "TRY_AGAIN": "Por favor intenta nuevamente"
     }
 }

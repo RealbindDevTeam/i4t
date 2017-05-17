@@ -28,6 +28,13 @@
     "VALIDATE" : "Validate",
     "TIP_PERCENTAGE": "Tip percentage",
     "CLOSE": "Close",
+    "ORDER_STATUS": {
+        "REGISTERED": "Registered",
+        "IN_PROCESS": "In Process",
+        "PREPARED": "Prepared",
+        "CANCELED": "Canceled",
+        "CLOSED": "Closed"
+    },
     "DATE_VALIDATE" : {
         "DAY_FORMAT" : "Day format incorrect",
         "MONTH_FORMAT" : "Month format incorrect",
@@ -566,7 +573,8 @@
         "SELECT_ADDITIONS": "Please select the desired additions",
         "TOTAL_PRICE": "Total Price",
         "ADD_ITEM": "Add Item to Order",
-        "SHOW_ALL": "Show All"
+        "SHOW_ALL": "Show All",
+        "COOKING_TIME": "Cooking Time"
     },
     "ORDER_LIST": {
         "TABLE_ORDERS": "Table Orders",
@@ -592,7 +600,14 @@
         "SELECT_ADDITIONS": "Please select the desired additions",
         "TOTAL_PRICE": "Total Price",
         "MODIFY_ITEM": "Modify Item",
-        "DELETE_ITEM": "Delete Item"
+        "DELETE_ITEM": "Delete Item",
+        "DELETE_ORDER": "Are you sure to delete the item from the order?",
+        "CANCEL_ORDER_CONFIRM": "Are you sure to cancel the order?",
+        "ORDER_CANT_CANCEL": "The order Can not be canceled.",
+        "CONFIRM_ORDER_MESSAGE": "Are you sure to confirm the order?",
+        "ORDER_ITEMS_UNAVAILABLE": "The order displays items that are not available. Please verify your order.",
+        "ORDER_CANT_CONFIRM": "Order can not be confirmed",
+        "COOKING_TIME": "Cooking Time"
     },
     "WAITER_CALL": {
         "TITTLE": "Call waiter",
@@ -637,5 +652,12 @@
             "DIAN_NUMERATION_TO": "To",
             "ENTER_TIP_PERCENTAGE": "Enter the percentage of the suggested tip ( 0% - 100% ). You can enter the value or use the Slider"              
         }
+    },
+    "ORDERS": {
+        "MSG_INITIAL": "Ingresa el código que se encuentra en la mesa",
+        "CANCEL": "Cancel",
+        "ENTER": "Enter Code",
+        "CODE_NOT_FOUND": "Code Not Found",
+        "TRY_AGAIN": "Please try again"
     }
 }
