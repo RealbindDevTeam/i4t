@@ -45,7 +45,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
             width  : '450px',
         });
         this._mdDialogRef.componentInstance._totalValue = 22200;
-        this._mdDialogRef.componentInstance._tipPorcentage = 0.10;
+        this._mdDialogRef.componentInstance._tipPorcentage = 0;
         this._mdDialogRef.afterClosed();
     }
 

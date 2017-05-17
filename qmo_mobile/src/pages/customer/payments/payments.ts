@@ -50,7 +50,7 @@ export class PaymentsPage implements OnInit, OnDestroy {
   }
 
   goToPaymentDetails(){
-    this._navCtrl.push(PaymentDetailsPage, { total_value : 22200, tip : 0.10 });
+    this._navCtrl.push(PaymentDetailsPage, { total_value : 22200, tip : 0 });
   }
 
 }

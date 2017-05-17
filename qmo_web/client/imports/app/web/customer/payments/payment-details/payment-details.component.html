@@ -17,14 +17,14 @@
                 <div class="item-inner">
                     <div class="input">
                         <div class="label">
-                            <h3>SubTotal:</h3>
-                            <h3>INC (8%):</h3>
-                            <h3>Total:</h3>
+                            <h3>{{'PAYMENTS.SUBTOTAL' | translate}}</h3>
+                            <h3>{{'PAYMENTS.INC' | translate}} (8%)</h3>
+                            <h3>{{'PAYMENTS.TOTAL' | translate}}</h3>
                         </div>
                     </div>
                     <div style="text-align: end">
-                        <p>{{_ipoComBaseValue}} COP</p>
-                        <p>{{_ipoComValue}} COP</p>
+                        <p>{{_ipoComBaseString}} COP</p>
+                        <p>{{_ipoComString}} COP</p>
                         <h3>{{_subTotal}} COP</h3>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                 <div class="item-inner">
                     <div class="input">
                         <div class="label">
-                            <h3>Propina:</h3>
+                            <h3>{{'PAYMENTS.TIPS' | translate}}</h3>
                         </div>
                     </div>
                     <div>
@@ -46,7 +46,7 @@
                     <div class="item-inner">
                         <div class="input">
                             <div class="label">
-                                <h2>TOTAL A PAGAR: </h2>
+                                <h2>{{'PAYMENTS.TOTAL_TO_PAY' | translate}} </h2>
                             </div>
                         </div>
                         <div>
