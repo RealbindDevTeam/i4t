@@ -11,13 +11,29 @@ import {CodeHighlighterDirective} from './layout/code-highlighter/code-highlight
 import {SearchService} from './services/search.service';
 import {NavigationModule} from '../web/navigation/navigation.module';
 import {NavigationService} from '../web/navigation/navigation.service';
+import {PaymentItemDetailComponent} from "../web/customer/payments/payment-details/payment-item-detail.component";
 
 @NgModule({
   declarations : [
-    WidgetComponent, CodeHighlighterDirective
+    WidgetComponent, 
+    CodeHighlighterDirective,
+    PaymentItemDetailComponent
   ],
-  exports : [FormsModule, HttpModule, CommonModule, MaterialModule, FlexLayoutModule, NavigationModule, WidgetComponent, CodeHighlighterDirective],
-  imports : [FormsModule, HttpModule, CommonModule, MaterialModule, FlexLayoutModule, NavigationModule]
+  exports : [ FormsModule, 
+              HttpModule, 
+              CommonModule, 
+              MaterialModule, 
+              FlexLayoutModule, 
+              NavigationModule, 
+              WidgetComponent, 
+              CodeHighlighterDirective,
+              PaymentItemDetailComponent ],
+  imports : [ FormsModule, 
+              HttpModule, 
+              CommonModule, 
+              MaterialModule, 
+              FlexLayoutModule, 
+              NavigationModule ]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

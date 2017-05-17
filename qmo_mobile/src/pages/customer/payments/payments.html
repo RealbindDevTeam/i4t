@@ -36,8 +36,8 @@
 
 <ion-footer class="ion-footer-custom" padding>
     <div>
-        <button class="button-secundary"  style="float:left; width: 45%" ion-button>{{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}</button>
-        <button class="button-secundary"  style="float: right; width: 45%" ion-button>{{'MOBILE.PAYMENTS.VIEW_DETAIL' | translate}}</button>
+        <button class="button-secundary" style="float:left; width: 45%" ion-button>{{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}</button>
+        <button class="button-secundary" style="float: right; width: 45%" (click)="goToPaymentDetails()" ion-button>{{'MOBILE.PAYMENTS.VIEW_DETAIL' | translate}}</button>
     </div>
     <div>
         <ion-list style="margin-bottom: 0px">
