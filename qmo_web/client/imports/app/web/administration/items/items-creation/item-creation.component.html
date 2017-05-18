@@ -5,27 +5,19 @@
                  <md-tab [disabled]="!canMove(0)" label="{{'ITEMS.SECTIONS_CATEGORIES' | translate}}">
                      <md-card>
                         <md-card-title>{{'ITEMS.SECTIONS_CATEGORIES' | translate}}</md-card-title>
-                        <md-card-subtitle>{{'ITEMS.SECTIONS_CATEGORIES_TEXT' | translate}}</md-card-subtitle>
+                        <md-card-subtitle class="subtitle">{{'ITEMS.SECTIONS_CATEGORIES_TEXT' | translate}}</md-card-subtitle>
                         <md-card-content>
-                            <table style="width: 100%" cellspacing="0">
-                                <tr>
-                                    <td>
-                                        <md-select formControlName="section" placeholder="{{'ITEMS.SELECT_SECTION' | translate}}" style="width: 95%;" [(ngModel)]="_selectedSectionValue">
-                                            <md-option *ngFor="let sec of _sections | async" (click)="changeSection(sec._id);" value="{{sec._id}}">{{sec.name}}</md-option>
-                                        </md-select>
-                                    </td>
-                                    <td>
-                                        <md-select formControlName="category" placeholder="{{'ITEMS.SELECT_CATEGORY' | translate}}" style="width: 95%;" [(ngModel)]="_selectedCategoryValue">
-                                            <md-option *ngFor="let cat of _categories | async" (click)="changeCategory(cat._id);" value="{{cat._id}}">{{cat.name}}</md-option>
-                                        </md-select>
-                                    </td>
-                                    <td>
-                                        <md-select formControlName="subcategory" placeholder="{{'ITEMS.SELECT_SUBCATEGORY' | translate}}" style="width: 95%;" [(ngModel)]="_selectedSubcategoryValue">
-                                            <md-option *ngFor="let subcat of _subcategories | async" (click)="changeSubcategory(subcat._id);" value="{{subcat._id}}">{{subcat.name}}</md-option>
-                                        </md-select>
-                                    </td>
-                                </tr>
-                            </table>
+                            <div>
+                                <md-select formControlName="section" placeholder="{{'ITEMS.SELECT_SECTION' | translate}}" [(ngModel)]="_selectedSectionValue" style="width: 30%;">
+                                    <md-option *ngFor="let sec of _sections | async" (click)="changeSection(sec._id);" value="{{sec._id}}">{{sec.name}}</md-option>
+                                </md-select>
+                                <md-select formControlName="category" placeholder="{{'ITEMS.SELECT_CATEGORY' | translate}}" [(ngModel)]="_selectedCategoryValue" style="width: 30%;margin-left: 3%;">
+                                    <md-option *ngFor="let cat of _categories | async" (click)="changeCategory(cat._id);" value="{{cat._id}}">{{cat.name}}</md-option>
+                                </md-select>
+                                <md-select formControlName="subcategory" placeholder="{{'ITEMS.SELECT_SUBCATEGORY' | translate}}" [(ngModel)]="_selectedSubcategoryValue" style="width: 30%;margin-left: 3%;">
+                                    <md-option *ngFor="let subcat of _subcategories | async" (click)="changeSubcategory(subcat._id);" value="{{subcat._id}}">{{subcat.name}}</md-option>
+                                </md-select>
+                            </div>
                         </md-card-content>
                         <md-card-actions align="end">
                             <button md-raised-button (click)="cancel()">{{'CANCEL' | translate}}</button>
@@ -38,97 +30,68 @@
                         <md-card-title>{{'ITEMS.GENERAL_INFORMATION' | translate}}</md-card-title>
                         <md-card-subtitle>{{'ITEMS.GENERAL_TEXT' | translate}}</md-card-subtitle>
                         <md-card-content>
-                            <table style="width: 100%" cellspacing="0">
-                                <tr>
-                                    <td colspan="3">
-                                        <md-input-container style="width: 95%">
-                                            <input mdInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="55" #inputName>
-                                            <md-hint align="end">{{inputName.value.length}} / 55</md-hint>
-                                        </md-input-container>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <md-input-container style="width: 100%">
-                                            <input mdInput required formControlName="price" placeholder="{{'PRICING' | translate}}" minlength="1" maxlength="20" #inputPrice>
-                                            <md-hint align="end">{{inputPrice.value.length}} / 20</md-hint>
-                                            <span md-prefix>$&nbsp;</span>
-                                        </md-input-container>
-                                    </td>
-                                    <td>
-                                        <md-input-container style="width: 95%">
-                                            <input mdInput formControlName="taxPercentage" placeholder="{{'ITEMS.TAX_PERCENTAGE' | translate}}" maxlength="3" #inputTaxPercentage>
-                                            <md-hint align="end">{{inputTaxPercentage.value.length}} / 3</md-hint>
-                                        </md-input-container>
-                                    </td>
-                                    <td>
-                                        <md-slide-toggle formControlName="observations">{{'ITEMS.OBSERVATIONS' | translate}}</md-slide-toggle>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3">
-                                        <md-input-container style="width: 100%">
-                                            <textarea mdInput required formControlName="description" placeholder="{{'DESCRIPTION' | translate}}" minlength="1" maxlength="200" #inputDesc></textarea>
-                                            <md-hint align="end">{{inputDesc.value.length}} / 200</md-hint>
-                                        </md-input-container>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3">
-                                        <label>* {{'ITEMS.ITEM_RESTAURANTS' | translate}}</label>
-                                        <div style="margin-top: 10px">
-                                            <div *ngFor="let rest of _restaurants | async">
-                                                <label>- {{rest.name}}</label>
-                                                <label></label>
-                                            </div>
+                            <div>
+                                <md-input-container class="name">
+                                    <input mdInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="55" #inputName>
+                                    <md-hint align="end">{{inputName.value.length}} / 55</md-hint>
+                                </md-input-container>
+                                <md-slide-toggle formControlName="observations" class="toogle">{{'ITEMS.OBSERVATIONS' | translate}}</md-slide-toggle>
+                            </div>
+                            <div>
+                                <md-input-container class="description">
+                                    <textarea mdInput required formControlName="description" placeholder="{{'DESCRIPTION' | translate}}" minlength="1" maxlength="200" #inputDesc></textarea>
+                                    <md-hint align="end">{{inputDesc.value.length}} / 200</md-hint>
+                                </md-input-container>
+                                <div class="image">
+                                    <p>{{'ITEMS.ADD_IMAGE' | translate}}:</p>
+                                    <input formControlName="image" accept=".png, .jpg, .jpeg" (change)="onChangeImage($event)" style="display: none" type="file" name="file-1[]" id="file-1" class="inputfile inputfile-1" data-multiple-caption="{count} files selected"/>
+                                    <label for="file-1"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg>
+                                        <span *ngIf="!_createImage">{{'CHOOSE_FILE' | translate}}&hellip;</span>
+                                        <span *ngIf="_createImage">{{_nameImageFile}}&hellip;</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <md-select formControlName="cookingTime" placeholder="{{'ITEMS.COOKING_TIME' | translate}}" style="width: 30%;margin-top: 2%;">
+                                    <md-option value="5 min aprox">5 min aprox</md-option>
+                                    <md-option value="15 min aprox">15 min aprox</md-option>
+                                    <md-option value="30 min aprox">30 min aprox</md-option>
+                                    <md-option value="45 min aprox">45 min aprox</md-option>
+                                    <md-option value="1 h aprox">1 h aprox</md-option>
+                                    <md-option value="1 h 15 min aprox">1 h 15 min aprox</md-option>
+                                    <md-option value="1 h 30 min aprox">1 h 30 min aprox</md-option>
+                                    <md-option value="1 h 45 min aprox">1 h 45 min aprox</md-option>
+                                    <md-option value="2 h aprox">2 h aprox</md-option>
+                                    <md-option value="+ 2 h aprox">+ 2 h aprox</md-option>                                                                        
+                                </md-select>
+                            </div>
+                            <div class="restaurants">
+                                <p *ngIf="!_showRestaurants">{{'ITEMS.NO_RESTAURANTS' | translate}}</p>
+                                <div *ngIf="_showRestaurants" formGroupName="restaurants">
+                                    <md-checkbox *ngFor="let restaurant of _restaurantList" [formControlName]="restaurant.name" [class.invalid]="!_itemForm.controls.restaurants.valid" class="checkbox" (change)="onCheckRestaurant(restaurant.name, $event)">{{restaurant.name}}</md-checkbox>
+                                </div>
+                            </div>
+                            <div>
+                                <p *ngIf="!_showCurrencies">{{'ITEMS.NO_RESTAURANTS_SELECTED' | translate}}</p>
+                                <p *ngIf="_showCurrencies" class="label">{{'ITEMS.ENTER_PRICE' | translate}}</p>
+                                <p *ngIf="_showTaxes" class="label">{{'ITEMS.ENTER_TAX' | translate}}</p>
+                                <div *ngFor="let currency of _currencies | async">
+                                    <div *ngIf="_showCurrencies" formGroupName="currencies" class="currencies">
+                                        <div *ngFor="let cur of _restaurantCurrencies">
+                                            <md-input-container *ngIf="currency._id === cur" class="currency">
+                                                <input mdInput required [formControlName]="cur" [class.invalid]="!_itemForm.controls.currencies.valid" type="number" placeholder="{{'ITEMS.ITEM_PRICE' | translate}}" min="0" [step]="currency.decimal">
+                                                <span mdSuffix>{{currency.code}} - {{currency.name | translate}} </span>
+                                            </md-input-container>
                                         </div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </md-card-content>
-                        <md-card-actions align="end">
-                            <button md-raised-button (click)="previous()" [disabled]="!canMove(0)">{{'BACK' | translate}}</button>
-                            <button md-raised-button (click)="next()" [disabled]="!canMove(2)">{{'NEXT' | translate}}</button>
-                        </md-card-actions>
-                     </md-card>
-                 </md-tab>
-                 <md-tab [disabled]="!canMove(2)" label="{{'ITEMS.IMAGE' | translate}}">
-                     <md-card>
-                        <md-card-title>{{'ITEMS.IMAGE_INFORMATION' | translate}}</md-card-title>
-                        <md-card-subtitle>{{'ITEMS.IMAGE_TEXT' | translate}}</md-card-subtitle>
-                        <md-card-content>
-                            <table style="width: 100%" cellspacing="0">
-                                <tr>
-                                    <td>
-                                        <input formControlName="image" accept=".png, .jpg, .jpeg" (change)="onChangeImage($event)" style="display: none" type="file" name="file-1[]" id="file-1" class="inputfile inputfile-1" data-multiple-caption="{count} files selected"/>
-                                        <label for="file-1"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg>
-                                            <span *ngIf="!_createImage">{{'CHOOSE_FILE' | translate}}&hellip;</span>
-                                            <span *ngIf="_createImage">{{_nameImageFile}}&hellip;</span>
-                                        </label>
-                                    </td>
-                                </tr>
-                            </table>
-                        </md-card-content>
-                        <md-card-actions align="end">
-                            <button md-raised-button (click)="previous()" [disabled]="!canMove(0)">{{'BACK' | translate}}</button>
-                            <button md-raised-button (click)="next()" [disabled]="!canMove(2)">{{'NEXT' | translate}}</button>
-                        </md-card-actions>
-                     </md-card>
-                 </md-tab>
-                 <md-tab [disabled]="!canMove(2)" label="{{'ITEMS.GARNISHFOOD' | translate}}">
-                    <md-card>
-                        <md-card-title>{{'ITEMS.GARNISHFOOD_INFORMATION' | translate}}</md-card-title>
-                        <md-card-subtitle>{{'ITEMS.GARNISHFOOD_TEXT' | translate}}</md-card-subtitle>
-                        <md-card-content>
-                            <md-slide-toggle style="display: inline-block;" [checked]="_checkedGarnishFood" (change)="changeGarnishFoodCheck()" formControlName="garnishFoodIsAcceped">{{'ITEMS.ALLOW_ITEM_GARNISHFOOD' | translate}}</md-slide-toggle>
-                            <md-input-container style="width: 40%;display: inline-block;padding-left: 2%;">
-                                <input mdInput required type="number" [(ngModel)]="_garnishFoodQuantity" formControlName="garnishFoodQuantity" placeholder="{{'ITEMS.ITEM_GARNISHFOOD_QUANTITY' | translate}}" #inputGarnishQuantity>
-                            </md-input-container>
-                            <div *ngIf="_checkedGarnishFood">
-                                <p><label *ngIf="!_showGarnishFood" class="label-field-void">{{'ITEMS.NOT_GARNISHFOOD' | translate}}</label></p>
-                                <div *ngIf="_showGarnishFood" formGroupName="garnishFood" style="padding-top: 20px">
-                                    <md-checkbox *ngFor="let garnish of _garnishFood" [formControlName]="garnish.name" [class.invalid]="!_itemForm.controls.garnishFood.valid" style="padding-right: 15px">{{garnish.name}}</md-checkbox>
-                                    <label></label>
+                                    </div>
+                                    <div *ngIf="_showTaxes" formGroupName="taxes" class="taxes">
+                                        <div *ngFor="let tax of _restaurantTaxes">
+                                            <md-input-container *ngIf="currency._id === tax" class="tax">
+                                                <input mdInput required [formControlName]="tax" [class.invalid]="!_itemForm.controls.taxes.valid" type="number" placeholder="{{'ITEMS.TAXES' | translate}}" min="0" max="100">
+                                                <span mdSuffix>% {{currency.code}} - {{currency.name | translate}} </span>
+                                            </md-input-container>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </md-card-content>
@@ -136,19 +99,28 @@
                             <button md-raised-button (click)="previous()" [disabled]="!canMove(0)">{{'BACK' | translate}}</button>
                             <button md-raised-button (click)="next()" [disabled]="!canMove(2)">{{'NEXT' | translate}}</button>
                         </md-card-actions>
-                    </md-card>
+                     </md-card>
                  </md-tab>
-                 <md-tab [disabled]="!canMove(2)" label="{{'ITEMS.ADDITIONS' | translate}}">
+                 <md-tab [disabled]="!canMove(2)" label="{{'ITEMS.ADDITION_GARNISHFOOD' | translate}}">
                     <md-card>
-                        <md-card-title>{{'ITEMS.ADDITIONS_INFORMATION' | translate}}</md-card-title>
-                        <md-card-subtitle>{{'ITEMS.ADDITIONS_TEXT' | translate}}</md-card-subtitle>
+                        <md-card-title>{{'ITEMS.ADDITION_GARNISHFOOD_TITLE' | translate}}</md-card-title>
+                        <md-card-subtitle>{{'ITEMS.ADDITION_GARNISHFOOD_SUBTITLE' | translate}}</md-card-subtitle>
                         <md-card-content>
-                            <md-slide-toggle formControlName="additionsIsAccepted" [checked]="_checkedAdditions" (change)="changeAdditionCheck()">{{'ITEMS.ALLOW_ITEM_ADDITIONS' | translate}}</md-slide-toggle>
-                            <div *ngIf="_checkedAdditions">
-                                <p><label *ngIf="!_showAdditions" class="label-field-void">{{'ITEMS.NOT_ADDITIONS' | translate}}</label></p>
-                                <div *ngIf="_showAdditions" formGroupName="additions" style="padding-top: 20px">
-                                    <md-checkbox *ngFor="let addition of _additions" [formControlName]="addition.name" [class.invalid]="!_itemForm.controls.additions.valid" style="padding-right: 15px">{{addition.name}}</md-checkbox>
-                                    <label></label>
+                            <p *ngIf="!_showGarnishFood">{{'ITEMS.NOT_GARNISHFOOD' | translate}}</p>
+                            <div *ngIf="_showGarnishFood">
+                                <p>{{'ITEMS.GARNISHFOOD_TEXT' | translate}}</p>
+                                <md-input-container style="width: 25%;margin-top: 1%;">
+                                    <input mdInput required type="number" formControlName="garnishFoodQuantity" placeholder="{{'ITEMS.GARNISHFOOD_ALLOWED' | translate}}" min="0" #inputGarnishQuantity>
+                                </md-input-container>
+                                <div formGroupName="garnishFood">
+                                    <md-checkbox *ngFor="let garnish of _garnishFood" [formControlName]="garnish.name" [class.invalid]="!_itemForm.controls.garnishFood.valid" class="checkbox">{{garnish.name}}</md-checkbox>
+                                </div>
+                            </div>
+                            <p *ngIf="!_showAdditions">{{'ITEMS.NOT_ADDITIONS' | translate}}</p>
+                            <div *ngIf="_showAdditions">
+                                <p>{{'ITEMS.ADDITIONS_TEXT' | translate}}:</p>
+                                <div formGroupName="additions">
+                                    <md-checkbox *ngFor="let addition of _additions" [formControlName]="addition.name" [class.invalid]="!_itemForm.controls.additions.valid" class="checkbox">{{addition.name}}</md-checkbox>
                                 </div>
                             </div>
                         </md-card-content>

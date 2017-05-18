@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -6,12 +6,13 @@ import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
 import { Order, OrderItem } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
-import { Item } from '../../../../../../../both/models/administration/item.model';
-import { Items } from '../../../../../../../both/collections/administration/item.collection';
+import { Item, ItemImage, ItemImageThumb } from '../../../../../../../both/models/administration/item.model';
+import { Items, ItemImages, ItemImagesThumbs } from '../../../../../../../both/collections/administration/item.collection';
 import { GarnishFood } from '../../../../../../../both/models/administration/garnish-food.model';
 import { GarnishFoodCol } from '../../../../../../../both/collections/administration/garnish-food.collection';
 import { Addition } from '../../../../../../../both/models/administration/addition.model';
 import { Additions } from '../../../../../../../both/collections/administration/addition.collection';
+import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
 
 import template from './order-list.component.html';
 import style from './order-list.component.scss';
@@ -25,11 +26,16 @@ export class OrdersListComponent implements OnInit, OnDestroy {
 
     @Input() restaurantId: string;
     @Input() tableQRCode: string;
+    @Input() restaurantCurrency: string;
     
+    private _user = Meteor.userId();
     private _ordersSub: Subscription;
     private _itemsSub: Subscription;
     private _garnishFoodSub: Subscription;
     private _additionsSub: Subscription;
+    private _itemImagesSub: Subscription;
+    private _itemImageThumbsSub: Subscription;
+    private _currenciesSub: Subscription;
 
     private _orders: Observable<Order[]>;
     private _ordersTable: Observable<Order[]>;
@@ -47,8 +53,6 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     private _garnishFormGroup: FormGroup = new FormGroup({});
     private _additionsFormGroup: FormGroup= new FormGroup({});
 
-    private _createdGarnishFood: GarnishFood[] = [];
-    private _createdAdditions: Addition[] = [];
     private _orderItemGarnishFood:string[] = [];
     private _orderItemAdditions: string[] = [];
 
@@ -61,6 +65,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     private _finalPrice:number = 0;
     private _unitPrice: number = 0;
     private _orderItemIndex: number = -1;
+    private _currencyCode: string;
 
     private _showCustomerOrders: boolean = true;
     private _showOtherOrders: boolean = false;
@@ -73,7 +78,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * OrdersComponent Constructor
      * @param {TranslateService} _translate 
      */
-    constructor( private _translate: TranslateService ) {
+    constructor( private _translate: TranslateService, private _ngZone: NgZone ) {
         var _userLang = navigator.language.split( '-' )[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
@@ -83,12 +88,18 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit(){
-        this._ordersSub = MeteorObservable.subscribe( 'getOrders', this.restaurantId, this.tableQRCode,[ 'REGISTERED','IN_PROCESS','CONFIRMED', 'PREPARED' ] ).subscribe();
-        this._orders = Orders.find( { creation_user: Meteor.userId() } ).zone();
-        this._ordersTable = Orders.find( { creation_user: { $not: Meteor.userId() } } ).zone();
-        this._itemsSub = MeteorObservable.subscribe( 'itemsByRestaurant', this.restaurantId ).subscribe();
-        this._items = Items.find( { } ).zone();
-
+        this._ordersSub = MeteorObservable.subscribe( 'getOrders', this.restaurantId, this.tableQRCode,[ 'ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED' ] ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._orders = Orders.find( { creation_user: this._user } ).zone();
+                this._ordersTable = Orders.find( { creation_user: { $not: this._user } } ).zone();
+            });
+        });
+        this._itemsSub = MeteorObservable.subscribe( 'itemsByRestaurant', this.restaurantId ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._items = Items.find( { } ).zone();
+            });
+        });
+    
         this._showOrderItemDetail = false;
 
         this._editOrderItemForm = new FormGroup({
@@ -97,10 +108,23 @@ export class OrdersListComponent implements OnInit, OnDestroy {
             additions: this._additionsFormGroup
         });
 
-        this._garnishFoodSub = MeteorObservable.subscribe( 'garnishFoodByRestaurant', this.restaurantId ).subscribe();
-        this._garnishFoodCol = GarnishFoodCol.find( { } ).zone();
-        this._additionsSub = MeteorObservable.subscribe( 'additionsByRestaurant', this.restaurantId ).subscribe();
-        this._additions = Additions.find( { } ).zone();
+        this._garnishFoodSub = MeteorObservable.subscribe( 'garnishFoodByRestaurant', this.restaurantId ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._garnishFoodCol = GarnishFoodCol.find( { } ).zone();
+            });
+        });
+        this._additionsSub = MeteorObservable.subscribe( 'additionsByRestaurant', this.restaurantId ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._additions = Additions.find( { } ).zone();
+            });
+        });
+        this._itemImagesSub = MeteorObservable.subscribe( 'itemImagesByRestaurant', this.restaurantId ).subscribe();
+        this._itemImageThumbsSub = MeteorObservable.subscribe( 'itemImageThumbsByRestaurant', this.restaurantId ).subscribe();
+        this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId',[ this.restaurantId ] ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._currencyCode = Currencies.findOne( { _id: this.restaurantCurrency } ).code + ' ';
+            });
+        });
     }
 
     /**
@@ -123,6 +147,28 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         }
         this._showDetails = false;
         this.viewItemDetail( true );
+    }
+
+    /**
+     * Get Item Image
+     * @param {string} _pItemId
+     */
+    getItemImage( _pItemId: string ):string{
+        let _lItemImage: ItemImageThumb = ItemImagesThumbs.findOne( { itemId: _pItemId } );
+        if( _lItemImage ){
+            return _lItemImage.url;
+        }
+    }
+
+    /**
+     * Get Item Image
+     * @param {string} _pItemId
+     */
+    getItemDetailImage( _pItemId: string ):string{
+        let _lItemImage: ItemImage = ItemImages.findOne( { itemId: _pItemId } );
+        if( _lItemImage ){
+            return _lItemImage.url;
+        }
     }
 
     /**
@@ -153,14 +199,14 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {string} _pItemId 
      */
     deleteOrderItem( _pItemId:string ):void{
-        if( confirm( "Esta seguro de eliminar el item de la orden?" ) ) {
+        if( confirm( this.itemNameTraduction("ORDER_LIST.DELETE_ORDER") ) ) {
             let _lOrderItemToremove:OrderItem = this._currentOrder.items.filter( o => _pItemId === o.itemId )[0];
             let _lNewTotalPayment:number = this._currentOrder.totalPayment - _lOrderItemToremove.paymentItem;
 
             Orders.update( { _id: this._currentOrder._id },{ $pull: { items:{ itemId: _pItemId } } } );
             Orders.update( { _id: this._currentOrder._id }, 
                            { $set: { totalPayment: _lNewTotalPayment, 
-                                     modification_user: Meteor.userId(), 
+                                     modification_user: this._user, 
                                      modification_date: new Date() 
                                    } 
                            } 
@@ -182,9 +228,11 @@ export class OrdersListComponent implements OnInit, OnDestroy {
             this._orderCustomerIndex = _pIndex;
         }
 
-        if( _pOrder.status === 'REGISTERED' ){
+        if( _pOrder.status === 'ORDER_STATUS.REGISTERED' ){
             this._customerCanEdit = true;
+            this._editOrderItemForm.controls['observations'].enable();
         } else {
+            this._editOrderItemForm.controls['observations'].disable();
             this._customerCanEdit = false;
         }
         this._orderOthersIndex = -1;
@@ -208,6 +256,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
             this._orderOthersIndex = _pIndex;
         }
         this._orderCustomerIndex = -1;
+        this._editOrderItemForm.controls['observations'].disable();
         this._customerCanEdit = false;
         this._currentOrder = _pOrder;
         this.resetEditionValues();
@@ -256,8 +305,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * When orderItem is in edited mode, this function prepare their garnish food elements
      */
     prepareGarnishFoodToEdit():void{
-        this._createdGarnishFood = GarnishFoodCol.collection.find( { } ).fetch();
-        for( let gar of this._createdGarnishFood ){
+        GarnishFoodCol.collection.find( { } ).fetch().forEach( ( gar ) => {
             let _lGarnishFood:GarnishFood = gar;
             let find = this._orderItemGarnishFood.filter( g => g === _lGarnishFood._id );
 
@@ -276,15 +324,14 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                     this._garnishFormGroup.addControl( gar.name, control );
                 }
             }
-        }
+        });
     }
 
     /**
      * When orderItem is in edited mode, this function prepare their addition elements
      */
     prepareAdditionsToEdit():void{
-        this._createdAdditions = Additions.collection.find( { } ).fetch();
-        for( let add of this._createdAdditions ){
+        Additions.collection.find( { } ).fetch().forEach( ( add ) => {
             let _lAddition:Addition = add;
             let find = this._orderItemAdditions.filter( a => a === _lAddition._id );
 
@@ -303,7 +350,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                     this._additionsFormGroup.addControl( add.name, control );
                 }
             }
-        }
+        });
     }
 
     /**
@@ -318,8 +365,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * Set item unit price
      * @param {number} _pItemPrice
      */
-    setUnitPrice( _pItemPrice:number ):void{
-        this._unitPrice = _pItemPrice;
+    setUnitPrice( _pItemPrice:Item ):void{
+        this._unitPrice = this.getItemPrice( _pItemPrice );
     }
 
     /**
@@ -379,7 +426,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {any} _event 
      * @param {number} _price 
      */
-    calculateFinalPriceGarnishFood( _event:any, _price:number ):void{
+    calculateFinalPriceGarnishFood( _event:any, _pGarnishFood:GarnishFood ):void{
+        let _price = _pGarnishFood.restaurants.filter( r => r.restaurantId === this.restaurantId )[0].price;
         if( _event.checked ){
             this._finalPrice =  ( Number.parseInt( this._finalPrice.toString() ) + ( Number.parseInt( _price.toString() ) * this._quantityCount ) );
             this._garnishFoodElementsCount += 1;
@@ -396,7 +444,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {any} _event 
      * @param {number} _price 
      */
-    calculateFinalPriceAddition( _event:any, _price:number ):void{
+    calculateFinalPriceAddition( _event:any, _pAddition:Addition ):void{
+        let _price = _pAddition.restaurants.filter( r => r.restaurantId === this.restaurantId )[0].price;
         if( _event.checked ){
             this._finalPrice =  ( Number.parseInt( this._finalPrice.toString() ) + ( Number.parseInt( _price.toString() ) * this._quantityCount ) );
         } else {
@@ -446,7 +495,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
             Orders.update( { _id: this._currentOrder._id },{ $pull: { items:{ itemId: _lOrderItem.itemId, index: _lOrderItem.index } } } );
             Orders.update( { _id: this._currentOrder._id }, 
                            { $set: { totalPayment: _lNewTotalPayment, 
-                                     modification_user: Meteor.userId(), 
+                                     modification_user: this._user, 
                                      modification_date: new Date() 
                                    } 
                            } 
@@ -461,7 +510,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
             Orders.update({ _id: _lOrder._id },
                           {
                              $set: {
-                                    modification_user: Meteor.userId(),
+                                    modification_user: this._user,
                                     modification_date: new Date(),
                                     totalPayment: _lTotalPaymentAux
                                    }
@@ -478,16 +527,16 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {Order} _pOrder 
      */
     cancelCustomerOrder( _pOrder: Order ){
-        if( confirm( "Esta seguro de cancelar la orden?" ) ) {
-            if( _pOrder.status === 'REGISTERED' ){
-                Orders.update( { _id: _pOrder._id }, { $set: { status: 'CANCELED', modification_user: Meteor.userId(),
+        if( confirm( this.itemNameTraduction( "ORDER_LIST.CANCEL_ORDER_CONFIRM" ) ) ) {
+            if( _pOrder.status === 'ORDER_STATUS.REGISTERED' ){
+                Orders.update( { _id: _pOrder._id }, { $set: { status: 'ORDER_STATUS.CANCELED', modification_user: this._user,
                                                             modification_date: new Date() 
                                                             } 
                                                     } 
                             );
                 this._showDetails = false;
             } else {
-                alert('La orden No se puede cancelar.');
+                alert( this.itemNameTraduction( "ORDER_LIST.ORDER_CANT_CANCEL" ) );
             }
             this.viewItemDetail( true );
         }
@@ -499,8 +548,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      */
     confirmCustomerOrder( _pOrder: Order ){
         let _lItemsIsAvailable: boolean = true;
-        if( confirm( "Esta seguro de confirmar la orden?" ) ) {
-            if( _pOrder.status === 'REGISTERED' ){
+        if( confirm( this.itemNameTraduction( "ORDER_LIST.CONFIRM_ORDER_MESSAGE" ) ) ) {
+            if( _pOrder.status === 'ORDER_STATUS.REGISTERED' ){
                 let _lOrderItems: OrderItem[] = _pOrder.items;
                 _lOrderItems.forEach( ( it ) => {
                     let _lItem:Item = Items.findOne( { _id: it.itemId } );
@@ -509,20 +558,57 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                     }
                 });
                 if( _lItemsIsAvailable ){
-                    Orders.update( { _id: _pOrder._id }, { $set: { status: 'CONFIRMED', modification_user: Meteor.userId(),
+                    Orders.update( { _id: _pOrder._id }, { $set: { status: 'ORDER_STATUS.IN_PROCESS', modification_user: this._user,
                                                                    modification_date: new Date() 
                                                                  } 
                                                          } 
                                  );
                     this._showDetails = false;
                 } else {
-                    alert('La orden presenta items que no se encuentran disponibles');
+                    alert( this.itemNameTraduction( "ORDER_LIST.ORDER_ITEMS_UNAVAILABLE" ) );
                 }
             } else {
-                alert('La orden no se puede confirmar');
+                alert( this.itemNameTraduction( "ORDER_LIST.ORDER_CANT_CONFIRM" ) );
             }
             this.viewItemDetail( true );
+            this._orderCustomerIndex = -1;
         }
+    }
+
+    /**
+     * Return traduction
+     * @param {string} itemName 
+     */
+    itemNameTraduction(itemName: string): string{
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res; 
+        });
+        return wordTraduced;
+    }
+
+    /**
+     * Return Item price by current restaurant
+     * @param {Item} _pItem 
+     */
+    getItemPrice( _pItem:Item ): number{
+        return _pItem.restaurants.filter( r => r.restaurantId === this.restaurantId )[0].price;
+    }
+
+    /**
+     * Return addition information
+     * @param {Addition} _pAddition
+     */
+    getAdditionInformation( _pAddition:Addition ):string {
+        return _pAddition.name + ' - ' + _pAddition.restaurants.filter( r => r.restaurantId === this.restaurantId )[0].price + ' ';
+    }
+
+    /**
+     * Return garnish food information
+     * @param {GarnishFood} _pGarnishFood
+     */
+    getGarnishFoodInformation( _pGarnishFood:GarnishFood ):string{
+        return _pGarnishFood.name + ' - ' + _pGarnishFood.restaurants.filter( r => r.restaurantId === this.restaurantId )[0].price + ' ';
     }
 
     /**
@@ -533,5 +619,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         this._itemsSub.unsubscribe();
         this._garnishFoodSub.unsubscribe();
         this._additionsSub.unsubscribe();
+        this._itemImagesSub.unsubscribe();
+        this._currenciesSub.unsubscribe();
+        this._itemImageThumbsSub.unsubscribe();
     }
 }

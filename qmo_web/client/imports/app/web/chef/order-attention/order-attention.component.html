@@ -1,90 +1,45 @@
-<md-tab-group>
-  <md-tab label="{{'ORDER_ATTENTION.ORDERS_CONFIRMED' | translate}}">
-    <div class="order-content">
-        <md-toolbar *ngFor="let order of _ordersConfirmed | async;" class="order" (click)="showOrderConfirmedDetail(order)">
-            <i class="fa fa-list-alt" aria-hidden="true" style="margin-right: 1%;"></i>
-            <span class="order-code">{{'ORDER_ATTENTION.ORDER' | translate}} # {{order.code}}</span>
-            <span class="app-flex-filler"></span>
-            <span *ngFor="let table of _tables | async">
-                <template [ngIf]="table._id === order.tableId">
-                    <span class="order-table">{{'ORDER_ATTENTION.TABLE' | translate}} {{table._number}}</span>
-                </template>
-            </span>
-        </md-toolbar>
-    </div>
-    <div class="order-detail">
-        <md-card>
-            <md-card-title *ngIf="!_showDetails" class="message">{{'ORDER_ATTENTION.MESSAGE' | translate}}</md-card-title>
-            <div *ngIf="_showDetails">
-                <div *ngFor="let order of _ordersConfirmedDetail | async;">
-                    <md-card-title class="title">{{'ORDER_ATTENTION.TITLE' | translate}} # {{order.code}}</md-card-title>
-                    <button md-raised-button color="primary" style="float: right;" (click)="setInProcessState(order)">{{'ORDER_ATTENTION.ORDER_IN_PROCESS' | translate}}</button>
-                    <md-card-content>
-                        <md-divider></md-divider>
-                        <md-list>
-                            <span *ngFor="let item of _items | async">
-                                <span *ngFor="let it of order.items">
-                                    <template [ngIf]="item._id === it.itemId">
-                                        <md-list-item class="list">
-                                            <img class="image" [src]="item.urlImage">
-                                            <p md-line class="item-name">{{item.name}}</p>
-                                            <p md-line class="item-quantity">{{'ORDER_ATTENTION.ITEM_QUANTITY' | translate}}: {{it.quantity}}</p>
-                                            <p md-line *ngIf="it.observations" class="message">{{'ORDER_ATTENTION.OBSERVATIONS' | translate}}: {{it.observations}}</p>
-                                        </md-list-item>
-                                        <md-divider></md-divider>
-                                    </template>
-                                </span>
+<div class="order-content">
+    <md-toolbar *ngFor="let order of _ordersInProcess | async;" class="order" (click)="showOrderInProcessDetail(order)">
+        <i class="fa fa-list-alt" aria-hidden="true" style="margin-right: 1%;"></i>
+        <span class="order-code">{{'ORDER_ATTENTION.ORDER' | translate}} # {{order.code}}</span>
+        <span class="app-flex-filler"></span>
+        <span *ngFor="let table of _tables | async">
+            <template [ngIf]="table._id === order.tableId">
+                <span class="order-table">{{'ORDER_ATTENTION.TABLE' | translate}} {{table._number}}</span>
+            </template>
+        </span>
+    </md-toolbar>
+</div>
+<div class="order-detail">
+    <md-card>
+        <md-card-title *ngIf="!_showDetailsInProcess" class="message">{{'ORDER_ATTENTION.MESSAGE' | translate}}</md-card-title>
+        <div *ngIf="_showDetailsInProcess">
+            <div *ngFor="let order of _ordersInProcessDetail | async;">
+                <md-card-title class="title">{{'ORDER_ATTENTION.TITLE' | translate}} # {{order.code}}</md-card-title>
+                <button md-raised-button color="primary" style="float: right;" (click)="setPreparedState(order)">{{'ORDER_ATTENTION.ORDER_PREPARED' | translate}}</button>
+                <md-card-content>
+                    <md-divider></md-divider>
+                    <md-list>
+                        <span *ngFor="let item of _items | async">
+                            <span *ngFor="let it of order.items">
+                                <template [ngIf]="item._id === it.itemId">
+                                    <md-list-item class="list">
+                                        <img class="image" src="{{ getItemImage(item._id) }}">
+                                        <p md-line class="item-name">{{item.name}}</p>
+                                        <p md-line class="item-quantity">{{'ORDER_ATTENTION.ITEM_QUANTITY' | translate}}: {{it.quantity}}</p>
+                                        <p md-line *ngIf="it.observations" class="message">{{'ORDER_ATTENTION.OBSERVATIONS' | translate}}: {{it.observations}}</p>
+                                    </md-list-item>
+                                    <md-divider></md-divider>
+                                </template>
                             </span>
-                        </md-list>
-                    </md-card-content>
-                </div>
+                        </span>
+                    </md-list>
+                </md-card-content>
             </div>
-        </md-card>
-    </div>
-  </md-tab>
-  <md-tab label="{{'ORDER_ATTENTION.ORDERS_IN_PROCESS' | translate}}">
-    <div class="order-content">
-        <md-toolbar *ngFor="let order of _ordersInProcess | async;" class="order" (click)="showOrderInProcessDetail(order)">
-            <i class="fa fa-list-alt" aria-hidden="true" style="margin-right: 1%;"></i>
-            <span class="order-code">{{'ORDER_ATTENTION.ORDER' | translate}} # {{order.code}}</span>
-            <span class="app-flex-filler"></span>
-            <span *ngFor="let table of _tables | async">
-                <template [ngIf]="table._id === order.tableId">
-                    <span class="order-table">{{'ORDER_ATTENTION.TABLE' | translate}} {{table._number}}</span>
-                </template>
-            </span>
-        </md-toolbar>
-    </div>
-    <div class="order-detail">
-        <md-card>
-            <md-card-title *ngIf="!_showDetailsInProcess" class="message">{{'ORDER_ATTENTION.MESSAGE' | translate}}</md-card-title>
-            <div *ngIf="_showDetailsInProcess">
-                <div *ngFor="let order of _ordersInProcessDetail | async;">
-                    <md-card-title class="title">{{'ORDER_ATTENTION.TITLE' | translate}} # {{order.code}}</md-card-title>
-                    <button md-raised-button color="primary" style="float: right;" (click)="setPreparedState(order)">{{'ORDER_ATTENTION.ORDER_PREPARED' | translate}}</button>
-                    <md-card-content>
-                        <md-divider></md-divider>
-                        <md-list>
-                            <span *ngFor="let item of _items | async">
-                                <span *ngFor="let it of order.items">
-                                    <template [ngIf]="item._id === it.itemId">
-                                        <md-list-item class="list">
-                                            <img class="image" [src]="item.urlImage">
-                                            <p md-line class="item-name">{{item.name}}</p>
-                                            <p md-line class="item-quantity">{{'ORDER_ATTENTION.ITEM_QUANTITY' | translate}}: {{it.quantity}}</p>
-                                            <p md-line *ngIf="it.observations" class="message">{{'ORDER_ATTENTION.OBSERVATIONS' | translate}}: {{it.observations}}</p>
-                                        </md-list-item>
-                                        <md-divider></md-divider>
-                                    </template>
-                                </span>
-                            </span>
-                        </md-list>
-                    </md-card-content>
-                </div>
-            </div>
-        </md-card>
-    </div>
-  </md-tab>
-</md-tab-group>
+        </div>
+    </md-card>
+</div>
 
-<button (click)="testCallWaiter()">Ejecutar llamado a mesaro</button>
+<div class="loading" *ngIf="_loading">
+    <md-spinner></md-spinner>
+</div>

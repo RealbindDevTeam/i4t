@@ -16,6 +16,7 @@ export interface GarnishFood extends CollectionObject {
 export interface GarnishFoodRestaurant {
     restaurantId: string;
     price: number;
+    garnishFoodTax?: number;
 }
 
 /**
@@ -24,4 +25,5 @@ export interface GarnishFoodRestaurant {
 export interface GarnishFoodPrice {
     currencyId: string;
     price: number;
+    garnishFoodTax?: number;
 }
