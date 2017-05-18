@@ -101,3 +101,22 @@ Meteor.publish('getItemsByRestaurantWork', function( _userId: string ){
     });
     return Items.collection.find( { sectionId: { $in: _sections }, is_active: true } );
 });
+
+/**
+ * Meteor publication return items thumbs by restaurant work
+ * @param {string} _userId
+ */
+Meteor.publish('getItemImageThumbsByRestaurantWork', function( _userId: string ){
+    check( _userId, String );
+    let _lUserDetail: UserDetail = UserDetails.findOne( { user_id: _userId } );
+    let _sections: string[] = [];
+    let _items: string[] = [];
+    
+    Sections.collection.find( { restaurants: { $in: [ _lUserDetail.restaurant_work ] } } ).fetch().forEach( ( s ) => {
+        _sections.push( s._id );
+    });
+    Items.collection.find( { sectionId: { $in: _sections }, is_active: true } ).fetch().forEach( (it) => {
+        _items.push( it._id );
+    });
+    return ItemImagesThumbs.collection.find( { itemId: { $in: _items } } );
+});
