@@ -31,6 +31,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
   private _searchToggled: boolean = false;
   private _showToggleSidenav: boolean = false;
   private _searchTerm: string = '';
+  private _itemsTopMenu: string = '';
 
   private _breadcrumbInterval: number;
   private _pageTitleInterval: number;
@@ -141,7 +142,24 @@ export class TopnavComponent implements OnInit, OnDestroy {
 
     MeteorObservable.call('getRole').subscribe((role) => {
       if(role == "100"){
-        this._showToggleSidenav = true;
+      }
+      switch(role){
+        case '100' :{
+          this._showToggleSidenav = true;
+          break;
+        }
+        case '200' :{
+            this._itemsTopMenu = 'waiter';
+            break;
+        }
+        case '400' :{
+            this._itemsTopMenu = 'customer';
+            break;
+        }
+        case '500' :{
+            this._itemsTopMenu = 'chef';
+            break;
+        }
       }
     }, (error) => {
       alert(`Failed to to load layout ${error}`);
