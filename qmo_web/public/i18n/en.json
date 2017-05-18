@@ -28,6 +28,13 @@
     "VALIDATE" : "Validate",
     "TIP_PERCENTAGE": "Tip percentage",
     "CLOSE": "Close",
+    "ORDER_STATUS": {
+        "REGISTERED": "Registered",
+        "IN_PROCESS": "In Process",
+        "PREPARED": "Prepared",
+        "CANCELED": "Canceled",
+        "CLOSED": "Closed"
+    },
     "DATE_VALIDATE" : {
         "DAY_FORMAT" : "Day format incorrect",
         "MONTH_FORMAT" : "Month format incorrect",
@@ -122,9 +129,11 @@
         "MODIFY": "MODIFY",
         "ACTIVATE": "ACTIVATE",
         "INACTIVATE": "INACTIVATE",
-        "SELECT_RESTAURANTS": "Please select the restaurant (s) where the addition is available",
-        "ADDITION_PRICES": "Please enter the addition price (In case of no value enter 0)",
-        "ADITION_PRICE": "Adition Price"
+        "ADDITION_PRICES": "Please enter the addition price ( In case of no value enter 0 ). ",
+        "ADITION_PRICE": "Adition Price",
+        "ADDITION_TAXES": "Enter the addition tax( In case of no value enter 0 ).",
+        "TAXES": "Taxes",
+        "PRICES": "Prices"
     },
     "SETTINGS": {
         "TITTLE": "Settings",
@@ -197,8 +206,11 @@
         "ACTIVATE": "ACTIVATE",
         "INACTIVATE": "INACTIVATE",
         "SELECT_RESTAURANTS": "Please select the restaurant (s) where the garnish food is available",
-        "GARNISHFOOD_PRICES": "Please enter the garnish food price (In case of no value enter 0)",
-        "GARNISHFOOD_PRICE": "Garnish Food Price"
+        "GARNISHFOOD_PRICES": "Please enter the garnish food price ( In case of no value enter 0 ). ",
+        "GARNISHFOOD_PRICE": "Garnish Food Price",
+        "GARNISHFOOD_TAXES": "Enter the garnish food tax( In case of no value enter 0 ).",
+        "TAXES": "Taxes",
+        "PRICES": "Prices"
     },
     "RESTAURANT_REGISTER": {
         "SELECT_COUNTRY": "Select Country",
@@ -443,29 +455,31 @@
         "GENERAL": "General",
         "GENERAL_INFORMATION": "General information",
         "GENERAL_TEXT": "Please enter the general information of the item",
-        "TAX_PERCENTAGE": "Percentage of taxes",
-        "ITEM_RESTAURANTS": "The item will be available in the following establishments according to the selected section",
-        "IMAGE": "Image",
-        "IMAGE_INFORMATION": "Item Image",
-        "IMAGE_TEXT": "Enter the image of the item so that it is seen by your customers",
-        "GARNISHFOOD": "Garnish Food",
-        "GARNISHFOOD_INFORMATION": "Garnish Food Item",
+        "NO_RESTAURANTS": "There are no restaurants created",
+        "NO_RESTAURANTS_SELECTED": "No restaurants selected",
+        "ENTER_PRICE": "Please enter the price of the item. ",
+        "ENTER_TAX": "Enter taxes if applicable.",
+        "ITEM_PRICE": "Item Price",
+        "TAXES": "Taxes",
+        "ADDITION_GARNISHFOOD": "Additions and Garnish Food",
+        "ADDITION_GARNISHFOOD_TITLE": "Item Additions and Garnish Food",
+        "ADDITION_GARNISHFOOD_SUBTITLE": "Please select the Garnish Food and Additions that will be available for the item ( If applicable )",
         "GARNISHFOOD_TEXT": "Please select the fittings that will be available for the item (If applicable)",
         "NOT_GARNISHFOOD": "There are no garrisons created for the establishment",
+        "GARNISHFOOD_ALLOWED": "Garnish Food Permitted",
         "SECTIONS_CATEGORIES_TEXT_EDIT": "Edit the section, category and subcategory of the item",
         "GENERAL_TEXT_EDIT": "Edit the general information of the item",
-        "IMAGE_TEXT_EDIT": "Edit the image of the item so that it is seen by your customers",
         "UPDATE_IMAGE": "Update item image",
         "GARNISHFOOD_TEXT_EDIT": "Edit the garments that will be available for the item (If applicable)",
         "OBSERVATIONS": "Enable observations for the item",
-        "ALLOW_ITEM_GARNISHFOOD": "Allow users to select garnish food for the item",
         "ITEM_GARNISHFOOD_QUANTITY": "Number of garnish food allowed for item",
-        "ADDITIONS": "Additions",
-        "ADDITIONS_INFORMATION": "Item Additions",
         "ADDITIONS_TEXT": "Please select the additions that will be available for the item (If applicable)",
-        "ALLOW_ITEM_ADDITIONS": "Allow users to select additions for the item",
         "NOT_ADDITIONS": "No additions created for the establishment",
-        "MSG_INITIAL" : "Implement an orderly and easy way to view your menu"
+        "MSG_INITIAL" : "Implement an orderly and easy way to view your menu",
+        "ADD_IMAGE": "Add item image",
+        "ACTIVATE": "ACTIVATE",
+        "INACTIVATE": "INACTIVATE",
+        "COOKING_TIME": "Approximate Cooking Time"
     },
     "ROLE" : {
         "ADMINISTRATOR" : "Administrator",
@@ -559,7 +573,8 @@
         "SELECT_ADDITIONS": "Please select the desired additions",
         "TOTAL_PRICE": "Total Price",
         "ADD_ITEM": "Add Item to Order",
-        "SHOW_ALL": "Show All"
+        "SHOW_ALL": "Show All",
+        "COOKING_TIME": "Cooking Time"
     },
     "ORDER_LIST": {
         "TABLE_ORDERS": "Table Orders",
@@ -585,7 +600,14 @@
         "SELECT_ADDITIONS": "Please select the desired additions",
         "TOTAL_PRICE": "Total Price",
         "MODIFY_ITEM": "Modify Item",
-        "DELETE_ITEM": "Delete Item"
+        "DELETE_ITEM": "Delete Item",
+        "DELETE_ORDER": "Are you sure to delete the item from the order?",
+        "CANCEL_ORDER_CONFIRM": "Are you sure to cancel the order?",
+        "ORDER_CANT_CANCEL": "The order Can not be canceled.",
+        "CONFIRM_ORDER_MESSAGE": "Are you sure to confirm the order?",
+        "ORDER_ITEMS_UNAVAILABLE": "The order displays items that are not available. Please verify your order.",
+        "ORDER_CANT_CONFIRM": "Order can not be confirmed",
+        "COOKING_TIME": "Cooking Time"
     },
     "PAYMENTS": {
         "TITTLE": "Payments",
@@ -649,5 +671,12 @@
             "DIAN_NUMERATION_TO": "To",
             "ENTER_TIP_PERCENTAGE": "Enter the percentage of the suggested tip ( 0% - 100% ). You can enter the value or use the Slider"              
         }
+    },
+    "ORDERS": {
+        "MSG_INITIAL": "Ingresa el código que se encuentra en la mesa",
+        "CANCEL": "Cancel",
+        "ENTER": "Enter Code",
+        "CODE_NOT_FOUND": "Code Not Found",
+        "TRY_AGAIN": "Please try again"
     }
 }

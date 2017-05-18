@@ -113,6 +113,13 @@ export class OrdersComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Function to cancel operation
+     */
+    cancel():void{
+        this._ordersForm.reset();
+    }
+
+    /**
      * ngOnDestroy implementation
      */
     ngOnDestroy(){
