@@ -23,15 +23,24 @@ export class PaymentItemDetailComponent implements OnInit, OnDestroy {
     private _items;
     private _itemsSub: Subscription;
 
+    /**
+     * PaymentItemDetailsComponent constructor
+     */
     constructor() {
     }
 
+    /**
+     * ngOnInit Implementation. Find the items corresponding to RestaurantId
+     */
     ngOnInit() {
         this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this.resCode).subscribe(() => {
             this._items = Items.find({_id: this.orderItem.itemId});
         });
     }
 
+    /**
+     * ngOnDestroy Implementation
+     */
     ngOnDestroy() {
         this._itemsSub.unsubscribe();
     }
