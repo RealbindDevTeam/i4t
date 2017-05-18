@@ -609,6 +609,25 @@
         "ORDER_CANT_CONFIRM": "La orden no se puede confirmar",
         "COOKING_TIME": "Tiempo de Cocción"
     },
+    "PAYMENTS": {
+        "TITTLE": "Pagos",
+        "TITTLE_CONTENT": "Tu cuenta",
+        "CONTENT": "Aún no tienes cuenta",
+        "BILL": "Cuenta de pago",
+        "ORDER": "Orden # ",
+        "VIEW_DETAIL": "Ver detalle",
+        "ADD_ORDER": "Agregar orden",
+        "PAYMENT_METHOD": "Medio de pago",
+        "TOTAL_BILL": "Total cuenta",
+        "PAY_BTN": "Pagar",
+        "PAY_DETAIL_TITTLE":"Detalle del pago",
+        "PAY_ORDER":"Orden",
+        "SUBTOTAL":"SubTotal",
+        "INC":"Inc",
+        "TOTAL":"Total",
+        "TIPS":"Tip",
+        "TOTAL_TO_PAY":"Total a pagar"
+    },
     "WAITER_CALL" : {
         "TITTLE": "Solicitar mesero",
         "CONTENT": "Oprime el botón para llamar al mesero",

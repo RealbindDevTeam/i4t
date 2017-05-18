@@ -46,7 +46,6 @@ import { OrdersListComponent } from './customer/orders/order-list/order-list.com
 import { ItemEnableComponent } from './administration/items/items-enable/items-enable.component';
 import { WaiterCallComponent } from './customer/waiter-call/waiter-call.component';
 import { OrderAttentionComponent } from './chef/order-attention/order-attention.component';
-import { OrdersToDeliveryComponent } from './waiter/orders-to-delivery/orders-to-delivery.component';
 import { CallsComponent } from './waiter/calls/calls.component';
 import { CallCloseConfirmComponent } from './waiter/calls/call-close-confirm/call-close-confirm.component';
 import { NotFoundWebComponent } from './auth/notfound.web.component';
@@ -54,6 +53,8 @@ import { FinancialControlService } from './custom/financial-info/financial-contr
 import { IurestFinancialFormComponent } from './custom/financial-info/financial-form/financial-form.component';
 import { IurestFinancialElementComponent } from './custom/financial-info/financial-element/financial-element.component';
 import { IurestSliderComponent } from './custom/slider/slider.component';
+import { PaymentsComponent } from './customer/payments/payments.component';
+import { PaymentDetailsComponent } from './customer/payments/payment-details/payment-details.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -87,12 +88,12 @@ export const WEB_DECLARATIONS = [
     ItemEnableComponent,
     WaiterCallComponent,
     OrderAttentionComponent,
-    OrdersToDeliveryComponent,
     CallsComponent,
     NotFoundWebComponent,
     IurestFinancialFormComponent,
     IurestFinancialElementComponent,
-    IurestSliderComponent
+    IurestSliderComponent,
+    PaymentsComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [
@@ -111,7 +112,8 @@ export const MODAL_DIALOG_DECLARATIONS = [
     RestaurantLocationInfoComponent,
     RestaurantInfoDetailComponent,
     RestaurantScheduleComponent,
-    CallCloseConfirmComponent
+    CallCloseConfirmComponent,
+    PaymentDetailsComponent
     /*
     CollaboratorsEditionComponent,
     */

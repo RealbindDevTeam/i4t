@@ -609,6 +609,25 @@
         "ORDER_CANT_CONFIRM": "Order can not be confirmed",
         "COOKING_TIME": "Cooking Time"
     },
+    "PAYMENTS": {
+        "TITTLE": "Payments",
+        "TITTLE_CONTENT": "Your bill",
+        "CONTENT": "You do not have bill yet",
+        "BILL": "Bill Payment",
+        "ORDER": "Order # ",
+        "VIEW_DETAIL": "View detail",
+        "ADD_ORDER": "Add order",
+        "PAYMENT_METHOD": "Payment method",
+        "TOTAL_BILL": "Total bill",
+        "PAY_BTN": "Pay",
+        "PAY_DETAIL_TITTLE":"Payment detail",
+        "PAY_ORDER":"Order",
+        "SUBTOTAL":"SubTotal",
+        "INC":"Inc",
+        "TOTAL":"Total",
+        "TIPS":"Tip",
+        "TOTAL_TO_PAY":"Total to pay"
+    },
     "WAITER_CALL": {
         "TITTLE": "Call waiter",
         "CONTENT": "Press the button to call the waiter",

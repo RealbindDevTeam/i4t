@@ -101,6 +101,13 @@ export function loadMenus() {
                 ]
             },
             {
+                _id: "4000",
+                is_active: true,
+                name: "MENUS.PAYMENTS",
+                url: "/app/payments",
+                icon_name: "local_atm"
+            },
+            {
                 _id: "3000",
                 is_active: true,
                 name: "MENUS.WAITER_CALL",
