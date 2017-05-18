@@ -31,6 +31,11 @@ export class PaymentDetailsPage implements OnInit, OnDestroy {
     private _ipoComString       : string;
     private _orders             : any;
 
+    /**
+     * PaymentDetailsPage constructor
+     * @param _translate 
+     * @param _navParams 
+     */
     constructor(public _translate: TranslateService,
                 public _navParams: NavParams,){
         this._userLang = navigator.language.split('-')[0];
@@ -38,16 +43,14 @@ export class PaymentDetailsPage implements OnInit, OnDestroy {
         _translate.use(this._userLang);
     }
 
+    /**
+     * ngOnInit Implementation. That allow calculate this values corresponding to Payment
+     */
     ngOnInit(){
         this._ordersSubscription  = MeteorObservable.subscribe('getOrdersByAccount', Meteor.userId()).subscribe();
         this._orders         = Orders.find({}).zone();
         this._totalValue      = this._navParams.get("total_value");
         this._tipPorcentage  = this._navParams.get("tip");
-        //this.tipTotal        = this.totalValue * this._tipPorcentage;
-        //this.subTotal        = this.totalValue - this.tipTotal;
-//
-        //this.ipoComValue     = this.subTotal * this._ipoCom;
-        //this.ipoComBaseValue = this.subTotal - this.ipoComValue;
         if(this._tipTotal > 0){
             this._tipTotal     = this._totalValue * this._tipPorcentage;
         }
@@ -58,6 +61,9 @@ export class PaymentDetailsPage implements OnInit, OnDestroy {
         this._ipoComString     = (this._ipoComValue).toFixed(2);
     }
 
+    /**
+     * ngOnDestroy Implementation.
+     */
     ngOnDestroy(){
         this._ordersSubscription.unsubscribe();
     }

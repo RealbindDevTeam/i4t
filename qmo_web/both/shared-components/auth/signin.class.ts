@@ -45,7 +45,7 @@ export class SigninClass implements OnInit {
                             this.error = err;
                         } else {
                             MeteorObservable.call('getRole').subscribe((role) => {
-                                if (role == "100") {
+                                /*if (role == "100") {
                                     //this.router.navigate(['app/dashboard']);
                                     this.roamWeb('app/dashboard');
                                 } else if (role == "400") {
@@ -55,6 +55,24 @@ export class SigninClass implements OnInit {
                                     this.roamWeb('app/chefOrders');
                                 } else if ( role == "200") {
                                     this.roamWeb('app/calls');
+                                }*/
+                                switch(role){
+                                    case '100' :{
+                                        this.roamWeb('app/dashboard');
+                                        break;
+                                    }
+                                    case '200' :{
+                                        this.roamWeb('app/calls');
+                                        break;
+                                    }
+                                    case '400' :{
+                                        this.roamWeb('app/orders');
+                                        break;
+                                    }
+                                    case '500' :{
+                                        this.roamWeb('app/chefOrders');
+                                        break;
+                                    }
                                 }
                             }, (error) => {
                                 this.error = err;

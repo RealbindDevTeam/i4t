@@ -42,14 +42,11 @@ export class PaymentDetailsComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * ngOnInit Implementation
+     * ngOnInit Implementation. That allow calculate this values corresponding to Payment
      */
     ngOnInit(){
-        //console.log(this._totalValue);
-        //console.log(this._tipPorcentage);
         this._ordersSubscription  = MeteorObservable.subscribe('getOrdersByAccount', Meteor.userId()).subscribe();
         this._orders = Orders.find({}).zone();
-        
         if(this._tipTotal > 0){
             this._tipTotal     = this._totalValue * this._tipPorcentage;
         }
@@ -58,10 +55,6 @@ export class PaymentDetailsComponent implements OnInit, OnDestroy {
         this._ipoComBaseString = (this._ipoComBaseValue).toFixed(2);
         this._ipoComValue      = this._subTotal - this._ipoComBaseValue;
         this._ipoComString     = (this._ipoComValue).toFixed(2);
-    }
-
-    cancel() {
-        this._dialogRef.close({success : false});
     }
 
     /**

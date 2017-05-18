@@ -29,6 +29,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
   private _breadcrumbs: Array<{title: string, link: any[] | string}> = [];
   private _autoBreadcrumbs: boolean = true;
   private _searchToggled: boolean = false;
+  private _showToggleSidenav: boolean = false;
   private _searchTerm: string = '';
 
   private _breadcrumbInterval: number;
@@ -136,6 +137,14 @@ export class TopnavComponent implements OnInit, OnDestroy {
           this._imageProfile = "/images/user_default_image.png";
         }
         
+    });
+
+    MeteorObservable.call('getRole').subscribe((role) => {
+      if(role == "100"){
+        this._showToggleSidenav = true;
+      }
+    }, (error) => {
+      alert(`Failed to to load layout ${error}`);
     });
   }
 

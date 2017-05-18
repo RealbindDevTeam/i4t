@@ -9,13 +9,29 @@ md-progress-bar {
 md-toolbar {
   background-color: #E53935;
   color: #fafafa;
+}
 
-  img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
+.buttom-profile {
+  padding: 0 40px 0 0;
+}
+
+.profile-img {
+  width: 39px;
+  height: 39px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.logo {
+  padding: 0 40px 0 40px;
+  height: 39px;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimizeQuality;
+  image-rendering: optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
 }
 
 #menu-toggler {
