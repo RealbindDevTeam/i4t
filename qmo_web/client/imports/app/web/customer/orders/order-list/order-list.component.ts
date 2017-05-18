@@ -6,8 +6,8 @@ import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
 import { Order, OrderItem } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
-import { Item, ItemImageThumb } from '../../../../../../../both/models/administration/item.model';
-import { Items, ItemImagesThumbs } from '../../../../../../../both/collections/administration/item.collection';
+import { Item, ItemImage, ItemImageThumb } from '../../../../../../../both/models/administration/item.model';
+import { Items, ItemImages, ItemImagesThumbs } from '../../../../../../../both/collections/administration/item.collection';
 import { GarnishFood } from '../../../../../../../both/models/administration/garnish-food.model';
 import { GarnishFoodCol } from '../../../../../../../both/collections/administration/garnish-food.collection';
 import { Addition } from '../../../../../../../both/models/administration/addition.model';
@@ -34,6 +34,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     private _garnishFoodSub: Subscription;
     private _additionsSub: Subscription;
     private _itemImagesSub: Subscription;
+    private _itemImageThumbsSub: Subscription;
     private _currenciesSub: Subscription;
 
     private _orders: Observable<Order[]>;
@@ -117,7 +118,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                 this._additions = Additions.find( { } ).zone();
             });
         });
-        this._itemImagesSub = MeteorObservable.subscribe( 'itemImageThumbsByRestaurant', this.restaurantId ).subscribe();
+        this._itemImagesSub = MeteorObservable.subscribe( 'itemImagesByRestaurant', this.restaurantId ).subscribe();
+        this._itemImageThumbsSub = MeteorObservable.subscribe( 'itemImageThumbsByRestaurant', this.restaurantId ).subscribe();
         this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId',[ this.restaurantId ] ).subscribe( () => {
             this._ngZone.run( () => {
                 this._currencyCode = Currencies.findOne( { _id: this.restaurantCurrency } ).code + ' ';
@@ -153,6 +155,17 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      */
     getItemImage( _pItemId: string ):string{
         let _lItemImage: ItemImageThumb = ItemImagesThumbs.findOne( { itemId: _pItemId } );
+        if( _lItemImage ){
+            return _lItemImage.url;
+        }
+    }
+
+    /**
+     * Get Item Image
+     * @param {string} _pItemId
+     */
+    getItemDetailImage( _pItemId: string ):string{
+        let _lItemImage: ItemImage = ItemImages.findOne( { itemId: _pItemId } );
         if( _lItemImage ){
             return _lItemImage.url;
         }
@@ -608,5 +621,6 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         this._additionsSub.unsubscribe();
         this._itemImagesSub.unsubscribe();
         this._currenciesSub.unsubscribe();
+        this._itemImageThumbsSub.unsubscribe();
     }
 }
