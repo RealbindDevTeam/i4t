@@ -28,6 +28,8 @@ import { SupervisorGuard } from './web/auth/navigation/supervisor-guard.service'
 import { ChefGuard } from './web/auth/navigation/chef-guard.service';
 import { CashierGuard } from './web/auth/navigation/cashier-guard.service';
 
+import { PayuPaymenteService } from './web/restaurant/restaurant/restaurant-register/payment-plan/payu-payment.service';
+
 const defaultOptions: AppConfigOptions = {
   appTitle : 'QMO',
   openSidenavStyle : 'side',
@@ -76,7 +78,8 @@ moduleDefinition = {
       WaiterGuard,
       SupervisorGuard,
       ChefGuard,
-      CashierGuard
+      CashierGuard,
+      PayuPaymenteService
     ],
     bootstrap: [
       AppComponent

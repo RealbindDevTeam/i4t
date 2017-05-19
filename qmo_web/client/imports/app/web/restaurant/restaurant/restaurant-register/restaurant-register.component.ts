@@ -24,6 +24,7 @@ import { FinancialDropDown } from '../../../../../../../both/shared-components/r
 import { FinancialTextBox } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-textbox';
 import { FinancialText } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-text';
 import { FinancialSlider } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-slider';
+import { PayuPaymenteService } from './payment-plan/payu-payment.service';
 
 import template from './restaurant-register.component.html';
 import style from './restaurant-register.component.scss';
@@ -72,6 +73,9 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _restaurantFinancialInformation: Object = {};
     private _financialInformation: RestaurantFinancialElement[] = [];
 
+
+    private postsArray: any[];
+
     /**
      * RestaurantRegisterComponent constructor
      * @param {FormBuilder} _formBuilder
@@ -79,7 +83,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * @param {NgZone} _ngZone
      * @param {Router} _router
      */
-    constructor( private _formBuilder: FormBuilder, private _translate: TranslateService, private _ngZone: NgZone, private _router: Router ){
+    constructor( private _formBuilder: FormBuilder, private _translate: TranslateService, private _ngZone: NgZone, private _router: Router, 
+                private payuPayment: PayuPaymenteService){
         var _userLang = navigator.language.split( '-' )[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
@@ -90,6 +95,15 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._paymentMethodsList = [];
         this._filesToUpload = [];
         this._createImage = false;
+
+        this.payuPayment.getPosts().subscribe(
+            posts => {
+                this.postsArray = posts;
+            },
+            error => {
+                console.log(error);
+            }
+        )
     }
 
     /**
