@@ -4,7 +4,8 @@ import { Sections } from '../../../both/collections/administration/section.colle
 import { Categories } from '../../../both/collections/administration/category.collection';
 import { Subcategories } from '../../../both/collections/administration/subcategory.collection';
 import { Additions } from '../../../both/collections/administration/addition.collection';
-import { Items } from '../../../both/collections/administration/item.collection';
+import { Items, ItemImages, ItemImagesThumbs } from '../../../both/collections/administration/item.collection';
+import { GarnishFoodCol } from '../../../both/collections/administration/garnish-food.collection';
 
 export function createdbindexes(){
 
@@ -41,4 +42,20 @@ export function createdbindexes(){
 
     // Item Collection Indexes
     Items.collection._ensureIndex( { additionsIsAccepted: 1 } );
+    Items.collection._ensureIndex( { garnishFoodIsAcceped: 1 } );
+    Items.collection._ensureIndex( { creation_user: 1 } );
+    Items.collection._ensureIndex( { sectionId: 1 } );
+
+    // GarnishFood Collection Indexes
+    GarnishFoodCol.collection._ensureIndex( { creation_user: 1 } );
+    GarnishFoodCol.collection._ensureIndex( { restaurants: 1 } );
+
+    // Item Images Collection Indexes
+    ItemImages.collection._ensureIndex( { userId: 1 } );
+    ItemImages.collection._ensureIndex( { itemId: 1 } );    
+
+    // Item Image Thumbs Collection Indexes
+    ItemImagesThumbs.collection._ensureIndex( { userId: 1 } );
+    ItemImagesThumbs.collection._ensureIndex( { itemId: 1 } );   
+    
 }

@@ -10,6 +10,7 @@ import {NavigationService} from './navigation.service';
 import {SidenavItemComponent} from './sidenav/sidenav-item/sidenav-item.component';
 import {FooterComponent} from './footer/footer.component';
 import {LayoutComponent} from './layout/layout.component';
+import {CustomerMenuComponent, WaiterMenuComponent, ChefMenuComponent} from './menu-partials';
 
 @NgModule({
   imports : [
@@ -23,11 +24,17 @@ import {LayoutComponent} from './layout/layout.component';
                   TopnavComponent, 
                   SidenavItemComponent, 
                   FooterComponent, 
-                  LayoutComponent],
+                  LayoutComponent,
+                  CustomerMenuComponent,
+                  WaiterMenuComponent,
+                  ChefMenuComponent],
   exports : [SidenavComponent, 
              TopnavComponent, 
              FooterComponent, 
-             LayoutComponent]
+             LayoutComponent,
+             CustomerMenuComponent,
+             WaiterMenuComponent,
+             ChefMenuComponent]
 })
 export class NavigationModule {
   static forRoot(): ModuleWithProviders {

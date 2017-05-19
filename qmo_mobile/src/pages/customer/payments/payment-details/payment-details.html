@@ -1,0 +1,44 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>
+            <!--img id="signup-logo" src="assets/img/logo_iurest_mobile_white.png"-->
+            {{ 'MOBILE.PAYMENTS.PAY_DETAIL_TITTLE' | translate }}
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-item-group *ngFor="let order of _orders | async">
+        <ion-item-divider color="light">
+            <h1>{{ 'MOBILE.PAYMENTS.PAY_ORDER' | translate }} # {{order.orderItemCount}}</h1>
+            <h1 item-right> {{order.totalPayment}} COP</h1>
+        </ion-item-divider>
+        <div *ngFor="let itemId of order.items">
+            <payment-item-detail [order]="order" [orderItem]="itemId" [resCode]="order.restaurantId"></payment-item-detail>
+        </div>
+    </ion-item-group>
+</ion-content>
+
+<ion-footer class="ion-footer-custom" padding>
+    <ion-item>
+        <h2>{{ 'MOBILE.PAYMENTS.SUBTOTAL' | translate }}</h2>
+        <h2>{{ 'MOBILE.PAYMENTS.INC' | translate }} (8%):</h2>
+        <h2>{{ 'MOBILE.PAYMENTS.TOTAL' | translate }}</h2>
+        <div item-right style="text-align: end;">
+            <p>{{_ipoComBaseString}} COP</p>
+            <p>{{_ipoComString}} COP</p>
+            <h2>{{_subTotal}} COP</h2>
+        </div>
+    </ion-item>
+    <ion-item>
+        <h2>{{ 'MOBILE.PAYMENTS.TIPS' | translate }}</h2>
+        <div item-right style="text-align: end;">
+            <p>{{_tipTotal}} COP</p>
+        </div>
+    </ion-item>
+    <ion-item>
+        <h1 style="font-size: 1.9rem;">{{ 'MOBILE.PAYMENTS.TOTAL_TO_PAY' | translate }}</h1>
+        <h1 style="font-size: 1.9rem;" item-right>{{_totalValue}} COP</h1>
+    </ion-item>
+</ion-footer>

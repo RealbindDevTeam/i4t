@@ -28,6 +28,13 @@
     "VALIDATE" : "Validar",
     "TIP_PERCENTAGE": "Porcentaje de propina",
     "CLOSE": "Cerrar",
+    "ORDER_STATUS": {
+        "REGISTERED": "Registrado",
+        "IN_PROCESS": "En Proceso",
+        "PREPARED": "Preparado",
+        "CANCELED": "Cancelado",
+        "CLOSED": "Cerrado"
+    },
     "DATE_VALIDATE" : {
         "DAY_FORMAT" : "Formato del día incorrecto",
         "MONTH_FORMAT" : "Formato del mes incorrecto",
@@ -122,9 +129,11 @@
         "MODIFY": "MODIFICAR",
         "ACTIVATE": "ACTIVAR",
         "INACTIVATE": "INACTIVAR",
-        "SELECT_RESTAURANTS": "Por favor selecciona el(los) restaurante(s) donde se encontrara disponible la adicion",
-        "ADDITION_PRICES": "Por favor ingresa el precio de la adicion (En caso de no tener valor ingresa 0 )",
-        "ADITION_PRICE": "Precio de la Adicion"
+        "ADDITION_PRICES": "Por favor ingresa el precio de la adicion ( En caso de no tener valor ingresa 0 ). ",
+        "ADITION_PRICE": "Precio de la Adicion",
+        "ADDITION_TAXES": "Ingresa los impuestos( En caso de no tener valor ingresa 0 ).",
+        "TAXES": "Impuestos",
+        "PRICES": "Precios"
     },
     "SETTINGS": {
         "TITTLE": "Ajustes",
@@ -197,8 +206,11 @@
         "ACTIVATE": "ACTIVAR",
         "INACTIVATE": "INACTIVAR",
         "SELECT_RESTAURANTS": "Por favor selecciona el(los) restaurante(s) donde se encontrara disponible la guarnicion",
-        "GARNISHFOOD_PRICES": "Por favor ingresa el precio de la guarnicion (En caso de no tener valor ingresa 0 )",
-        "GARNISHFOOD_PRICE": "Precio de la Guarnicion"
+        "GARNISHFOOD_PRICES": "Por favor ingresa el precio de la guarnicion ( En caso de no tener valor ingresa 0 ). ",
+        "GARNISHFOOD_PRICE": "Precio de la Guarnicion",
+        "GARNISHFOOD_TAXES": "Ingresa los impuestos( En caso de no tener valor ingresa 0 ).",
+        "TAXES": "Impuestos",
+        "PRICES": "Precios"
     },
     "RESTAURANT_REGISTER": {
         "SELECT_COUNTRY": "Seleccione Pais",
@@ -443,29 +455,31 @@
         "GENERAL": "General",
         "GENERAL_INFORMATION": "Informacion General",
         "GENERAL_TEXT": "Por favor ingresa la informacion general del item",
-        "TAX_PERCENTAGE": "Porcentaje de impuestos",
-        "ITEM_RESTAURANTS": "El item se encontrara disponible en los siguientes establecimientos de acuerdo a la seccion seleccionada",
-        "IMAGE": "Imagen",
-        "IMAGE_INFORMATION": "Imagen del item",
-        "IMAGE_TEXT": "Ingresa la imagen del item para que sea vista por tus clientes",
-        "GARNISHFOOD": "Guarniciones",
-        "GARNISHFOOD_INFORMATION": "Guarniciones para el item",
-        "GARNISHFOOD_TEXT": "Por favor selecciona las guarniciones que estaran disponibles para el item (En caso de que aplique)",
-        "NOT_GARNISHFOOD": "No se encuentran guarniciones creadas para el establecimiento",
+        "NO_RESTAURANTS": "No se encuentran restaurantes creados",
+        "NO_RESTAURANTS_SELECTED": "No se han seleccionado restaurantes",
+        "ENTER_PRICE": "Por favor ingrese el precio del item. ",
+        "ENTER_TAX": "Ingrese los impuestos en caso de que aplique.",
+        "ITEM_PRICE": "Precio del Item",
+        "TAXES": "Impuestos",
+        "ADDITION_GARNISHFOOD": "Adiciones y Guarniciones",
+        "ADDITION_GARNISHFOOD_TITLE": "Adiciones y Guarniciones del Item",
+        "ADDITION_GARNISHFOOD_SUBTITLE": "Por favor selecciona las Guarniciones y las Adiciones que estaran disponibles para el item ( En caso de que aplique )",
+        "GARNISHFOOD_TEXT": "Ingrese la cantidad y seleccione las Guarniciones permitidas para el Item:",
+        "NOT_GARNISHFOOD": "No se encuentran Guarniciones creadas para el Restaurante",
+        "GARNISHFOOD_ALLOWED": "Guarniciones Permitidas",
         "SECTIONS_CATEGORIES_TEXT_EDIT": "Edita la seccion, categoria y subcategoria del item",
         "GENERAL_TEXT_EDIT": "Edita la informacion general del item",
-        "IMAGE_TEXT_EDIT": "Edita la imagen del item para que sea vista por tus clientes",
         "UPDATE_IMAGE": "Actualizar imagen del item",
         "GARNISHFOOD_TEXT_EDIT": "Edita las guarniciones que estaran disponibles para el item (En caso de que aplique)",
         "OBSERVATIONS": "Habilitar observaciones para el ítem",
-        "ALLOW_ITEM_GARNISHFOOD": "Permitir a los usuarios seleccionar guarniciones para el item",
         "ITEM_GARNISHFOOD_QUANTITY": "Cantidad de Guarniciones Permitidas para el item",
-        "ADDITIONS": "Adiciones",
-        "ADDITIONS_INFORMATION": "Adiciones para el item",
-        "ADDITIONS_TEXT": "Por favor selecciona las adiciones que estaran disponibles para el item (En caso de que aplique)",
-        "ALLOW_ITEM_ADDITIONS": "Permitir a los usuarios seleccionar adiciones para el item",
-        "NOT_ADDITIONS": "No se encuentran adiciones creadas para el establecimiento",
-        "MSG_INITIAL" : "Implementa una manera ordenada y facil de visualizar tu menú"
+        "ADDITIONS_TEXT": "Ingrese las Adiciones permitidas para el Item",
+        "NOT_ADDITIONS": "No se encuentran Adiciones creadas para el Restaurante",
+        "MSG_INITIAL" : "Implementa una manera ordenada y facil de visualizar tu menú",
+        "ADD_IMAGE": "Agrega la imagen del Item",
+        "ACTIVATE": "ACTIVAR",
+        "INACTIVATE": "INACTIVAR",
+        "COOKING_TIME": "Tiempo Aprox de Cocción"
     },
     "ROLE" : {
         "ADMINISTRATOR" : "Administrador",
@@ -559,7 +573,8 @@
         "SELECT_ADDITIONS": "Por favor seleccione las adiciones que desee",
         "TOTAL_PRICE": "Precio Total",
         "ADD_ITEM": "Agregar Item a la Orden",
-        "SHOW_ALL": "Mostrar todos"
+        "SHOW_ALL": "Mostrar todos",
+        "COOKING_TIME": "Tiempo de Cocción"
     },
     "ORDER_LIST": {
         "TABLE_ORDERS": "Órdenes de la mesa",
@@ -585,7 +600,33 @@
         "SELECT_ADDITIONS": "Por favor seleccione las adiciones que desee",
         "TOTAL_PRICE": "Precio Total",
         "MODIFY_ITEM": "Modificar Item",
-        "DELETE_ITEM": "Eliminar Item"
+        "DELETE_ITEM": "Eliminar Item",
+        "DELETE_ORDER": "Esta seguro de eliminar el item de la orden?",
+        "CANCEL_ORDER_CONFIRM": "Esta seguro de cancelar la orden?",
+        "ORDER_CANT_CANCEL": "La orden No se puede cancelar.",
+        "CONFIRM_ORDER_MESSAGE": "Esta seguro de confirmar la orden?",
+        "ORDER_ITEMS_UNAVAILABLE": "La orden presenta items que no se encuentran disponibles. Verifica tu order por favor.",
+        "ORDER_CANT_CONFIRM": "La orden no se puede confirmar",
+        "COOKING_TIME": "Tiempo de Cocción"
+    },
+    "PAYMENTS": {
+        "TITTLE": "Pagos",
+        "TITTLE_CONTENT": "Tu cuenta",
+        "CONTENT": "Aún no tienes cuenta",
+        "BILL": "Cuenta de pago",
+        "ORDER": "Orden # ",
+        "VIEW_DETAIL": "Ver detalle",
+        "ADD_ORDER": "Agregar orden",
+        "PAYMENT_METHOD": "Medio de pago",
+        "TOTAL_BILL": "Total cuenta",
+        "PAY_BTN": "Pagar",
+        "PAY_DETAIL_TITTLE":"Detalle del pago",
+        "PAY_ORDER":"Orden",
+        "SUBTOTAL":"SubTotal",
+        "INC":"Inc",
+        "TOTAL":"Total",
+        "TIPS":"Tip",
+        "TOTAL_TO_PAY":"Total a pagar"
     },
     "WAITER_CALL" : {
         "TITTLE": "Solicitar mesero",
@@ -630,5 +671,12 @@
             "DIAN_NUMERATION_TO": "Hasta",
             "ENTER_TIP_PERCENTAGE": "Ingresa el porcentaje de la propina sugerida ( 0% - 100% ). Puedes ingresar el valor o utilizar el Slider"            
         }
+    },
+    "ORDERS": {
+        "MSG_INITIAL": "Ingresa el código que se encuentra en la mesa",
+        "CANCEL": "Cancelar",
+        "ENTER": "Ingresar código",
+        "CODE_NOT_FOUND": "Código no encontrado",
+        "TRY_AGAIN": "Por favor intenta nuevamente"
     }
 }

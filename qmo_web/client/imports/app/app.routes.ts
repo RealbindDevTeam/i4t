@@ -26,7 +26,6 @@ import { RestaurantEditionComponent } from './web/restaurant/restaurant/restaura
 import { ItemEnableComponent } from './web/administration/items/items-enable/items-enable.component';
 import { WaiterCallComponent } from './web/customer/waiter-call/waiter-call.component';
 import { OrderAttentionComponent } from './web/chef/order-attention/order-attention.component';
-import { OrdersToDeliveryComponent } from "./web/waiter/orders-to-delivery/orders-to-delivery.component";
 import { CallsComponent } from "./web/waiter/calls/calls.component";
 import { NotFoundWebComponent } from './web/auth/notfound.web.component';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -36,6 +35,7 @@ import { WaiterGuard } from './web/auth/navigation/waiter-guard.service';
 import { SupervisorGuard } from './web/auth/navigation/supervisor-guard.service';
 import { ChefGuard } from './web/auth/navigation/chef-guard.service';
 import { CashierGuard } from './web/auth/navigation/cashier-guard.service';
+import { PaymentsComponent } from './web/customer/payments/payments.component';
 
 export const routes: Route[] = [
     {
@@ -61,8 +61,8 @@ export const routes: Route[] = [
             { path: 'itemsEnable', component: ItemEnableComponent, canActivate: [ChefGuard] },
             { path: 'waiter-call', component: WaiterCallComponent, canActivate: [CustomerGuard] },
             { path: 'chefOrders', component: OrderAttentionComponent, canActivate: [ChefGuard] },
-            { path: 'orders-to-delivery', component: OrdersToDeliveryComponent, canActivate: [WaiterGuard] },
-            { path: 'calls', component: CallsComponent, canActivate: [WaiterGuard] }
+            { path: 'calls', component: CallsComponent, canActivate: [WaiterGuard] },
+            { path: 'payments', component: PaymentsComponent, canActivate: [CustomerGuard] }
         ]
     },
     { path: '', component: LandingPageComponent },

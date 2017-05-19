@@ -4,62 +4,52 @@
   <md-card-content>
     <form [formGroup]="_additionForm" (ngSubmit)="addAddition();">
       <div>
-        <md-input-container style="width: 40%">
+        <md-input-container class="name">
           <input mdInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #inputName>
           <md-hint align="end">{{inputName.value.length}} / 50</md-hint>
         </md-input-container>
       </div>
       <div>
-        <p>{{'ADDITIONS.RESTAURANT_ADDITION' | translate}}</p> 
-        <p *ngIf="!_showRestaurants">{{'ADDITIONS.NO_RESTAURANT_CREATED' | translate}}</p>
-        <div *ngIf="_showRestaurants" formGroupName="restaurants">
-          <md-checkbox *ngFor="let restaurant of _restaurantList" [formControlName]="restaurant.name" [class.invalid]="!_additionForm.controls.restaurants.valid" style="padding-right: 15px" (change)="onCheckRestaurant(restaurant.name, $event)">{{restaurant.name}}</md-checkbox>
-        </div>
-      </div>
-      <div>
-        <p *ngIf="!_showCurrencies">{{'ADDITIONS.SELECT_RESTAURANTS' | translate}}</p>
-        <p *ngIf="_showCurrencies">{{'ADDITIONS.ADDITION_PRICES' | translate}}</p>
-        <div *ngIf="_showCurrencies" formGroupName="currencies">
-          <div *ngFor="let currency of _currencies | async">
+        <p *ngIf="!_showCurrencies">{{'ADDITIONS.NO_RESTAURANT_CREATED' | translate}}</p>
+        <p *ngIf="_showCurrencies" class="message">{{'ADDITIONS.ADDITION_PRICES' | translate}}</p>
+        <p *ngIf="_showTaxes" class="message">{{'ADDITIONS.ADDITION_TAXES' | translate}}</p>
+        <div *ngFor="let currency of _currencies | async">
+          <div *ngIf="_showCurrencies" formGroupName="currencies" class="currencies">
             <div *ngFor="let cur of _restaurantCurrencies">
-                <div *ngIf="currency._id === cur">
-                  <md-input-container style="width: 30%;">
-                    <input mdInput required [formControlName]="cur" [class.invalid]="!_additionForm.controls.currencies.valid" type="number" placeholder="{{'ADDITIONS.ADITION_PRICE' | translate}}" min="0" [step]="currency.decimal">
-                    <span mdSuffix>{{currency.code}} - {{currency.name | translate}} </span>
-                  </md-input-container>
-                  <md-input-container style="width: 30%;margin-left: 3%;">
-                    <input mdInput type="number" placeholder="Ingrese Impuesto" min="0" max="100">
-                    <span mdSuffix>{{currency.code}} - {{currency.name | translate}} </span>
-                  </md-input-container>
-                </div>
+                <md-input-container *ngIf="currency._id === cur" class="currency">
+                  <input mdInput required [formControlName]="cur" [class.invalid]="!_additionForm.controls.currencies.valid" type="number" placeholder="{{'ADDITIONS.ADITION_PRICE' | translate}}" min="0" [step]="currency.decimal">
+                  <span mdSuffix>{{currency.code}} - {{currency.name | translate}} </span>
+                </md-input-container>
+            </div>
+          </div>
+          <div *ngIf="_showTaxes" formGroupName="taxes" class="taxes">
+            <div *ngFor="let tax of _restaurantTaxes">
+              <md-input-container *ngIf="currency._id === tax" class="tax">
+                <input mdInput required [formControlName]="tax" [class.invalid]="!_additionForm.controls.taxes.valid" type="number" placeholder="{{'ADDITIONS.TAXES' | translate}}" min="0" max="100">
+                <span mdSuffix>% {{currency.code}} - {{currency.name | translate}} </span>
+              </md-input-container>
             </div>
           </div>
         </div>
       </div>
       <button md-raised-button class="button-secundary" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
-      <button md-raised-button class="button-primary" [disabled]="!_additionForm.valid" type="submit">{{'CREATE' | translate}}</button>
+      <button md-raised-button class="button-primary" type="submit">{{'CREATE' | translate}}</button>
     </form>    
   </md-card-content>
 </md-card>
-<md-card *ngFor="let addition of _additions | async" style="width: 44%;display: inline-block;vertical-align: top;margin-left: 1%;">
-  <md-card-title>{{addition.name}}</md-card-title>
+<md-card *ngFor="let addition of _additions | async" class="cards">
+  <md-card-title class="card-title">{{addition.name}}</md-card-title>
+  <md-card-subtitle class="card-subtitle">
+    <label class="prices">{{'ADDITIONS.PRICES' | translate}}</label>&emsp;-&emsp;
+    <label class="taxes">{{'ADDITIONS.TAXES' | translate}}</label>
+  </md-card-subtitle>
   <md-card-content>
-    <p *ngIf="addition.restaurants.length === 0">{{'ADDITIONS.NO_RESTAURANT' | translate}}</p>
-    <div *ngFor="let rst of _restaurants | async">
-      <div *ngFor="let additionRest of addition.restaurants">
-        <div *ngIf="rst._id === additionRest.restaurantId">
-          <div>
-            <md-icon>store</md-icon>
-            {{rst.name}}
-          </div>
-        </div>              
-      </div>
-    </div>
-    <div style="margin-top: 2%;font-size: x-large;color: green;margin-bottom: -3%;">{{showAdditionPrices(addition.prices)}}</div>
+    <div class="card-addition-price">{{showAdditionPrices(addition.prices)}}</div>
+    <div class="card-addition-tax">{{showAdditionTaxes(addition.prices)}}</div>    
   </md-card-content>
-  <md-card-actions style="margin-top: -2%;">
+  <md-card-actions class="card-actions">
     <button md-raised-button (click)="open(addition)">{{'ADDITIONS.MODIFY' | translate}}</button>
-    <button md-raised-button *ngIf="addition.is_active" style="background-color: red;color: white;" (click)="updateStatus(addition)">{{'ADDITIONS.INACTIVATE' | translate}}</button>
-    <button md-raised-button *ngIf="!addition.is_active" style="background-color: green;color: white;" (click)="updateStatus(addition)">{{'ADDITIONS.ACTIVATE' | translate}}</button>
+    <button md-raised-button *ngIf="addition.is_active" class="inactivate" (click)="updateStatus(addition)">{{'ADDITIONS.INACTIVATE' | translate}}</button>
+    <button md-raised-button *ngIf="!addition.is_active" class="activate" (click)="updateStatus(addition)">{{'ADDITIONS.ACTIVATE' | translate}}</button>
   </md-card-actions>
 </md-card>

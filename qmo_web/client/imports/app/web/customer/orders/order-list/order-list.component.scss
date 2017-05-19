@@ -125,6 +125,15 @@ $sidenav-width: 225px;
         box-shadow: none;
     }
 
+    .description {
+        color: black;
+    }
+    
+    .price {
+        font-weight: bold;
+        color: black;
+    }
+
 }
 
 .item-detail-shadow {
@@ -140,4 +149,54 @@ $sidenav-width: 225px;
     box-shadow: none;
     background-color: transparent;
     min-width: 0px;
+}
+
+.orders-bar {
+    margin-bottom: 1%; 
+    margin-top: 30px;
+    width: 30%;
+}
+
+.customer-order {
+    background-color: #679436;
+    color: white;
+    margin-bottom: 1%;
+}
+
+.order-icon {
+    margin-right: 1%;
+}
+
+.order-code {
+    margin-right: 1rem;
+}
+
+.order-status {
+    float: right;
+}
+
+.item-image {
+    border-radius: 0;
+}
+
+.item-unavailable {
+    color: #D50000;
+    font-weight: bold;
+}
+
+.item-icon {
+    color:#D50000;
+}
+
+.other-order {
+    background-color: #114B5F;
+    color: white;
+    margin-bottom: 1%;
+}
+
+.available-button{
+    color: #D50000; 
+    font-weight: bold;
+    display: inline-block;
+    margin-left: 10%;
 }

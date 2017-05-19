@@ -1,8 +1,13 @@
 <md-progress-bar mode="indeterminate" *ngIf="_isLoadingRoute"></md-progress-bar>
+
 <md-toolbar>
-  <button md-icon-button (click)="toggleSidenav()" id="menu-toggler" *ngIf="_sidenavOpenStyle !== 'off'">
+  <button md-icon-button (click)="toggleSidenav()" id="menu-toggler" *ngIf="_showToggleSidenav" style="margin-right: -16px;">
     <md-icon>menu</md-icon>
   </button>
+
+  <a href="/app/">
+    <img class="logo" src="/images/logo_iurest_white.png">
+  </a>
 
   <span class="breadcrumb-holder" *ngIf="_navigation.largeScreen">
     <span *ngFor="let breadcrumb of _breadcrumbs" class="breadcrumb">
@@ -14,13 +19,21 @@
   <span *ngIf="_navigation.mediumScreenAndDown && (_breadcrumbs.length === 0 || _autoBreadcrumbs) && !_searchToggled">
     {{_pageTitle}}
   </span>
-
+  
   <span class="app-flex-filler"></span>
-  <button md-icon-button [md-menu-trigger-for]="menu" id="user-dropdown-toggler">
-    <img md-list-avatar src="{{_imageProfile}}">
-    {{ _userName }}
-    <md-icon>keyboard_arrow_down</md-icon>
-  </button>
+  
+  <c-customer-menu *ngIf="!_showToggleSidenav && _itemsTopMenu == 'customer'"></c-customer-menu>
+  <c-chef-menu     *ngIf="!_showToggleSidenav && _itemsTopMenu == 'chef'"></c-chef-menu>
+  <c-waiter-menu   *ngIf="!_showToggleSidenav && _itemsTopMenu == 'waiter'"></c-waiter-menu>
+
+  <div class="buttom-profile">
+    <button md-icon-button [md-menu-trigger-for]="menu" id="user-dropdown-toggler" style="padding: 0;">
+      <img class="profile-img" md-list-avatar src="{{_imageProfile}}">
+      {{ _userName }}
+      <md-icon>keyboard_arrow_down</md-icon>
+    </button>
+  </div>
+
   <md-menu #menu="mdMenu" x-position="before">
     <button md-menu-item><md-icon>refresh</md-icon> Refresh</button>
     <button md-menu-item [routerLink]="['/app/settings']"><md-icon>settings</md-icon> Settings</button>

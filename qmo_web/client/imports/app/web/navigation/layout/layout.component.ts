@@ -20,30 +20,53 @@ import style from './layout.component.scss';
 export class LayoutComponent implements OnInit, OnDestroy {
   @ViewChild(MdSidenav) sideNav: MdSidenav;
 
-  private sidenavStyle: string = 'side';
-  private isHovering: boolean = false;
-  private sidenavOpened: boolean = true;
-  private _isHoveringNew: boolean = false;
-  private _isHoveringTimeout: number;
-  private _subscriptions: Subscription[] = [];
+  private sidenavStyle       : string = 'side';
+  private isHovering         : boolean = false;
+  private sidenavOpened      : boolean = true;
+  private _isHoveringNew     : boolean = false;
+  private _isHoveringTimeout : number;
+  private _subscriptions     : Subscription[] = [];
   
   menuItemSetup: MenuItem[];
   userLang: string;
 
+  /**
+   * LayoutComponent constructor
+   * @param _navigation 
+   * @param translate 
+   */
   constructor(private _navigation: NavigationService, private translate: TranslateService) {
         this.userLang = navigator.language.split('-')[0];
         translate.setDefaultLang('en');
         translate.use(this.userLang);
   }
 
+  /**
+   * ngOnDestroy Implementatio
+   */
   ngOnDestroy() {
     this._subscriptions.forEach(sub => {
       sub.unsubscribe();
     });
   }
 
+  /**
+   * ngOnInit Implementation. Is validated user role to load layout corresponding
+   */
   ngOnInit() {
+    MeteorObservable.call('getRole').subscribe((role) => {
+      if(role == "100"){
+        this.showSidenav();
+      }
+    }, (error) => {
+      alert(`Failed to to load layout ${error}`);
+    });
+  }
 
+  /**
+   * This method bundle the Sidenav functionality
+   */
+  showSidenav(){
     if(this._navigation.mediumScreenAndDown) {
       this.sideNav.close();
     }

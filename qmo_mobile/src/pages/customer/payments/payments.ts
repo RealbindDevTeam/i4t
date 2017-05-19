@@ -4,6 +4,7 @@ import { TranslateService } from 'ng2-translate';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
+import { PaymentDetailsPage } from './payment-details/payment-details'
 
 /*
   Generated class for the Payments page.
@@ -24,7 +25,9 @@ export class PaymentsPage implements OnInit, OnDestroy {
   private _ordersSub: Subscription;
   private _paymethod: string = "cash";
 
-  constructor(public _navCtrl: NavController, public _navParams: NavParams, public _translate: TranslateService) {
+  constructor(public _navCtrl: NavController, 
+              public _navParams: NavParams, 
+              public _translate: TranslateService) {
     this._userLang = navigator.language.split('-')[0];
     _translate.setDefaultLang('en');
     _translate.use(this._userLang);
@@ -44,6 +47,10 @@ export class PaymentsPage implements OnInit, OnDestroy {
   ngOnDestroy() { 
     console.log('Entra a ngOnDestroy');
     this._ordersSub.unsubscribe();
+  }
+
+  goToPaymentDetails(){
+    this._navCtrl.push(PaymentDetailsPage, { total_value : 22200, tip : 0 });
   }
 
 }
