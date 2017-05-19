@@ -7,10 +7,10 @@ import { MaterialModule } from '@angular/material';
 import { HttpModule, Http } from '@angular/http';
 import { MdSnackBar } from '@angular/material';
 import { TranslateModule, TranslateStaticLoader, TranslateLoader } from 'ng2-translate';
-import { Ng2PaginationModule } from 'ng2-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { routes, ROUTES_PROVIDERS } from './app.routes';
 import { Ng2PageScrollModule } from 'ng2-page-scroll';
-import { AgmCoreModule } from 'angular2-google-maps/core';
+import { AgmCoreModule } from '@agm/core';
 
 import { AppComponent } from './web/app.web.component';
 import { SHARED_DECLARATIONS } from './shared';
@@ -58,10 +58,10 @@ moduleDefinition = {
       }),
       SharedModule.forRoot(),
       Ng2PageScrollModule.forRoot(),
-      Ng2PaginationModule,
-      AgmCoreModule.forRoot({
+      NgxPaginationModule,
+      /*AgmCoreModule.forRoot({
         apiKey: 'AIzaSyBXJSlwWRSHoRiZdqlOfHPqxxDRdqm8_Jk'
-      })
+      })*/
     ],
     declarations: [
       ...WEB_DECLARATIONS,

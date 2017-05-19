@@ -2,9 +2,9 @@
     <md-card-title style="text-align: -webkit-center;">{{'RESTAURANT_LOCATION.TITTLE' | translate}}</md-card-title>
     <md-card-subtitle style="text-align: -webkit-center;">{{'RESTAURANT_LOCATION.TEXT' | translate}}</md-card-subtitle>
     <md-card-content>
-        <sebm-google-map [latitude]="_lat" [longitude]="_lng" (mapClick)="mapClicked($event)">
-            <sebm-google-map-marker [latitude]="_lat" [longitude]="_lng" [markerDraggable]="true" (dragEnd)="markerDragEnd($event)"></sebm-google-map-marker>
-        </sebm-google-map>
+        <!--agm-map [latitude]="_lat" [longitude]="_lng" (mapClick)="mapClicked($event)">
+            <agm-marker [latitude]="_lat" [longitude]="_lng" [markerDraggable]="true" (dragEnd)="markerDragEnd($event)"></agm-marker>
+        </agm-map-->
     </md-card-content>
     <md-card-actions>
         <button md-raised-button class="button-secundary" type="button" (click)="_dialogRef.close()">{{'RESTAURANT_LOCATION.CLOSE' | translate}}</button>
