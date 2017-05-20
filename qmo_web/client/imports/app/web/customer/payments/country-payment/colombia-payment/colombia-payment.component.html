@@ -9,7 +9,7 @@
                     <h3> {{order.totalPayment}} COP</h3>
                 </div>
                 <div *ngFor="let itemId of order.items">
-                    <payment-item-detail [order]="order" [orderItem]="itemId" [resCode]="order.restaurantId"></payment-item-detail>
+                    <colombia-item-detail [order]="order" [orderItem]="itemId" [resCode]="order.restaurantId"></colombia-item-detail>
                 </div>
             </div>
 

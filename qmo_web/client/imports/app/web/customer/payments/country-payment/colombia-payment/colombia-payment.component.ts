@@ -3,17 +3,17 @@ import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { MeteorObservable } from "meteor-rxjs";
 import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs';
-import { Orders } from "../../../../../../../both/collections/restaurant/order.collection";
+import { Orders } from "../../../../../../../../both/collections/restaurant/order.collection";
 
-import template from './payment-details.component.html';
-import style from './payment-details.component.scss';
+import template from './colombia-payment.component.html';
+import style from './colombia-payment.component.scss';
 
 @Component({
-    selector: 'payment-details',
+    selector: 'iu-colombia-payment',
     template,
     styles: [ style ]
 })
-export class PaymentDetailsComponent implements OnInit, OnDestroy {
+export class ColombiaPaymentComponent implements OnInit, OnDestroy {
 
     public _totalValue    : number = 0;
     public _tipPorcentage : number = 0;
@@ -30,7 +30,7 @@ export class PaymentDetailsComponent implements OnInit, OnDestroy {
     private _orders             : any;
 
     /**
-     * PaymentDetailsComponent Constructor
+     * ColombiaPaymentComponent Constructor
      * @param { TranslateService } _translate 
      * @param { NgZone } _ngZone 
      */

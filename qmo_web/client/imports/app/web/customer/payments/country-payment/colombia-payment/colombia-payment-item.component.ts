@@ -1,13 +1,13 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { Orders } from "../../../../../../../both/collections/restaurant/order.collection";
-import { Order, OrderItem } from "../../../../../../../both/models/restaurant/order.model";
-import { Items } from "../../../../../../../both/collections/administration/item.collection";
-import { Item } from "../../../../../../../both/models/administration/item.model";
+import { Orders } from "../../../../../../../../both/collections/restaurant/order.collection";
+import { Order, OrderItem } from "../../../../../../../../both/models/restaurant/order.model";
+import { Items } from "../../../../../../../../both/collections/administration/item.collection";
+import { Item } from "../../../../../../../../both/models/administration/item.model";
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'payment-item-detail',
+    selector: 'colombia-item-detail',
     template : `
         <div *ngFor="let item of _items | async">
             <div *ngIf="orderItem.itemId == item._id" style="width: 100%">
@@ -18,7 +18,7 @@ import { Subscription } from 'rxjs';
     `,
 })
 
-export class PaymentItemDetailComponent implements OnInit, OnDestroy {
+export class ColombiaItemDetailComponent implements OnInit, OnDestroy {
     @Input() order: Order;
 
     @Input() orderItem: OrderItem;

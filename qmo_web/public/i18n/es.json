@@ -33,7 +33,7 @@
         "IN_PROCESS": "En Proceso",
         "PREPARED": "Preparado",
         "CANCELED": "Cancelado",
-        "CLOSED": "Cerrado"
+        "DELIVERED": "Entregado"
     },
     "DATE_VALIDATE" : {
         "DAY_FORMAT" : "Formato del día incorrecto",

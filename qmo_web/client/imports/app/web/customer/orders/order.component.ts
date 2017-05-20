@@ -7,6 +7,9 @@ import { Meteor } from 'meteor/meteor';
 import { Table } from '../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
+import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
+import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 
 import template from './order.component.html';
 import style from './order.component.scss';
@@ -18,16 +21,18 @@ import style from './order.component.scss';
 })
 export class OrdersComponent implements OnInit, OnDestroy {
 
+    private _user = Meteor.userId();
     private _ordersForm: FormGroup;
 
     private _tablesSub: Subscription;
-    
+    private _userDetailsSub: Subscription;
+    private _restaurantSub: Subscription;
 
     private _currentRestaurant: Restaurant;
     private _currentQRCode: string;
 
     private _showError: boolean = false;
-    private _showAlphanumericCodeCard: boolean = true;
+    private _showAlphanumericCodeCard: boolean = false;
     private _showRestaurantInformation: boolean = false;
     private _showNewOrderButton: boolean = false;
     private _showOrderCreation: boolean = false;
@@ -51,6 +56,30 @@ export class OrdersComponent implements OnInit, OnDestroy {
         this._ordersForm = new FormGroup({
             qrCode: new FormControl( '', [ Validators.required, Validators.minLength( 1 ) ] )
         });
+        this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByUser', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                let _lUserDetail: UserDetail = UserDetails.findOne( { user_id: this._user } );
+                if( _lUserDetail.current_restaurant !== "" && _lUserDetail.current_table !== "" ){
+                    this._restaurantSub = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', this._user ).subscribe( () => {
+                        this._ngZone.run( () => {
+                            let _lRestaurant: Restaurant = Restaurants.findOne( { _id: _lUserDetail.current_restaurant } );
+                            let _lTable:Table = Tables.findOne( { _id: _lUserDetail.current_table } );
+                            this._currentRestaurant = _lRestaurant;
+                            this._currentQRCode = _lTable.QR_code;
+                            this._showAlphanumericCodeCard = false;
+                            this._showRestaurantInformation = true;
+                            this._showOrderList = true;
+                            this._showNewOrderButton = true;
+                        });
+                    });
+                } else {
+                    this._showAlphanumericCodeCard = true;
+                    this._showRestaurantInformation = false;
+                    this._showOrderList = false;
+                    this._showNewOrderButton = false;
+                }
+            });
+        });
         this._tablesSub = MeteorObservable.subscribe( 'getAllTables' ).subscribe();
     }
 
@@ -61,7 +90,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
         if( this._ordersForm.valid ){
             let _lTable:Table = Tables.findOne( { QR_code: this._ordersForm.value.qrCode } );
             if( _lTable ){
-                MeteorObservable.call( 'getRestaurantByQRCode', _lTable.QR_code, Meteor.userId() ).subscribe( ( _result: Restaurant ) => {
+                MeteorObservable.call( 'getRestaurantByQRCode', _lTable.QR_code, this._user ).subscribe( ( _result: Restaurant ) => {
                     this._currentRestaurant = _result;
                     this._currentQRCode = _lTable.QR_code;
                     this._showAlphanumericCodeCard = false;
@@ -124,5 +153,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
      */
     ngOnDestroy(){
         this._tablesSub.unsubscribe();
+        this._userDetailsSub.unsubscribe();
+        this._restaurantSub.unsubscribe();
     }
 }

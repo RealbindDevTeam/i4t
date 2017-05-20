@@ -11,13 +11,11 @@ import {CodeHighlighterDirective} from './layout/code-highlighter/code-highlight
 import {SearchService} from './services/search.service';
 import {NavigationModule} from '../web/navigation/navigation.module';
 import {NavigationService} from '../web/navigation/navigation.service';
-import {PaymentItemDetailComponent} from "../web/customer/payments/payment-details/payment-item-detail.component";
 
 @NgModule({
   declarations : [
     WidgetComponent, 
-    CodeHighlighterDirective,
-    PaymentItemDetailComponent
+    CodeHighlighterDirective
   ],
   exports : [ FormsModule, 
               HttpModule, 
@@ -26,8 +24,7 @@ import {PaymentItemDetailComponent} from "../web/customer/payments/payment-detai
               FlexLayoutModule, 
               NavigationModule, 
               WidgetComponent, 
-              CodeHighlighterDirective,
-              PaymentItemDetailComponent ],
+              CodeHighlighterDirective],
   imports : [ FormsModule, 
               HttpModule, 
               CommonModule, 
