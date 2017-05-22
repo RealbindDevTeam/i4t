@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
     template : `
         <div *ngFor="let item of _items | async">
             <div *ngIf="orderItem.itemId == item._id" style="width: 100%">
-                <h3 style="white-space: normal; display: inline-block; width: 74%;">{{item.name}}</h3> 
+                <h4 style="white-space: normal; display: inline-block; width: 74%;">{{item.name}}</h4> 
                 <p item-right style="white-space: normal;display: inline-block; width: 24%; text-align: end;">{{orderItem.paymentItem}} COP</p>
             </div>
         </div>

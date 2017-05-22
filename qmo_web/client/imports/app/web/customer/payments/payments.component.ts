@@ -1,7 +1,12 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-//import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
-//import { PaymentDetailsComponent } from "./payment-details/payment-details.component";
+import { Observable, Subscription } from 'rxjs';
+import { MeteorObservable } from 'meteor-rxjs';
+import { Meteor } from 'meteor/meteor';
+import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
+import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
+import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 
 import template from './payments.component.html';
 import style from './payments.component.scss';
@@ -13,8 +18,14 @@ import style from './payments.component.scss';
 })
 export class PaymentsComponent implements OnInit, OnDestroy {
 
-    //private _mdDialogRef : MdDialogRef<any>;
-    
+    private _user = Meteor.userId();
+    private _userDetailsSub: Subscription;
+    private _restaurantSub: Subscription;
+
+    private _currentRestaurant: Restaurant;
+    private _showInitCard: boolean = false;
+    private _showPaymentInfo: boolean = false;
+
     /**
      * PaymentsComponent Constructor
      * @param { TranslateService } _translate 
@@ -31,27 +42,31 @@ export class PaymentsComponent implements OnInit, OnDestroy {
      * ngOnInit Implementation
      */
     ngOnInit(){
-
-    }
-
-    /**
-     * This function show the Payment details
-     
-    showPaymentDetails() {
-        this._mdDialogRef = this._mdDialog.open(PaymentDetailsComponent, {
-            disableClose : false,
-            height : '80%',
-            width  : '450px',
+        this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByUser', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                let _lUserDetail: UserDetail = UserDetails.findOne( { user_id: this._user } );
+                if( _lUserDetail.current_restaurant !== "" && _lUserDetail.current_table !== "" ){
+                    this._restaurantSub = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', this._user ).subscribe( () => {
+                        this._ngZone.run( () => {
+                            let _lRestaurant: Restaurant = Restaurants.findOne( { _id: _lUserDetail.current_restaurant } );
+                            this._currentRestaurant = _lRestaurant;
+                            this._showInitCard = false;
+                            this._showPaymentInfo = true;
+                        });
+                    });
+                } else {
+                    this._showInitCard = true;
+                    this._showPaymentInfo = false;
+                }
+            });
         });
-        this._mdDialogRef.componentInstance._totalValue = 22200;
-        this._mdDialogRef.componentInstance._tipPorcentage = 0;
-        this._mdDialogRef.afterClosed();
-    }*/
+    }
 
     /**
      * ngOnDestroy Implementation
      */
     ngOnDestroy(){
-
+        this._userDetailsSub.unsubscribe();
+        this._restaurantSub.unsubscribe();
     }
 }
