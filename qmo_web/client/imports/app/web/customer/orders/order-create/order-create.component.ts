@@ -273,27 +273,16 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * @param {boolean} _boolean 
      */
     viewItemDetail( _boolean : boolean ):void {
-        var card = document.getElementById("item-detail");
-        var fb = document.getElementById("fb");
-        var img = document.getElementById("card");
+        var card = document.getElementById("item-selected");
 
         if(!_boolean){
-            card.style.right = "0";
-            fb.style.right = "431px";
-            card.classList.add("item-detail-shadow");
-            document.getElementById("content").style.marginRight = "396px";
-            this._numberColums = 2;
+            //card.classList.add("item-detail-width");
+            //card.removeAttribute("style");
+            card.style.width = "336px";
         } else {
-            card.style.right = "-396px";
-            fb.style.right = "35px";
-            card.classList.remove("item-detail-shadow");
-            document.getElementById("content").style.marginRight = "0";
-            this._numberColums = 3;
-            this._finalPrice = 0;
-            this._maxGarnishFoodElements = 0;
-            this._showItemDetails = false;
-            this._unitPrice = 0;
-            this.resetItemDetailVariables();
+            //card.classList.remove("item-detail-width");
+            card.style.width = "0";
+            //card.style.display = "none";
         }
     }
 
