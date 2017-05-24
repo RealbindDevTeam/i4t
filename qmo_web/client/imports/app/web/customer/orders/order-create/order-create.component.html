@@ -1,20 +1,19 @@
 <div class="order-form-1">
     <div class="order-form-2">
         <div class="sidenav">
-                <div class="sidenav-content">
-                    <div class="sidenav-list">
-                        <md-nav-list [ngStyle]="{'height': auto}">
-                            <a class="mat-list-item" (click)="showAllItems()">
-                                <div class="mat-list-item-content">
-                                    <md-icon>restaurant_menu</md-icon>{{'ORDER_CREATE.SHOW_ALL' | translate}}
-                                </div>
-                            </a>
-                            <order-menu-option *ngFor="let menu of _orderMenus" [orderMenu]="menu" [parent]="_this" (idToEvaluate)="evaluateId($event)"></order-menu-option>
-                        </md-nav-list>
-                    </div>
+            <div class="sidenav-content">
+                <div class="sidenav-list">
+                    <md-nav-list [ngStyle]="{'height': auto}">
+                        <a class="mat-list-item" (click)="showAllItems()">
+                            <div class="mat-list-item-content">
+                                <md-icon>restaurant_menu</md-icon>{{'ORDER_CREATE.SHOW_ALL' | translate}}
+                            </div>
+                        </a>
+                        <order-menu-option *ngFor="let menu of _orderMenus" [orderMenu]="menu" [parent]="_this" (idToEvaluate)="evaluateId($event)"></order-menu-option>
+                    </md-nav-list>
                 </div>
+            </div>
         </div>
-
         <div class="menu-items">
             <div class="menu-items-1">
                 <div class="menu-items-2">
