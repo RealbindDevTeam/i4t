@@ -3,33 +3,28 @@
     </md-sidenav>
 
 </md-sidenav-container-->
+
 <div class="order-form-1">
     <div class="order-form-2">
-        <!--div class="sidenav">
-            <div class="sidenav-1">
-                <div class="sidenav-2">
-                    <div class="sidenav-3">
-                        <div class="sidenav-content"-->
-                            <div class="sidenav-list">
-                                <md-nav-list [ngStyle]="{'height': auto}">
-                                    <a class="mat-list-item" (click)="showAllItems()">
-                                        <div class="mat-list-item-content">
-                                            <md-icon>restaurant_menu</md-icon>{{'ORDER_CREATE.SHOW_ALL' | translate}}
-                                        </div>
-                                    </a>
-                                    <order-menu-option *ngFor="let menu of _orderMenus" [orderMenu]="menu" [parent]="_this" (idToEvaluate)="evaluateId($event)"></order-menu-option>
-                                </md-nav-list>
-                            </div>
-                        <!--/div>
+        <div class="sidenav">
+                <div class="sidenav-content">
+                    <div class="sidenav-list">
+                        <md-nav-list [ngStyle]="{'height': auto}">
+                            <a class="mat-list-item" (click)="showAllItems()">
+                                <div class="mat-list-item-content">
+                                    <md-icon>restaurant_menu</md-icon>{{'ORDER_CREATE.SHOW_ALL' | translate}}
+                                </div>
+                            </a>
+                            <order-menu-option *ngFor="let menu of _orderMenus" [orderMenu]="menu" [parent]="_this" (idToEvaluate)="evaluateId($event)"></order-menu-option>
+                        </md-nav-list>
                     </div>
                 </div>
-            </div>
-        </div-->
+        </div>
 
-        <!--div class="menu-items">
+        <div class="menu-items">
             <div class="menu-items-1">
                 <div class="menu-items-2">
-                    <div class="menu-items-3"-->
+                    <div class="menu-items-3">
                         <div class="items">
                             <span *ngFor="let section of _sections | async" >
                                 <span *ngFor="let item of _items | async">
@@ -94,12 +89,12 @@
                             </span>
                         </div>
                         <div id="item-selected" class="item-detail">
-                            <div *ngFor="let itemDet of _itemDetail | async">
+                            <div *ngFor="let itemDet of _itemDetail | async" class="detail-content">
                                 <div class="header-detail" #headerDetailCard>
+                                    <label>{{itemDet.name}}</label>
                                     <button class="btn-close" md-raised-button (click)="viewItemDetail(true)">
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                     </button>
-                                    <label>{{itemDet.name}}</label>
                                 </div>
                                 <div class="item-detail-card">
                                     <div class="card-content">
@@ -114,7 +109,7 @@
                                             <div *ngIf="itemDet.isAvailable">
                                                 <div>
                                                     <div class="quantity-count">
-                                                        <md-card-title>{{'ORDER_CREATE.QUANTITY' | translate}}: {{ _quantityCount }}</md-card-title>
+                                                        <span>{{'ORDER_CREATE.QUANTITY' | translate}}: {{ _quantityCount }}</span>
                                                     </div>  
                                                     <div class="inline-block">
                                                         <button md-button class="quantity-button" (click)="removeCount()">
@@ -161,17 +156,17 @@
                                                 </form>
                                             </div>
                                             <h3>{{'ORDER_CREATE.TOTAL_PRICE' | translate}}: {{ _finalPrice }} {{_currencyCode}}</h3>
-                                            <md-card-actions *ngIf="itemDet.isAvailable">
+                                            <div *ngIf="itemDet.isAvailable">
                                                 <button md-button [disabled]="!_newOrderForm.valid || _showGarnishFoodError" (click)="AddItemToOrder(itemDet._id)">{{'ORDER_CREATE.ADD_ITEM' | translate}}</button>
-                                            </md-card-actions>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    <!--/div>
+                    </div>
                 </div>
             </div>
-        </div-->
+        </div>
     </div>
 </div>
