@@ -1,9 +1,3 @@
-<!--md-sidenav-container>
-    <md-sidenav mode="side" opened="true">
-    </md-sidenav>
-
-</md-sidenav-container-->
-
 <div class="order-form-1">
     <div class="order-form-2">
         <div class="sidenav">
@@ -156,9 +150,7 @@
                                                 </form>
                                             </div>
                                             <h3>{{'ORDER_CREATE.TOTAL_PRICE' | translate}}: {{ _finalPrice }} {{_currencyCode}}</h3>
-                                            <div *ngIf="itemDet.isAvailable">
-                                                <button md-button [disabled]="!_newOrderForm.valid || _showGarnishFoodError" (click)="AddItemToOrder(itemDet._id)">{{'ORDER_CREATE.ADD_ITEM' | translate}}</button>
-                                            </div>
+                                            <button *ngIf="itemDet.isAvailable" md-button [disabled]="!_newOrderForm.valid || _showGarnishFoodError" (click)="AddItemToOrder(itemDet._id)">{{'ORDER_CREATE.ADD_ITEM' | translate}}</button>
                                         </div>
                                     </div>
                                 </div>

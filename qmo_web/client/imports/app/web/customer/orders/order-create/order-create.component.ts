@@ -277,11 +277,11 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
 
         if(!_boolean){
             //card.classList.add("item-detail-width");
-            //card.removeAttribute("style");
             card.style.width = "336px";
         } else {
             //card.classList.remove("item-detail-width");
             card.style.width = "0";
+            card.removeAttribute("style");
             //card.style.display = "none";
         }
     }
