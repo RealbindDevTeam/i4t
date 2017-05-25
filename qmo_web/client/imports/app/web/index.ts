@@ -54,7 +54,8 @@ import { IurestFinancialFormComponent } from './custom/financial-info/financial-
 import { IurestFinancialElementComponent } from './custom/financial-info/financial-element/financial-element.component';
 import { IurestSliderComponent } from './custom/slider/slider.component';
 import { PaymentsComponent } from './customer/payments/payments.component';
-import { PaymentDetailsComponent } from './customer/payments/payment-details/payment-details.component';
+import { ColombiaPaymentComponent } from './customer/payments/country-payment/colombia-payment/colombia-payment.component';
+import { ColombiaItemDetailComponent } from "./customer/payments/country-payment/colombia-payment/colombia-payment-item.component";
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -93,7 +94,9 @@ export const WEB_DECLARATIONS = [
     IurestFinancialFormComponent,
     IurestFinancialElementComponent,
     IurestSliderComponent,
-    PaymentsComponent
+    PaymentsComponent,
+    ColombiaPaymentComponent,
+    ColombiaItemDetailComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [
@@ -112,8 +115,7 @@ export const MODAL_DIALOG_DECLARATIONS = [
     RestaurantLocationInfoComponent,
     RestaurantInfoDetailComponent,
     RestaurantScheduleComponent,
-    CallCloseConfirmComponent,
-    PaymentDetailsComponent
+    CallCloseConfirmComponent
     /*
     CollaboratorsEditionComponent,
     */
