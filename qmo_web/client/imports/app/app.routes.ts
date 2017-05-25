@@ -58,7 +58,7 @@ export const routes: Route[] = [
             { path: 'restaurantEdition', component: RestaurantEditionComponent, canActivate: [AdminGuard] },
             { path: 'tables', component: TableComponent, canActivate: [SupervisorGuard] },
             { path: 'orders', component: OrdersComponent, canActivate: [CustomerGuard] },
-            { path: 'itemsEnable', component: ItemEnableComponent, canActivate: [ChefGuard] },
+            { path: 'itemsEnable', component: ItemEnableComponent, canActivate: [SupervisorGuard] },
             { path: 'waiter-call', component: WaiterCallComponent, canActivate: [CustomerGuard] },
             { path: 'chefOrders', component: OrderAttentionComponent, canActivate: [ChefGuard] },
             { path: 'calls', component: CallsComponent, canActivate: [WaiterGuard] },

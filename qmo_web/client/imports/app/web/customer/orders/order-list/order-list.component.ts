@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, NgZone, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -27,6 +27,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     @Input() restaurantId: string;
     @Input() tableQRCode: string;
     @Input() restaurantCurrency: string;
+    @Output() createNewOrder = new EventEmitter();
     
     private _user = Meteor.userId();
     private _ordersSub: Subscription;
@@ -176,20 +177,29 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {boolean} _boolean 
      */
     viewItemDetail( _boolean : boolean ):void {
-        var card = document.getElementById("item-detail");
-        var img = document.getElementById("card");
-        var center = document.getElementById("center");
+        //var card = document.getElementById("item-detail");
+        //var img = document.getElementById("card");
+        //var center = document.getElementById("center");
+
+        //if(!_boolean){
+            //card.style.right = "0";
+            //card.classList.add("item-detail-shadow");
+            //document.getElementById("content").style.marginRight = "396px";
+            //center.style.width = "95%";
+        //} else {
+            //card.style.right = "-396px";
+            //card.classList.remove("item-detail-shadow");
+            //document.getElementById("content").style.marginRight = "0";
+            //center.style.width = "80%";
+        //}
+
+        var card = document.getElementById("item-selected");
 
         if(!_boolean){
-            card.style.right = "0";
-            card.classList.add("item-detail-shadow");
-            document.getElementById("content").style.marginRight = "396px";
-            center.style.width = "95%";
+            card.style.width = "396px";
         } else {
-            card.style.right = "-396px";
-            card.classList.remove("item-detail-shadow");
-            document.getElementById("content").style.marginRight = "0";
-            center.style.width = "80%";
+            card.style.width = "0";
+            card.removeAttribute("style");
         }
     }
 
@@ -609,6 +619,10 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      */
     getGarnishFoodInformation( _pGarnishFood:GarnishFood ):string{
         return _pGarnishFood.name + ' - ' + _pGarnishFood.restaurants.filter( r => r.restaurantId === this.restaurantId )[0].price + ' ';
+    }
+
+    createNewOrderEvent():void{
+        this.createNewOrder.emit( true );
     }
 
     /**
