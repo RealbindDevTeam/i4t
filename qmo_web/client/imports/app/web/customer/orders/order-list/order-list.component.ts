@@ -177,24 +177,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {boolean} _boolean 
      */
     viewItemDetail( _boolean : boolean ):void {
-        //var card = document.getElementById("item-detail");
-        //var img = document.getElementById("card");
-        //var center = document.getElementById("center");
-
-        //if(!_boolean){
-            //card.style.right = "0";
-            //card.classList.add("item-detail-shadow");
-            //document.getElementById("content").style.marginRight = "396px";
-            //center.style.width = "95%";
-        //} else {
-            //card.style.right = "-396px";
-            //card.classList.remove("item-detail-shadow");
-            //document.getElementById("content").style.marginRight = "0";
-            //center.style.width = "80%";
-        //}
-
         var card = document.getElementById("item-selected");
-
         if(!_boolean){
             card.style.width = "396px";
         } else {

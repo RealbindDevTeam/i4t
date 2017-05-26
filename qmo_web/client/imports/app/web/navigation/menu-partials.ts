@@ -72,6 +72,9 @@ export class WaiterMenuComponent extends RoutingClass {
   selector: 'c-chef-menu',
   template : `  <button md-icon-button id="menu-toggler" (click)="goToRoute('/app/chefOrders')">
                     <md-icon>restaurant_menu</md-icon>
+                </button>
+                <button md-icon-button id="menu-toggler" (click)="goToRoute('/app/itemsEnable')">
+                    <md-icon>iso</md-icon>
                 </button>`
 })
 export class ChefMenuComponent extends RoutingClass {
