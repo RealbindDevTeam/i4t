@@ -55,7 +55,7 @@ import { IurestFinancialElementComponent } from './custom/financial-info/financi
 import { IurestSliderComponent } from './custom/slider/slider.component';
 import { PaymentsComponent } from './customer/payments/payments.component';
 import { ColombiaPaymentComponent } from './customer/payments/country-payment/colombia-payment/colombia-payment.component';
-import { ColombiaItemDetailComponent } from "./customer/payments/country-payment/colombia-payment/colombia-payment-item.component";
+import { ColombiaItemDetailComponent } from "./customer/payments/country-payment/colombia-payment/colombia-payment-item/colombia-payment-item.component";
 
 export const WEB_DECLARATIONS = [
     AppComponent,

@@ -1,4 +1,4 @@
-<md-card style="box-shadow: none;width:45%">
+<md-card style="box-shadow: none;width:50%;display: inline-block;">
     <md-card-title>{{ 'PAYMENTS.PAY_DETAIL_TITTLE' | translate }}</md-card-title>
     <md-card-content>
         <div id="item" *ngFor="let order of _orders | async">
@@ -9,10 +9,10 @@
                 <h3> {{order.totalPayment}} {{_currencyCode}}</h3>
             </div>
             <div *ngFor="let itemId of order.items">
-                <colombia-item-detail [order]="order" [orderItem]="itemId" [resCode]="order.restaurantId"></colombia-item-detail>
+                <colombia-item-detail [orderItem]="itemId" [resCode]="order.restaurantId" [cur]="currencyId" [curCode]="_currencyCode"></colombia-item-detail>
             </div>
         </div>
-
+        
         <div class="block">
             <div class="item-inner">
                 <div class="input">
@@ -56,4 +56,7 @@
             </div>
         </div>
     </md-card-content>
+</md-card>
+<md-card style="box-shadow: none;width: 40%;display: inline-block;margin-left: 1%;vertical-align: top;">
+    <button md-raised-button color="primary">Ordenes de la Mesa</button>
 </md-card>

@@ -626,7 +626,9 @@
         "INC":"Inc",
         "TOTAL":"Total",
         "TIPS":"Tip",
-        "TOTAL_TO_PAY":"Total to pay"
+        "TOTAL_TO_PAY":"Total to pay",
+        "ADDITION": "Addition",
+        "GARNISH_FOOD": "Garnish Food"
     },
     "WAITER_CALL": {
         "TITTLE": "Call waiter",

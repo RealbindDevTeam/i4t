@@ -626,7 +626,9 @@
         "INC":"Inc",
         "TOTAL":"Total",
         "TIPS":"Propina Sugerida",
-        "TOTAL_TO_PAY":"Total a pagar"
+        "TOTAL_TO_PAY":"Total a pagar",
+        "ADDITION": "Adicion",
+        "GARNISH_FOOD": "Guarnicion"
     },
     "WAITER_CALL" : {
         "TITTLE": "Solicitar mesero",
