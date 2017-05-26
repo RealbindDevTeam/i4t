@@ -276,7 +276,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         var card = document.getElementById("item-selected");
 
         if(!_boolean){
-            card.style.width = "336px";
+            card.style.width = "396px";
         } else {
             card.style.width = "0";
             card.removeAttribute("style");

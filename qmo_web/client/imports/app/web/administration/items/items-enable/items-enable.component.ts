@@ -3,11 +3,11 @@ import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
-import { Item } from '../../../../../../../both/models/administration/item.model';
-import { Items } from '../../../../../../../both/collections/administration/item.collection';
+import { Item, ItemImage, ItemPrice } from '../../../../../../../both/models/administration/item.model';
+import { Items, ItemImages } from '../../../../../../../both/collections/administration/item.collection';
 
 import template from './items-enable.component.html';
-import style from './items-enable.component.scss';
+import style from '../item.component.scss';
 
 @Component({
     selector: 'item-enable',
@@ -17,7 +17,9 @@ import style from './items-enable.component.scss';
 export class ItemEnableComponent implements OnInit, OnDestroy {
     
     private _itemsSub: Subscription;
+    private _itemImagesSub: Subscription;
     private _items: Observable<Item[]>;
+    private _itemImages: Observable<ItemImage[]>;
     private _itemsFilter: Item[] = [];
 
     /**
@@ -40,6 +42,8 @@ export class ItemEnableComponent implements OnInit, OnDestroy {
                 this._itemsFilter = Items.collection.find( { } ).fetch();
             });
         });
+        this._itemImages = ItemImages.find( { } ).zone();
+        this._itemImagesSub = MeteorObservable.subscribe( 'itemImages', Meteor.userId() ).subscribe();
     }
 
     /**
@@ -61,5 +65,6 @@ export class ItemEnableComponent implements OnInit, OnDestroy {
      */
     ngOnDestroy(){
         this._itemsSub.unsubscribe();
+        this._itemImagesSub.unsubscribe();
     }
 }
