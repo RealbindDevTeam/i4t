@@ -239,7 +239,10 @@
         "NO_CURRENCY_FOUND": "No Currency Found",
         "CURRENCY_ACCEPTED": "Currency Accepted",
         "ENTER_TAX_PERCENTAGE": "Enter the tax percentage (0% - 100%). You can enter the value or use the Slider",
-        "ENTER_TIP_PERCENTAGE": "Enter the percentage of the suggested tip (0% - 100%). You can enter the value or use the Slider"
+        "ENTER_TIP_PERCENTAGE": "Enter the percentage of the suggested tip (0% - 100%). You can enter the value or use the Slider",
+        "NUMBER_TABLE_LABEL": "# Tables",
+        "NUMBER_TABLE_LABEL_INFO": "Select the number of restaurant tables",
+        "NUMBER_TABLE_LABEL_INFO_TEXT": "You have a 15 days test period, after that, you can choose your plan according to the selected number of tables"
     },
     "WEEK": {
         "MONDAY": "Monday",

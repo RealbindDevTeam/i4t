@@ -105,18 +105,18 @@
                         </md-card-actions>
                     </md-card>
                 </md-tab>
-                <md-tab label="PLANES">
+                <md-tab label="{{'RESTAURANT_REGISTER.NUMBER_TABLE_LABEL' | translate}}">
                     <md-card>
-                        <md-card-title>Selección de plan</md-card-title>
-                        <md-card-subtitle>Por favor selecciona el plan </md-card-subtitle>
+                        <md-card-title>{{'RESTAURANT_REGISTER.NUMBER_TABLE_LABEL_INFO' | translate}}</md-card-title>
+                        <md-card-subtitle>{{'RESTAURANT_REGISTER.NUMBER_TABLE_LABEL_INFO_TEXT' | translate}}</md-card-subtitle>
                         <md-card-content>
-
-                            <md-chip-list class="mat-chip-list-stacked">
-                                <md-chip *ngFor="let post of postsArray">
-                                    {{post.title}}
-                                </md-chip>
-                            </md-chip-list>
-
+                            <md-radio-group formControlName="plans" [(ngModel)]="align">
+                                <md-list>
+                                    <md-list-item *ngFor="let plan of _restaurantPlans | async">
+                                        <md-radio-button class="example-margin" value="{{plan.planCode}}">{{plan.planCode}}</md-radio-button>
+                                    </md-list-item>
+                                </md-list>
+                            </md-radio-group>
                         </md-card-content>
                         <md-card-actions align="end">
                             <button md-raised-button (click)="previous()" [disabled]="!canMove(1)">{{'BACK' | translate}}</button>
