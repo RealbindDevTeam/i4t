@@ -1,1 +1,5 @@
-<button md-raised-button (click)="showPaymentDetails()">VER DETALLE</button>
+<div *ngIf="_showPaymentInfo">
+  <div [ngSwitch]="_currentRestaurant.countryId">
+    <iu-colombia-payment *ngSwitchCase="'1900'" [restaurantId]="_currentRestaurant._id" [currencyId]="_currentRestaurant.currencyId"></iu-colombia-payment>
+  </div> 
+</div>

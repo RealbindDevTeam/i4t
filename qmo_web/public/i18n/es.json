@@ -33,7 +33,7 @@
         "IN_PROCESS": "En Proceso",
         "PREPARED": "Preparado",
         "CANCELED": "Cancelado",
-        "CLOSED": "Cerrado"
+        "DELIVERED": "Entregado"
     },
     "DATE_VALIDATE" : {
         "DAY_FORMAT" : "Formato del día incorrecto",
@@ -628,7 +628,7 @@
         "SUBTOTAL":"SubTotal",
         "INC":"Inc",
         "TOTAL":"Total",
-        "TIPS":"Tip",
+        "TIPS":"Propina Sugerida",
         "TOTAL_TO_PAY":"Total a pagar"
     },
     "WAITER_CALL" : {

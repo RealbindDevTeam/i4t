@@ -1,0 +1,59 @@
+<md-card style="box-shadow: none;width:45%">
+    <md-card-title>{{ 'PAYMENTS.PAY_DETAIL_TITTLE' | translate }}</md-card-title>
+    <md-card-content>
+        <div id="item" *ngFor="let order of _orders | async">
+            <div class="inner-item">
+                <div class="input-wraper">
+                    <h3>{{ 'PAYMENTS.PAY_ORDER' | translate }} # {{order.code}}</h3>
+                </div>
+                <h3> {{order.totalPayment}} {{_currencyCode}}</h3>
+            </div>
+            <div *ngFor="let itemId of order.items">
+                <colombia-item-detail [order]="order" [orderItem]="itemId" [resCode]="order.restaurantId"></colombia-item-detail>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="item-inner">
+                <div class="input">
+                    <div class="label">
+                        <h3>{{'PAYMENTS.SUBTOTAL' | translate}}</h3>
+                        <h3>{{'PAYMENTS.INC' | translate}} (8%)</h3>
+                        <h3>{{'PAYMENTS.TOTAL' | translate}}</h3>
+                    </div>
+                </div>
+                <div style="text-align: end">
+                    <p>{{_ipoComBaseString}} {{_currencyCode}}</p>
+                    <p>{{_ipoComString}} {{_currencyCode}}</p>
+                    <h3>{{_totalValue}} {{_currencyCode}}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="block">
+            <div class="item-inner">
+                <div class="input">
+                    <div class="label">
+                        <h3>{{'PAYMENTS.TIPS' | translate}} ({{_tipValue}}%)</h3>
+                    </div>
+                </div>
+                <div>
+                    <p>{{_tipTotalString}} {{_currencyCode}}</p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="block">
+                <div class="item-inner">
+                    <div class="input">
+                        <div class="label">
+                            <h2>{{'PAYMENTS.TOTAL_TO_PAY' | translate}} </h2>
+                        </div>
+                    </div>
+                    <div>
+                        <h2>{{_totalToPayment}} {{_currencyCode}}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </md-card-content>
+</md-card>
