@@ -4,9 +4,9 @@ import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
-import { Items } from 'qmo_web/both/collections/administration/item.collection';
+import { Items, ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
 import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
-import { Restaurants } from 'qmo_web/both/collections/restaurant/restaurant.collection';
+import { Restaurants, RestaurantImageThumbs } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { Storage } from '@ionic/storage';
 import { CodeTypeSelectPage } from '../code-type-select/code-type-select';
@@ -36,6 +36,9 @@ export class OrdersPage implements OnInit, OnDestroy {
     private _orderIndex: number = -1;
     private selected: string = "me";
 
+    //private _restaurantThumbs;
+    private _restaurantThumbSub: Subscription;
+
     alert_not: string;
 
     constructor(public _navCtrl: NavController, public _navParams: NavParams, public _app: App, public _translate: TranslateService,
@@ -44,7 +47,7 @@ export class OrdersPage implements OnInit, OnDestroy {
         _translate.setDefaultLang('en');
         _translate.use(this._userLang);
         this._currentUserId = Meteor.userId();
-        this._statusArray = ['REGISTERED', 'IN_PROCESS', 'PREPARED', 'DELIVERED'];
+        this._statusArray = ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED'];
     }
 
     ngOnInit() {
@@ -70,10 +73,15 @@ export class OrdersPage implements OnInit, OnDestroy {
                         this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this._res_code).subscribe(() => {
                             this._items = Items.find({});
                         });
+                        this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByRestaurantId', this._res_code).subscribe();
                     }
                 }
             });
         });
+
+        //this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByRestaurant', this._res_code).subscribe(() => {
+        //    this._imageThumbs = ItemImagesThumbs.find({});
+        //});
     }
 
     goToNewOrder() {
@@ -132,6 +140,7 @@ export class OrdersPage implements OnInit, OnDestroy {
                         this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this._res_code).subscribe(() => {
                             this._items = Items.find({});
                         });
+                        this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByRestaurantId', this._res_code).subscribe();
                     }
                 }
             });
@@ -275,6 +284,7 @@ export class OrdersPage implements OnInit, OnDestroy {
             this._restaurantSub.unsubscribe();
             this._ordersSub.unsubscribe();
             this._itemsSub.unsubscribe();
+            this._restaurantThumbSub.unsubscribe();
         }
     }
 
@@ -282,5 +292,13 @@ export class OrdersPage implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+    }
+
+    getRestaurantThumb(_id: string): string {
+        let _imageThumb;
+        _imageThumb = RestaurantImageThumbs.find().fetch().filter((i) => i.restaurantId === _id)[0];
+        if (_imageThumb) {
+        return _imageThumb.url;
+        }
     }
 }

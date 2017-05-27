@@ -11,6 +11,8 @@ import { GarnishFoodCol } from 'qmo_web/both/collections/administration/garnish-
 import { GarnishFood } from 'qmo_web/both/models/administration/garnish-food.model';
 import { ModalObservations } from './modal-observations';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
+import { Item } from 'qmo_web/both/models/administration/item.model';
+import { Currencies } from 'qmo_web/both/collections/general/currency.collection';
 
 /*
   Generated class for the ItemDetail page.
@@ -54,6 +56,8 @@ export class ItemDetailPage implements OnInit, OnDestroy {
   private _statusArray: string[];
   private _currentUserId: string;
   private _itemImageSub: Subscription;
+  private _currenciesSub: Subscription;
+  private _currencyCode: string;
 
   private _newOrderForm: FormGroup;
   private _garnishFormGroup: FormGroup = new FormGroup({});
@@ -127,6 +131,9 @@ export class ItemDetailPage implements OnInit, OnDestroy {
       quantity: new FormControl('', [Validators.required]),
       garnishFood: this._garnishFormGroup,
       additions: this._additionsFormGroup
+    });
+    this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId',[ this._res_code ] ).subscribe( () => {
+      this._currencyCode = Currencies.collection.find({}).fetch()[0].code + ' ';
     });
   }
 
@@ -309,6 +316,14 @@ export class ItemDetailPage implements OnInit, OnDestroy {
     if (_itemImage) {
       return _itemImage.url;
     }
+  }
+
+  /**
+   * Return Item price by current restaurant
+   * @param {Item} _pItem 
+   */
+  getItemPrice( _pItem:Item ): number{
+    return _pItem.restaurants.filter( r => r.restaurantId === this._res_code )[0].price;
   }
 
   ngOnDestroy() {
