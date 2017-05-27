@@ -1,5 +1,5 @@
 item-card {
-        .custom-item-divider {
+    .custom-item-divider {
         color: #000;
         background: #fff;
     }
@@ -18,6 +18,8 @@ item-card {
 
     .item-ios {
         padding-left: 0px;
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
 
     .custom-select{
@@ -40,4 +42,6 @@ item-card {
      white-space: normal;
      height: 34px;
     }
+
 }
+

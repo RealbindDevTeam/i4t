@@ -10,7 +10,7 @@
     <div *ngIf="(_allOrders | async)?.length > 0">
         <ion-item *ngFor="let _res of _restaurants | async">
             <ion-thumbnail item-left>
-                <img src="{{_res.urlImage}}">
+                <img src="{{getRestaurantThumb(_res._id)}}">
             </ion-thumbnail>
             <h1 style="white-space:normal">{{_res.name}} </h1>
         </ion-item>
@@ -37,7 +37,7 @@
                             <order-detail [order]="order"></order-detail>
                         </button>
                         <div *ngIf="_orderIndex == i">
-                            <ion-row *ngIf="order?.status === 'REGISTERED' && order?.items?.length > 0" no-padding style="background-color: #679436">
+                            <ion-row *ngIf="order?.status === 'ORDER_STATUS.REGISTERED' && order?.items?.length > 0" no-padding style="background-color: #679436">
                                 <ion-col>
                                     <button ion-button small clear block text-left class="button-secundary" (click)="cancelOrder(order)">{{'MOBILE.ORDERS.CANCEL' | translate}}</button>
                                 </ion-col>

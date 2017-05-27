@@ -1,4 +1,11 @@
 {
+    "ORDER_STATUS": {
+        "REGISTERED": "Registered",
+        "IN_PROCESS": "In Process",
+        "PREPARED": "Prepared",
+        "CANCELED": "Canceled",
+        "DELIVERED": "Delivered"
+    },
     "MOBILE": {
         "CANCEL": "Cancel",
         "CATEGORY": "Category",
