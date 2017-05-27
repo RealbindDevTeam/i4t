@@ -1,22 +1,22 @@
-<div id="content" class="main">
-    <md-grid-list cols="4" rowHeight="425px">
-            <div *ngFor="let item of _items | async">
-                <md-grid-tile>
-                    <md-card id="card-main" class="cards">
-                        <md-card-header>
-                            <md-card-title>{{item.name}}</md-card-title>
-                            <md-card-subtitle>{{'ITEMS.PRICE' | translate}}: {{item.price}}</md-card-subtitle>
-                        </md-card-header>
-                        <div class="crop">
-                            <img src="{{item.urlImage}}">
-                        </div>
-                        <br/>
-                        <md-card-content>
-                            <p>{{item.description}}</p>
-                            <md-slide-toggle [(checked)]="item.isAvailable" (change)="updateAvailableFlag(item)">Habilitar/Inhabilitar Item</md-slide-toggle>
-                        </md-card-content>
-                    </md-card>
-                </md-grid-tile>
-            </div>
-    </md-grid-list>
+<div class="main">
+    <div class="main-overflow">
+            <md-card class="cards" *ngFor="let item of _items | async">
+                <md-card-header>
+                    <md-card-title>{{item.name}}</md-card-title>
+                </md-card-header>
+                <div class="crop">
+                    <span *ngFor="let image of _itemImages | async">
+                        <template [ngIf]="image.itemId == item._id">
+                            <img src="{{image.url}}">
+                        </template>
+                    </span>
+                </div>
+                <br/>
+                <md-card-content>
+                    <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
+                    <p *ngIf="item.description.length <= 50">{{item.description}}</p>
+                    <md-slide-toggle [(checked)]="item.isAvailable" (change)="updateAvailableFlag(item)">Habilitar/Inhabilitar Item</md-slide-toggle>
+                </md-card-content>
+            </md-card>
+    </div>
 </div>

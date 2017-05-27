@@ -35,6 +35,7 @@ import { WaiterGuard } from './web/auth/navigation/waiter-guard.service';
 import { SupervisorGuard } from './web/auth/navigation/supervisor-guard.service';
 import { ChefGuard } from './web/auth/navigation/chef-guard.service';
 import { CashierGuard } from './web/auth/navigation/cashier-guard.service';
+import { SuperChefGuard } from './web/auth/navigation/super-chef-guard.service';
 import { PaymentsComponent } from './web/customer/payments/payments.component';
 
 export const routes: Route[] = [
@@ -58,7 +59,7 @@ export const routes: Route[] = [
             { path: 'restaurantEdition', component: RestaurantEditionComponent, canActivate: [AdminGuard] },
             { path: 'tables', component: TableComponent, canActivate: [SupervisorGuard] },
             { path: 'orders', component: OrdersComponent, canActivate: [CustomerGuard] },
-            { path: 'itemsEnable', component: ItemEnableComponent, canActivate: [ChefGuard] },
+            { path: 'itemsEnable', component: ItemEnableComponent, canActivate: [SuperChefGuard] },
             { path: 'waiter-call', component: WaiterCallComponent, canActivate: [CustomerGuard] },
             { path: 'chefOrders', component: OrderAttentionComponent, canActivate: [ChefGuard] },
             { path: 'calls', component: CallsComponent, canActivate: [WaiterGuard] },
