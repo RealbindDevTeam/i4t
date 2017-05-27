@@ -20,8 +20,9 @@ import style from './colombia-payment.component.scss';
 })
 export class ColombiaPaymentComponent implements OnInit, OnDestroy {
 
-    @Input() restaurantId: string;
-    @Input() currencyId: string;
+    @Input() restId: string;
+    @Input() currId: string;
+    @Input() tabId: string;
 
     private _user = Meteor.userId();
     private _totalValue    : number = 0;
@@ -60,13 +61,13 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     ngOnInit(){
         this._ordersSubscription = MeteorObservable.subscribe( 'getOrdersByAccount', this._user ).subscribe( () => {
            this._ngZone.run( () => {
-                this._orders = Orders.find( { } ).zone();
+                this._orders = Orders.find( { creation_user: this._user } ).zone();
                 Orders.collection.find( { } ).fetch().forEach( ( order ) => {
                     this._totalValue += order.totalPayment;
                 });
                 this._restaurantsSub = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', this._user ).subscribe( () => {
                     this._ngZone.run( () => {
-                        let _lRestaurant:Restaurant = Restaurants.findOne( { _id: this.restaurantId } );
+                        let _lRestaurant:Restaurant = Restaurants.findOne( { _id: this.restId } );
                         if( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] > 0 ){
                             this._tipValue = _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ];
                             this._tipTotal = this._totalValue * ( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] / 100 );
@@ -84,9 +85,9 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                 });
            }); 
         });
-        this._currencySub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', [ this.restaurantId ] ).subscribe( () => {
+        this._currencySub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', [ this.restId ] ).subscribe( () => {
             this._ngZone.run( () => {
-                let _lCurrency: Currency = Currencies.findOne( { _id: this.currencyId } );
+                let _lCurrency: Currency = Currencies.findOne( { _id: this.currId } );
                 this._currencyCode = _lCurrency.code;
             });
         });

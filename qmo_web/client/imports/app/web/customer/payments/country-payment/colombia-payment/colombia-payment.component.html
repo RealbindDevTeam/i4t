@@ -9,7 +9,7 @@
                 <h3> {{order.totalPayment}} {{_currencyCode}}</h3>
             </div>
             <div *ngFor="let itemId of order.items">
-                <colombia-item-detail [orderItem]="itemId" [resCode]="order.restaurantId" [cur]="currencyId" [curCode]="_currencyCode"></colombia-item-detail>
+                <colombia-item-detail [orderItem]="itemId" [resCode]="order.restaurantId" [cur]="currId" [curCode]="_currencyCode"></colombia-item-detail>
             </div>
         </div>
         
@@ -57,6 +57,4 @@
         </div>
     </md-card-content>
 </md-card>
-<md-card style="box-shadow: none;width: 40%;display: inline-block;margin-left: 1%;vertical-align: top;">
-    <button md-raised-button color="primary">Ordenes de la Mesa</button>
-</md-card>
+<order-payment-translate style="display: inline-block;width: 44%;vertical-align: top;margin-left: 1%;" [resId]="restId" [currId]="currId" [tabId]="tabId"></order-payment-translate>

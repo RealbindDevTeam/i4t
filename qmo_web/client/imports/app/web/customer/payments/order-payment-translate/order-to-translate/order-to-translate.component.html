@@ -1,0 +1,32 @@
+<div *ngFor="let or of _ordersTable | async; let in = index">
+    <md-toolbar class="other-order" (click)="showOthersOrderDetail(or,in)">
+        <i class="fa fa-list-alt" aria-hidden="true" class="order-icon"></i>
+        <span class="order-code">{{'ORDER_LIST.ORDERS' | translate}} # {{or.code}}</span>
+        <span>{{'ORDER_LIST.TOTAL' | translate}}: {{or.totalPayment}} {{_currencyCode}}</span>
+        <span class="app-flex-filler"></span>
+        <span class="order-status">{{'ORDER_LIST.STATUS' | translate}}: {{or.status | translate}}</span>
+        <button md-raised-button class="pay-button" (click)="markOrderToPay(or)">Pagar</button>
+    </md-toolbar>
+    <md-card *ngIf="_orderOthersIndex == in">
+        <md-card-content>
+            <md-list *ngIf="(or.items.length > 0)">
+                <span *ngFor="let item of _items | async">
+                    <span *ngFor="let it of or.items">
+                        <template [ngIf]="item._id === it.itemId">
+                            <md-list-item>
+                                <img md-list-avatar class="item-image" src="{{ getItemImage(item._id) }}">
+                                <h4 md-line>{{item.name}}</h4>
+                                <p md-line>{{'ORDER_LIST.PRICE' | translate}}: {{it.paymentItem}} {{_currencyCode}}</p>
+                            </md-list-item>
+                            <md-divider></md-divider>
+                        </template>
+                    </span>
+                </span>
+            </md-list>
+        </md-card-content>
+    </md-card>
+</div>
+<md-card>
+    <md-card-title *ngIf="(_ordersTable | async)?.length <= 0">No se Encuentran ordenes en la mesa que se hayan entregado y esten listas para ser pagadas</md-card-title>
+    <button md-raised-button color="primary" (click)="close()">Cerrar</button>
+</md-card>
