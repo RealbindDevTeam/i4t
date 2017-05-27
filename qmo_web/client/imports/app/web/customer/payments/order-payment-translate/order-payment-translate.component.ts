@@ -7,6 +7,8 @@ import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { OrderToTranslateComponent } from './order-to-translate/order-to-translate.component';
 import { Order, OrderTranslateInfo } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
+import { Currency } from '../../../../../../../both/models/general/currency.model';
+import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
 
 import template from './order-payment-translate.component.html';
 import style from './order-payment-translate.component.scss';
@@ -24,8 +26,10 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
     public _dialogRef: MdDialogRef<any>;
+    private _currencyCode: string;
 
     private _ordersSub: Subscription;
+    private _currencySub: Subscription;
     private _ordersToConfirm: Observable<Order[]>;
     private _ordersWithPendingConfirmation: Observable<Order[]>;
 
@@ -53,6 +57,12 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
                                                                      'translateInfo.lastOrderOwner': this._user } ).zone();
             });
         });
+        this._currencySub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', [ this.resId ] ).subscribe( () => {
+            this._ngZone.run( () => {
+                let _lCurrency: Currency = Currencies.findOne( { _id: this.currId } );
+                this._currencyCode = _lCurrency.code;
+            });
+        });
     }
 
     /**
@@ -73,9 +83,32 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Function to confirm order pay translate
+     * @param {Order} _pOrder 
+     */
+    confirmOrderToPay( _pOrder: Order ):void{
+        if( confirm( 'El usuario ' + _pOrder.translateInfo.lastOrderOwner + ' desea pagar la orden ' + _pOrder.code + ', usted esta de acuerdo?' ) ) {
+            let _lUser = _pOrder.translateInfo.lastOrderOwner;
+            Orders.update( { _id: _pOrder._id }, { $set: { creation_user: _lUser, modification_user: this._user, modification_date: new Date(), 
+                                                           'translateInfo.confirmedToTranslate': true, status: 'ORDER_STATUS.DELIVERED'
+                                                         } 
+                                                 } 
+                         );
+        } else {
+            let _lOrderTranslate: OrderTranslateInfo = { firstOrderOwner: _pOrder.creation_user, markedToTranslate: false, lastOrderOwner: '', confirmedToTranslate: false };
+            Orders.update( { _id: _pOrder._id }, { $set: { modification_user: this._user, modification_date: new Date(), 
+                                                           translateInfo: _lOrderTranslate, status: 'ORDER_STATUS.DELIVERED'
+                                                         } 
+                                                 } 
+                         );
+        }
+    }
+
+    /**
      * ngOnDestroy Implementation
      */
     ngOnDestroy(){
         this._ordersSub.unsubscribe();
+        this._currencySub.unsubscribe();
     }
 }
