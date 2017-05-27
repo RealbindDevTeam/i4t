@@ -41,15 +41,15 @@
           {{_observations != '' ? _observations.substring(0, 20)+ '...': 'MOBILE.SECTIONS.OBSERVATIONS' | translate}}
         </button>
           <form [formGroup]="_newOrderForm" *ngIf="item.isAvailable">
-            <div *ngIf="item.garnishFoodIsAcceped">
+            <div *ngIf="item.garnishFood.length > 0">
               <h3 class="custom-padding">{{'MOBILE.SECTIONS.GARNISHES' | translate}}</h3>
               <p>{{'MOBILE.SECTIONS.MAX_GARNISH' | translate}} {{item.garnishFoodQuantity}}</p>
               <div formGroupName="garnishFood">
                 <div *ngFor="let itemGarnish of item.garnishFood">
                   <div *ngFor="let garnish of _garnishes | async">
                     <ion-item class="ion-item-cust" style="padding-left: 0px" *ngIf="itemGarnish ==  garnish._id">
-                      <ion-label style="white-space: normal">{{garnish.name}} - <span style="color: #666">{{garnish.price}} COP x {{_quantityCount}}</span></ion-label>
-                      <ion-checkbox [formControlName]="garnish.name" (ionChange)="calculateFinalPriceGarnishFood($event, garnish.price)" color="primary"
+                      <ion-label style="white-space: normal">{{garnish.name}} - <span style="color: #666">{{ getGarnishFoodPrice( garnish ) }} {{_currencyCode}} x {{_quantityCount}}</span></ion-label>
+                      <ion-checkbox [formControlName]="garnish.name" (ionChange)="calculateFinalPriceGarnishFood($event, getGarnishFoodPrice( garnish ))" color="primary"
                         [class.invalid]="!_newOrderForm.controls.garnishFood.valid"></ion-checkbox>
                     </ion-item>
                   </div>
@@ -59,14 +59,14 @@
                 | translate}}</p>
             </div>
             <br/>
-            <div *ngIf="item.additionsIsAccepted">
+            <div *ngIf="item.additions.length > 0">
               <h3 class="custom-padding">{{'MOBILE.SECTIONS.ADDITIONS' | translate}}</h3>
               <div formGroupName="additions">
                 <div *ngFor="let itemAddition of item.additions">
                   <div *ngFor="let addition of _additions | async">
                     <ion-item class="ion-item-cust" style="padding-left: 0px" *ngIf="itemAddition ==  addition._id">
-                      <ion-label style="white-space: normal">{{addition.name}} - <span style="color: #666">{{addition.price}} COP x {{_quantityCount}}</span></ion-label>
-                      <ion-checkbox [formControlName]="addition.name" (ionChange)="calculateFinalPriceAddition($event, addition.price)" color="primary"
+                      <ion-label style="white-space: normal">{{addition.name}} - <span style="color: #666">{{ getAdditionsPrice( addition ) }} {{_currencyCode}} x {{_quantityCount}}</span></ion-label>
+                      <ion-checkbox [formControlName]="addition.name" (ionChange)="calculateFinalPriceAddition($event, getAdditionsPrice( addition ))" color="primary"
                         [class.invalid]="!_newOrderForm.controls.additions.valid"></ion-checkbox>
                     </ion-item>
                   </div>
@@ -80,7 +80,7 @@
 </ion-content>
 
 <ion-footer class="ion-footer-custom" padding>
-  <ion-label style="float: left; font-size: large; margin-top: 0px">{{'MOBILE.SECTIONS.TOTAL' | translate}}{{_finalPrice}} COP </ion-label>
+  <ion-label style="float: left; font-size: large; margin-top: 0px">{{'MOBILE.SECTIONS.TOTAL' | translate}}{{_finalPrice}} {{_currencyCode}} </ion-label>
   <div>
     <button *ngIf="_showAddBtn" ion-button block [disabled]="_disabledAddBtn" (click)="addItemToOrder()">{{'MOBILE.SECTIONS.ADD_TO_ORDER' | translate}}</button>
   </div>

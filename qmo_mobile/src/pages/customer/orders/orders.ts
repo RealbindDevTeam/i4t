@@ -188,10 +188,10 @@ export class OrdersPage implements OnInit, OnDestroy {
                 {
                     text: dialog_accept_btn,
                     handler: () => {
-                        if (_order.status === 'REGISTERED') {
+                        if (_order.status === 'ORDER_STATUS.REGISTERED') {
                             Orders.update({ _id: _order._id }, {
                                 $set: {
-                                    status: 'CANCELED', modification_user: Meteor.userId(),
+                                    status: 'ORDER_STATUS.CANCELED', modification_user: Meteor.userId(),
                                     modification_date: new Date()
                                 }
                             });
@@ -228,7 +228,7 @@ export class OrdersPage implements OnInit, OnDestroy {
                     text: dialog_accept_btn,
                     handler: () => {
                         let _lItemsIsAvailable: boolean = true;
-                        if (_order.status === 'REGISTERED') {
+                        if (_order.status === 'ORDER_STATUS.REGISTERED') {
                             let _Items = _order.items;
                             _Items.forEach((item) => {
                                 let _lItem = Items.findOne({ _id: item.itemId });
@@ -239,7 +239,7 @@ export class OrdersPage implements OnInit, OnDestroy {
                             if (_lItemsIsAvailable) {
                                 Orders.update({ _id: _order._id }, {
                                     $set: {
-                                        status: 'IN_PROCESS', modification_user: Meteor.userId(),
+                                        status: 'ORDER_STATUS.IN_PROCESS', modification_user: Meteor.userId(),
                                         modification_date: new Date()
                                     }
                                 }

@@ -69,7 +69,7 @@ export class ItemDetailPage implements OnInit, OnDestroy {
     _translate.setDefaultLang('en');
     _translate.use(this._userLang);
     this._currentUserId = Meteor.userId();
-    this._statusArray = ['REGISTERED'];
+    this._statusArray = ['ORDER_STATUS.REGISTERED'];
   }
 
   ionViewDidLoad() { }
@@ -86,8 +86,10 @@ export class ItemDetailPage implements OnInit, OnDestroy {
           this._items = Items.find({ _id: this._item_code }).zone();
           this._item = Items.collection.find({ _id: this._item_code }).fetch();
           for (let item of this._item) {
-            this._finalPrice = item.price;
-            this._unitPrice = item.price;
+            //this._finalPrice = item.price;
+            //this._unitPrice = item.price;
+            this._finalPrice = this.getItemPrice(item);
+            this._unitPrice = this.getItemPrice(item);
             this._showAddBtn = item.isAvailable;
           }
           this._garnishFoodElementsCount = 0;
@@ -226,7 +228,7 @@ export class ItemDetailPage implements OnInit, OnDestroy {
       creation_user: this._currentUserId,
       restaurantId: this._res_code,
       tableId: this._table_code,
-      status: 'REGISTERED'
+      status: 'ORDER_STATUS.REGISTERED'
     }).fetch()[0];
 
     if (_lOrder) {
@@ -325,10 +327,28 @@ export class ItemDetailPage implements OnInit, OnDestroy {
   getItemPrice( _pItem:Item ): number{
     return _pItem.restaurants.filter( r => r.restaurantId === this._res_code )[0].price;
   }
+  
+  /**
+   * Return Addition price by current restaurant
+   * @param {Addition} _pAddition
+   */
+  getAdditionsPrice( _pAddition : Addition ): number{
+    return _pAddition.restaurants.filter( r => r.restaurantId === this._res_code )[0].price;
+  }
+  
+  /**
+   * Return Garnish food price by current restaurant
+   * @param {GarnishFood} _pGarnishFood
+   */
+  getGarnishFoodPrice( _pGarnishFood : GarnishFood ): number{
+    return _pGarnishFood.restaurants.filter( r => r.restaurantId === this._res_code )[0].price;
+  }
 
   ngOnDestroy() {
     this._itemSub.unsubscribe();
     this._additionSub.unsubscribe();
     this._garnishSub.unsubscribe();
+    this._currenciesSub.unsubscribe();
+    this._itemImageSub.unsubscribe();
   }
 }
