@@ -7,7 +7,7 @@
 <ion-content padding>
   <ion-item *ngFor="let _res of _restaurants | async">
     <ion-thumbnail item-left>
-      <img src="{{_res.urlImage}}">
+        <img src="{{getRestaurantThumb(_res._id)}}"/>
     </ion-thumbnail>
     <h1 style="white-space:normal; font-size: 1.8rem">{{_res.name}} </h1>
     <p *ngFor="let city of _cities | async">

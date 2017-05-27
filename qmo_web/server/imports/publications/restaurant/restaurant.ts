@@ -62,3 +62,12 @@ Meteor.publish( 'restaurantImageThumbs', function( _userId:string ) {
     check( _userId, String );
     return RestaurantImageThumbs.collection.find( { userId: _userId } );
 });
+
+/**
+ * Meteor publication restaurantImageThumbs with restaurant Id condition
+ * @param {string} _restaurantId 
+ */
+Meteor.publish( 'restaurantImageThumbsByRestaurantId', function( _restaurantId:string ) {
+    check( _restaurantId, String );
+    return RestaurantImageThumbs.collection.find( { restaurantId: _restaurantId } );
+});
