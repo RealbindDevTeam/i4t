@@ -1,5 +1,5 @@
 <div *ngIf="_showPaymentInfo">
   <div [ngSwitch]="_currentRestaurant.countryId">
-    <iu-colombia-payment *ngSwitchCase="'1900'" [restaurantId]="_currentRestaurant._id" [currencyId]="_currentRestaurant.currencyId"></iu-colombia-payment>
+    <iu-colombia-payment *ngSwitchCase="'1900'" [restId]="_currentRestaurant._id" [currId]="_currentRestaurant.currencyId" [tabId]="_currentTable"></iu-colombia-payment>
   </div> 
 </div>

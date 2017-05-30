@@ -75,7 +75,13 @@ if (Meteor.isServer) {
                     accountId: _lAccount._id,
                     items: [_itemToInsert],
                     totalPayment: _finalPrice,
-                    orderItemCount: 1
+                    orderItemCount: 1,
+                    translateInfo: {
+                        firstOrderOwner: Meteor.userId(),
+                        markedToTranslate: false,
+                        lastOrderOwner: '',
+                        confirmedToTranslate: false
+                    }
                 });
             }
         },
@@ -140,7 +146,13 @@ if (Meteor.isServer) {
                     accountId: _lAccount._id,
                     items: [_itemToInsert],
                     totalPayment: _finalPrice,
-                    orderItemCount: 1
+                    orderItemCount: 1,
+                    translateInfo: {
+                        firstOrderOwner: Meteor.userId(),
+                        markedToTranslate: false,
+                        lastOrderOwner: '',
+                        confirmedToTranslate: false
+                    }
                 });
             }
         }

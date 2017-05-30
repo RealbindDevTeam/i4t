@@ -33,7 +33,8 @@
         "IN_PROCESS": "En Proceso",
         "PREPARED": "Preparado",
         "CANCELED": "Cancelado",
-        "DELIVERED": "Entregado"
+        "DELIVERED": "Entregado",
+        "PENDING_CONFIRM": "Confirmacion Pendiente para Pago"
     },
     "DATE_VALIDATE" : {
         "DAY_FORMAT" : "Formato del día incorrecto",
@@ -626,7 +627,9 @@
         "INC":"Inc",
         "TOTAL":"Total",
         "TIPS":"Propina Sugerida",
-        "TOTAL_TO_PAY":"Total a pagar"
+        "TOTAL_TO_PAY":"Total a pagar",
+        "ADDITION": "Adicion",
+        "GARNISH_FOOD": "Guarnicion"
     },
     "WAITER_CALL" : {
         "TITTLE": "Solicitar mesero",

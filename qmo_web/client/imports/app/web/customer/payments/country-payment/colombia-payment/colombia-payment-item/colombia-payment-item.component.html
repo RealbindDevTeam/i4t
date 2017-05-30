@@ -1,0 +1,30 @@
+<div *ngFor="let item of _items | async">
+    <p class="name">{{item.name}}</p> 
+    <p class="quantity">{{orderItem.quantity}}</p> 
+    <p class="unitPrice">{{getUnitPrice(item)}} {{curCode}}</p> 
+    <p item-right class="totalPrice">{{getTotalPrice(item)}} {{curCode}}</p>
+    <div *ngIf="orderItem.garnishFood.length > 0">
+        <span *ngFor="let garnish of _garnishFood | async">
+            <span *ngFor="let g of orderItem.garnishFood">
+                <template [ngIf]="g === garnish._id">
+                    <p class="name">{{garnish.name}} ({{'PAYMENTS.GARNISH_FOOD' | translate}})</p> 
+                    <p class="quantity">{{orderItem.quantity}}</p> 
+                    <p class="unitPrice">{{getGarnisFoodhUnitPrice(garnish)}} {{curCode}}</p> 
+                    <p item-right class="totalPrice">{{getGarnishFoodTotalPrice(garnish)}} {{curCode}}</p>
+                </template>
+            </span>
+        </span>
+    </div>
+    <div *ngIf="orderItem.additions.length > 0">
+        <span *ngFor="let addition of _additions | async">
+            <span *ngFor="let add of orderItem.additions">
+                <template [ngIf]="add === addition._id">
+                    <p class="name">{{addition.name}} ({{'PAYMENTS.ADDITION' | translate}})</p> 
+                    <p class="quantity">{{orderItem.quantity}}</p> 
+                    <p class="unitPrice">{{getAdditionhUnitPrice(addition)}} {{curCode}}</p> 
+                    <p item-right class="totalPrice">{{getAdditionTotalPrice(addition)}} {{curCode}}</p>
+                </template>
+            </span>
+        </span>
+    </div>
+</div>
