@@ -2,10 +2,11 @@
   <ion-navbar>
   </ion-navbar>
 </ion-header>
+
 <ion-content>
   <div *ngFor="let item of _items | async">
     <div class="crop">
-      <img src="{{item.urlImage}}" style="display:inline-block">
+      <img src="{{getItemImage(item._id)}}" style="display:inline-block">
     </div>
     <ion-card class="ion-card-custom">
       <ion-card-content>
@@ -20,7 +21,7 @@
               <ion-list>
                 <ion-item style="padding-left: 0px">
                   <ion-label>
-                    {{'MOBILE.SECTIONS.UNIT_PRICE' | translate}} <span style="color: #666"> {{_unitPrice}} COP</span>
+                    {{'MOBILE.SECTIONS.UNIT_PRICE' | translate}} <span style="color: #666"> {{_unitPrice}} {{_currencyCode}}</span>
                   </ion-label>
                 </ion-item>
                 <ion-item *ngIf="item.isAvailable" style="padding-left: 0px">
@@ -40,49 +41,49 @@
                 (click)="presentModal()" style="text-transform: inherit; margin-bottom: 15px">
                 <ion-icon name="chatboxes" *ngIf="_observations != null"></ion-icon>
                 {{_observations != null ? _observations.substring(0, 20)+ '...': 'MOBILE.SECTIONS.OBSERVATIONS' | translate}}
-                </button>
+              </button>
 
-                <button [disabled]="!_showActionsBtn" ion-button clear block icon-left class="button-secundary btn-size-custom" *ngIf="item.observations && item.isAvailable && (itemId.observations != '')"
-                  (click)="presentModal(itemId.observations)" style="text-transform: inherit; margin-bottom: 15px">
-                  <ion-icon name="chatboxes" *ngIf="_observations != null || (itemId.observations != '' && _auxCounter == 0)"></ion-icon>
-                  {{_observations != null ? _observations.substring(0, 20)+ '...': (_auxCounter == 0 ? itemId.observations.substring(0, 20)+
-                  '...' : 'MOBILE.SECTIONS.OBSERVATIONS' | translate)}}
-                  </button>
+              <button [disabled]="!_showActionsBtn" ion-button clear block icon-left class="button-secundary btn-size-custom" *ngIf="item.observations && item.isAvailable && (itemId.observations != '')"
+                (click)="presentModal(itemId.observations)" style="text-transform: inherit; margin-bottom: 15px">
+                <ion-icon name="chatboxes" *ngIf="_observations != null || (itemId.observations != '' && _auxCounter == 0)"></ion-icon>
+                {{_observations != null ? _observations.substring(0, 20)+ '...': (_auxCounter == 0 ? itemId.observations.substring(0, 20)+
+                '...' : 'MOBILE.SECTIONS.OBSERVATIONS' | translate)}}
+              </button>
 
-                  <form [formGroup]="_newOrderForm">
-                    <div *ngIf="item.garnishFoodIsAcceped && item.isAvailable">
-                      <h3 class="custom-padding">{{'MOBILE.SECTIONS.GARNISHES' | translate}}</h3>
-                      <p>{{'MOBILE.SECTIONS.MAX_GARNISH' | translate}} {{item.garnishFoodQuantity}}</p>
-                      <div formGroupName="garnishFood">
-                        <div *ngFor="let itemGarnish of item.garnishFood">
-                          <div *ngFor="let garnish of _garnishes | async">
-                            <ion-item *ngIf="itemGarnish == garnish._id" class="ion-item-cust" style="padding-left: 0px">
-                              <ion-label style="white-space: normal">{{garnish.name}} - <span style="color: #666">{{garnish.price}} COP x {{_quantityCount}}</span></ion-label>
-                              <ion-checkbox [formControlName]="garnish.name" (ionChange)="calculateFinalPriceGarnishFood($event, garnish.price)" color="primary"
-                                [class.invalid]="!_newOrderForm.controls.garnishFood.valid"></ion-checkbox>
-                            </ion-item>
-                          </div>
-                        </div>
-                      </div>
-                      <p *ngIf="_showGarnishFoodError" style="color: red; margin-bottom: 5px">{{'MOBILE.SECTIONS.SELECT_MAX_VALID' | translate}} {{item.garnishFoodQuantity}} {{'MOBILE.SECTIONS.GARNISHES'
-                        | translate}}</p>
-                    </div>
-                    <br/>
-                    <div *ngIf="item.additionsIsAccepted && item.isAvailable">
-                      <h3 class="custom-padding">{{'MOBILE.SECTIONS.ADDITIONS' | translate}}</h3>
-                      <div formGroupName="additions">
-                        <div *ngFor="let itemAddition of item.additions">
-                          <div *ngFor="let addition of _additions | async">
-                            <ion-item class="ion-item-cust" style="padding-left: 0px" *ngIf="itemAddition ==  addition._id">
-                              <ion-label style="white-space: normal">{{addition.name}} - <span style="color: #666">{{addition.price}} COP x {{_quantityCount}}</span></ion-label>
-                              <ion-checkbox [formControlName]="addition.name" (ionChange)="calculateFinalPriceAddition($event, addition.price)" color="primary"
-                                [class.invalid]="!_newOrderForm.controls.additions.valid"></ion-checkbox>
-                            </ion-item>
-                          </div>
-                        </div>
+              <form [formGroup]="_newOrderForm">
+                <div *ngIf="item.garnishFood.length > 0 && item.isAvailable">
+                  <h3 class="custom-padding">{{'MOBILE.SECTIONS.GARNISHES' | translate}}</h3>
+                  <p>{{'MOBILE.SECTIONS.MAX_GARNISH' | translate}} {{item.garnishFoodQuantity}}</p>
+                  <div formGroupName="garnishFood">
+                    <div *ngFor="let itemGarnish of item.garnishFood">
+                      <div *ngFor="let garnish of _garnishes | async">
+                        <ion-item *ngIf="itemGarnish == garnish._id" class="ion-item-cust" style="padding-left: 0px">
+                          <ion-label style="white-space: normal">{{garnish.name}} - <span style="color: #666">{{ getGarnishFoodPrice( garnish ) }} {{_currencyCode}} x {{_quantityCount}}</span></ion-label>
+                          <ion-checkbox [formControlName]="garnish.name" (ionChange)="calculateFinalPriceGarnishFood($event, getGarnishFoodPrice( garnish ))" color="primary"
+                            [class.invalid]="!_newOrderForm.controls.garnishFood.valid"></ion-checkbox>
+                        </ion-item>
                       </div>
                     </div>
-                  </form>
+                  </div>
+                  <p *ngIf="_showGarnishFoodError" style="color: red; margin-bottom: 5px">{{'MOBILE.SECTIONS.SELECT_MAX_VALID' | translate}} {{item.garnishFoodQuantity}} {{'MOBILE.SECTIONS.GARNISHES'
+                    | translate}}</p>
+                </div>
+                <br/>
+                <div *ngIf="item.additions.length > 0 && item.isAvailable">
+                  <h3 class="custom-padding">{{'MOBILE.SECTIONS.ADDITIONS' | translate}}</h3>
+                  <div formGroupName="additions">
+                    <div *ngFor="let itemAddition of item.additions">
+                      <div *ngFor="let addition of _additions | async">
+                        <ion-item class="ion-item-cust" style="padding-left: 0px" *ngIf="itemAddition ==  addition._id">
+                          <ion-label style="white-space: normal">{{addition.name}} - <span style="color: #666">{{ getAdditionsPrice( addition ) }} {{_currencyCode}} x {{_quantityCount}}</span></ion-label>
+                          <ion-checkbox [formControlName]="addition.name" (ionChange)="calculateFinalPriceAddition($event, getAdditionsPrice( addition ))" color="primary"
+                            [class.invalid]="!_newOrderForm.controls.additions.valid"></ion-checkbox>
+                        </ion-item>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -91,7 +92,7 @@
   </div>
 </ion-content>
 <ion-footer *ngIf="_showFooter" class="ion-footer-custom" padding> 
-  <ion-label style="float: left; font-size: large; margin-top: 0px">{{'MOBILE.SECTIONS.TOTAL' | translate}}{{_finalPrice}} COP </ion-label>
+  <ion-label style="float: left; font-size: large; margin-top: 0px">{{'MOBILE.SECTIONS.TOTAL' | translate}}{{_finalPrice}} {{_currencyCode}} </ion-label>
   <div>
     <button *ngIf="_showActionsBtn " style="float:left; width: 45%" ion-button (click)="deleteOrderItem()">{{'MOBILE.ITEM_EDIT.REMOVE' | translate}}</button>
     <button *ngIf="_showActionsBtn && _showCancelBtn" [disabled]="_disabledAddBtn" style="float: right; width: 45%" ion-button (click)="editOrderItem()">{{'MOBILE.ITEM_EDIT.MODIFY' | translate}}</button>

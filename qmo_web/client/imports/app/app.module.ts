@@ -27,6 +27,7 @@ import { WaiterGuard } from './web/auth/navigation/waiter-guard.service';
 import { SupervisorGuard } from './web/auth/navigation/supervisor-guard.service';
 import { ChefGuard } from './web/auth/navigation/chef-guard.service';
 import { CashierGuard } from './web/auth/navigation/cashier-guard.service';
+import { SuperChefGuard } from './web/auth/navigation/super-chef-guard.service';
 
 import { PayuPaymenteService } from './web/restaurant/restaurant/restaurant-register/payment-plan/payu-payment.service';
 
@@ -79,7 +80,8 @@ moduleDefinition = {
       SupervisorGuard,
       ChefGuard,
       CashierGuard,
-      PayuPaymenteService
+      PayuPaymenteService,
+      SuperChefGuard
     ],
     bootstrap: [
       AppComponent

@@ -49,6 +49,10 @@ $menu-navegation-color : #F5F5F5;
                     height: 100%;
                     
                     md-nav-list {
+                        position: relative;
+                        max-height: calc(100vh - 120px);
+                        overflow-y: scroll;
+                        overflow-x: hidden;
                         height: 100%;
                         background-color: #fff;
                         transition: box-shadow 280ms cubic-bezier(.4,0,.2,1);
@@ -175,66 +179,56 @@ $menu-navegation-color : #F5F5F5;
             flex: 1 1 auto;
             height: 100%;
 
-            .menu-items-1 {
-                height: 100%;
-                width: 100%;
-
-                .menu-items-2 {
+                .menu-items-content {
                     height: 100%;
                     width: 100%;
-
-                    .menu-items-3 {
-                        height: 100%;
-                        width: 100%;
-                        top: 0;
-                        -webkit-flex-direction: row;
-                        flex-direction: row;
+                    top: 0;
+                    -webkit-flex-direction: row;
+                    flex-direction: row;
+                    display: -webkit-box;
+                    display: -moz-box;
+                    display: -ms-flexbox;
+                    display: -webkit-flex;
+                    display: flex;
+                    
+                    .items {
+                        overflow: scroll;
+                        margin-top: 20px;
+                        margin-left: 20px;
                         display: -webkit-box;
                         display: -moz-box;
                         display: -ms-flexbox;
                         display: -webkit-flex;
                         display: flex;
-                        
-                        .items {
-                            overflow: scroll;
-                            margin-top: 20px;
-                            margin-left: 20px;
-                            display: -webkit-box;
-                            display: -moz-box;
-                            display: -ms-flexbox;
-                            display: -webkit-flex;
-                            display: flex;
-                            height: calc( 100vh - 90px);
-                            width: 100%;
-                            -webkit-flex-direction: column;
-                            flex-direction: column;
-                            overflow-x: hidden;
-                            overflow-y: auto;
-                            -webkit-flex: 1 1 auto;
-                            flex: 1 1 auto;
+                        height: calc( 100vh - 90px);
+                        width: 100%;
+                        -webkit-flex-direction: column;
+                        flex-direction: column;
+                        overflow-x: hidden;
+                        overflow-y: auto;
+                        -webkit-flex: 1 1 auto;
+                        flex: 1 1 auto;
 
-                            .cards{
-                                width: 260px;
-                                display: inline-block; 
-                                margin-right: 20px; 
-                                vertical-align: top;
-                            }
+                        .cards{
+                            width: 240px;
+                            display: inline-block; 
+                            margin-right: 20px; 
+                            vertical-align: top;
+                        }
 
-                            .crop {
-                                height: 200px;
-                                overflow: hidden;
-                                margin: 0 -24px 0px;
-                            }
+                        .crop {
+                            height: 200px;
+                            overflow: hidden;
+                            margin: 0 -24px 0px;
+                        }
 
-                            .crop img {
-                                width: calc(100% + 48px);
-                                height: 35vh;
-                                margin: 0 -15px 0px;
-                            }
+                        .crop img {
+                            width: calc(100% + 48px);
+                            height: 35vh;
+                            margin: 0 -15px 0px;
                         }
                     }
                 }
-            }
         }
 
         .item-detail {
@@ -265,7 +259,7 @@ $menu-navegation-color : #F5F5F5;
                 position: absolute;
                 background-color: white;
                 padding: 24px;
-                width: 288px;
+                width: 348px;
                 z-index: 999;
 
                 label {
@@ -292,7 +286,7 @@ $menu-navegation-color : #F5F5F5;
             
             .item-detail-card {
                 position: relative;
-                max-height: calc(100vh - 116px);
+                max-height: calc(100vh - 120px);
                 overflow-y: scroll;
                 overflow-x: hidden;
                 -webkit-flex: 1 1 auto;
@@ -304,7 +298,7 @@ $menu-navegation-color : #F5F5F5;
             .crop {
                 margin: 48px -24px 16px;
                 img {
-                    width: 336px;
+                    width: 396px;
                 }
             }
             
@@ -329,6 +323,23 @@ $menu-navegation-color : #F5F5F5;
     display: inline-block;
 }
 
+.button-action {		
+    font-weight: bold;
+    position: absolute;
+    display: inline-block;
+    margin: 0;
+    padding: 8px;
+    right: 15px;
+}
+
+.available-button {
+    color: #D50000;
+}
+
+.price-button {
+    color: #333;
+}
+
 .quantity-button {
     background: #E53935;
     min-height: 30px !important;
@@ -339,4 +350,22 @@ $menu-navegation-color : #F5F5F5;
 
 .color-button-icon {
     color: white;
+}
+
+.fixed-action-btn {		
+    position: relative;
+
+    button {
+        position: absolute;
+        bottom: 30px;
+        right: 35px;
+        width: 56px;
+        -webkit-transition: all 0.3s ease;
+        -moz-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+    }
+ }
+
+md-tab-group {
+    width: 348px;
 }

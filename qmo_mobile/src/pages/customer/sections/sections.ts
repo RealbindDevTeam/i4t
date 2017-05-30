@@ -3,7 +3,7 @@ import { NavController, NavParams, Content } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
-import { Restaurants } from 'qmo_web/both/collections/restaurant/restaurant.collection';
+import { Restaurants, RestaurantImageThumbs } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { Cities } from 'qmo_web/both/collections/settings/city.collection';
 import { Countries } from 'qmo_web/both/collections/settings/country.collection';
 import { Sections } from 'qmo_web/both/collections/administration/section.collection';
@@ -38,6 +38,7 @@ export class SectionsPage implements OnInit, OnDestroy {
   private _itemSub: Subscription;
   private _imageThumbs;
   private _imageThumbSub: Subscription;
+  private _restaurantThumbSub: Subscription;
 
   private _res_code: string = '';
   private _table_code: string = '';
@@ -90,6 +91,7 @@ export class SectionsPage implements OnInit, OnDestroy {
     this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByRestaurant', this._res_code).subscribe(() => {
       this._imageThumbs = ItemImagesThumbs.find({});
     });
+    this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByRestaurantId', this._res_code).subscribe();
   }
 
   validateSection(section_selected) {
@@ -114,12 +116,18 @@ export class SectionsPage implements OnInit, OnDestroy {
 
   getItem(event){
     this._item_code = event;
-    console.log(this._item_code);
     this._navCtrl.push(ItemDetailPage, { item_id: this._item_code, res_id: this._res_code, table_id: this._table_code });
   }
 
+  getRestaurantThumb(_id: string): string {
+    let _imageThumb;
+    _imageThumb = RestaurantImageThumbs.find().fetch().filter((i) => i.restaurantId === _id)[0];
+    if (_imageThumb) {
+      return _imageThumb.url;
+    }
+  }
+
   ngOnDestroy() {
-    console.log('ngOnDestroy de sections');
     this._sectionsSub.unsubscribe();
     this._restaurantSub.unsubscribe();
     this._citySub.unsubscribe();
@@ -127,5 +135,6 @@ export class SectionsPage implements OnInit, OnDestroy {
     this._categorySub.unsubscribe();
     this._subcategorySub.unsubscribe();
     this._itemSub.unsubscribe();
+    this._restaurantThumbSub.unsubscribe();
   }
 }

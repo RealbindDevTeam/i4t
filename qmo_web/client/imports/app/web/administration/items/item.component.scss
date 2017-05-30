@@ -1,74 +1,52 @@
-.fixed-action-btn {
-  position: absolute;
-  right: 20px;
-  bottom: 10px;
-}
-
 .btn-position-create{
     position: absolute;
     top: -45px;
-    right: 10px;
+    right: 0;
 }
 
 .main {
-    position: relative;
-    display: block;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    bottom: 0;
     height: 100%;
-    overflow: auto;
-    margin-right: 0px;
-    transform: translate3d(0px, 0px, 0px);
-    -webkit-transition: all 0.3s ease;
-    -moz-transition: all 0.3s ease;
-    transition: all 0.3s ease;
-
-    .cards{
-        width: 350px;
-        display: inline-block; 
-        margin-right: 20px; 
-        vertical-align: top;
-
-        .card-item-price{
-            margin-top: 2%;
-            font-size: x-large;
-            color: green;
-            margin-bottom: -3%;
-        }
-
-        .card-item-tax{
-            margin-top: 4%;
-            font-size: initial;
-            color: goldenrod;
-            margin-bottom: -3%;
-        }
-
-        .card-actions{
-            margin-top: -2%;
-
-            .inactivate{
-                background-color: red;
-                color: white;
-            }
-
-            .activate{
-                background-color: green;
-                color: white;
-            }
-        }
-    }
-
-    .crop {
-        height: 200px;
-        overflow: hidden;
-        margin: 0 -24px 0px;
-    }
-
-    .crop img {
-        width: calc(100% + 48px);
-        height: 35vh;
-        margin: 0 -15px 0px;
-    }
-
-    .title-font{
-        font-family: "Open Sans",Arial,sans-serif;
+    
+    .main-overflow {
+        position: relative;
+        top: 20px;
+        overflow: scroll;
+        height: calc( 100vh - 86px);
     }
 }
+
+
+.cards{
+    width: 240px;
+    display: inline-block; 
+    margin-right: 20px; 
+    vertical-align: top;
+
+    md-card-content {
+        margin-top: 16px;
+        margin-bottom: 16px;
+        height: 50px;
+    }
+}
+
+.crop {
+    height: 200px;
+    overflow: hidden;
+    margin: 0 -24px 0px;
+}
+
+.crop img {
+    width: calc(100% + 48px);
+    height: 35vh;
+    margin: 0 -15px 0px;
+}
+
+.fixed-action-btn {		
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+ }

@@ -4,12 +4,14 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
-import { Items } from 'qmo_web/both/collections/administration/item.collection';
+import { Items, ItemImages } from 'qmo_web/both/collections/administration/item.collection';
 import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
 import { Addition } from 'qmo_web/both/models/administration/addition.model';
 import { GarnishFoodCol } from 'qmo_web/both/collections/administration/garnish-food.collection';
 import { GarnishFood } from 'qmo_web/both/models/administration/garnish-food.model';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
+import { Item } from 'qmo_web/both/models/administration/item.model';
+import { Currencies } from 'qmo_web/both/collections/general/currency.collection';
 import { ModalObservationsEdit } from './modal-observations-edit';
 import { Storage } from '@ionic/storage';
 
@@ -66,6 +68,9 @@ export class ItemEditPage implements OnInit, OnDestroy {
   private _newOrderForm: FormGroup;
   private _garnishFormGroup: FormGroup = new FormGroup({});
   private _additionsFormGroup: FormGroup = new FormGroup({});
+  private _itemImageSub: Subscription;
+  private _currencyCode: string;
+  private _currenciesSub: Subscription;
 
   constructor(public _navCtrl: NavController, public _navParams: NavParams, public _translate: TranslateService, public _storage: Storage,
     public _modalCtrl: ModalController, public _loadingCtrl: LoadingController, private _toastCtrl: ToastController, private _ngZone: NgZone,
@@ -75,7 +80,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
     _translate.setDefaultLang('en');
     _translate.use(this._userLang);
     this._currentUserId = Meteor.userId();
-    this._statusArray = ['REGISTERED', 'IN_PROCESS', 'PREPARED', 'DELIVERED'];
+    this._statusArray = ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED', 'ORDER_STATUS.DELIVERED'];
 
     this._createdGarnishFood = [];
     this._createAdditions = [];
@@ -100,7 +105,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
         this._items = Items.find({ _id: this._item_code }).zone();
         this._item = Items.collection.find({ _id: this._item_code }).fetch();
         for (let item of this._item) {
-          this._unitPrice = item.price;
+          this._unitPrice = this.getItemPrice(item);
           this._showFooter = true;
           if (item.isAvailable) {
             this._showActionsBtn = true;
@@ -129,7 +134,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
             this._garnishFoodElementsCount = itemOrder.garnishFood.length;
           }
         });
-        if (this._orderAux.status === 'REGISTERED' && this._orderAux.creation_user === this._currentUserId) {
+        if (this._orderAux.status === 'ORDER_STATUS.REGISTERED' && this._orderAux.creation_user === this._currentUserId) {
           this._showActionsBtn = true;
         } else {
           this._showActionsBtn = false;
@@ -157,7 +162,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
               this._garnishFormGroup.controls[gar.name].setValue(true);
             } else {
               let control: FormControl;
-              if (_actualOrder.status !== 'REGISTERED' || this._orderAux.creation_user !== this._currentUserId) {
+              if (_actualOrder.status !== 'ORDER_STATUS.REGISTERED' || this._orderAux.creation_user !== this._currentUserId) {
                 control = new FormControl({ value: true, disabled: true });
               } else {
                 control = new FormControl({ value: true, disabled: false });
@@ -169,7 +174,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
               this._garnishFormGroup.controls[gar.name].setValue(false);
             } else {
               let control: FormControl;
-              if (_actualOrder.status !== 'REGISTERED' || this._orderAux.creation_user !== this._currentUserId) {
+              if (_actualOrder.status !== 'ORDER_STATUS.REGISTERED' || this._orderAux.creation_user !== this._currentUserId) {
                 control = new FormControl({ value: false, disabled: true });
               } else {
                 control = new FormControl({ value: false, disabled: false });
@@ -201,7 +206,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
               this._additionsFormGroup.controls[add.name].setValue(true);
             } else {
               let control: FormControl;
-              if (_actualOrder.status !== 'REGISTERED' || this._orderAux.creation_user !== this._currentUserId) {
+              if (_actualOrder.status !== 'ORDER_STATUS.REGISTERED' || this._orderAux.creation_user !== this._currentUserId) {
                 control = new FormControl({ value: true, disabled: true });
               } else {
                 control = new FormControl({ value: true, disabled: false });
@@ -213,7 +218,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
               this._additionsFormGroup.controls[add.name].setValue(false);
             } else {
               let control: FormControl;
-              if (_actualOrder.status !== 'REGISTERED' || this._orderAux.creation_user !== this._currentUserId) {
+              if (_actualOrder.status !== 'ORDER_STATUS.REGISTERED' || this._orderAux.creation_user !== this._currentUserId) {
                 control = new FormControl({ value: false, disabled: true });
               } else {
                 control = new FormControl({ value: false, disabled: false });
@@ -231,6 +236,12 @@ export class ItemEditPage implements OnInit, OnDestroy {
       additions: this._additionsFormGroup
     });
     //
+
+    this._itemImageSub = MeteorObservable.subscribe('itemImagesByRestaurant', this._res_code).subscribe();
+
+    this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId',[ this._res_code ] ).subscribe( () => {
+      this._currencyCode = Currencies.collection.find({}).fetch()[0].code + ' ';
+    });
   }
 
   presentModal(_actualObs?: string) {
@@ -479,10 +490,48 @@ export class ItemEditPage implements OnInit, OnDestroy {
     return wordTraduced;
   }
 
+/**
+ * Return the Image source (url)
+ * @param  {string} _itemId 
+ */
+  getItemImage(_itemId: string): string {
+    let _itemImage;
+    _itemImage = ItemImages.find().fetch().filter((i) => i.itemId === _itemId)[0];
+    if (_itemImage) {
+      return _itemImage.url;
+    }
+  }
+
+  /**
+   * Return Item price by current restaurant
+   * @param {Item} _pItem 
+   */
+  getItemPrice( _pItem:Item ): number{
+    return _pItem.restaurants.filter( r => r.restaurantId === this._res_code )[0].price;
+  }
+
+  /**
+   * Return Addition price by current restaurant
+   * @param {Addition} _pAddition
+   */
+  getAdditionsPrice( _pAddition : Addition ): number{
+    return _pAddition.restaurants.filter( r => r.restaurantId === this._res_code )[0].price;
+  }
+  
+  /**
+   * Return Garnish food price by current restaurant
+   * @param {GarnishFood} _pGarnishFood
+   */
+  getGarnishFoodPrice( _pGarnishFood : GarnishFood ): number{
+    return _pGarnishFood.restaurants.filter( r => r.restaurantId === this._res_code )[0].price;
+  }
+
   ngOnDestroy() {
     this._itemsSub.unsubscribe();
     this._additionSub.unsubscribe();
     this._garnishSub.unsubscribe();
     this._ordersSub.unsubscribe();
+    this._itemImageSub.unsubscribe();
+    this._currenciesSub.unsubscribe();
   }
 }

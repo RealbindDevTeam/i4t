@@ -113,7 +113,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     /**
      * This function allow user create new order
      */
-    createNewOrder():void{
+    createNewOrder( _event?:any ):void{
         this._showOrderCreation = true;
         this._showRestaurantInformation = false;
         this._showOrderList = false;
