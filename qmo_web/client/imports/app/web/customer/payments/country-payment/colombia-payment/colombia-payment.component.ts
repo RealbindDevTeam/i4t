@@ -56,41 +56,46 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * ngOnInit Implementation. That allow calculate this values corresponding to Payment
+     * ngOnInit Implementation.
      */
     ngOnInit(){
         this._ordersSubscription = MeteorObservable.subscribe( 'getOrdersByAccount', this._user ).subscribe( () => {
            this._ngZone.run( () => {
-                this._orders = Orders.find( { creation_user: this._user } ).zone();
-                Orders.collection.find( { } ).fetch().forEach( ( order ) => {
-                    this._totalValue += order.totalPayment;
-                });
-                this._restaurantsSub = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', this._user ).subscribe( () => {
-                    this._ngZone.run( () => {
-                        let _lRestaurant:Restaurant = Restaurants.findOne( { _id: this.restId } );
-                        if( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] > 0 ){
-                            this._tipValue = _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ];
-                            this._tipTotal = this._totalValue * ( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] / 100 );
-                        }
-
-                        this._ipoComBaseValue  = (this._totalValue * 100 ) / this._ipoCom;
-                        this._ipoComBaseString = (this._ipoComBaseValue).toFixed(2);
-
-                        this._ipoComValue      = this._totalValue - this._ipoComBaseValue;
-                        this._ipoComString     = (this._ipoComValue).toFixed(2);
-
-                        this._tipTotalString   = (this._tipTotal).toFixed(2);
-                        this._totalToPayment   = this._totalValue + this._tipTotal;
-                    });
-                });
+                this._orders = Orders.find( { creation_user: this._user, status: 'ORDER_STATUS.DELIVERED' } ).zone();
+                this._orders.subscribe( () => { this.calculateValues(); });
            }); 
         });
+        this._restaurantsSub = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', this._user ).subscribe();
         this._currencySub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', [ this.restId ] ).subscribe( () => {
             this._ngZone.run( () => {
                 let _lCurrency: Currency = Currencies.findOne( { _id: this.currId } );
                 this._currencyCode = _lCurrency.code;
             });
         });
+    }
+
+    /**
+     * Function to calculate this values corresponding to Payment
+     */
+    calculateValues():void{
+        this._totalValue = 0;
+        Orders.collection.find( { creation_user: this._user, status: 'ORDER_STATUS.DELIVERED' } ).fetch().forEach( ( order ) => {
+            this._totalValue += order.totalPayment;
+        });
+        let _lRestaurant:Restaurant = Restaurants.findOne( { _id: this.restId } );
+        if( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] > 0 ){
+            this._tipValue = _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ];
+            this._tipTotal = this._totalValue * ( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] / 100 );
+        }
+
+        this._ipoComBaseValue  = (this._totalValue * 100 ) / this._ipoCom;
+        this._ipoComBaseString = (this._ipoComBaseValue).toFixed(2);
+
+        this._ipoComValue      = this._totalValue - this._ipoComBaseValue;
+        this._ipoComString     = (this._ipoComValue).toFixed(2);
+
+        this._tipTotalString   = (this._tipTotal).toFixed(2);
+        this._totalToPayment   = this._totalValue + this._tipTotal;
     }
 
     /**

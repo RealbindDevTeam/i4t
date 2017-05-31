@@ -63,11 +63,7 @@ Meteor.publish('getOrdersByAccount', function (_userId: string) {
         let _lAccount: Account = Accounts.findOne({restaurantId: _lUserDetail.current_restaurant, 
                                                    tableId: _lUserDetail.current_table,
                                                    status: 'OPEN'});
-        if(_lAccount){
-            return Orders.find( { creation_user: _userId, restaurantId: _lAccount.restaurantId, tableId: _lAccount.tableId, status: 'ORDER_STATUS.DELIVERED' } );
-        }else{
-            return Orders.find( { creation_user: _userId, restaurantId: "", tableId: "", status: ""} );
-        }
+        return Orders.find( { creation_user: _userId, restaurantId: _lAccount.restaurantId, tableId: _lAccount.tableId, status: 'ORDER_STATUS.DELIVERED' } );
     }else{
         return Orders.find( { creation_user: _userId, restaurantId: "", tableId: "", status: ""} );
     }

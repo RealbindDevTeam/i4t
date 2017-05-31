@@ -57,4 +57,4 @@
         </div>
     </md-card-content>
 </md-card>
-<order-payment-translate style="display: inline-block;width: 44%;vertical-align: top;margin-left: 1%;" [resId]="restId" [currId]="currId" [tabId]="tabId"></order-payment-translate>
+<order-payment-translate style="display: inline-block;width: 44%;vertical-align: top;margin-left: 1%;" [resId]="restId" [currId]="currId" [tabId]="tabId" (recalculate)="reCalculateValues($event)"></order-payment-translate>
