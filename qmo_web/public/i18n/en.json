@@ -33,7 +33,8 @@
         "IN_PROCESS": "In Process",
         "PREPARED": "Prepared",
         "CANCELED": "Canceled",
-        "DELIVERED": "Delivered"
+        "DELIVERED": "Delivered",
+        "PENDING_CONFIRM": "Pending Payment Confirmation"
     },
     "DATE_VALIDATE" : {
         "DAY_FORMAT" : "Day format incorrect",
@@ -629,7 +630,9 @@
         "INC":"Inc",
         "TOTAL":"Total",
         "TIPS":"Tip",
-        "TOTAL_TO_PAY":"Total to pay"
+        "TOTAL_TO_PAY":"Total to pay",
+        "ADDITION": "Addition",
+        "GARNISH_FOOD": "Garnish Food"
     },
     "WAITER_CALL": {
         "TITTLE": "Call waiter",

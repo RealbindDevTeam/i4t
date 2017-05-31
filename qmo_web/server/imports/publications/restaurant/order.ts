@@ -64,11 +64,24 @@ Meteor.publish('getOrdersByAccount', function (_userId: string) {
                                                    tableId: _lUserDetail.current_table,
                                                    status: 'OPEN'});
         if(_lAccount){
-            return Orders.find({restaurantId: _lAccount.restaurantId, tableId: _lAccount.tableId, status: 'ORDER_STATUS.DELIVERED'});
+            return Orders.find( { creation_user: _userId, restaurantId: _lAccount.restaurantId, tableId: _lAccount.tableId, status: 'ORDER_STATUS.DELIVERED' } );
         }else{
-            return Orders.find({restaurantId: "", tableId: "", status: ""});
+            return Orders.find( { creation_user: _userId, restaurantId: "", tableId: "", status: ""} );
         }
     }else{
-        return Orders.find({restaurantId: "", tableId: "", status: ""});
+        return Orders.find( { creation_user: _userId, restaurantId: "", tableId: "", status: ""} );
     }
+});
+
+/**
+ * Meteor publication return orders with translate confirmation pending
+ */
+Meteor.publish( 'getOrdersWithConfirmationPending', function( _restaurantId:string, _tableId:string ) {
+    check( _restaurantId, String );
+    check( _tableId, String );   
+    return Orders.find( { restaurantId: _restaurantId,
+                          tableId: _tableId,
+                          status: 'ORDER_STATUS.PENDING_CONFIRM', 
+                          'translateInfo.markedToTranslate': true, 
+                          'translateInfo.confirmedToTranslate': false } );
 });

@@ -23,6 +23,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
     private _restaurantSub: Subscription;
 
     private _currentRestaurant: Restaurant;
+    private _currentTable: string;
     private _showInitCard: boolean = false;
     private _showPaymentInfo: boolean = false;
 
@@ -50,6 +51,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
                         this._ngZone.run( () => {
                             let _lRestaurant: Restaurant = Restaurants.findOne( { _id: _lUserDetail.current_restaurant } );
                             this._currentRestaurant = _lRestaurant;
+                            this._currentTable = _lUserDetail.current_table;
                             this._showInitCard = false;
                             this._showPaymentInfo = true;
                         });

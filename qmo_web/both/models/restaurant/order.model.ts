@@ -1,5 +1,8 @@
 import { CollectionObject } from '../collection-object.model';
 
+/**
+ * Order Model
+ */
 export interface Order extends CollectionObject{
     restaurantId: string;
     tableId: string;
@@ -9,8 +12,12 @@ export interface Order extends CollectionObject{
     items: OrderItem[];
     totalPayment: number;
     orderItemCount: number;
+    translateInfo: OrderTranslateInfo;
 }
 
+/**
+ * Order Item Model
+ */
 export interface OrderItem{
     index: number;
     itemId: string;
@@ -19,4 +26,14 @@ export interface OrderItem{
     garnishFood: string[];
     additions: string[];
     paymentItem: number;
+}
+
+/**
+ * Order Translate Information Model
+ */
+export interface OrderTranslateInfo{
+    firstOrderOwner: string;
+    markedToTranslate: boolean;
+    lastOrderOwner: string;
+    confirmedToTranslate: false;
 }

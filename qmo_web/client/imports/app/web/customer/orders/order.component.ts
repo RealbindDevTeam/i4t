@@ -154,6 +154,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
     ngOnDestroy(){
         this._tablesSub.unsubscribe();
         this._userDetailsSub.unsubscribe();
-        this._restaurantSub.unsubscribe();
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
     }
 }
