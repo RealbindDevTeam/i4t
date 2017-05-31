@@ -22,7 +22,7 @@ export class PaymentsPage implements OnInit, OnDestroy {
   private _userLang: string;
   private _currentUserId: string;
   private _orders;
-  private _ordersSub: Subscription;
+  private _ordersSubscription: Subscription;
   private _paymethod: string = "cash";
 
   constructor(public _navCtrl: NavController, 
@@ -39,18 +39,29 @@ export class PaymentsPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log('Entra a ngOnInit ');
-    this._ordersSub = MeteorObservable.subscribe('getOrdersByAccount', Meteor.userId()).subscribe(() => {
-      this._orders = Orders.find({status: 'DELIVERED'}); 
+    this._ordersSubscription = MeteorObservable.subscribe('getOrdersByAccount', Meteor.userId()).subscribe(() => {
+      this._orders = Orders.find({status: 'ORDER_STATUS.DELIVERED'}); 
+    });
+  }
+  
+  ionViewWillEnter() {
+    console.log('Pasá por payments');
+    this._ordersSubscription = MeteorObservable.subscribe('getOrdersByAccount', Meteor.userId()).subscribe(() => {
+      this._orders = Orders.find({status: 'ORDER_STATUS.DELIVERED'}); 
     });
   }
 
   ngOnDestroy() { 
     console.log('Entra a ngOnDestroy');
-    this._ordersSub.unsubscribe();
+    this._ordersSubscription.unsubscribe();
   }
 
   goToPaymentDetails(){
     this._navCtrl.push(PaymentDetailsPage, { total_value : 22200, tip : 0 });
+  }
+
+  ionViewWillLeave() {
+    this._ordersSubscription.unsubscribe();
   }
 
 }

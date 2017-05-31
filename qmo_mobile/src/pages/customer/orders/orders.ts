@@ -51,9 +51,22 @@ export class OrdersPage implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
+            this._restaurants = Restaurants.find({});
+        });
+
         this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
 
-        this._storage.ready().then(() => {
+        this._ordersSub = MeteorObservable.subscribe('getOrdersByUserId', Meteor.userId(), this._statusArray).subscribe(() => {
+            this._orders = Orders.find({ creation_user: this._currentUserId, status: { $in: this._statusArray } });
+        });
+        this._itemsSub = MeteorObservable.subscribe('itemsByUser', Meteor.userId()).subscribe(() => {
+            this._items = Items.find({});
+        });
+
+        this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByUserId', Meteor.userId()).subscribe();
+
+        /*this._storage.ready().then(() => {
             this._storage.get('trobj').then((val_obj) => {
                 if (val_obj != null) {
                     this._table_code = val_obj.evalc_tb;
@@ -62,22 +75,19 @@ export class OrdersPage implements OnInit, OnDestroy {
                     if ((this._table_code == null) && (this._res_code == null)) {
                         this._table_code = "";
                         this._res_code = "";
-                    } else {
-                        this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
-                            this._restaurants = Restaurants.find({});
-                        });
-                        this._ordersSub = MeteorObservable.subscribe('getOrdersByTableId', this._res_code, this._table_code, this._statusArray).subscribe(() => {
-                            this._orders = Orders.find({ creation_user: this._currentUserId });
+                    } else {*/
+                        /*this._ordersSub = MeteorObservable.subscribe('getOrdersByTableId', this._res_code, this._table_code, this._statusArray).subscribe(() => {
+                            this._orders = Orders.find({ creation_user: this._currentUserId, status: { $in: this._statusArray } });
                             this._allOrders = Orders.find({});
-                        });
-                        this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this._res_code).subscribe(() => {
+                        });*/
+                        /*this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this._res_code).subscribe(() => {
                             this._items = Items.find({});
-                        });
-                        this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByRestaurantId', this._res_code).subscribe();
-                    }
+                        });*/
+                        //this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByRestaurantId', this._res_code).subscribe();
+                    /*}
                 }
             });
-        });
+        });*/
 
         //this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByRestaurant', this._res_code).subscribe(() => {
         //    this._imageThumbs = ItemImagesThumbs.find({});
@@ -118,7 +128,22 @@ export class OrdersPage implements OnInit, OnDestroy {
     }
 
     ionViewWillEnter() {
-        this.selected = "me";
+        this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
+            this._restaurants = Restaurants.find({});
+        });
+
+        this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
+
+        this._ordersSub = MeteorObservable.subscribe('getOrdersByUserId', Meteor.userId(), this._statusArray).subscribe(() => {
+            this._orders = Orders.find({ creation_user: this._currentUserId, status: { $in: this._statusArray } });
+        });
+        this._itemsSub = MeteorObservable.subscribe('itemsByUser', Meteor.userId()).subscribe(() => {
+            this._items = Items.find({});
+        });
+
+        this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByRestaurantId', Meteor.userId()).subscribe();
+
+        /*this.selected = "me";
         this._storage.ready().then(() => {
             this._storage.get('trobj').then((val_obj) => {
                 if (val_obj != null) {
@@ -128,23 +153,21 @@ export class OrdersPage implements OnInit, OnDestroy {
                     if ((this._table_code == null) && (this._res_code == null)) {
                         this._table_code = "";
                         this._res_code = "";
-                    } else {
-                        this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
-                            this._restaurants = Restaurants.find({});
-                        });
+                    } else {*/
+                        /*
                         this._ordersSub = MeteorObservable.subscribe('getOrdersByTableId', this._res_code, this._table_code, this._statusArray).subscribe(() => {
-                            this._orders = Orders.find({ creation_user: this._currentUserId });
+                            this._orders = Orders.find({ creation_user: this._currentUserId, status: { $in: this._statusArray } });
                             this._allOrders = Orders.find({});
                         });
 
                         this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this._res_code).subscribe(() => {
                             this._items = Items.find({});
                         });
-                        this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByRestaurantId', this._res_code).subscribe();
-                    }
+                        this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByRestaurantId', this._res_code).subscribe();*/
+                    /*}
                 }
             });
-        });
+        });*/
     }
 
     filterOrders(orders_selected) {
@@ -265,6 +288,13 @@ export class OrdersPage implements OnInit, OnDestroy {
         loader.present();
         let objaux: any[] = [];
         objaux = event;
+        let _lUserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+
+        if(_lUserDetail.current_restaurant && _lUserDetail.current_table){
+            this._res_code   = _lUserDetail.current_restaurant;
+            this._table_code = _lUserDetail.current_table;
+        }
+
         this._navCtrl.push(ItemEditPage, { order_id: _order._id, 
                                            item_ord_ind: objaux[1], 
                                            item_code: objaux[0], 
@@ -280,12 +310,13 @@ export class OrdersPage implements OnInit, OnDestroy {
     }
 
     ionViewWillLeave() {
-        if ((this._table_code != "") && (this._res_code != "")) {
+        //if ((this._table_code != "") && (this._res_code != "")) {
             this._restaurantSub.unsubscribe();
             this._ordersSub.unsubscribe();
             this._itemsSub.unsubscribe();
             this._restaurantThumbSub.unsubscribe();
-        }
+            this._userDetailSub.unsubscribe();
+        //}
     }
 
     ionViewWillUnload() {

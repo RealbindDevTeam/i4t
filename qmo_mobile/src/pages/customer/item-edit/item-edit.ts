@@ -127,13 +127,15 @@ export class ItemEditPage implements OnInit, OnDestroy {
       MeteorObservable.autorun().subscribe(() => {
         this._orders = Orders.find({ _id: this._order_code, creation_user: this._creation_user });
         this._orderAux = Orders.collection.find({ _id: this._order_code, creation_user: this._creation_user }).fetch()[0];
-        this._orderAux.items.forEach((itemOrder) => {
+        for ( let itemOrder of this._orderAux.items ){
           if (itemOrder.itemId === this._item_code && itemOrder.index === this._item_order_index) {
             this._quantityCount = itemOrder.quantity;
             this._finalPrice = itemOrder.paymentItem;
             this._garnishFoodElementsCount = itemOrder.garnishFood.length;
           }
-        });
+        }
+        //this._orderAux.items.forEach((itemOrder) => {
+        //});
         if (this._orderAux.status === 'ORDER_STATUS.REGISTERED' && this._orderAux.creation_user === this._currentUserId) {
           this._showActionsBtn = true;
         } else {
@@ -150,11 +152,13 @@ export class ItemEditPage implements OnInit, OnDestroy {
 
         let _actualOrder;
         _actualOrder = Orders.collection.find({ _id: this._order_code, creation_user: this._creation_user }).fetch()[0];
-        _actualOrder.items.forEach((itemOrder) => {
+        //_actualOrder.items.forEach((itemOrder) => {
+        for ( let itemOrder of _actualOrder.items ){
           if (itemOrder.itemId === this._item_code && itemOrder.index === this._item_order_index) {
             this._orderItemGarnishFood = itemOrder.garnishFood;
           }
-        });
+        }
+        //});
         for (let gar of this._createdGarnishFood) {
           let garnishExist: any[] = this._orderItemGarnishFood.filter(garnish => garnish === gar._id);
           if (garnishExist.length > 0) {
@@ -193,11 +197,13 @@ export class ItemEditPage implements OnInit, OnDestroy {
 
         let _actualOrder;
         _actualOrder = Orders.collection.find({ _id: this._order_code, creation_user: this._creation_user }).fetch()[0];
-        _actualOrder.items.forEach((itemOrder) => {
+        //_actualOrder.items.forEach((itemOrder) => {
+        for (let itemOrder of _actualOrder.items) {
           if (itemOrder.itemId === this._item_code && itemOrder.index === this._item_order_index) {
             this._orderAdditions = itemOrder.additions;
           }
-        });
+        }
+        //});
 
         for (let add of this._createAdditions) {
           let additionExist: any[] = this._orderAdditions.filter(addition => addition === add._id);

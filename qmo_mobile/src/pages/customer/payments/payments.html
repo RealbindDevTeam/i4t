@@ -9,7 +9,7 @@
 </ion-header>
 
 <ion-content>
-    <ion-list>
+    <ion-list *ngIf="(_orders | async)?.length > 0">
         <ion-list-header>
             {{'MOBILE.PAYMENTS.BILL' | translate}}
         </ion-list-header>
@@ -27,14 +27,14 @@
         <div class="img">
             <img src="assets/img/pagos.png">
         </div>
-        <div class="content">
+        <div class="content" style="text-align: center">
             <h1>{{'MOBILE.PAYMENTS.TITTLE_CONTENT' | translate}}</h1>
             <p>{{'MOBILE.PAYMENTS.CONTENT' | translate}}</p>
         </div>
     </div>
 </ion-content>
 
-<ion-footer class="ion-footer-custom" padding>
+<ion-footer class="ion-footer-custom" padding *ngIf="(_orders | async)?.length > 0">
     <div>
         <button class="button-secundary" style="float:left; width: 45%" ion-button>{{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}</button>
         <button class="button-secundary" style="float: right; width: 45%" (click)="goToPaymentDetails()" ion-button>{{'MOBILE.PAYMENTS.VIEW_DETAIL' | translate}}</button>

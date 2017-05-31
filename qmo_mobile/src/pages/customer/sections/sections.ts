@@ -52,7 +52,8 @@ export class SectionsPage implements OnInit, OnDestroy {
 
     this._res_code = this._navParams.get("res_id");
     this._table_code = this._navParams.get("table_id");
-
+    
+    /*
     let trobj = {
       edoc_rs: this._res_code,
       evalc_tb: this._table_code
@@ -61,6 +62,7 @@ export class SectionsPage implements OnInit, OnDestroy {
     this._storage.ready().then(() => {
       this._storage.set('trobj', trobj);
     });
+    */
 
     this.selected = 'all';
   }
