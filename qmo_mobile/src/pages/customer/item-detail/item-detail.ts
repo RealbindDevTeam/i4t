@@ -86,8 +86,6 @@ export class ItemDetailPage implements OnInit, OnDestroy {
           this._items = Items.find({ _id: this._item_code }).zone();
           this._item = Items.collection.find({ _id: this._item_code }).fetch();
           for (let item of this._item) {
-            //this._finalPrice = item.price;
-            //this._unitPrice = item.price;
             this._finalPrice = this.getItemPrice(item);
             this._unitPrice = this.getItemPrice(item);
             this._showAddBtn = item.isAvailable;

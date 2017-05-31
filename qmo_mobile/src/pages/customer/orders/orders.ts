@@ -172,14 +172,14 @@ export class OrdersPage implements OnInit, OnDestroy {
 
     filterOrders(orders_selected) {
         if (orders_selected == 'all') {
-            this._orders = Orders.find({});
+            this._orders = Orders.find({ status : { $in: this._statusArray }});
             this._orderIndex = -1;
         } else if (orders_selected == 'me') {
-            this._orders = Orders.find({ creation_user: this._currentUserId });
+            this._orders = Orders.find({ creation_user: this._currentUserId, status : { $in: this._statusArray } });
             this._orderIndex = -1;
         } else if (orders_selected == 'other') {
             this._orderIndex = -1;
-            this._orders = Orders.find({ creation_user: { $nin: [this._currentUserId] } });
+            this._orders = Orders.find({ creation_user: { $nin: [this._currentUserId], status : { $in: this._statusArray } } });
         }
     }
 

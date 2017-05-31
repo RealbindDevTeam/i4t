@@ -124,7 +124,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
     });
 
     this._ordersSub = MeteorObservable.subscribe('getOrdersByTableId', this._res_code, this._table_code, this._statusArray).subscribe(() => {
-      MeteorObservable.autorun().subscribe(() => {
+      //MeteorObservable.autorun().subscribe(() => {
         this._orders = Orders.find({ _id: this._order_code, creation_user: this._creation_user });
         this._orderAux = Orders.collection.find({ _id: this._order_code, creation_user: this._creation_user }).fetch()[0];
         for ( let itemOrder of this._orderAux.items ){
@@ -141,7 +141,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
         } else {
           this._showActionsBtn = false;
         }
-      });
+      //});
     });
 
     this._garnishSub = MeteorObservable.subscribe('garnishFoodByRestaurant', this._res_code).subscribe(() => {
