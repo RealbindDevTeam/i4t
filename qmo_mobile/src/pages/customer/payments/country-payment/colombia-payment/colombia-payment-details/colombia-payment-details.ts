@@ -4,6 +4,7 @@ import { MeteorObservable } from 'meteor-rxjs'
 import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
+import { Restaurants } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 
 /*
   Generated class for the Payment-Details page.
@@ -27,12 +28,14 @@ export class ColombiaPaymentDetailsPage implements OnInit, OnDestroy {
     private _ipoCom             : number = 108;
     private _ipoComValue        : number = 0;
     private _tip                : number = 0;
+    private _tipTotal           : number;
+    private _restaurantId       : number;
     private _userLang           : string;
     private _ipoComBaseString   : string;
     private _ipoComString       : string;
     private _tipTotalString     : string;
     private _currency           : string;
-    private _tipTotal           : number;
+    private _tipValue           : string;
 
     /**
      * ColombiaPaymentDetailsPage constructor
@@ -52,24 +55,21 @@ export class ColombiaPaymentDetailsPage implements OnInit, OnDestroy {
     ngOnInit(){
         this._ordersSubscription  = MeteorObservable.subscribe('getOrdersByAccount', Meteor.userId()).subscribe( () =>{
             MeteorObservable.autorun().subscribe(() => {
-                this._orders = Orders.find({ creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED' }).zone();
-
-                this._totalValue       = this._navParams.get("total");
-                this._tip              = this._navParams.get("tip");
-                this._currency         = this._navParams.get("currency");
-
-                this._tipTotal         = this._totalValue * ( this._tip / 100 )
+                this._currency = this._navParams.get("currency");
+                
+                this._totalValue = 0;
+                this._orders = Orders.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED' } ).zone();
+                Orders.collection.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED' } ).fetch().forEach( ( order ) => {
+                    this._totalValue += order.totalPayment;
+                });
+                
                 this._ipoComBaseValue  = (this._totalValue * 100 ) / this._ipoCom;
                 this._ipoComValue      = this._totalValue - this._ipoComBaseValue;
                 
                 this._ipoComBaseString = (this._ipoComBaseValue).toFixed(2);
                 this._ipoComString     = (this._ipoComValue).toFixed(2);
-                this._tipTotalString   = (this._tipTotal).toFixed(2);
-
-                this._totalToPayment   = this._totalValue + this._tipTotal;
             });
         });
-        
     }
 
     /**

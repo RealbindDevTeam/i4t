@@ -22,7 +22,7 @@
     </div>
 </div>
 
-<ion-footer class="ion-footer-custom" padding *ngIf="(_orders | async)?.length > 0">
+<div class="ion-footer-custom" padding *ngIf="(_orders | async)?.length > 0">
     <div>
         <button class="button-secundary" style="float:left; width: 45%" ion-button>{{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}</button>
         <button class="button-secundary" style="float: right; width: 45%" (click)="goToPaymentDetails()" ion-button>{{'MOBILE.PAYMENTS.VIEW_DETAIL' | translate}}</button>
@@ -46,4 +46,4 @@
     <div>
         <button ion-button block>{{'MOBILE.PAYMENTS.PAY_BTN' | translate}}</button>
     </div>
-</ion-footer>
+</div>
