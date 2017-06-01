@@ -28,8 +28,9 @@ import { IonicStorageModule } from '@ionic/storage';
 import { ItemCardComponent } from '../pages/customer/sections/item-card';
 import { OrderDetailComponent } from '../pages/customer/orders/order-detail';
 import { OrderItemDetailComponent } from '../pages/customer/orders/order-item-detail';
-import { PaymentDetailsPage } from '../pages/customer/payments/payment-details/payment-details';
-import { PaymentItemDetailComponent } from '../pages/customer/payments/payment-details/payment-item-detail';
+import { ColombiaPaymentsPage } from '../pages/customer/payments/country-payment/colombia-payment/colombia-payment';
+import { ColombiaPaymentDetailsPage } from '../pages/customer/payments/country-payment/colombia-payment/colombia-payment-details/colombia-payment-details';
+import { ColombiaPaymentItemDetailComponent } from '../pages/customer/payments/country-payment/colombia-payment/colombia-payment-details/colombia-payment-item-detail';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateStaticLoader(http, 'assets/i18n', '.json');
@@ -61,8 +62,9 @@ export function createTranslateLoader(http: Http) {
     ItemCardComponent,
     OrderDetailComponent,
     OrderItemDetailComponent,
-    PaymentDetailsPage,
-    PaymentItemDetailComponent
+    ColombiaPaymentsPage,
+    ColombiaPaymentDetailsPage,
+    ColombiaPaymentItemDetailComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -111,8 +113,9 @@ export function createTranslateLoader(http: Http) {
     ItemCardComponent,
     OrderDetailComponent,
     OrderItemDetailComponent,
-    PaymentDetailsPage,
-    PaymentItemDetailComponent
+    ColombiaPaymentsPage,
+    ColombiaPaymentDetailsPage,
+    ColombiaPaymentItemDetailComponent
   ],
   providers: [
     {

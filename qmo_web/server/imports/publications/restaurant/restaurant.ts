@@ -3,6 +3,7 @@ import { Restaurants, RestaurantImages, RestaurantImageThumbs } from '../../../.
 import { UserDetails } from '../../../../both/collections/auth/user-detail.collection';
 import { check } from 'meteor/check';
 import { Accounts } from '../../../../both/collections/restaurant/account.collection';
+import { UserDetail } from '../../../../both/models/auth/user-detail.model';
 
 /**
  * Meteor publication restaurants with creation user condition
@@ -70,4 +71,17 @@ Meteor.publish( 'restaurantImageThumbs', function( _userId:string ) {
 Meteor.publish( 'restaurantImageThumbsByRestaurantId', function( _restaurantId:string ) {
     check( _restaurantId, String );
     return RestaurantImageThumbs.collection.find( { restaurantId: _restaurantId } );
+});
+
+/**
+ * Meteor publication restaurantImageThumbs with user Id condition
+ * @param {string} _restaurantId 
+ */
+Meteor.publish( 'restaurantImageThumbsByUserId', function( _userId:string ) {
+    check( _userId, String );
+    let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
+    if(_lUserDetail.current_restaurant){
+        return RestaurantImageThumbs.collection.find( { restaurantId: _lUserDetail.current_restaurant } );
+    }
+    return;
 });

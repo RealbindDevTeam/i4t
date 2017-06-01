@@ -35,11 +35,12 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
      }
 
     ngOnInit() {
-        this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this.resCode).subscribe(() => {
+        this._itemsSub = MeteorObservable.subscribe('itemsByUser', Meteor.userId()).subscribe(() => {
             this._items = Items.find({_id: this.orderItem.itemId});
         });
 
-        this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByRestaurant', this.resCode).subscribe();
+        //this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByRestaurant', this.resCode).subscribe();
+        this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByUserId', Meteor.userId()).subscribe();
     }
 
     getItemThumb(_itemId: string): string {
@@ -58,6 +59,11 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        this._imageThumbSub.unsubscribe();
+        this._itemsSub.unsubscribe();
+    }
+
+    ionViewWillLeave() {
         this._imageThumbSub.unsubscribe();
         this._itemsSub.unsubscribe();
     }

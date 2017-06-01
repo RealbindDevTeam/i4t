@@ -6,6 +6,7 @@ import { WaiterCallDetail } from '../../../models/restaurant/waiter-call-detail.
 import { WaiterCallDetails } from '../../../collections/restaurant/waiter-call-detail.collection';
 import { Restaurant, RestaurantTurn } from '../../../models/restaurant/restaurant.model';
 import { Restaurants, RestaurantTurns } from '../../../collections/restaurant/restaurant.collection';
+import { Orders } from '../../../collections/restaurant/order.collection';
 
 //var _queue = JobCollection('waiterCallQueue');
 
@@ -48,7 +49,8 @@ if (Meteor.isServer) {
           creation_date : new Date(),
           queue : _queue,
           job_id : job._doc._id,
-          type : _data.type
+          type : _data.type,
+          order_id : _data.order_id,
         });
       } 
       return;
@@ -142,6 +144,18 @@ if (Meteor.isServer) {
           WaiterCallDetails.update({ job_id : _jobDetail.job_id },
             { $set : { "status" : "closed", modification_user : _waiter_id, modification_date : new Date() }
           });
+          
+          let waiterDetail = WaiterCallDetails.collection.findOne({job_id : _jobDetail.job_id});
+          if( waiterDetail.type === "SEND_ORDER" && waiterDetail.order_id !== null ){
+            Orders.update( { _id: waiterDetail.order_id }, 
+              { $set: { status: 'ORDER_STATUS.DELIVERED',
+                        modification_user: this._user, 
+                        modification_date: new Date() 
+                      } 
+              }
+            );
+          }
+          
           let usr_detail = UserDetails.collection.findOne({ user_id : _waiter_id });
           let jobs = usr_detail.jobs - 1;
           UserDetails.update({user_id : _waiter_id} , { $set : { "enabled" : true, "jobs" : jobs } });

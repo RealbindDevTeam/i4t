@@ -32,6 +32,20 @@ Meteor.publish('getOrdersByTableId', function (_restaurantId: string, _tableId, 
 });
 
 /**
+ * Meteor publications orders with userId and status conditions
+ * @param {string}
+ * @param {string}
+*/
+Meteor.publish('getOrdersByUserId', function (_userId: string, _status: string[]) {
+    check(_userId, String);
+    let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
+    if(_lUserDetail.current_restaurant && _lUserDetail.current_table){
+        return Orders.collection.find({ restaurantId: _lUserDetail.current_restaurant, tableId: _lUserDetail.current_table, status: { $in: _status } });
+    }
+    return;
+});
+
+/**
  * Meteor publication orders with restaurantId condition
  * @param {string} _restaurantId
 */

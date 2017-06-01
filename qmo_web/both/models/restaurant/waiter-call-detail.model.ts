@@ -13,4 +13,5 @@ export interface WaiterCallDetail extends CollectionObject {
     queue : string;
     job_id : string;
     type : string;
+    order_id? : string;
 }
