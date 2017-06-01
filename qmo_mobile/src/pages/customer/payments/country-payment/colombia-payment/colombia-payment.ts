@@ -32,15 +32,8 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
   private _orders             : any;
   private _totalValue         : number = 0;
   private _tipTotal           : number = 0;
-  private _ipoCom             : number = 108;
-  private _ipoComValue        : number = 0;
-  private _ipoComBaseValue    : number = 0;
   private _totalToPayment     : number = 0;
   private _userLang           : string;
-  private _currentUserId      : string;
-  private _ipoComBaseString   : string;
-  private _ipoComString       : string;
-  private _tipTotalString     : string;
   private _currencyCode       : string;
   private _tipValue           : string;
 
