@@ -1,60 +1,80 @@
-<md-card style="box-shadow: none;width:50%;display: inline-block;">
-    <md-card-title>{{ 'PAYMENTS.PAY_DETAIL_TITTLE' | translate }}</md-card-title>
-    <md-card-content>
-        <div id="item" *ngFor="let order of _orders | async">
-            <div class="inner-item">
-                <div class="input-wraper">
-                    <h3>{{ 'PAYMENTS.PAY_ORDER' | translate }} # {{order.code}}</h3>
-                </div>
-                <h3> {{order.totalPayment}} {{_currencyCode}}</h3>
-            </div>
-            <div *ngFor="let itemId of order.items">
-                <colombia-item-detail [orderItem]="itemId" [resCode]="order.restaurantId" [cur]="currId" [curCode]="_currencyCode"></colombia-item-detail>
-            </div>
-        </div>
-        
-        <div class="block">
-            <div class="item-inner">
-                <div class="input">
-                    <div class="label">
-                        <h3>{{'PAYMENTS.SUBTOTAL' | translate}}</h3>
-                        <h3>{{'PAYMENTS.INC' | translate}} (8%)</h3>
-                        <h3>{{'PAYMENTS.TOTAL' | translate}}</h3>
-                    </div>
-                </div>
-                <div style="text-align: end">
-                    <p>{{_ipoComBaseString}} {{_currencyCode}}</p>
-                    <p>{{_ipoComString}} {{_currencyCode}}</p>
-                    <h3>{{_totalValue}} {{_currencyCode}}</h3>
-                </div>
-            </div>
-        </div>
-        <div class="block">
-            <div class="item-inner">
-                <div class="input">
-                    <div class="label">
-                        <h3>{{'PAYMENTS.TIPS' | translate}} ({{_tipValue}}%)</h3>
-                    </div>
-                </div>
-                <div>
-                    <p>{{_tipTotalString}} {{_currencyCode}}</p>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="block">
-                <div class="item-inner">
-                    <div class="input">
-                        <div class="label">
-                            <h2>{{'PAYMENTS.TOTAL_TO_PAY' | translate}} </h2>
+<div>
+    <div class="info">
+        <md-card>
+            <md-card-content>
+                <div class="block">
+                    <div class="item-inner">
+                        <div class="input">
+                            <div class="label">
+                                <h3>{{'PAYMENTS.SUBTOTAL' | translate}}</h3>
+                                <h3>{{'PAYMENTS.INC' | translate}} (8%)</h3>
+                                <h3>{{'PAYMENTS.TOTAL' | translate}}</h3>
+                            </div>
+                        </div>
+                        <div style="text-align: end">
+                            <p>{{_ipoComBaseString}} {{_currencyCode}}</p>
+                            <p>{{_ipoComString}} {{_currencyCode}}</p>
+                            <h3>{{_totalValue}} {{_currencyCode}}</h3>
                         </div>
                     </div>
-                    <div>
-                        <h2>{{_totalToPayment}} {{_currencyCode}}</h2>
+                </div>        
+                <div>
+                    <div style="display: inline-block;width: 50%;">
+                        <p>Propina:</p>
+                        <md-checkbox (change)="allowTip($event)">{{'PAYMENTS.TIPS' | translate}} ({{_tipValue}}%)</md-checkbox> 
+                    </div>
+                    <p style="font-size: 1.17em;font-weight: bold;color: black;display: inline-block;width: 49%;text-align: right;">{{_tipTotalString}} {{_currencyCode}}</p>
+                </div>
+                <div>
+                    <md-checkbox (change)="allowOtherTip($event)">Otro Valor:</md-checkbox> 
+                    <md-input-container style="margin-left: 2%;">
+                        <input mdInput type="number" min="0" [(disabled)]="_otherTipAllowed" [(ngModel)]="_otherTip" (input)="sumOtherTip($event.target.value)">
+                    </md-input-container>                
+                </div>
+                <md-divider></md-divider>
+                <div>
+                    <div class="block">
+                        <div class="item-inner">
+                            <div class="input">
+                                <div class="label">
+                                    <h2>{{'PAYMENTS.TOTAL_TO_PAY' | translate}} </h2>
+                                </div>
+                            </div>
+                            <div>
+                                <h2>{{_totalToPayment}} {{_currencyCode}}</h2>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </md-card-content>
-</md-card>
-<order-payment-translate style="display: inline-block;width: 44%;vertical-align: top;margin-left: 1%;" [resId]="restId" [currId]="currId" [tabId]="tabId"></order-payment-translate>
+            </md-card-content>
+        </md-card>
+        <order-payment-translate [resId]="restId" [currId]="currId" [tabId]="tabId" (recalculate)="reCalculateValues($event)"></order-payment-translate>
+    </div>
+    <div class="orders">
+        <md-card>
+            <md-card-title style="display: inline-block;">Ordenes de mi Cuenta</md-card-title>
+            <button md-raised-button style="float: right;" color="primary" (click)="open()">Consultar Detalle del Pago</button>
+            <md-card-content>
+                <table class="centered striped">
+                    <thead>
+                        <tr>
+                            <th data-field="id">Orden</th>
+                            <th data-field="name">Estado</th>
+                            <th data-field="price">Pago total de la orden</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let order of _orders | async">
+                            <td>{{ 'PAYMENTS.PAY_ORDER' | translate }} # {{order.code}}</td>
+                            <td>{{order.status | translate}}</td>
+                            <td>{{order.totalPayment}} {{_currencyCode}}</td>
+                            <td *ngIf="isAvailableToReturn(order)">
+                                <button md-icon-button (click)="returnOrderToFirstOwner(order)"><md-icon class="md-24">repeat</md-icon></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>

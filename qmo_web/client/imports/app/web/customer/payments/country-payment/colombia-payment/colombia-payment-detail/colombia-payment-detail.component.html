@@ -1,0 +1,35 @@
+<md-card>
+    <md-card-title>Detalle de las Ordenes</md-card-title>
+    <md-card-content>
+        <div id="item" *ngFor="let order of _orders | async">
+            <div class="inner-item">
+                <div class="input-wraper">
+                    <h3>{{ 'PAYMENTS.PAY_ORDER' | translate }} # {{order.code}}</h3>
+                </div>
+                <h3> {{order.totalPayment}} {{currencyCode}}</h3>
+            </div>
+            <div *ngFor="let itemId of order.items">
+                <colombia-item-detail [orderItem]="itemId" [resCode]="order.restaurantId" [cur]="currId" [curCode]="currencyCode"></colombia-item-detail>
+            </div>
+        </div>
+        <div class="block">
+            <div class="item-inner">
+                <div class="input">
+                    <div class="label">
+                        <h3>{{'PAYMENTS.SUBTOTAL' | translate}}</h3>
+                        <h3>{{'PAYMENTS.INC' | translate}} (8%)</h3>
+                        <h2>{{'PAYMENTS.TOTAL' | translate}}</h2>
+                    </div>
+                </div>
+                <div style="text-align: end">
+                    <p>{{_ipoComBaseString}} {{currencyCode}}</p>
+                    <p>{{_ipoComString}} {{currencyCode}}</p>
+                    <h2>{{_totalValue}} {{currencyCode}}</h2>
+                </div>
+            </div>
+        </div>
+    </md-card-content>
+    <md-card-actions>
+        <button md-button (click)="close()">Cerrar</button>
+   </md-card-actions>
+</md-card>
