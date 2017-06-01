@@ -59,21 +59,22 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
    * ngOnInit Implementation. Calculated the total to payment
    */
   ngOnInit() {
+
+    this._restaurantsSub = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', Meteor.userId() ).subscribe();
+
     this._ordersSubscription = MeteorObservable.subscribe( 'getOrdersByAccount', Meteor.userId() ).subscribe( () => {
       MeteorObservable.autorun().subscribe(() => {
+        this._totalValue = 0;
         this._orders = Orders.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED' } ).zone();
         Orders.collection.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED' } ).fetch().forEach( ( order ) => {
           this._totalValue += order.totalPayment;
         });
-
-        this._restaurantsSub = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', Meteor.userId() ).subscribe( () => {
-          let _lRestaurant   = Restaurants.findOne( { _id: this.restId } );
-          if( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] > 0 ){
-              this._tipValue = _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ];
-              this._tipTotal = this._totalValue * ( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] / 100 );
-          }
-          this._totalToPayment   = this._totalValue + this._tipTotal;
-        });
+        let _lRestaurant   = Restaurants.findOne( { _id: this.restId } );
+        if( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] > 0 ){
+            this._tipValue = _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ];
+            this._tipTotal = this._totalValue * ( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] / 100 );
+        }
+        this._totalToPayment = this._totalValue + this._tipTotal;
       });
     });
 
@@ -81,37 +82,6 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
         let _lCurrency = Currencies.findOne( { _id: this.currId } );
         this._currencyCode = _lCurrency.code;
     });
-  }
-
-  ionViewWillEnter() {
-    this._ordersSubscription = MeteorObservable.subscribe( 'getOrdersByAccount', Meteor.userId() ).subscribe( () => {
-      MeteorObservable.autorun().subscribe(() => {
-        this._orders = Orders.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED' } ).zone();
-        Orders.collection.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED' } ).fetch().forEach( ( order ) => {
-          this._totalValue += order.totalPayment;
-        });
-
-        this._restaurantsSub = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', Meteor.userId() ).subscribe( () => {
-          let _lRestaurant   = Restaurants.findOne( { _id: this.restId } );
-          if( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] > 0 ){
-              this._tipValue = _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ];
-              this._tipTotal = this._totalValue * ( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] / 100 );
-          }
-          this._totalToPayment   = this._totalValue + this._tipTotal;
-        });
-      });
-    });
-
-    this._currencySub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', [ this.restId ] ).subscribe( () => {
-        let _lCurrency = Currencies.findOne( { _id: this.currId } );
-        this._currencyCode = _lCurrency.code;
-    });
-  }
-
-  ionViewWillLeave() {
-    this._ordersSubscription.unsubscribe();
-    this._currencySub.unsubscribe();
-    this._restaurantsSub.unsubscribe();
   }
 
   /**

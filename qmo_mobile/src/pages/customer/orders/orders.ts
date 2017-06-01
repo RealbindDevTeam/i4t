@@ -179,7 +179,7 @@ export class OrdersPage implements OnInit, OnDestroy {
             this._orderIndex = -1;
         } else if (orders_selected == 'other') {
             this._orderIndex = -1;
-            this._orders = Orders.find({ creation_user: { $nin: [this._currentUserId], status : { $in: this._statusArray } } });
+            this._orders = Orders.find({ creation_user: { $nin: [this._currentUserId] } });
         }
     }
 
