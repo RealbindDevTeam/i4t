@@ -34,3 +34,4 @@ btafel:accounts-facebook-cordova
 babel-compiler@6.19.1
 ecmascript@0.8.0
 localstorage@1.1.0
+dynamic-import
