@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Order, OrderItem } from 'qmo_web/both/models/restaurant/order.model';
-import { Item } from 'qmo_web/both/models/administration/item.model';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
 import { Items } from 'qmo_web/both/collections/administration/item.collection';

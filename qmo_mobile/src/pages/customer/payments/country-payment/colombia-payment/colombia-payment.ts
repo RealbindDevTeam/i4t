@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { TranslateService } from 'ng2-translate';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
@@ -7,6 +7,7 @@ import { Currencies } from 'qmo_web/both/collections/general/currency.collection
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { Restaurants } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { ColombiaPaymentDetailsPage } from "./colombia-payment-details/colombia-payment-details";
+import { ModalColombiaPayment } from "./modal-colombia-payment";
 
 /*
   Generated class for the Colombia Payments page.
@@ -37,9 +38,12 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
   private _currencyCode       : string;
   private _tipValue           : string;
 
+  private _paymentMethod      : string;
+
   constructor(public _navCtrl: NavController, 
               public _navParams: NavParams, 
-              public _translate: TranslateService) {
+              public _translate: TranslateService,
+              public _modalCtrl: ModalController) {
     this._userLang = navigator.language.split('-')[0];
     _translate.setDefaultLang('en');
     _translate.use(this._userLang);
@@ -76,6 +80,13 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
         this._currencyCode = _lCurrency.code;
     });
   }
+  
+  /**
+   * Allow navegate to ColombiaPaymentDetailsPage
+   */
+  goToPaymentDetails(){
+    this._navCtrl.push(ColombiaPaymentDetailsPage, { currency : this._currencyCode });
+  }
 
   /**
    * ngOnDestroy Implementation. Subscription unsubscribe
@@ -86,11 +97,9 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
     this._restaurantsSub.unsubscribe();
   }
 
-  /**
-   * Allow navegate to ColombiaPaymentDetailsPage
-   */
-  goToPaymentDetails(){
-    this._navCtrl.push(ColombiaPaymentDetailsPage, { currency : this._currencyCode });
+  presentModal(){
+    let modal;
+    modal = this._modalCtrl.create( ModalColombiaPayment, { obs: this._paymentMethod });
+    modal.present();
   }
-
 }

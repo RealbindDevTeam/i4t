@@ -191,7 +191,8 @@
             "SELECT_MAX_VALID": "You have selected more than ",
             "LOADING_MSG": "Adding to order ...",
             "TOAST_MSG": "Item was added successfully",
-            "WAIT_QR": "Please wait ..."
+            "WAIT_QR": "Please wait ...",
+            "TIME" : "Approximate Cooking Time:"
         },
         "ITEM_EDIT": {
             "MODIFY": "Modify",

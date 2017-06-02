@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      {{'MOBILE.SECTIONS.OBSERVATIONS' | translate}}
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="closeNormal()">
+        <span ion-text style="color: #FFF" showWhen="ios">{{'MOBILE.SECTIONS.MODAL_CANCEL' | translate}}</span>
+        <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <hr showWhen="android"/>
+  Hola
+</ion-content>

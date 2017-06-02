@@ -4,7 +4,6 @@ import { MeteorObservable } from 'meteor-rxjs'
 import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
-import { Restaurants } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 
 /*
   Generated class for the Payment-Details page.
@@ -23,19 +22,13 @@ export class ColombiaPaymentDetailsPage implements OnInit, OnDestroy {
     
     private _orders             : any;
     private _totalValue         : number = 0;
-    private _totalToPayment     : number = 0;
     private _ipoComBaseValue    : number = 0;
     private _ipoCom             : number = 108;
     private _ipoComValue        : number = 0;
-    private _tip                : number = 0;
-    private _tipTotal           : number;
-    private _restaurantId       : number;
     private _userLang           : string;
     private _ipoComBaseString   : string;
     private _ipoComString       : string;
-    private _tipTotalString     : string;
     private _currency           : string;
-    private _tipValue           : string;
 
     /**
      * ColombiaPaymentDetailsPage constructor

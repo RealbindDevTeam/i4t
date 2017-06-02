@@ -29,6 +29,7 @@ import { ItemCardComponent } from '../pages/customer/sections/item-card';
 import { OrderDetailComponent } from '../pages/customer/orders/order-detail';
 import { OrderItemDetailComponent } from '../pages/customer/orders/order-item-detail';
 import { ColombiaPaymentsPage } from '../pages/customer/payments/country-payment/colombia-payment/colombia-payment';
+import { ModalColombiaPayment } from '../pages/customer/payments/country-payment/colombia-payment/modal-colombia-payment';
 import { ColombiaPaymentDetailsPage } from '../pages/customer/payments/country-payment/colombia-payment/colombia-payment-details/colombia-payment-details';
 import { ColombiaPaymentItemDetailComponent } from '../pages/customer/payments/country-payment/colombia-payment/colombia-payment-details/colombia-payment-item-detail';
 
@@ -63,6 +64,7 @@ export function createTranslateLoader(http: Http) {
     OrderDetailComponent,
     OrderItemDetailComponent,
     ColombiaPaymentsPage,
+    ModalColombiaPayment,
     ColombiaPaymentDetailsPage,
     ColombiaPaymentItemDetailComponent
   ],
@@ -114,6 +116,7 @@ export function createTranslateLoader(http: Http) {
     OrderDetailComponent,
     OrderItemDetailComponent,
     ColombiaPaymentsPage,
+    ModalColombiaPayment,
     ColombiaPaymentDetailsPage,
     ColombiaPaymentItemDetailComponent
   ],
