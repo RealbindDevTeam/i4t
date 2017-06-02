@@ -27,7 +27,7 @@
                 </div>
                 <div>
                     <md-checkbox (change)="allowOtherTip($event)">Otro Valor:</md-checkbox> 
-                    <md-input-container style="margin-left: 2%;">
+                    <md-input-container class="otherTip">
                         <input mdInput type="number" min="0" [(disabled)]="_otherTipAllowed" [(ngModel)]="_otherTip" (input)="sumOtherTip($event.target.value)">
                     </md-input-container>                
                 </div>
