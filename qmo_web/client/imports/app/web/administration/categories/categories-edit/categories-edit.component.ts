@@ -77,7 +77,7 @@ export class CategoriesEditComponent implements OnInit, OnDestroy {
                     modification_date: new Date(),
                     name: this._editForm.value.editName,
                     is_active: this._editForm.value.editIsActive,
-                    structure: this._editForm.value.editStructure
+                    section: this._editForm.value.editSection
                 }
             });
         }

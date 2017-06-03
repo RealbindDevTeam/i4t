@@ -62,7 +62,7 @@ export class SectionComponent implements OnInit, OnDestroy {
 
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
             this._ngZone.run(() => {
-                this._restaurants = Restaurants.find( { } );
+                this._restaurants = Restaurants.find( { } ).zone();
                 this._restaurantList = Restaurants.collection.find({}).fetch();
                 for ( let res of this._restaurantList ) {
                     let control: FormControl = new FormControl( false );
