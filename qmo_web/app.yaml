@@ -5,5 +5,5 @@ automatic_scaling:
   max_num_instances: 1
 env_variables:
   MONGO_URL: 'mongodb://root:Leonardo2503@deviurest-shard-00-00-pgydc.mongodb.net:27017,deviurest-shard-00-01-pgydc.mongodb.net:27017,deviurest-shard-00-02-pgydc.mongodb.net:27017/meteor?ssl=true&replicaSet=deviurest-shard-0&authSource=admin'
-  ROOT_URL: 'https://devi4t.appspot.com.'
+  ROOT_URL: 'https://deviurest.appspot.com'
   METEOR_SETTINGS: '{}'
