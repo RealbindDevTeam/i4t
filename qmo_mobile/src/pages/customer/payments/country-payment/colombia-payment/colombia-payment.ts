@@ -5,9 +5,9 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
 import { Currencies } from 'qmo_web/both/collections/general/currency.collection';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
-import { Restaurants } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { ColombiaPaymentDetailsPage } from "./colombia-payment-details/colombia-payment-details";
 import { ModalColombiaPayment } from "./modal-colombia-payment";
+import { OrderPaymentTranslatePage } from "../order-payment-translate/order-payment-translate";
 
 /*
   Generated class for the Colombia Payments page.
@@ -36,9 +36,7 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
   private _totalToPayment     : number = 0;
   private _userLang           : string;
   private _currencyCode       : string;
-  private _tipValue           : string;
-
-  private _paymentMethod      : string;
+  private _paymentMethod      : string = "MOBILE.PAYMENTS.MODAL_TITLE";
 
   constructor(public _navCtrl: NavController, 
               public _navParams: NavParams, 
@@ -66,11 +64,29 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
         Orders.collection.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED' } ).fetch().forEach( ( order ) => {
           this._totalValue += order.totalPayment;
         });
-        let _lRestaurant   = Restaurants.findOne( { _id: this.restId } );
-        if( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] > 0 ){
-            this._tipValue = _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ];
-            this._tipTotal = this._totalValue * ( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] / 100 );
-        }
+        this._totalToPayment = this._totalValue + this._tipTotal;
+      });
+    });
+
+    this._currencySub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', [ this.restId ] ).subscribe( () => {
+        let _lCurrency = Currencies.findOne( { _id: this.currId } );
+        this._currencyCode = _lCurrency.code;
+    });
+  }
+
+  /**
+   * ionViewWillEnter Implementation. Calculated the total to payment
+   */
+  ionViewWillEnter() {
+    this._restaurantsSub = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', Meteor.userId() ).subscribe();
+
+    this._ordersSubscription = MeteorObservable.subscribe( 'getOrdersByAccount', Meteor.userId() ).subscribe( () => {
+      MeteorObservable.autorun().subscribe(() => {
+        this._totalValue = 0;
+        this._orders = Orders.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED' } ).zone();
+        Orders.collection.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED' } ).fetch().forEach( ( order ) => {
+          this._totalValue += order.totalPayment;
+        });
         this._totalToPayment = this._totalValue + this._tipTotal;
       });
     });
@@ -87,6 +103,43 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
   goToPaymentDetails(){
     this._navCtrl.push(ColombiaPaymentDetailsPage, { currency : this._currencyCode });
   }
+  
+  /**
+   * Allow navegate to OrderPaymentTranslatePage
+   */
+  goToAddOrders(){
+    this._navCtrl.push(OrderPaymentTranslatePage, { restaurant : this.restId, currency : this._currencyCode, table : this.tabId });
+  }
+
+  /**
+   * This function allow open the modal for payment method selection and the tip
+   */
+  presentModal(){
+    let modal;
+    modal = this._modalCtrl.create( ModalColombiaPayment, { restaurant : this.restId,
+                                                            value : this._totalValue,
+                                                            currency : this._currencyCode,
+                                                            payment_method : this._paymentMethod });
+    modal.onDidDismiss(data => {
+      if ((typeof data != "undefined" || data != null)) {
+        this._tipTotal = data.tip;
+        this._paymentMethod = data.payment;
+        console.log(data.tip);
+        console.log(data.payment);
+        this._totalToPayment = this._totalValue + this._tipTotal;
+      }
+    });
+    modal.present();
+  }
+
+  /**
+   * ionViewWillLeave Implementation. Subscription unsubscribe
+   */
+  ionViewWillLeave() {
+    this._ordersSubscription.unsubscribe();
+    this._currencySub.unsubscribe();
+    this._restaurantsSub.unsubscribe();
+  }
 
   /**
    * ngOnDestroy Implementation. Subscription unsubscribe
@@ -97,9 +150,4 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
     this._restaurantsSub.unsubscribe();
   }
 
-  presentModal(){
-    let modal;
-    modal = this._modalCtrl.create( ModalColombiaPayment, { obs: this._paymentMethod });
-    modal.present();
-  }
 }

@@ -1,4 +1,8 @@
 {
+    "PAYMENT_METHODS.CASH" : "Efectivo",
+    "PAYMENT_METHODS.CREDIT_CARD" : "Tarjeta de Crédito",
+    "PAYMENT_METHODS.DEBIT_CARD" : "Tarjeta debito",
+    "PAYMENT_METHODS.ONLINE" : "Pago en Línea",
     "ORDER_STATUS": {
         "REGISTERED": "Registrado",
         "IN_PROCESS": "En Proceso",
@@ -150,7 +154,15 @@
             "INC":"Inc",
             "TOTAL":"Total",
             "TIPS":"Propina sugerida",
-            "TOTAL_TO_PAY":"Total a pagar"
+            "TOTAL_TO_PAY":"Total a pagar",
+            "TIPS_OTHER_VALUE" : "Otro valor",
+            "MODAL_TITLE" : "Opciones de pago",
+            "TITLE_SERVICES_INCLUDE" : "¿Deseas incluir el servicio?",
+            "CONTENT_SERVICES_INCLUDE_INIT" : "Ten en cuenta que la propina sugerida por el restaurante equivale al",
+            "CONTENT_SERVICES_INCLUDE_END" : "del total de tu cuenta, pero tu puedes modificarla",
+            "TIP" : "Propina",
+            "TIP_OTHER_VALUE" : "Otro valor",
+            "SELECT_PAYMENT_METHOD" : "Seleccionar medio de pago"
         },
         "WAITER_CALL": {
             "TITTLE": "Solicitar mesero",

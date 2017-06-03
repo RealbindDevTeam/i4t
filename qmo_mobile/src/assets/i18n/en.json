@@ -1,4 +1,8 @@
 {
+    "PAYMENT_METHODS.CASH" : "Cash",
+    "PAYMENT_METHODS.CREDIT_CARD" : "Credit card",
+    "PAYMENT_METHODS.DEBIT_CARD" : "Debit card",
+    "PAYMENT_METHODS.ONLINE" : "Online",
     "ORDER_STATUS": {
         "REGISTERED": "Registered",
         "IN_PROCESS": "In Process",
@@ -150,7 +154,15 @@
             "INC":"Inc",
             "TOTAL":"Total",
             "TIPS":"Tip",
-            "TOTAL_TO_PAY":"Total to pay"
+            "TOTAL_TO_PAY":"Total to pay",
+            "TIPS_OTHER_VALUE" : "Other value",
+            "MODAL_TITLE" : "Payment options",
+            "TITLE_SERVICES_INCLUDE" : "¿Want you include the service?",
+            "CONTENT_SERVICES_INCLUDE_INIT" : "Keep in mind that the tip suggested of the restaurant is equivalent to",
+            "CONTENT_SERVICES_INCLUDE_END" : "of your total account, but you can modify it",
+            "TIP" : "Tip",
+            "TIP_OTHER_VALUE" : "Other value",
+            "SELECT_PAYMENT_METHOD" : "Select payment method"
         },
         "WAITER_CALL": {
             "TITTLE": "Call waiter",

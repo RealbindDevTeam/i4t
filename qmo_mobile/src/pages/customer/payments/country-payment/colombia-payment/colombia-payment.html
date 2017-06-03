@@ -9,62 +9,38 @@
 </div>
 
 <div>
-<div class="ion-content-custom">
-    <ion-list *ngIf="(_orders | async)?.length > 0">
-        <h3 style="padding-left: 16px">{{'MOBILE.PAYMENTS.BILL' | translate}}</h3>
-        <ion-item *ngFor="let order of _orders | async">
-            <ion-icon name='list' item-left></ion-icon>
-            {{'MOBILE.PAYMENTS.ORDER' | translate}} {{order.code}}
-            <ion-note item-right>
-                {{order.totalPayment}} {{_currencyCode}}
-            </ion-note>
-        </ion-item>
-    </ion-list>
-</div>
-
-<div class="ion-footer-custom" padding *ngIf="(_orders | async)?.length > 0" style="">
-    <div>
-        <button class="button-secundary" style="float:left; width: 45%" ion-button>{{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}</button>
-        <button class="button-secundary" style="float: right; width: 45%" (click)="goToPaymentDetails()" ion-button>{{'MOBILE.PAYMENTS.VIEW_DETAIL' | translate}}</button>
-    </div>
-    <!--div>
-        <ion-list style="margin-bottom: 0px">
-            <ion-item style="padding-left: 0px">
-                <ion-label>{{'MOBILE.PAYMENTS.PAYMENT_METHOD' | translate}}</ion-label>
-                <ion-select [(ngModel)]="_paymethod">
-                    <ion-option value="cash">Efectivo</ion-option>
-                    <ion-option value="dcard">Tarjeta Debito</ion-option>
-                    <ion-option value="ccard">Tarjeta Credito</ion-option>  
-                </ion-select>
-            </ion-item>
-            <ion-item style="padding-left: 0px">
-                <ion-label>{{ 'MOBILE.PAYMENTS.TIPS' | translate }} ({{_tipValue}}%)</ion-label>
-                <div item-right style="text-align: end;">
-                    <button ion-button>{{_tipTotal}} {{_currencyCode}}</button>
-                </div>
-                <div item-right style="text-align: end;">
-                    <button ion-button>otro</button>
-                </div>
+    <div class="ion-content-custom">
+        <ion-list *ngIf="(_orders | async)?.length > 0">
+            <h3 style="padding-left: 16px">{{'MOBILE.PAYMENTS.BILL' | translate}}</h3>
+            <ion-item *ngFor="let order of _orders | async">
+                <ion-icon name='list' item-left></ion-icon>
+                {{'MOBILE.PAYMENTS.ORDER' | translate}} {{order.code}}
+                <ion-note item-right>
+                    {{order.totalPayment}} {{_currencyCode}}
+                </ion-note>
             </ion-item>
         </ion-list>
-    </div-->
-    <!--button [disabled]="!_showActionsBtn" ion-button clear block icon-left class="button-secundary btn-size-custom" *ngIf="item.observations && item.isAvailable && (itemId.observations != '')"
-        (click)="presentModal(itemId.observations)" style="text-transform: inherit; margin-bottom: 15px">
-        <ion-icon name="chatboxes" *ngIf="_observations != null || (itemId.observations != '' && _auxCounter == 0)"></ion-icon>
-        {{_observations != null ? _observations.substring(0, 20)+ '...': (_auxCounter == 0 ? itemId.observations.substring(0, 20)+
-        '...' : 'MOBILE.SECTIONS.OBSERVATIONS' | translate)}}
-    </button-->
-    <button ion-button clear block icon-left class="button-secundary btn-size-custom" 
-        (click)="presentModal()" style="text-transform: inherit; margin-bottom: 15px">
-        <ion-icon name="card"></ion-icon>
-        prueba
-    </button>
-    <h3 style="display: inline-block;">{{'MOBILE.PAYMENTS.TOTAL_BILL' | translate}}</h3>
-    <h3 style="display: inline-block; position: absolute; right: 15px;">{{_totalToPayment}} {{_currencyCode}}</h3>    
-    <div>
-        <button ion-button block>{{'MOBILE.PAYMENTS.PAY_BTN' | translate}}</button>
     </div>
-    <div showWhen="ios" style="height: 42px">
+
+    <div class="ion-footer-custom" padding *ngIf="(_orders | async)?.length > 0">
+        <div>
+            <button class="button-secundary" style="float:left; width: 45%" ion-button (click)="goToAddOrders()">{{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}</button>
+            <button class="button-secundary" style="float: right; width: 45%" (click)="goToPaymentDetails()" ion-button>{{'MOBILE.PAYMENTS.VIEW_DETAIL' | translate}}</button>
+        </div>
+        <button ion-button clear block icon-left class="button-secundary btn-size-custom" 
+            (click)="presentModal()" style="text-transform: inherit; margin-bottom: 15px">
+            <ion-icon name="cash" *ngIf="_paymentMethod == 'PAYMENT_METHODS.CASH'"></ion-icon>
+            <ion-icon name="card" *ngIf="_paymentMethod == 'PAYMENT_METHODS.CREDIT_CARD' || _paymentMethod == 'PAYMENT_METHODS.DEBIT_CARD'"></ion-icon>
+            <ion-icon name="navigate" *ngIf="_paymentMethod == 'PAYMENT_METHODS.ONLINE'"></ion-icon>
+            <span>{{_paymentMethod | translate}}</span>
+            <span>&nbsp;-&nbsp;{{_tipTotal}} {{_currencyCode}}</span>
+        </button>
+        <h3 style="display: inline-block;">{{'MOBILE.PAYMENTS.TOTAL_BILL' | translate}}</h3>
+        <h3 style="display: inline-block; position: absolute; right: 15px;">{{_totalToPayment}} {{_currencyCode}}</h3>    
+        <div>
+            <button ion-button block>{{'MOBILE.PAYMENTS.PAY_BTN' | translate}}</button>
+        </div>
+        <div showWhen="ios" style="height: 42px">
+        </div>
     </div>
-</div>
 </div>
