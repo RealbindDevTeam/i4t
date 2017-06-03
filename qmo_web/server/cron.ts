@@ -7,13 +7,13 @@ export function createCrons() {
   activeCountries.forEach(country => {
 
     SyncedCron.add({
-      name: 'SCHEDULED.' + country.name,
+      name: 'SCHEDULE_TRIAL.' + country.name,
       schedule: function (parser) {
         // parser is a later.parse object
         return parser.cron(country.cronSchedule);
       },
       job: function () {
-        var numbersCrunched = showText(country);
+        var numbersCrunched = Meteor.call('validateTrialPeriod', country._id);
         return numbersCrunched;
       }
     });
@@ -22,6 +22,13 @@ export function createCrons() {
 
 export function showText(country) {
   console.log(country._id);
+
+  Email.send({
+    to: "clgrhc@gmail.com",
+    from: "leonardogonzalez@realbind.com",
+    subject: "Example Email",
+    text: "The contents of our email in plain text. "+country.name
+  });
 }
 
 SyncedCron.start();

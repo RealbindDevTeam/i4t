@@ -386,6 +386,9 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             orderNumberCount: 0,
             max_jobs: 5,
             queue: this._queues,
+            plan: this._restaurantForm.value.plans,
+            isActive: true,
+            tstPeriod: true
         });
 
         if (this._createImage) {

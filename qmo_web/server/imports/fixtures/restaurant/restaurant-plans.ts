@@ -4,9 +4,9 @@ import { RestaurantPlans } from '../../../../both/collections/restaurant/restaur
 export function loadRestaurantPlans() {
     if (RestaurantPlans.find().cursor.count() === 0) {
         const restaurantPlans: RestaurantPlan[] = [
-            { _id: '1', isActive: true, planCode: 'plan_one_iur', minTableNumber: 0, maxTableNumber: 20 },
-            { _id: '2', isActive: true, planCode: 'plan_two_iur', minTableNumber: 21, maxTableNumber: 50 },
-            { _id: '3', isActive: true, planCode: 'plan_three_iur', minTableNumber: 51}
+            { _id: '100', isActive: true, planCode: 'plan_one_iur', minTableNumber: 0, maxTableNumber: 20 },
+            { _id: '200', isActive: true, planCode: 'plan_two_iur', minTableNumber: 21, maxTableNumber: 50 },
+            { _id: '300', isActive: true, planCode: 'plan_three_iur', minTableNumber: 51}
         ];
 
         restaurantPlans.forEach((restaurantPlan: RestaurantPlan) => {

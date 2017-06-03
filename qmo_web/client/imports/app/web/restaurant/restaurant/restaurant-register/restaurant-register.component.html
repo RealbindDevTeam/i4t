@@ -113,7 +113,7 @@
                             <md-radio-group formControlName="plans" [(ngModel)]="align">
                                 <md-list>
                                     <md-list-item *ngFor="let plan of _restaurantPlans | async">
-                                        <md-radio-button class="example-margin" value="{{plan.planCode}}">{{plan.planCode}}</md-radio-button>
+                                        <md-radio-button class="example-margin" value="{{plan._id}}">{{plan.planCode}}</md-radio-button>
                                     </md-list-item>
                                 </md-list>
                             </md-radio-group>
