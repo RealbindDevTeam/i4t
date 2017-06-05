@@ -6,11 +6,11 @@ import { Subscription } from 'rxjs';
 import { Items } from 'qmo_web/both/collections/administration/item.collection';
 
 @Component({
-    selector: 'payment-item-detail',
-    templateUrl: 'payment-item-detail.html'
+    selector: 'colombia-payment-item-detail',
+    templateUrl: 'colombia-payment-item-detail.html'
 })
 
-export class PaymentItemDetailComponent implements OnInit, OnDestroy {
+export class ColombiaPaymentItemDetailComponent implements OnInit, OnDestroy {
     @Input()
     order: Order;
 
@@ -19,12 +19,15 @@ export class PaymentItemDetailComponent implements OnInit, OnDestroy {
 
     @Input()
     resCode: string;
+    
+    @Input()
+    currencyCode: string;
 
     private _items;
     private _itemsSub: Subscription;
 
     /**
-     * PaymentItemDetailsComponent constructor
+     * ColombiaPaymentItemDetailsComponent constructor
      */
     constructor() {
     }

@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content padding>
-    <div *ngIf="(_allOrders | async)?.length > 0">
+    <div *ngIf="(_orders | async)?.length > 0">
         <ion-item *ngFor="let _res of _restaurants | async">
             <ion-thumbnail item-left>
                 <img src="{{getRestaurantThumb(_res._id)}}">
@@ -34,7 +34,9 @@
                 <ion-card class="custom-padding-card">
                     <ion-list>
                         <button ion-item style="background-color: #679436;" (click)="showDetail(i)">
+                            <div *ngIf="order">
                             <order-detail [order]="order"></order-detail>
+                            </div>
                         </button>
                         <div *ngIf="_orderIndex == i">
                             <ion-row *ngIf="order?.status === 'ORDER_STATUS.REGISTERED' && order?.items?.length > 0" no-padding style="background-color: #679436">
@@ -45,8 +47,10 @@
                                     <button ion-button small clear block text-right class="button-secundary" (click)="confirmOrder(order)">{{'MOBILE.ORDERS.CONFIRM' | translate}}</button>
                                 </ion-col>
                             </ion-row>
-                            <div *ngFor="let itemId of order?.items">
+                            <div *ngIf="order">
+                            <div *ngFor="let itemId of order.items">
                                 <order-item-detail [order]="order" [orderItem]="itemId" [resCode]="_res_code" (gotoedititem)="goToItemEdit($event, order)"></order-item-detail>
+                            </div>
                             </div>
                         </div>
                     </ion-list>
@@ -61,8 +65,10 @@
                             <order-detail [order]="order"></order-detail>
                         </button>
                         <div *ngIf="_orderIndex == i">
-                            <div *ngFor="let itemId of order.items">
+                            <div *ngIf="order">
+                            <div *ngFor="let itemId of order?.items">
                                 <order-item-detail [order]="order" [orderItem]="itemId" [resCode]="_res_code" (gotoedititem)="goToItemEdit($event, order)"></order-item-detail>
+                            </div>
                             </div>
                         </div>
                     </ion-list>
@@ -70,13 +76,13 @@
             </div>
         </div>
     </div>
-    <div *ngIf="(_allOrders | async)?.length <= 0">
+    <div *ngIf="(_orders | async)?.length <= 0">
         <div class="img">
             <img src="assets/img/platos-orden.png">
         </div>
-        <div class="content">
-            <h1 style="text-align: center">{{'MOBILE.ORDERS.TITTLE_CONTENT' | translate}}</h1>
-            <p style="text-align: center">{{'MOBILE.ORDERS.CONTENT' | translate}}</p>
+        <div class="content" style="text-align: center">
+            <h1>{{'MOBILE.ORDERS.TITTLE_CONTENT' | translate}}</h1>
+            <p>{{'MOBILE.ORDERS.CONTENT' | translate}}</p>
         </div>
     </div>
     <div showWhen="ios" style="height: 40px">

@@ -103,6 +103,7 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
           waiter_id : "",
           status : "PREPARED",
           type : "SEND_ORDER",
+          order_id : _pOrder._id
         }
         
         this._loading = true;

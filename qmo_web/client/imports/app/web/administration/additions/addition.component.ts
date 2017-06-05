@@ -189,7 +189,6 @@ export class AdditionComponent implements OnInit, OnDestroy{
         this._currenciesFormGroup.reset();
         this._taxesFormGroup.reset();
         this._showTaxes = false;
-        this._restaurantTaxes = [];
     }
 
     /**
@@ -247,7 +246,7 @@ export class AdditionComponent implements OnInit, OnDestroy{
     ngOnDestroy(){
         this._additionsSub.unsubscribe();
         this._restaurantSub.unsubscribe();
-        this._currenciesSub.unsubscribe();
-        this._countriesSub.unsubscribe();
+        if( this._currenciesSub ) { this._currenciesSub.unsubscribe(); }
+        if( this._countriesSub ) { this._countriesSub.unsubscribe(); }
     }
 }

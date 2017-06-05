@@ -46,6 +46,23 @@ Meteor.publish('itemsByRestaurant', function (_restaurantId: string) {
 });
 
 /**
+ * Meteor publication return items with user condition
+ */
+Meteor.publish('itemsByUser', function (_userId: string) {
+    let _sections: string[] = [];
+    check(_userId, String);
+    let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
+    
+    if(_lUserDetail.current_restaurant){
+        Sections.collection.find({ restaurants: { $in: [_lUserDetail.current_restaurant] } }).fetch().forEach((s) => {
+            _sections.push(s._id);
+        });
+        return Items.collection.find({ sectionId: { $in: _sections }, is_active: true });
+    }
+    return;
+});
+
+/**
  * Meteor publication return item images with restaurant condition
  */
 Meteor.publish('itemImagesByRestaurant', function (_restaurantId: string) {
@@ -77,6 +94,27 @@ Meteor.publish('itemImageThumbsByRestaurant', function (_restaurantId: string) {
         _items.push( i._id );
     });
     return ItemImagesThumbs.collection.find( { itemId: { $in: _items } } );
+});
+
+/**
+ * Meteor publication return item thumbs images with user id condition
+ */
+Meteor.publish('itemImageThumbsByUserId', function (_userId: string) {
+    let _sections: string[] = [];
+    let _items: string [] = [];
+    check(_userId, String);
+
+    let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
+    if(_lUserDetail.current_restaurant){
+        Sections.collection.find( { restaurants: { $in: [_lUserDetail.current_restaurant] } } ).fetch().forEach((s) => {
+            _sections.push( s._id );
+        });
+        Items.collection.find( { sectionId: { $in: _sections }, is_active: true } ).fetch().forEach((i) => {
+            _items.push( i._id );
+        });
+        return ItemImagesThumbs.collection.find( { itemId: { $in: _items } } );
+    }
+    return;
 });
 
 /**
