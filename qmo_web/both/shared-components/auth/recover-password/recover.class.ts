@@ -24,6 +24,7 @@ export class RecoverClass {
 
     recover() {
         if (this.recoverForm.valid) {
+            console.log('RECUPERAR CONTRASEÑA');
             this.zone.run(() => {
                 Accounts.forgotPassword({
                     email: this.recoverForm.value.email

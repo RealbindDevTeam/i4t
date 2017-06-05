@@ -15,4 +15,5 @@ export interface Country {
     itemsWithDifferentTax: boolean;
     queue: string[];
     financialInformation: RestaurantFinancialElement[];
+    cronSchedule: string;
 }
