@@ -1,7 +1,9 @@
+import { CollectionObject } from '../collection-object.model';
+
 /**
  * EmailContent Model
  */
-export interface EmailContent {
+export interface EmailContent extends CollectionObject{
     language: string;
     lang_dictionary: LangDictionary[];
 }

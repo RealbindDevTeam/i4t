@@ -20,15 +20,4 @@ export function createCrons() {
   });
 }
 
-export function showText(country) {
-  console.log(country._id);
-
-  Email.send({
-    to: "clgrhc@gmail.com",
-    from: "leonardogonzalez@realbind.com",
-    subject: "Example Email",
-    text: "The contents of our email in plain text. "+country.name
-  });
-}
-
 SyncedCron.start();

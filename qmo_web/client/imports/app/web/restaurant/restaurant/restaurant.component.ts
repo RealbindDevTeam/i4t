@@ -43,9 +43,6 @@ export class RestaurantComponent implements OnInit, OnDestroy {
 
     public _dialogRef: MdDialogRef<any>;
 
-    private sysDate: Date;
-    private restaurantArray: Restaurant;
-
     /**
      * RestaurantComponent Constructor
      * @param {Router} router 
@@ -57,11 +54,6 @@ export class RestaurantComponent implements OnInit, OnDestroy {
         var userLang = navigator.language.split('-')[0];
         translate.setDefaultLang('en');
         translate.use(userLang);
-
-        this.sysDate = new Date();
-        console.log('**********');
-        console.log(this.sysDate);
-
     }
 
     /**
@@ -70,17 +62,7 @@ export class RestaurantComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this._empty = false;
         this.restaurants = Restaurants.find({}).zone();
-        this.restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe(() => {
-            this.restaurantArray = Restaurants.collection.find({}).fetch()[0];
-            console.log('/////////');
-            console.log(this.restaurantArray.creation_date);
-
-            var diff = Math.round((this.sysDate.valueOf()-this.restaurantArray.creation_date.valueOf())/(1000 * 60 * 60 * 24));
-
-            console.log('$$');
-            console.log(diff);
-
-        });
+        this.restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe();
         this.countriesSub = MeteorObservable.subscribe('countries').subscribe();
         this.citiesSub = MeteorObservable.subscribe('cities').subscribe();
         this._hoursSub = MeteorObservable.subscribe('hours').subscribe(() => {
@@ -88,8 +70,6 @@ export class RestaurantComponent implements OnInit, OnDestroy {
         });
         this._restaurantImagesSub = MeteorObservable.subscribe('restaurantImages', this._user).subscribe();
         this._restaurantImages = RestaurantImages.find({}).zone();
-
-
     }
 
     /**

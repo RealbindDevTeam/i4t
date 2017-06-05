@@ -36,3 +36,4 @@ ecmascript@0.8.0
 localstorage@1.1.0
 percolate:synced-cron
 dynamic-import
+meteorhacks:ssr

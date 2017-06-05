@@ -8,8 +8,8 @@ import { Restaurant } from '../../models/restaurant/restaurant.model';
 import { Users } from '../../collections/auth/user.collection';
 import { User } from '../../models/auth/user.model';
 import { Parameters } from '../../collections/general/parameter.collection';
-
-
+import { Parameter } from '../../models/general/parameter.model';
+import { SSR } from 'meteor/meteorhacks:ssr';
 
 if (Meteor.isServer) {
     Meteor.methods({
@@ -17,70 +17,34 @@ if (Meteor.isServer) {
          * This function validate if restaurant trial period has ended
          */
         validateTrialPeriod: function (_countryId: string) {
-            console.log('### _countryId: ' + _countryId);
 
             var currentDate: Date = new Date();
             var currentString: string = Meteor.call('convertDate', currentDate);
-            console.log('### currentDate: ' + currentString);
-
             var trialDays: number = Number.parseInt(Parameters.collection.findOne({ name: 'trial_days' }).value);
-            console.log('### trialDays: ' + trialDays);
-
             var firstAdviceDays: number = Number.parseInt(Parameters.collection.findOne({ name: 'first_advice_days' }).value);
-            console.log('### warningDays: ' + firstAdviceDays);
-
             var secondAdviceDays: number = Number.parseInt(Parameters.collection.findOne({ name: 'second_advice_days' }).value);
-            console.log('### warningDays: ' + secondAdviceDays);
-
             var thirdAdviceDays: number = Number.parseInt(Parameters.collection.findOne({ name: 'third_advice_days' }).value);
-            console.log('### warningDays: ' + thirdAdviceDays);
 
             Restaurants.collection.find({ countryId: _countryId, isActive: true, tstPeriod: true }).forEach((restaurant: Restaurant) => {
-
-                console.log('-----------------------------------------------');
-                console.log('*********' + restaurant.name);
-                console.log('****** restaurant.creation_date: ' + restaurant.creation_date);
                 let diff = Math.round((currentDate.valueOf() - restaurant.creation_date.valueOf()) / (1000 * 60 * 60 * 24));
-                console.log('****** diff: ' + diff);
-
                 let forwardDate: Date = Meteor.call('addDays', restaurant.creation_date, trialDays);
-                console.log('****** forwardDate: ' + forwardDate);
                 let forwardString: string = Meteor.call('convertDate', forwardDate);
-                console.log('****** forwardString: ' + forwardString);
-
                 let firstAdviceDate: Date = Meteor.call('substractDays', forwardDate, firstAdviceDays);
-                console.log('****** firstAdviceDate: ' + firstAdviceDate);
                 let firstAdviceString: string = Meteor.call('convertDate', firstAdviceDate);
-                console.log('****** firstAdviceString: ' + firstAdviceString);
-
                 let secondAdviceDate: Date = Meteor.call('substractDays', forwardDate, secondAdviceDays);
-                console.log('****** secondAdviceDate: ' + secondAdviceDate);
                 let secondAdviceString: string = Meteor.call('convertDate', secondAdviceDate);
-                console.log('****** secondAdviceString: ' + secondAdviceString);
-
-
                 let thirdAdviceDate: Date = Meteor.call('substractDays', forwardDate, thirdAdviceDays);
-                console.log('****** thirdAdviceDate: ' + thirdAdviceDate);
                 let thirdAdviceString: string = Meteor.call('convertDate', thirdAdviceDate);
-                console.log('****** thirdAdviceString: ' + thirdAdviceString);
-
+                
                 if (diff > trialDays) {
                     Restaurants.collection.update({ _id: restaurant._id }, { $set: { isActive: false } })
                 } else {
-                    if(currentString == firstAdviceString || currentString == secondAdviceString || currentString == thirdAdviceString){
-                        Meteor.call('sendEmail', restaurant.creation_user);
+                    if (currentString == firstAdviceString || currentString == secondAdviceString || currentString == thirdAdviceString) {
+                        Meteor.call('sendTrialEmail', restaurant.creation_user, forwardString);
                     }
                 }
             });
 
-            /*
-                        Email.send({
-                            to: "clgrhc@gmail.com",
-                            from: "leonardogonzalez@realbind.com",
-                            subject: "Example Email",
-                            text: "Correo enviado desde tarea programada en meteor method " + _countryId
-                        });
-            */
             return "emailSend";
         },
         /**
@@ -109,9 +73,34 @@ if (Meteor.isServer) {
             result.setDate(result.getDate() - _days);
             return result;
         },
-        sendEmail: function (_userId: string){
-            let user: User = Users.collection.findOne({_id: _userId})
-            console.log('SE ENVÍA CORREO A '+ user.emails[0].address);
+        /**
+         * This function send de email to the account admin registered if trial period is going to end
+         */
+        sendTrialEmail: function (_userId: string, _forwardDate: string) {
+            let user: User = Users.collection.findOne({ _id: _userId });
+            let parameter: Parameter = Parameters.collection.findOne({_id: '500'});
+            let emailContent: EmailContent = EmailContents.collection.findOne({ language: user.profile.language_code });
+            var trial_email_subject: string = emailContent.lang_dictionary[0].traduction;
+            var greeting: string = (user.profile && user.profile.first_name) ? (emailContent.lang_dictionary[1].traduction +' '+user.profile.first_name + ",") : emailContent.lang_dictionary[1].traduction;
+            
+            SSR.compileTemplate('htmlEmail', Assets.getText('html-email.html'));
+
+            var emailData =  {
+                greeting: greeting,
+                reminderMsgVar: emailContent.lang_dictionary[7].traduction,
+                dateVar: _forwardDate,
+                instructionMsgVar: emailContent.lang_dictionary[8].traduction,
+                regardVar: emailContent.lang_dictionary[5].traduction,
+                followMsgVar: emailContent.lang_dictionary[6].traduction
+            }
+
+             Email.send({
+                            to: user.emails[0].address,
+                            from: parameter.value,
+                            subject: trial_email_subject,
+                            html: SSR.render('htmlEmail', emailData),      
+                        });
+
         }
     });
 }
