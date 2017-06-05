@@ -33,6 +33,8 @@ import { ModalColombiaPayment } from '../pages/customer/payments/country-payment
 import { ColombiaPaymentDetailsPage } from '../pages/customer/payments/country-payment/colombia-payment/colombia-payment-details/colombia-payment-details';
 import { ColombiaPaymentItemDetailComponent } from '../pages/customer/payments/country-payment/colombia-payment/colombia-payment-details/colombia-payment-item-detail';
 import { OrderPaymentTranslatePage } from '../pages/customer/payments/country-payment/order-payment-translate/order-payment-translate';
+import { AddOrderPaymentPage } from '../pages/customer/payments/country-payment/order-payment-translate/add-order-payment/add-order-payment';
+import { OrderPaymentDetailComponent } from '../pages/customer/payments/country-payment/order-payment-translate/order-payment-detail';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateStaticLoader(http, 'assets/i18n', '.json');
@@ -68,7 +70,9 @@ export function createTranslateLoader(http: Http) {
     ModalColombiaPayment,
     ColombiaPaymentDetailsPage,
     ColombiaPaymentItemDetailComponent,
-    OrderPaymentTranslatePage
+    OrderPaymentTranslatePage,
+    AddOrderPaymentPage,
+    OrderPaymentDetailComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -121,7 +125,9 @@ export function createTranslateLoader(http: Http) {
     ModalColombiaPayment,
     ColombiaPaymentDetailsPage,
     ColombiaPaymentItemDetailComponent,
-    OrderPaymentTranslatePage
+    OrderPaymentTranslatePage,
+    AddOrderPaymentPage,
+    OrderPaymentDetailComponent
   ],
   providers: [
     {

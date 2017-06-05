@@ -8,7 +8,8 @@
         "IN_PROCESS": "En Proceso",
         "PREPARED": "Preparado",
         "CANCELED": "Cancelado",
-        "DELIVERED": "Entregado"
+        "DELIVERED": "Entregado",
+        "PENDING_CONFIRM" : "Confirmación pendiente para pago"
     },
     "MOBILE": {
         "CANCEL": "Cancelar",
@@ -162,7 +163,14 @@
             "CONTENT_SERVICES_INCLUDE_END" : "del total de tu cuenta, pero tu puedes modificarla",
             "TIP" : "Propina",
             "TIP_OTHER_VALUE" : "Otro valor",
-            "SELECT_PAYMENT_METHOD" : "Seleccionar medio de pago"
+            "SELECT_PAYMENT_METHOD" : "Seleccionar medio de pago",
+            "ADD_ORDER_PAYMENT" : "Agregar orden a la cuenta",
+            "BTN_PAY" : "Pagar",
+            "CONFIRM_TO_ADD_ACCOUNT" : "¿Deseas realizar el pago de la orden",
+            "CONFIRM_OWNER_ORDER" : "El propietario de la orden debe confirmar la solicitud del pago",
+            "CONFIRM_ORDER_STATUS" : "La orden no ha sido entregada",
+            "CONFIRM_PAY_OTHER_USER" : "¿Deseas transferir el pago de la orden",
+            "SUCCESSFUL_PAY_OTHER_USER" : "Se ha transferido el pago de la orden"
         },
         "WAITER_CALL": {
             "TITTLE": "Solicitar mesero",

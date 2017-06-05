@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+            {{'MOBILE.PAYMENTS.ADD_ORDER_PAYMENT' | translate}}
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <hr showWhen="android"/>
+    <div *ngFor="let order of _ordersTable | async; let i = index">
+        <div *ngIf="order.creation_user != _currentUserId">
+            <ion-card class="custom-padding-card">
+                <ion-list>
+                    <button ion-item style="background-color: #114B5F" (click)="showDetail(i)">
+                        <order-detail [order]="order"></order-detail>
+                    </button>
+                    <div *ngIf="_orderIndex == i">
+                        <ion-row *ngIf="order?.status === 'ORDER_STATUS.DELIVERED' && order?.items?.length > 0" no-padding style="background-color: #114B5F">
+                            <ion-col>
+                                <button ion-button small clear block text-left class="button-secundary" (click)="showDetail(i)">{{'MOBILE.CLOSE' | translate}}</button>
+                            </ion-col>
+                            <ion-col>
+                                <button ion-button small clear block text-left class="button-secundary" (click)="showConfirm(order)">{{'MOBILE.PAYMENTS.BTN_PAY' | translate}}</button>
+                            </ion-col>
+                        </ion-row>
+                        <div *ngIf="order">
+                            <div *ngFor="let itemId of order?.items">
+                                <order-item-detail [order]="order" [orderItem]="itemId" [resCode]="_res_code" (gotoedititem)="goToItemEdit($event, order)"></order-item-detail>
+                            </div>
+                        </div>
+                    </div>
+                </ion-list>
+            </ion-card>
+        </div>
+    </div>
+</ion-content>
