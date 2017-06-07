@@ -243,7 +243,11 @@
         "ENTER_TIP_PERCENTAGE": "Enter the percentage of the suggested tip (0% - 100%). You can enter the value or use the Slider",
         "NUMBER_TABLE_LABEL": "# Tables",
         "NUMBER_TABLE_LABEL_INFO": "Select the number of restaurant tables",
-        "NUMBER_TABLE_LABEL_INFO_TEXT": "You have a 15 days test period, after that, you can choose your plan according to the selected number of tables"
+        "NUMBER_TABLE_LABEL_INFO_TEXT_1": "You have a " ,
+        "NUMBER_TABLE_LABEL_INFO_TEXT_2": " days test period, after that, you can choose your plan according to the selected number of tables",
+        "TO": "to ",
+        "TABLES": "tables",
+        "MORE": "more"
     },
     "WEEK": {
         "MONDAY": "Monday",
@@ -679,7 +683,7 @@
         }
     },
     "ORDERS": {
-        "MSG_INITIAL": "Ingresa el código que se encuentra en la mesa",
+        "MSG_INITIAL": "Enter the code on the table",
         "CANCEL": "Cancel",
         "ENTER": "Enter Code",
         "CODE_NOT_FOUND": "Code Not Found",

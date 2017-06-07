@@ -243,7 +243,11 @@
         "ENTER_TIP_PERCENTAGE": "Ingresa el porcentaje de la propina sugerida ( 0% - 100%). Puedes ingresar el valor o utilizar el Slider",
         "NUMBER_TABLE_LABEL": "# Mesas",
         "NUMBER_TABLE_LABEL_INFO": "Selecciona el número de mesas del restaurante",
-        "NUMBER_TABLE_LABEL_INFO_TEXT": "Tienes un período de prueba de 15 días, después de eso, puedes elegir un plan de acuerdo con el número seleccionado de mesas"
+        "NUMBER_TABLE_LABEL_INFO_TEXT_1": "Tienes un período de prueba de ",
+        "NUMBER_TABLE_LABEL_INFO_TEXT_2": " días, después de eso, puedes elegir un plan de acuerdo con el número seleccionado de mesas",
+        "TO": "a ",
+        "TABLES": "mesas",
+        "MORE": "más"
     },
     "WEEK": {
         "MONDAY": "Lunes",

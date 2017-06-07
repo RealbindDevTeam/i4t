@@ -27,6 +27,8 @@ import { FinancialSlider } from '../../../../../../../both/shared-components/res
 import { PayuPaymenteService } from './payment-plan/payu-payment.service';
 import { RestaurantPlan } from '../../../../../../../both/models/restaurant/restaurant-plan.model';
 import { RestaurantPlans } from '../../../../../../../both/collections/restaurant/restaurant-plan.collection';
+import { Parameter } from '../../../../../../../both/models/general/parameter.model';
+import { Parameters } from '../../../../../../../both/collections/general/parameter.collection';
 
 import template from './restaurant-register.component.html';
 import style from './restaurant-register.component.scss';
@@ -58,8 +60,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
 
     private _paymentMethods: PaymentMethod[];
     private _paymentMethodsList: PaymentMethod[];
-    //private _restaurantPlans: RestaurantPlan[];
-    //private _restaurantPlansList: RestaurantPlan[];
 
     private _filesToUpload: Array<File>;
     private _restaurantImageToInsert: File;
@@ -110,8 +110,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._paymentMethodsList = [];
         this._filesToUpload = [];
         this._createImage = false;
-        //this._restaurantPlans = [];
-        //this._restaurantPlansList = [];
 
         this.align = "";
 
@@ -186,23 +184,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._restaurantImagesSub = MeteorObservable.subscribe('restaurantImages', Meteor.userId()).subscribe();
         this._currencySub = MeteorObservable.subscribe('currencies').subscribe();
         
-
-/*
-        this._restaurantPlanSub = MeteorObservable.subscribe('getPlans').subscribe(() => {
-            this._ngZone.run(() => {
-                this._restaurantPlans = RestaurantPlans.collection.find({}).fetch();
-                console.log('***');
-                console.log(this._restaurantPlans);
-                for (let plan of this._restaurantPlans) {
-                    console.log('///');
-                    console.log(plan);
-                    this._restaurantPlansList.push(plan);
-                    let control: FormControl = new FormControl(false);
-                    this._plansFormGroup.addControl(plan.planCode, control);
-                }
-            });
-        });
-*/
         this._restaurantPlanSub = MeteorObservable.subscribe('getPlans').subscribe();
         this._restaurantPlans = RestaurantPlans.find({});
 
@@ -297,7 +278,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                     });
                     return _lElementsValidated;
                 } else {
-                    return true;
+                    return false;
                 }
             default:
                 return true;
