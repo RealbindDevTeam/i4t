@@ -9,6 +9,8 @@ import { Currency } from '../../../../../../../../both/models/general/currency.m
 import { Currencies } from '../../../../../../../../both/collections/general/currency.collection';
 import { Restaurant } from '../../../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../../../both/collections/restaurant/restaurant.collection';
+import { PaymentMethod } from '../../../../../../../../both/models/general/paymentMethod.model';
+import { PaymentMethods } from '../../../../../../../../both/collections/general/paymentMethod.collection';
 import { ColombiaPaymentDetailComponent } from './colombia-payment-detail/colombia-payment-detail.component';
 
 import template from './colombia-payment.component.html';
@@ -32,8 +34,10 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     private _ordersSubscription : Subscription;
     private _currencySub        : Subscription;
     private _restaurantsSub     : Subscription;
+    private _paymentMethodsSub  : Subscription;
     
     private _orders             : Observable<Order[]>;
+    private _paymentMethods     : Observable<PaymentMethod[]>;
 
     private _tipTotal           : number = 0;
     private _ipoCom             : number = 108;
@@ -47,7 +51,9 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     private _tipTotalString     : string;
     private _currencyCode       : string;
     private _tipValue           : string;
+
     private _otherTipAllowed    : boolean = true;
+    private _paymentMethodId    : string;
 
     /**
      * ColombiaPaymentComponent Constructor
@@ -75,6 +81,11 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
             this._ngZone.run( () => {
                 let _lCurrency: Currency = Currencies.findOne( { _id: this.currId } );
                 this._currencyCode = _lCurrency.code;
+            });
+        });
+        this._paymentMethodsSub = MeteorObservable.subscribe( 'paymentMethods' ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._paymentMethods = PaymentMethods.find( { } ).zone();
             });
         });
     }
@@ -194,11 +205,20 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Set Payment Method Id
+     * @param {string} _pPaymentMethod
+     */
+    setPaymentMethod( _pPaymentMethod:string ):void{
+        this._paymentMethodId = _pPaymentMethod;
+    }
+
+    /**
      * ngOnDestroy Implementation
      */
     ngOnDestroy(){
         this._ordersSubscription.unsubscribe();
         this._currencySub.unsubscribe();
         this._restaurantsSub.unsubscribe();
+        this._paymentMethodsSub.unsubscribe();
     }
 }

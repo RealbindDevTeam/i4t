@@ -14,7 +14,7 @@ import { Currencies } from '../../../../../../../both/collections/general/curren
 import { PaymentMethod } from '../../../../../../../both/models/general/paymentMethod.model';
 import { PaymentMethods } from '../../../../../../../both/collections/general/paymentMethod.collection';
 import { Countries } from '../../../../../../../both/collections/settings/country.collection';
-import { Country } from '../../../../../../../both/models/settings/country.model'; 
+import { Country } from '../../../../../../../both/models/settings/country.model';
 import { City } from '../../../../../../../both/models/settings/city.model';
 import { Cities } from '../../../../../../../both/collections/settings/city.collection';
 import { uploadRestaurantImage, createRestaurantCode } from '../../../../../../../both/methods/restaurant/restaurant.methods';
@@ -24,6 +24,9 @@ import { FinancialDropDown } from '../../../../../../../both/shared-components/r
 import { FinancialTextBox } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-textbox';
 import { FinancialText } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-text';
 import { FinancialSlider } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-slider';
+import { PayuPaymenteService } from './payment-plan/payu-payment.service';
+import { RestaurantPlan } from '../../../../../../../both/models/restaurant/restaurant-plan.model';
+import { RestaurantPlans } from '../../../../../../../both/collections/restaurant/restaurant-plan.collection';
 
 import template from './restaurant-register.component.html';
 import style from './restaurant-register.component.scss';
@@ -37,6 +40,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
 
     private _restaurantForm: FormGroup;
     private _paymentsFormGroup: FormGroup = new FormGroup({});
+    private _plansFormGroup: FormGroup = new FormGroup({});
 
     private _restaurantSub: Subscription;
     private _hoursSub: Subscription;
@@ -45,21 +49,25 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _citiesSub: Subscription;
     private _paymentMethodsSub: Subscription;
     private _restaurantImagesSub: Subscription;
+    private _restaurantPlanSub: Subscription;
 
     private _hours: Observable<Hour[]>;
     private _countries: Observable<Country[]>;
     private _cities: Observable<City[]>;
+    private _restaurantPlans: Observable<RestaurantPlan[]>;
+    private _paymentMethods: Observable<PaymentMethod[]>;
 
-    private _paymentMethods: PaymentMethod[];
     private _paymentMethodsList: PaymentMethod[];
-    
+    //private _restaurantPlans: RestaurantPlan[];
+    //private _restaurantPlansList: RestaurantPlan[];
+
     private _filesToUpload: Array<File>;
     private _restaurantImageToInsert: File;
     private _createImage: boolean;
     private _nameImageFile: string;
     public _selectedIndex: number = 0;
 
-    private _queues : string[] = [];
+    private _queues: string[] = [];
     private _selectedCountryValue: string;
     private _selectedCityValue: string;
     private _restaurantCurrency: string = '';
@@ -72,6 +80,17 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _restaurantFinancialInformation: Object = {};
     private _financialInformation: RestaurantFinancialElement[] = [];
 
+    private postsArray: any[];
+    private planObj: any;
+    private post: any;
+
+    align: string;
+
+    public genders = [
+        { value: 'F', display: 'Female' },
+        { value: 'M', display: 'Male' }
+    ];
+
     /**
      * RestaurantRegisterComponent constructor
      * @param {FormBuilder} _formBuilder
@@ -79,63 +98,103 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * @param {NgZone} _ngZone
      * @param {Router} _router
      */
-    constructor( private _formBuilder: FormBuilder, private _translate: TranslateService, private _ngZone: NgZone, private _router: Router ){
-        var _userLang = navigator.language.split( '-' )[0];
-        _translate.setDefaultLang( 'en' );
-        _translate.use( _userLang );
+    constructor(private _formBuilder: FormBuilder, private _translate: TranslateService, private _ngZone: NgZone, private _router: Router,
+        private payuPayment: PayuPaymenteService) {
+        var _userLang = navigator.language.split('-')[0];
+        _translate.setDefaultLang('en');
+        _translate.use(_userLang);
         this._selectedCountryValue = "";
         this._selectedCityValue = "";
         this._nameImageFile = "";
-        this._paymentMethods = [];
         this._paymentMethodsList = [];
         this._filesToUpload = [];
         this._createImage = false;
+        //this._restaurantPlans = [];
+        //this._restaurantPlansList = [];
+
+        this.align = "";
+
+
+        this.payuPayment.getPosts().subscribe(
+            posts => {
+                this.post = posts;
+                console.log('>>>>>');
+                console.log(this.post);
+            },
+            error => {
+                console.log(error);
+            }
+        );
+
+        this.payuPayment.getPlans().subscribe(
+            plans => {
+                this.planObj = plans;
+                console.log('>>>>>');
+                console.log(this.planObj);
+            },
+            error => {
+                console.log(error);
+            }
+        );
     }
 
     /**
      * Implements ngOnInit implementation
      */
-    ngOnInit() {                    
+    ngOnInit() {
         this._restaurantForm = new FormGroup({
-            country: new FormControl( '', [ Validators.required ] ),
-            city: new FormControl( '', [ Validators.required ] ),
-            name: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 70 ) ] ),
-            address: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 90 ) ] ),
-            phone: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 30 ) ] ),
-            webPage: new FormControl( '', [ Validators.minLength( 1 ), Validators.maxLength( 40 ) ] ),
-            email: new FormControl( '', [ Validators.minLength( 1 ), Validators.maxLength( 40 ) ] ),
-            image: new FormControl( '' ),
+            country: new FormControl('', [Validators.required]),
+            city: new FormControl('', [Validators.required]),
+            name: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(70)]),
+            address: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(90)]),
+            phone: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]),
+            webPage: new FormControl('', [Validators.minLength(1), Validators.maxLength(40)]),
+            email: new FormControl('', [Validators.minLength(1), Validators.maxLength(40)]),
+            image: new FormControl(''),
             paymentMethods: this._paymentsFormGroup,
+            //restaurantPlans: this._plansFormGroup
+            plans: new FormControl('', [Validators.required])
         });
 
-        this._hoursSub = MeteorObservable.subscribe( 'hours' ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._hours = Hours.find( {}, { sort: { hour: 1 } } );
+        this._hoursSub = MeteorObservable.subscribe('hours').subscribe(() => {
+            this._ngZone.run(() => {
+                this._hours = Hours.find({}, { sort: { hour: 1 } });
             });
         });
 
-        this._paymentMethodsSub = MeteorObservable.subscribe( 'paymentMethods' ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._paymentMethods = PaymentMethods.collection.find( { } ).fetch();
-                for( let pay of this._paymentMethods ){
-                    let paymentTranslated:PaymentMethod = {
-                        _id: pay._id,
-                        isActive: pay.isActive,
-                        name: this.itemNameTraduction( pay.name )
-                    };
-                    this._paymentMethodsList.push( paymentTranslated );
-                    let control: FormControl = new FormControl( false );
-                    this._paymentsFormGroup.addControl( paymentTranslated.name, control );
+        this._paymentMethodsSub = MeteorObservable.subscribe('paymentMethods').subscribe(() => {
+            this._ngZone.run(() => {
+                this._paymentMethods = PaymentMethods.find( { } ).zone();
+                this._paymentMethods.subscribe( () => { this.createPaymentMethods() });
+            });
+        });
+
+        this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
+        this._countries = Countries.find({}).zone();
+        this._countriesSub = MeteorObservable.subscribe('countries').subscribe();
+        this._citiesSub = MeteorObservable.subscribe('cities').subscribe();
+        this._restaurantImagesSub = MeteorObservable.subscribe('restaurantImages', Meteor.userId()).subscribe();
+        this._currencySub = MeteorObservable.subscribe('currencies').subscribe();
+        
+
+/*
+        this._restaurantPlanSub = MeteorObservable.subscribe('getPlans').subscribe(() => {
+            this._ngZone.run(() => {
+                this._restaurantPlans = RestaurantPlans.collection.find({}).fetch();
+                console.log('***');
+                console.log(this._restaurantPlans);
+                for (let plan of this._restaurantPlans) {
+                    console.log('///');
+                    console.log(plan);
+                    this._restaurantPlansList.push(plan);
+                    let control: FormControl = new FormControl(false);
+                    this._plansFormGroup.addControl(plan.planCode, control);
                 }
             });
         });
-
-        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', Meteor.userId() ).subscribe();     
-        this._countries = Countries.find( { } ).zone();
-        this._countriesSub = MeteorObservable.subscribe( 'countries' ).subscribe();
-        this._citiesSub = MeteorObservable.subscribe( 'cities' ).subscribe();
-        this._restaurantImagesSub = MeteorObservable.subscribe( 'restaurantImages', Meteor.userId() ).subscribe();
-        this._currencySub = MeteorObservable.subscribe( 'currencies' ).subscribe();
+*/
+        this._restaurantPlanSub = MeteorObservable.subscribe('getPlans').subscribe();
+        this._restaurantPlans = RestaurantPlans.find({});
 
         this._schedule = {
             monday: {
@@ -187,7 +246,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * This function set selectedIndex
      * @param {number} _selectedIndex
      */
-    set selectedIndex( _selectedIndex: number ) {
+    set selectedIndex(_selectedIndex: number) {
         this._selectedIndex = _selectedIndex;
     }
 
@@ -202,36 +261,36 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * This function allow move in wizard tabs
      * @param {number} _index
      */
-    canMove( _index: number ): boolean {
-        switch ( _index ) {
-        case 0:
-            return true;
-        case 1:
-            if( this._restaurantForm.controls['country'].valid && this._restaurantForm.controls['city'].valid
-                && this._restaurantForm.controls['name'].valid && this._restaurantForm.controls['address'].valid
-                && this._restaurantForm.controls['phone'].valid ){
+    canMove(_index: number): boolean {
+        switch (_index) {
+            case 0:
                 return true;
-            } else {
-                return false;
-            }
-        case 2:
-            let _lElementsValidated: boolean = true;
-            if( this._showFinancialElements ){
-                this._financialInformation.forEach( ( element ) => {
-                    if( element.required !== undefined && element.required === true ){
-                        let _lObjects: string[] = [];
-                        _lObjects = Object.keys( this._restaurantFinancialInformation );
-                        if( _lObjects.filter( e => e === element.key ).length === 0 ){
-                            _lElementsValidated = false;
+            case 1:
+                if (this._restaurantForm.controls['country'].valid && this._restaurantForm.controls['city'].valid
+                    && this._restaurantForm.controls['name'].valid && this._restaurantForm.controls['address'].valid
+                    && this._restaurantForm.controls['phone'].valid) {
+                    return true;
+                } else {
+                    return false;
+                }
+            case 2:
+                let _lElementsValidated: boolean = true;
+                if (this._showFinancialElements) {
+                    this._financialInformation.forEach((element) => {
+                        if (element.required !== undefined && element.required === true) {
+                            let _lObjects: string[] = [];
+                            _lObjects = Object.keys(this._restaurantFinancialInformation);
+                            if (_lObjects.filter(e => e === element.key).length === 0) {
+                                _lElementsValidated = false;
+                            }
                         }
-                    }
-                });
-                return _lElementsValidated;
-            } else {
+                    });
+                    return _lElementsValidated;
+                } else {
+                    return true;
+                }
+            default:
                 return true;
-            }
-        default:
-            return true;
         }
     }
 
@@ -239,8 +298,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * This function move to the next tab
      */
     next(): void {
-        if( this.canMove( this.selectedIndex + 1 ) ) {
-            this.selectedIndex ++;
+        if (this.canMove(this.selectedIndex + 1)) {
+            this.selectedIndex++;
         }
     }
 
@@ -248,46 +307,66 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * This function move to the previous tab
      */
     previous(): void {
-        if( this.selectedIndex === 0 ) {
+        if (this.selectedIndex === 0) {
             return;
         }
-        if( this.canMove( this.selectedIndex - 1 ) ) {
-            this.selectedIndex --;
+        if (this.canMove(this.selectedIndex - 1)) {
+            this.selectedIndex--;
         }
     }
 
     /**
      * Function to cancel add Restaurant 
      */
-    cancel():void{
-        if( this._selectedCountryValue !== "" ){ this._selectedCountryValue = ""; }
-        if( this._selectedCityValue !== "" ){ this._selectedCityValue = ""; }    
+    cancel(): void {
+        if (this._selectedCountryValue !== "") { this._selectedCountryValue = ""; }
+        if (this._selectedCityValue !== "") { this._selectedCityValue = ""; }
         this._restaurantForm.controls['paymentMethods'].reset();
         this._restaurantForm.controls['name'].reset();
         this._restaurantForm.controls['address'].reset();
         this._restaurantForm.controls['phone'].reset();
         this._restaurantForm.controls['webPage'].reset();
-        this._restaurantForm.controls['email'].reset();    
+        this._restaurantForm.controls['email'].reset();
         this._restaurantFinancialInformation = {};
-        this._router.navigate( [ 'app/restaurant' ] );
+        this._router.navigate(['app/restaurant']);
+    }
+
+    /**
+     * Create Payment Methods
+     */
+    createPaymentMethods():void{
+        PaymentMethods.collection.find({}).fetch().forEach( ( pay ) => {
+            let paymentTranslated: PaymentMethod = {
+                _id: pay._id,
+                isActive: pay.isActive,
+                name: this.itemNameTraduction(pay.name)
+            };
+            if( this._paymentMethodsList.filter( p => p._id === paymentTranslated._id ).length > 0 ){
+                this._paymentsFormGroup.controls[ paymentTranslated.name ].setValue( false );
+            } else {
+                this._paymentMethodsList.push(paymentTranslated);
+                let control: FormControl = new FormControl(false);
+                this._paymentsFormGroup.addControl(paymentTranslated.name, control);
+            }
+        });
     }
 
     /**
      * Function to add Restaurant
      */
-    addRestaurant(): void{
-        if(!Meteor.userId()){
+    addRestaurant(): void {
+        if (!Meteor.userId()) {
             alert('Please log in to add a restaurant');
             return;
         }
 
-        let arrPay:any[] = Object.keys( this._restaurantForm.value.paymentMethods );
+        let arrPay: any[] = Object.keys(this._restaurantForm.value.paymentMethods);
         let _lPaymentMethodsToInsert: string[] = [];
 
-        arrPay.forEach( ( pay ) => {
-            if( this._restaurantForm.value.paymentMethods[ pay ] ){
-                let _lPayment:PaymentMethod = this._paymentMethodsList.filter( p => p.name === pay )[0];
-                _lPaymentMethodsToInsert.push( _lPayment._id );
+        arrPay.forEach((pay) => {
+            if (this._restaurantForm.value.paymentMethods[pay]) {
+                let _lPayment: PaymentMethod = this._paymentMethodsList.filter(p => p.name === pay)[0];
+                _lPaymentMethodsToInsert.push(_lPayment._id);
             }
         });
 
@@ -309,25 +388,28 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             financialInformation: this._restaurantFinancialInformation,
             paymentMethods: _lPaymentMethodsToInsert,
             location: {
-                    lat: 0,
-                    lng: 0
+                lat: 0,
+                lng: 0
             },
-            schedule: this._schedule,            
+            schedule: this._schedule,
             tables_quantity: 0,
             orderNumberCount: 0,
             max_jobs: 5,
-            queue : this._queues,
+            queue: this._queues,
+            plan: this._restaurantForm.value.plans,
+            isActive: true,
+            tstPeriod: true
         });
 
-        if( this._createImage ){
-            uploadRestaurantImage( this._restaurantImageToInsert, 
-                                   Meteor.userId(), 
-                                   _lNewRestaurant ).then( ( result ) => {
+        if (this._createImage) {
+            uploadRestaurantImage(this._restaurantImageToInsert,
+                Meteor.userId(),
+                _lNewRestaurant).then((result) => {
 
-            }).catch( ( error ) => {
-                alert('Upload image error. Only accept .png, .jpg, .jpeg files.');
-            });                   
-        }         
+                }).catch((error) => {
+                    alert('Upload image error. Only accept .png, .jpg, .jpeg files.');
+                });
+        }
         this.cancel();
     }
 
@@ -335,10 +417,10 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * Function to translate information
      * @param {string} _itemName
      */
-    itemNameTraduction( _itemName: string ): string{
+    itemNameTraduction(_itemName: string): string {
         var _wordTraduced: string;
-        this._translate.get( _itemName ).subscribe( ( res: string ) => {
-            _wordTraduced = res; 
+        this._translate.get(_itemName).subscribe((res: string) => {
+            _wordTraduced = res;
         });
         return _wordTraduced;
     }
@@ -347,20 +429,20 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * Function to change country
      * @param {string} _country
      */
-    changeCountry( _country ){
+    changeCountry(_country) {
         this._selectedCountryValue = _country;
-        this._restaurantForm.controls['country'].setValue( _country );
-        
+        this._restaurantForm.controls['country'].setValue(_country);
+
         let _lCountry: Country;
-        Countries.find( { _id: _country } ).fetch().forEach( (c) => {
+        Countries.find({ _id: _country }).fetch().forEach((c) => {
             _lCountry = c;
         });
         let _lCurrency: Currency;
-        Currencies.find( { _id: _lCountry.currencyId } ).fetch().forEach( (cu) => {
+        Currencies.find({ _id: _lCountry.currencyId }).fetch().forEach((cu) => {
             _lCurrency = cu;
-        });    
+        });
         this._restaurantCurrencyId = _lCurrency._id;
-        this._restaurantCurrency = _lCurrency.code + ' - ' + this.itemNameTraduction( _lCurrency.name );
+        this._restaurantCurrency = _lCurrency.code + ' - ' + this.itemNameTraduction(_lCurrency.name);
         this._countryIndicative = _lCountry.indicative;
         this._queues = _lCountry.queue;
 
@@ -368,24 +450,24 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._financialElements = [];
         this._restaurantFinancialInformation = {};
         this._financialInformation = _lCountry.financialInformation;
-        this.createFinancialForm( this._financialInformation );
-        this._cities = Cities.find( { country: _country } ).zone();
+        this.createFinancialForm(this._financialInformation);
+        this._cities = Cities.find({ country: _country }).zone();
     }
 
     /**
      * Function to change city
      * @param {string} _city
      */
-    changeCity( _city ){
+    changeCity(_city) {
         this._selectedCityValue = _city;
-        this._restaurantForm.controls['city'].setValue( _city );
+        this._restaurantForm.controls['city'].setValue(_city);
     }
 
     /**
      * Function to receive schedule from schedule component
      * @param {any} _event 
      */
-    receiveSchedule( _event:any ):void{
+    receiveSchedule(_event: any): void {
         this._schedule = _event;
     }
 
@@ -393,9 +475,9 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * When user change Image, this function allow insert in the store
      * @param {any} _fileInput
      */
-    onChangeImage( _fileInput:any ):void{
+    onChangeImage(_fileInput: any): void {
         this._createImage = true;
-        this._filesToUpload = <Array<File>> _fileInput.target.files;
+        this._filesToUpload = <Array<File>>_fileInput.target.files;
         this._restaurantImageToInsert = this._filesToUpload[0];
         this._nameImageFile = this._restaurantImageToInsert.name;
     }
@@ -403,12 +485,12 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     /**
      * Function to generate Restaurant code
      */
-    generateRestaurantCode():string{
-        let _lCode:string = '';
+    generateRestaurantCode(): string {
+        let _lCode: string = '';
 
-        while( true ){
+        while (true) {
             _lCode = createRestaurantCode();
-            if ( Restaurants.find( {restaurant_code: _lCode} ).cursor.count() === 0 ){
+            if (Restaurants.find({ restaurant_code: _lCode }).cursor.count() === 0) {
                 break;
             }
         }
@@ -419,50 +501,50 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * Create Financial form from restaurant template
      * @param {RestaurantFinancialElement[]} _pFinancialInformation 
      */
-    createFinancialForm( _pFinancialInformation: RestaurantFinancialElement[] ):void{
-        if( _pFinancialInformation.length > 0 ){
-            _pFinancialInformation.forEach( ( element ) => {
-                if( element.controlType === 'textbox' ){
-                    this._financialElements.push( new FinancialTextBox( {
-                                                                            key: element.key,
-                                                                            label: element.label,
-                                                                            value: element.value,
-                                                                            required: element.required,
-                                                                            order: element.order
-                                                                        }
-                                                                    ) 
-                                                );
-                } else if( element.controlType === 'checkbox' ){
-                    this._financialElements.push( new FinancialCheckBox( {
-                                                                            key: element.key,
-                                                                            label: element.label,
-                                                                            value: element.value,
-                                                                            required: element.required,
-                                                                            order: element.order
-                                                                        } 
-                                                                    )
-                                                );
-                } else if( element.controlType === 'text' ){
-                    this._financialElements.push( new FinancialText( { 
-                                                                        key: element.key, 
-                                                                        label: element.label, 
-                                                                        order: element.order 
-                                                                     } 
-                                                                   )
-                                                );
-                } else if ( element.controlType === 'slider' ){
-                    this._financialElements.push( new FinancialSlider( {
-                                                                          key: element.key,
-                                                                          label: element.label,
-                                                                          order: element.order,
-                                                                          value: element.value,
-                                                                          minValue: element.minValue,
-                                                                          maxValue: element.maxValue,
-                                                                          stepValue: element.stepValue
-                    } ) );
+    createFinancialForm(_pFinancialInformation: RestaurantFinancialElement[]): void {
+        if (_pFinancialInformation.length > 0) {
+            _pFinancialInformation.forEach((element) => {
+                if (element.controlType === 'textbox') {
+                    this._financialElements.push(new FinancialTextBox({
+                        key: element.key,
+                        label: element.label,
+                        value: element.value,
+                        required: element.required,
+                        order: element.order
+                    }
+                    )
+                    );
+                } else if (element.controlType === 'checkbox') {
+                    this._financialElements.push(new FinancialCheckBox({
+                        key: element.key,
+                        label: element.label,
+                        value: element.value,
+                        required: element.required,
+                        order: element.order
+                    }
+                    )
+                    );
+                } else if (element.controlType === 'text') {
+                    this._financialElements.push(new FinancialText({
+                        key: element.key,
+                        label: element.label,
+                        order: element.order
+                    }
+                    )
+                    );
+                } else if (element.controlType === 'slider') {
+                    this._financialElements.push(new FinancialSlider({
+                        key: element.key,
+                        label: element.label,
+                        order: element.order,
+                        value: element.value,
+                        minValue: element.minValue,
+                        maxValue: element.maxValue,
+                        stepValue: element.stepValue
+                    }));
                 }
             });
-            this._financialElements.sort( ( a, b ) => a.order - b.order );
+            this._financialElements.sort((a, b) => a.order - b.order);
             this._showFinancialElements = true;
         }
     }
@@ -471,7 +553,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * Set Restaurant Financial Information
      * @param {Object} _event 
      */
-    setRestaurantFinancialInfo( _event: Object ):void{
+    setRestaurantFinancialInfo(_event: Object): void {
         this._restaurantFinancialInformation = _event;
     }
 

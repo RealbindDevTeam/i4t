@@ -19,15 +19,15 @@
                     </div>
                 </div>        
                 <div>
-                    <div style="display: inline-block;width: 50%;">
+                    <div class="tipValue">
                         <p>Propina:</p>
                         <md-checkbox (change)="allowTip($event)">{{'PAYMENTS.TIPS' | translate}} ({{_tipValue}}%)</md-checkbox> 
                     </div>
-                    <p style="font-size: 1.17em;font-weight: bold;color: black;display: inline-block;width: 49%;text-align: right;">{{_tipTotalString}} {{_currencyCode}}</p>
+                    <p class="tipTotal">{{_tipTotalString}} {{_currencyCode}}</p>
                 </div>
                 <div>
                     <md-checkbox (change)="allowOtherTip($event)">Otro Valor:</md-checkbox> 
-                    <md-input-container style="margin-left: 2%;">
+                    <md-input-container class="otherTip">
                         <input mdInput type="number" min="0" [(disabled)]="_otherTipAllowed" [(ngModel)]="_otherTip" (input)="sumOtherTip($event.target.value)">
                     </md-input-container>                
                 </div>
@@ -46,6 +46,9 @@
                         </div>
                     </div>
                 </div>
+                <md-select style="margin-top: 4%;" placeholder="Seleccione Medio de Pago">
+                    <md-option *ngFor="let paymentMethod of _paymentMethods | async" (click)="setPaymentMethod(paymentMethod._id);" value="{{paymentMethod._id}}">{{paymentMethod.name | translate}}</md-option>
+                </md-select>
             </md-card-content>
         </md-card>
         <order-payment-translate [resId]="restId" [currId]="currId" [tabId]="tabId" (recalculate)="reCalculateValues($event)"></order-payment-translate>

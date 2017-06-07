@@ -29,6 +29,9 @@ import './imports/publications/auth/user-details';
 import './imports/publications/restaurant/account';
 import './imports/publications/restaurant/order';
 import './imports/publications/restaurant/waiter-call';
+import './imports/publications/restaurant/restaurant-plan';
+import './imports/publications/general/email-content';
+import './imports/publications/general/parameter';
 
 import { loadRoles } from './imports/fixtures/auth/roles';
 import { loadMenus } from './imports/fixtures/auth/menus';
@@ -38,6 +41,10 @@ import { loadPaymentMethods } from './imports/fixtures/general/paymentMethods';
 import { loadCountries } from './imports/fixtures/settings/countries';
 import { loadCities } from './imports/fixtures/settings/cities';
 import { loadLanguages } from './imports/fixtures/settings/languages';
+import { loadRestaurantPlans } from './imports/fixtures/restaurant/restaurant-plans';
+import { loadEmailContents } from './imports/fixtures/general/email-contents';
+import { createCrons } from './cron';
+import { loadParameters } from './imports/fixtures/general/parameters';
 
 import { createdbindexes } from './imports/indexes/indexdb';
 
@@ -51,4 +58,8 @@ Meteor.startup(() => {
     loadCities();
     loadLanguages();
     createdbindexes();
+    loadRestaurantPlans();
+    createCrons();
+    loadEmailContents();
+    loadParameters();
 });
