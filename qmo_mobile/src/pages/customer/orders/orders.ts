@@ -4,7 +4,7 @@ import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
-import { Items, ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
+import { Items } from 'qmo_web/both/collections/administration/item.collection';
 import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantImageThumbs } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
@@ -23,7 +23,6 @@ export class OrdersPage implements OnInit, OnDestroy {
     private _userDetail;
     private _userDetailSub: Subscription;
     private _orders;
-    private _allOrders;
     private _ordersSub: Subscription;
     private _restaurants;
     private _restaurantSub: Subscription;
@@ -34,9 +33,8 @@ export class OrdersPage implements OnInit, OnDestroy {
     private _statusArray: string[];
     private _currentUserId: string;
     private _orderIndex: number = -1;
-    private selected: string = "me";
+    private selected: string = "";
 
-    //private _restaurantThumbs;
     private _restaurantThumbSub: Subscription;
 
     alert_not: string;
@@ -48,6 +46,7 @@ export class OrdersPage implements OnInit, OnDestroy {
         _translate.use(this._userLang);
         this._currentUserId = Meteor.userId();
         this._statusArray = ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED'];
+        this.selected = "me";
     }
 
     ngOnInit() {
@@ -65,49 +64,19 @@ export class OrdersPage implements OnInit, OnDestroy {
         });
 
         this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByUserId', Meteor.userId()).subscribe();
-
-        /*this._storage.ready().then(() => {
-            this._storage.get('trobj').then((val_obj) => {
-                if (val_obj != null) {
-                    this._table_code = val_obj.evalc_tb;
-                    this._res_code = val_obj.edoc_rs;
-
-                    if ((this._table_code == null) && (this._res_code == null)) {
-                        this._table_code = "";
-                        this._res_code = "";
-                    } else {*/
-                        /*this._ordersSub = MeteorObservable.subscribe('getOrdersByTableId', this._res_code, this._table_code, this._statusArray).subscribe(() => {
-                            this._orders = Orders.find({ creation_user: this._currentUserId, status: { $in: this._statusArray } });
-                            this._allOrders = Orders.find({});
-                        });*/
-                        /*this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this._res_code).subscribe(() => {
-                            this._items = Items.find({});
-                        });*/
-                        //this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByRestaurantId', this._res_code).subscribe();
-                    /*}
-                }
-            });
-        });*/
-
-        //this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByRestaurant', this._res_code).subscribe(() => {
-        //    this._imageThumbs = ItemImagesThumbs.find({});
-        //});
     }
 
     goToNewOrder() {
         this._userDetail = UserDetails.collection.findOne({ user_id: Meteor.userId() });
 
         if (this._userDetail.current_table == "") {
-            //this._app.getRootNav().push(CodeTypeSelectPage);
             this._navCtrl.push(CodeTypeSelectPage);
         } else {
             MeteorObservable.call('getCurrentRestaurantByUser', this._userDetail.current_restaurant).subscribe((restaurant: Restaurant) => {
                 if (restaurant == null) {
-                    //this._app.getRootNav().push(CodeTypeSelectPage);
                     this._navCtrl.push(CodeTypeSelectPage);
 
                 } else {
-                    //this._app.getRootNav().push(SectionsPage, { res_id: restaurant._id, table_id: this._userDetail.current_table });
                     this._navCtrl.push(SectionsPage, { res_id: restaurant._id, table_id: this._userDetail.current_table });
                 }
             }, (error) => {
@@ -141,33 +110,7 @@ export class OrdersPage implements OnInit, OnDestroy {
             this._items = Items.find({});
         });
 
-        this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByRestaurantId', Meteor.userId()).subscribe();
-
-        /*this.selected = "me";
-        this._storage.ready().then(() => {
-            this._storage.get('trobj').then((val_obj) => {
-                if (val_obj != null) {
-                    this._table_code = val_obj.evalc_tb
-                    this._res_code = val_obj.edoc_rs
-
-                    if ((this._table_code == null) && (this._res_code == null)) {
-                        this._table_code = "";
-                        this._res_code = "";
-                    } else {*/
-                        /*
-                        this._ordersSub = MeteorObservable.subscribe('getOrdersByTableId', this._res_code, this._table_code, this._statusArray).subscribe(() => {
-                            this._orders = Orders.find({ creation_user: this._currentUserId, status: { $in: this._statusArray } });
-                            this._allOrders = Orders.find({});
-                        });
-
-                        this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this._res_code).subscribe(() => {
-                            this._items = Items.find({});
-                        });
-                        this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByRestaurantId', this._res_code).subscribe();*/
-                    /*}
-                }
-            });
-        });*/
+        this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByUserId', Meteor.userId()).subscribe();
     }
 
     filterOrders(orders_selected) {
@@ -310,13 +253,11 @@ export class OrdersPage implements OnInit, OnDestroy {
     }
 
     ionViewWillLeave() {
-        //if ((this._table_code != "") && (this._res_code != "")) {
-            this._restaurantSub.unsubscribe();
-            this._ordersSub.unsubscribe();
-            this._itemsSub.unsubscribe();
-            this._restaurantThumbSub.unsubscribe();
-            this._userDetailSub.unsubscribe();
-        //}
+        this._restaurantSub.unsubscribe();
+        this._ordersSub.unsubscribe();
+        this._itemsSub.unsubscribe();
+        this._restaurantThumbSub.unsubscribe();
+        this._userDetailSub.unsubscribe();
     }
 
     ionViewWillUnload() {

@@ -7,11 +7,11 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
     <ion-item-group *ngFor="let order of _orders | async">
         <ion-item-divider color="light">
-            <h1>{{ 'MOBILE.PAYMENTS.PAY_ORDER' | translate }} # {{order.code}}</h1>
-            <h1 item-right> {{order.totalPayment}} {{_currency}}</h1>
+            <h2>{{ 'MOBILE.PAYMENTS.PAY_ORDER' | translate }} # {{order.code}}</h2>
+            <h2 item-right> {{order.totalPayment}} {{_currency}}</h2>
         </ion-item-divider>
         <div *ngFor="let itemId of order.items">
             <colombia-payment-item-detail [order]="order" [orderItem]="itemId" [resCode]="order.restaurantId" [currencyCode]="_currency"></colombia-payment-item-detail>
@@ -23,21 +23,11 @@
     <ion-item>
         <h2>{{ 'MOBILE.PAYMENTS.SUBTOTAL' | translate }}</h2>
         <h2>{{ 'MOBILE.PAYMENTS.INC' | translate }} (8%):</h2>
-        <!--h2>{{ 'MOBILE.PAYMENTS.TOTAL' | translate }}</h2-->
         <div item-right style="text-align: end;">
             <p>{{_ipoComBaseString}} {{_currency}}</p>
             <p>{{_ipoComString}} {{_currency}}</p>
-            <!--h2>{{_totalValue}} {{_currency}}</h2-->
         </div>
     </ion-item>
-    <!--ion-item>
-        <h2>{{ 'MOBILE.PAYMENTS.TIPS' | translate }} ({{_tip}}%)</h2>
-        <div item-right style="text-align: end;">
-            <p>{{_tipTotalString}} {{_currency}}</p>
-        </div>
-    </ion-item-->
-    <!--h1 style="display: inline-block;">{{ 'MOBILE.PAYMENTS.TOTAL_TO_PAY' | translate }}</h1>
-    <h1 style="display: inline-block; position: absolute; right: 15px;">{{_totalToPayment}} {{_currency}}</h1-->
     <h1 style="display: inline-block;">{{ 'MOBILE.PAYMENTS.TOTAL' | translate }}</h1>
     <h1 style="display: inline-block; position: absolute; right: 15px;">{{_totalValue}} {{_currency}}</h1>
 </ion-footer>

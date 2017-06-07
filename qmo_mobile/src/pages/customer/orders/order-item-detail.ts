@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { Order, OrderItem } from 'qmo_web/both/models/restaurant/order.model';
 import { ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
-import { Item } from 'qmo_web/both/models/administration/item.model';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
 import { Items } from 'qmo_web/both/collections/administration/item.collection';
@@ -24,7 +23,6 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
     @Output('gotoedititem')
     itemIdOut: EventEmitter<any> = new EventEmitter<any>();
 
-    private _imageThumbs;
     private _imageThumbSub: Subscription;
     private _items;
     private _itemsSub: Subscription;
