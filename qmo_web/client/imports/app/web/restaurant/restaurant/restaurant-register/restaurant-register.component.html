@@ -78,9 +78,14 @@
                             <div>
                                 <p>{{'RESTAURANT_REGISTER.ADD_PAYMENTMETHODS_RESTURANT' | translate}}</p>
                                 <div formGroupName="paymentMethods">
-                                    <md-checkbox *ngFor="let payment of _paymentMethodsList" [formControlName]="payment.name" [class.invalid]="!_restaurantForm.controls.paymentMethods.valid"
-                                        style="padding-right: 15px">{{payment.name}}</md-checkbox>
-                                    <label></label>
+                                    <span *ngFor="let pay of _paymentMethods | async">
+                                        <span *ngFor="let payment of _paymentMethodsList">
+                                            <template [ngIf]="pay._id === payment._id">
+                                                <md-checkbox [formControlName]="payment.name" [class.invalid]="!_restaurantForm.controls.paymentMethods.valid" style="padding-right: 15px">{{payment.name}}</md-checkbox>
+                                                <label></label>
+                                            </template>
+                                        </span>
+                                    </span>
                                 </div>
                             </div>
                         </md-card-content>
@@ -101,7 +106,7 @@
                         </md-card-content>
                         <md-card-actions align="end">
                             <button md-raised-button (click)="previous()" [disabled]="!canMove(1)">{{'BACK' | translate}}</button>
-                            <button md-raised-button [disabled]="!canFinish()" (click)="addRestaurant()">{{'FINISH' | translate}}</button>
+                            <button md-raised-button (click)="next()" [disabled]="!canMove(2)">{{'NEXT' | translate}}</button>
                         </md-card-actions>
                     </md-card>
                 </md-tab>

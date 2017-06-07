@@ -23,7 +23,7 @@ export class IurestSliderComponent {
      * @param {any} _event 
      */
     onPercentageChange( _event:any ):void{
-        this.percentageValue = _event;
+        this.percentageValue = Number( Number( _event ).toFixed( 2 ) );
         this.sliderValue.emit( ( this.label + ':' + this.percentageValue ) );
     }
 }

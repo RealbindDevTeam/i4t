@@ -55,8 +55,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _countries: Observable<Country[]>;
     private _cities: Observable<City[]>;
     private _restaurantPlans: Observable<RestaurantPlan[]>;
+    private _paymentMethods: Observable<PaymentMethod[]>;
 
-    private _paymentMethods: PaymentMethod[];
     private _paymentMethodsList: PaymentMethod[];
     //private _restaurantPlans: RestaurantPlan[];
     //private _restaurantPlansList: RestaurantPlan[];
@@ -106,7 +106,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._selectedCountryValue = "";
         this._selectedCityValue = "";
         this._nameImageFile = "";
-        this._paymentMethods = [];
         this._paymentMethodsList = [];
         this._filesToUpload = [];
         this._createImage = false;
@@ -165,17 +164,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
 
         this._paymentMethodsSub = MeteorObservable.subscribe('paymentMethods').subscribe(() => {
             this._ngZone.run(() => {
-                this._paymentMethods = PaymentMethods.collection.find({}).fetch();
-                for (let pay of this._paymentMethods) {
-                    let paymentTranslated: PaymentMethod = {
-                        _id: pay._id,
-                        isActive: pay.isActive,
-                        name: this.itemNameTraduction(pay.name)
-                    };
-                    this._paymentMethodsList.push(paymentTranslated);
-                    let control: FormControl = new FormControl(false);
-                    this._paymentsFormGroup.addControl(paymentTranslated.name, control);
-                }
+                this._paymentMethods = PaymentMethods.find( { } ).zone();
+                this._paymentMethods.subscribe( () => { this.createPaymentMethods() });
             });
         });
 
@@ -339,6 +329,26 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._restaurantForm.controls['email'].reset();
         this._restaurantFinancialInformation = {};
         this._router.navigate(['app/restaurant']);
+    }
+
+    /**
+     * Create Payment Methods
+     */
+    createPaymentMethods():void{
+        PaymentMethods.collection.find({}).fetch().forEach( ( pay ) => {
+            let paymentTranslated: PaymentMethod = {
+                _id: pay._id,
+                isActive: pay.isActive,
+                name: this.itemNameTraduction(pay.name)
+            };
+            if( this._paymentMethodsList.filter( p => p._id === paymentTranslated._id ).length > 0 ){
+                this._paymentsFormGroup.controls[ paymentTranslated.name ].setValue( false );
+            } else {
+                this._paymentMethodsList.push(paymentTranslated);
+                let control: FormControl = new FormControl(false);
+                this._paymentsFormGroup.addControl(paymentTranslated.name, control);
+            }
+        });
     }
 
     /**
