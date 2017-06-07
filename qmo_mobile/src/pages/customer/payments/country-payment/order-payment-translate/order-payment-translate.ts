@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs'
-import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { AddOrderPaymentPage } from "./add-order-payment/add-order-payment";

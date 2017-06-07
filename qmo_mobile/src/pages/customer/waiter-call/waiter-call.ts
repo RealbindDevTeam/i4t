@@ -95,7 +95,6 @@ export class WaiterCallPage implements OnInit, OnDestroy {
       });
       loading.present();
       setTimeout(() => {
-        //MeteorObservable.call('waiterCall', false, data).subscribe(() => {
         MeteorObservable.call('findQueueByRestaurant', data).subscribe(() => {
           loading.dismiss();
         });

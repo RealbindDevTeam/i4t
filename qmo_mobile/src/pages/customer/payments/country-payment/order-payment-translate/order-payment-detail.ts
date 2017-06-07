@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { AlertController, LoadingController, NavParams, ToastController } from 'ionic-angular';
+import { AlertController, LoadingController, ToastController } from 'ionic-angular';
 import { TranslateService } from 'ng2-translate';
 import { Order } from 'qmo_web/both/models/restaurant/order.model';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';

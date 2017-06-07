@@ -10,6 +10,22 @@ Meteor.publish('countWaiterCallDetailByUsrId', function ( _userId : string ) {
 });
 
 /**
+ * Meteor publication waiter call details, for to payment.
+ * @param { string } _restaurantId
+ * @param { string } _tableId
+ * @param { string } _type
+ * @param { string[] } _status
+ */
+Meteor.publish('WaiterCallDetailForPayment', function ( _restaurantId : string, 
+                                                        _tableId      : string,
+                                                        _type         : string ) {
+  return WaiterCallDetails.collection.find({ restaurant_id : _restaurantId, 
+                                             table_id : _tableId, 
+                                             type : _type,
+                                             status : { $in : ['waiting', 'completed'] }});
+});
+
+/**
  * Meteor publication waiter call details. userId (Waiter id)
  * @param { string } _waiterId
  */
