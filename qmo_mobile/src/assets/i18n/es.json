@@ -31,6 +31,7 @@
         "MODIFY": "Modificar",
         "CHOOSE_FILE": "Seleccionar archivo",
         "CLOSE" : "Cerrar",
+        "VIEW" : "Ver",
         "INITIAL": {
             "SIGNUP": "Registrarse",
             "SIGNIN": "Iniciar sesión"
@@ -187,7 +188,8 @@
             "TABLE" :"Mesa",
             "CALL_LABEL_SEND_ORDER" : "Entrega de orden",
             "CALL_LABEL_CUSTOMER" : "Llamado de cliente",
-            "CALL_LABEL_CUSTOMER_PAYMENT" : "Pago de cliente"
+            "CALL_LABEL_CUSTOMER_PAYMENT" : "Pago de cliente",
+            "PAY_CONFIRM" : "Confirmación de pago"
         },
         "SECTIONS": {
             "MENU": "Menú",

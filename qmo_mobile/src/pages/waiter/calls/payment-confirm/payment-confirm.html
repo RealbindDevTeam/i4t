@@ -1,0 +1,11 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            {{ 'MOBILE.WAITER_CALL.PAY_CONFIRM' | translate }}
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <user-detail-payment-confirm *ngFor="let user of _usersDetails | async" [userDetail]="user"></user-detail-payment-confirm>
+</ion-content>

@@ -1,0 +1,19 @@
+<ion-list *ngFor="let user of _users | async">
+    <ion-list-header>
+        <ion-avatar item-start>
+            <img *ngIf="user.username" src="assets/img/user_default_image.png">
+            <img *ngIf="user.services.facebook" src="http://graph.facebook.com/{{user.services.facebook.id}}/picture/?type=large">
+        </ion-avatar>
+        <span *ngIf="user.username">
+            {{user.username}}
+        </span>
+        <span *ngIf="user.services.facebook">
+            {{user.services.facebook.name}}
+        </span>
+    </ion-list-header>
+    
+    <button ion-item *ngFor="let order of _orders | async">
+      <ion-icon name="medical" item-start></ion-icon>
+        {{order._id}}
+    </button>
+</ion-list>

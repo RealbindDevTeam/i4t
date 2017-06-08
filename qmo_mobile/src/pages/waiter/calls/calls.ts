@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AlertController, LoadingController, ToastController  } from 'ionic-angular';
+import { AlertController, LoadingController, NavController, ToastController  } from 'ionic-angular';
 import { TranslateService } from 'ng2-translate';
 import { MeteorObservable } from "meteor-rxjs";
 import { Subscription } from "rxjs";
@@ -7,6 +7,7 @@ import { Restaurants, RestaurantImages } from 'qmo_web/both/collections/restaura
 import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 import { WaiterCallDetail } from 'qmo_web/both/models/restaurant/waiter-call-detail.model';
 import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-call-detail.collection';
+import { PaymentConfirmPage } from "./payment-confirm/payment-confirm";
 
 @Component({
   selector : 'calls-page',
@@ -38,7 +39,8 @@ export class CallsPage implements OnInit, OnDestroy {
   constructor(public _translate: TranslateService,
               public _alertCtrl: AlertController,
               public _loadingCtrl: LoadingController,
-              private _toastCtrl: ToastController) {
+              private _toastCtrl: ToastController,
+              public _navCtrl: NavController) {
     this._userLang = navigator.language.split('-')[0];
     _translate.setDefaultLang('en');
     _translate.use(this._userLang);
@@ -145,6 +147,11 @@ export class CallsPage implements OnInit, OnDestroy {
         wordTraduced = res;
     });
     return wordTraduced;
+  }
+
+  goToPaymentConfirm( _call : WaiterCallDetail ){
+    //this._navCtrl.push(OrderPaymentTranslatePage, { restaurant : this.restId, currency : this._currencyCode, table : this.tabId });
+    this._navCtrl.push(PaymentConfirmPage, { restaurant : _call.restaurant_id, table : _call.table_id});
   }
 
 
