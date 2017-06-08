@@ -1,10 +1,15 @@
 {
+    "PAYMENT_METHODS.CASH" : "Cash",
+    "PAYMENT_METHODS.CREDIT_CARD" : "Credit card",
+    "PAYMENT_METHODS.DEBIT_CARD" : "Debit card",
+    "PAYMENT_METHODS.ONLINE" : "Online",
     "ORDER_STATUS": {
         "REGISTERED": "Registered",
         "IN_PROCESS": "In Process",
         "PREPARED": "Prepared",
         "CANCELED": "Canceled",
-        "DELIVERED": "Delivered"
+        "DELIVERED": "Delivered",
+        "PENDING_CONFIRM" : "Pending confirmation for payment"
     },
     "MOBILE": {
         "CANCEL": "Cancel",
@@ -150,7 +155,22 @@
             "INC":"Inc",
             "TOTAL":"Total",
             "TIPS":"Tip",
-            "TOTAL_TO_PAY":"Total to pay"
+            "TOTAL_TO_PAY":"Total to pay",
+            "TIPS_OTHER_VALUE" : "Other value",
+            "MODAL_TITLE" : "Payment options",
+            "TITLE_SERVICES_INCLUDE" : "¿Want you include the service?",
+            "CONTENT_SERVICES_INCLUDE_INIT" : "Keep in mind that the tip suggested of the restaurant is equivalent to",
+            "CONTENT_SERVICES_INCLUDE_END" : "of your total account, but you can modify it",
+            "TIP" : "Tip",
+            "TIP_OTHER_VALUE" : "Other value",
+            "SELECT_PAYMENT_METHOD" : "Select payment method",
+            "ADD_ORDER_PAYMENT" : "Add order to account",
+            "BTN_PAY" : "Pay",
+            "CONFIRM_TO_ADD_ACCOUNT" : "¿Want you to pay the order",
+            "CONFIRM_OWNER_ORDER" : "The owner of the order must confirm the request for payment",
+            "CONFIRM_ORDER_STATUS" : "The order has not been delivered",
+            "CONFIRM_PAY_OTHER_USER" : "¿You want to transfer order payment",
+            "SUCCESSFUL_PAY_OTHER_USER" : "Payment of order has been transferred"
         },
         "WAITER_CALL": {
             "TITTLE": "Call waiter",
@@ -191,7 +211,8 @@
             "SELECT_MAX_VALID": "You have selected more than ",
             "LOADING_MSG": "Adding to order ...",
             "TOAST_MSG": "Item was added successfully",
-            "WAIT_QR": "Please wait ..."
+            "WAIT_QR": "Please wait ...",
+            "TIME" : "Approximate Cooking Time:"
         },
         "ITEM_EDIT": {
             "MODIFY": "Modify",

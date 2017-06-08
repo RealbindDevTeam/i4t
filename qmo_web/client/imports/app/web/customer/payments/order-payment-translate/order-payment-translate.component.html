@@ -1,25 +1,28 @@
 <md-card>
-    <md-card-subtitle>Cuando algun acompañante de tu mesa desea pagar una de tus ordenes, debes confirmar este proceso. En esta seccion apareceran aquellas ordenes que otros usuarios desean pagar por ti.</md-card-subtitle>
-    <p *ngIf="(_ordersToConfirm | async)?.length <= 0">No se encuentran ordenes</p>
-    <div *ngFor="let orderCon of _ordersToConfirm | async">
-        <md-toolbar class="order">
-            <i class="fa fa-list-alt" aria-hidden="true" class="order-icon"></i>
-            <span class="order-code">{{'ORDER_LIST.ORDERS' | translate}} # {{orderCon.code}}</span>
-            <span>{{'ORDER_LIST.TOTAL' | translate}}: {{orderCon.totalPayment}} {{_currencyCode}}</span>
-            <span class="app-flex-filler"></span>
-            <button md-raised-button class="confirm-button" (click)="confirmOrderToPay(orderCon)">Confirmar</button>
-        </md-toolbar>
+    <div style="width: 50%;display: inline-block;border-right: 1px solid #7E7E7E;">
+        <md-card-subtitle>Cuando algun acompañante de tu mesa desea pagar una de tus ordenes, debes confirmar este proceso. En esta seccion apareceran aquellas ordenes que otros usuarios desean pagar por ti.</md-card-subtitle>
+        <p *ngIf="(_ordersToConfirm | async)?.length <= 0">No se encuentran ordenes</p>
+        <div *ngFor="let orderCon of _ordersToConfirm | async">
+            <md-toolbar class="order">
+                <i class="fa fa-list-alt" aria-hidden="true" class="order-icon"></i>
+                <span class="order-code">{{'ORDER_LIST.ORDERS' | translate}} # {{orderCon.code}}</span>
+                <span>{{'ORDER_LIST.TOTAL' | translate}}: {{orderCon.totalPayment}} {{_currencyCode}}</span>
+                <span class="app-flex-filler"></span>
+                <button md-raised-button class="confirm-button" (click)="confirmOrderToPay(orderCon)">Confirmar</button>
+            </md-toolbar>
+        </div>
     </div>
-    <br/>
-    <md-card-subtitle>Si deseas pagar ordenes de algun acompañante de tu mesa, esta seccion mostrara aquellas ordenes que se encuentran pendientes por confirmar para agregar a tu pago.</md-card-subtitle>
-    <p *ngIf="(_ordersWithPendingConfirmation | async)?.length <= 0">No se encuentran ordenes</p>  
-    <div *ngFor="let orderPenCon of _ordersWithPendingConfirmation | async">
-        <md-toolbar class="order">
-            <i class="fa fa-list-alt" aria-hidden="true" class="order-icon"></i>
-            <span class="order-code">{{'ORDER_LIST.ORDERS' | translate}} # {{orderPenCon.code}}</span>
-            <span class="app-flex-filler"></span>
-            <span class="order-status">{{orderPenCon.status | translate}}</span>
-        </md-toolbar>
+    <div style="width: 48%;display: inline-block;vertical-align: top;margin-left: 1%;">
+        <md-card-subtitle>Si deseas pagar ordenes de algun acompañante de tu mesa, esta seccion mostrara aquellas ordenes que se encuentran pendientes por confirmar para agregar a tu pago.</md-card-subtitle>
+        <p *ngIf="(_ordersWithPendingConfirmation | async)?.length <= 0">No se encuentran ordenes</p>  
+        <div *ngFor="let orderPenCon of _ordersWithPendingConfirmation | async">
+            <md-toolbar class="order">
+                <i class="fa fa-list-alt" aria-hidden="true" class="order-icon"></i>
+                <span class="order-code">{{'ORDER_LIST.ORDERS' | translate}} # {{orderPenCon.code}}</span>
+                <span class="app-flex-filler"></span>
+                <span class="order-status">{{orderPenCon.status | translate}}</span>
+            </md-toolbar>
+        </div>
     </div>  
     <br/>
     <button md-raised-button color="primary" (click)="open()">Consultar ordenes de la mesa</button>

@@ -1,10 +1,15 @@
 {
+    "PAYMENT_METHODS.CASH" : "Efectivo",
+    "PAYMENT_METHODS.CREDIT_CARD" : "Tarjeta de Crédito",
+    "PAYMENT_METHODS.DEBIT_CARD" : "Tarjeta debito",
+    "PAYMENT_METHODS.ONLINE" : "Pago en Línea",
     "ORDER_STATUS": {
         "REGISTERED": "Registrado",
         "IN_PROCESS": "En Proceso",
         "PREPARED": "Preparado",
         "CANCELED": "Cancelado",
-        "DELIVERED": "Entregado"
+        "DELIVERED": "Entregado",
+        "PENDING_CONFIRM" : "Confirmación pendiente para pago"
     },
     "MOBILE": {
         "CANCEL": "Cancelar",
@@ -150,7 +155,22 @@
             "INC":"Inc",
             "TOTAL":"Total",
             "TIPS":"Propina sugerida",
-            "TOTAL_TO_PAY":"Total a pagar"
+            "TOTAL_TO_PAY":"Total a pagar",
+            "TIPS_OTHER_VALUE" : "Otro valor",
+            "MODAL_TITLE" : "Opciones de pago",
+            "TITLE_SERVICES_INCLUDE" : "¿Deseas incluir el servicio?",
+            "CONTENT_SERVICES_INCLUDE_INIT" : "Ten en cuenta que la propina sugerida por el restaurante equivale al",
+            "CONTENT_SERVICES_INCLUDE_END" : "del total de tu cuenta, pero tu puedes modificarla",
+            "TIP" : "Propina",
+            "TIP_OTHER_VALUE" : "Otro valor",
+            "SELECT_PAYMENT_METHOD" : "Seleccionar medio de pago",
+            "ADD_ORDER_PAYMENT" : "Agregar orden a la cuenta",
+            "BTN_PAY" : "Pagar",
+            "CONFIRM_TO_ADD_ACCOUNT" : "¿Deseas realizar el pago de la orden",
+            "CONFIRM_OWNER_ORDER" : "El propietario de la orden debe confirmar la solicitud del pago",
+            "CONFIRM_ORDER_STATUS" : "La orden no ha sido entregada",
+            "CONFIRM_PAY_OTHER_USER" : "¿Deseas transferir el pago de la orden",
+            "SUCCESSFUL_PAY_OTHER_USER" : "Se ha transferido el pago de la orden"
         },
         "WAITER_CALL": {
             "TITTLE": "Solicitar mesero",
@@ -191,7 +211,8 @@
             "SELECT_MAX_VALID": "Se han seleccionado mas de ",
             "LOADING_MSG": "Agregando a la orden ...",
             "TOAST_MSG": "Item agregado exitosamente",
-            "WAIT_QR": "Espera por favor  ..."
+            "WAIT_QR": "Espera por favor  ...",
+            "TIME" : "Tiempo de cocción:"
         },
         "ITEM_EDIT": {
             "MODIFY": "Modificar",

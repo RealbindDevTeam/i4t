@@ -13,4 +13,14 @@
             <component-colombia-payments *ngSwitchCase="'1900'" [restId]="_currentRestaurant._id" [currId]="_currentRestaurant.currencyId" [tabId]="_currentTable"></component-colombia-payments>
         </div>
     </div>
+
+    <div *ngIf="!_showPaymentInfo">
+        <div class="img">
+            <img src="assets/img/pagos.png">
+        </div>
+        <div class="content" style="text-align: center">
+            <h1>{{'MOBILE.PAYMENTS.TITTLE_CONTENT' | translate}}</h1>
+            <p>{{'MOBILE.PAYMENTS.CONTENT' | translate}}</p>
+        </div>
+    </div>
 </ion-content>
