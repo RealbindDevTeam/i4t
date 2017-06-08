@@ -12,6 +12,9 @@ import { Restaurants } from '../../../../../../../../both/collections/restaurant
 import { PaymentMethod } from '../../../../../../../../both/models/general/paymentMethod.model';
 import { PaymentMethods } from '../../../../../../../../both/collections/general/paymentMethod.collection';
 import { ColombiaPaymentDetailComponent } from './colombia-payment-detail/colombia-payment-detail.component';
+import { WaiterCallDetails } from '../../../../../../../../both/collections/restaurant/waiter-call-detail.collection';
+import { Payment } from '../../../../../../../../both/models/restaurant/payment.model';
+import { Payments } from '../../../../../../../../both/collections/restaurant/payment.collection';
 
 import template from './colombia-payment.component.html';
 import style from './colombia-payment.component.scss';
@@ -35,9 +38,11 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     private _currencySub        : Subscription;
     private _restaurantsSub     : Subscription;
     private _paymentMethodsSub  : Subscription;
+    private _paymentsSub        : Subscription;
     
     private _orders             : Observable<Order[]>;
     private _paymentMethods     : Observable<PaymentMethod[]>;
+    private _payments           : Observable<Payment[]>;
 
     private _tipTotal           : number = 0;
     private _ipoCom             : number = 108;
@@ -54,6 +59,9 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
 
     private _otherTipAllowed    : boolean = true;
     private _paymentMethodId    : string;
+    private _loading            : boolean;
+    private _userIncludeTip     : boolean = false;
+    private _paymentCreated     : boolean = false;
 
     /**
      * ColombiaPaymentComponent Constructor
@@ -72,7 +80,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     ngOnInit(){
         this._ordersSubscription = MeteorObservable.subscribe( 'getOrdersByAccount', this._user ).subscribe( () => {
            this._ngZone.run( () => {
-                this._orders = Orders.find( { creation_user: this._user, status: 'ORDER_STATUS.DELIVERED' } ).zone();
+                this._orders = Orders.find( { creation_user: this._user, restaurantId: this.restId, tableId: this.tabId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] } } ).zone();
                 this._orders.subscribe( () => { this.calculateValues(); });
            }); 
         });
@@ -88,6 +96,12 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                 this._paymentMethods = PaymentMethods.find( { } ).zone();
             });
         });
+        this._paymentsSub = MeteorObservable.subscribe( 'getUserPaymentsByRestaurantAndTable', this._user, this.restId, this.tabId ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._payments = Payments.find( { } ).zone();
+                this._payments.subscribe( () => { this.validateUserPayments() } );
+            });
+        });
     }
 
     /**
@@ -95,7 +109,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
      */
     calculateValues():void{
         this._totalValue = 0;
-        Orders.collection.find( { creation_user: this._user, status: 'ORDER_STATUS.DELIVERED' } ).fetch().forEach( ( order ) => {
+        Orders.collection.find( { creation_user: this._user, restaurantId: this.restId, tableId: this.tabId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] } } ).fetch().forEach( ( order ) => {
             this._totalValue += order.totalPayment;
         });
 
@@ -121,7 +135,8 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
      */
     isAvailableToReturn( _pOrder:Order ):boolean{
         if( _pOrder.translateInfo.firstOrderOwner !== '' && _pOrder.translateInfo.lastOrderOwner !== '' 
-            && _pOrder.translateInfo.confirmedToTranslate && _pOrder.translateInfo.markedToTranslate ){
+            && _pOrder.translateInfo.confirmedToTranslate && _pOrder.translateInfo.markedToTranslate
+            && _pOrder.status === 'ORDER_STATUS.DELIVERED' ){
             return true;
         } else {
             return false;
@@ -156,6 +171,8 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
         });
         this._dialogRef.componentInstance.currId = this.currId;
         this._dialogRef.componentInstance.currencyCode = this._currencyCode;
+        this._dialogRef.componentInstance.restId = this.restId;
+        this._dialogRef.componentInstance.tabId = this.tabId;
         this._dialogRef.afterClosed().subscribe( result => {
             this._dialogRef = null;
         });
@@ -168,8 +185,10 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     allowTip( _event:any ):void{
         if( _event.checked ){
             this._totalToPayment = this._totalToPayment + this._tipTotal;
+            this._userIncludeTip = true;
         } else {
             this._totalToPayment = this._totalToPayment - this._tipTotal;
+            this._userIncludeTip = false;
         }
     }
 
@@ -213,6 +232,94 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * This function validate the payment method.
+     */
+    pay(){
+        if ( this.tabId !== "" && this.restId !== "" ) {
+            if ( this._paymentMethodId === '10' || this._paymentMethodId === '20' || this._paymentMethodId === '30' ){
+                let _lOrdersWithPendingConfim:number = Orders.collection.find( { creation_user: this._user, restaurantId: this.restId, tableId: this.tabId, 
+                                                                                    status: 'ORDER_STATUS.PENDING_CONFIRM' } ).count();
+                if( _lOrdersWithPendingConfim === 0 ){
+                    let _lOrdersToInsert:string[] = [];
+                    let _lTotalValue: number = 0;
+                    let _lTotalTip: number = 0;
+                    Orders.collection.find( { creation_user: this._user, restaurantId: this.restId, 
+                                              tableId: this.tabId, status: 'ORDER_STATUS.DELIVERED' } ).fetch().forEach( ( order ) => {
+                                                  _lOrdersToInsert.push( order._id );
+                                                  _lTotalValue += order.totalPayment;
+                                              });
+                    if( this._userIncludeTip ){ _lTotalTip += this._tipTotal }
+                    if( !this._otherTipAllowed ){ _lTotalTip += this._otherTip }
+                    Payments.insert( {
+                        creation_user: this._user,
+                        creation_date: new Date(),
+                        modification_user: '-',
+                        modification_date: new Date(),
+                        restaurantId: this.restId,
+                        tableId: this.tabId,
+                        userId: this._user,
+                        orders: _lOrdersToInsert,
+                        paymentMethodId: this._paymentMethodId,
+                        totalOrdersPrice: _lTotalValue,
+                        totalTip: _lTotalTip,
+                        totalToPayment: this._totalToPayment,
+                        currencyId: this.currId,
+                        status: 'PAYMENT.NO_PAID'
+                    });
+                    this.waiterCallForPay();
+                } else {
+                    alert('Tienes Ordenes con estado pendiente por confirmacion. Debes confirmarlas o esperar a que te confirmen.');
+                } 
+            } else {
+                if( this._paymentMethodId === '40' ){
+                    alert('El pago Online aun no se encuentra habilitado en Iurest');
+                } else {
+                    alert('Por favor seleccione un medio de pago');
+                }
+            }
+        } else {
+            alert('La opcion de pagos no se encuentra disponible por el momento');
+        }
+    }
+
+    /**
+     * Validate the total number of Waiter Call payment by table Id to request the pay
+     */
+    waiterCallForPay() {
+        var data : any = {
+            restaurants : this.restId,
+            tables : this.tabId,
+            user : this._user,
+            waiter_id : "",
+            status : "waiting",
+            type : 'PAYMENT',
+        }
+        let isWaiterCalls = WaiterCallDetails.collection.find({ restaurant_id : this.restId, 
+                                                                table_id : this.tabId, 
+                                                                type : data.type }).count();
+        if( isWaiterCalls === 0 ){
+            let loading_msg = 'Un momento Por favor'; 
+            
+            this._loading = true;
+            setTimeout(() => {
+                MeteorObservable.call( 'findQueueByRestaurant', data ).subscribe( () => {
+                    this._loading = false;
+                });
+            }, 1500 );
+        } else {
+            alert('En un momento te atenderemos en tu mesa');
+        }
+    }
+
+    /**
+     * Validate User Payments
+     */
+    validateUserPayments():void{
+        let _lPayments: number = Payments.collection.find( { status: 'PAYMENT.NO_PAID' } ).count();
+        _lPayments > 0 ? this._paymentCreated = true : this._paymentCreated = false;
+    }
+
+    /**
      * ngOnDestroy Implementation
      */
     ngOnDestroy(){
@@ -220,5 +327,6 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
         this._currencySub.unsubscribe();
         this._restaurantsSub.unsubscribe();
         this._paymentMethodsSub.unsubscribe();
+        this._paymentsSub.unsubscribe();
     }
 }
