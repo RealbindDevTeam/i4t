@@ -14,10 +14,10 @@
             <table class="bordered">
                 <tbody>
                     <tr *ngIf="g === garnish._id">
-                        <td class="name">{{garnish.name}} ({{'PAYMENTS.GARNISH_FOOD' | translate}})</td> 
-                        <td class="quantity">{{orderItem.quantity}}</td> 
-                        <td class="unitPrice">{{getGarnisFoodhUnitPrice(garnish)}} {{curCode}}</td> 
-                        <td class="totalPrice">{{getGarnishFoodTotalPrice(garnish)}} {{curCode}}</td>
+                        <td class="garnishName">{{garnish.name}} ({{'PAYMENTS.GARNISH_FOOD' | translate}})</td> 
+                        <td class="garnishQuantity">{{orderItem.quantity}}</td> 
+                        <td class="garnishUnitPrice">{{getGarnisFoodhUnitPrice(garnish)}} {{curCode}}</td> 
+                        <td class="garnishTotalPrice">{{getGarnishFoodTotalPrice(garnish)}} {{curCode}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -29,11 +29,11 @@
         <span *ngFor="let add of orderItem.additions">
             <table class="bordered">
                 <tbody>
-                    <tr [ngIf]="add === addition._id">
-                        <td class="name">{{addition.name}} ({{'PAYMENTS.ADDITION' | translate}})</td> 
-                        <td class="quantity">{{orderItem.quantity}}</td> 
-                        <td class="unitPrice">{{getAdditionhUnitPrice(addition)}} {{curCode}}</td> 
-                        <td class="totalPrice">{{getAdditionTotalPrice(addition)}} {{curCode}}</td>
+                    <tr *ngIf="add === addition._id">
+                        <td class="additionName">{{addition.name}} ({{'PAYMENTS.ADDITION' | translate}})</td> 
+                        <td class="additionQuantity">{{orderItem.quantity}}</td> 
+                        <td class="additionUnitPrice">{{getAdditionhUnitPrice(addition)}} {{curCode}}</td> 
+                        <td class="additionTotalPrice">{{getAdditionTotalPrice(addition)}} {{curCode}}</td>
                     </tr>
                 </tbody>
             </table>
