@@ -113,7 +113,9 @@
                 <md-tab label="{{'RESTAURANT_REGISTER.NUMBER_TABLE_LABEL' | translate}}">
                     <md-card>
                         <md-card-title>{{'RESTAURANT_REGISTER.NUMBER_TABLE_LABEL_INFO' | translate}}</md-card-title>
-                        <md-card-subtitle>{{'RESTAURANT_REGISTER.NUMBER_TABLE_LABEL_INFO_TEXT' | translate}}</md-card-subtitle>
+                        <div *ngFor="let param of _parameterDaysTrial | async">
+                            <md-card-subtitle>{{'RESTAURANT_REGISTER.NUMBER_TABLE_LABEL_INFO_TEXT_1' | translate}} {{param.value}} {{'RESTAURANT_REGISTER.NUMBER_TABLE_LABEL_INFO_TEXT_2' | translate}}</md-card-subtitle>
+                        </div>
                         <md-card-content>
                             <md-radio-group formControlName="plans" [(ngModel)]="align">
                                 <md-list>

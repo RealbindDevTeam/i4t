@@ -9,7 +9,6 @@ export function createCrons() {
     SyncedCron.add({
       name: 'SCHEDULE_TRIAL.' + country.name,
       schedule: function (parser) {
-        // parser is a later.parse object
         return parser.cron(country.cronSchedule);
       },
       job: function () {

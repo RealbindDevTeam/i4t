@@ -16,16 +16,16 @@
     "STRUCTURE": "Estructura",
     "UPDATE": "Actualizar",
     "MODIFY": "Modificar",
-    "CHOOSE_FILE" : "Seleccionar archivo",
+    "CHOOSE_FILE": "Seleccionar archivo",
     "NEXT": "Siguiente",
     "BACK": "Atras",
     "FINISH": "Finalizar",
-    "LAST_NAME" : "Apellidos",
-    "BIRTHDATE" : "Fecha de nacimiento",
+    "LAST_NAME": "Apellidos",
+    "BIRTHDATE": "Fecha de nacimiento",
     "PHONE": "Telefono",
-    "SEARCH" : "Consultar",
-    "JOB" : "Cargo",
-    "VALIDATE" : "Validar",
+    "SEARCH": "Consultar",
+    "JOB": "Cargo",
+    "VALIDATE": "Validar",
     "TIP_PERCENTAGE": "Porcentaje de propina",
     "CLOSE": "Cerrar",
     "ORDER_STATUS": {
@@ -36,10 +36,10 @@
         "DELIVERED": "Entregado",
         "PENDING_CONFIRM": "Confirmacion Pendiente para Pago"
     },
-    "DATE_VALIDATE" : {
-        "DAY_FORMAT" : "Formato del día incorrecto",
-        "MONTH_FORMAT" : "Formato del mes incorrecto",
-        "YEAR_FORMAT" : "Formato del año incorrecto"
+    "DATE_VALIDATE": {
+        "DAY_FORMAT": "Formato del día incorrecto",
+        "MONTH_FORMAT": "Formato del mes incorrecto",
+        "YEAR_FORMAT": "Formato del año incorrecto"
     },
     "LANDING": {
         "PRICING": "Precio",
@@ -80,7 +80,7 @@
             "CANCEL": "Cancelar"
         }
     },
-    "RESET_PASWORD":{
+    "RESET_PASWORD": {
         "TITLE": "Cambiar contraseña",
         "BTN_RESET": "Cambiar",
         "EMAIL_SEND": "Se ha enviado un mensaje a tu correo electronico para cambiar la contraseña",
@@ -163,7 +163,7 @@
             "RESTAURANTS": "Restaurantes",
             "MANAGEMENT": "Administración",
             "TABLES": "Mesas",
-            "COLLABORATORS" : "Colaboradores"
+            "COLLABORATORS": "Colaboradores"
         },
         "ADMINISTRATION": {
             "ADMINISTRATION": "Administración",
@@ -178,7 +178,7 @@
             "ORDERS_CHEF": "Ordenes"
         },
         "ORDERS": "Ordenes",
-        "WAITER_CALL" : "Llamar mesero"
+        "WAITER_CALL": "Llamar mesero"
     },
     "PROMOTIONS": {
         "PROMOTION_CREATION": "Creación de promociones",
@@ -227,7 +227,7 @@
         "SELECT_CLOSING_HOUR": "Seleccione Hora de Cierre",
         "ADD_PAYMENTMETHODS_RESTURANT": "Selecciona los medios de pago aceptados por el restaurante",
         "ADD_RESTAURANT_IMAGE": "Agregar imagen del restaurante",
-        "GENERAL_LABEL": "General", 
+        "GENERAL_LABEL": "General",
         "GENERAL_INFO": "Informacion General del Restaurante",
         "GENERAL_INFO_TEXT": "Por favor ingresa la informacion del restaurante. Dicha informacion sera visualizada por las personas en internet y te dara mayor visivilidad",
         "FINANCIAL_LABEL": "Financiera",
@@ -400,10 +400,10 @@
         "COUNTRY": "Pais",
         "PHONE": "Telefono",
         "WEBPAGE": "Pagina de Internet",
-        "EMAIL":"Correo Electronico",
-        "MSG_INITIAL":"Administra la información de tus restaurantes"
+        "EMAIL": "Correo Electronico",
+        "MSG_INITIAL": "Administra la información de tus restaurantes"
     },
-    "TABLES":{
+    "TABLES": {
         "TABLES_CREATION": "Creación de mesas",
         "TABLES_TEXT": "Seleccione el restaurante que desee y la cantidad de mesas que desea crear",
         "RESTAURANT": "Restaurante",
@@ -421,32 +421,32 @@
         "MSG_INITIAL": "Crea las mesas con el código QR asociado"
     },
     "GO_TO_STORE": {
-        "TITTLE" : "¿Qué te",
-        "SUB_TITTLE" : "gusta comer?",
-        "CONTENT" : "Hicimos la mayor parte del trabajo pesado para que usted pueda proporcionar un estilo por defecto que incorpora nuestros componentes personalizados",
-        "BUTTON" : "Descargar"
+        "TITTLE": "¿Qué te",
+        "SUB_TITTLE": "gusta comer?",
+        "CONTENT": "Hicimos la mayor parte del trabajo pesado para que usted pueda proporcionar un estilo por defecto que incorpora nuestros componentes personalizados",
+        "BUTTON": "Descargar"
     },
-    "COLLABORATORS" : {
-        "COLLABORATORS_SEARCH" : "Consulta de colaboradores",
-        "COLLABORATORS_REGISTER" : "Registro de colaborador",
+    "COLLABORATORS": {
+        "COLLABORATORS_SEARCH": "Consulta de colaboradores",
+        "COLLABORATORS_REGISTER": "Registro de colaborador",
         "COLLABORATORS_TEXT": "Seleccione el restaurante que deseé para la consulta",
-        "MSG_INITIAL" : "Vincula a todos tus colaboradores de a cuerdo al rol que desempeña",
-        "BTN" : "Registrar colaborador"
+        "MSG_INITIAL": "Vincula a todos tus colaboradores de a cuerdo al rol que desempeña",
+        "BTN": "Registrar colaborador"
     },
-    "COLLABORATORS_REGISTER" : {
-        "COLLABORATORS_LABEL" : "Colaborador",
-        "USER_LABEL" : "Usuario",
-        "GENERAL_INFO" : "Información personal",
-        "GENERAL_INFO_TEXT" : "Por favor ingresa la información personal de tu colaboradore",
-        "USER_INFO" : "Información de usuario",
-        "USER_INFO_TEXT" : "Por favor ingresa la información del usuario de tu colaborador",
-        "RESTAURANT" : "Restaurante",
-        "SELECT_RESTAURANT" : "Seleccionar restaurante",
-        "SELECT_ROLE" : "Seleccionar rol",
-        "MESSAGE_COLLABORATOR" : "Colaborador creado exitosamente",
-        "MESSAGE_FORM_INVALID" : "Debe diligenciar los campos obligatorios",
-        "ERROR_INSERT" : "Error al insertar colaborador",
-        "MESSAGE_NOT_LOGIN" : "Por favor ingresar al sistema para agregar un colaborador"
+    "COLLABORATORS_REGISTER": {
+        "COLLABORATORS_LABEL": "Colaborador",
+        "USER_LABEL": "Usuario",
+        "GENERAL_INFO": "Información personal",
+        "GENERAL_INFO_TEXT": "Por favor ingresa la información personal de tu colaboradore",
+        "USER_INFO": "Información de usuario",
+        "USER_INFO_TEXT": "Por favor ingresa la información del usuario de tu colaborador",
+        "RESTAURANT": "Restaurante",
+        "SELECT_RESTAURANT": "Seleccionar restaurante",
+        "SELECT_ROLE": "Seleccionar rol",
+        "MESSAGE_COLLABORATOR": "Colaborador creado exitosamente",
+        "MESSAGE_FORM_INVALID": "Debe diligenciar los campos obligatorios",
+        "ERROR_INSERT": "Error al insertar colaborador",
+        "MESSAGE_NOT_LOGIN": "Por favor ingresar al sistema para agregar un colaborador"
     },
     "ITEMS": {
         "ITEMS_MANAGEMENT": "Administracion de items",
@@ -483,24 +483,24 @@
         "ITEM_GARNISHFOOD_QUANTITY": "Cantidad de Guarniciones Permitidas para el item",
         "ADDITIONS_TEXT": "Ingrese las Adiciones permitidas para el Item",
         "NOT_ADDITIONS": "No se encuentran Adiciones creadas para el Restaurante",
-        "MSG_INITIAL" : "Implementa una manera ordenada y facil de visualizar tu menú",
+        "MSG_INITIAL": "Implementa una manera ordenada y facil de visualizar tu menú",
         "ADD_IMAGE": "Agrega la imagen del Item",
         "ACTIVATE": "ACTIVAR",
         "INACTIVATE": "INACTIVAR",
         "COOKING_TIME": "Tiempo Aprox de Cocción"
     },
-    "ROLE" : {
-        "ADMINISTRATOR" : "Administrador",
-        "WAITER" : "Mesero",
-        "CASHIER" : "Cajero",
-        "CUSTOMER" : "Cliente",
-        "CHEF" : "Chef",
-        "SUPERVISOR" : "Supervisor"
+    "ROLE": {
+        "ADMINISTRATOR": "Administrador",
+        "WAITER": "Mesero",
+        "CASHIER": "Cajero",
+        "CUSTOMER": "Cliente",
+        "CHEF": "Chef",
+        "SUPERVISOR": "Supervisor"
     },
     "SCHEDULE": {
         "SCHEDULE": "Horario de Atencion",
         "SELECT_OPENING_HOUR": "Seleccione Hora de Apertura",
-        "SELECT_CLOSING_HOUR":"Seleccione Hora de Cierre",
+        "SELECT_CLOSING_HOUR": "Seleccione Hora de Cierre",
         "MONDAY": "Lunes",
         "TUESDAY": "Martes",
         "WEDNESDAY": "Miercoles",
@@ -524,7 +524,7 @@
         "CLOSE": "Cerrar"
     },
     "RESTAURANT_EDITION": {
-        "GENERAL_LABEL": "General", 
+        "GENERAL_LABEL": "General",
         "GENERAL_INFO": "Informacion General del Restaurante",
         "GENERAL_INFO_TEXT": "Edita la informacion del restaurante. Dicha informacion sera visualizada por las personas en internet y te dara mayor visivilidad",
         "SELECT_COUNTRY": "Seleccione Pais",
@@ -546,7 +546,15 @@
         "SCHEDULE_INFO_TEXT": "Ingresa el horario de atencion del establecimiento",
         "CURRENCY_ACCEPTED": "Moneda Aceptada",
         "ENTER_TAX_PERCENTAGE": "Ingresa el porcentaje de impuestos ( 0% - 100%). Puedes ingresar el valor o utilizar el Slider",
-        "ENTER_TIP_PERCENTAGE": "Ingresa el porcentaje de la propina sugerida ( 0% - 100%). Puedes ingresar el valor o utilizar el Slider"
+        "ENTER_TIP_PERCENTAGE": "Ingresa el porcentaje de la propina sugerida ( 0% - 100%). Puedes ingresar el valor o utilizar el Slider",
+        "NUMBER_TABLE_LABEL": "# Mesas",
+        "NUMBER_TABLE_LABEL_INFO": "Selecciona el número de mesas del restaurante",
+        "NUMBER_TABLE_LABEL_INFO_TEXT_1": "Tienes un período de prueba de ",
+        "NUMBER_TABLE_LABEL_INFO_TEXT_2": " días desde",
+        "NUMBER_TABLE_LABEL_INFO_TEXT_3": ", después de eso, puedes elegir un plan de acuerdo con el número seleccionado de mesas",
+        "TO": "a ",
+        "TABLES": "mesas",
+        "MORE": "más"
     },
     "RESTAURANT_LOCATION": {
         "TITTLE": "Ubicacion del Establecimiento",
@@ -564,7 +572,7 @@
         "TITTLE": "Ubicacion del Establecimiento",
         "CLOSE": "Cerrar",
         "MESSAGE": "Lo sentimos. Este establecimiento no ha ingresado aun su ubicacion actual"
-    }, 
+    },
     "ORDER_CREATE": {
         "PRICE": "Precio",
         "VIEW_DETAIL": "Ver Detalle",
@@ -596,7 +604,7 @@
         "UNAVAILABLE": "No Disponible",
         "CANCEL_ORDER": "Cancelar Orden",
         "CONFIRM_ORDER": "Confirmar Orden",
-        "SELECT_ITEM":"Seleccione un Item para detallar, editar o eliminar de la orden",
+        "SELECT_ITEM": "Seleccione un Item para detallar, editar o eliminar de la orden",
         "QUANTITY": "Cantidad",
         "ITEM_UNAVAILABLE": "En este momento el item no se encuentra disponible para agregar a la orden",
         "OBSERVATIONS": "Observaciones",
@@ -628,34 +636,34 @@
         "PAYMENT_METHOD": "Medio de pago",
         "TOTAL_BILL": "Total cuenta",
         "PAY_BTN": "Pagar",
-        "PAY_DETAIL_TITTLE":"Detalle del pago",
-        "PAY_ORDER":"Orden",
-        "SUBTOTAL":"SubTotal",
-        "INC":"Inc",
-        "TOTAL":"Total",
-        "TIPS":"Propina Sugerida",
-        "TOTAL_TO_PAY":"Total a pagar",
+        "PAY_DETAIL_TITTLE": "Detalle del pago",
+        "PAY_ORDER": "Orden",
+        "SUBTOTAL": "SubTotal",
+        "INC": "Inc",
+        "TOTAL": "Total",
+        "TIPS": "Propina Sugerida",
+        "TOTAL_TO_PAY": "Total a pagar",
         "ADDITION": "Adicion",
         "GARNISH_FOOD": "Guarnicion"
     },
-    "WAITER_CALL" : {
+    "WAITER_CALL": {
         "TITTLE": "Solicitar mesero",
         "CONTENT": "Oprime el botón para llamar al mesero",
-        "THERE_IS_NOT_CODE_REST" : "!Ups¡ No estas en ningún restaurante",
-        "THERE_IS_NOT_CODE_REST_INS" : "Ve a la opción de ordenes e ingresa el código para llamar al mesero",
-        "RECEIVE_CALL" : "Recibimos tu llamado!",
-        "ONE_MOMENT" : "En un momento te atenderemos",
-        "TITLE_PROMPT" : "Cerrar solicitud",
-        "CONTENT_PROMPT" : "¿Deseas cerrar la solicitud del cliente?",
-        "LOADING" : "Por favor espera...",
-        "MSG_COMFIRM" : "Solicitud cerrada",
-        "NO_ANSWER" : "No",
-        "YES_ANSWER" : "Si",
-        "TURN" : "Turno",
-        "TABLE" :"Mesa",
-        "CALL_LABEL_SEND_ORDER" : "Entrega de orden",
-        "CALL_LABEL_CUSTOMER" : "Llamado de cliente",
-        "CALL_LABEL_CUSTOMER_PAYMENT" : "Pago de cliente"
+        "THERE_IS_NOT_CODE_REST": "!Ups¡ No estas en ningún restaurante",
+        "THERE_IS_NOT_CODE_REST_INS": "Ve a la opción de ordenes e ingresa el código para llamar al mesero",
+        "RECEIVE_CALL": "Recibimos tu llamado!",
+        "ONE_MOMENT": "En un momento te atenderemos",
+        "TITLE_PROMPT": "Cerrar solicitud",
+        "CONTENT_PROMPT": "¿Deseas cerrar la solicitud del cliente?",
+        "LOADING": "Por favor espera...",
+        "MSG_COMFIRM": "Solicitud cerrada",
+        "NO_ANSWER": "No",
+        "YES_ANSWER": "Si",
+        "TURN": "Turno",
+        "TABLE": "Mesa",
+        "CALL_LABEL_SEND_ORDER": "Entrega de orden",
+        "CALL_LABEL_CUSTOMER": "Llamado de cliente",
+        "CALL_LABEL_CUSTOMER_PAYMENT": "Pago de cliente"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Ordenes Confirmadas",
@@ -679,7 +687,7 @@
             "DIAN_NUMERATION": "Ingresa numeracion autorizada por la DIAN:",
             "DIAN_NUMERATION_FROM": "Desde",
             "DIAN_NUMERATION_TO": "Hasta",
-            "ENTER_TIP_PERCENTAGE": "Ingresa el porcentaje de la propina sugerida ( 0% - 100% ). Puedes ingresar el valor o utilizar el Slider"            
+            "ENTER_TIP_PERCENTAGE": "Ingresa el porcentaje de la propina sugerida ( 0% - 100% ). Puedes ingresar el valor o utilizar el Slider"
         }
     },
     "ORDERS": {

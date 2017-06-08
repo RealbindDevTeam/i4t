@@ -52,14 +52,15 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _paymentMethodsSub: Subscription;
     private _restaurantImagesSub: Subscription;
     private _restaurantPlanSub: Subscription;
+    private _parameterSub: Subscription;
 
     private _hours: Observable<Hour[]>;
     private _countries: Observable<Country[]>;
     private _cities: Observable<City[]>;
     private _restaurantPlans: Observable<RestaurantPlan[]>;
     private _paymentMethods: Observable<PaymentMethod[]>;
-
     private _paymentMethodsList: PaymentMethod[];
+    private _parameterDaysTrial: Observable<Parameter[]>;
 
     private _filesToUpload: Array<File>;
     private _restaurantImageToInsert: File;
@@ -176,6 +177,9 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         
         this._restaurantPlanSub = MeteorObservable.subscribe('getPlans').subscribe();
         this._restaurantPlans = RestaurantPlans.find({});
+        this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe(() => {
+            this._parameterDaysTrial = Parameters.find({_id: '100'});
+        });
 
         this._schedule = {
             monday: {

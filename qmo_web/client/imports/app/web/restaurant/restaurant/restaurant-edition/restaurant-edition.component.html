@@ -1,106 +1,147 @@
 <md-card>
-  <md-card-content>
-    <form [formGroup]="_restaurantEditionForm">
-        <md-tab-group [(selectedIndex)]="selectedIndex">
-            <md-tab [disabled]="!canMove(0)" label="{{'RESTAURANT_EDITION.GENERAL_LABEL' | translate}}">
-                <md-card>
-                    <md-card-title-group>
-                        <img md-card-sm-image src="{{_restaurantEditImage}}">
-                        <md-card-title>{{'RESTAURANT_EDITION.GENERAL_INFO' | translate}}</md-card-title>
-                        <md-card-subtitle>{{'RESTAURANT_EDITION.GENERAL_INFO_TEXT' | translate}}</md-card-subtitle>
-                    </md-card-title-group>
-                    <md-card-content>
-                        <div style="margin-top: 3%;">
-                            <md-select formControlName="country" placeholder="{{'RESTAURANT_EDITION.SELECT_COUNTRY' | translate}}" style="width: 45%;" [(ngModel)]="_selectedCountryValue">
-                                <md-option *ngFor="let country of _countries | async" (click)="changeCountry(country._id);" value="{{country._id}}" ng-selected="_restaurantCountryValue === country._id">{{country.name | translate}}</md-option>
-                            </md-select>
-                            <md-select formControlName="city" placeholder="{{'RESTAURANT_EDITION.SELECT_CITY' | translate}}" style="width: 45%;margin-left: 2%;" [(ngModel)]="_selectedCityValue">
-                                <md-option *ngFor="let city of _cities | async" (click)="changeCity(city._id);" value="{{city._id}}" ng-selected="_restaurantCityValue === city._id">{{city.name}}</md-option>
-                            </md-select>
-                        </div>
-                        <div style="margin-top: 1%;">
-                            <md-input-container style="width: 45%">
-                                <textarea mdInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="70" #inputName></textarea>
-                                <md-hint align="end">{{inputName.value.length}} / 70</md-hint>
-                            </md-input-container>
-                            <md-input-container style="width: 45%;margin-left: 2%;">
-                                <textarea mdInput required formControlName="address" placeholder="{{'RESTAURANT_EDITION.ADDRESS' | translate}}" minlength="1" maxlength="90" #inputAddress></textarea>
-                                <md-hint align="end">{{inputAddress.value.length}} / 90</md-hint>
-                            </md-input-container>
-                        </div>
-                        <div style="margin-top: 1%;">
-                            <div style="width: 30%; display: inline-block;text-align: center;">
-                                <p style="font-weight: bold;">{{'RESTAURANT_REGISTER.CURRENCY_ACCEPTED' | translate}}: {{_restaurantCurrency}}</p>
+    <md-card-content>
+        <form [formGroup]="_restaurantEditionForm">
+            <md-tab-group [(selectedIndex)]="selectedIndex">
+                <md-tab [disabled]="!canMove(0)" label="{{'RESTAURANT_EDITION.GENERAL_LABEL' | translate}}">
+                    <md-card>
+                        <md-card-title-group>
+                            <img md-card-sm-image src="{{_restaurantEditImage}}">
+                            <md-card-title>{{'RESTAURANT_EDITION.GENERAL_INFO' | translate}}</md-card-title>
+                            <md-card-subtitle>{{'RESTAURANT_EDITION.GENERAL_INFO_TEXT' | translate}}</md-card-subtitle>
+                        </md-card-title-group>
+                        <md-card-content>
+                            <div style="margin-top: 3%;">
+                                <md-select formControlName="country" placeholder="{{'RESTAURANT_EDITION.SELECT_COUNTRY' | translate}}" style="width: 45%;"
+                                    [(ngModel)]="_selectedCountryValue">
+                                    <md-option *ngFor="let country of _countries | async" (click)="changeCountry(country._id);" value="{{country._id}}" ng-selected="_restaurantCountryValue === country._id">{{country.name | translate}}</md-option>
+                                </md-select>
+                                <md-select formControlName="city" placeholder="{{'RESTAURANT_EDITION.SELECT_CITY' | translate}}" style="width: 45%;margin-left: 2%;"
+                                    [(ngModel)]="_selectedCityValue">
+                                    <md-option *ngFor="let city of _cities | async" (click)="changeCity(city._id);" value="{{city._id}}" ng-selected="_restaurantCityValue === city._id">{{city.name}}</md-option>
+                                </md-select>
                             </div>
-                            <md-input-container style="width: 30%">
-                                <input mdInput required formControlName="phone" type="tel" placeholder="{{'RESTAURANT_EDITION.PHONE' | translate}}" minlength="1" maxlength="30" #inputPhone>
-                                <div mdPrefix>{{_countryIndicative}}&nbsp;</div>
-                                <md-hint align="end">{{inputPhone.value.length}} / 30</md-hint>
-                            </md-input-container>
-                            <md-input-container style="width: 30%;margin-left: 2%;">
-                                <input mdInput formControlName="webPage" placeholder="{{'RESTAURANT_EDITION.WEBPAGE' | translate}}" minlength="1" maxlength="40" #inputWebpage>
-                                <md-hint align="end">{{inputWebpage.value.length}} / 40</md-hint>
-                            </md-input-container>
-                        </div>
-                        <div style="margin-top: 1%;">
-                            <md-input-container style="width: 35%">
-                                <input mdInput formControlName="email" type="email" placeholder="{{'RESTAURANT_EDITION.EMAIL' | translate}}" minlength="1" maxlength="40" #inputEmail>
-                                <md-hint align="end">{{inputEmail.value.length}} / 40</md-hint>
-                            </md-input-container>
-                            <div style="display: inline-block;width: 50%;margin-left: 2%;text-align: center;">
-                                <p style="display: inline-block;">{{'RESTAURANT_EDITION.UPDATE_IMAGE' | translate}}</p>
-                                <input formControlName="editImage" accept=".png, .jpg, .jpeg" (change)="onChangeImage($event)" style="display: none" type="file" name="file-1[]" id="file-1" class="inputfile inputfile-1" data-multiple-caption="{count} files selected"/>
-                                <label for="file-1"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg>
+                            <div style="margin-top: 1%;">
+                                <md-input-container style="width: 45%">
+                                    <textarea mdInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="70" #inputName></textarea>
+                                    <md-hint align="end">{{inputName.value.length}} / 70</md-hint>
+                                </md-input-container>
+                                <md-input-container style="width: 45%;margin-left: 2%;">
+                                    <textarea mdInput required formControlName="address" placeholder="{{'RESTAURANT_EDITION.ADDRESS' | translate}}" minlength="1"
+                                        maxlength="90" #inputAddress></textarea>
+                                    <md-hint align="end">{{inputAddress.value.length}} / 90</md-hint>
+                                </md-input-container>
+                            </div>
+                            <div style="margin-top: 1%;">
+                                <div style="width: 30%; display: inline-block;text-align: center;">
+                                    <p style="font-weight: bold;">{{'RESTAURANT_REGISTER.CURRENCY_ACCEPTED' | translate}}: {{_restaurantCurrency}}</p>
+                                </div>
+                                <md-input-container style="width: 30%">
+                                    <input mdInput required formControlName="phone" type="tel" placeholder="{{'RESTAURANT_EDITION.PHONE' | translate}}" minlength="1"
+                                        maxlength="30" #inputPhone>
+                                    <div mdPrefix>{{_countryIndicative}}&nbsp;</div>
+                                    <md-hint align="end">{{inputPhone.value.length}} / 30</md-hint>
+                                </md-input-container>
+                                <md-input-container style="width: 30%;margin-left: 2%;">
+                                    <input mdInput formControlName="webPage" placeholder="{{'RESTAURANT_EDITION.WEBPAGE' | translate}}" minlength="1" maxlength="40"
+                                        #inputWebpage>
+                                    <md-hint align="end">{{inputWebpage.value.length}} / 40</md-hint>
+                                </md-input-container>
+                            </div>
+                            <div style="margin-top: 1%;">
+                                <md-input-container style="width: 35%">
+                                    <input mdInput formControlName="email" type="email" placeholder="{{'RESTAURANT_EDITION.EMAIL' | translate}}" minlength="1"
+                                        maxlength="40" #inputEmail>
+                                    <md-hint align="end">{{inputEmail.value.length}} / 40</md-hint>
+                                </md-input-container>
+                                <div style="display: inline-block;width: 50%;margin-left: 2%;text-align: center;">
+                                    <p style="display: inline-block;">{{'RESTAURANT_EDITION.UPDATE_IMAGE' | translate}}</p>
+                                    <input formControlName="editImage" accept=".png, .jpg, .jpeg" (change)="onChangeImage($event)" style="display: none" type="file"
+                                        name="file-1[]" id="file-1" class="inputfile inputfile-1" data-multiple-caption="{count} files selected"
+                                    />
+                                    <label for="file-1"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg>
                                     <span *ngIf="!_createImage">{{'CHOOSE_FILE' | translate}}&hellip;</span>
                                     <span *ngIf="_createImage">{{_nameImageFileEdit}}&hellip;</span>
                                 </label>
+                                </div>
                             </div>
-                        </div>
-                    </md-card-content>
-                    <md-card-actions align="end">
-                        <button md-raised-button (click)="cancel();">{{'CANCEL' | translate}}</button>
-                        <button md-raised-button (click)="next()" [disabled]="!canMove(1)">{{'NEXT' | translate}}</button>
-                    </md-card-actions>
-                </md-card>
-            </md-tab>
-            <md-tab [disabled]="!canMove(1)" label="{{'RESTAURANT_EDITION.FINANCIAL_LABEL' | translate}}">
-                <md-card>
-                    <md-card-title>{{'RESTAURANT_EDITION.FINANCIAL_INFO' | translate}}</md-card-title>
-                    <md-card-subtitle>{{'RESTAURANT_EDITION.FINANCIAL_INFO_TEXT' | translate}}</md-card-subtitle>
-                    <md-card-content>
-                        <iu-financialform *ngIf="_showFinancialElements" [financialElements]="_financialElements" (restaurantFinancialInfo)="setRestaurantFinancialInfo($event)"></iu-financialform>
-                        <div>
-                            <p>{{'RESTAURANT_EDITION.ADD_PAYMENTMETHODS_RESTURANT' | translate}}</p>
-                            <div formGroupName="paymentMethods">
-                                <md-checkbox *ngFor="let payment of _paymentMethodsList" [formControlName]="payment.name" [class.invalid]="!_restaurantEditionForm.controls.paymentMethods.valid" style="padding-right: 15px">{{payment.name}}</md-checkbox>
-                                <label></label>
+                        </md-card-content>
+                        <md-card-actions align="end">
+                            <button md-raised-button (click)="cancel();">{{'CANCEL' | translate}}</button>
+                            <button md-raised-button (click)="next()" [disabled]="!canMove(1)">{{'NEXT' | translate}}</button>
+                        </md-card-actions>
+                    </md-card>
+                </md-tab>
+                <md-tab [disabled]="!canMove(1)" label="{{'RESTAURANT_EDITION.FINANCIAL_LABEL' | translate}}">
+                    <md-card>
+                        <md-card-title>{{'RESTAURANT_EDITION.FINANCIAL_INFO' | translate}}</md-card-title>
+                        <md-card-subtitle>{{'RESTAURANT_EDITION.FINANCIAL_INFO_TEXT' | translate}}</md-card-subtitle>
+                        <md-card-content>
+                            <iu-financialform *ngIf="_showFinancialElements" [financialElements]="_financialElements" (restaurantFinancialInfo)="setRestaurantFinancialInfo($event)"></iu-financialform>
+                            <div>
+                                <p>{{'RESTAURANT_EDITION.ADD_PAYMENTMETHODS_RESTURANT' | translate}}</p>
+                                <div formGroupName="paymentMethods">
+                                    <md-checkbox *ngFor="let payment of _paymentMethodsList" [formControlName]="payment.name" [class.invalid]="!_restaurantEditionForm.controls.paymentMethods.valid"
+                                        style="padding-right: 15px">{{payment.name}}</md-checkbox>
+                                    <label></label>
+                                </div>
                             </div>
-                        </div>
-                    </md-card-content>
-                    <md-card-actions align="end">
-                        <button md-raised-button (click)="cancel();">{{'CANCEL' | translate}}</button>
-                        <button md-raised-button (click)="previous()" [disabled]="!canMove(0)">{{'BACK' | translate}}</button>
-                        <button md-raised-button (click)="next()" [disabled]="!canMove(2)">{{'NEXT' | translate}}</button>
-                    </md-card-actions>
-                </md-card>
-            </md-tab>
-            <md-tab [disabled]="!canMove(2)" label="{{'RESTAURANT_EDITION.SCHEDULE_LABEL' | translate}}">
-                <md-card>
-                    <md-card-title>{{'RESTAURANT_EDITION.SCHEDULE_INFO' | translate}}</md-card-title>
-                    <md-card-subtitle>{{'RESTAURANT_EDITION.SCHEDULE_INFO_TEXT' | translate}}</md-card-subtitle>
-                    <md-card-content>
-                        <div style="padding-top: 15px;text-align: -webkit-center;">
-                            <iu-schedule [scheduleToEdit]="_scheduleToEdit" (finalSchedule)="receiveSchedule($event)"></iu-schedule>
-                        </div>
-                    </md-card-content>
-                    <md-card-actions align="end">
-                        <button md-raised-button (click)="cancel();">{{'CANCEL' | translate}}</button>
-                        <button md-raised-button (click)="previous()" [disabled]="!canMove(1)">{{'BACK' | translate}}</button>
-                        <button md-raised-button [disabled]="!canFinish()" (click)="editRestaurant()">{{'FINISH' | translate}}</button>
-                    </md-card-actions>
-                </md-card>
-            </md-tab>
-        </md-tab-group>
-    </form>
-  </md-card-content>
+                        </md-card-content>
+                        <md-card-actions align="end">
+                            <button md-raised-button (click)="cancel();">{{'CANCEL' | translate}}</button>
+                            <button md-raised-button (click)="previous()" [disabled]="!canMove(0)">{{'BACK' | translate}}</button>
+                            <button md-raised-button (click)="next()" [disabled]="!canMove(2)">{{'NEXT' | translate}}</button>
+                        </md-card-actions>
+                    </md-card>
+                </md-tab>
+                <md-tab [disabled]="!canMove(2)" label="{{'RESTAURANT_EDITION.SCHEDULE_LABEL' | translate}}">
+                    <md-card>
+                        <md-card-title>{{'RESTAURANT_EDITION.SCHEDULE_INFO' | translate}}</md-card-title>
+                        <md-card-subtitle>{{'RESTAURANT_EDITION.SCHEDULE_INFO_TEXT' | translate}}</md-card-subtitle>
+                        <md-card-content>
+                            <div style="padding-top: 15px;text-align: -webkit-center;">
+                                <iu-schedule [scheduleToEdit]="_scheduleToEdit" (finalSchedule)="receiveSchedule($event)"></iu-schedule>
+                            </div>
+                        </md-card-content>
+                        <md-card-actions align="end">
+                            <button md-raised-button (click)="cancel();">{{'CANCEL' | translate}}</button>
+                            <button md-raised-button (click)="previous()" [disabled]="!canMove(1)">{{'BACK' | translate}}</button>
+                            <button md-raised-button (click)="next()" [disabled]="!canMove(2)">{{'NEXT' | translate}}</button>
+                        </md-card-actions>
+                    </md-card>
+                </md-tab>
+
+                <md-tab [disabled]="!canMove(2)" label="{{'RESTAURANT_EDITION.NUMBER_TABLE_LABEL' | translate}}">
+                    <div *ngIf="_restaurantToEdit.tstPeriod">
+                        <md-card>
+                            <md-card-title>{{'RESTAURANT_EDITION.NUMBER_TABLE_LABEL_INFO' | translate}}</md-card-title>
+                            <div *ngFor="let param of _parameterDaysTrial | async">
+                                <md-card-subtitle>{{'RESTAURANT_EDITION.NUMBER_TABLE_LABEL_INFO_TEXT_1' | translate}} {{param.value}} {{'RESTAURANT_EDITION.NUMBER_TABLE_LABEL_INFO_TEXT_2'
+                                    | translate}} {{_restaurantToEdit.creation_date | date: 'yyyy/MM/dd'}}{{'RESTAURANT_EDITION.NUMBER_TABLE_LABEL_INFO_TEXT_3' | translate}}</md-card-subtitle>
+                            </div>
+                            <md-card-content>
+                                <md-radio-group formControlName="plans" [(ngModel)]="_restaurantToEdit.plan">
+                                    <md-list>
+                                        <md-list-item *ngFor="let plan of _restaurantPlans | async">
+                                            <md-radio-button class="example-margin" value="{{plan._id}}">
+                                                {{plan.minTableNumber}} {{'RESTAURANT_EDITION.TO' | translate}} {{plan.maxTableNumber != null ? plan.maxTableNumber: 'RESTAURANT_EDITION.MORE'
+                                                | translate}} {{'RESTAURANT_EDITION.TABLES' | translate}}</md-radio-button>
+                                        </md-list-item>
+                                    </md-list>
+                                </md-radio-group>
+                            </md-card-content>
+                            <md-card-actions align="end">
+                                <button md-raised-button (click)="cancel();">{{'CANCEL' | translate}}</button>
+                                <button md-raised-button (click)="previous()" [disabled]="!canMove(2)">{{'BACK' | translate}}</button>
+                                <button md-raised-button [disabled]="!canFinish()" (click)="editRestaurant()">{{'FINISH' | translate}}</button>
+                            </md-card-actions>
+                        </md-card>
+                    </div>
+                    <div *ngIf="!_restaurantToEdit.tstPeriod" [ngSwitch]="_restaurantToEdit.countryId">
+                        <label *ngSwitchCase="'1900'">IS COLOMBIA </label>
+                        <label *ngSwitchCase="'1700'">IS CHILE </label>
+                    </div>
+                </md-tab>
+            </md-tab-group>
+        </form>
+    </md-card-content>
 </md-card>

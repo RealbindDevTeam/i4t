@@ -35,9 +35,14 @@ if (Meteor.isServer) {
                 let secondAdviceString: string = Meteor.call('convertDate', secondAdviceDate);
                 let thirdAdviceDate: Date = Meteor.call('substractDays', forwardDate, thirdAdviceDays);
                 let thirdAdviceString: string = Meteor.call('convertDate', thirdAdviceDate);
+
+                console.log('*** currentString: ' + currentString);
+                console.log('*** firstAdviceString: ' + firstAdviceString);
+                console.log('*** secondAdviceString: ' + secondAdviceString);
+                console.log('*** thirdAdviceString: ' + thirdAdviceString);
                 
                 if (diff > trialDays) {
-                    Restaurants.collection.update({ _id: restaurant._id }, { $set: { isActive: false } })
+                    Restaurants.collection.update({ _id: restaurant._id }, { $set: { isActive: false, tstPeriod: false } })
                 } else {
                     if (currentString == firstAdviceString || currentString == secondAdviceString || currentString == thirdAdviceString) {
                         Meteor.call('sendTrialEmail', restaurant.creation_user, forwardString);
@@ -78,7 +83,7 @@ if (Meteor.isServer) {
          */
         sendTrialEmail: function (_userId: string, _forwardDate: string) {
             let user: User = Users.collection.findOne({ _id: _userId });
-            let parameter: Parameter = Parameters.collection.findOne({_id: '500'});
+            let parameter: Parameter = Parameters.collection.findOne({name: 'from_email'});
             let emailContent: EmailContent = EmailContents.collection.findOne({ language: user.profile.language_code });
             var trial_email_subject: string = emailContent.lang_dictionary[0].traduction;
             var greeting: string = (user.profile && user.profile.first_name) ? (emailContent.lang_dictionary[1].traduction +' '+user.profile.first_name + ",") : emailContent.lang_dictionary[1].traduction;
@@ -100,7 +105,6 @@ if (Meteor.isServer) {
                             subject: trial_email_subject,
                             html: SSR.render('htmlEmail', emailData),      
                         });
-
         }
     });
 }
