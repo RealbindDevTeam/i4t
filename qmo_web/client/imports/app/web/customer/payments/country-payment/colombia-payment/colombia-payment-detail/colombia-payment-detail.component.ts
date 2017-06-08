@@ -19,6 +19,8 @@ export class ColombiaPaymentDetailComponent implements OnInit, OnDestroy {
     private _user = Meteor.userId();
     public currId: string;
     public currencyCode: string;
+    public restId: string;
+    public tabId: string;
 
     private _orders: Observable<Order[]>;
     private _ordersSubscription : Subscription;
@@ -48,7 +50,7 @@ export class ColombiaPaymentDetailComponent implements OnInit, OnDestroy {
     ngOnInit(){
         this._ordersSubscription = MeteorObservable.subscribe( 'getOrdersByAccount', this._user ).subscribe( () => {
            this._ngZone.run( () => {
-                this._orders = Orders.find( { creation_user: this._user, status: 'ORDER_STATUS.DELIVERED' } ).zone();
+                this._orders = Orders.find( { creation_user: this._user, restaurantId: this.restId, tableId: this.tabId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] } } ).zone();
                 this._orders.subscribe( () => { this.calculateValues(); });
            }); 
         });
@@ -59,7 +61,7 @@ export class ColombiaPaymentDetailComponent implements OnInit, OnDestroy {
      */
     calculateValues():void{
         this._totalValue = 0;
-        Orders.collection.find( { creation_user: this._user, status: 'ORDER_STATUS.DELIVERED' } ).fetch().forEach( ( order ) => {
+        Orders.collection.find( { creation_user: this._user, restaurantId: this.restId, tableId: this.tabId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] } } ).fetch().forEach( ( order ) => {
             this._totalValue += order.totalPayment;
         });
         this._ipoComBaseValue  = (this._totalValue * 100 ) / this._ipoCom;
