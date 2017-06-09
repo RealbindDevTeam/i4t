@@ -11,6 +11,7 @@ import { WaiterCallDetails } from '../../../../../../both/collections/restaurant
 import { User } from '../../../../../../both/models/auth/user.model';
 import { Users } from '../../../../../../both/collections/auth/user.collection';
 import { CallCloseConfirmComponent } from './call-close-confirm/call-close-confirm.component';
+import { PaymentConfirmComponent } from '../payment-confirm/payment-confirm.component';
 
 import template from './calls.component.html';
 import style from './calls.component.scss';
@@ -92,6 +93,23 @@ export class CallsComponent {
                     });
                 }, 1500);
             }
+        });
+    }
+
+    /**
+     * This function show modal dialog with payment information
+     * @param {WaiterCallDetail} _call 
+     */
+    showPayment( _call: WaiterCallDetail ){
+        this._mdDialogRef = this._mdDialog.open( PaymentConfirmComponent, {
+            disableClose : true,
+            width: '50%',
+            height: '85%'
+        });
+        this._mdDialogRef.componentInstance.restId = _call.restaurant_id;
+        this._mdDialogRef.componentInstance.tabId = _call.table_id;
+        this._mdDialogRef.afterClosed().subscribe( result => {
+            this._mdDialogRef = null;
         });
     }
 

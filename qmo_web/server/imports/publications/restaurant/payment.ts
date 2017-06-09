@@ -29,11 +29,11 @@ Meteor.publish( 'getUserPaymentsByRestaurant', function( _userId: string, _resta
  * @param {string} _restaurantId
  * @param {string} _tableId
  */
-Meteor.publish( 'getUserPaymentsByRestaurantAndTable', function( _userId: string, _restaurantId: string, _tableId: string ) {
+Meteor.publish( 'getUserPaymentsByRestaurantAndTable', function( _userId: string, _restaurantId: string, _tableId: string, _status: string[] ) {
     check( _userId, String );
     check( _restaurantId, String );
     check( _tableId, String );
-    return Payments.collection.find( { creation_user: _userId, restaurantId: _restaurantId, tableId: _tableId } );
+    return Payments.collection.find( { creation_user: _userId, restaurantId: _restaurantId, tableId: _tableId, status: { $in: _status } } );
 });
 
 /**
@@ -44,5 +44,5 @@ Meteor.publish( 'getUserPaymentsByRestaurantAndTable', function( _userId: string
 Meteor.publish( 'getPaymentsToWaiter', function( _restaurantId: string, _tableId: string ) {
     check( _restaurantId, String );
     check( _tableId, String );
-    return Payments.collection.find( { restaurantId: _restaurantId, tableId: _tableId } );
+    return Payments.collection.find( { restaurantId: _restaurantId, tableId: _tableId, status: 'PAYMENT.NO_PAID' } );
 });
