@@ -165,13 +165,17 @@
             "TIP" : "Tip",
             "TIP_OTHER_VALUE" : "Other value",
             "SELECT_PAYMENT_METHOD" : "Select payment method",
+            "CONFIRM_PAYMENT_METHOD" : "You must select a payment method",
             "ADD_ORDER_PAYMENT" : "Add order to account",
             "BTN_PAY" : "Pay",
             "CONFIRM_TO_ADD_ACCOUNT" : "¿Want you to pay the order",
             "CONFIRM_OWNER_ORDER" : "The owner of the order must confirm the request for payment",
             "CONFIRM_ORDER_STATUS" : "The order has not been delivered",
             "CONFIRM_PAY_OTHER_USER" : "¿You want to transfer order payment",
-            "SUCCESSFUL_PAY_OTHER_USER" : "Payment of order has been transferred"
+            "SUCCESSFUL_PAY_OTHER_USER" : "Payment of order has been transferred",
+            "PAYMENTS_TO_BE_CONFIRM" : "You have pending orders by confirmation",
+            "MOMENT_ANSWER" : "In a moment we will answer you",
+            "MOMENT_PAY_ANSWER" : "In a moment we will receive your payment"
         },
         "WAITER_CALL": {
             "TITTLE": "Call waiter",

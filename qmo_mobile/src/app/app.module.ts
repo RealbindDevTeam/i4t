@@ -37,6 +37,7 @@ import { AddOrderPaymentPage } from '../pages/customer/payments/country-payment/
 import { OrderPaymentDetailComponent } from '../pages/customer/payments/country-payment/order-payment-translate/order-payment-detail';
 import { PaymentConfirmPage } from "../pages/waiter/calls/payment-confirm/payment-confirm";
 import { UserDetailPaymentConfirmComponent } from "../pages/waiter/calls/payment-confirm/user-detail-payment-confirm";
+import { ItemDetailPaymentConfirmComponent } from "../pages/waiter/calls/payment-confirm/item-detail-payment-confirm";
 
 export function createTranslateLoader(http: Http) {
   return new TranslateStaticLoader(http, 'assets/i18n', '.json');
@@ -76,7 +77,8 @@ export function createTranslateLoader(http: Http) {
     AddOrderPaymentPage,
     OrderPaymentDetailComponent,
     PaymentConfirmPage,
-    UserDetailPaymentConfirmComponent
+    UserDetailPaymentConfirmComponent,
+    ItemDetailPaymentConfirmComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -133,7 +135,8 @@ export function createTranslateLoader(http: Http) {
     AddOrderPaymentPage,
     OrderPaymentDetailComponent,
     PaymentConfirmPage,
-    UserDetailPaymentConfirmComponent
+    UserDetailPaymentConfirmComponent,
+    ItemDetailPaymentConfirmComponent
   ],
   providers: [
     {

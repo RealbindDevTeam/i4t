@@ -21,22 +21,30 @@ export class ModalColombiaPayment implements OnInit, OnDestroy {
   private _tipTotal      : number = 0;
   private _totalValue    : number = 0;
   private _otherTip      : number = 0;
-  private _tipFinal      : number = 0;
+  //private _tipFinal      : number = 0;
 
-  private _paymentMethod : string = "";
-  private _restaurantId  : string;
+  private _paymentMethod : any = "";
   private _currencyCode  : string;
 
   private _disabledSubggestedTip : boolean = false ;
-  private _disabledBtnOtherTip : boolean = true ;
+  private _disabledBtnOtherTip   : boolean = false ;
 
   constructor(public _viewCtrl: ViewController, 
               public _translate: TranslateService, 
               public _params: NavParams) {
 
-    this._restaurantId = this._params.get('restaurant');
-    this._totalValue   = this._params.get('value');
-    this._currencyCode = this._params.get('currency');
+    this._tipTotal      = this._params.get('tip');
+    this._otherTip      = this._params.get('other_tip');
+    this._totalValue    = this._params.get('value');
+    this._currencyCode  = this._params.get('currency');
+    this._paymentMethod = this._params.get('payment_method');
+
+    if (  this._tipTotal > 0) {
+      this._disabledSubggestedTip = true;
+    }
+    if ( this._otherTip > 0) {
+      this._disabledBtnOtherTip = true;
+    }
   }
 
   /**
@@ -59,7 +67,7 @@ export class ModalColombiaPayment implements OnInit, OnDestroy {
    * @param _totalTipValue 
    */
   shearchTipPorcentage(){
-      let _lRestaurant   = Restaurants.findOne( { _id: this._restaurantId } );
+      let _lRestaurant   = Restaurants.findOne( {} );
       if( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] > 0 ){
           this._tipValue = _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ];
       }
@@ -85,9 +93,9 @@ export class ModalColombiaPayment implements OnInit, OnDestroy {
    */
   otherTip( _event : any ) : void {
     if( _event.checked ){
-      this._disabledBtnOtherTip = false;
-    } else {
       this._disabledBtnOtherTip = true;
+    } else {
+      this._disabledBtnOtherTip = false;
       this._otherTip = 0;
     }
   }
@@ -106,8 +114,12 @@ export class ModalColombiaPayment implements OnInit, OnDestroy {
     if(!this._disabledSubggestedTip){
       this._tipTotal = 0;
     }
-    this._tipFinal = Number.parseInt(this._tipTotal.toString()) + Number.parseInt(this._otherTip.toString());
-    this._viewCtrl.dismiss({ tip :  this._tipFinal, payment : this._paymentMethod });
+    if(this._paymentMethod === ''){
+      this._paymentMethod = 'MOBILE.PAYMENTS.PAYMENT_METHOD';
+    }
+    //this._tipFinal = Number.parseInt(this._tipTotal.toString()) + Number.parseInt(this._otherTip.toString());
+    //this._viewCtrl.dismiss({ tip :  this._tipFinal, payment : this._paymentMethod });
+    this._viewCtrl.dismiss({ tip :  this._tipTotal, other_tip: this._otherTip, payment : this._paymentMethod });
   }
 
   /**

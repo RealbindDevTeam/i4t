@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AlertController, LoadingController, NavController, NavParams, ToastController  } from 'ionic-angular';
+import { NavParams  } from 'ionic-angular';
 import { TranslateService } from 'ng2-translate';
 import { MeteorObservable } from "meteor-rxjs";
 import { Subscription } from "rxjs";
@@ -18,18 +18,29 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
   private _restauranId : string;
   private _tableId     : string;
 
+  /**
+   * PaymentConfirmPage constructor
+   * @param _translate 
+   * @param _params 
+   */
   constructor( public _translate: TranslateService,
                public _params: NavParams ) {
     this._restauranId = this._params.get('restaurant');
     this._tableId     = this._params.get('table');
   }
 
+  /**
+   * ngOnInti Implementation
+   */
   ngOnInit(){
     this._usersDetailSubscription = MeteorObservable.subscribe('getUserDetailsByCurrentTable', this._restauranId, this._tableId).subscribe(() => {
       this._usersDetails = UserDetails.find({current_restaurant : this._restauranId, current_table : this._tableId});
     });
   }
 
+  /**
+   * ngOnDestroy Implementation
+   */
   ngOnDestroy(){
     this._usersDetailSubscription.unsubscribe();
   }

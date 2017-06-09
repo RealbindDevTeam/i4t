@@ -1,19 +1,17 @@
-<ion-list *ngFor="let user of _users | async">
-    <ion-list-header>
-        <ion-avatar item-start>
-            <img *ngIf="user.username" src="assets/img/user_default_image.png">
-            <img *ngIf="user.services.facebook" src="http://graph.facebook.com/{{user.services.facebook.id}}/picture/?type=large">
-        </ion-avatar>
-        <span *ngIf="user.username">
-            {{user.username}}
-        </span>
-        <span *ngIf="user.services.facebook">
-            {{user.services.facebook.name}}
-        </span>
-    </ion-list-header>
-    
-    <button ion-item *ngFor="let order of _orders | async">
-      <ion-icon name="medical" item-start></ion-icon>
-        {{order._id}}
+<ion-item-group *ngFor="let user of _users | async" style="margin: 0 -16px 0;">
+    <ion-item-divider  style="color: #000; background-color: #f4f4f4;">
+        <h3 *ngIf="user.username">{{user.username}}</h3>
+        <h3 *ngIf="user.services.facebook">{{user.services.facebook.name}}</h3>
+    </ion-item-divider>
+</ion-item-group>
+
+<div *ngFor="let order of _orders | async; let i = index">
+    <button ion-item style="padding-left: 0;" (click)="showDetail(i)">
+        {{'MOBILE.ORDERS.ORDER' | translate}} {{order.code}}
+        <ion-note item-right>{{order.totalPayment}}</ion-note>
+        <ion-icon showWhen="android" item-right name="ios-arrow-forward-outline" style="float: right; color: #c5c5c5"></ion-icon>
     </button>
-</ion-list>
+    <div *ngIf="_orderIndex == i">
+        <item-detail-payment-confirm *ngFor="let item of order.items" [itemId]="item.itemId" [quantity]="item.quantity" [paymentItem]="item.paymentItem"></item-detail-payment-confirm>
+    </div>
+</div>

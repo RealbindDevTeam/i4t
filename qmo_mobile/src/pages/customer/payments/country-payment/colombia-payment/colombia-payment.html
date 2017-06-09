@@ -11,17 +11,60 @@
 <div>
     <div class="ion-content-custom">
         <h3 style="padding-left: 16px">{{'MOBILE.PAYMENTS.BILL' | translate}}</h3>
-        <!--ion-list *ngIf="(_orders | async)?.length > 0">
-            <ion-item *ngFor="let order of _orders | async">
-                <ion-icon name='list' item-left></ion-icon>
-                {{'MOBILE.PAYMENTS.ORDER' | translate}} {{order.code}}
-                <ion-note item-right>
-                    {{order.totalPayment}} {{_currencyCode}}
-                </ion-note>
-            </ion-item>
-        </ion-list-->
 
-        <ion-list>
+        <ion-card (click)="goToAddOrders()">
+            <ion-card-content>
+                <div class="item-block">
+                    <img class="img-cards" src="assets/img/pago.png">
+                    <div class="header-title">
+                        <div class="label">
+                            <span>
+                                {{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}
+                            </span>
+                            <p>Ordenes</p>
+                        </div>
+                    </div>
+                </div>
+            </ion-card-content>
+        </ion-card>
+        
+        <ion-card (click)="goToPaymentDetails()">
+            <ion-card-content>
+                <div class="item-block">
+                    <img class="img-cards" src="assets/img/pago.png">
+                    <div class="header-title">
+                        <div class="label">
+                            <span>
+                                {{'MOBILE.PAYMENTS.VIEW_DETAIL' | translate}}
+                            </span>
+                            <p>Detalle</p>
+                        </div>
+                    </div>
+                </div>
+            </ion-card-content>
+        </ion-card>
+
+        <ion-card (click)="presentModal()">
+            <ion-card-content>
+                <div class="item-block">
+                    <img *ngIf="_paymentMethod == 'MOBILE.PAYMENTS.PAYMENT_METHOD'" class="img-cards" src="assets/img/pagopng">
+                    <img *ngIf="_paymentMethod == 'PAYMENT_METHODS.CASH'" class="img-cards" src="assets/img/pago.png">
+                    <img *ngIf="_paymentMethod == 'PAYMENT_METHODS.CREDIT_CARD'" class="img-cards" src="assets/img/pago_tarjeta_credito.png">
+                    <img *ngIf="_paymentMethod == 'PAYMENT_METHODS.DEBIT_CARD'" class="img-cards" src="assets/img/pago_tarjeta_debito.png">
+                    <img *ngIf="_paymentMethod == 'PAYMENT_METHODS.ONLINE'" class="img-cards" src="assets/img/pagopng">
+                    <div class="header-title">
+                        <div class="label">
+                            <span>
+                                {{'MOBILE.PAYMENTS.MODAL_TITLE' | translate}}
+                            </span>
+                            <p>{{_paymentMethod | translate}}</p>
+                            <p>{{'MOBILE.PAYMENTS.TIP' | translate}}&nbsp;{{_tipTotal}} {{_currencyCode}}</p>
+                        </div>
+                    </div>
+                </div>
+            </ion-card-content>
+        </ion-card>
+        <!--ion-list>
             <button ion-item (click)="goToAddOrders()">
                 <ion-icon name="cart" item-left></ion-icon>
                 <h2>{{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}</h2>
@@ -40,7 +83,7 @@
                 <h2>{{'MOBILE.PAYMENTS.MODAL_TITLE' | translate}}</h2>
                 <p>{{_paymentMethod | translate}}&nbsp;-&nbsp;{{_tipTotal}} {{_currencyCode}}</p>
             </button>
-        </ion-list>
+        </ion-list-->
 
     </div>
 
@@ -60,7 +103,8 @@
         <h3 style="display: inline-block;">{{'MOBILE.PAYMENTS.TOTAL_BILL' | translate}}</h3>
         <h3 style="display: inline-block; position: absolute; right: 15px; -webkit-margin-before: 0em;">{{_totalToPayment}} {{_currencyCode}}</h3>    
         <div>
-            <button ion-button block (click)="pay()">{{'MOBILE.PAYMENTS.PAY_BTN' | translate}}</button>
+            <button *ngIf="!_paymentCreated"  ion-button block (click)="pay()">{{'MOBILE.PAYMENTS.PAY_BTN' | translate}}</button>
+            <p *ngIf="_paymentCreated" style="font-weight: bold;color: red;">Pago Pendiente por Confirmar por parte del Mesero</p>
         </div>
         <div showWhen="ios" style="height: 42px">
         </div>
