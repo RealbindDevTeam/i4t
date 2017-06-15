@@ -178,7 +178,12 @@
             "ORDERS_CHEF": "Ordenes"
         },
         "ORDERS": "Ordenes",
-        "WAITER_CALL": "Llamar mesero"
+        "WAITER_CALL": "Llamar mesero",
+        "INVOICING": {
+            "INVOICING": "Facturación",
+            "MONTHLY_INVOICE": "Factura del mes",
+            "INOVICING_HISTORY": "Historial de facturas"
+        }
     },
     "PROMOTIONS": {
         "PROMOTION_CREATION": "Creación de promociones",
@@ -247,7 +252,12 @@
         "NUMBER_TABLE_LABEL_INFO_TEXT_2": " días, después de eso, puedes elegir un plan de acuerdo con el número seleccionado de mesas",
         "TO": "a ",
         "TABLES": "mesas",
-        "MORE": "más"
+        "MORE": "más",
+        "RESTAURANT_CREATION": "Creación de restaurante",
+        "ACTIVATION_MESSAGE": "Se activará el cobro mensual del servicio Iurest por restaurante",
+        "CLARIFICATION_MESSAGE": "Iurest realiza el cobro de servicio el primer día de cada mes, el primer mes sobre el 50%",
+        "ACCEPT_CREATION": "Aceptar",
+        "CANCEL_CREATION": "Cancelar"
     },
     "WEEK": {
         "MONDAY": "Lunes",
@@ -554,7 +564,12 @@
         "NUMBER_TABLE_LABEL_INFO_TEXT_3": ", después de eso, puedes elegir un plan de acuerdo con el número seleccionado de mesas",
         "TO": "a ",
         "TABLES": "mesas",
-        "MORE": "más"
+        "MORE": "más",
+        "NUMBER_TABLE_LABEL_PLAN": "Selecciona un plan",
+        "NUMBER_TABLE_LABEL_PLAN_INFO": "De acuerdo al número de mesas se realizará el cobro correspondiente a la cuenta que registres",
+        "PLAN_ONE": "Plan Uno",
+        "PLAN_TWO": "Plan Dos",
+        "PLAN_THREE": "Plan Tres"
     },
     "RESTAURANT_LOCATION": {
         "TITTLE": "Ubicacion del Establecimiento",
@@ -696,5 +711,15 @@
         "ENTER": "Ingresar código",
         "CODE_NOT_FOUND": "Código no encontrado",
         "TRY_AGAIN": "Por favor intenta nuevamente"
+    },
+    "MONTHLY_INVOICE": {
+        "TITLE": "Facturación del servicio Iurest Mensual",
+        "SUBTITLE": "Aquí puedes visualizar el costo total por el servicio iurest por restaurante y número de mesas",
+        "RESTAURANT_NAME": "Nombre",
+        "RESTAURANT_PRICE": "Precio",
+        "TABLES_NUMBER": "Número de mesas",
+        "TABLES_PRICE": "Precio de mesas",
+        "TOTAL": "Total",
+        "CURRENCY": "Moneda"
     }
 }

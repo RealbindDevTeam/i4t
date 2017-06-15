@@ -89,7 +89,7 @@
                         <md-card-actions align="end">
                             <button md-raised-button (click)="cancel();">{{'CANCEL' | translate}}</button>
                             <button md-raised-button (click)="previous()" [disabled]="!canMove(0)">{{'BACK' | translate}}</button>
-                            <button md-raised-button (click)="next()" [disabled]="!canMove(2)">{{'NEXT' | translate}}</button>
+                            <button md-raised-button (click)="next()" [disabled]="!canMove(1)">{{'NEXT' | translate}}</button>
                         </md-card-actions>
                     </md-card>
                 </md-tab>
@@ -104,42 +104,10 @@
                         </md-card-content>
                         <md-card-actions align="end">
                             <button md-raised-button (click)="cancel();">{{'CANCEL' | translate}}</button>
-                            <button md-raised-button (click)="previous()" [disabled]="!canMove(1)">{{'BACK' | translate}}</button>
-                            <button md-raised-button (click)="next()" [disabled]="!canMove(2)">{{'NEXT' | translate}}</button>
+                            <button md-raised-button (click)="previous()" [disabled]="!canMove(2)">{{'BACK' | translate}}</button>
+                            <button md-raised-button [disabled]="!canFinish()" (click)="editRestaurant()">{{'FINISH' | translate}}</button>
                         </md-card-actions>
                     </md-card>
-                </md-tab>
-
-                <md-tab [disabled]="!canMove(2)" label="{{'RESTAURANT_EDITION.NUMBER_TABLE_LABEL' | translate}}">
-                    <div *ngIf="_restaurantToEdit.tstPeriod">
-                        <md-card>
-                            <md-card-title>{{'RESTAURANT_EDITION.NUMBER_TABLE_LABEL_INFO' | translate}}</md-card-title>
-                            <div *ngFor="let param of _parameterDaysTrial | async">
-                                <md-card-subtitle>{{'RESTAURANT_EDITION.NUMBER_TABLE_LABEL_INFO_TEXT_1' | translate}} {{param.value}} {{'RESTAURANT_EDITION.NUMBER_TABLE_LABEL_INFO_TEXT_2'
-                                    | translate}} {{_restaurantToEdit.creation_date | date: 'yyyy/MM/dd'}}{{'RESTAURANT_EDITION.NUMBER_TABLE_LABEL_INFO_TEXT_3' | translate}}</md-card-subtitle>
-                            </div>
-                            <md-card-content>
-                                <md-radio-group formControlName="plans" [(ngModel)]="_restaurantToEdit.plan">
-                                    <md-list>
-                                        <md-list-item *ngFor="let plan of _restaurantPlans | async">
-                                            <md-radio-button class="example-margin" value="{{plan._id}}">
-                                                {{plan.minTableNumber}} {{'RESTAURANT_EDITION.TO' | translate}} {{plan.maxTableNumber != null ? plan.maxTableNumber: 'RESTAURANT_EDITION.MORE'
-                                                | translate}} {{'RESTAURANT_EDITION.TABLES' | translate}}</md-radio-button>
-                                        </md-list-item>
-                                    </md-list>
-                                </md-radio-group>
-                            </md-card-content>
-                            <md-card-actions align="end">
-                                <button md-raised-button (click)="cancel();">{{'CANCEL' | translate}}</button>
-                                <button md-raised-button (click)="previous()" [disabled]="!canMove(2)">{{'BACK' | translate}}</button>
-                                <button md-raised-button [disabled]="!canFinish()" (click)="editRestaurant()">{{'FINISH' | translate}}</button>
-                            </md-card-actions>
-                        </md-card>
-                    </div>
-                    <div *ngIf="!_restaurantToEdit.tstPeriod" [ngSwitch]="_restaurantToEdit.countryId">
-                        <label *ngSwitchCase="'1900'">IS COLOMBIA </label>
-                        <label *ngSwitchCase="'1700'">IS CHILE </label>
-                    </div>
                 </md-tab>
             </md-tab-group>
         </form>

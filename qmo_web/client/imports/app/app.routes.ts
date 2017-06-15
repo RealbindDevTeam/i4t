@@ -37,6 +37,7 @@ import { ChefGuard } from './web/auth/navigation/chef-guard.service';
 import { CashierGuard } from './web/auth/navigation/cashier-guard.service';
 import { SuperChefGuard } from './web/auth/navigation/super-chef-guard.service';
 import { PaymentsComponent } from './web/customer/payments/payments.component';
+import { MonthlyInvoiceComponent } from './web/invoicing/monthly-invoice/monthly-invoice.component';
 
 export const routes: Route[] = [
     {
@@ -63,7 +64,8 @@ export const routes: Route[] = [
             { path: 'waiter-call', component: WaiterCallComponent, canActivate: [CustomerGuard] },
             { path: 'chefOrders', component: OrderAttentionComponent, canActivate: [ChefGuard] },
             { path: 'calls', component: CallsComponent, canActivate: [WaiterGuard] },
-            { path: 'payments', component: PaymentsComponent, canActivate: [CustomerGuard] }
+            { path: 'payments', component: PaymentsComponent, canActivate: [CustomerGuard] },
+            { path: 'monthly_invoice', component: MonthlyInvoiceComponent, canActivate: [AdminGuard]}
         ]
     },
     { path: '', component: LandingPageComponent },

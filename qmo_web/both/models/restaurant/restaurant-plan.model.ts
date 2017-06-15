@@ -6,6 +6,7 @@ export interface RestaurantPlan extends CollectionObject{
     minTableNumber: number;
     maxTableNumber?: number;
     price: Price[];
+    name: string;
 }
 
 export interface Price {

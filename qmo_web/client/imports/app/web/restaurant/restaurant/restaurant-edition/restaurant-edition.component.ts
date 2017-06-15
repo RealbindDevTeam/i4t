@@ -187,8 +187,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             webPage: [this._restaurantToEdit.webPage],
             email: [this._restaurantToEdit.email],
             editImage: [''],
-            paymentMethods: this._paymentsFormGroup,
-            plans: [this._restaurantToEdit.plan]
+            paymentMethods: this._paymentsFormGroup
         });
 
         this._selectedCountryValue = this._restaurantToEdit.countryId;
@@ -234,8 +233,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                 financialInformation: this._restaurantFinancialInformation,
                 paymentMethods: _lPaymentMethodsToInsert,
                 schedule: this._edition_schedule,
-                queue: this._queue,
-                plan: this._restaurantEditionForm.value.plans
+                queue: this._queue
             }
         });
 
