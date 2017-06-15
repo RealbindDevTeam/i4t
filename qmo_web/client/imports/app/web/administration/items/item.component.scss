@@ -10,6 +10,7 @@
     top: 0;
     bottom: 0;
     height: 100%;
+    width: 100%;
     
     .main-overflow {
         position: relative;
@@ -47,6 +48,6 @@
 
 .fixed-action-btn {		
     position: absolute;
-    right: 10px;
+    right: 20px;
     bottom: 10px;
  }

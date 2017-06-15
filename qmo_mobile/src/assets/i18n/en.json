@@ -31,6 +31,7 @@
         "MODIFY": "Modify",
         "CHOOSE_FILE": "Choose a file",
         "CLOSE" : "Close",
+        "VIEW" : "Ver",
         "INITIAL": {
             "SIGNUP": "Sign Up",
             "SIGNIN": "Log In"
@@ -148,6 +149,7 @@
             "ADD_ORDER": "Add order",
             "PAYMENT_METHOD": "Payment method",
             "TOTAL_BILL": "Total bill",
+            "TOTAL_PAY": "Total pay",
             "PAY_BTN": "Pay",
             "PAY_DETAIL_TITTLE":"Payment detail",
             "PAY_ORDER":"Order",
@@ -164,13 +166,17 @@
             "TIP" : "Tip",
             "TIP_OTHER_VALUE" : "Other value",
             "SELECT_PAYMENT_METHOD" : "Select payment method",
+            "CONFIRM_PAYMENT_METHOD" : "You must select a payment method",
             "ADD_ORDER_PAYMENT" : "Add order to account",
             "BTN_PAY" : "Pay",
             "CONFIRM_TO_ADD_ACCOUNT" : "¿Want you to pay the order",
             "CONFIRM_OWNER_ORDER" : "The owner of the order must confirm the request for payment",
             "CONFIRM_ORDER_STATUS" : "The order has not been delivered",
             "CONFIRM_PAY_OTHER_USER" : "¿You want to transfer order payment",
-            "SUCCESSFUL_PAY_OTHER_USER" : "Payment of order has been transferred"
+            "SUCCESSFUL_PAY_OTHER_USER" : "Payment of order has been transferred",
+            "PAYMENTS_TO_BE_CONFIRM" : "You have pending orders by confirmation",
+            "MOMENT_ANSWER" : "In a moment we will answer you",
+            "MOMENT_PAY_ANSWER" : "In a moment we will receive your payment"
         },
         "WAITER_CALL": {
             "TITTLE": "Call waiter",
@@ -187,7 +193,9 @@
             "TABLE" :"Table",
             "CALL_LABEL_SEND_ORDER" : "Order to deliver",
             "CALL_LABEL_CUSTOMER" : "Customer's call",
-            "CALL_LABEL_CUSTOMER_PAYMENT" : "Customer's payment"
+            "CALL_LABEL_CUSTOMER_PAYMENT" : "Customer's payment",
+            "PAY_CONFIRM" : "Payment confirm",
+            "PAY_CLOSE" : "Payments close"
         },
         "SECTIONS": {
             "MENU": "Menu",

@@ -31,6 +31,7 @@
         "MODIFY": "Modificar",
         "CHOOSE_FILE": "Seleccionar archivo",
         "CLOSE" : "Cerrar",
+        "VIEW" : "Ver",
         "INITIAL": {
             "SIGNUP": "Registrarse",
             "SIGNIN": "Iniciar sesión"
@@ -148,6 +149,7 @@
             "ADD_ORDER": "Agregar orden",
             "PAYMENT_METHOD": "Medio de pago",
             "TOTAL_BILL": "Total cuenta",
+            "TOTAL_PAY": "Total por pagar",
             "PAY_BTN": "Pagar",
             "PAY_DETAIL_TITTLE":"Detalle del pago",
             "PAY_ORDER":"Orden",
@@ -164,13 +166,17 @@
             "TIP" : "Propina",
             "TIP_OTHER_VALUE" : "Otro valor",
             "SELECT_PAYMENT_METHOD" : "Seleccionar medio de pago",
+            "CONFIRM_PAYMENT_METHOD" : "Debe seleccionar un medio de pago",
             "ADD_ORDER_PAYMENT" : "Agregar orden a la cuenta",
             "BTN_PAY" : "Pagar",
             "CONFIRM_TO_ADD_ACCOUNT" : "¿Deseas realizar el pago de la orden",
             "CONFIRM_OWNER_ORDER" : "El propietario de la orden debe confirmar la solicitud del pago",
             "CONFIRM_ORDER_STATUS" : "La orden no ha sido entregada",
             "CONFIRM_PAY_OTHER_USER" : "¿Deseas transferir el pago de la orden",
-            "SUCCESSFUL_PAY_OTHER_USER" : "Se ha transferido el pago de la orden"
+            "SUCCESSFUL_PAY_OTHER_USER" : "Se ha transferido el pago de la orden",
+            "PAYMENTS_TO_BE_CONFIRM" : "Tienes ordenes en estado pendiente por confirmación",
+            "MOMENT_ANSWER" : "En un momento te atenderemos",
+            "MOMENT_PAY_ANSWER" : "En un momento recibiremos tu pago"
         },
         "WAITER_CALL": {
             "TITTLE": "Solicitar mesero",
@@ -187,7 +193,9 @@
             "TABLE" :"Mesa",
             "CALL_LABEL_SEND_ORDER" : "Entrega de orden",
             "CALL_LABEL_CUSTOMER" : "Llamado de cliente",
-            "CALL_LABEL_CUSTOMER_PAYMENT" : "Pago de cliente"
+            "CALL_LABEL_CUSTOMER_PAYMENT" : "Pago de cliente",
+            "PAY_CONFIRM" : "Confirmación de pago",
+            "PAY_CLOSE" : "Cerrar pagos"
         },
         "SECTIONS": {
             "MENU": "Menú",

@@ -35,6 +35,9 @@ import { ColombiaPaymentItemDetailComponent } from '../pages/customer/payments/c
 import { OrderPaymentTranslatePage } from '../pages/customer/payments/country-payment/order-payment-translate/order-payment-translate';
 import { AddOrderPaymentPage } from '../pages/customer/payments/country-payment/order-payment-translate/add-order-payment/add-order-payment';
 import { OrderPaymentDetailComponent } from '../pages/customer/payments/country-payment/order-payment-translate/order-payment-detail';
+import { PaymentConfirmPage } from "../pages/waiter/calls/payment-confirm/payment-confirm";
+import { PaymentDetailConfirmComponent } from "../pages/waiter/calls/payment-confirm/payment-detail-confirm";
+import { ItemDetailPaymentConfirmComponent } from "../pages/waiter/calls/payment-confirm/item-detail-payment-confirm";
 
 export function createTranslateLoader(http: Http) {
   return new TranslateStaticLoader(http, 'assets/i18n', '.json');
@@ -72,7 +75,10 @@ export function createTranslateLoader(http: Http) {
     ColombiaPaymentItemDetailComponent,
     OrderPaymentTranslatePage,
     AddOrderPaymentPage,
-    OrderPaymentDetailComponent
+    OrderPaymentDetailComponent,
+    PaymentConfirmPage,
+    PaymentDetailConfirmComponent,
+    ItemDetailPaymentConfirmComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -127,7 +133,10 @@ export function createTranslateLoader(http: Http) {
     ColombiaPaymentItemDetailComponent,
     OrderPaymentTranslatePage,
     AddOrderPaymentPage,
-    OrderPaymentDetailComponent
+    OrderPaymentDetailComponent,
+    PaymentConfirmPage,
+    PaymentDetailConfirmComponent,
+    ItemDetailPaymentConfirmComponent
   ],
   providers: [
     {

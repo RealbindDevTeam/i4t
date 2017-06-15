@@ -26,7 +26,7 @@
   <ion-list style="margin-bottom: 0px">
       <ion-item style="padding-left: 0px">
           <!--ion-label>{{ 'MOBILE.PAYMENTS.TIPS' | translate }} ({{_tipValue}}%)</ion-label-->
-          <ion-checkbox (ionChange)="allowTip($event)"></ion-checkbox>
+          <ion-checkbox (ionChange)="allowTip($event)" [checked]="_disabledSubggestedTip"></ion-checkbox>
           <ion-label>{{ 'MOBILE.PAYMENTS.TIP' | translate }} ({{_tipValue}}%)</ion-label>
           <div item-right style="text-align: end;">
               <h4>{{_tipTotal}} {{_currencyCode}}</h4>
@@ -35,10 +35,10 @@
   </ion-list>
       
   <div style="padding-left: 0px" class="item item-block item-ios item-checkbox">
-      <ion-checkbox (ionChange)="otherTip($event)"></ion-checkbox>
+      <ion-checkbox (ionChange)="otherTip($event)" [checked]="_disabledBtnOtherTip"></ion-checkbox>
       <ion-label>{{ 'MOBILE.PAYMENTS.TIP_OTHER_VALUE' | translate }}</ion-label>
       <div item-right style="width: 150px;">
-          <ion-input type="number" min="0" [disabled]="_disabledBtnOtherTip" [(ngModel)]="_otherTip"></ion-input>
+          <ion-input type="number" min="0" [disabled]="!_disabledBtnOtherTip" [(ngModel)]="_otherTip"></ion-input>
       </div>
   </div>
 

@@ -31,7 +31,8 @@
                     </div>
                 </div>
                 <div>
-                    <button md-raised-button style="width: 50%;" color="primary">Pagar</button>
+                    <button md-raised-button style="width: 50%;" color="primary" *ngIf="!_paymentCreated" (click)="pay()">Pagar</button>
+                    <p *ngIf="_paymentCreated" style="font-weight: bold;color: red;">Pago Pendiente por Confirmar por parte del Mesero</p>
                 </div>
             </md-card-content>
         </md-card>
@@ -43,9 +44,9 @@
                     <table class="centered striped">
                         <thead>
                             <tr>
-                                <th data-field="id">Orden</th>
-                                <th data-field="name">Estado</th>
-                                <th data-field="price">Pago total de la orden</th>
+                                <th data-field="order">Orden</th>
+                                <th data-field="status">Estado</th>
+                                <th data-field="payment">Pago total de la orden</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,4 +65,7 @@
         </md-card>
     </div>
     <order-payment-translate [resId]="restId" [currId]="currId" [tabId]="tabId" (recalculate)="reCalculateValues($event)"></order-payment-translate>
+</div>
+<div class="loading" *ngIf="_loading">
+    <md-spinner></md-spinner>
 </div>

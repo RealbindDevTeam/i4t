@@ -59,6 +59,7 @@ import { ColombiaItemDetailComponent } from "./customer/payments/country-payment
 import { OrderPaymentTranslateComponent } from './customer/payments/order-payment-translate/order-payment-translate.component';
 import { OrderToTranslateComponent } from './customer/payments/order-payment-translate/order-to-translate/order-to-translate.component';
 import { ColombiaPaymentDetailComponent } from './customer/payments/country-payment/colombia-payment/colombia-payment-detail/colombia-payment-detail.component';
+import { PaymentConfirmComponent } from './waiter/payment-confirm/payment-confirm.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -121,7 +122,8 @@ export const MODAL_DIALOG_DECLARATIONS = [
     RestaurantScheduleComponent,
     CallCloseConfirmComponent,
     OrderToTranslateComponent,
-    ColombiaPaymentDetailComponent
+    ColombiaPaymentDetailComponent,
+    PaymentConfirmComponent
     /*
     CollaboratorsEditionComponent,
     */

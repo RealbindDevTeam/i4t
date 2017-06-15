@@ -12,3 +12,13 @@ Meteor.publish( 'getAccountsByTableRestaurant', function( _restaurantId:string, 
     check( _status, String );
     return Accounts.collection.find( { restaurantId: _restaurantId, status: _status } );
 });
+
+/**
+ * Meteor publication account by tableId
+ * @param {string} _tableId
+ */
+Meteor.publish( 'getAccountsByTableId', function( _tableId : string ){
+    check( _tableId, String );
+    let account = Accounts.collection.find( { tableId : _tableId } );
+    return account;
+});
