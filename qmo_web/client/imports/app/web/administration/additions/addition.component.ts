@@ -184,11 +184,10 @@ export class AdditionComponent implements OnInit, OnDestroy{
      */
     cancel():void{
         this._additionForm.reset();    
-        this._showCurrencies = false; 
-        this._restaurantCurrencies = [];
+        this._restaurantCurrencies.length > 0 ? this._showCurrencies = true : this._showCurrencies = false; 
         this._currenciesFormGroup.reset();
         this._taxesFormGroup.reset();
-        this._showTaxes = false;
+        this._restaurantTaxes.length > 0 ? this._showTaxes = true : this._showTaxes = false;
     }
 
     /**
