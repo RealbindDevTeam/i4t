@@ -165,7 +165,11 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         this._itemImageThumbsSub = MeteorObservable.subscribe( 'itemImageThumbs', this._user ).subscribe( () => {
             this._ngZone.run( () => {
                 let _lItemImage:ItemImageThumb = ItemImagesThumbs.findOne( { itemId: this._itemToEdit._id } );
-                this._itemEditImage = _lItemImage.url;
+                if( _lItemImage ){ 
+                    this._itemEditImage = _lItemImage.url;
+                 } else {
+                    this._itemEditImage = '';
+                 }
             });
         });
         this._sectionsSub = MeteorObservable.subscribe( 'sections', this._user ).subscribe( () => {
@@ -340,6 +344,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
      */
     changeSectionEdit( _section ):void{
         let _restaurantSectionsIds: string[]= [];
+        this._restaurantList = [];
         this._itemEditionForm.controls['editSectionId'].setValue( _section );
 
         this._categories = Categories.find( { section: _section, is_active: true } ).zone();
@@ -501,8 +506,10 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                 let _lItemImage:ItemImage = ItemImages.findOne( { itemId: this._itemEditionForm.value.editId } );
                 let _lItemImageThumb: ItemImageThumb =  ItemImagesThumbs.findOne( { itemId: this._itemEditionForm.value.editId } );
 
-                ItemImages.remove( { _id: _lItemImage._id } );
-                ItemImagesThumbs.remove( { _id: _lItemImageThumb._id } );
+                if( _lItemImage && _lItemImageThumb ){
+                    ItemImages.remove( { _id: _lItemImage._id } );
+                    ItemImagesThumbs.remove( { _id: _lItemImageThumb._id } );
+                }
 
                 uploadItemImage( this._editItemImageToInsert, 
                                  Meteor.userId(),
@@ -591,7 +598,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         this._restaurantSub.unsubscribe();
         this._garnishFoodSub.unsubscribe();
         this._additionSub.unsubscribe();
-        this._currenciesSub.unsubscribe();
-        this._countriesSub.unsubscribe();
+        if( this._currenciesSub ) { this._currenciesSub.unsubscribe(); }
+        if( this._countriesSub ){ this._countriesSub.unsubscribe(); }
     }
 }
