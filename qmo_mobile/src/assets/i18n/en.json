@@ -149,6 +149,7 @@
             "ADD_ORDER": "Add order",
             "PAYMENT_METHOD": "Payment method",
             "TOTAL_BILL": "Total bill",
+            "TOTAL_PAY": "Total pay",
             "PAY_BTN": "Pay",
             "PAY_DETAIL_TITTLE":"Payment detail",
             "PAY_ORDER":"Order",
@@ -193,7 +194,8 @@
             "CALL_LABEL_SEND_ORDER" : "Order to deliver",
             "CALL_LABEL_CUSTOMER" : "Customer's call",
             "CALL_LABEL_CUSTOMER_PAYMENT" : "Customer's payment",
-            "PAY_CONFIRM" : "Payment confirm"
+            "PAY_CONFIRM" : "Payment confirm",
+            "PAY_CLOSE" : "Payments close"
         },
         "SECTIONS": {
             "MENU": "Menu",

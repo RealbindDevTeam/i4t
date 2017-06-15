@@ -36,7 +36,7 @@ import { OrderPaymentTranslatePage } from '../pages/customer/payments/country-pa
 import { AddOrderPaymentPage } from '../pages/customer/payments/country-payment/order-payment-translate/add-order-payment/add-order-payment';
 import { OrderPaymentDetailComponent } from '../pages/customer/payments/country-payment/order-payment-translate/order-payment-detail';
 import { PaymentConfirmPage } from "../pages/waiter/calls/payment-confirm/payment-confirm";
-import { UserDetailPaymentConfirmComponent } from "../pages/waiter/calls/payment-confirm/user-detail-payment-confirm";
+import { PaymentDetailConfirmComponent } from "../pages/waiter/calls/payment-confirm/payment-detail-confirm";
 import { ItemDetailPaymentConfirmComponent } from "../pages/waiter/calls/payment-confirm/item-detail-payment-confirm";
 
 export function createTranslateLoader(http: Http) {
@@ -77,7 +77,7 @@ export function createTranslateLoader(http: Http) {
     AddOrderPaymentPage,
     OrderPaymentDetailComponent,
     PaymentConfirmPage,
-    UserDetailPaymentConfirmComponent,
+    PaymentDetailConfirmComponent,
     ItemDetailPaymentConfirmComponent
   ],
   imports: [
@@ -135,7 +135,7 @@ export function createTranslateLoader(http: Http) {
     AddOrderPaymentPage,
     OrderPaymentDetailComponent,
     PaymentConfirmPage,
-    UserDetailPaymentConfirmComponent,
+    PaymentDetailConfirmComponent,
     ItemDetailPaymentConfirmComponent
   ],
   providers: [

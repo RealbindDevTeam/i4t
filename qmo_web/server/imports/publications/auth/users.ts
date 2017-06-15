@@ -10,8 +10,15 @@ Meteor.publish('getUserSettings', function () {
 });
 
 /**
- * 
+ * Meteor publish, get all users
+ */
+Meteor.publish('getUsers', function () {
+    return Users.find({});
+});
+
+/**
+ * Meteor publish. Get user by Id
  */
 Meteor.publish('getUserByUserId', function ( _usrId : string ) {
-    return Users.find({ _id: _usrId });
+    return Users.find({ _id : _usrId });
 });

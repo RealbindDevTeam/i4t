@@ -67,15 +67,14 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
     this._restaurantsSubscription = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', Meteor.userId() ).subscribe();
 
     this._ordersSubscription = MeteorObservable.subscribe( 'getOrdersByAccount', Meteor.userId() ).subscribe( () => {
-      MeteorObservable.autorun().subscribe(() => {
-        this._totalValue = 0;
-        this._orders = Orders.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED' } ).zone();
-        Orders.collection.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED' } ).fetch().forEach( ( order ) => {
-          this._totalValue += order.totalPayment;
+        this._orders = Orders.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : { $ne : true } } ).zone();
+        this._orders.subscribe(()=>{
+          this._totalValue = 0;
+          Orders.collection.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : { $ne : true } } ).fetch().forEach( ( order ) => {
+            this._totalValue += order.totalPayment;
+          });
+          this._totalToPayment = this._totalValue;
         });
-        //this._totalToPayment = this._totalValue + this._tipTotal;
-        this._totalToPayment = this._totalValue;
-      });
     });
 
     this._currencySubscription = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', [ this.restId ] ).subscribe( () => {
@@ -101,15 +100,14 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
     this._restaurantsSubscription = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', Meteor.userId() ).subscribe();
 
     this._ordersSubscription = MeteorObservable.subscribe( 'getOrdersByAccount', Meteor.userId() ).subscribe( () => {
-      MeteorObservable.autorun().subscribe(() => {
-        this._totalValue = 0;
-        this._orders = Orders.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED' } ).zone();
-        Orders.collection.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED' } ).fetch().forEach( ( order ) => {
-          this._totalValue += order.totalPayment;
+        this._orders = Orders.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : { $ne : true } } ).zone();
+        this._orders.subscribe(()=>{
+          this._totalValue = 0;
+          Orders.collection.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : { $ne : true } } ).fetch().forEach( ( order ) => {
+            this._totalValue += order.totalPayment;
+          });
+          this._totalToPayment = this._totalValue;
         });
-        //this._totalToPayment = this._totalValue + this._tipTotal;
-        this._totalToPayment = this._totalValue;
-      });
     });
 
     this._currencySubscription = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', [ this.restId ] ).subscribe( () => {
@@ -118,6 +116,14 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
     });
 
     this._waiterCallsPaySubscription = MeteorObservable.subscribe('WaiterCallDetailForPayment', this.restId, this.tabId, this._type ).subscribe();
+    
+    this._paymentSubscription = MeteorObservable.subscribe('getUserPaymentsByRestaurantAndTable', Meteor.userId(), this.restId, this.tabId).subscribe( ()=>{
+      this._payments = Payments.find({});
+      this._payments.subscribe(() =>{
+        let _lPayments: number = Payments.collection.find( { status: 'PAYMENT.NO_PAID' } ).count();
+        _lPayments > 0 ? this._paymentCreated = true : this._paymentCreated = false;
+      });
+    });
   }
   
   /**
@@ -151,6 +157,7 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
         this._paymentMethod  = data.payment;
         this._tipTotal       = Number.parseInt(this._tipSuggested.toString()) + Number.parseInt(this._tipOtherTotal.toString());
         this._totalToPayment = Number.parseInt(this._totalValue.toString()) + Number.parseInt(this._tipTotal.toString());
+        console.log(this._totalToPayment);
       }
     });
     modal.present();
@@ -169,26 +176,19 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
         let _lOrdersWithPendingConfim : number = Orders.collection.find( { creation_user: Meteor.userId(), restaurantId: this.restId, tableId: this.tabId, status: 'ORDER_STATUS.PENDING_CONFIRM' } ).count();
         
         if( _lOrdersWithPendingConfim === 0 ) {
+
             let loading_msg = this.itemNameTraduction('MOBILE.WAITER_CALL.LOADING'); 
+            let _lOrdersToInsert  : string[] = [];
+            let _lPaymentMethodId : string = '0';
+            let _totalToPaymentPartial : number = 0;
+            let _totalValuePartial : number = 0;
     
             let loading = this._loadingCtrl.create({
               content: loading_msg
             });
 
-            let _lOrdersToInsert  : string[] = [];
-            let _lPaymentMethodId : string = '0';
-            let _lTotalValue      : number = 0;
-
             loading.present();
-
             setTimeout(() => {
-
-              Orders.collection.find( { creation_user: Meteor.userId(), restaurantId: this.restId, 
-                                        tableId: this.tabId, status: 'ORDER_STATUS.DELIVERED' } ).fetch().forEach( ( order ) => {
-                                            _lOrdersToInsert.push( order._id );
-                                            _lTotalValue += order.totalPayment;
-                                        });
-
               switch(this._paymentMethod) {
                 case 'PAYMENT_METHODS.CASH' :{
                   _lPaymentMethodId = '10';
@@ -202,22 +202,30 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
                   _lPaymentMethodId = '30';
                   break;
               }
-              
+              _totalToPaymentPartial = this._totalToPayment;
+              _totalValuePartial     = this._totalValue;
+
+              Orders.collection.find( { creation_user: Meteor.userId(), restaurantId: this.restId, 
+                                        tableId: this.tabId, status: 'ORDER_STATUS.DELIVERED' } ).fetch().forEach( ( order ) => {
+                                          _lOrdersToInsert.push( order._id );
+                                          Orders.update({_id : order._id},{ $set : { toPay : true }});
+                                        });
+
               Payments.insert( {
-                  creation_user: Meteor.userId(),
-                  creation_date: new Date(),
-                  modification_user: '-',
-                  modification_date: new Date(),
-                  restaurantId: this.restId,
-                  tableId: this.tabId,
-                  userId: Meteor.userId(),
-                  orders: _lOrdersToInsert,
-                  paymentMethodId: _lPaymentMethodId,
-                  totalOrdersPrice: _lTotalValue,
-                  totalTip: this._tipTotal,
-                  totalToPayment: this._totalToPayment,
-                  currencyId: this.currId,
-                  status: 'PAYMENT.NO_PAID'
+                  creation_user : Meteor.userId(),
+                  creation_date : new Date(),
+                  modification_user : '-',
+                  modification_date : new Date(),
+                  restaurantId : this.restId,
+                  tableId : this.tabId,
+                  userId : Meteor.userId(),
+                  orders : _lOrdersToInsert,
+                  paymentMethodId : _lPaymentMethodId,
+                  totalOrdersPrice : _totalValuePartial,
+                  totalTip : this._tipTotal,
+                  totalToPayment : _totalToPaymentPartial,
+                  currencyId : this.currId,
+                  status : 'PAYMENT.NO_PAID'
               });
             this.waiterCallForPay();
             loading.dismiss();

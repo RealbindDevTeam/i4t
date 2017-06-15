@@ -33,7 +33,7 @@ Meteor.publish( 'getUserPaymentsByRestaurantAndTable', function( _userId: string
     check( _userId, String );
     check( _restaurantId, String );
     check( _tableId, String );
-    return Payments.collection.find( { creation_user: _userId, restaurantId: _restaurantId, tableId: _tableId, status: { $in: _status } } );
+    //return Payments.collection.find( { creation_user: _userId, restaurantId: _restaurantId, tableId: _tableId, status: { $in: _status } } );
 });
 
 /**

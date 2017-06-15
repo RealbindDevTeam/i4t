@@ -149,9 +149,12 @@ export class CallsPage implements OnInit, OnDestroy {
     return wordTraduced;
   }
 
+  /**
+  * This function allow navegate to PaymentConfirmPage
+  * @param {WaiterCallDetail} _call
+  */
   goToPaymentConfirm( _call : WaiterCallDetail ){
-    //this._navCtrl.push(OrderPaymentTranslatePage, { restaurant : this.restId, currency : this._currencyCode, table : this.tabId });
-    this._navCtrl.push(PaymentConfirmPage, { restaurant : _call.restaurant_id, table : _call.table_id});
+    this._navCtrl.push(PaymentConfirmPage, { call : _call });
   }
 
 
