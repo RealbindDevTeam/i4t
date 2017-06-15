@@ -28,6 +28,7 @@
     "VALIDATE" : "Validar",
     "TIP_PERCENTAGE": "Porcentaje de propina",
     "CLOSE": "Cerrar",
+    "VIEW_DETAIL": "Ver Detalle",
     "ORDER_STATUS": {
         "REGISTERED": "Registrado",
         "IN_PROCESS": "En Proceso",

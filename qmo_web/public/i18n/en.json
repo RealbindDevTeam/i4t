@@ -28,6 +28,7 @@
     "VALIDATE" : "Validate",
     "TIP_PERCENTAGE": "Tip percentage",
     "CLOSE": "Close",
+    "VIEW_DETAIL": "View Detail",
     "ORDER_STATUS": {
         "REGISTERED": "Registered",
         "IN_PROCESS": "In Process",
