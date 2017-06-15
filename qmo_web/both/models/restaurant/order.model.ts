@@ -13,6 +13,7 @@ export interface Order extends CollectionObject{
     totalPayment: number;
     orderItemCount: number;
     translateInfo: OrderTranslateInfo;
+    toPay?: boolean;
 }
 
 /**

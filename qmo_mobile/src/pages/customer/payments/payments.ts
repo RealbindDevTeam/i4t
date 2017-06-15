@@ -24,7 +24,6 @@ export class PaymentsPage implements OnInit, OnDestroy {
   private _currentRestaurant : any;
   private _userLang          : string;
   private _currentTable      : string;
-  private _showInitCard      : boolean = false;
   private _showPaymentInfo   : boolean = false;
 
   /**
@@ -54,47 +53,14 @@ export class PaymentsPage implements OnInit, OnDestroy {
             let _lRestaurant = Restaurants.findOne( { _id: _lUserDetail.current_restaurant } );
             this._currentRestaurant = _lRestaurant;
             this._currentTable = _lUserDetail.current_table;
-            this._showInitCard = false;
             this._showPaymentInfo = true;
           });
-          } else {
-              this._showInitCard = true;
-              this._showPaymentInfo = false;
+        } else {
+            this._showPaymentInfo = false;
           }
       });
     });
   }
-
-  /**
-   * ionViewWillEnter Implementation
-   */
-  /*ionViewWillEnter() {
-    this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByUser', Meteor.userId() ).subscribe( () => {
-      MeteorObservable.autorun().subscribe(() => {
-        let _lUserDetail = UserDetails.findOne( { user_id: Meteor.userId() } );
-        if( _lUserDetail.current_restaurant !== "" && _lUserDetail.current_table !== "" ){
-          this._restaurantSub = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', Meteor.userId() ).subscribe( () => {
-            let _lRestaurant = Restaurants.findOne( { _id: _lUserDetail.current_restaurant } );
-            this._currentRestaurant = _lRestaurant;
-            this._currentTable = _lUserDetail.current_table;
-            this._showInitCard = false;
-            this._showPaymentInfo = true;
-          });
-          } else {
-              this._showInitCard = true;
-              this._showPaymentInfo = false;
-          }
-      });
-    });
-  }*/
-
-  /**
-   * ionViewWillLeave Implementation
-   */
-  /*ionViewWillLeave() {
-      this._userDetailsSub.unsubscribe();
-      this._restaurantSub.unsubscribe();
-  }*/
 
   /**
    * ngOnDestroy Implementation

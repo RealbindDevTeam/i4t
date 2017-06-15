@@ -77,7 +77,7 @@ Meteor.publish('getOrdersByAccount', function (_userId: string) {
         let _lAccount: Account = Accounts.findOne({restaurantId: _lUserDetail.current_restaurant, 
                                                    tableId: _lUserDetail.current_table,
                                                    status: 'OPEN'});
-        return Orders.find( { creation_user: _userId, restaurantId: _lAccount.restaurantId, tableId: _lAccount.tableId, status: 'ORDER_STATUS.DELIVERED' } );
+        return Orders.find( { creation_user: _userId, restaurantId: _lAccount.restaurantId, tableId: _lAccount.tableId, status: 'ORDER_STATUS.DELIVERED', toPay : { $ne : true } } );
     }else{
         return Orders.find( { creation_user: _userId, restaurantId: "", tableId: "", status: ""} );
     }
@@ -94,4 +94,11 @@ Meteor.publish( 'getOrdersWithConfirmationPending', function( _restaurantId:stri
                           status: 'ORDER_STATUS.PENDING_CONFIRM', 
                           'translateInfo.markedToTranslate': true, 
                           'translateInfo.confirmedToTranslate': false } );
+});
+
+/**
+ * Meteor publications return orders by id
+ */
+Meteor.publish( 'getOrderById', function( _orderId : string ){
+    return Orders.find({_id :  _orderId });
 });
