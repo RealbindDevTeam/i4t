@@ -157,7 +157,6 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
         this._paymentMethod  = data.payment;
         this._tipTotal       = Number.parseInt(this._tipSuggested.toString()) + Number.parseInt(this._tipOtherTotal.toString());
         this._totalToPayment = Number.parseInt(this._totalValue.toString()) + Number.parseInt(this._tipTotal.toString());
-        console.log(this._totalToPayment);
       }
     });
     modal.present();
@@ -225,7 +224,8 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
                   totalTip : this._tipTotal,
                   totalToPayment : _totalToPaymentPartial,
                   currencyId : this.currId,
-                  status : 'PAYMENT.NO_PAID'
+                  status : 'PAYMENT.NO_PAID',
+                  received : false,
               });
             this.waiterCallForPay();
             loading.dismiss();
