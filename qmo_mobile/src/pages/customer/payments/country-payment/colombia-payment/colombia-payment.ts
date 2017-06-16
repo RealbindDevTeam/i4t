@@ -157,7 +157,6 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
         this._paymentMethod  = data.payment;
         this._tipTotal       = Number.parseInt(this._tipSuggested.toString()) + Number.parseInt(this._tipOtherTotal.toString());
         this._totalToPayment = Number.parseInt(this._totalValue.toString()) + Number.parseInt(this._tipTotal.toString());
-        console.log(this._totalToPayment);
       }
     });
     modal.present();

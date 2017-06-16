@@ -442,7 +442,9 @@
         "MESSAGE_COLLABORATOR" : "Colaborador creado exitosamente",
         "MESSAGE_FORM_INVALID" : "Debe diligenciar los campos obligatorios",
         "ERROR_INSERT" : "Error al insertar colaborador",
-        "MESSAGE_NOT_LOGIN" : "Por favor ingresar al sistema para agregar un colaborador"
+        "MESSAGE_NOT_LOGIN" : "Por favor ingresar al sistema para agregar un colaborador",
+        "SELECT_RANGE_VALID_TABLES" : "Seleccionar un rango valido de mesas",
+        "TABLES_ASSIGNMENT" : "Asignación de mesas"
     },
     "ITEMS": {
         "ITEMS_MANAGEMENT": "Administracion de items",

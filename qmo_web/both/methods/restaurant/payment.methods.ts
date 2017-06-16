@@ -36,16 +36,13 @@ if(Meteor.isServer){
                 }
                 
                 let accountTable = Accounts.collection.findOne({tableId : _tableId, status : 'OPEN'});
-                console.log('1 >>> ' + accountTable.total_payment);
                 Accounts.update({ _id : accountTable._id }, { $set : { total_payment : (accountTable.total_payment - pay.totalOrdersPrice) } });
-                console.log('2 >>> ' + accountTable.total_payment);
             });
             
             _countOrders = Orders.collection.find({ restaurantId: _restaurantId, tableId: _tableId, status: 
                 { $in : ['ORDER_STATUS.REGISTERED','ORDER_STATUS.IN_PROCESS','ORDER_STATUS.PREPARED','ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM'] }  }).count();
             
             let accountTable = Accounts.collection.findOne({tableId : _tableId, status : 'OPEN'});
-            console.log('3 >>> ' + accountTable.total_payment);
             if ( _countOrders === 0 && accountTable.total_payment===0 ) {
                 Accounts.update({ _id : accountTable._id }, { $set : { status : 'CLOSED' } });
                 Tables.update({ _id :  _tableId }, { $set : { status : 'FREE', amount_people : 0 }});

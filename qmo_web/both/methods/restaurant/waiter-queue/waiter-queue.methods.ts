@@ -8,6 +8,7 @@ import { Restaurant, RestaurantTurn } from '../../../models/restaurant/restauran
 import { Restaurants, RestaurantTurns } from '../../../collections/restaurant/restaurant.collection';
 import { Accounts } from '../../../collections/restaurant/account.collection';
 import { Orders } from '../../../collections/restaurant/order.collection';
+import { Tables } from '../../../collections/restaurant/table.collection';
 
 //var _queue = JobCollection('waiterCallQueue');
 
@@ -60,8 +61,7 @@ if (Meteor.isServer) {
     processJobs : function(job, callback, queueName){
       var data_detail = WaiterCallDetails.collection.findOne({ job_id : job._doc._id });
       var restaurant = Restaurants.collection.findOne({ _id : data_detail.restaurant_id });
-      
-      var usr_id_enabled : UserDetail = Meteor.call('validateWaiterEnabled', data_detail.restaurant_id, restaurant.max_jobs);
+      var usr_id_enabled : UserDetail = Meteor.call('validateWaiterEnabled', data_detail.restaurant_id, restaurant.max_jobs, data_detail.table_id);
       if( usr_id_enabled ){
         Job.getJob(queueName, job._doc._id, function (err, job) {
           job.done(function (err, result){});
@@ -176,12 +176,18 @@ if (Meteor.isServer) {
      * @param {string} _restaurant
      * @param {string} _maxJobs
      */
-    validateWaiterEnabled ( _restaurant : string, _maxJobs : string ) : UserDetail {
+    validateWaiterEnabled ( _restaurant : string, _maxJobs : string, _tableId : string ) : UserDetail {
       let usr     : UserDetail = null;
       let position    : number   = 0;
       let _randomLast : string;
-        
-      let waiterEnableds = UserDetails.collection.find({ restaurant_work : _restaurant, enabled : true, role_id : "200", jobs : {$lt : _maxJobs} });
+
+      let table = Tables.findOne({_id : _tableId});
+      let waiterEnableds = UserDetails.collection.find({ restaurant_work : _restaurant, 
+                                                         enabled : true, 
+                                                         role_id : "200", 
+                                                         jobs : {$lt : _maxJobs},
+                                                         table_assignment_init : {$lte : table._number},
+                                                         table_assignment_end  : {$gte : table._number}, });
       var count =  waiterEnableds.count();
 
       if( count > 0 ) {
