@@ -23,16 +23,15 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
   private _paymentsSubscription     : Subscription;
   private _ordersSubscription       : Subscription;
   private _tablesSubscription       : Subscription;
-  //private _accountSubscription      : Subscription;
-  private _call           : WaiterCallDetail;
-  private _payments       : any;
-  private _orders         : any;
-  private _paymentsToPay  : any;
-  private _user           : any;
-  private _restauranId    : string;
-  private _tableId        : string;
-  private _totalPayment   : number = 0;
-  private _ordersTotalPay : number = 0;
+  private _call                 : WaiterCallDetail;
+  private _payments             : any;
+  private _orders               : any;
+  private _paymentsToPay        : any;
+  private _user                 : any;
+  private _restauranId          : string;
+  private _tableId              : string;
+  private _totalPayment         : number = 0;
+  private _ordersTotalPay       : number = 0;
 
   /**
    * PaymentConfirmPage constructor
@@ -66,7 +65,11 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
 
     this._paymentsSubscription = MeteorObservable.subscribe('getPaymentsToWaiter', this._restauranId, this._tableId).subscribe(()=>{
       this._payments = Payments.find({restaurantId : this._restauranId, tableId : this._tableId});
-      this._paymentsToPay = Payments.collection.find({restaurantId : this._restauranId, tableId : this._tableId});
+      this._paymentsToPay = Payments.collection.find( { restaurantId : this._restauranId, 
+                                                        tableId : this._tableId, 
+                                                        status: 'PAYMENT.NO_PAID', 
+                                                        received : true } );
+      
       this._payments.subscribe(()=>{
         this.totalPayment();
       });
@@ -93,11 +96,19 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * This function allow get table number
+   * @param _table_id 
+   */
   getTable ( _table_id : string ){
     let table = Tables.collection.find({_id : _table_id}).fetch()[0];
     return table._number;
   }
 
+  /**
+   * This function allow get user name
+   * @param _id 
+   */
   getUserDetail (_id : string) {
     let user = Users.collection.find({ _id : _id }).fetch()[0];
     if(user.username){
@@ -105,6 +116,22 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
     } else if (user.services.facebook){
       return user.services.facebook.name;
     }
+  }
+
+  /**
+   * Validate payments received
+   */
+  validatePaymentsReceived(){
+    if(this._paymentsToPay.count() > 0){
+        this.showComfirmPay();
+      } else {
+        let alert = this._alertCtrl.create({
+          title: 'New Friend!',
+          subTitle: 'Your friend, Obi wan Kenobi, just accepted your friend request!',
+          buttons: ['OK']
+        });
+        alert.present();
+      }
   }
 
   /**
@@ -148,8 +175,8 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
     loading.present();
 
     setTimeout(() => {
-      Meteor.call('closePay', this._restauranId, this._tableId);
-      Meteor.call('closeCall', this._call, Meteor.userId());
+      Meteor.call('closePay', this._restauranId, this._tableId, this._call);
+      //Meteor.call('closeCall', this._call, Meteor.userId());
       loading.dismiss();
       this.presentToast();
     }, 1500);
@@ -183,6 +210,14 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
         wordTraduced = res;
     });
     return wordTraduced;
+  }
+
+  /**
+   * Set to Payment received value
+   * @param _pay 
+   */
+  received ( _pay : Payment ) {
+    Payments.update({ _id : _pay._id }, { $set : { received : !_pay.received } });
   }
 
   /**

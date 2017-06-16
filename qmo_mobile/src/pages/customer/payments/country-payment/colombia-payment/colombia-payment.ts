@@ -225,7 +225,8 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
                   totalTip : this._tipTotal,
                   totalToPayment : _totalToPaymentPartial,
                   currencyId : this.currId,
-                  status : 'PAYMENT.NO_PAID'
+                  status : 'PAYMENT.NO_PAID',
+                  received : false,
               });
             this.waiterCallForPay();
             loading.dismiss();

@@ -6,6 +6,7 @@ import { WaiterCallDetail } from '../../../models/restaurant/waiter-call-detail.
 import { WaiterCallDetails } from '../../../collections/restaurant/waiter-call-detail.collection';
 import { Restaurant, RestaurantTurn } from '../../../models/restaurant/restaurant.model';
 import { Restaurants, RestaurantTurns } from '../../../collections/restaurant/restaurant.collection';
+import { Accounts } from '../../../collections/restaurant/account.collection';
 import { Orders } from '../../../collections/restaurant/order.collection';
 
 //var _queue = JobCollection('waiterCallQueue');
@@ -154,6 +155,12 @@ if (Meteor.isServer) {
                       } 
               }
             );
+
+            let order = Orders.findOne({_id: waiterDetail.order_id});
+            if(order){
+              let account = Accounts.findOne({ _id : order.accountId });
+              Accounts.update({ _id : account._id }, { $set : { total_payment : (account.total_payment + order.totalPayment) } });
+            }
           }
           
           let usr_detail = UserDetails.collection.findOne({ user_id : _waiter_id });
