@@ -5,6 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
+import { MdSnackBar } from '@angular/material';
 import { Categories } from '../../../../../../both/collections/administration/category.collection';
 import { Category } from '../../../../../../both/models/administration/category.model';
 import { Sections } from '../../../../../../both/collections/administration/section.collection';
@@ -22,15 +23,15 @@ import style from './categories.component.scss';
 export class CategoryComponent implements OnInit, OnDestroy{
 
     private _user = Meteor.userId();
-    private _categoryForm: FormGroup;
-    private _categories: Observable<Category[]>;
-    private _sections: Observable<Section[]>;
+    private _categoryForm       : FormGroup;
+    private _categories         : Observable<Category[]>;
+    private _sections           : Observable<Section[]>;
 
-    private _categoriesSub: Subscription;
-    private _sectionsSub: Subscription;
+    private _categoriesSub      : Subscription;
+    private _sectionsSub        : Subscription;
 
-    private _selectedValue:string;
-    public _dialogRef: MdDialogRef<any>;
+    private _selectedValue      : string;
+    public _dialogRef           : MdDialogRef<any>;
     
     /**
      * CategoryComponent constructor
@@ -38,7 +39,10 @@ export class CategoryComponent implements OnInit, OnDestroy{
      * @param {TranslateService} _translate
      * @param {MdDialog} _dialog
      */
-    constructor( private _formBuilder: FormBuilder, private _translate: TranslateService, public _dialog: MdDialog ){
+    constructor( private _formBuilder: FormBuilder, 
+                 private _translate: TranslateService, 
+                 public _dialog: MdDialog, 
+                 public snackBar: MdSnackBar ){
         var _userLang = navigator.language.split( '-' )[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );           
@@ -69,7 +73,7 @@ export class CategoryComponent implements OnInit, OnDestroy{
         }
 
         if( this._categoryForm.valid ){
-            Categories.insert({
+            let _lNewCategory = Categories.collection.insert({
                 creation_user: this._user,
                 creation_date: new Date(),
                 modification_user: '-',
@@ -78,6 +82,14 @@ export class CategoryComponent implements OnInit, OnDestroy{
                 name: this._categoryForm.value.name,
                 section: this._categoryForm.value.section
             });
+
+            if( _lNewCategory ){
+                let _lMessage:string = this.itemNameTraduction( 'CATEGORIES.CATEGORY_CREATED' );
+                this.snackBar.open( _lMessage, '',{
+                    duration: 2500
+                });
+            }
+
             this._categoryForm.reset();
             this._selectedValue = "";
         }
@@ -125,6 +137,18 @@ export class CategoryComponent implements OnInit, OnDestroy{
                 modification_user: this._user
             }
         });
+    }
+
+    /**
+     * Return traduction
+     * @param {string} itemName 
+     */
+    itemNameTraduction(itemName: string): string{
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res; 
+        });
+        return wordTraduced;
     }
 
     /**

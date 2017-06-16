@@ -5,6 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { MdDialogRef } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
+import { MdSnackBar } from '@angular/material';
 import { Sections } from '../../../../../../../both/collections/administration/section.collection';
 import { Section } from '../../../../../../../both/models/administration/section.model';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
@@ -21,20 +22,20 @@ import style from './section-edit.component.scss';
 export class SectionEditComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    public _sectionToEdit: Section;
-    private _editForm: FormGroup;
-    private _restaurantsFormGroup: FormGroup = new FormGroup({});
+    public _sectionToEdit           : Section;
+    private _editForm               : FormGroup;
+    private _restaurantsFormGroup   : FormGroup = new FormGroup({});
 
-    private _sections: Observable<Section[]>;
-    private _restaurants: Observable<Restaurant[]>;
+    private _sections               : Observable<Section[]>;
+    private _restaurants            : Observable<Restaurant[]>;
 
-    private _sectionsSub: Subscription;
-    private _restaurantSub: Subscription;
+    private _sectionsSub            : Subscription;
+    private _restaurantSub          : Subscription;
 
-    private _sectionRestaurants:string[];    
-    private _restaurantsList: Restaurant[];
-    private _edition_restaurants: string[];
-    private _createdRestaurants: Restaurant[];
+    private _sectionRestaurants     : string[];    
+    private _restaurantsList        : Restaurant[];
+    private _edition_restaurants    : string[];
+    private _createdRestaurants     : Restaurant[];
         
     /**
      * SectionEditComponent constructor
@@ -42,7 +43,11 @@ export class SectionEditComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate
      * @param {MdDialogRef<any>} _dialogRef 
      */    
-    constructor( private _formBuilder: FormBuilder, private _translate: TranslateService, public _dialogRef: MdDialogRef<any>, private _ngZone: NgZone ){
+    constructor( private _formBuilder: FormBuilder, 
+                 private _translate: TranslateService, 
+                 public _dialogRef: MdDialogRef<any>, 
+                 private _ngZone: NgZone, 
+                 public snackBar: MdSnackBar ){
         var userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang('en');
         _translate.use(userLang);
@@ -116,8 +121,25 @@ export class SectionEditComponent implements OnInit, OnDestroy {
                     restaurants: this._edition_restaurants
                 }
             });
+
+            let _lMessage:string = this.itemNameTraduction( 'SECTIONS.SECTION_EDITED' );
+            this.snackBar.open( _lMessage, '',{
+                duration: 2500
+            });
         }
         this._dialogRef.close();
+    }
+
+    /**
+     * Return traduction
+     * @param {string} itemName 
+     */
+    itemNameTraduction(itemName: string): string{
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res; 
+        });
+        return wordTraduced;
     }
 
     /**

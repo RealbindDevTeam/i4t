@@ -5,6 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { MdDialogRef } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
+import { MdSnackBar } from '@angular/material';
 import { Subcategories } from '../../../../../../../both/collections/administration/subcategory.collection';
 import { Subcategory } from '../../../../../../../both/models/administration/subcategory.model';
 import { Categories } from '../../../../../../../both/collections/administration/category.collection';
@@ -21,21 +22,24 @@ import style from './subcategories-edit.component.scss';
 export class SubcategoryEditComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    public _subcategoryToEdit: Subcategory;
-    private _editForm: FormGroup;
+    public _subcategoryToEdit       : Subcategory;
+    private _editForm               : FormGroup;
 
-    private _subcategories: Observable<Subcategory[]>;
-    private _categories: Observable<Category[]>;
+    private _subcategories          : Observable<Subcategory[]>;
+    private _categories             : Observable<Category[]>;
 
-    private _subcategorySub: Subscription;    
-    private _categoriesSub: Subscription;
+    private _subcategorySub         : Subscription;    
+    private _categoriesSub          : Subscription;
 
-    private _subcategoryCategory: string;
+    private _subcategoryCategory    : string;
 
     /**
      * SubcategoryEditComponent constructor
      */
-    constructor( private _formBuilder: FormBuilder, private _translate: TranslateService, public _dialogRef: MdDialogRef<any> ){
+    constructor( private _formBuilder: FormBuilder,     
+                 private _translate: TranslateService, 
+                 public _dialogRef: MdDialogRef<any>, 
+                 public snackBar: MdSnackBar ){
         var _userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
@@ -85,8 +89,25 @@ export class SubcategoryEditComponent implements OnInit, OnDestroy {
                     category: this._editForm.value.editCategory
                 }
             });
+
+            let _lMessage:string = this.itemNameTraduction( 'SUBCATEGORIES.SUBCATEGORY_EDITED' );
+            this.snackBar.open( _lMessage, '',{
+                duration: 2500
+            });
         }
         this._dialogRef.close();
+    }
+
+    /**
+     * Return traduction
+     * @param {string} itemName 
+     */
+    itemNameTraduction(itemName: string): string{
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res; 
+        });
+        return wordTraduced;
     }
 
     /**

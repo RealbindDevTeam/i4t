@@ -97,7 +97,9 @@
         "NO_RESTAURANT_CREATED": "No se encuentran restaurantes creados en la plataforma",
         "MODIFY": "MODIFICAR",
         "ACTIVATE": "ACTIVAR",
-        "INACTIVATE": "INACTIVAR"
+        "INACTIVATE": "INACTIVAR",
+        "SECTION_CREATED": "Seccion Creada Correctamente",
+        "SECTION_EDITED": "Seccion Editada Correctamente"
     },
     "CATEGORIES": {
         "CATEGORIES_CREATION": "Creación de categorias",
@@ -107,7 +109,9 @@
         "SECTION": "Seccion",
         "MODIFY": "MODIFICAR",
         "ACTIVATE": "ACTIVAR",
-        "INACTIVATE": "INACTIVAR"
+        "INACTIVATE": "INACTIVAR",
+        "CATEGORY_CREATED": "Categoria Creada Correctamente",
+        "CATEGORY_EDITED": "Categoria Editada Correctamente"
     },
     "SUBCATEGORIES": {
         "SUBCATEGORY_CREATION": "Creación de subcategorias",
@@ -118,7 +122,9 @@
         "CATEGORY": "Categoria",
         "MODIFY": "MODIFICAR",
         "ACTIVATE": "ACTIVAR",
-        "INACTIVATE": "INACTIVAR"
+        "INACTIVATE": "INACTIVAR",
+        "SUBCATEGORY_CREATED": "Subcategoria Creada Correctamente",
+        "SUBCATEGORY_EDITED": "Subcategoria Editada Correctamente"
     },
     "ADDITIONS": {
         "ADDITION_CREATION": "Creación de adiciones",
@@ -135,7 +141,9 @@
         "ADITION_PRICE": "Precio de la Adicion",
         "ADDITION_TAXES": "Ingresa los impuestos( En caso de no tener valor ingresa 0 ).",
         "TAXES": "Impuestos",
-        "PRICES": "Precios"
+        "PRICES": "Precios",
+        "ADDITION_CREATED": "Adicion Creada Correctamente",
+        "ADDITION_EDITED": "Adicion Editada Correctamente"
     },
     "SETTINGS": {
         "TITTLE": "Ajustes",
@@ -212,7 +220,9 @@
         "GARNISHFOOD_PRICE": "Precio de la Guarnicion",
         "GARNISHFOOD_TAXES": "Ingresa los impuestos( En caso de no tener valor ingresa 0 ).",
         "TAXES": "Impuestos",
-        "PRICES": "Precios"
+        "PRICES": "Precios",
+        "GARNISH_FOOD_CREATED": "Guarnicion Creada Correctamente",
+        "GARNISH_FOOD_EDITED": "Guarnicion Editada Correctamente"
     },
     "RESTAURANT_REGISTER": {
         "SELECT_COUNTRY": "Seleccione Pais",
