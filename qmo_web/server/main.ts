@@ -44,10 +44,9 @@ import { loadCities } from './imports/fixtures/settings/cities';
 import { loadLanguages } from './imports/fixtures/settings/languages';
 import { loadRestaurantPlans } from './imports/fixtures/restaurant/restaurant-plans';
 import { loadEmailContents } from './imports/fixtures/general/email-contents';
-import { createCrons } from './cron';
 import { loadParameters } from './imports/fixtures/general/parameters';
-
 import { createdbindexes } from './imports/indexes/indexdb';
+import { createCrons } from './cron';
 
 Meteor.startup(() => {
     loadMenus();
@@ -60,7 +59,7 @@ Meteor.startup(() => {
     loadLanguages();
     createdbindexes();
     loadRestaurantPlans();
-    createCrons();
     loadEmailContents();
     loadParameters();
+    createCrons();
 });

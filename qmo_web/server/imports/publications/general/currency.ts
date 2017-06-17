@@ -17,3 +17,15 @@ Meteor.publish( 'getCurrenciesByRestaurantsId', function( _restaurantsId: string
     });
     return Currencies.collection.find( { _id: { $in: _ids } } );
 });
+
+/**
+ * Meteor publication return currencies by  userId
+ */
+Meteor.publish('getCurrenciesByUserId', function() {
+    let _currenciesIds: string[] = [];
+    Restaurants.collection.find( { creation_user: this.userId } ).forEach( (restaurant) =>{
+        _currenciesIds.push(restaurant.currencyId);
+    });
+
+    return Currencies.collection.find({ _id: { $in: _currenciesIds}});
+});

@@ -1,0 +1,35 @@
+<md-card>
+    <md-card-title>{{'MONTHLY_INVOICE.TITLE' | translate }}</md-card-title>
+    <md-card-subtitle>{{'MONTHLY_INVOICE.SUBTITLE' | translate}}</md-card-subtitle>
+    <md-card-content style="background: #FFF">
+
+        <div *ngFor="let currency of _currencies | async">
+            <md-toolbar color="primary">
+                <span>{{getCountryByCurrency(currency._id) | translate}}</span> <span class="app-flex-filler"></span> <span> {{'MONTHLY_INVOICE.PRICE_BY_TABLE' | translate}} {{getUnitTablePrice(currency._id)}} {{currency.code}}</span>
+            </md-toolbar>
+            <table class="striped" width="100%" style="border:0.5px solid; border-color: lightgrey">
+                <thead>
+                    <tr>
+                        <th data-field="name" style="width: 50%">{{'MONTHLY_INVOICE.RESTAURANT_NAME' | translate}}</th>
+                        <th data-field="restaurant_price" style="width: 15%">{{'MONTHLY_INVOICE.RESTAURANT_PRICE' | translate}}</th>
+                        <th data-field="tables_number" style="width: 10%">{{'MONTHLY_INVOICE.TABLES_NUMBER' | translate}}</th>
+                        <th data-field="tables_price" style="width: 13%">{{'MONTHLY_INVOICE.TABLES_PRICE' | translate}}</th>
+                        <th data-field="total_price" style="width: 14%">{{'MONTHLY_INVOICE.FINAL_PRICE' | translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let restaurant of _restaurants | async">
+                        <td *ngIf="restaurant.currencyId === currency._id">{{restaurant.name}}</td>
+                        <td *ngIf="restaurant.currencyId === currency._id">{{getRestaurantPrice(restaurant)}} {{currency.code}}</td>
+                        <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">{{getActiveTables(restaurant)}}</td>
+                        <td *ngIf="restaurant.currencyId === currency._id">{{getTablePrice(restaurant)}} {{currency.code}}</td>
+                        <td *ngIf="restaurant.currencyId === currency._id">{{getTotalRestaurant(restaurant)}} {{currency.code}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <md-toolbar style="background: white">
+                <span><button color="accent" md-raised-button>{{'MONTHLY_INVOICE.PAY' | translate}}</button></span><span class="app-flex-filler"></span> <span><h3>{{'MONTHLY_INVOICE.TOTAL_PRICE' | translate}}{{getTotalByCurrency(currency._id)}} {{currency.code}}</h3></span>
+            </md-toolbar>
+        </div>
+    </md-card-content>
+</md-card>

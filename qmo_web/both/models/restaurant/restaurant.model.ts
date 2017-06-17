@@ -24,7 +24,7 @@ export interface Restaurant extends CollectionObject {
     queue: string[];
     plan: number;
     isActive: boolean;
-    tstPeriod: boolean;
+    firstPay: boolean;
 }
 
 /**

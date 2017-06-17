@@ -1,0 +1,19 @@
+<md-button-toggle-group #group="mdButtonToggleGroup" style="box-shadow: none">
+    <md-button-toggle *ngFor="let plan of _plans | async" class="btn-toggle-cust" value="{{plan._id}}">
+        <md-card style="width: 190px; display: flex; flex-direction: column; white-space: normal; margin-top: 20px">
+            <md-card-title>{{plan.name | translate}}</md-card-title>
+            <md-card-subtitle>
+                <h1>{{plan.price[0].price}} COP</h1>
+            </md-card-subtitle>
+            <md-card-content>
+                <h3 style="font-weight: 500">
+                    {{plan.minTableNumber}} a {{plan.maxTableNumber}} Mesas
+                </h3>
+            </md-card-content>
+            <md-card-actions align="end">
+
+            </md-card-actions>
+        </md-card>
+    </md-button-toggle>
+</md-button-toggle-group>
+<div>Selected value: {{group.value}}</div>

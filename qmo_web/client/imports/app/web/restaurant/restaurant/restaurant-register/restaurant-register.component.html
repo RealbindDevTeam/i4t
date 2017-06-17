@@ -69,7 +69,7 @@
                         </md-card-actions>
                     </md-card>
                 </md-tab>
-                <md-tab [disabled]="!canMove(1)" label="{{'RESTAURANT_REGISTER.FINANCIAL_LABEL' | translate}}">
+                <md-tab  label="{{'RESTAURANT_REGISTER.FINANCIAL_LABEL' | translate}}">
                     <md-card>
                         <md-card-title>{{'RESTAURANT_REGISTER.FINANCIAL_INFO' | translate}}</md-card-title>
                         <md-card-subtitle>{{'RESTAURANT_REGISTER.FINANCIAL_INFO_TEXT' | translate}}</md-card-subtitle>
@@ -91,11 +91,11 @@
                         </md-card-content>
                         <md-card-actions align="end">
                             <button md-raised-button (click)="previous()" [disabled]="!canMove(0)">{{'BACK' | translate}}</button>
-                            <button md-raised-button (click)="next()" [disabled]="!canMove(2)">{{'NEXT' | translate}}</button>
+                            <button md-raised-button (click)="next()">{{'NEXT' | translate}}</button>
                         </md-card-actions>
                     </md-card>
                 </md-tab>
-                <md-tab [disabled]="!canMove(2)" label="{{'RESTAURANT_REGISTER.SCHEDULE_LABEL' | translate}}">
+                <md-tab  label="{{'RESTAURANT_REGISTER.SCHEDULE_LABEL' | translate}}">
                     <md-card>
                         <md-card-title>{{'RESTAURANT_REGISTER.SCHEDULE_INFO' | translate}}</md-card-title>
                         <md-card-subtitle>{{'RESTAURANT_REGISTER.SCHEDULE_INFO_TEXT' | translate}}</md-card-subtitle>
@@ -106,26 +106,7 @@
                         </md-card-content>
                         <md-card-actions align="end">
                             <button md-raised-button (click)="previous()" [disabled]="!canMove(1)">{{'BACK' | translate}}</button>
-                            <button md-raised-button (click)="next()" [disabled]="!canMove(2)">{{'NEXT' | translate}}</button>
-                        </md-card-actions>
-                    </md-card>
-                </md-tab>
-                <md-tab label="{{'RESTAURANT_REGISTER.NUMBER_TABLE_LABEL' | translate}}">
-                    <md-card>
-                        <md-card-title>{{'RESTAURANT_REGISTER.NUMBER_TABLE_LABEL_INFO' | translate}}</md-card-title>
-                        <md-card-subtitle>{{'RESTAURANT_REGISTER.NUMBER_TABLE_LABEL_INFO_TEXT' | translate}}</md-card-subtitle>
-                        <md-card-content>
-                            <md-radio-group formControlName="plans" [(ngModel)]="align">
-                                <md-list>
-                                    <md-list-item *ngFor="let plan of _restaurantPlans | async">
-                                        <md-radio-button class="example-margin" value="{{plan._id}}">{{plan.planCode}}</md-radio-button>
-                                    </md-list-item>
-                                </md-list>
-                            </md-radio-group>
-                        </md-card-content>
-                        <md-card-actions align="end">
-                            <button md-raised-button (click)="previous()" [disabled]="!canMove(1)">{{'BACK' | translate}}</button>
-                            <button md-raised-button [disabled]="!canFinish()" (click)="addRestaurant()">{{'FINISH' | translate}}</button>
+                            <button md-raised-button (click)="addRestaurant()">{{'FINISH' | translate}}</button>
                         </md-card-actions>
                     </md-card>
                 </md-tab>
