@@ -1,6 +1,9 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone, OnInit, OnDestroy} from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 import { MeteorObservable } from "meteor-rxjs";
+import { Observable, Subscription } from 'rxjs';
+import { Parameter } from '../../../../../../../../both/models/general/parameter.model';
+import { Parameters } from '../../../../../../../../both/collections/general/parameter.collection';
 
 import template from './create-confirm.component.html';
 import style from './create-confirm.component.scss';
@@ -8,29 +11,46 @@ import style from './create-confirm.component.scss';
 @Component({
     selector: 'create-confirm',
     template,
-    styles: [ style ]
+    styles: [style]
 })
-export class CreateConfirmComponent{
+export class CreateConfirmComponent implements OnInit, OnDestroy{
+
+     private _parameterSub: Subscription;
 
     /**
      * CallCloseConfirmComponent constructor
      * @param {MdDialogRef<any>} _dialogRef
      */
-    constructor( public _dialogRef: MdDialogRef<any>,  private _zone: NgZone ){
+    constructor(public _dialogRef: MdDialogRef<any>, private _zone: NgZone) {
+        
+    }
 
+    ngOnInit() {
+        this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
+    }
+
+    getDiscountPercent(){
+        let discount = Parameters.findOne({name: 'first_pay_discount'});
+        if(discount){
+            return discount.value;
+        }
     }
 
     /**
      * Function that returns true to Parent component
      */
-    closeWaiterCall(){
-        this._dialogRef.close({success : true});
+    closeConfirm() {
+        this._dialogRef.close({ success: true });
     }
 
     /**
      * This function allow closed the modal dialog
      */
     cancel() {
-        this._dialogRef.close({success : false});
+        this._dialogRef.close({ success: false });
+    }
+
+    ngOnDestroy(){
+        this._parameterSub.unsubscribe();
     }
 }

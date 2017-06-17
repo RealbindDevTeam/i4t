@@ -48,8 +48,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _citiesSub: Subscription;
     private _paymentMethodsSub: Subscription;
     private _restaurantImagesSub: Subscription;
-    private _restaurantPlanSub: Subscription;
-    private _parameterSub: Subscription;
 
     private _hours: Observable<Hour[]>;
     private _countries: Observable<Country[]>;

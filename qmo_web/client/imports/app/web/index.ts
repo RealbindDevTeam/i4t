@@ -128,11 +128,8 @@ export const MODAL_DIALOG_DECLARATIONS = [
     CallCloseConfirmComponent,
     OrderToTranslateComponent,
     ColombiaPaymentDetailComponent,
-<<<<<<< HEAD
-    CreateConfirmComponent
-=======
+    CreateConfirmComponent,
     PaymentConfirmComponent
->>>>>>> dd6aa1e254be570aca77572e4d2750781cc3f152
     /*
     CollaboratorsEditionComponent,
     */

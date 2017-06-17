@@ -255,7 +255,7 @@
         "MORE": "more",
         "RESTAURANT_CREATION": "Restaurant creation",
         "ACTIVATION_MESSAGE": "Se activará el cobro mensual del servicio Iurest por restaurante",
-        "CLARIFICATION_MESSAGE": "Iurest performs the service charge on the first day of each month, the first month over 50%",
+        "CLARIFICATION_MESSAGE": "Iurest performs the service charge on the 1st day of each month, the first charge is over ",
         "ACCEPT_CREATION": "Accept",
         "CANCEL_CREATION": "Cancel"
     },
@@ -715,11 +715,14 @@
     "MONTHLY_INVOICE": {
         "TITLE": "Iurest service billing",
         "SUBTITLE": "Here you can see the cost by restaurant and tables number",
-        "RESTAURANT_NAME": "Name",
-        "RESTAURANT_PRICE": "Price",
+        "RESTAURANT_NAME": "Restaurant name",
+        "RESTAURANT_PRICE": "Restauran price",
         "TABLES_NUMBER ": "Tables number",
         "TABLES_PRICE": "Tables price",
-        "TOTAL": "Total",
-        "CURRENCY": "Currency"
+        "FINAL_PRICE": "Final price",
+        "CURRENCY": "Currency",
+        "PRICE_BY_TABLE": "Price by table: ",
+        "TOTAL_PRICE": "Total: ",
+        "PAY": "   PAY   "
     }
 }
