@@ -13,6 +13,8 @@ export interface UserDetail extends CollectionObject{
     birthdate? : Date; 
     phone? : string;
     enabled? : boolean;
+    table_assignment_init? : number;
+    table_assignment_end? : number;
 }
 
 export interface UserDetailPenalty extends CollectionObject{

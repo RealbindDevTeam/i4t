@@ -22,14 +22,11 @@
     <div *ngFor="let _call of _waiterCallDetail | async">
         <div *ngFor="let _table of _tables | async">
             <ion-card *ngIf="_table._id === _call.table_id">
-                <!--ion-card-header>
-                </ion-card-header-->
                 <ion-card-content>
                     <div class="item-block">
                         <img *ngIf="_call.type == 'SEND_ORDER'" class="img-cards" src="assets/img/chef.png">
                         <img *ngIf="_call.type == 'CALL_OF_CUSTOMER'" class="img-cards" src="assets/img/llamar_mesero.png">
                         <img *ngIf="_call.type == 'PAYMENT'" class="img-cards" src="assets/img/pago.png">
-                        <!--ion-icon name='hand' style="font-size: 2.6em;margin-right: 16px;"></ion-icon-->
                         <div class="header-title">
                             <div class="label">
                                 <span>
@@ -40,8 +37,14 @@
                                 <p *ngIf="_call.type == 'PAYMENT'">{{ 'MOBILE.WAITER_CALL.CALL_LABEL_CUSTOMER_PAYMENT' | translate }}</p>
                             </div>
                             <button ion-button item-right (click)="showComfirmClose(_call)" 
-                                    style="height: 36px; font-size: 1.2rem; background-color: #679436;">
+                                    style="height: 36px; font-size: 1.2rem; background-color: #679436;"
+                                    *ngIf="_call.type == 'SEND_ORDER' || _call.type == 'CALL_OF_CUSTOMER'">
                                 {{'MOBILE.CLOSE' | translate}}
+                            </button>
+                            <button ion-button item-right (click)="goToPaymentConfirm(_call)" 
+                                    style="height: 36px; font-size: 1.2rem; background-color: #679436;"
+                                    *ngIf="_call.type == 'PAYMENT'">
+                                {{'MOBILE.VIEW' | translate}}
                             </button>
                         </div>
                     </div>

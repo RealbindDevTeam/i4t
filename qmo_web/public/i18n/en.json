@@ -453,7 +453,9 @@
         "MESSAGE_COLLABORATOR" : "Collaborator created successfully",
         "MESSAGE_FORM_INVALID" : "You must fill in the required fields",
         "ERROR_INSERT" : "Error inserting collaborator",
-        "MESSAGE_NOT_LOGIN" : "Please log in to add a restaurant"
+        "MESSAGE_NOT_LOGIN" : "Please log in to add a restaurant",
+        "SELECT_RANGE_VALID_TABLES" : "Select a valid range of the tables",
+        "TABLES_ASSIGNMENT" : "Assignment of tables"
     },
     "ITEMS": {
         "ITEMS_MANAGEMENT": "Item management",

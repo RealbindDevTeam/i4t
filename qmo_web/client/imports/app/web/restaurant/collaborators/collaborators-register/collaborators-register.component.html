@@ -16,7 +16,7 @@
                                 </td>
                                 <td>
                                     <md-select required formControlName="role" placeholder="{{'COLLABORATORS_REGISTER.SELECT_ROLE' | translate}}" style="width: 100%;">
-                                        <md-option *ngFor="let rol of _roles | async" value="{{rol._id}}">{{rol.name | translate}}</md-option>
+                                        <md-option *ngFor="let rol of _roles | async" value="{{rol._id}}" (click)="validateWaiterRole(rol._id)" >{{rol.name | translate}}</md-option>
                                     </md-select>
                                 </td>
                             </tr>
@@ -60,6 +60,18 @@
                                         <input mdInput formControlName="phone" placeholder="{{'PHONE' | translate}}" #inputPhone/>
                                         <md-hint align="end">{{inputPhone.value.length}} / 40</md-hint>
                                     </md-input-container>
+                                </td>
+                            </tr>
+                            <tr *ngIf="_showTablesSelect">
+                                <td colspan="1" style="padding-top: 10px; width: 50%">
+                                    <md-checkbox class="checkbox" (change)="pushSelectArray($event)">{{'COLLABORATORS_REGISTER.TABLES_ASSIGNMENT' | translate}}</md-checkbox>
+                                    <md-select style="width: 100px;" formControlName="table_init" [disabled]="_disabledTablesAssignment">
+                                        <md-option *ngFor="let index of _tablesNumber" value="{{index}}" >{{index}}</md-option>
+                                    </md-select>
+                                    &nbsp;
+                                    <md-select style="width: 100px;" formControlName="table_end" [disabled]="_disabledTablesAssignment">
+                                        <md-option *ngFor="let index of _tablesNumber" value="{{index}}">{{index}}</md-option>
+                                    </md-select>
                                 </td>
                             </tr>
                         </table>

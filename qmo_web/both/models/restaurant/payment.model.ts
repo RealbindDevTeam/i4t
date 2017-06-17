@@ -14,4 +14,5 @@ export interface Payment extends CollectionObject{
     totalToPayment: number;
     currencyId: string;
     status: string;
+    received: boolean;
 }
