@@ -22,7 +22,7 @@
     </md-card-content>
 </md-card>
 
-<div class="main">
+<div class="main" *ngIf="(_items | async)?.length > 0">
     <div class="main-overflow">
         <md-card id="card-main" class="cards" *ngFor="let item of _items | async">
             <md-card-header>
@@ -50,11 +50,10 @@
                 <button md-raised-button *ngIf="!item.is_active" class="activate" (click)="updateStatus(item)">{{'ITEMS.ACTIVATE' | translate}}</button>
             </md-card-actions>
         </md-card>
-        
     </div>
     
     <div class="fixed-action-btn">
-        <button *ngIf="(_items | async)?.length > 0" md-tooltip="{{'ITEMS.CREATE_NEW_ITEM' | translate}}" class="fixed-action-btn" md-fab (click)="openItemCreation()">
+        <button md-tooltip="{{'ITEMS.CREATE_NEW_ITEM' | translate}}" class="fixed-action-btn" md-fab (click)="openItemCreation()">
             <md-icon style="color: white;">
                 add
             </md-icon>
