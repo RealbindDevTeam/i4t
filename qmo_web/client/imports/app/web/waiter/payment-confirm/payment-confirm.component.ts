@@ -16,6 +16,9 @@ import { Item } from '../../../../../../both/models/administration/item.model';
 import { Items } from '../../../../../../both/collections/administration/item.collection'; 
 import { PaymentMethod } from '../../../../../../both/models/general/paymentMethod.model';
 import { PaymentMethods } from '../../../../../../both/collections/general/paymentMethod.collection';
+import { Table } from '../../../../../../both/models/restaurant/table.model';
+import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
+import { WaiterCallDetail } from '../../../../../../both/models/restaurant/waiter-call-detail.model';
 
 import template from './payment-confirm.component.html';
 import style from './payment-confirm.component.scss';
@@ -27,23 +30,29 @@ import style from './payment-confirm.component.scss';
 })
 export class PaymentConfirmComponent implements OnInit, OnDestroy{
 
-    public restId   : string;
-    public tabId    : string;
+    public call                 : WaiterCallDetail;
 
-    private _paymentsSub    : Subscription;
-    private _ordersSub      : Subscription;
-    private _usersSub       : Subscription;
-    private _currencySub    : Subscription;
-    private _itemsSub       : Subscription;
-    private _paymentMethodsSub: Subscription;
+    private _user = Meteor.userId();
+    private _paymentsSub        : Subscription;
+    private _ordersSub          : Subscription;
+    private _usersSub           : Subscription;
+    private _currencySub        : Subscription;
+    private _itemsSub           : Subscription;
+    private _paymentMethodsSub  : Subscription;
+    private _tablesSub          : Subscription;
 
-    private _payments       : Observable<Payment[]>;
-    private _orders         : Observable<Order[]>;
-    private _items          : Observable<Item[]>;
-    private _paymentMethods : Observable<PaymentMethod[]>;
+    private _payments           : Observable<Payment[]>;
+    private _orders             : Observable<Order[]>;
+    private _items              : Observable<Item[]>;
+    private _paymentMethods     : Observable<PaymentMethod[]>;
 
-    private _orderIndex     : number = -1;
-    private _paymentIndex   : number = -1;
+    private _orderIndex         : number = -1;
+    private _paymentIndex       : number = -1;
+    private _totalPayment       : number = 0;
+    private _tableNumber        : string;
+    private _tableQRCode        : string;
+    private _payAllowed         : boolean = false;
+    private _loading            : boolean = false;
 
     /**
      * PaymentConfirmComponent constructor
@@ -61,22 +70,23 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy{
      * ngOnInit Implementation
      */
     ngOnInit(){
-        this._paymentsSub = MeteorObservable.subscribe( 'getPaymentsToWaiter', this.restId, this.tabId ).subscribe( () => {
+        this._paymentsSub = MeteorObservable.subscribe( 'getPaymentsToWaiter', this.call.restaurant_id, this.call.table_id ).subscribe( () => {
             this._ngZone.run( () => {
                 this._payments = Payments.find( { } ).zone();
+                this._payments.subscribe( ()=> { this.totalPayment(); this.verifyReceivedPayments(); } );
             });
         });
-        this._ordersSub = MeteorObservable.subscribe( 'getOrdersByTableId', this.restId, this.tabId, ['ORDER_STATUS.DELIVERED'] ).subscribe( () => {
+        this._ordersSub = MeteorObservable.subscribe( 'getOrdersByTableId', this.call.restaurant_id, this.call.table_id, ['ORDER_STATUS.DELIVERED'] ).subscribe( () => {
             this._ngZone.run( () => {
                 this._orders = Orders.find( { } ).zone();
             });
         });
 
-        this._currencySub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', [ this.restId ] ).subscribe();
+        this._currencySub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', [ this.call.restaurant_id ] ).subscribe();
 
-        this._usersSub = MeteorObservable.subscribe('getUserByTableId', this.restId, this. tabId ).subscribe();
+        this._usersSub = MeteorObservable.subscribe('getUserByTableId', this.call.restaurant_id, this.call.table_id ).subscribe();
 
-        this._itemsSub = MeteorObservable.subscribe( 'itemsByRestaurant', this.restId ).subscribe( () => {
+        this._itemsSub = MeteorObservable.subscribe( 'itemsByRestaurant', this.call.restaurant_id ).subscribe( () => {
             this._ngZone.run( () => {
                 this._items = Items.find( { } ).zone();
             });
@@ -85,6 +95,14 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy{
         this._paymentMethodsSub = MeteorObservable.subscribe( 'paymentMethods' ).subscribe( () => {
             this._ngZone.run( () => {
                 this._paymentMethods = PaymentMethods.find( { } ).zone();
+            });
+        });
+
+        this._tablesSub = MeteorObservable.subscribe( 'getTablesByRestaurant', this.call.restaurant_id ).subscribe( () => {
+            this._ngZone.run( () => {
+                let _lTable:Table = Tables.collection.find( { _id : this.call.table_id } ).fetch()[0];
+                this._tableNumber = _lTable._number + '';
+                this._tableQRCode = _lTable.QR_code;
             });
         });
     }
@@ -138,6 +156,67 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy{
     }
 
     /**
+     * Update payment received status
+     * @param {Payment} _pPayment 
+     */
+    updateReceivedStatus( _pPayment:Payment ):void{
+        Payments.update( _pPayment._id, 
+                        { $set : { 
+                            received : !_pPayment.received,
+                            modification_date: new Date(),
+                            modification_user: this._user 
+                          } 
+                        });
+    }
+
+    /**
+     * Calculate total payment
+     */
+    totalPayment(){
+        this._totalPayment = 0;
+        Payments.collection.find( { restaurantId : this.call.restaurant_id, tableId : this.call.table_id } ).fetch().forEach( ( pay ) => {
+            this._totalPayment += pay.totalToPayment;
+        });
+    }
+
+    /**
+     * Function to verify all table payments received status is recived
+     */
+    verifyReceivedPayments():void{
+        let _lPaymentsNoReceived = Payments.collection.find( { restaurantId : this.call.restaurant_id, tableId : this.call.table_id, received: false } ).count();
+        _lPaymentsNoReceived === 0 ? this._payAllowed = true : this._payAllowed = false;
+    }
+
+    /**
+     * Function to close table payments
+     */
+    closePayments():void{
+        this._loading = true;
+        setTimeout( () => {
+            MeteorObservable.call( 'closePay', this.call.restaurant_id, this.call.table_id, this.call ).subscribe( () => {
+                this._loading = false;
+                this.close();
+            });
+        }, 1500 );
+    }
+
+    /**
+     * Update Payments with received true or false
+     * @param {any} _event 
+     */
+    markPaymentsAsReceived( _event:any ):void{
+         if( _event.checked ){
+            Payments.collection.find( { } ).fetch().forEach( ( pay ) => {
+                Payments.update( pay._id, { $set: { received: true, modification_user: this._user } } );
+            });
+         } else{
+            Payments.collection.find( { } ).fetch().forEach( ( pay ) => {
+                Payments.update( pay._id, { $set: { received: false, modification_user: this._user } } );
+            });
+         }
+    }
+
+    /**
      * ngOnDestroy Implementation
      */
     ngOnDestroy(){
@@ -147,5 +226,6 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy{
         this._currencySub.unsubscribe();
         this._itemsSub.unsubscribe();
         this._paymentMethodsSub.unsubscribe();
+        this._tablesSub.unsubscribe();
     }
 }

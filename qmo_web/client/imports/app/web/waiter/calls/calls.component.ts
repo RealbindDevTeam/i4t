@@ -104,10 +104,9 @@ export class CallsComponent {
         this._mdDialogRef = this._mdDialog.open( PaymentConfirmComponent, {
             disableClose : true,
             width: '50%',
-            height: '85%'
+            height: '90%'
         });
-        this._mdDialogRef.componentInstance.restId = _call.restaurant_id;
-        this._mdDialogRef.componentInstance.tabId = _call.table_id;
+        this._mdDialogRef.componentInstance.call = _call;
         this._mdDialogRef.afterClosed().subscribe( result => {
             this._mdDialogRef = null;
         });

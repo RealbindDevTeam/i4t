@@ -1,55 +1,70 @@
-<md-card *ngFor="let payment of _payments | async; let inPay = index">
-    <md-card-content>
-        <div>
+<div class="payments-info">
+    <div class="table-info">
+        <p class="table">Mesa {{_tableNumber}} - Codigo: {{_tableQRCode}}</p>
+        <p class="total-table">Total de la Mesa: {{_totalPayment}}</p>
+    </div>
+    <md-checkbox (change)="markPaymentsAsReceived($event)">Marcar Todos los Pagos como Recibidos</md-checkbox>
+</div>
+<div *ngFor="let payment of _payments | async; let inPay = index">
+    <md-card class="cards">
+        <md-card-content>
             <div>
-                <h3 style="width: 40%;display: inline-block;text-align: center">{{ getUserName(payment.userId) }}</h3>
-                <h3 style="width: 35%;display: inline-block;text-align: center;color: green;">Total: {{payment.totalToPayment}} {{ getPaymentCurrency(payment.currencyId)}}</h3>
-                <div style="display: inline-block;vertical-align: top;">
-                    <button md-raised-button color="primary">Pago Recibido</button>
+                <div>
+                    <h3 class="user-name">{{ getUserName(payment.userId) }}</h3>
+                    <h3 class="total-payment">Total: {{payment.totalToPayment}} {{ getPaymentCurrency(payment.currencyId)}}</h3>
+                    <div class="received-button">
+                        <button md-raised-button *ngIf="payment.received" class="received" (click)="updateReceivedStatus(payment)"><md-icon class="md-24">check</md-icon>Recibido</button>
+                        <button md-raised-button *ngIf="!payment.received" class="no-received" (click)="updateReceivedStatus(payment)">No Recibido</button>
+                    </div>
+                </div>
+                <div>
+                    <div class="payment-method">
+                        <span *ngFor="let payMet of _paymentMethods | async">
+                            <template [ngIf]="payMet._id === payment.paymentMethodId">
+                                <p class="method">M.Pago: {{payMet.name | translate}}</p>
+                            </template>
+                        </span>
+                    </div>
+                    <p class="total-tip">Propina: {{payment.totalTip}} {{ getPaymentCurrency(payment.currencyId)}}</p>
+                    <p class="total-orders-price">Ordenes: {{payment.totalOrdersPrice}} {{ getPaymentCurrency(payment.currencyId)}}</p>
                 </div>
             </div>
-            <div>
-                <div style="display: inline-block;width: 35%;text-align: center;">
-                    <span *ngFor="let payMet of _paymentMethods | async">
-                        <template [ngIf]="payMet._id === payment.paymentMethodId">
-                            <p style="color: darkgoldenrod;font-weight: bold;">Medio de Pago: {{payMet.name | translate}}</p>
-                        </template>
-                    </span>
-                </div>
-                <p style="display: inline-block;width: 30%;text-align: center;color: darkgoldenrod;font-weight: bold;">Propina: {{payment.totalTip}} {{ getPaymentCurrency(payment.currencyId)}}</p>
-                <p style="display: inline-block;width: 30%;text-align: center;color: darkgoldenrod;font-weight: bold;">Ordenes: {{payment.totalOrdersPrice}} {{ getPaymentCurrency(payment.currencyId)}}</p>
-            </div>
-        </div>
-        <md-divider></md-divider>
-        <span *ngFor="let or of payment.orders; let inOrd = index">
-            <span *ngFor="let order of _orders | async">
-                <template [ngIf]="or === order._id">
-                    <div>
-                        <div style="width: 55%;display: inline-block">
-                            <p style="color: black;">orden # {{order.code}} - Estado: {{order.status | translate}}</p>
-                        </div>
-                        <div style="width: 35%;text-align: right;display: inline-block">
-                            <p style="color: black;">{{order.totalPayment}} {{ getPaymentCurrency(payment.currencyId)}}</p>
-                        </div>
-                        <button md-icon-button (click)="showOrderDetail(or, inPay, inOrd)"> <md-icon class="md-24">keyboard_arrow_right</md-icon> </button>
-                        <div *ngIf="_paymentIndex === inPay && _orderIndex === inOrd">
-                            <div *ngIf="(order.items.length > 0)">
-                                <span *ngFor="let item of _items | async">
-                                    <span *ngFor="let it of order.items">
-                                        <template [ngIf]="item._id === it.itemId">                                            
-                                            <p style="width: 60%;display: inline-block;">- {{item.name}}</p>
-                                            <p style="width: 35%;display: inline-block;text-align: right;">{{'ORDER_LIST.PRICE' | translate}}: {{it.paymentItem}} {{ getPaymentCurrency(payment.currencyId)}}</p>
-                                        </template>
+            <md-divider></md-divider>
+            <span *ngFor="let or of payment.orders; let inOrd = index">
+                <span *ngFor="let order of _orders | async">
+                    <template [ngIf]="or === order._id">
+                        <div class="orders">
+                            <div class="order">
+                                <p class="order-info">Orden # {{order.code}} - Estado: {{order.status | translate}}</p>
+                            </div>
+                            <div class="order-payment">
+                                <p class="order-payment-info">{{order.totalPayment}} {{ getPaymentCurrency(payment.currencyId)}}</p>
+                            </div>
+                            <button md-icon-button (click)="showOrderDetail(or, inPay, inOrd)"> <md-icon class="md-24">keyboard_arrow_right</md-icon> </button>
+                            <div class="items" *ngIf="_paymentIndex === inPay && _orderIndex === inOrd">
+                                <div *ngIf="(order.items.length > 0)">
+                                    <span *ngFor="let item of _items | async">
+                                        <span *ngFor="let it of order.items">
+                                            <template [ngIf]="item._id === it.itemId">                                            
+                                                <p class="item-name">- {{item.name}}</p>
+                                                <p class="item-quantity">Cant. {{it.quantity}}</p>
+                                                <p class="item-price">Precio: {{it.paymentItem}} {{ getPaymentCurrency(payment.currencyId)}}</p>
+                                            </template>
+                                        </span>
                                     </span>
-                                </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <md-divider></md-divider>
-                </template>
+                        <md-divider></md-divider>
+                    </template>
+                </span>
             </span>
-        </span>
-    </md-card-content>
-</md-card>
-<br/>
+        </md-card-content>
+    </md-card>
+    <br/>
+</div>
 <button md-raised-button color="primary" (click)="close()">Cerrar</button>
+<button md-raised-button color="primary" [disabled]="!_payAllowed" (click)="closePayments()">Cerrar Pagos</button>
+<div class="loading" *ngIf="_loading">
+    <md-spinner></md-spinner>
+</div>

@@ -1,0 +1,118 @@
+.payments-info{
+    text-align: center;
+    margin-bottom: 2%;
+    font-weight: bold;
+
+    .table-info{
+        margin-bottom: 2%;
+
+        .table{
+            font-family: Roboto,'Helvetica Neue',sans-serif;
+            font-size: 20px;
+            display: inline;
+        }
+
+        .total-table{
+            font-family: Roboto,'Helvetica Neue',sans-serif;
+            font-size: 20px;
+            display: inline;
+            margin-left: 3%;
+        }
+    }
+}
+
+.cards{
+    .user-name{
+        width: 40%;
+        display: inline-block;
+        text-align: center
+    }
+
+    .total-payment{
+        width: 35%;
+        display: inline-block;
+        text-align: center;
+        color: green;
+    }
+
+    .received-button{
+        display: inline-block;
+        vertical-align: middle;
+
+        .received{
+            background-color: green;
+            color: white;
+        }
+
+        .no-received{
+            background-color: red;
+            color: white;
+        }
+    }
+
+    .payment-method{
+        display: inline-block;
+        width: 35%;
+        text-align: center;
+
+        .method{
+            color: darkgoldenrod;
+            font-weight: bold;
+        }
+    }
+
+    .total-tip{
+        display: inline-block;
+        width: 30%;
+        text-align: center;
+        color: darkgoldenrod;
+        font-weight: bold;
+    }
+
+    .total-orders-price{
+        display: inline-block;
+        width: 30%;
+        text-align: center;
+        color: darkgoldenrod;
+        font-weight: bold;
+    }
+
+    .orders{
+        .order{
+            width: 55%;
+            display: inline-block;
+
+            .order-info{
+                color: black;
+            }
+        }
+
+        .order-payment{
+            width: 35%;
+            text-align: right;
+            display: inline-block;
+
+            .order-payment-info{
+                color: black;
+            }
+        }
+
+        .items{
+            .item-name{
+                width: 50%;
+                display: inline-block;
+            }
+
+            .item-quantity{
+                width: 15%;
+                display: inline-block;
+            }
+
+            .item-price{
+                width: 30%;
+                display: inline-block;
+                text-align: right;
+            }
+        }
+    }
+}
