@@ -59,6 +59,9 @@ import { ColombiaItemDetailComponent } from "./customer/payments/country-payment
 import { OrderPaymentTranslateComponent } from './customer/payments/order-payment-translate/order-payment-translate.component';
 import { OrderToTranslateComponent } from './customer/payments/order-payment-translate/order-to-translate/order-to-translate.component';
 import { ColombiaPaymentDetailComponent } from './customer/payments/country-payment/colombia-payment/colombia-payment-detail/colombia-payment-detail.component';
+import { ColombiaPaymentPlanComponent } from './restaurant/restaurant/restaurant-edition/country-payment-plan/colombia-payment-plan/colombia-payment-plan.component';
+import { CreateConfirmComponent } from './restaurant/restaurant/restaurant-register/create-confirm/create-confirm.component';
+import { MonthlyInvoiceComponent } from './invoicing/monthly-invoice/monthly-invoice.component';
 import { PaymentConfirmComponent } from './waiter/payment-confirm/payment-confirm.component';
 
 export const WEB_DECLARATIONS = [
@@ -101,7 +104,9 @@ export const WEB_DECLARATIONS = [
     PaymentsComponent,
     ColombiaPaymentComponent,
     ColombiaItemDetailComponent,
-    OrderPaymentTranslateComponent
+    OrderPaymentTranslateComponent,
+    ColombiaPaymentPlanComponent,
+    MonthlyInvoiceComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [
@@ -123,6 +128,7 @@ export const MODAL_DIALOG_DECLARATIONS = [
     CallCloseConfirmComponent,
     OrderToTranslateComponent,
     ColombiaPaymentDetailComponent,
+    CreateConfirmComponent,
     PaymentConfirmComponent
     /*
     CollaboratorsEditionComponent,

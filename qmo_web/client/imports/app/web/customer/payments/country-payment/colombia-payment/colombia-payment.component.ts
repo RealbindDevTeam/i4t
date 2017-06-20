@@ -96,7 +96,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                 this._paymentMethods = PaymentMethods.find( { } ).zone();
             });
         });
-        this._paymentsSub = MeteorObservable.subscribe( 'getUserPaymentsByRestaurantAndTable', this._user, this.restId, this.tabId ).subscribe( () => {
+        this._paymentsSub = MeteorObservable.subscribe( 'getUserPaymentsByRestaurantAndTable', this._user, this.restId, this.tabId, ['PAYMENT.NO_PAID'] ).subscribe( () => {
             this._ngZone.run( () => {
                 this._payments = Payments.find( { } ).zone();
                 this._payments.subscribe( () => { this.validateUserPayments() } );
@@ -246,6 +246,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                     Orders.collection.find( { creation_user: this._user, restaurantId: this.restId, 
                                               tableId: this.tabId, status: 'ORDER_STATUS.DELIVERED' } ).fetch().forEach( ( order ) => {
                                                   _lOrdersToInsert.push( order._id );
+                                                  Orders.update( { _id : order._id },{ $set : { toPay : true } } );
                                                   _lTotalValue += order.totalPayment;
                                               });
                     if( this._userIncludeTip ){ _lTotalTip += this._tipTotal }

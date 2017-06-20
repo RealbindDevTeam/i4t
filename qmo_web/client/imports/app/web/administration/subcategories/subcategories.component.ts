@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { MeteorObservable } from 'meteor-rxjs';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
+import { MdSnackBar } from '@angular/material';
 import { Subcategories } from '../../../../../../both/collections/administration/subcategory.collection';
 import { Subcategory } from '../../../../../../both/models/administration/subcategory.model';
 import { Categories } from '../../../../../../both/collections/administration/category.collection';
@@ -21,21 +22,24 @@ import style from './subcategories.component.scss';
 export class SubcategoryComponent implements OnInit, OnDestroy{
 
     private _user = Meteor.userId();
-    private _subcategoryForm: FormGroup;
+    private _subcategoryForm        : FormGroup;
 
-    private _subcategories: Observable<Subcategory[]>;
-    private _categories: Observable<Category[]>;
+    private _subcategories          : Observable<Subcategory[]>;
+    private _categories             : Observable<Category[]>;
 
-    private _subcategorySub: Subscription;    
-    private _categoriesSub: Subscription;
+    private _subcategorySub         : Subscription;    
+    private _categoriesSub          : Subscription;
 
-    _selectedValue:string;
-    _dialogRef: MdDialogRef<any>;
+    _selectedValue                  : string;
+    _dialogRef                      : MdDialogRef<any>;
 
     /**
      * SubcategoryComponent constructor
      */
-    constructor( private _formBuilder: FormBuilder, private _translate: TranslateService, public _dialog: MdDialog ){
+    constructor( private _formBuilder: FormBuilder, 
+                 private _translate: TranslateService, 
+                 public _dialog: MdDialog, 
+                 public snackBar: MdSnackBar ){
         var _userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
@@ -66,7 +70,7 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
         }
 
         if( this._subcategoryForm.valid ){
-            Subcategories.insert({
+            let _lNewSubcategory = Subcategories.collection.insert({
                 creation_user: this._user,
                 creation_date: new Date(),
                 modification_user: '-',
@@ -75,6 +79,14 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
                 name: this._subcategoryForm.value.name,
                 category: this._subcategoryForm.value.category
             });
+
+            if( _lNewSubcategory ){
+                let _lMessage:string = this.itemNameTraduction( 'SUBCATEGORIES.SUBCATEGORY_CREATED' );
+                this.snackBar.open( _lMessage, '',{
+                    duration: 2500
+                });
+            }
+
             this._subcategoryForm.reset();
             this._selectedValue = "";
         }
@@ -122,6 +134,18 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
         this._dialogRef.afterClosed().subscribe(result => {
             this._dialogRef = null;
         });
+    }
+
+    /**
+     * Return traduction
+     * @param {string} itemName 
+     */
+    itemNameTraduction(itemName: string): string{
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res; 
+        });
+        return wordTraduced;
     }
 
     /**

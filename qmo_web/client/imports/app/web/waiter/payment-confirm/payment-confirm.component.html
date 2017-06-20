@@ -1,4 +1,70 @@
-<md-card>
-    <md-card-title>Prueba</md-card-title>
-    <button md-raised-button color="primary" (click)="close()">Cerrar</button>
-</md-card>
+<div class="payments-info">
+    <div class="table-info">
+        <p class="table">Mesa {{_tableNumber}} - Codigo: {{_tableQRCode}}</p>
+        <p class="total-table">Total de la Mesa: {{_totalPayment}}</p>
+    </div>
+    <md-checkbox (change)="markPaymentsAsReceived($event)">Marcar Todos los Pagos como Recibidos</md-checkbox>
+</div>
+<div *ngFor="let payment of _payments | async; let inPay = index">
+    <md-card class="cards">
+        <md-card-content>
+            <div>
+                <div>
+                    <h3 class="user-name">{{ getUserName(payment.userId) }}</h3>
+                    <h3 class="total-payment">Total: {{payment.totalToPayment}} {{ getPaymentCurrency(payment.currencyId)}}</h3>
+                    <div class="received-button">
+                        <button md-raised-button *ngIf="payment.received" class="received" (click)="updateReceivedStatus(payment)"><md-icon class="md-24">check</md-icon>Recibido</button>
+                        <button md-raised-button *ngIf="!payment.received" class="no-received" (click)="updateReceivedStatus(payment)">No Recibido</button>
+                    </div>
+                </div>
+                <div>
+                    <div class="payment-method">
+                        <span *ngFor="let payMet of _paymentMethods | async">
+                            <template [ngIf]="payMet._id === payment.paymentMethodId">
+                                <p class="method">M.Pago: {{payMet.name | translate}}</p>
+                            </template>
+                        </span>
+                    </div>
+                    <p class="total-tip">Propina: {{payment.totalTip}} {{ getPaymentCurrency(payment.currencyId)}}</p>
+                    <p class="total-orders-price">Ordenes: {{payment.totalOrdersPrice}} {{ getPaymentCurrency(payment.currencyId)}}</p>
+                </div>
+            </div>
+            <md-divider></md-divider>
+            <span *ngFor="let or of payment.orders; let inOrd = index">
+                <span *ngFor="let order of _orders | async">
+                    <template [ngIf]="or === order._id">
+                        <div class="orders">
+                            <div class="order">
+                                <p class="order-info">Orden # {{order.code}} - Estado: {{order.status | translate}}</p>
+                            </div>
+                            <div class="order-payment">
+                                <p class="order-payment-info">{{order.totalPayment}} {{ getPaymentCurrency(payment.currencyId)}}</p>
+                            </div>
+                            <button md-icon-button (click)="showOrderDetail(or, inPay, inOrd)"> <md-icon class="md-24">keyboard_arrow_right</md-icon> </button>
+                            <div class="items" *ngIf="_paymentIndex === inPay && _orderIndex === inOrd">
+                                <div *ngIf="(order.items.length > 0)">
+                                    <span *ngFor="let item of _items | async">
+                                        <span *ngFor="let it of order.items">
+                                            <template [ngIf]="item._id === it.itemId">                                            
+                                                <p class="item-name">- {{item.name}}</p>
+                                                <p class="item-quantity">Cant. {{it.quantity}}</p>
+                                                <p class="item-price">Precio: {{it.paymentItem}} {{ getPaymentCurrency(payment.currencyId)}}</p>
+                                            </template>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <md-divider></md-divider>
+                    </template>
+                </span>
+            </span>
+        </md-card-content>
+    </md-card>
+    <br/>
+</div>
+<button md-raised-button color="primary" (click)="close()">Cerrar</button>
+<button md-raised-button color="primary" [disabled]="!_payAllowed" (click)="closePayments()">Cerrar Pagos</button>
+<div class="loading" *ngIf="_loading">
+    <md-spinner></md-spinner>
+</div>

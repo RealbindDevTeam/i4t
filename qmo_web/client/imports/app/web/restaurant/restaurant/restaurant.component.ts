@@ -61,7 +61,7 @@ export class RestaurantComponent implements OnInit, OnDestroy {
      */
     ngOnInit() {
         this._empty = false;
-        this.restaurants = Restaurants.find({}).zone();
+        this.restaurants = Restaurants.find({ creation_user: this._user}).zone();
         this.restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe();
         this.countriesSub = MeteorObservable.subscribe('countries').subscribe();
         this.citiesSub = MeteorObservable.subscribe('cities').subscribe();

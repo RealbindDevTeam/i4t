@@ -312,6 +312,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
      */
     changeSection( _section ):void{
         let _restaurantSectionsIds: string[]= [];
+        this._restaurantList = [];
         this._selectedSectionValue = _section;
         this._itemForm.controls['section'].setValue( _section );
         

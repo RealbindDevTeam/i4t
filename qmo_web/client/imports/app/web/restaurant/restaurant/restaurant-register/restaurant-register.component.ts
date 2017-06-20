@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -25,8 +26,7 @@ import { FinancialTextBox } from '../../../../../../../both/shared-components/re
 import { FinancialText } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-text';
 import { FinancialSlider } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-slider';
 import { PayuPaymenteService } from './payment-plan/payu-payment.service';
-import { RestaurantPlan } from '../../../../../../../both/models/restaurant/restaurant-plan.model';
-import { RestaurantPlans } from '../../../../../../../both/collections/restaurant/restaurant-plan.collection';
+import { CreateConfirmComponent } from './create-confirm/create-confirm.component';
 
 import template from './restaurant-register.component.html';
 import style from './restaurant-register.component.scss';
@@ -40,7 +40,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
 
     private _restaurantForm: FormGroup;
     private _paymentsFormGroup: FormGroup = new FormGroup({});
-    private _plansFormGroup: FormGroup = new FormGroup({});
 
     private _restaurantSub: Subscription;
     private _hoursSub: Subscription;
@@ -49,17 +48,12 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _citiesSub: Subscription;
     private _paymentMethodsSub: Subscription;
     private _restaurantImagesSub: Subscription;
-    private _restaurantPlanSub: Subscription;
 
     private _hours: Observable<Hour[]>;
     private _countries: Observable<Country[]>;
     private _cities: Observable<City[]>;
-    private _restaurantPlans: Observable<RestaurantPlan[]>;
     private _paymentMethods: Observable<PaymentMethod[]>;
-
     private _paymentMethodsList: PaymentMethod[];
-    //private _restaurantPlans: RestaurantPlan[];
-    //private _restaurantPlansList: RestaurantPlan[];
 
     private _filesToUpload: Array<File>;
     private _restaurantImageToInsert: File;
@@ -80,16 +74,12 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _restaurantFinancialInformation: Object = {};
     private _financialInformation: RestaurantFinancialElement[] = [];
 
-    private postsArray: any[];
     private planObj: any;
     private post: any;
 
     align: string;
 
-    public genders = [
-        { value: 'F', display: 'Female' },
-        { value: 'M', display: 'Male' }
-    ];
+    private _mdDialogRef: MdDialogRef<any>;
 
     /**
      * RestaurantRegisterComponent constructor
@@ -99,7 +89,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * @param {Router} _router
      */
     constructor(private _formBuilder: FormBuilder, private _translate: TranslateService, private _ngZone: NgZone, private _router: Router,
-        private payuPayment: PayuPaymenteService) {
+        private payuPayment: PayuPaymenteService, public _mdDialog: MdDialog) {
         var _userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang('en');
         _translate.use(_userLang);
@@ -109,8 +99,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._paymentMethodsList = [];
         this._filesToUpload = [];
         this._createImage = false;
-        //this._restaurantPlans = [];
-        //this._restaurantPlansList = [];
 
         this.align = "";
 
@@ -151,9 +139,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             webPage: new FormControl('', [Validators.minLength(1), Validators.maxLength(40)]),
             email: new FormControl('', [Validators.minLength(1), Validators.maxLength(40)]),
             image: new FormControl(''),
-            paymentMethods: this._paymentsFormGroup,
-            //restaurantPlans: this._plansFormGroup
-            plans: new FormControl('', [Validators.required])
+            paymentMethods: this._paymentsFormGroup
         });
 
         this._hoursSub = MeteorObservable.subscribe('hours').subscribe(() => {
@@ -164,8 +150,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
 
         this._paymentMethodsSub = MeteorObservable.subscribe('paymentMethods').subscribe(() => {
             this._ngZone.run(() => {
-                this._paymentMethods = PaymentMethods.find( { } ).zone();
-                this._paymentMethods.subscribe( () => { this.createPaymentMethods() });
+                this._paymentMethods = PaymentMethods.find({}).zone();
+                this._paymentMethods.subscribe(() => { this.createPaymentMethods() });
             });
         });
 
@@ -175,26 +161,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._citiesSub = MeteorObservable.subscribe('cities').subscribe();
         this._restaurantImagesSub = MeteorObservable.subscribe('restaurantImages', Meteor.userId()).subscribe();
         this._currencySub = MeteorObservable.subscribe('currencies').subscribe();
-        
-
-/*
-        this._restaurantPlanSub = MeteorObservable.subscribe('getPlans').subscribe(() => {
-            this._ngZone.run(() => {
-                this._restaurantPlans = RestaurantPlans.collection.find({}).fetch();
-                console.log('***');
-                console.log(this._restaurantPlans);
-                for (let plan of this._restaurantPlans) {
-                    console.log('///');
-                    console.log(plan);
-                    this._restaurantPlansList.push(plan);
-                    let control: FormControl = new FormControl(false);
-                    this._plansFormGroup.addControl(plan.planCode, control);
-                }
-            });
-        });
-*/
-        this._restaurantPlanSub = MeteorObservable.subscribe('getPlans').subscribe();
-        this._restaurantPlans = RestaurantPlans.find({});
 
         this._schedule = {
             monday: {
@@ -287,7 +253,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                     });
                     return _lElementsValidated;
                 } else {
-                    return true;
+                    return false;
                 }
             default:
                 return true;
@@ -334,15 +300,15 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     /**
      * Create Payment Methods
      */
-    createPaymentMethods():void{
-        PaymentMethods.collection.find({}).fetch().forEach( ( pay ) => {
+    createPaymentMethods(): void {
+        PaymentMethods.collection.find({}).fetch().forEach((pay) => {
             let paymentTranslated: PaymentMethod = {
                 _id: pay._id,
                 isActive: pay.isActive,
                 name: this.itemNameTraduction(pay.name)
             };
-            if( this._paymentMethodsList.filter( p => p._id === paymentTranslated._id ).length > 0 ){
-                this._paymentsFormGroup.controls[ paymentTranslated.name ].setValue( false );
+            if (this._paymentMethodsList.filter(p => p._id === paymentTranslated._id).length > 0) {
+                this._paymentsFormGroup.controls[paymentTranslated.name].setValue(false);
             } else {
                 this._paymentMethodsList.push(paymentTranslated);
                 let control: FormControl = new FormControl(false);
@@ -360,57 +326,69 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             return;
         }
 
-        let arrPay: any[] = Object.keys(this._restaurantForm.value.paymentMethods);
-        let _lPaymentMethodsToInsert: string[] = [];
 
-        arrPay.forEach((pay) => {
-            if (this._restaurantForm.value.paymentMethods[pay]) {
-                let _lPayment: PaymentMethod = this._paymentMethodsList.filter(p => p.name === pay)[0];
-                _lPaymentMethodsToInsert.push(_lPayment._id);
+        this._mdDialogRef = this._mdDialog.open(CreateConfirmComponent, {
+            disableClose: true
+        });
+
+        this._mdDialogRef.afterClosed().subscribe(result => {
+
+            this._mdDialogRef = result;
+            if (result.success) {
+
+                let arrPay: any[] = Object.keys(this._restaurantForm.value.paymentMethods);
+                let _lPaymentMethodsToInsert: string[] = [];
+
+                arrPay.forEach((pay) => {
+                    if (this._restaurantForm.value.paymentMethods[pay]) {
+                        let _lPayment: PaymentMethod = this._paymentMethodsList.filter(p => p.name === pay)[0];
+                        _lPaymentMethodsToInsert.push(_lPayment._id);
+                    }
+                });
+
+                let _lNewRestaurant = Restaurants.collection.insert({
+                    creation_user: Meteor.userId(),
+                    creation_date: new Date(),
+                    modification_user: '-',
+                    modification_date: new Date(),
+                    countryId: this._restaurantForm.value.country,
+                    cityId: this._restaurantForm.value.city,
+                    name: this._restaurantForm.value.name,
+                    currencyId: this._restaurantCurrencyId,
+                    address: this._restaurantForm.value.address,
+                    indicative: this._countryIndicative,
+                    phone: this._restaurantForm.value.phone,
+                    webPage: this._restaurantForm.value.webPage,
+                    email: this._restaurantForm.value.email,
+                    restaurant_code: this.generateRestaurantCode(),
+                    financialInformation: this._restaurantFinancialInformation,
+                    paymentMethods: _lPaymentMethodsToInsert,
+                    location: {
+                        lat: 0,
+                        lng: 0
+                    },
+                    schedule: this._schedule,
+                    tables_quantity: 0,
+                    orderNumberCount: 0,
+                    max_jobs: 5,
+                    queue: this._queues,
+                    plan: this._restaurantForm.value.plans,
+                    isActive: true,
+                    firstPay: true
+                });
+
+                if (this._createImage) {
+                    uploadRestaurantImage(this._restaurantImageToInsert,
+                        Meteor.userId(),
+                        _lNewRestaurant).then((result) => {
+
+                        }).catch((error) => {
+                            alert('Upload image error. Only accept .png, .jpg, .jpeg files.');
+                        });
+                }
+                this.cancel();
             }
         });
-
-        let _lNewRestaurant = Restaurants.collection.insert({
-            creation_user: Meteor.userId(),
-            creation_date: new Date(),
-            modification_user: '-',
-            modification_date: new Date(),
-            countryId: this._restaurantForm.value.country,
-            cityId: this._restaurantForm.value.city,
-            name: this._restaurantForm.value.name,
-            currencyId: this._restaurantCurrencyId,
-            address: this._restaurantForm.value.address,
-            indicative: this._countryIndicative,
-            phone: this._restaurantForm.value.phone,
-            webPage: this._restaurantForm.value.webPage,
-            email: this._restaurantForm.value.email,
-            restaurant_code: this.generateRestaurantCode(),
-            financialInformation: this._restaurantFinancialInformation,
-            paymentMethods: _lPaymentMethodsToInsert,
-            location: {
-                lat: 0,
-                lng: 0
-            },
-            schedule: this._schedule,
-            tables_quantity: 0,
-            orderNumberCount: 0,
-            max_jobs: 5,
-            queue: this._queues,
-            plan: this._restaurantForm.value.plans,
-            isActive: true,
-            tstPeriod: true
-        });
-
-        if (this._createImage) {
-            uploadRestaurantImage(this._restaurantImageToInsert,
-                Meteor.userId(),
-                _lNewRestaurant).then((result) => {
-
-                }).catch((error) => {
-                    alert('Upload image error. Only accept .png, .jpg, .jpeg files.');
-                });
-        }
-        this.cancel();
     }
 
     /**

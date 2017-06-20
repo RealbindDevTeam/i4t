@@ -69,6 +69,6 @@ export class PaymentsComponent implements OnInit, OnDestroy {
      */
     ngOnDestroy(){
         this._userDetailsSub.unsubscribe();
-        this._restaurantSub.unsubscribe();
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
     }
 }

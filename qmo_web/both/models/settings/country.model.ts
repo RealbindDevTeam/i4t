@@ -16,4 +16,6 @@ export interface Country {
     queue: string[];
     financialInformation: RestaurantFinancialElement[];
     cronSchedule: string;
+    restaurantPrice: number;
+    tablePrice: number;
 }

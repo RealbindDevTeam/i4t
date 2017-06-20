@@ -10,12 +10,7 @@ import style from './dashboard.component.scss';
 })
 export class DashboardComponent{
 
-  private sysDate: Date;
-
   constructor(){
-    this.sysDate = new Date();
-    console.log('**********');
-    console.log(this.sysDate);
   }
 
 }

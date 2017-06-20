@@ -6,5 +6,5 @@ import { RestaurantPlans } from '../../../../both/collections/restaurant/restaur
  * Meteor publications for get all restaurant plans
 */
 Meteor.publish('getPlans', function () {
-    return RestaurantPlans.collection.find({ isActive: true});
+    return RestaurantPlans.collection.find({ isActive: true });
 });
