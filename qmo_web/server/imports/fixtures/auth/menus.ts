@@ -12,21 +12,21 @@ export function loadMenus() {
                 name: "MENUS.RESTAURANT.RESTAURANTS",
                 url: "",
                 icon_name: "view_list",
-                children: 
+                children:
                 [
                     {
                         _id: "1001",
                         is_active: true,
                         name: "MENUS.RESTAURANT.MANAGEMENT",
                         url: "/app/restaurant",
-                        icon_name: "",                        
-                    },{
+                        icon_name: "",
+                    }, {
                         _id: "1002",
                         is_active: true,
                         name: "MENUS.RESTAURANT.TABLES",
                         url: "/app/tables",
                         icon_name: ""
-                    },{
+                    }, {
                         _id: "1003",
                         is_active: true,
                         name: "MENUS.RESTAURANT.COLLABORATORS",
@@ -41,7 +41,7 @@ export function loadMenus() {
                 name: "MENUS.ADMINISTRATION.ADMINISTRATION",
                 url: "",
                 icon_name: "view_list",
-                children: 
+                children:
                 [
                     {
                         _id: "2001",
@@ -49,49 +49,49 @@ export function loadMenus() {
                         name: "MENUS.ADMINISTRATION.SECTIONS",
                         url: "/app/sections",
                         icon_name: ""
-                    },{
-                       _id: "2002",
+                    }, {
+                        _id: "2002",
                         is_active: true,
                         name: "MENUS.ADMINISTRATION.CATEGORIES",
                         url: "/app/categories",
                         icon_name: ""
-                    },{
+                    }, {
                         _id: "2003",
                         is_active: true,
                         name: "MENUS.ADMINISTRATION.SUBCATEGORIES",
                         url: "/app/subcategories",
                         icon_name: ""
-                    },{
+                    }, {
                         _id: "2004",
                         is_active: true,
                         name: "MENUS.ADMINISTRATION.ADDITIONS",
                         url: "/app/additions",
                         icon_name: ""
-                    },{
+                    }, {
                         _id: "2005",
                         is_active: true,
                         name: "MENUS.ADMINISTRATION.PROMOTIONS",
                         url: "/app/promotions",
                         icon_name: ""
-                    },{
+                    }, {
                         _id: "2006",
                         is_active: true,
                         name: "MENUS.ADMINISTRATION.GARNISHFOOD",
                         url: "/app/garnishFood",
                         icon_name: ""
-                    },{
+                    }, {
                         _id: "2007",
                         is_active: true,
                         name: "MENUS.ADMINISTRATION.ITEMS",
                         url: "/app/items",
                         icon_name: ""
-                    },{
+                    }, {
                         _id: "2008",
                         is_active: true,
                         name: "MENUS.ADMINISTRATION.ITEMS_ENABLE",
                         url: "/app/itemsEnable",
                         icon_name: ""
-                    },{
+                    }, {
                         _id: "2009",
                         is_active: true,
                         name: "MENUS.ADMINISTRATION.ORDERS_CHEF",
@@ -127,6 +127,30 @@ export function loadMenus() {
                 name: "MENUS.ADMINISTRATION.ORDERS_CHEF",
                 url: "/app/chefOrders",
                 icon_name: "dns"
+            },
+            {
+                _id: "7000",
+                is_active: true,
+                name: "MENUS.INVOICING.INVOICING",
+                url: "",
+                icon_name: "view_list",
+                children:
+                [
+                    {
+                        _id: "7001",
+                        is_active: true,
+                        name: "MENUS.INVOICING.MONTHLY_INVOICE",
+                        url: "/app/monthly_invoice",
+                        icon_name: ""
+                    },
+                    {
+                        _id: "7002",
+                        is_active: true,
+                        name: "MENUS.INVOICING.INOVICING_HISTORY",
+                        url: "/app/invoicing_history",
+                        icon_name: ""
+                    }
+                ]
             }
         ];
 

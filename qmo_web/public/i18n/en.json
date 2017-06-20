@@ -16,16 +16,16 @@
     "STRUCTURE": "Structure",
     "UPDATE": "Update",
     "MODIFY": "Modify",
-    "CHOOSE_FILE" : "Choose a file",
+    "CHOOSE_FILE": "Choose a file",
     "NEXT": "Next",
     "BACK": "Back",
     "FINISH": "Finish",
-    "LAST_NAME" : "Last name",
-    "BIRTHDATE" : "Birthdate",
+    "LAST_NAME": "Last name",
+    "BIRTHDATE": "Birthdate",
     "PHONE": "Phone",
-    "SEARCH" : "Search",
-    "JOB" : "Job tittle",
-    "VALIDATE" : "Validate",
+    "SEARCH": "Search",
+    "JOB": "Job tittle",
+    "VALIDATE": "Validate",
     "TIP_PERCENTAGE": "Tip percentage",
     "CLOSE": "Close",
     "ORDER_STATUS": {
@@ -36,10 +36,10 @@
         "DELIVERED": "Delivered",
         "PENDING_CONFIRM": "Pending Payment Confirmation"
     },
-    "DATE_VALIDATE" : {
-        "DAY_FORMAT" : "Day format incorrect",
-        "MONTH_FORMAT" : "Month format incorrect",
-        "YEAR_FORMAT" : "Year format incorrect"
+    "DATE_VALIDATE": {
+        "DAY_FORMAT": "Day format incorrect",
+        "MONTH_FORMAT": "Month format incorrect",
+        "YEAR_FORMAT": "Year format incorrect"
     },
     "LANDING": {
         "PRICING": "Pricing",
@@ -80,7 +80,7 @@
             "CANCEL": "Cancel"
         }
     },
-    "RESET_PASWORD":{
+    "RESET_PASWORD": {
         "TITLE": "Reset password",
         "BTN_RESET": "Reset",
         "EMAIL_SEND": "A message has been sent to your email to change the password",
@@ -163,7 +163,7 @@
             "RESTAURANTS": "Restaurants",
             "MANAGEMENT": "Management",
             "TABLES": "Tables",
-            "COLLABORATORS" : "Collaborators"
+            "COLLABORATORS": "Collaborators"
         },
         "ADMINISTRATION": {
             "ADMINISTRATION": "Administration",
@@ -178,7 +178,12 @@
             "ORDERS_CHEF": "Orders"
         },
         "ORDERS": "Orders",
-        "WAITER_CALL" : "Waiter call"
+        "WAITER_CALL": "Waiter call",
+        "INVOICING": {
+            "INVOICING": "Invoicing",
+            "MONTHLY_INVOICE": "Monthly Invoice",
+            "INOVICING_HISTORY": "Invoice History"
+        }
     },
     "PROMOTIONS": {
         "PROMOTION_CREATION": "Promotions creation",
@@ -227,7 +232,7 @@
         "SELECT_CLOSING_HOUR": "Select Closing Hour",
         "ADD_PAYMENTMETHODS_RESTURANT": "Select payment methods accepted by the restaurant",
         "ADD_RESTAURANT_IMAGE": "Add Restaurant Image",
-        "GENERAL_LABEL": "General", 
+        "GENERAL_LABEL": "General",
         "GENERAL_INFO": "General information about the restaurant",
         "GENERAL_INFO_TEXT": "Please enter the information of the restaurant. This information will be displayed by people on the internet and will give you greater visibility",
         "FINANCIAL_LABEL": "Financial",
@@ -243,7 +248,16 @@
         "ENTER_TIP_PERCENTAGE": "Enter the percentage of the suggested tip (0% - 100%). You can enter the value or use the Slider",
         "NUMBER_TABLE_LABEL": "# Tables",
         "NUMBER_TABLE_LABEL_INFO": "Select the number of restaurant tables",
-        "NUMBER_TABLE_LABEL_INFO_TEXT": "You have a 15 days test period, after that, you can choose your plan according to the selected number of tables"
+        "NUMBER_TABLE_LABEL_INFO_TEXT_1": "You have a ",
+        "NUMBER_TABLE_LABEL_INFO_TEXT_2": " days test period, after that, you can choose your plan according to the selected number of tables",
+        "TO": "to ",
+        "TABLES": "tables",
+        "MORE": "more",
+        "RESTAURANT_CREATION": "Restaurant creation",
+        "ACTIVATION_MESSAGE": "Se activará el cobro mensual del servicio Iurest por restaurante",
+        "CLARIFICATION_MESSAGE": "Iurest performs the service charge on the 1st day of each month, the first charge is over ",
+        "ACCEPT_CREATION": "Accept",
+        "CANCEL_CREATION": "Cancel"
     },
     "WEEK": {
         "MONDAY": "Monday",
@@ -396,10 +410,10 @@
         "COUNTRY": "Country",
         "PHONE": "Phone",
         "WEBPAGE": "Webpage",
-        "EMAIL":"Email",
-        "MSG_INITIAL":"Manage your restaurant information"
+        "EMAIL": "Email",
+        "MSG_INITIAL": "Manage your restaurant information"
     },
-    "TABLES":{
+    "TABLES": {
         "TABLES_CREATION": "Creating tables",
         "TABLES_TEXT": "Select the restaurant you want and the number of tables you want to create",
         "RESTAURANT": "Restaurant",
@@ -417,34 +431,34 @@
         "MSG_INITIAL": "Create the tables with the asociated QR Code"
     },
     "GO_TO_STORE": {
-        "TITTLE" : "What do you ",
-        "SUB_TITTLE" : "like to eat?",
-        "CONTENT" : "We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components",
-        "BUTTON" : "Download"
+        "TITTLE": "What do you ",
+        "SUB_TITTLE": "like to eat?",
+        "CONTENT": "We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components",
+        "BUTTON": "Download"
     },
-    "COLLABORATORS" : {
-        "COLLABORATORS_SEARCH" : "Collaborators query",
-        "COLLABORATORS_REGISTER" : "Collaborator register",
+    "COLLABORATORS": {
+        "COLLABORATORS_SEARCH": "Collaborators query",
+        "COLLABORATORS_REGISTER": "Collaborator register",
         "COLLABORATORS_TEXT": "Select the restaurant you want for search",
-        "MSG_INITIAL" : "Link to all your collaborators an agreement to the role they play",
-        "BTN" : "Collaborator register"
+        "MSG_INITIAL": "Link to all your collaborators an agreement to the role they play",
+        "BTN": "Collaborator register"
     },
-    "COLLABORATORS_REGISTER" : {
-        "COLLABORATORS_LABEL" : "Collaborator",
-        "USER_LABEL" : "User",
-        "GENERAL_INFO" : "Personal information",
-        "GENERAL_INFO_TEXT" : "Please enter the personal information of your collaborator",
-        "USER_INFO" : "User information",
-        "USER_INFO_TEXT" : "Please enter the user information of your collaborator",
-        "RESTAURANT" : "Restaurant",
-        "SELECT_RESTAURANT" : "Select restaurant",
-        "SELECT_ROLE" : "Select role",
-        "MESSAGE_COLLABORATOR" : "Collaborator created successfully",
-        "MESSAGE_FORM_INVALID" : "You must fill in the required fields",
-        "ERROR_INSERT" : "Error inserting collaborator",
-        "MESSAGE_NOT_LOGIN" : "Please log in to add a restaurant",
-        "SELECT_RANGE_VALID_TABLES" : "Select a valid range of the tables",
-        "TABLES_ASSIGNMENT" : "Assignment of tables"
+    "COLLABORATORS_REGISTER": {
+        "COLLABORATORS_LABEL": "Collaborator",
+        "USER_LABEL": "User",
+        "GENERAL_INFO": "Personal information",
+        "GENERAL_INFO_TEXT": "Please enter the personal information of your collaborator",
+        "USER_INFO": "User information",
+        "USER_INFO_TEXT": "Please enter the user information of your collaborator",
+        "RESTAURANT": "Restaurant",
+        "SELECT_RESTAURANT": "Select restaurant",
+        "SELECT_ROLE": "Select role",
+        "MESSAGE_COLLABORATOR": "Collaborator created successfully",
+        "MESSAGE_FORM_INVALID": "You must fill in the required fields",
+        "ERROR_INSERT": "Error inserting collaborator",
+        "MESSAGE_NOT_LOGIN": "Please log in to add a restaurant",
+        "SELECT_RANGE_VALID_TABLES": "Select a valid range of the tables",
+        "TABLES_ASSIGNMENT": "Assignment of tables"
     },
     "ITEMS": {
         "ITEMS_MANAGEMENT": "Item management",
@@ -481,24 +495,24 @@
         "ITEM_GARNISHFOOD_QUANTITY": "Number of garnish food allowed for item",
         "ADDITIONS_TEXT": "Please select the additions that will be available for the item (If applicable)",
         "NOT_ADDITIONS": "No additions created for the establishment",
-        "MSG_INITIAL" : "Implement an orderly and easy way to view your menu",
+        "MSG_INITIAL": "Implement an orderly and easy way to view your menu",
         "ADD_IMAGE": "Add item image",
         "ACTIVATE": "ACTIVATE",
         "INACTIVATE": "INACTIVATE",
         "COOKING_TIME": "Approximate Cooking Time"
     },
-    "ROLE" : {
-        "ADMINISTRATOR" : "Administrator",
-        "WAITER" : "Waiter",
-        "CASHIER" : "Cashier",
-        "CUSTOMER" : "Customer",
-        "CHEF" : "Chef",
-        "SUPERVISOR" : "Supervisor"
+    "ROLE": {
+        "ADMINISTRATOR": "Administrator",
+        "WAITER": "Waiter",
+        "CASHIER": "Cashier",
+        "CUSTOMER": "Customer",
+        "CHEF": "Chef",
+        "SUPERVISOR": "Supervisor"
     },
     "SCHEDULE": {
         "SCHEDULE": "Schedule",
         "SELECT_OPENING_HOUR": "Select Opening Hour",
-        "SELECT_CLOSING_HOUR":"Select Closing Hour",
+        "SELECT_CLOSING_HOUR": "Select Closing Hour",
         "MONDAY": "Monday",
         "TUESDAY": "Tuesday",
         "WEDNESDAY": "Wednesday",
@@ -522,7 +536,7 @@
         "CLOSE": "Close"
     },
     "RESTAURANT_EDITION": {
-        "GENERAL_LABEL": "General", 
+        "GENERAL_LABEL": "General",
         "GENERAL_INFO": "General information about the restaurant",
         "GENERAL_INFO_TEXT": "Edit the restaurant information. This information will be displayed by people on the internet and will give you greater visibility.",
         "SELECT_COUNTRY": "Select Country",
@@ -544,7 +558,20 @@
         "SCHEDULE_INFO_TEXT": "Enter the opening hours of the establishment",
         "CURRENCY_ACCEPTED": "Currency Accepted",
         "ENTER_TAX_PERCENTAGE": "Enter the tax percentage (0% - 100%). You can enter the value or use the Slider",
-        "ENTER_TIP_PERCENTAGE": "Enter the percentage of the suggested tip (0% - 100%). You can enter the value or use the Slider"
+        "ENTER_TIP_PERCENTAGE": "Enter the percentage of the suggested tip (0% - 100%). You can enter the value or use the Slider",
+        "NUMBER_TABLE_LABEL": "# Tables",
+        "NUMBER_TABLE_LABEL_INFO": "Select the number of restaurant tables",
+        "NUMBER_TABLE_LABEL_INFO_TEXT_1": "You have a ",
+        "NUMBER_TABLE_LABEL_INFO_TEXT_2": " trial period days since",
+        "NUMBER_TABLE_LABEL_INFO_TEXT_3": ", after that, you can choose your plan according to the selected number of tables",
+        "TO": "to ",
+        "TABLES": "tables",
+        "MORE": "more",
+        "NUMBER_TABLE_LABEL_PLAN": "Select a plan",
+        "NUMBER_TABLE_LABEL_PLAN_INFO": "According to the tables number, the corresponding charge will be made to the account that you register",
+        "PLAN_ONE": "Plan One",
+        "PLAN_TWO": "Plan Two",
+        "PLAN_THREE": "Plan Three"
     },
     "RESTAURANT_LOCATION": {
         "TITTLE": "Location of the establishment",
@@ -562,7 +589,7 @@
         "TITTLE": "Location of the establishment",
         "CLOSE": "Close",
         "MESSAGE": "We are sorry. This establishment has not yet entered its current location"
-    }, 
+    },
     "ORDER_CREATE": {
         "PRICE": "Price",
         "VIEW_DETAIL": "See detail",
@@ -594,8 +621,8 @@
         "UNAVAILABLE": "Unavailable",
         "CANCEL_ORDER": "Cancel Orden",
         "CONFIRM_ORDER": "Confirm Orden",
-        "SELECT_ITEM":"Select an item to detail, edit or remove from the order",
-        "QUANTITY":"Quantity",
+        "SELECT_ITEM": "Select an item to detail, edit or remove from the order",
+        "QUANTITY": "Quantity",
         "ITEM_UNAVAILABLE": "At this time the item is not available to add to the order",
         "OBSERVATIONS": "Observations",
         "GARNISH_FOOD": "Garnish Food",
@@ -626,34 +653,34 @@
         "PAYMENT_METHOD": "Payment method",
         "TOTAL_BILL": "Total bill",
         "PAY_BTN": "Pay",
-        "PAY_DETAIL_TITTLE":"Payment detail",
-        "PAY_ORDER":"Order",
-        "SUBTOTAL":"SubTotal",
-        "INC":"Inc",
-        "TOTAL":"Total",
-        "TIPS":"Tip",
-        "TOTAL_TO_PAY":"Total to pay",
+        "PAY_DETAIL_TITTLE": "Payment detail",
+        "PAY_ORDER": "Order",
+        "SUBTOTAL": "SubTotal",
+        "INC": "Inc",
+        "TOTAL": "Total",
+        "TIPS": "Tip",
+        "TOTAL_TO_PAY": "Total to pay",
         "ADDITION": "Addition",
         "GARNISH_FOOD": "Garnish Food"
     },
     "WAITER_CALL": {
         "TITTLE": "Call waiter",
         "CONTENT": "Press the button to call the waiter",
-        "THERE_IS_NOT_CODE_REST" : "!Ups¡ You are not in any restaurant",
-        "THERE_IS_NOT_CODE_REST_INS" : "Go to the order option and enter the code to call the waiter",
-        "RECEIVE_CALL" : "We receive your call!",
-        "ONE_MOMENT" : "In a moment we will answer you",
-        "TITLE_PROMPT" : "Request close",
-        "CONTENT_PROMPT" : "¿Want you close the client request?",
-        "LOADING" : "Please wait...",
-        "MSG_COMFIRM" : "Request closed",
-        "NO_ANSWER" : "No",
-        "YES_ANSWER" : "Yes",
-        "TURN" : "Turn",
-        "TABLE" :"Table",
-        "CALL_LABEL_SEND_ORDER" : "Order to deliver",
-        "CALL_LABEL_CUSTOMER" : "Customer's call",
-        "CALL_LABEL_CUSTOMER_PAYMENT" : "Customer's payment"
+        "THERE_IS_NOT_CODE_REST": "!Ups¡ You are not in any restaurant",
+        "THERE_IS_NOT_CODE_REST_INS": "Go to the order option and enter the code to call the waiter",
+        "RECEIVE_CALL": "We receive your call!",
+        "ONE_MOMENT": "In a moment we will answer you",
+        "TITLE_PROMPT": "Request close",
+        "CONTENT_PROMPT": "¿Want you close the client request?",
+        "LOADING": "Please wait...",
+        "MSG_COMFIRM": "Request closed",
+        "NO_ANSWER": "No",
+        "YES_ANSWER": "Yes",
+        "TURN": "Turn",
+        "TABLE": "Table",
+        "CALL_LABEL_SEND_ORDER": "Order to deliver",
+        "CALL_LABEL_CUSTOMER": "Customer's call",
+        "CALL_LABEL_CUSTOMER_PAYMENT": "Customer's payment"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Orders Confirmed",
@@ -677,14 +704,31 @@
             "DIAN_NUMERATION": "Enter numbers authorized by DIAN:",
             "DIAN_NUMERATION_FROM": "From",
             "DIAN_NUMERATION_TO": "To",
-            "ENTER_TIP_PERCENTAGE": "Enter the percentage of the suggested tip ( 0% - 100% ). You can enter the value or use the Slider"              
+            "ENTER_TIP_PERCENTAGE": "Enter the percentage of the suggested tip ( 0% - 100% ). You can enter the value or use the Slider"
         }
     },
     "ORDERS": {
-        "MSG_INITIAL": "Ingresa el código que se encuentra en la mesa",
+        "MSG_INITIAL": "Enter the code on the table",
         "CANCEL": "Cancel",
         "ENTER": "Enter Code",
         "CODE_NOT_FOUND": "Code Not Found",
         "TRY_AGAIN": "Please try again"
+    },
+    "MONTHLY_INVOICE": {
+        "TITLE": "Iurest service invoicing",
+        "SUBTITLE": "Here you can see the cost by restaurant and tables number",
+        "RESTAURANT_NAME": "Restaurant name",
+        "RESTAURANT_PRICE": "Restaurant price",
+        "TABLES_NUMBER": "Tables number",
+        "TABLES_PRICE": "Tables price",
+        "FINAL_PRICE": "Final price",
+        "CURRENCY": "Currency",
+        "PRICE_BY_TABLE": "Price by table: ",
+        "TOTAL_PRICE": "Total: ",
+        "PAY": "   PAY   ",
+        "DISCOUNT_TOOLTIP_1": "You have a " ,
+        "DISCOUNT_TOOLTIP_2": " discount for the first payment",
+        "INVOICE_PERIOD": "Invoice period: ",
+        "TO": "to" 
     }
 }

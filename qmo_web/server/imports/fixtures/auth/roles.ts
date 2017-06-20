@@ -10,7 +10,7 @@ export function loadRoles() {
             is_active: true,
             name: "ROLE.ADMINISTRATOR",
             description: "restaurant administrator",
-            menus: ["1000", "2000"]
+            menus: ["1000", "2000", "7000"]
         },{
             _id: "200",
             is_active: true,

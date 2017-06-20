@@ -5,5 +5,11 @@ export interface RestaurantPlan extends CollectionObject{
     isActive: boolean;
     minTableNumber: number;
     maxTableNumber?: number;
-    price?: number;
+    price: Price[];
+    name: string;
+}
+
+export interface Price {
+    country: string;
+    price: number;
 }
