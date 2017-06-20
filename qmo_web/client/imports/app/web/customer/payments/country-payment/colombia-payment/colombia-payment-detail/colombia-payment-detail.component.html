@@ -1,10 +1,10 @@
 <md-card>
-    <md-card-title>Detalle de las Ordenes</md-card-title>
+    <md-card-title>{{ 'PAYMENTS.COLOMBIA.ORDER_DETAILS' | translate }}</md-card-title>
     <md-card-content>
         <div id="item" *ngFor="let order of _orders | async">
             <div class="inner-item">
                 <div class="input-wraper">
-                    <h3>{{ 'PAYMENTS.PAY_ORDER' | translate }} # {{order.code}}</h3>
+                    <h3>{{ 'PAYMENTS.COLOMBIA.PAY_ORDER' | translate }} # {{order.code}}</h3>
                 </div>
                 <h3> {{order.totalPayment}} {{currencyCode}}</h3>
             </div>
@@ -16,9 +16,9 @@
             <div class="item-inner">
                 <div class="input">
                     <div class="label">
-                        <h3>{{'PAYMENTS.SUBTOTAL' | translate}}</h3>
-                        <h3>{{'PAYMENTS.INC' | translate}} (8%)</h3>
-                        <h2>{{'PAYMENTS.TOTAL' | translate}}</h2>
+                        <h3>{{'PAYMENTS.COLOMBIA.SUBTOTAL' | translate}}</h3>
+                        <h3>{{'PAYMENTS.COLOMBIA.INC' | translate}} (8%)</h3>
+                        <h2>{{'PAYMENTS.COLOMBIA.TOTAL' | translate}}</h2>
                     </div>
                 </div>
                 <div style="text-align: end">
@@ -30,6 +30,6 @@
         </div>
     </md-card-content>
     <md-card-actions>
-        <button md-button (click)="close()">Cerrar</button>
+        <button md-button (click)="close()">{{'CLOSE' | translate}}</button>
    </md-card-actions>
 </md-card>
