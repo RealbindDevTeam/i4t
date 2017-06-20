@@ -5,6 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MdSnackBar } from '@angular/material';
 import { Additions } from '../../../../../../both/collections/administration/addition.collection';
 import { Addition, AdditionRestaurant, AdditionPrice } from '../../../../../../both/models/administration/addition.model';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
@@ -26,24 +27,24 @@ import style from './addition.component.scss';
 export class AdditionComponent implements OnInit, OnDestroy{
 
     private _user = Meteor.userId();
-    private _additionForm: FormGroup;
-    private _currenciesFormGroup: FormGroup = new FormGroup({});
-    private _taxesFormGroup: FormGroup = new FormGroup({});
+    private _additionForm           : FormGroup;
+    private _currenciesFormGroup    : FormGroup = new FormGroup({});
+    private _taxesFormGroup         : FormGroup = new FormGroup({});
 
-    private _additions: Observable<Addition[]>;
-    private _currencies: Observable<Currency[]>;
+    private _additions              : Observable<Addition[]>;
+    private _currencies             : Observable<Currency[]>;
 
-    private _additionsSub: Subscription;
-    private _restaurantSub: Subscription;
-    private _currenciesSub: Subscription;
-    private _countriesSub: Subscription;
+    private _additionsSub           : Subscription;
+    private _restaurantSub          : Subscription;
+    private _currenciesSub          : Subscription;
+    private _countriesSub           : Subscription;
     
-    private _restaurantList: Restaurant[] = [];
-    public _dialogRef: MdDialogRef<any>;
-    private _restaurantCurrencies: string [] = [];
-    private _showCurrencies: boolean = false;
-    private _restaurantTaxes: string [] = [];
-    private _showTaxes: boolean = false;
+    private _restaurantList         : Restaurant[] = [];
+    public _dialogRef               : MdDialogRef<any>;
+    private _restaurantCurrencies   : string [] = [];
+    private _showCurrencies         : boolean = false;
+    private _restaurantTaxes        : string [] = [];
+    private _showTaxes              : boolean = false;
 
     /**
      * AdditionComponent constructor
@@ -51,7 +52,11 @@ export class AdditionComponent implements OnInit, OnDestroy{
      * @param {TranslateService} _translate
      * @param {MdDialog} _dialog
      */
-    constructor( private _formBuilder: FormBuilder, private _translate: TranslateService, public _dialog: MdDialog, private _ngZone: NgZone ) {
+    constructor( private _formBuilder: FormBuilder, 
+                 private _translate: TranslateService, 
+                 public _dialog: MdDialog, 
+                 private _ngZone: NgZone,
+                 public snackBar: MdSnackBar ) {
         var _userLang = navigator.language.split( '-' )[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
@@ -152,7 +157,7 @@ export class AdditionComponent implements OnInit, OnDestroy{
             }
         });
 
-        Additions.insert({
+        let _lNewAddition = Additions.collection.insert({
             creation_user: this._user,
             creation_date: new Date(),
             modification_user: '-',
@@ -162,6 +167,14 @@ export class AdditionComponent implements OnInit, OnDestroy{
             restaurants: _lAdditionRestaurantsToInsert,
             prices: _lAdditionPricesToInsert
         });
+
+        if( _lNewAddition ){
+            let _lMessage:string = this.itemNameTraduction( 'ADDITIONS.ADDITION_CREATED' );
+            this.snackBar.open( _lMessage, '',{
+                duration: 2500
+            });
+        }
+
         this.cancel();
     }
 
@@ -184,11 +197,10 @@ export class AdditionComponent implements OnInit, OnDestroy{
      */
     cancel():void{
         this._additionForm.reset();    
-        this._showCurrencies = false; 
-        this._restaurantCurrencies = [];
+        this._restaurantCurrencies.length > 0 ? this._showCurrencies = true : this._showCurrencies = false; 
         this._currenciesFormGroup.reset();
         this._taxesFormGroup.reset();
-        this._showTaxes = false;
+        this._restaurantTaxes.length > 0 ? this._showTaxes = true : this._showTaxes = false;
     }
 
     /**
@@ -238,6 +250,18 @@ export class AdditionComponent implements OnInit, OnDestroy{
             }
         });
         return _lTaxes;
+    }
+
+    /**
+     * Return traduction
+     * @param {string} itemName 
+     */
+    itemNameTraduction(itemName: string): string{
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res; 
+        });
+        return wordTraduced;
     }
 
     /**

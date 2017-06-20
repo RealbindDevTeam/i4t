@@ -28,6 +28,7 @@
     "VALIDATE": "Validate",
     "TIP_PERCENTAGE": "Tip percentage",
     "CLOSE": "Close",
+    "VIEW_DETAIL": "View Detail",
     "ORDER_STATUS": {
         "REGISTERED": "Registered",
         "IN_PROCESS": "In Process",
@@ -96,7 +97,9 @@
         "NO_RESTAURANT_CREATED": "There are no restaurants created on the platform",
         "MODIFY": "MODIFY",
         "ACTIVATE": "ACTIVATE",
-        "INACTIVATE": "INACTIVATE"
+        "INACTIVATE": "INACTIVATE",
+        "SECTION_CREATED": "Section Created Correctly",
+        "SECTION_EDITED": "Edited Section Correctly"
     },
     "CATEGORIES": {
         "CATEGORIES_CREATION": "Categories creation",
@@ -106,7 +109,9 @@
         "SECTION": "Section",
         "MODIFY": "MODIFY",
         "ACTIVATE": "ACTIVATE",
-        "INACTIVATE": "INACTIVATE"
+        "INACTIVATE": "INACTIVATE",
+        "CATEGORY_CREATED": "Category Created Correctly",
+        "CATEGORY_EDITED": "Edited Category Correctly"
     },
     "SUBCATEGORIES": {
         "SUBCATEGORY_CREATION": "Subcategories creation",
@@ -117,7 +122,9 @@
         "CATEGORY": "Category",
         "MODIFY": "MODIFY",
         "ACTIVATE": "ACTIVATE",
-        "INACTIVATE": "INACTIVATE"
+        "INACTIVATE": "INACTIVATE",
+        "SUBCATEGORY_CREATED": "Subcategory Created Correctly",
+        "SUBCATEGORY_EDITED": "Edited Subcategory Correctly"
     },
     "ADDITIONS": {
         "ADDITION_CREATION": "Additions creation",
@@ -134,7 +141,9 @@
         "ADITION_PRICE": "Adition Price",
         "ADDITION_TAXES": "Enter the addition tax( In case of no value enter 0 ).",
         "TAXES": "Taxes",
-        "PRICES": "Prices"
+        "PRICES": "Prices",
+        "ADDITION_CREATED": "Adition Created Correctly",
+        "ADDITION_EDITED": "Edited Adition Correctly"
     },
     "SETTINGS": {
         "TITTLE": "Settings",
@@ -216,7 +225,9 @@
         "GARNISHFOOD_PRICE": "Garnish Food Price",
         "GARNISHFOOD_TAXES": "Enter the garnish food tax( In case of no value enter 0 ).",
         "TAXES": "Taxes",
-        "PRICES": "Prices"
+        "PRICES": "Prices",
+        "GARNISH_FOOD_CREATED": "Garnish Food Created Correctly",
+        "GARNISH_FOOD_EDITED": "Edited Garnish Food Correctly"
     },
     "RESTAURANT_REGISTER": {
         "SELECT_COUNTRY": "Select Country",

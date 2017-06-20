@@ -5,6 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
+import { MdSnackBar } from '@angular/material';
 import { GarnishFoodCol } from '../../../../../../both/collections/administration/garnish-food.collection';
 import { GarnishFood, GarnishFoodPrice, GarnishFoodRestaurant } from '../../../../../../both/models/administration/garnish-food.model';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
@@ -26,24 +27,24 @@ import style from './garnish-food.component.scss';
 export class GarnishFoodComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    private _garnishFoodForm: FormGroup;
-    private _currenciesFormGroup: FormGroup = new FormGroup({});
-    private _taxesFormGroup: FormGroup = new FormGroup({});
+    private _garnishFoodForm        : FormGroup;
+    private _currenciesFormGroup    : FormGroup = new FormGroup({});
+    private _taxesFormGroup         : FormGroup = new FormGroup({});
 
-    private _garnishFoodCol: Observable<GarnishFood[]>;
-    private _currencies: Observable<Currency[]>;
+    private _garnishFoodCol         : Observable<GarnishFood[]>;
+    private _currencies             : Observable<Currency[]>;
 
-    private _garnishFoodSub: Subscription;    
-    private _restaurantsSub: Subscription;
-    private _currenciesSub: Subscription;
-    private _countriesSub: Subscription;
+    private _garnishFoodSub         : Subscription;    
+    private _restaurantsSub         : Subscription;
+    private _currenciesSub          : Subscription;
+    private _countriesSub           : Subscription;
 
-    private _restaurants: Restaurant[];            
-    public _dialogRef: MdDialogRef<any>;    
-    private _restaurantCurrencies: string[] = [];
-    private _showCurrencies: boolean = false;
-    private _restaurantTaxes: string [] = [];
-    private _showTaxes: boolean = false;
+    private _restaurants            : Restaurant[];            
+    public _dialogRef               : MdDialogRef<any>;    
+    private _restaurantCurrencies   : string[] = [];
+    private _showCurrencies         : boolean = false;
+    private _restaurantTaxes        : string [] = [];
+    private _showTaxes              : boolean = false;
 
     /**
      * GarnishFoodComponent constructor
@@ -52,7 +53,11 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
      * @param {MdDialog} _dialog
      * @param {NgZone} _ngZone
      */
-    constructor( private _formBuilder: FormBuilder, private _translate: TranslateService, public _dialog: MdDialog, private _ngZone: NgZone ){
+    constructor( private _formBuilder: FormBuilder, 
+                 private _translate: TranslateService, 
+                 public _dialog: MdDialog,
+                 private _ngZone: NgZone, 
+                 public snackBar: MdSnackBar ){
         var userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang('en');
         _translate.use(userLang);
@@ -154,7 +159,7 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
             }
         });
 
-        GarnishFoodCol.insert({
+        let _lNewGarnishFood = GarnishFoodCol.collection.insert({
             creation_user: this._user,
             creation_date: new Date(),
             modification_user: '-',
@@ -164,6 +169,14 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
             restaurants: _lGarnishFoodRestaurantsToInsert,
             prices: _lGarnishFoodPricesToInsert
         });
+
+        if( _lNewGarnishFood ){
+            let _lMessage:string = this.itemNameTraduction( 'GARNISHFOOD.GARNISH_FOOD_CREATED' );
+            this.snackBar.open( _lMessage, '',{
+                duration: 2500
+            });
+        }
+
         this.cancel();
     }
 
@@ -186,11 +199,10 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
      */
     cancel():void{
         this._garnishFoodForm.reset();
-        this._showCurrencies = false;
-        this._restaurantCurrencies = [];
+        this._restaurantCurrencies.length > 0 ? this._showCurrencies = true : this._showCurrencies = false;
         this._currenciesFormGroup.reset();
         this._taxesFormGroup.reset();
-        this._showTaxes = false;
+        this._restaurantTaxes.length > 0 ? this._showTaxes = true : this._showTaxes = false;
     }
 
     /**
@@ -240,6 +252,18 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
             }
         });
         return _lPrices;
+    }
+
+    /**
+     * Return traduction
+     * @param {string} itemName 
+     */
+    itemNameTraduction(itemName: string): string{
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res; 
+        });
+        return wordTraduced;
     }
 
     /**

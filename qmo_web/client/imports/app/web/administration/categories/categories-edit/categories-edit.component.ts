@@ -5,6 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { MdDialogRef } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
+import { MdSnackBar } from '@angular/material';
 import { Categories } from '../../../../../../../both/collections/administration/category.collection';
 import { Category } from '../../../../../../../both/models/administration/category.model';
 import { Sections } from '../../../../../../../both/collections/administration/section.collection';
@@ -21,16 +22,16 @@ import style from './categories-edit.component.scss';
 export class CategoriesEditComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    public _categoryToEdit: Category;
-    private _editForm: FormGroup;
+    public _categoryToEdit          : Category;
+    private _editForm               : FormGroup;
 
-    private _categories: Observable<Category[]>;
-    private _sections: Observable<Section[]>;
+    private _categories             : Observable<Category[]>;
+    private _sections               : Observable<Section[]>;
 
-    private _categoriesSub: Subscription;    
-    private _sectionsSub: Subscription;
+    private _categoriesSub          : Subscription;    
+    private _sectionsSub            : Subscription;
 
-    private _categorySection: string;
+    private _categorySection        : string;
 
     /**
      * CategoriesEditComponent constructor
@@ -38,7 +39,10 @@ export class CategoriesEditComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate
      * @param {MdDialogRef<any>} _dialogRef 
      */
-    constructor( private _formBuilder: FormBuilder, private _translate: TranslateService, public _dialogRef: MdDialogRef<any> ){
+    constructor( private _formBuilder: FormBuilder, 
+                 private _translate: TranslateService, 
+                 public _dialogRef: MdDialogRef<any>, 
+                 public snackBar: MdSnackBar ){
         var userLang = navigator.language.split( '-' )[0];
         _translate.setDefaultLang( 'en' );
         _translate.use(userLang);
@@ -80,6 +84,11 @@ export class CategoriesEditComponent implements OnInit, OnDestroy {
                     section: this._editForm.value.editSection
                 }
             });
+
+            let _lMessage:string = this.itemNameTraduction( 'CATEGORIES.CATEGORY_EDITED' );
+            this.snackBar.open( _lMessage, '',{
+                duration: 2500
+            });
         }
         this._dialogRef.close();
     }
@@ -89,6 +98,18 @@ export class CategoriesEditComponent implements OnInit, OnDestroy {
      */
     changeSectionEdit( _section ):void{
         this._editForm.controls['editSection'].setValue( _section );
+    }
+
+    /**
+     * Return traduction
+     * @param {string} itemName 
+     */
+    itemNameTraduction(itemName: string): string{
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res; 
+        });
+        return wordTraduced;
     }
 
     /**

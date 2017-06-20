@@ -29,7 +29,8 @@ if (Meteor.isServer) {
                 restaurantId: _restaurantId,
                 tableId: _lTable._id,
                 accountId: _lAccount._id,
-                status: 'ORDER_STATUS.REGISTERED'
+                status: 'ORDER_STATUS.REGISTERED',
+                toPay: false
             });
 
             if (_lOrder) {
@@ -81,7 +82,8 @@ if (Meteor.isServer) {
                         markedToTranslate: false,
                         lastOrderOwner: '',
                         confirmedToTranslate: false
-                    }
+                    },
+                    toPay: false
                 });
             }
         },
@@ -100,7 +102,8 @@ if (Meteor.isServer) {
                 restaurantId: _restaurantId,
                 tableId: _lTable._id,
                 accountId: _lAccount._id,
-                status: 'ORDER_STATUS.REGISTERED'
+                status: 'ORDER_STATUS.REGISTERED',
+                toPay: false
             });
 
             if (_lOrder) {
@@ -152,7 +155,8 @@ if (Meteor.isServer) {
                         markedToTranslate: false,
                         lastOrderOwner: '',
                         confirmedToTranslate: false
-                    }
+                    },
+                    toPay: false
                 });
             }
         }
