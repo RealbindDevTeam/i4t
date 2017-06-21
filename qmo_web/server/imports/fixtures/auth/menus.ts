@@ -7,153 +7,198 @@ export function loadMenus() {
 
         const menus: Menu[] = [
             {
+                _id: "900",
+                is_active: true,
+                name: "MENUS.DASHBOARD.DASHBOARD",
+                url: "/app/dashboard",
+                icon_name: "view_list",
+                order: 900
+            },
+            {
+                _id: "910",
+                is_active: true,
+                name: "MENUS.DASHBOARD.DASHBOARD",
+                url: "/app/dashboards",
+                icon_name: "view_list",
+                order: 910
+            },
+            {
                 _id: "1000",
                 is_active: true,
-                name: "MENUS.RESTAURANT.RESTAURANTS",
+                name: "MENUS.ADMINISTRATION.MANAGEMENT",
                 url: "",
                 icon_name: "view_list",
+                order: 1000,
                 children:
                 [
                     {
                         _id: "1001",
                         is_active: true,
-                        name: "MENUS.RESTAURANT.MANAGEMENT",
+                        name: "MENUS.ADMINISTRATION.RESTAURANTS",
                         url: "/app/restaurant",
                         icon_name: "",
+                        order: 1001
                     }, {
                         _id: "1002",
                         is_active: true,
-                        name: "MENUS.RESTAURANT.TABLES",
+                        name: "MENUS.ADMINISTRATION.TABLES",
                         url: "/app/tables",
-                        icon_name: ""
+                        icon_name: "",
+                        order: 1002
                     }, {
                         _id: "1003",
                         is_active: true,
-                        name: "MENUS.RESTAURANT.COLLABORATORS",
+                        name: "MENUS.ADMINISTRATION.COLLABORATORS",
                         url: "/app/collaborators",
-                        icon_name: ""
+                        icon_name: "",
+                        order: 1003
+                    }, {
+                        _id: "1004",
+                        is_active: true,
+                        name: "MENUS.ADMINISTRATION.MONTHLY_CONFIG",
+                        url: "/app/monthly_config",
+                        icon_name: "",
+                        order: 1004
                     }
                 ]
             },
             {
+                _id: "1100",
+                is_active: true,
+                name: "MENUS.ADMINISTRATION.COLLABORATORS",
+                url: "/app/collaborators",
+                icon_name: "group",
+                order: 1100
+            },
+            {
                 _id: "2000",
                 is_active: true,
-                name: "MENUS.ADMINISTRATION.ADMINISTRATION",
+                name: "MENUS.PAYMENTS.PAYMENTS",
                 url: "",
                 icon_name: "view_list",
+                order: 2000,
                 children:
                 [
                     {
                         _id: "2001",
                         is_active: true,
-                        name: "MENUS.ADMINISTRATION.SECTIONS",
-                        url: "/app/sections",
-                        icon_name: ""
-                    }, {
+                        name: "MENUS.PAYMENTS.MONTHLY_PAYMENT",
+                        url: "/app/monthly_invoice",
+                        icon_name: "",
+                        order: 2001
+                    },
+                    {
                         _id: "2002",
                         is_active: true,
-                        name: "MENUS.ADMINISTRATION.CATEGORIES",
-                        url: "/app/categories",
-                        icon_name: ""
-                    }, {
-                        _id: "2003",
-                        is_active: true,
-                        name: "MENUS.ADMINISTRATION.SUBCATEGORIES",
-                        url: "/app/subcategories",
-                        icon_name: ""
-                    }, {
-                        _id: "2004",
-                        is_active: true,
-                        name: "MENUS.ADMINISTRATION.ADDITIONS",
-                        url: "/app/additions",
-                        icon_name: ""
-                    }, {
-                        _id: "2005",
-                        is_active: true,
-                        name: "MENUS.ADMINISTRATION.PROMOTIONS",
-                        url: "/app/promotions",
-                        icon_name: ""
-                    }, {
-                        _id: "2006",
-                        is_active: true,
-                        name: "MENUS.ADMINISTRATION.GARNISHFOOD",
-                        url: "/app/garnishFood",
-                        icon_name: ""
-                    }, {
-                        _id: "2007",
-                        is_active: true,
-                        name: "MENUS.ADMINISTRATION.ITEMS",
-                        url: "/app/items",
-                        icon_name: ""
-                    }, {
-                        _id: "2008",
-                        is_active: true,
-                        name: "MENUS.ADMINISTRATION.ITEMS_ENABLE",
-                        url: "/app/itemsEnable",
-                        icon_name: ""
-                    }, {
-                        _id: "2009",
-                        is_active: true,
-                        name: "MENUS.ADMINISTRATION.ORDERS_CHEF",
-                        url: "/app/chefOrders",
-                        icon_name: ""
+                        name: "MENUS.PAYMENTS.PAYMENT_HISTORY",
+                        url: "/app/invoicing_history",
+                        icon_name: "",
+                        order: 2002
                     }
                 ]
-            },
-            {
-                _id: "4000",
-                is_active: true,
-                name: "MENUS.PAYMENTS",
-                url: "/app/payments",
-                icon_name: "local_atm"
             },
             {
                 _id: "3000",
                 is_active: true,
-                name: "MENUS.WAITER_CALL",
-                url: "/app/waiter-call",
-                icon_name: "record_voice_over"
+                name: "MENUS.MENU_DEFINITION.MENU_DEFINITION",
+                url: "",
+                icon_name: "view_list",
+                order: 3000,
+                children:
+                [
+                    {
+                        _id: "3001",
+                        is_active: true,
+                        name: "MENUS.MENU_DEFINITION.SECTIONS",
+                        url: "/app/sections",
+                        icon_name: "",
+                        order: 3001
+                    }, {
+                        _id: "3002",
+                        is_active: true,
+                        name: "MENUS.MENU_DEFINITION.CATEGORIES",
+                        url: "/app/categories",
+                        icon_name: "",
+                        order: 3002
+                    }, {
+                        _id: "3003",
+                        is_active: true,
+                        name: "MENUS.MENU_DEFINITION.SUBCATEGORIES",
+                        url: "/app/subcategories",
+                        icon_name: "",
+                        order: 3003
+                    }, {
+                        _id: "3004",
+                        is_active: true,
+                        name: "MENUS.MENU_DEFINITION.ADDITIONS",
+                        url: "/app/additions",
+                        icon_name: "",
+                        order: 3004
+                    }, {
+                        _id: "3006",
+                        is_active: true,
+                        name: "MENUS.MENU_DEFINITION.GARNISHFOOD",
+                        url: "/app/garnishFood",
+                        icon_name: "",
+                        order: 3006
+                    }, {
+                        _id: "3007",
+                        is_active: true,
+                        name: "MENUS.MENU_DEFINITION.ITEMS",
+                        url: "/app/items",
+                        icon_name: "",
+                        order: 3007
+                    }, {
+                        _id: "3008",
+                        is_active: true,
+                        name: "MENUS.MENU_DEFINITION.ITEMS_ENABLE",
+                        url: "/app/itemsEnable",
+                        icon_name: "",
+                        order: 3008
+                    }
+                ]
+            },
+            {
+                _id: "3100",
+                is_active: true,
+                name: "MENUS.MENU_DEFINITION.ITEMS_ENABLE",
+                url: "/app/itemsEnable",
+                icon_name: "view_list",
+                order: 3100
+            },
+            {
+                _id: "4000",
+                is_active: true,
+                name: "MENUS.ORDERS",
+                url: "/app/orders",
+                icon_name: "dns",
+                order: 4000
             },
             {
                 _id: "5000",
                 is_active: true,
-                name: "MENUS.ORDERS",
-                url: "/app/orders",
-                icon_name: "dns"
+                name: "MENUS.PAYMENTS",
+                url: "/app/payments",
+                icon_name: "local_atm",
+                order: 5000
             },
             {
                 _id: "6000",
                 is_active: true,
-                name: "MENUS.ADMINISTRATION.ORDERS_CHEF",
-                url: "/app/chefOrders",
-                icon_name: "dns"
+                name: "MENUS.WAITER_CALL",
+                url: "/app/waiter-call",
+                icon_name: "record_voice_over",
+                order: 6000
             },
             {
                 _id: "7000",
                 is_active: true,
-                name: "MENUS.INVOICING.INVOICING",
-                url: "",
-                icon_name: "view_list",
-                children:
-                [
-                    {
-                        _id: "7001",
-                        is_active: true,
-                        name: "MENUS.INVOICING.MONTHLY_INVOICE",
-                        url: "/app/monthly_invoice",
-                        icon_name: ""
-                    },
-                    {
-                        _id: "7002",
-                        is_active: true,
-                        name: "MENUS.INVOICING.INOVICING_HISTORY",
-                        url: "/app/invoicing_history",
-                        icon_name: ""
-                    }
-                ]
+                name: "MENUS.ADMINISTRATION.ORDERS_CHEF",
+                url: "/app/chefOrders",
+                icon_name: "dns",
+                order: 7000
             }
         ];
-
         menus.forEach((menu: Menu) => Menus.insert(menu));
     }
 }

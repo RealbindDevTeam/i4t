@@ -361,7 +361,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                     webPage: this._restaurantForm.value.webPage,
                     email: this._restaurantForm.value.email,
                     restaurant_code: this.generateRestaurantCode(),
-                    financialInformation: this._restaurantFinancialInformation,
+                    financialInformation: this._restaurantFinancialInformation, 
                     paymentMethods: _lPaymentMethodsToInsert,
                     location: {
                         lat: 0,
@@ -372,9 +372,9 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                     orderNumberCount: 0,
                     max_jobs: 5,
                     queue: this._queues,
-                    plan: this._restaurantForm.value.plans,
                     isActive: true,
-                    firstPay: true
+                    firstPay: true,
+                    freeDays: true
                 });
 
                 if (this._createImage) {

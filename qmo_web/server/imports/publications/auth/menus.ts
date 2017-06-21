@@ -5,5 +5,5 @@ import { Menus } from '../../../../both/collections/auth/menu.collection';
 import { User } from '../../../../both/models/auth/user.model';
 
 Meteor.publish('getMenus', function () {
-    return Menus.find({});
+    return Menus.find({}, { sort: { order: 1 } });
 });

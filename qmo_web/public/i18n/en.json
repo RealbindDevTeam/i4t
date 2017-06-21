@@ -168,14 +168,23 @@
         "USER_DETAIL_UPDATED": "User updated sussesfully"
     },
     "MENUS": {
-        "RESTAURANT": {
-            "RESTAURANTS": "Restaurants",
-            "MANAGEMENT": "Management",
-            "TABLES": "Tables",
-            "COLLABORATORS": "Collaborators"
+        "DASHBOARD": {
+            "DASHBOARD": "Dashboard"
         },
         "ADMINISTRATION": {
-            "ADMINISTRATION": "Administration",
+            "MANAGEMENT": "Administration",
+            "RESTAURANTS": "Restaurants",
+            "TABLES": "Tables",
+            "COLLABORATORS": "Collaborators",
+            "MONTHLY_CONFIG": "Monthly config"
+        },
+        "PAYMENTS": {
+            "PAYMENTS": "Payments",
+            "MONTHLY_PAYMENT": "Monthly Payment",
+            "PAYMENT_HISTORY": "Payment History"
+        },
+        "MENU_DEFINITION": {
+            "MENU_DEFINITION": "Menu",
             "SECTIONS": "Sections",
             "CATEGORIES": "Categories",
             "SUBCATEGORIES": "Subcategories",
@@ -187,12 +196,7 @@
             "ORDERS_CHEF": "Orders"
         },
         "ORDERS": "Orders",
-        "WAITER_CALL": "Waiter call",
-        "INVOICING": {
-            "INVOICING": "Invoicing",
-            "MONTHLY_INVOICE": "Monthly Invoice",
-            "INOVICING_HISTORY": "Invoice History"
-        }
+        "WAITER_CALL": "Waiter call"
     },
     "PROMOTIONS": {
         "PROMOTION_CREATION": "Promotions creation",
@@ -737,9 +741,9 @@
         "PRICE_BY_TABLE": "Price by table: ",
         "TOTAL_PRICE": "Total: ",
         "PAY": "   PAY   ",
-        "DISCOUNT_TOOLTIP_1": "You have a " ,
+        "DISCOUNT_TOOLTIP_1": "You have a ",
         "DISCOUNT_TOOLTIP_2": " discount for the first payment",
         "INVOICE_PERIOD": "Invoice period: ",
-        "TO": "to" 
+        "TO": "to"
     }
 }
