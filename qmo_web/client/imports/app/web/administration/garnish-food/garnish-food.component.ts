@@ -34,6 +34,7 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
 
     private _garnishFoodCol         : Observable<GarnishFood[]>;
     private _currencies             : Observable<Currency[]>;
+    private _restaurantsObservable  : Observable<Restaurant[]>;            
 
     private _garnishFoodSub         : Subscription;    
     private _restaurantsSub         : Subscription;
@@ -41,7 +42,6 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
     private _countriesSub           : Subscription;
 
     private _restaurants            : Restaurant[];            
-    private _restaurantsObservable  : Restaurant[];            
     public _dialogRef               : MdDialogRef<any>;    
     private _restaurantCurrencies   : string[] = [];
     private _showCurrencies         : boolean = false;
