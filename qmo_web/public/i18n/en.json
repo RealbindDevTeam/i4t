@@ -101,7 +101,8 @@
         "SECTION_CREATED": "Section Created Correctly",
         "SECTION_EDITED": "Edited Section Correctly",
         "THERE_NOT_RESTAURANTS" :"No restaurants yet register",
-        "RESTAURANT_REGISTER" : "Restaurant register"
+        "RESTAURANT_REGISTER" : "Restaurant register",
+        "MESSAGE" : "Register one to enable this option"
     },
     "CATEGORIES": {
         "CATEGORIES_CREATION": "Categories creation",

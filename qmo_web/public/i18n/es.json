@@ -101,7 +101,8 @@
         "SECTION_CREATED": "Seccion Creada Correctamente",
         "SECTION_EDITED": "Seccion Editada Correctamente",
         "THERE_NOT_RESTAURANTS" :"Aún no hay restaurantes registrados",
-        "RESTAURANT_REGISTER" : "Registrar restaurante"
+        "RESTAURANT_REGISTER" : "Registrar restaurante",
+        "MESSAGE" : "Regístra uno para habilitar esta opción"
     },
     "CATEGORIES": {
         "CATEGORIES_CREATION": "Creación de categorias",
