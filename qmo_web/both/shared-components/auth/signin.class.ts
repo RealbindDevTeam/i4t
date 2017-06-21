@@ -37,7 +37,7 @@ export class SigninClass implements OnInit {
 
     login() {
         let respLogin = this.devicesValidate();
-        if(respLogin){
+        if (respLogin) {
             if (this.signinForm.valid) {
                 Meteor.loginWithPassword(this.signinForm.value.email, this.signinForm.value.password, (err) => {
                     this.zone.run(() => {
@@ -45,21 +45,25 @@ export class SigninClass implements OnInit {
                             this.error = err;
                         } else {
                             MeteorObservable.call('getRole').subscribe((role) => {
-                                switch(role){
-                                    case '100' :{
+                                switch (role) {
+                                    case '100': {
                                         this.roamWeb('app/dashboard');
                                         break;
                                     }
-                                    case '200' :{
+                                    case '200': {
                                         this.roamWeb('app/calls');
                                         break;
                                     }
-                                    case '400' :{
+                                    case '400': {
                                         this.roamWeb('app/orders');
                                         break;
                                     }
-                                    case '500' :{
+                                    case '500': {
                                         this.roamWeb('app/chefOrders');
+                                        break;
+                                    }
+                                    case '600': {
+                                        this.roamWeb('app/dashboards');
                                         break;
                                     }
                                 }
@@ -71,14 +75,14 @@ export class SigninClass implements OnInit {
                 });
             }
         }
-        else{
+        else {
             this.roamWeb('go-to-store');
         }
     }
 
     loginWithFacebook() {
         let respLogin = this.devicesValidate();
-        if(respLogin){
+        if (respLogin) {
             Meteor.loginWithFacebook({ requestPermissions: ['public_profile', 'email'] }, (err) => {
 
                 this.zone.run(() => {
@@ -90,14 +94,14 @@ export class SigninClass implements OnInit {
                 });
             });
         }
-        else{
+        else {
             this.roamWeb('go-to-store');
         }
     }
 
     loginWithTwiteer() {
         let respLogin = this.devicesValidate();
-        if(respLogin){
+        if (respLogin) {
             Meteor.loginWithTwitter({ requestPermissions: [] }, (err) => {
                 this.zone.run(() => {
                     if (err) {
@@ -108,14 +112,14 @@ export class SigninClass implements OnInit {
                 });
             });
         }
-        else{
+        else {
             this.roamWeb('go-to-store');
         }
     }
 
     loginWithGoogle() {
         let respLogin = this.devicesValidate();
-        if(respLogin){
+        if (respLogin) {
             Meteor.loginWithGoogle({ requestPermissions: [] }, (err) => {
                 this.zone.run(() => {
                     if (err) {
@@ -126,7 +130,7 @@ export class SigninClass implements OnInit {
                 });
             });
         }
-        else{
+        else {
             this.roamWeb('go-to-store');
         }
     }
@@ -159,16 +163,15 @@ export class SigninClass implements OnInit {
 
     }
 
-    devicesValidate() : boolean {
-        
-        if( navigator.userAgent.match(/Android/i)
+    devicesValidate(): boolean {
+
+        if (navigator.userAgent.match(/Android/i)
             || navigator.userAgent.match(/webOS/i)
             || navigator.userAgent.match(/iPhone/i)
             || navigator.userAgent.match(/iPad/i)
             || navigator.userAgent.match(/iPod/i)
             || navigator.userAgent.match(/BlackBerry/i)
-            || navigator.userAgent.match(/Windows Phone/i) )
-        {
+            || navigator.userAgent.match(/Windows Phone/i)) {
             return false;
         } else {
             return true

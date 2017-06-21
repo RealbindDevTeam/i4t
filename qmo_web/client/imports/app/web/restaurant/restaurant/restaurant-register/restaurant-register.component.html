@@ -69,7 +69,7 @@
                         </md-card-actions>
                     </md-card>
                 </md-tab>
-                <md-tab  label="{{'RESTAURANT_REGISTER.FINANCIAL_LABEL' | translate}}">
+                <md-tab label="{{'RESTAURANT_REGISTER.FINANCIAL_LABEL' | translate}}">
                     <md-card>
                         <md-card-title>{{'RESTAURANT_REGISTER.FINANCIAL_INFO' | translate}}</md-card-title>
                         <md-card-subtitle>{{'RESTAURANT_REGISTER.FINANCIAL_INFO_TEXT' | translate}}</md-card-subtitle>
@@ -95,7 +95,7 @@
                         </md-card-actions>
                     </md-card>
                 </md-tab>
-                <md-tab  label="{{'RESTAURANT_REGISTER.SCHEDULE_LABEL' | translate}}">
+                <md-tab label="{{'RESTAURANT_REGISTER.SCHEDULE_LABEL' | translate}}">
                     <md-card>
                         <md-card-title>{{'RESTAURANT_REGISTER.SCHEDULE_INFO' | translate}}</md-card-title>
                         <md-card-subtitle>{{'RESTAURANT_REGISTER.SCHEDULE_INFO_TEXT' | translate}}</md-card-subtitle>
@@ -114,3 +114,7 @@
         </form>
     </md-card-content>
 </md-card>
+
+<div class="loading" *ngIf="_loading">
+    <md-spinner></md-spinner>
+</div>

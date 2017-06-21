@@ -26,8 +26,6 @@ import { FinancialDropDown } from '../../../../../../../both/shared-components/r
 import { FinancialTextBox } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-textbox';
 import { FinancialText } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-text';
 import { FinancialSlider } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-slider';
-import { RestaurantPlan } from '../../../../../../../both/models/restaurant/restaurant-plan.model';
-import { RestaurantPlans } from '../../../../../../../both/collections/restaurant/restaurant-plan.collection';
 import { Parameter } from '../../../../../../../both/models/general/parameter.model';
 import { Parameters } from '../../../../../../../both/collections/general/parameter.collection';
 
@@ -61,7 +59,6 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     private _countries: Observable<Country[]>;
     private _cities: Observable<City[]>;
     private _currencies: Observable<Currency[]>;
-    private _restaurantPlans: Observable<RestaurantPlan[]>;
     private _parameterDaysTrial: Observable<Parameter[]>;
 
     private _paymentMethods: PaymentMethod[] = [];
@@ -169,9 +166,6 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                 }
             });
         });
-
-        this._restaurantPlanSub = MeteorObservable.subscribe('getPlans').subscribe();
-        this._restaurantPlans = RestaurantPlans.find({});
 
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe(() => {
             this._parameterDaysTrial = Parameters.find({ _id: '100' });

@@ -5,5 +5,6 @@ export interface Menu extends CollectionObject {
     name: string;
     url: string;
     icon_name?: string;
+    order?: number;
     children?: Menu[];
 }
