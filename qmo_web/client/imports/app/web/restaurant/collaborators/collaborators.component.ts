@@ -38,16 +38,26 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
 
     public _dialogRef: MdDialogRef<any>;
 
-    constructor( private router: Router, 
+    /**
+     * CollaboratorsComponent contructor
+     * @param router 
+     * @param _formBuilder 
+     * @param translate 
+     * @param _dialog 
+     */
+    constructor( private _router: Router, 
                  private _formBuilder: FormBuilder, 
-                 private translate: TranslateService, 
+                 private _translate: TranslateService, 
                  public _dialog: MdDialog )
     {
         var userLang = navigator.language.split('-')[0];
-        translate.setDefaultLang('en');
-        translate.use(userLang);
+        _translate.setDefaultLang('en');
+        _translate.use(userLang);
     } 
 
+    /**
+     * ngOnInit Implementation
+     */
     ngOnInit() {
         this._form = new FormGroup({
             restaurant: new FormControl('', [Validators.required]),
@@ -60,6 +70,9 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
         this._usersSub = MeteorObservable.subscribe( 'getUsersByRestaurant', '' ).subscribe(); 
     }
 
+    /**
+     * This method allow search collaborators by restaurant id
+     */
     collaboratorsSearch(){
         if ( this._form.valid ) {
             let id_restaurant : string;
@@ -77,7 +90,11 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
         }
     }
 
-     editCollaborator( _userdetail : UserDetail ){
+    /**
+     * Collaboratos edition
+     * @param _userdetail 
+     */
+    editCollaborator( _userdetail : UserDetail ){
         this._dialogRef = this._dialog.open( CollaboratorsEditionComponent, {
             disableClose : true,
             width: '75%'
@@ -88,14 +105,30 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
         });
     }
 
+    /**
+     * Change user state
+     */
     changeUserState(){
 
     }
     
+    /**
+     * Open Collaborator register component
+     */
     openCollaboratorstRegister(){
-        this.router.navigate(['app/collaborators-register']);
+        this._router.navigate(['app/collaborators-register']);
     }
 
+    /**
+     * Go to add new Restaurant
+     */
+    goToAddRestaurant(){
+        this._router.navigate(['/app/restaurantRegister']);
+    }
+
+    /**
+     * ngOnDestroy implementation
+     */
     ngOnDestroy(){
         this._restaurantSub.unsubscribe();
         this._userDetailsSub.unsubscribe();

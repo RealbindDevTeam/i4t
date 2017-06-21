@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -44,11 +45,12 @@ export class SectionComponent implements OnInit, OnDestroy {
      * @param {MdDialog} _dialog
      * @param {ViewContainerRef} _viewContainerRef
      */
-    constructor( private _formBuilder: FormBuilder, 
-                 private _translate: TranslateService, 
+    constructor( public snackBar: MdSnackBar,
                  public _dialog: MdDialog, 
+                 private _formBuilder: FormBuilder, 
+                 private _translate: TranslateService, 
                  private _ngZone: NgZone, 
-                 public snackBar: MdSnackBar ){
+                 private _router: Router ){
         var userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang('en');
         _translate.use(userLang);
@@ -171,6 +173,13 @@ export class SectionComponent implements OnInit, OnDestroy {
             wordTraduced = res; 
         });
         return wordTraduced;
+    }
+
+    /**
+     * Go to add new Restaurant
+     */
+    goToAddRestaurant(){
+        this._router.navigate(['/app/restaurantRegister']);
     }
 
     /**

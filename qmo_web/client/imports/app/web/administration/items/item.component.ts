@@ -11,6 +11,8 @@ import { Items, ItemImages } from '../../../../../../both/collections/administra
 import { ItemEditionComponent } from './items-edition/item-edition.component';
 import { Currency } from '../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../both/collections/general/currency.collection';
+import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 
 import template from './item.component.html';
 import style from './item.component.scss';
@@ -25,9 +27,11 @@ export class ItemComponent implements OnInit, OnDestroy {
     private _itemsSub: Subscription;
     private _itemImagesSub: Subscription;
     private _currenciesSub: Subscription;
+    private _restaurantSub: Subscription;
 
     private _items: Observable<Item[]>;
     private _itemImages: Observable<ItemImage[]>;
+    private _restaurants: Observable<Restaurant[]>;
 
     public _dialogRef: MdDialogRef<any>;
 
@@ -53,6 +57,9 @@ export class ItemComponent implements OnInit, OnDestroy {
         this._itemImages = ItemImages.find( { } ).zone();
         this._itemImagesSub = MeteorObservable.subscribe( 'itemImages', Meteor.userId() ).subscribe();
         this._currenciesSub = MeteorObservable.subscribe( 'currencies' ).subscribe();
+        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', Meteor.userId() ).subscribe( () => {
+            this._restaurants = Restaurants.find( { } ).zone();
+        });
    }
 
     /**
@@ -126,11 +133,19 @@ export class ItemComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Go to add new Restaurant
+     */
+    goToAddRestaurant(){
+        this._router.navigate(['/app/restaurantRegister']);
+    }
+
+    /**
      * Implements ngOnDestroy function
      */
     ngOnDestroy(){
         this._itemsSub.unsubscribe();
         this._itemImagesSub.unsubscribe();
         this._currenciesSub.unsubscribe();
+        this._restaurantSub.unsubscribe();
     }
 }

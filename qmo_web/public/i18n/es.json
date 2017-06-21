@@ -99,7 +99,9 @@
         "ACTIVATE": "ACTIVAR",
         "INACTIVATE": "INACTIVAR",
         "SECTION_CREATED": "Seccion Creada Correctamente",
-        "SECTION_EDITED": "Seccion Editada Correctamente"
+        "SECTION_EDITED": "Seccion Editada Correctamente",
+        "THERE_NOT_RESTAURANTS" :"Aún no hay restaurantes registrados",
+        "RESTAURANT_REGISTER" : "Registrar restaurante"
     },
     "CATEGORIES": {
         "CATEGORIES_CREATION": "Creación de categorias",
