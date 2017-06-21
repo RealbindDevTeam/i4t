@@ -657,26 +657,26 @@
         "ORDER_CANT_CONFIRM": "Order can not be confirmed",
         "COOKING_TIME": "Cooking Time"
     },
-    "PAYMENTS": {
-        "TITTLE": "Payments",
-        "TITTLE_CONTENT": "Your bill",
-        "CONTENT": "You do not have bill yet",
-        "BILL": "Bill Payment",
-        "ORDER": "Order # ",
-        "VIEW_DETAIL": "View detail",
-        "ADD_ORDER": "Add order",
-        "PAYMENT_METHOD": "Payment method",
-        "TOTAL_BILL": "Total bill",
-        "PAY_BTN": "Pay",
-        "PAY_DETAIL_TITTLE": "Payment detail",
-        "PAY_ORDER": "Order",
-        "SUBTOTAL": "SubTotal",
-        "INC": "Inc",
-        "TOTAL": "Total",
-        "TIPS": "Tip",
-        "TOTAL_TO_PAY": "Total to pay",
-        "ADDITION": "Addition",
-        "GARNISH_FOOD": "Garnish Food"
+   "PAYMENTS": {
+        "COLOMBIA": {
+            "GARNISH_FOOD": "Garnish Food",
+            "ADDITION": "Addition",
+            "ORDER_DETAILS": "Order Details",
+            "PAY_ORDER": "Order",
+            "SUBTOTAL": "SubTotal",
+            "INC": "Inc",
+            "TOTAL": "Total",
+            "PAYMENT_OPTIONS": "Payment Options",
+            "TIPS": "Suggested Tip",
+            "OTHER_VALUE": "Other Value",
+            "TOTAL_TO_PAY": "Total To Pay",
+            "PAY": "Pay",
+            "PENDING_PAYMENT": "Pending payment to be confirmed by the waiter",
+            "CONSULT_PAYMENTS": "Consult Payment Detail",
+            "SELECT_PAYMENT_METHOD": "Select Payment Method",
+            "STATUS": "Status",
+            "FULL_PAYMENT": "Full order payment"
+        }
     },
     "WAITER_CALL": {
         "TITTLE": "Call waiter",
@@ -745,5 +745,39 @@
         "DISCOUNT_TOOLTIP_2": " discount for the first payment",
         "INVOICE_PERIOD": "Invoice period: ",
         "TO": "to"
+    },
+    "ORDER_PAYMENT_TRANS":{
+        "ORDER_TO_CONFIRM": "When someone accompanying your table wishes to pay one of your orders, you must confirm this process. In this section will appear those orders that other users want to pay for you.",
+        "NO_ORDERS": "Orders Not Found",
+        "ORDERS": "Order",
+        "TOTAL": "Total",
+        "CONFIRM": "Confirm",
+        "PENDING_ORDERS": "If you want to pay for orders from a companion of your table, this section will show that there are orders that are pending to confirm to add to your payment.",
+        "CONSULT_TABLE_ORDERS": "Consult table orders"
+    },
+    "ORDER_TRANS": {
+        "ORDERS": "Order",
+        "TOTAL": "Total",
+        "STATUS": "Status",
+        "PRICE": "Price",
+        "PAY": "Pay",
+        "NO_ORDERS": "No Orders found on the table that have been delivered and are ready to be paid."
+    },
+    "PAYMENT_CONFIRM": {
+        "TABLE": "Table ",
+        "CODE": "Code: ",
+        "TOTAL_TABLE": "Total Table: ",
+        "MARK_PAYMENTS": "Mark All Payments as Received",
+        "TOTAL": "Total: ",
+        "RECEIVED": "Received",
+        "NO_RECEIVED": "No Received",
+        "PAYMENT_METHOD": "Payment M.: ",
+        "TIP": "Tip: ",
+        "ORDERS": "Orders: ",
+        "ORDER": "Order",
+        "STATUS": "Status",
+        "QUANTITY": "Quant. ",
+        "PRICE": "Price: ",
+        "CLOSE_PAYMENTS": "Close Payments"
     }
 }

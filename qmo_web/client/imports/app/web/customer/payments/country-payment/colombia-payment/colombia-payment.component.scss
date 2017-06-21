@@ -86,11 +86,57 @@
     text-align: right;
 }
 
-.tipValue{
+.payment-info{
+    width: 35%;
     display: inline-block;
-    width: 50%;
+    height: 18rem;
+
+    .tipValue{
+        display: inline-block;
+        width: 50%;
+    }
+
+    .otherTip-content{
+        width: 49%;
+        display: inline-block;
+        text-align: right;
+
+        .otherTip{
+            width: 40%;
+        }
+    }
+
+    .payment-method{
+        margin-top: 2%;
+    }
+
+    .pay-button{
+        width: 50%;
+    }
+
+    .waiter-message{
+        font-weight: bold;
+        color: red;
+    }
 }
 
-.otherTip{
-    width: 40%;
+.order-info{
+    width: 55%;
+    display: inline-block;
+    margin-left: 1%;
+    vertical-align: top;
+    height: 18rem;
+
+    .order-detail{
+        display: inline-block;
+    }
+
+    .pay-detail{
+        float:right;
+    }
+
+    .orders-list{
+        overflow: auto;
+        height: 16rem;
+    }
 }

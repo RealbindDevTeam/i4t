@@ -17,3 +17,16 @@
 .order-icon {
     margin-right: 1%;
 }
+
+.orders-to-confirm{
+    width: 50%;
+    display: inline-block;
+    border-right: 1px solid #7E7E7E;
+}
+
+.orders-to-pay{
+    width: 48%;
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 1%;
+}
