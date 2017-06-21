@@ -28,5 +28,9 @@ Meteor.publish('garnishFoodByRestaurant', function (_restaurantId: string) {
 Meteor.publish('garnishesByItem', function (_itemId: string) {
     check(_itemId, String);
     var item = Items.collection.findOne({ _id: _itemId, garnishFoodIsAcceped: true });
-    return GarnishFoodCol.collection.find({ _id: { $in: item.garnishFood } });
+    if( item ){
+        return GarnishFoodCol.collection.find({ _id: { $in: item.garnishFood } });
+    } else {
+        return;
+    }
 });
