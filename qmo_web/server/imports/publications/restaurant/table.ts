@@ -29,8 +29,11 @@ Meteor.publish('getTableByCurrentTable', function (_userId: string) {
     check(_userId, String);
 
     var user_detail = UserDetails.collection.findOne({ user_id: _userId });
-
-    return Tables.collection.find({ _id: user_detail.current_table });
+    if( user_detail ){
+        return Tables.collection.find({ _id: user_detail.current_table });
+    } else {
+        return;
+    }
 });
 
 /**
@@ -56,5 +59,9 @@ Meteor.publish( 'getTablesByRestaurant', function( _restaurantId:string ) {
 Meteor.publish( 'getTablesByRestaurantWork', function( _userId: string ){
     check( _userId, String );
     let _lUserDetail: UserDetail = UserDetails.findOne( { user_id: _userId } );
-    return Tables.collection.find( { restaurantId: _lUserDetail.restaurant_work } );
+    if( _lUserDetail ){
+        return Tables.collection.find( { restaurantId: _lUserDetail.restaurant_work } );
+    } else {
+        return;
+    }
 });

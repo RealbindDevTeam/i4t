@@ -18,7 +18,11 @@ Meteor.publish('getOrders', function (_restaurantId: string, _tableQRCode: strin
     check(_tableQRCode, String);
 
     let _lTable: Table = Tables.collection.findOne({ QR_code: _tableQRCode });
-    return Orders.collection.find({ restaurantId: _restaurantId, tableId: _lTable._id, status: { $in: _status } });
+    if( _lTable ){
+        return Orders.collection.find({ restaurantId: _restaurantId, tableId: _lTable._id, status: { $in: _status } });
+    } else {
+        return;
+    }
 });
 
 /**
@@ -39,10 +43,15 @@ Meteor.publish('getOrdersByTableId', function (_restaurantId: string, _tableId, 
 Meteor.publish('getOrdersByUserId', function (_userId: string, _status: string[]) {
     check(_userId, String);
     let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
-    if(_lUserDetail.current_restaurant && _lUserDetail.current_table){
-        return Orders.collection.find({ restaurantId: _lUserDetail.current_restaurant, tableId: _lUserDetail.current_table, status: { $in: _status } });
+    if( _lUserDetail ){
+        if(_lUserDetail.current_restaurant && _lUserDetail.current_table){
+            return Orders.collection.find({ restaurantId: _lUserDetail.current_restaurant, tableId: _lUserDetail.current_table, status: { $in: _status } });
+        } else {
+            return;
+        }
+    } else {
+        return;
     }
-    return;
 });
 
 /**
@@ -62,7 +71,11 @@ Meteor.publish('getOrdersByRestaurantId', function (_restaurantId: string, _stat
 Meteor.publish('getOrdersByRestaurantWork', function (_userId: string, _status: string[]) {
     check(_userId, String);
     let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
-    return Orders.collection.find({ restaurantId: _lUserDetail.restaurant_work, status: { $in: _status } });
+    if( _lUserDetail ){
+        return Orders.collection.find({ restaurantId: _lUserDetail.restaurant_work, status: { $in: _status } });
+    } else {
+        return;
+    }
 });
 
 
@@ -73,13 +86,17 @@ Meteor.publish('getOrdersByRestaurantWork', function (_userId: string, _status: 
 Meteor.publish('getOrdersByAccount', function (_userId: string) {
     check(_userId, String);
     let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
-    if(_lUserDetail.current_restaurant !== "" && _lUserDetail.current_table !== ""){
-        let _lAccount: Account = Accounts.findOne({restaurantId: _lUserDetail.current_restaurant, 
-                                                   tableId: _lUserDetail.current_table,
-                                                   status: 'OPEN'});
-        return Orders.find( { creation_user: _userId, restaurantId: _lAccount.restaurantId, tableId: _lAccount.tableId, status: 'ORDER_STATUS.DELIVERED', toPay : { $ne : true } } );
-    }else{
-        return Orders.find( { creation_user: _userId, restaurantId: "", tableId: "", status: ""} );
+    if( _lUserDetail ){
+        if(_lUserDetail.current_restaurant !== "" && _lUserDetail.current_table !== ""){
+            let _lAccount: Account = Accounts.findOne({restaurantId: _lUserDetail.current_restaurant, 
+                                                    tableId: _lUserDetail.current_table,
+                                                    status: 'OPEN'});
+            return Orders.find( { creation_user: _userId, restaurantId: _lAccount.restaurantId, tableId: _lAccount.tableId, status: 'ORDER_STATUS.DELIVERED', toPay : { $ne : true } } );
+        }else{
+            return Orders.find( { creation_user: _userId, restaurantId: "", tableId: "", status: ""} );
+        }
+    } else {
+        return;
     }
 });
 
