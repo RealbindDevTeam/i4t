@@ -517,7 +517,8 @@
         "ADD_IMAGE": "Add item image",
         "ACTIVATE": "ACTIVATE",
         "INACTIVATE": "INACTIVATE",
-        "COOKING_TIME": "Approximate Cooking Time"
+        "COOKING_TIME": "Approximate Cooking Time",
+        "MESSAGE" : "No items yet register"
     },
     "ROLE": {
         "ADMINISTRATOR": "Administrator",

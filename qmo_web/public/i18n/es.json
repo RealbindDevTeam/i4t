@@ -517,7 +517,8 @@
         "ADD_IMAGE": "Agrega la imagen del Item",
         "ACTIVATE": "ACTIVAR",
         "INACTIVATE": "INACTIVAR",
-        "COOKING_TIME": "Tiempo Aprox de Cocción"
+        "COOKING_TIME": "Tiempo Aprox de Cocción",
+        "MESSAGE" : "Aún no hay items registrados"
     },
     "ROLE": {
         "ADMINISTRATOR": "Administrador",
