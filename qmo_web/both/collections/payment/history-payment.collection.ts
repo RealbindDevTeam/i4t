@@ -1,6 +1,6 @@
 import { MongoObservable } from 'meteor-rxjs';
 import { Meteor } from 'meteor/meteor';
-import { HistoryPayment } from '../../models/invoicing/history-payment.model';
+import { HistoryPayment } from '../../models/payment/history-payment.model';
 
 export const HistoryPayments = new MongoObservable.Collection<HistoryPayment>('history_payment');
 
