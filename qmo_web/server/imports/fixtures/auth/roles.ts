@@ -10,7 +10,7 @@ export function loadRoles() {
             is_active: true,
             name: "ROLE.ADMINISTRATOR",
             description: "restaurant administrator",
-            menus: ["1000", "2000", "7000"]
+            menus: ["900","1000", "2000", "3000"]
         },{
             _id: "200",
             is_active: true,
@@ -28,19 +28,19 @@ export function loadRoles() {
             is_active: true,
             name: "ROLE.CUSTOMER",
             description: "restaurant customer",
-            menus: ["5000","3000","4000"]
+            menus: ["4000","5000","6000"]
         },{
             _id: "500",
             is_active: true,
             name: "ROLE.CHEF",
             description: "restaurant chef",
-            menus: ["6000"]
+            menus: ["7000"]
         },{
             _id: "600",
             is_active: true,
             name: "ROLE.SUPERVISOR",
             description: "restaurant supervisor",
-            menus: []
+            menus: ["910","1100","3100"]
         }];
 
         roles.forEach((role: Role) => Roles.insert(role));

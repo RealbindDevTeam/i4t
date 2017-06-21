@@ -16,8 +16,8 @@ import { Table } from '../../../../../../both/models/restaurant/table.model';
 import { Parameters } from '../../../../../../both/collections/general/parameter.collection';
 import { Parameter } from '../../../../../../both/models/general/parameter.model';
 
-import template from './monthly-invoice.component.html';
-import style from './monthly-invoice.component.scss';
+import template from './monthly-payment.component.html';
+import style from './monthly-payment.component.scss';
 
 @Component({
     selector: 'billing',
@@ -25,7 +25,7 @@ import style from './monthly-invoice.component.scss';
     styles: [style]
 })
 
-export class MonthlyInvoiceComponent implements OnInit, OnDestroy {
+export class MonthlyPaymentComponent implements OnInit, OnDestroy {
 
     private _restaurants: Observable<Restaurant[]>;
     private _restaurantSub: Subscription;
@@ -36,6 +36,9 @@ export class MonthlyInvoiceComponent implements OnInit, OnDestroy {
     private _tableSub: Subscription;
     private _parameterSub: Subscription;
     private _restaurantsArray: Restaurant[];
+    private _date: Date;
+    private _firstDay: Date;
+    private _lastDay: Date;
 
     constructor(private router: Router,
         private _formBuilder: FormBuilder,
@@ -47,12 +50,16 @@ export class MonthlyInvoiceComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
-        this._restaurants = Restaurants.find({creation_user: Meteor.userId()}).zone();
+        this._restaurants = Restaurants.find({ creation_user: Meteor.userId() }).zone();
         this._currencySub = MeteorObservable.subscribe('getCurrenciesByUserId').subscribe();
         this._currencies = Currencies.find({}).zone();
         this._countrySub = MeteorObservable.subscribe('countries').subscribe();
         this._tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe();
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
+
+        this._date = new Date();
+        this._firstDay = new Date(this._date.getFullYear(), this._date.getMonth(), 1);
+        this._lastDay = new Date(this._date.getFullYear(), this._date.getMonth() + 1, 0);
     }
 
     /**
@@ -126,7 +133,7 @@ export class MonthlyInvoiceComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * This function gets the total cost by restaurant to pay
+     * This function gets the total cost by restaurant to pay for first and forward pays
      * @param {Restaurant} _restaurant
      */
     getTotalRestaurant(_restaurant: Restaurant): number {
@@ -144,7 +151,7 @@ export class MonthlyInvoiceComponent implements OnInit, OnDestroy {
             } else {
                 return country.restaurantPrice + (country.tablePrice * tables_length);
             }
-        }else if(country && !tables_length && discount){
+        } else if (country && !tables_length && discount) {
             if (_restaurant.firstPay) {
                 return country.restaurantPrice * Number(discount.value) / 100;
             } else {
@@ -154,18 +161,48 @@ export class MonthlyInvoiceComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * This function gets the total cost by restaurant to pay
+     * @param {Restaurant} _restaurant
+     */
+    getTotalRestaurantNoDiscount(_restaurant: Restaurant): number {
+        let country: Country;
+        let tables_length: number;
+
+        country = Countries.findOne({ _id: _restaurant.countryId });
+        tables_length = Tables.find({ restaurantId: _restaurant._id, is_active: true }).fetch().length;
+
+        if (country && tables_length) {
+            return country.restaurantPrice + (country.tablePrice * tables_length);
+        } else if (country && !tables_length) {
+            return country.restaurantPrice;
+
+        }
+    }
+
+    /**
      * This function gets the total cost by currency
      * @param {string} _currencyId
      */
-    getTotalByCurrency(_currencyId: string): number{
+    getTotalByCurrency(_currencyId: string): number {
         let price: number = 0;
-        Restaurants.collection.find({currencyId: _currencyId, creation_user: Meteor.userId()}).forEach((restaurant) => {
+        Restaurants.collection.find({ currencyId: _currencyId, creation_user: Meteor.userId() }).forEach((restaurant) => {
             price = price + this.getTotalRestaurant(restaurant);
         });
         return price;
     }
 
-
+    /**
+     * This function gets the discount
+     * @param {string} _currencyId
+     */
+    getDiscount(): string {
+        let discount: Parameter;
+        discount = Parameters.findOne({ name: 'first_pay_discount' });
+        if (discount) {
+            return discount.value;
+        }
+    }
+    
     ngOnDestroy() {
         this._restaurantSub.unsubscribe();
         this._currencySub.unsubscribe();

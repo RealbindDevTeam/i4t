@@ -22,9 +22,9 @@ export interface Restaurant extends CollectionObject {
     orderNumberCount: number;
     max_jobs?: number;
     queue: string[];
-    plan: number;
     isActive: boolean;
     firstPay: boolean;
+    freeDays: boolean
 }
 
 /**

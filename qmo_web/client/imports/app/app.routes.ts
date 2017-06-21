@@ -37,13 +37,14 @@ import { ChefGuard } from './web/auth/navigation/chef-guard.service';
 import { CashierGuard } from './web/auth/navigation/cashier-guard.service';
 import { SuperChefGuard } from './web/auth/navigation/super-chef-guard.service';
 import { PaymentsComponent } from './web/customer/payments/payments.component';
-import { MonthlyInvoiceComponent } from './web/invoicing/monthly-invoice/monthly-invoice.component';
+import { MonthlyPaymentComponent } from './web/payment/monthly-payment/monthly-payment.component';
+import { SupervisorDashboardComponent } from './web/supervisor-dashboard/supervisor-dashboard.component';
 
 export const routes: Route[] = [
     {
         path: 'app', component: LayoutComponent, canActivateChild: ['canActivateForLoggedIn'], children: [
             //{ path : '', redirectTo : 'dashboard', pathMatch: 'full' },
-            { path: 'dashboard', component: DashboardComponent, canActivate: [AdminGuard] },
+            { path: 'dashboard', component: DashboardComponent, canActivate: [SuperChefGuard] },
             { path: 'settings', component: SettingsWebComponent },
             { path: 'collaborators', component: CollaboratorsComponent, canActivate: [SupervisorGuard] },
             { path: 'collaborators-register', component: CollaboratorsRegisterComponent, canActivate: [SupervisorGuard] },
@@ -65,7 +66,8 @@ export const routes: Route[] = [
             { path: 'chefOrders', component: OrderAttentionComponent, canActivate: [ChefGuard] },
             { path: 'calls', component: CallsComponent, canActivate: [WaiterGuard] },
             { path: 'payments', component: PaymentsComponent, canActivate: [CustomerGuard] },
-            { path: 'monthly_invoice', component: MonthlyInvoiceComponent, canActivate: [AdminGuard]}
+            { path: 'monthly_invoice', component: MonthlyPaymentComponent, canActivate: [AdminGuard]},
+            { path: 'dashboards', component: SupervisorDashboardComponent, canActivate: [SupervisorGuard]}
         ]
     },
     { path: '', component: LandingPageComponent },

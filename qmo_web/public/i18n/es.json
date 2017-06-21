@@ -170,14 +170,23 @@
         "USER_DETAIL_UPDATED": "Usuario actualizado correctamente"
     },
     "MENUS": {
-        "RESTAURANT": {
-            "RESTAURANTS": "Restaurantes",
-            "MANAGEMENT": "Administración",
-            "TABLES": "Mesas",
-            "COLLABORATORS": "Colaboradores"
+        "DASHBOARD": {
+            "DASHBOARD": "Tablero de control"
         },
         "ADMINISTRATION": {
-            "ADMINISTRATION": "Administración",
+            "MANAGEMENT": "Administración",
+            "RESTAURANTS": "Restaurantes",
+            "TABLES": "Mesas",
+            "COLLABORATORS": "Colaboradores",
+            "MONTHLY_CONFIG": "Configuración mensual"
+        },
+        "PAYMENTS": {
+            "PAYMENTS": "Pagos",
+            "MONTHLY_PAYMENT": "Pago mensual",
+            "PAYMENT_HISTORY": "Historial de Pagos"
+        },
+        "MENU_DEFINITION": {
+            "MENU_DEFINITION": "Menú",
             "SECTIONS": "Secciones",
             "CATEGORIES": "Categorias",
             "SUBCATEGORIES": "Subcategorias",
@@ -189,12 +198,7 @@
             "ORDERS_CHEF": "Ordenes"
         },
         "ORDERS": "Ordenes",
-        "WAITER_CALL": "Llamar mesero",
-        "INVOICING": {
-            "INVOICING": "Facturación",
-            "MONTHLY_INVOICE": "Factura del mes",
-            "INOVICING_HISTORY": "Historial de facturas"
-        }
+        "WAITER_CALL": "Llamar mesero"
     },
     "PROMOTIONS": {
         "PROMOTION_CREATION": "Creación de promociones",
@@ -453,25 +457,25 @@
         "COLLABORATORS_SEARCH": "Consulta de colaboradores",
         "COLLABORATORS_REGISTER": "Registro de colaborador",
         "COLLABORATORS_TEXT": "Seleccione el restaurante que deseé para la consulta",
-        "MSG_INITIAL" : "Vincula a todos tus colaboradores de a cuerdo al rol que desempeña",
-        "BTN" : "Registrar colaborador"
+        "MSG_INITIAL": "Vincula a todos tus colaboradores de a cuerdo al rol que desempeña",
+        "BTN": "Registrar colaborador"
     },
-    "COLLABORATORS_REGISTER" : {
-        "COLLABORATORS_LABEL" : "Colaborador",
-        "USER_LABEL" : "Usuario",
-        "GENERAL_INFO" : "Información personal",
-        "GENERAL_INFO_TEXT" : "Por favor ingresa la información personal de tu colaboradore",
-        "USER_INFO" : "Información de usuario",
-        "USER_INFO_TEXT" : "Por favor ingresa la información del usuario de tu colaborador",
-        "RESTAURANT" : "Restaurante",
-        "SELECT_RESTAURANT" : "Seleccionar restaurante",
-        "SELECT_ROLE" : "Seleccionar rol",
-        "MESSAGE_COLLABORATOR" : "Colaborador creado exitosamente",
-        "MESSAGE_FORM_INVALID" : "Debe diligenciar los campos obligatorios",
-        "ERROR_INSERT" : "Error al insertar colaborador",
-        "MESSAGE_NOT_LOGIN" : "Por favor ingresar al sistema para agregar un colaborador",
-        "SELECT_RANGE_VALID_TABLES" : "Seleccionar un rango valido de mesas",
-        "TABLES_ASSIGNMENT" : "Asignación de mesas"
+    "COLLABORATORS_REGISTER": {
+        "COLLABORATORS_LABEL": "Colaborador",
+        "USER_LABEL": "Usuario",
+        "GENERAL_INFO": "Información personal",
+        "GENERAL_INFO_TEXT": "Por favor ingresa la información personal de tu colaboradore",
+        "USER_INFO": "Información de usuario",
+        "USER_INFO_TEXT": "Por favor ingresa la información del usuario de tu colaborador",
+        "RESTAURANT": "Restaurante",
+        "SELECT_RESTAURANT": "Seleccionar restaurante",
+        "SELECT_ROLE": "Seleccionar rol",
+        "MESSAGE_COLLABORATOR": "Colaborador creado exitosamente",
+        "MESSAGE_FORM_INVALID": "Debe diligenciar los campos obligatorios",
+        "ERROR_INSERT": "Error al insertar colaborador",
+        "MESSAGE_NOT_LOGIN": "Por favor ingresar al sistema para agregar un colaborador",
+        "SELECT_RANGE_VALID_TABLES": "Seleccionar un rango valido de mesas",
+        "TABLES_ASSIGNMENT": "Asignación de mesas"
     },
     "ITEMS": {
         "ITEMS_MANAGEMENT": "Administracion de items",
@@ -738,7 +742,11 @@
         "CURRENCY": "Moneda",
         "PRICE_BY_TABLE": "Costo por mesa: ",
         "TOTAL_PRICE": "Total: ",
-        "PAY": "   PAGAR   "
+        "PAY": "   PAGAR   ",
+        "DISCOUNT_TOOLTIP_1": "Tienes un descuento de ",
+        "DISCOUNT_TOOLTIP_2": "para el primer pago",
+        "INVOICE_PERIOD": "Periodo de facturación: ",
+        "TO": "a"
     },
     "ORDER_PAYMENT_TRANS": {
         "ORDER_TO_CONFIRM": "Cuando algun acompañante de tu mesa desea pagar una de tus ordenes, debes confirmar este proceso. En esta seccion apareceran aquellas ordenes que otros usuarios desean pagar por ti.",
