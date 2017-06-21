@@ -754,5 +754,22 @@
         "PRICE": "Precio",
         "PAY": "Pagar",
         "NO_ORDERS": "No se Encuentran ordenes en la mesa que se hayan entregado y esten listas para ser pagadas"
+    },
+    "PAYMENT_CONFIRM": {
+        "TABLE": "Mesa ",
+        "CODE": "Código: ",
+        "TOTAL_TABLE": "Total de la Mesa: ",
+        "MARK_PAYMENTS": "Marcar Todos los Pagos como Recibidos",
+        "TOTAL": "Total: ",
+        "RECEIVED": "Recibido",
+        "NO_RECEIVED": "No Recibido",
+        "PAYMENT_METHOD": "M. Pago: ",
+        "TIP": "Propina: ",
+        "ORDERS": "Ordenes: ",
+        "ORDER": "Orden",
+        "STATUS": "Estado",
+        "QUANTITY": "Cant. ",
+        "PRICE": "Precio: ",
+        "CLOSE_PAYMENTS": "Cerrar Pagos"
     }
 }

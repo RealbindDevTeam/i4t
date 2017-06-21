@@ -754,5 +754,22 @@
         "PRICE": "Price",
         "PAY": "Pay",
         "NO_ORDERS": "No Orders found on the table that have been delivered and are ready to be paid."
+    },
+    "PAYMENT_CONFIRM": {
+        "TABLE": "Table ",
+        "CODE": "Code: ",
+        "TOTAL_TABLE": "Total Table: ",
+        "MARK_PAYMENTS": "Mark All Payments as Received",
+        "TOTAL": "Total: ",
+        "RECEIVED": "Received",
+        "NO_RECEIVED": "No Received",
+        "PAYMENT_METHOD": "Payment M.: ",
+        "TIP": "Tip: ",
+        "ORDERS": "Orders: ",
+        "ORDER": "Order",
+        "STATUS": "Status",
+        "QUANTITY": "Quant. ",
+        "PRICE": "Price: ",
+        "CLOSE_PAYMENTS": "Close Payments"
     }
 }
