@@ -25,7 +25,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let restaurant of _restaurants | async">
+                    <tr style="background-color: whitesmoke !important" *ngFor="let restaurant of _restaurants | async">
                         <td *ngIf="restaurant.currencyId === currency._id">{{restaurant.name}}</td>
                         <td *ngIf="restaurant.currencyId === currency._id">{{getRestaurantPrice(restaurant)}} {{currency.code}}</td>
                         <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">{{getActiveTables(restaurant)}}</td>
@@ -45,8 +45,10 @@
             </table>
 
             <div style="text-align: right">
-                <button color="accent" md-raised-button>{{'MONTHLY_INVOICE.PAY' | translate}}</button><span>
-                <h4>{{'MONTHLY_INVOICE.TOTAL_PRICE' | translate}}{{getTotalByCurrency(currency._id)}} {{currency.code}}</h4></span>
+                <h2> <span style="margin-right: 10px"> 
+                    <button color="accent" md-raised-button>{{'MONTHLY_INVOICE.PAY' | translate}}</button>
+                    </span>{{'MONTHLY_INVOICE.TOTAL_PRICE' | translate}}{{getTotalByCurrency(currency._id)}} {{currency.code}}  
+                </h2>
             </div>
         </div>
     </md-card-content>

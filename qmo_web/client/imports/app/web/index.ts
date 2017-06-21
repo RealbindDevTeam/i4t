@@ -60,7 +60,7 @@ import { OrderPaymentTranslateComponent } from './customer/payments/order-paymen
 import { OrderToTranslateComponent } from './customer/payments/order-payment-translate/order-to-translate/order-to-translate.component';
 import { ColombiaPaymentDetailComponent } from './customer/payments/country-payment/colombia-payment/colombia-payment-detail/colombia-payment-detail.component';
 import { CreateConfirmComponent } from './restaurant/restaurant/restaurant-register/create-confirm/create-confirm.component';
-import { MonthlyInvoiceComponent } from './invoicing/monthly-invoice/monthly-invoice.component';
+import { MonthlyPaymentComponent } from './payment/monthly-payment/monthly-payment.component';
 import { PaymentConfirmComponent } from './waiter/payment-confirm/payment-confirm.component';
 import { SupervisorDashboardComponent } from './supervisor-dashboard/supervisor-dashboard.component';
 
@@ -105,7 +105,7 @@ export const WEB_DECLARATIONS = [
     ColombiaPaymentComponent,
     ColombiaItemDetailComponent,
     OrderPaymentTranslateComponent,
-    MonthlyInvoiceComponent,
+    MonthlyPaymentComponent,
     SupervisorDashboardComponent
 ];
 

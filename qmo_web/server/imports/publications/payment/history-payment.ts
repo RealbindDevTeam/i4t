@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { HistoryPayments } from '../../../../both/collections/invoicing/history-payment.collection';
+import { HistoryPayments } from '../../../../both/collections/payment/history-payment.collection';
 
 /**
  * Meteor publication EmailContents

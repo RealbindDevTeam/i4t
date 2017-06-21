@@ -11,7 +11,7 @@ export function loadMenus() {
                 is_active: true,
                 name: "MENUS.DASHBOARD.DASHBOARD",
                 url: "/app/dashboard",
-                icon_name: "view_list",
+                icon_name: "trending up",
                 order: 900
             },
             {
@@ -19,7 +19,7 @@ export function loadMenus() {
                 is_active: true,
                 name: "MENUS.DASHBOARD.DASHBOARD",
                 url: "/app/dashboards",
-                icon_name: "view_list",
+                icon_name: "trending up",
                 order: 910
             },
             {
@@ -27,7 +27,7 @@ export function loadMenus() {
                 is_active: true,
                 name: "MENUS.ADMINISTRATION.MANAGEMENT",
                 url: "",
-                icon_name: "view_list",
+                icon_name: "supervisor account",
                 order: 1000,
                 children:
                 [
@@ -67,7 +67,7 @@ export function loadMenus() {
                 is_active: true,
                 name: "MENUS.ADMINISTRATION.COLLABORATORS",
                 url: "/app/collaborators",
-                icon_name: "group",
+                icon_name: "supervisor account",
                 order: 1100
             },
             {
@@ -75,7 +75,7 @@ export function loadMenus() {
                 is_active: true,
                 name: "MENUS.PAYMENTS.PAYMENTS",
                 url: "",
-                icon_name: "view_list",
+                icon_name: "payment",
                 order: 2000,
                 children:
                 [
@@ -102,7 +102,7 @@ export function loadMenus() {
                 is_active: true,
                 name: "MENUS.MENU_DEFINITION.MENU_DEFINITION",
                 url: "",
-                icon_name: "view_list",
+                icon_name: "list",
                 order: 3000,
                 children:
                 [
@@ -163,7 +163,7 @@ export function loadMenus() {
                 is_active: true,
                 name: "MENUS.MENU_DEFINITION.ITEMS_ENABLE",
                 url: "/app/itemsEnable",
-                icon_name: "view_list",
+                icon_name: "done all",
                 order: 3100
             },
             {

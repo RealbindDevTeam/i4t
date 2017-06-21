@@ -16,8 +16,8 @@ import { Table } from '../../../../../../both/models/restaurant/table.model';
 import { Parameters } from '../../../../../../both/collections/general/parameter.collection';
 import { Parameter } from '../../../../../../both/models/general/parameter.model';
 
-import template from './monthly-invoice.component.html';
-import style from './monthly-invoice.component.scss';
+import template from './monthly-payment.component.html';
+import style from './monthly-payment.component.scss';
 
 @Component({
     selector: 'billing',
@@ -25,7 +25,7 @@ import style from './monthly-invoice.component.scss';
     styles: [style]
 })
 
-export class MonthlyInvoiceComponent implements OnInit, OnDestroy {
+export class MonthlyPaymentComponent implements OnInit, OnDestroy {
 
     private _restaurants: Observable<Restaurant[]>;
     private _restaurantSub: Subscription;

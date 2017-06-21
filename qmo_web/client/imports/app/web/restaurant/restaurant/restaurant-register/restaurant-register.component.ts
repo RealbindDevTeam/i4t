@@ -78,6 +78,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private post: any;
 
     align: string;
+    private _loading: boolean;
 
     private _mdDialogRef: MdDialogRef<any>;
 
@@ -326,7 +327,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             return;
         }
 
-
         this._mdDialogRef = this._mdDialog.open(CreateConfirmComponent, {
             disableClose: true
         });
@@ -334,60 +334,68 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._mdDialogRef.afterClosed().subscribe(result => {
 
             this._mdDialogRef = result;
-            if (result.success) {
 
-                let arrPay: any[] = Object.keys(this._restaurantForm.value.paymentMethods);
-                let _lPaymentMethodsToInsert: string[] = [];
+            this._loading = true;
+            setTimeout(() => {
 
-                arrPay.forEach((pay) => {
-                    if (this._restaurantForm.value.paymentMethods[pay]) {
-                        let _lPayment: PaymentMethod = this._paymentMethodsList.filter(p => p.name === pay)[0];
-                        _lPaymentMethodsToInsert.push(_lPayment._id);
+
+
+                if (result.success) {
+
+                    let arrPay: any[] = Object.keys(this._restaurantForm.value.paymentMethods);
+                    let _lPaymentMethodsToInsert: string[] = [];
+
+                    arrPay.forEach((pay) => {
+                        if (this._restaurantForm.value.paymentMethods[pay]) {
+                            let _lPayment: PaymentMethod = this._paymentMethodsList.filter(p => p.name === pay)[0];
+                            _lPaymentMethodsToInsert.push(_lPayment._id);
+                        }
+                    });
+
+                    let _lNewRestaurant = Restaurants.collection.insert({
+                        creation_user: Meteor.userId(),
+                        creation_date: new Date(),
+                        modification_user: '-',
+                        modification_date: new Date(),
+                        countryId: this._restaurantForm.value.country,
+                        cityId: this._restaurantForm.value.city,
+                        name: this._restaurantForm.value.name,
+                        currencyId: this._restaurantCurrencyId,
+                        address: this._restaurantForm.value.address,
+                        indicative: this._countryIndicative,
+                        phone: this._restaurantForm.value.phone,
+                        webPage: this._restaurantForm.value.webPage,
+                        email: this._restaurantForm.value.email,
+                        restaurant_code: this.generateRestaurantCode(),
+                        financialInformation: this._restaurantFinancialInformation,
+                        paymentMethods: _lPaymentMethodsToInsert,
+                        location: {
+                            lat: 0,
+                            lng: 0
+                        },
+                        schedule: this._schedule,
+                        tables_quantity: 0,
+                        orderNumberCount: 0,
+                        max_jobs: 5,
+                        queue: this._queues,
+                        isActive: true,
+                        firstPay: true,
+                        freeDays: true
+                    });
+
+                    if (this._createImage) {
+                        uploadRestaurantImage(this._restaurantImageToInsert,
+                            Meteor.userId(),
+                            _lNewRestaurant).then((result) => {
+
+                            }).catch((error) => {
+                                alert('Upload image error. Only accept .png, .jpg, .jpeg files.');
+                            });
                     }
-                });
-
-                let _lNewRestaurant = Restaurants.collection.insert({
-                    creation_user: Meteor.userId(),
-                    creation_date: new Date(),
-                    modification_user: '-',
-                    modification_date: new Date(),
-                    countryId: this._restaurantForm.value.country,
-                    cityId: this._restaurantForm.value.city,
-                    name: this._restaurantForm.value.name,
-                    currencyId: this._restaurantCurrencyId,
-                    address: this._restaurantForm.value.address,
-                    indicative: this._countryIndicative,
-                    phone: this._restaurantForm.value.phone,
-                    webPage: this._restaurantForm.value.webPage,
-                    email: this._restaurantForm.value.email,
-                    restaurant_code: this.generateRestaurantCode(),
-                    financialInformation: this._restaurantFinancialInformation, 
-                    paymentMethods: _lPaymentMethodsToInsert,
-                    location: {
-                        lat: 0,
-                        lng: 0
-                    },
-                    schedule: this._schedule,
-                    tables_quantity: 0,
-                    orderNumberCount: 0,
-                    max_jobs: 5,
-                    queue: this._queues,
-                    isActive: true,
-                    firstPay: true,
-                    freeDays: true
-                });
-
-                if (this._createImage) {
-                    uploadRestaurantImage(this._restaurantImageToInsert,
-                        Meteor.userId(),
-                        _lNewRestaurant).then((result) => {
-
-                        }).catch((error) => {
-                            alert('Upload image error. Only accept .png, .jpg, .jpeg files.');
-                        });
+                    this.cancel();
                 }
-                this.cancel();
-            }
+                this._loading = false;
+            }, 1500);
         });
     }
 

@@ -14,7 +14,6 @@ if (Meteor.isServer) {
             let userDetail = UserDetails.collection.findOne({ user_id: this.userId });
             let role = Roles.collection.findOne({ _id: userDetail.role_id });
             Menus.collection.find({ _id: { $in: role.menus }, is_active: true }, { sort: { order: 1 } }).forEach(menu => {
-                console.log(menu);
                 menuList.push(menu);
             });
             return menuList;
