@@ -37,43 +37,42 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     @Input() restaurantCurrency: string;
     @Output() finishOrdenCreation = new EventEmitter();
 
-    private _newOrderForm: FormGroup;
-    private _garnishFormGroup: FormGroup = new FormGroup({});
-    private _additionsFormGroup: FormGroup = new FormGroup({});
+    private _newOrderForm               : FormGroup;
+    private _garnishFormGroup           : FormGroup = new FormGroup({});
+    private _additionsFormGroup         : FormGroup = new FormGroup({});
    
-    private _sectionsSub: Subscription;
-    private _categoriesSub: Subscription;
-    private _subcategoriesSub: Subscription;
-    private _itemsSub: Subscription;
-    private _garnishFoodSub: Subscription;
-    private _additionsSub: Subscription;
-    private _ordersSub: Subscription;
-    private _itemImagesSub: Subscription;
-    private _currenciesSub: Subscription;
+    private _sectionsSub                : Subscription;
+    private _categoriesSub              : Subscription;
+    private _subcategoriesSub           : Subscription;
+    private _itemsSub                   : Subscription;
+    private _garnishFoodSub             : Subscription;
+    private _additionsSub               : Subscription;
+    private _ordersSub                  : Subscription;
+    private _itemImagesSub              : Subscription;
+    private _currenciesSub              : Subscription;
 
-    private _sections: Observable<Section[]>;
-    private _categories: Observable<Category[]>;
-    private _subcategories: Observable<Subcategory[]>;
-    private _items: Observable<Item[]>;
-    private _itemDetail: Observable<Item[]>;
-    private _garnishFoodCol: Observable<GarnishFood[]>;
-    private _additions: Observable<Addition[]>;
+    private _sections                   : Observable<Section[]>;
+    private _categories                 : Observable<Category[]>;
+    private _subcategories              : Observable<Subcategory[]>;
+    private _items                      : Observable<Item[]>;
+    private _itemDetail                 : Observable<Item[]>;
+    private _garnishFoodCol             : Observable<GarnishFood[]>;
+    private _additions                  : Observable<Addition[]>;
+    private _itemImages                 : Observable<ItemImage[]>
 
-    private _showItemDetails: boolean = false;
-    private _finalPrice:number = 0;
-    private _maxGarnishFoodElements: number = 0;
-    private _garnishFoodElementsCount: number = 0;
-    private _numberColums : number = 3;
-    private _showGarnishFoodError: boolean = false;
-    private _unitPrice: number = 0;
-    private _lastQuantity: number = 1;
-    private _quantityCount: number = 1;
-    private _currencyCode: string;
+    private _showItemDetails            : boolean = false;
+    private _finalPrice                 :number = 0;
+    private _maxGarnishFoodElements     : number = 0;
+    private _garnishFoodElementsCount   : number = 0;
+    private _numberColums               : number = 3;
+    private _showGarnishFoodError       : boolean = false;
+    private _unitPrice                  : number = 0;
+    private _lastQuantity               : number = 1;
+    private _quantityCount              : number = 1;
+    private _currencyCode               : string;
 
-    private _orderMenus: OrderMenu[] = [];
-    private orderMenuSetup: OrderMenu [] = [];
-    private _garnishFoodList: GarnishFood[] = [];
-    private _additionsList: Addition[] = [];
+    private _orderMenus                 : OrderMenu[] = [];
+    private orderMenuSetup              : OrderMenu [] = [];
 
     /**
      * OrderCreateComponent Constructor
@@ -82,7 +81,10 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * @param {OrderNavigationService} _navigation 
      * @param {NgZone} _ngZone 
      */
-    constructor( private _formBuilder: FormBuilder, private _translate: TranslateService, private _navigation: OrderNavigationService, private _ngZone: NgZone ){
+    constructor( private _formBuilder: FormBuilder, 
+                 private _translate: TranslateService, 
+                 private _navigation: OrderNavigationService, 
+                 private _ngZone: NgZone ){
         var _userLang = navigator.language.split( '-' )[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
@@ -92,63 +94,51 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit(){
-        this._categoriesSub = MeteorObservable.subscribe( 'categoriesByRestaurant', this.restaurantId ).subscribe();
-        this._subcategoriesSub = MeteorObservable.subscribe( 'subcategoriesByRestaurant', this.restaurantId ).subscribe();
-        this._itemsSub = MeteorObservable.subscribe( 'itemsByRestaurant', this.restaurantId ).subscribe();
-        this._itemImagesSub = MeteorObservable.subscribe( 'itemImagesByRestaurant', this.restaurantId ).subscribe();
+        this._itemsSub = MeteorObservable.subscribe( 'itemsByRestaurant', this.restaurantId ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._items = Items.find( { } ).zone();
+            });
+        });
+        this._itemImagesSub = MeteorObservable.subscribe( 'itemImagesByRestaurant', this.restaurantId ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._itemImages = ItemImages.find( { } ).zone();
+            });
+        });
         this._ordersSub = MeteorObservable.subscribe( 'getOrders', this.restaurantId, this.tableQRCode,[ 'ORDER_STATUS.REGISTERED' ] ).subscribe( () => { } );
         this._garnishFoodSub = MeteorObservable.subscribe( 'garnishFoodByRestaurant', this.restaurantId ).subscribe( () => {
             this._ngZone.run( () => {
                 this._garnishFoodCol = GarnishFoodCol.find( { } ).zone();
-                this._garnishFoodList = GarnishFoodCol.collection.find( { } ).fetch();
-                for( let gar of this._garnishFoodList ){
+                GarnishFoodCol.collection.find( { } ).fetch().forEach( ( gar ) => {
                     let control: FormControl = new FormControl( false );
                     this._garnishFormGroup.addControl( gar.name, control );
-                }
+                });
             });
         });
         this._additionsSub = MeteorObservable.subscribe( 'additionsByRestaurant', this.restaurantId ).subscribe( () => {
             this._ngZone.run( () =>{
                 this._additions = Additions.find( { } ).zone();
-                this._additionsList = Additions.collection.find( { } ).fetch();
-                for( let add of this._additionsList ){
+                Additions.collection.find( { } ).fetch().forEach( ( add ) => {
                     let control: FormControl = new FormControl( false );
                     this._additionsFormGroup.addControl( add.name, control );
-                }
+                });
             });
         });
         this._sectionsSub = MeteorObservable.subscribe( 'sectionsByRestaurant', this.restaurantId ).subscribe( () => {
             this._ngZone.run( () => {
-                Sections.find().fetch().forEach( ( s ) => {
-                    let _lCategoryCount:number = 0;
-                    _lCategoryCount = Categories.find( { section: { $in: [ s._id ] } } ).fetch().length;
-
-                    if( _lCategoryCount > 0 ){
-                        let _lSubcategoryCount: number = 0;
-                        let _lCategories: OrderMenu[] = [];
-
-                        Categories.find( { section: { $in: [ s._id ] } } ).fetch().forEach( ( c ) => {
-                            let _lSubcategories: OrderMenu[] = [];
-                            _lSubcategoryCount = Subcategories.find( { category: { $in: [ c._id ] } } ).fetch().length;
-
-                            if( _lSubcategoryCount > 0 ){
-                                Subcategories.find( { category: { $in: [ c._id ] } } ).fetch().forEach( ( s ) => {
-                                    _lSubcategories.push( new OrderMenu( s.name, { id:s._id, type: 'Sub' }, [] ) );
-                                });
-                                _lCategories.push( new OrderMenu( c.name, { id: c._id, type: 'Ca' }, _lSubcategories ) );
-                            } else {
-                                _lCategories.push( new OrderMenu( c.name, { id: c._id, type: 'Ca' }, [] ) );
-                            }
-                        });
-                        this.orderMenuSetup.push( new OrderMenu( s.name, { id: s._id, type: 'Se' }, _lCategories ) );
-                    } else {
-                        this.orderMenuSetup.push( new OrderMenu( s.name, { id: s._id, type: 'Se' }, [] ) );
-                    }
-                });
-                this._navigation.setOrderMenus( this.orderMenuSetup );
-                this._navigation.orderMenus.subscribe( orderMenus => {
-                    this._orderMenus = orderMenus;
-                });
+                this._sections = Sections.find( { } ).zone();
+                this._sections.subscribe( () => { this.buildCustomerMenu(); } );
+            });
+        });
+        this._categoriesSub = MeteorObservable.subscribe( 'categoriesByRestaurant', this.restaurantId ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._categories = Categories.find( { } ).zone();
+                this._categories.subscribe( () => { this.buildCustomerMenu(); });
+            });
+        });
+        this._subcategoriesSub = MeteorObservable.subscribe( 'subcategoriesByRestaurant', this.restaurantId ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._subcategories = Subcategories.find( { } ).zone();
+                this._subcategories.subscribe( () => { this.buildCustomerMenu(); } );
             });
         });
         this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId',[ this.restaurantId ] ).subscribe( () => {
@@ -156,15 +146,48 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
                 this._currencyCode = Currencies.findOne( { _id: this.restaurantCurrency } ).code + ' ';
             });
         });
-        this._items = Items.find( { } ).zone();
-        this._sections = Sections.find( { } ).zone();
-        this._categories = Categories.find( { } ).zone();
-        this._subcategories = Subcategories.find( { } ).zone();
         
         this._newOrderForm = new FormGroup({
             observations: new FormControl( '', [ Validators.maxLength( 50 ) ] ),
             garnishFood: this._garnishFormGroup,
             additions: this._additionsFormGroup
+        });
+    }
+
+    /**
+     * Build Customer Menu
+     */
+    buildCustomerMenu():void{
+        this.orderMenuSetup = [];
+        Sections.find().fetch().forEach( ( s ) => {
+            let _lCategoryCount:number = 0;
+            _lCategoryCount = Categories.find( { section: { $in: [ s._id ] } } ).fetch().length;
+
+            if( _lCategoryCount > 0 ){
+                let _lSubcategoryCount: number = 0;
+                let _lCategories: OrderMenu[] = [];
+
+                Categories.find( { section: { $in: [ s._id ] } } ).fetch().forEach( ( c ) => {
+                    let _lSubcategories: OrderMenu[] = [];
+                    _lSubcategoryCount = Subcategories.find( { category: { $in: [ c._id ] } } ).fetch().length;
+
+                    if( _lSubcategoryCount > 0 ){
+                        Subcategories.find( { category: { $in: [ c._id ] } } ).fetch().forEach( ( s ) => {
+                            _lSubcategories.push( new OrderMenu( s.name, { id:s._id, type: 'Sub' }, [] ) );
+                        });
+                        _lCategories.push( new OrderMenu( c.name, { id: c._id, type: 'Ca' }, _lSubcategories ) );
+                    } else {
+                        _lCategories.push( new OrderMenu( c.name, { id: c._id, type: 'Ca' }, [] ) );
+                    }
+                });
+                this.orderMenuSetup.push( new OrderMenu( s.name, { id: s._id, type: 'Se' }, _lCategories ) );
+            } else {
+                this.orderMenuSetup.push( new OrderMenu( s.name, { id: s._id, type: 'Se' }, [] ) );
+            }
+        });
+        this._navigation.setOrderMenus( this.orderMenuSetup );
+        this._navigation.orderMenus.subscribe( orderMenus => {
+            this._orderMenus = orderMenus;
         });
     }
 
@@ -390,17 +413,6 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      */
     setMaxGarnishFoodElements( _pGarnishFoodQuantity: number ):void {
         this._maxGarnishFoodElements = _pGarnishFoodQuantity;
-    }
-
-    /**
-     * Get Item Image
-     * @param {string} _pRestaurantId
-     */
-    getItemImage( _pItemId: string ):string{
-        let _lItemImage: ItemImage = ItemImages.findOne( { itemId: _pItemId } );
-        if( _lItemImage ){
-            return _lItemImage.url;
-        }
     }
 
     /**

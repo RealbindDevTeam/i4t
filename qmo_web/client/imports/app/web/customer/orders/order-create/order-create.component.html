@@ -23,10 +23,13 @@
                                 <md-card class="cards">
                                     <md-card-header>
                                         <md-card-title>{{item.name}}</md-card-title>
-                                        <!--md-card-subtitle>{{'ORDER_CREATE.PRICE' | translate}}: {{ getItemPrice( item ) }} {{_currencyCode}}</md-card-subtitle-->
                                     </md-card-header>
                                     <div class="crop">
-                                        <img src="{{ getItemImage(item._id) }}">
+                                        <span *ngFor="let itemImg of _itemImages | async">
+                                            <template [ngIf]="itemImg.itemId === item._id">
+                                                <img src="{{ itemImg.url }}">
+                                            </template>
+                                        </span>
                                     </div>
                                     <md-card-actions>
                                         <button md-button (click)="showItemInformation(item)">{{'ORDER_CREATE.VIEW_DETAIL' | translate}}</button>
@@ -43,10 +46,13 @@
                                         <md-card class="cards">
                                             <md-card-header>
                                                 <md-card-title>{{item.name}}</md-card-title>
-                                                <!--md-card-subtitle>{{'ORDER_CREATE.PRICE' | translate}}: {{ getItemPrice( item ) }} {{_currencyCode}}</md-card-subtitle-->
                                             </md-card-header>
                                             <div class="crop">
-                                                <img md-card-image src="{{ getItemImage(item._id) }}">
+                                                <span *ngFor="let itemImg of _itemImages | async">
+                                                    <template [ngIf]="itemImg.itemId === item._id">
+                                                        <img src="{{ itemImg.url }}">
+                                                    </template>
+                                                </span>
                                             </div>
                                             <md-card-actions>
                                                 <button md-button (click)="showItemInformation(item)">{{'ORDER_CREATE.VIEW_DETAIL' | translate}}</button>
@@ -63,10 +69,13 @@
                                                 <md-card id="card-main" class="cards">
                                                     <md-card-header>
                                                         <md-card-title>{{item.name}}</md-card-title>
-                                                        <!--md-card-subtitle>{{'ORDER_CREATE.PRICE' | translate}}: {{ getItemPrice( item ) }} {{_currencyCode}}</md-card-subtitle-->
                                                     </md-card-header>
                                                     <div class="crop">
-                                                        <img src="{{ getItemImage(item._id) }}">
+                                                        <span *ngFor="let itemImg of _itemImages | async">
+                                                            <template [ngIf]="itemImg.itemId === item._id">
+                                                                <img src="{{ itemImg.url }}">
+                                                            </template>
+                                                        </span>
                                                     </div>
                                                     <md-card-actions>
                                                         <button md-button (click)="showItemInformation(item)">{{'ORDER_CREATE.VIEW_DETAIL' | translate}}</button>
