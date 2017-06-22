@@ -30,7 +30,11 @@ Meteor.publish( 'restaurantImages', function( _userId:string ) {
 Meteor.publish( 'restaurantImagesByRestaurantWork', function( _userId : string ) {
     check( _userId, String );
     var user_detail = UserDetails.collection.findOne({ user_id: _userId });
-    return RestaurantImages.collection.find( { restaurantId: user_detail.restaurant_work } );
+    if( user_detail ){
+        return RestaurantImages.collection.find( { restaurantId: user_detail.restaurant_work } );
+    } else {
+        return;
+    }
 });
 
 /**
@@ -41,7 +45,11 @@ Meteor.publish( 'restaurantImagesByRestaurantWork', function( _userId : string )
 Meteor.publish('getRestaurantByCurrentUser', function( _userId: string){
     check( _userId, String);
     var user_detail = UserDetails.collection.findOne({ user_id: _userId });
-    return Restaurants.collection.find({_id: user_detail.current_restaurant});
+    if( user_detail ){
+        return Restaurants.collection.find( {_id: user_detail.current_restaurant} );
+    } else {
+        return;
+    }
 });
 
 /**
@@ -52,7 +60,11 @@ Meteor.publish('getRestaurantByCurrentUser', function( _userId: string){
 Meteor.publish('getRestaurantByRestaurantWork', function( _userId: string){
     check( _userId, String);
     var user_detail = UserDetails.collection.findOne({ user_id: _userId });
-    return Restaurants.collection.find({_id: user_detail.restaurant_work});
+    if( user_detail ){
+        return Restaurants.collection.find({_id: user_detail.restaurant_work});
+    } else {
+        return;
+    }
 });
 
 /**
@@ -80,8 +92,13 @@ Meteor.publish( 'restaurantImageThumbsByRestaurantId', function( _restaurantId:s
 Meteor.publish( 'restaurantImageThumbsByUserId', function( _userId:string ) {
     check( _userId, String );
     let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
-    if(_lUserDetail.current_restaurant){
-        return RestaurantImageThumbs.collection.find( { restaurantId: _lUserDetail.current_restaurant } );
+    if( _lUserDetail ){
+        if(_lUserDetail.current_restaurant){
+            return RestaurantImageThumbs.collection.find( { restaurantId: _lUserDetail.current_restaurant } );
+        } else {
+            return;
+        }
+    } else {
+        return;
     }
-    return;
 });

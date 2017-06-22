@@ -1,4 +1,29 @@
-<md-card>
+<!--md-card *ngIf="(tables | async)?.length <= 0" md-cell="12" class="demo-card demo-basic"-->
+<md-card *ngIf="(restaurants | async)?.length <= 0" md-cell="12" class="demo-card demo-basic">
+    <md-card-content>
+        <div class="card_initial">
+            <div class="card_initial has-image">
+                <div class="card_initial-image-container">
+                    <img class="card_initial-image" 
+                        src="/images/mesas.png"/>
+                </div>
+                <div class="card_initial-copy">
+                    <div class="card_initial-tagline">
+                        {{'SECTIONS.THERE_NOT_RESTAURANTS' | translate}}
+                    </div>
+                    <div class="card_initial-additional-links">
+                      {{'SECTIONS.MESSAGE' | translate}}
+                    </div>
+                </div>
+                <div class="card_initial-button">
+                    <button md-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </md-card-content>
+</md-card>
+
+<md-card *ngIf="(restaurants | async)?.length > 0">
     <md-card-title>{{'TABLES.TABLES_CREATION' | translate}}</md-card-title>
     <md-card-subtitle>{{'TABLES.TABLES_TEXT' | translate}}</md-card-subtitle>
     <md-card-content style="background: #FFF">
@@ -26,24 +51,6 @@
                 </tr>
             </table>
         </form>
-    </md-card-content>
-</md-card>
-
-<md-card *ngIf="(tables | async)?.length <= 0" md-cell="12" class="demo-card demo-basic">
-    <md-card-content>
-        <div class="card_initial">
-            <div class="card_initial has-image">
-                <div class="card_initial-image-container">
-                    <img class="card_initial-image" 
-                        src="/images/mesas.png"/>
-                </div>
-                <div class="card_initial-copy">
-                    <div class="card_initial-tagline">
-                        {{'TABLES.MSG_INITIAL' | translate}}
-                    </div>
-                </div>
-            </div>
-        </div>
     </md-card-content>
 </md-card>
 

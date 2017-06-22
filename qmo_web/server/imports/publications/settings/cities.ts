@@ -13,5 +13,9 @@ Meteor.publish( 'cities', () => Cities.find( { is_active: true } ) );
 Meteor.publish('getCityByRestaurantId', function( _restaurantId: string){
     check(_restaurantId, String);
     let restaurant = Restaurants.collection.findOne({_id: _restaurantId});
-    return Cities.collection.find({_id: restaurant.cityId});
+    if( restaurant ){
+        return Cities.collection.find({_id: restaurant.cityId});
+    } else {
+        return;
+    }
 });

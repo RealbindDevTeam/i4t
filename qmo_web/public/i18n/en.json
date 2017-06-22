@@ -99,7 +99,10 @@
         "ACTIVATE": "ACTIVATE",
         "INACTIVATE": "INACTIVATE",
         "SECTION_CREATED": "Section Created Correctly",
-        "SECTION_EDITED": "Edited Section Correctly"
+        "SECTION_EDITED": "Edited Section Correctly",
+        "THERE_NOT_RESTAURANTS" :"No restaurants yet register",
+        "RESTAURANT_REGISTER" : "Restaurant register",
+        "MESSAGE" : "Register one to enable this option"
     },
     "CATEGORIES": {
         "CATEGORIES_CREATION": "Categories creation",
@@ -514,7 +517,8 @@
         "ADD_IMAGE": "Add item image",
         "ACTIVATE": "ACTIVATE",
         "INACTIVATE": "INACTIVATE",
-        "COOKING_TIME": "Approximate Cooking Time"
+        "COOKING_TIME": "Approximate Cooking Time",
+        "MESSAGE" : "No items yet register"
     },
     "ROLE": {
         "ADMINISTRATOR": "Administrator",

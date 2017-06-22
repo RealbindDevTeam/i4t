@@ -6,6 +6,13 @@ import { Subcategories } from '../../../both/collections/administration/subcateg
 import { Additions } from '../../../both/collections/administration/addition.collection';
 import { Items, ItemImages, ItemImagesThumbs } from '../../../both/collections/administration/item.collection';
 import { GarnishFoodCol } from '../../../both/collections/administration/garnish-food.collection';
+import { PaymentMethods } from '../../../both/collections/general/paymentMethod.collection';
+import { HistoryPayments } from '../../../both/collections/payment/history-payment.collection';
+import { Accounts } from '../../../both/collections/restaurant/account.collection';
+import { Orders } from '../../../both/collections/restaurant/order.collection';
+import { Tables } from '../../../both/collections/restaurant/table.collection';
+import { Payments } from '../../../both/collections/restaurant/payment.collection';
+import { WaiterCallDetails } from '../../../both/collections/restaurant/waiter-call-detail.collection';
 
 export function createdbindexes(){
 
@@ -23,6 +30,8 @@ export function createdbindexes(){
 
     // User Collections Indexes
     UserDetails.collection._ensureIndex( { user_id: 1 } );
+    UserDetails.collection._ensureIndex( { restaurant_work: 1 } );
+    UserDetails.collection._ensureIndex( { current_restaurant: 1, current_table: 1 } );    
 
     // Section Collection Indexes
     Sections.collection._ensureIndex( { creation_user: 1 } );
@@ -56,6 +65,34 @@ export function createdbindexes(){
 
     // Item Image Thumbs Collection Indexes
     ItemImagesThumbs.collection._ensureIndex( { userId: 1 } );
-    ItemImagesThumbs.collection._ensureIndex( { itemId: 1 } );   
+    ItemImagesThumbs.collection._ensureIndex( { itemId: 1 } );
+
+    // PaymentMethod Collection Indexes
+    PaymentMethods.collection._ensureIndex( { isActive: 1 } );   
     
+    // HistoryPayments Collection Indexes
+    HistoryPayments.collection._ensureIndex( { restaurantId: 1 } );
+
+    // Accounts Collection Indexes
+    Accounts.collection._ensureIndex( { restaurantId: 1 } );
+    Accounts.collection._ensureIndex( { status: 1 } );
+    Accounts.collection._ensureIndex( { tableId: 1 } );
+
+    // Tables Collection Indexes
+    Tables.collection._ensureIndex( { QR_code: 1 } );
+    Tables.collection._ensureIndex( { restaurantId: 1 } );    
+
+    // Orders Collection Indexes
+    Orders.collection._ensureIndex( { restaurantId: 1 } );
+    Orders.collection._ensureIndex( { tableId: 1 } );
+    Orders.collection._ensureIndex( { status: 1 } );
+
+    // Payments Collection Indexes
+    Payments.collection._ensureIndex( { creation_user: 1 } );
+    Payments.collection._ensureIndex( { restaurantId: 1, tableId: 1, status: 1 } );
+    
+    // WaiterCallDetails Collection Indexes
+    WaiterCallDetails.collection._ensureIndex( { status: 1 } );
+    WaiterCallDetails.collection._ensureIndex( { user_id: 1 } );
+    WaiterCallDetails.collection._ensureIndex( { restaurant_id: 1, table_id: 1, type: 1 } );    
 }

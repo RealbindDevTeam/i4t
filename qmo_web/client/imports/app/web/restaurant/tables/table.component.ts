@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { QRCodeComponent } from 'angular2-qrcode';
+import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -46,7 +47,7 @@ export class TableComponent implements OnInit, OnDestroy {
 
   finalImg: any;
 
-  constructor(private _formBuilder: FormBuilder, private translate: TranslateService) {
+  constructor(private _formBuilder: FormBuilder, private translate: TranslateService, private _router: Router) {
     var userLang = navigator.language.split('-')[0];
     translate.setDefaultLang('en');
     translate.use(userLang);
@@ -233,6 +234,13 @@ export class TableComponent implements OnInit, OnDestroy {
         return element._id !== selected._id;
       });
     }
+  }
+
+  /**
+   * Go to add new Restaurant
+   */
+  goToAddRestaurant(){
+      this._router.navigate(['/app/restaurantRegister']);
   }
 
   itemNameTraduction(itemName: string): string {

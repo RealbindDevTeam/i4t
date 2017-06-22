@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
@@ -33,6 +34,7 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
 
     private _garnishFoodCol         : Observable<GarnishFood[]>;
     private _currencies             : Observable<Currency[]>;
+    private _restaurantsObservable  : Observable<Restaurant[]>;            
 
     private _garnishFoodSub         : Subscription;    
     private _restaurantsSub         : Subscription;
@@ -53,11 +55,12 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
      * @param {MdDialog} _dialog
      * @param {NgZone} _ngZone
      */
-    constructor( private _formBuilder: FormBuilder, 
+    constructor( public _dialog: MdDialog,
+                 public snackBar: MdSnackBar,
                  private _translate: TranslateService, 
-                 public _dialog: MdDialog,
+                 private _formBuilder: FormBuilder, 
                  private _ngZone: NgZone, 
-                 public snackBar: MdSnackBar ){
+                 private _router: Router ){
         var userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang('en');
         _translate.use(userLang);
@@ -77,6 +80,7 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
 
         this._restaurantsSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
             this._ngZone.run( () => {
+                this._restaurantsObservable = Restaurants.find( { } ).zone();
                 this._restaurants = Restaurants.collection.find( { } ).fetch();
                 Restaurants.collection.find({}).fetch().forEach( ( res ) =>{
                     _lRestaurantsId.push( res._id );
@@ -264,6 +268,13 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
             wordTraduced = res; 
         });
         return wordTraduced;
+    }
+
+    /**
+     * Go to add new Restaurant
+     */
+    goToAddRestaurant(){
+        this._router.navigate(['/app/restaurantRegister']);
     }
 
     /**

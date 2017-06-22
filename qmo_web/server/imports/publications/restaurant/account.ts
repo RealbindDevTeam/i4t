@@ -19,6 +19,5 @@ Meteor.publish( 'getAccountsByTableRestaurant', function( _restaurantId:string, 
  */
 Meteor.publish( 'getAccountsByTableId', function( _tableId : string ){
     check( _tableId, String );
-    let account = Accounts.collection.find( { tableId : _tableId } );
-    return account;
+    return Accounts.collection.find( { tableId : _tableId } );
 });

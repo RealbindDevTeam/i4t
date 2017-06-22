@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
@@ -10,6 +11,8 @@ import { Subcategory } from '../../../../../../both/models/administration/subcat
 import { Categories } from '../../../../../../both/collections/administration/category.collection';
 import { Category } from '../../../../../../both/models/administration/category.model';
 import { SubcategoryEditComponent } from './subcategories-edit/subcategories-edit.component';
+import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 
 import template from './subcategories.component.html';
 import style from './subcategories.component.scss';
@@ -26,9 +29,11 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
 
     private _subcategories          : Observable<Subcategory[]>;
     private _categories             : Observable<Category[]>;
+    private _restaurants            : Observable<Restaurant[]>;
 
     private _subcategorySub         : Subscription;    
     private _categoriesSub          : Subscription;
+    private _restaurantSub          : Subscription;
 
     _selectedValue                  : string;
     _dialogRef                      : MdDialogRef<any>;
@@ -36,10 +41,11 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
     /**
      * SubcategoryComponent constructor
      */
-    constructor( private _formBuilder: FormBuilder, 
+    constructor( public _dialog: MdDialog, 
+                 public snackBar: MdSnackBar,
+                 private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
-                 public _dialog: MdDialog, 
-                 public snackBar: MdSnackBar ){
+                 private _router: Router ){
         var _userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
@@ -53,7 +59,10 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
         this._subcategoryForm = new FormGroup({
             name: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 50 ) ] ),
             category: new FormControl( '' )  
-        });       
+        });
+        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
+            this._restaurants = Restaurants.find( { } ).zone();
+        });
         this._categories = Categories.find( { } ).zone();
         this._categoriesSub = MeteorObservable.subscribe( 'categories', this._user ).subscribe();
         this._subcategories = Subcategories.find( { } ).zone();
@@ -149,10 +158,18 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
     }
 
     /**
+     * Go to add new Restaurant
+     */
+    goToAddRestaurant(){
+        this._router.navigate(['/app/restaurantRegister']);
+    }
+
+    /**
      * Implements ngOnDestroy function
      */
     ngOnDestroy(){
         this._categoriesSub.unsubscribe();
         this._subcategorySub.unsubscribe();
+        this._restaurantSub.unsubscribe();
     }
 }

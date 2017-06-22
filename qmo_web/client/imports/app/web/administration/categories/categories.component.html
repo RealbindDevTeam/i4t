@@ -1,4 +1,28 @@
-<md-card>
+<md-card md-cell="12" class="demo-card demo-basic" *ngIf="(_restaurants | async)?.length <= 0">
+    <md-card-content>
+        <div class="card_initial">
+            <div class="card_initial has-image">
+                <div class="card_initial-image-container">
+                    <img class="card_initial-image" 
+                        src="/images/categories.png"/>
+                </div>
+                <div class="card_initial-copy">
+                    <div class="card_initial-tagline">
+                        {{'SECTIONS.THERE_NOT_RESTAURANTS' | translate}}
+                    </div>
+                    <div class="card_initial-additional-links">
+                      {{'SECTIONS.MESSAGE' | translate}}
+                    </div>
+                </div>
+                <div class="card_initial-button">
+                    <button md-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </md-card-content>
+</md-card>
+
+<md-card *ngIf="(_restaurants | async)?.length > 0">
   <md-card-title>{{'CATEGORIES.CATEGORIES_CREATION' | translate}}</md-card-title>
   <md-card-subtitle>{{'CATEGORIES.CATEGORIES_TEXT' | translate}}</md-card-subtitle>
   <md-card-content>
