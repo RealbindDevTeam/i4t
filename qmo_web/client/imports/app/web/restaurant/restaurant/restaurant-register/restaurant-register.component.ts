@@ -332,14 +332,10 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         });
 
         this._mdDialogRef.afterClosed().subscribe(result => {
-
             this._mdDialogRef = result;
 
             this._loading = true;
             setTimeout(() => {
-
-
-
                 if (result.success) {
 
                     let arrPay: any[] = Object.keys(this._restaurantForm.value.paymentMethods);
@@ -395,7 +391,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                     this.cancel();
                 }
                 this._loading = false;
-            }, 1500);
+            }, 3000);
         });
     }
 

@@ -36,9 +36,11 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     private _tableSub: Subscription;
     private _parameterSub: Subscription;
     private _restaurantsArray: Restaurant[];
-    private _date: Date;
-    private _firstDay: Date;
-    private _lastDay: Date;
+    private _currentDate: Date;
+    private _firstMonthDay: Date;
+    private _lastMonthDay: Date;
+    private _firstNextMonthDay: Date;
+    private _maxPaymentDay: Date;
 
     constructor(private router: Router,
         private _formBuilder: FormBuilder,
@@ -57,9 +59,11 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
         this._tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe();
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
 
-        this._date = new Date();
-        this._firstDay = new Date(this._date.getFullYear(), this._date.getMonth(), 1);
-        this._lastDay = new Date(this._date.getFullYear(), this._date.getMonth() + 1, 0);
+        this._currentDate = new Date(2017, 5, 3);
+        this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
+        this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
+        this._firstNextMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 1);
+        this._maxPaymentDay = new Date(this._firstMonthDay);
     }
 
     /**
@@ -193,7 +197,6 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
 
     /**
      * This function gets the discount
-     * @param {string} _currencyId
      */
     getDiscount(): string {
         let discount: Parameter;
@@ -202,7 +205,37 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
             return discount.value;
         }
     }
-    
+
+    /**
+     * This function validate the current day to return or not the customer payment
+     */
+    validatePeriodDays(): boolean {
+        let startDay = Parameters.findOne({ name: 'start_payment_day' });
+        let endDay = Parameters.findOne({ name: 'end_payment_day' });
+        let currentDay = this._currentDate.getDate();
+
+        if (startDay && endDay) {
+            if (currentDay >= Number(startDay.value) && currentDay <= Number(endDay.value)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    /**
+     * This function return the max day to pay
+     */
+    getMaxPaymentDay(): Date{
+        let endDay = Parameters.findOne({ name: 'end_payment_day' });
+        if(endDay){
+            this._maxPaymentDay.setDate(this._maxPaymentDay.getDate() + (Number(endDay.value) - 1));
+            return this._maxPaymentDay;
+        }
+    }
+
+
+
     ngOnDestroy() {
         this._restaurantSub.unsubscribe();
         this._currencySub.unsubscribe();
@@ -211,4 +244,3 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
         this._parameterSub.unsubscribe();
     }
 }
-

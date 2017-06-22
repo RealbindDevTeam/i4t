@@ -12,8 +12,10 @@ export function createCrons() {
         return parser.cron(country.cronSchedule);
       },
       job: function () {
+        /*
         var numbersCrunched = Meteor.call('validateTrialPeriod', country._id);
         return numbersCrunched;
+        */
       }
     });
   });

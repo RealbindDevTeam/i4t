@@ -729,8 +729,8 @@
         "CODE_NOT_FOUND": "Código no encontrado",
         "TRY_AGAIN": "Por favor intenta nuevamente"
     },
-    "MONTHLY_INVOICE": {
-        "TITLE": "Facturación del servicio Iurest Mensual",
+    "MONTHLY_PAYMENT": {
+        "TITLE": "Pago del servicio mensual de Iurest",
         "SUBTITLE": "Aquí puedes visualizar el costo total por el servicio iurest por restaurante y número de mesas",
         "RESTAURANT_NAME": "Nombre del restaurante",
         "RESTAURANT_PRICE": "Precio del restaurante",
@@ -744,7 +744,9 @@
         "DISCOUNT_TOOLTIP_1": "Tienes un descuento de ",
         "DISCOUNT_TOOLTIP_2": "para el primer pago",
         "INVOICE_PERIOD": "Periodo de facturación: ",
-        "TO": "a"
+        "TO": "a",
+        "NEXT_PAY_MSG": "La opción de pagos estará habilitada a partir de: ",
+        "MAX_PAY_TERM": " - Plazo máximo para pagar: "
     },
     "ORDER_PAYMENT_TRANS": {
         "ORDER_TO_CONFIRM": "Cuando algun acompañante de tu mesa desea pagar una de tus ordenes, debes confirmar este proceso. En esta seccion apareceran aquellas ordenes que otros usuarios desean pagar por ti.",

@@ -744,7 +744,9 @@
         "DISCOUNT_TOOLTIP_1": "You have a ",
         "DISCOUNT_TOOLTIP_2": " discount for the first payment",
         "INVOICE_PERIOD": "Invoice period: ",
-        "TO": "to"
+        "TO": "to",
+        "NEXT_PAY_MSG": "Payment option will be enabled from: ",
+        "MAX_PAY_TERM": " - Maximum term of payment: "
     },
     "ORDER_PAYMENT_TRANS":{
         "ORDER_TO_CONFIRM": "When someone accompanying your table wishes to pay one of your orders, you must confirm this process. In this section will appear those orders that other users want to pay for you.",
