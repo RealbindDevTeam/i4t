@@ -110,7 +110,11 @@
                         <div class="item-detail-card">
                             <div class="card-content">
                                 <div class="crop">
-                                    <img src="{{ getItemImage(itemDet._id) }}">
+                                    <span *ngFor="let itemImg of _itemImages | async">
+                                        <template [ngIf]="itemImg.itemId === itemDet._id">
+                                            <img src="{{ itemImg.url }}">
+                                        </template>
+                                    </span>
                                 </div>
                                 <div class="content">
                                     <md-card-subtitle class="description">{{itemDet.description}}</md-card-subtitle>

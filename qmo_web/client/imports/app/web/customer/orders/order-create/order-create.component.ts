@@ -60,8 +60,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     private _additions                  : Observable<Addition[]>;
     private _itemImages                 : Observable<ItemImage[]>
 
-    private _showItemDetails            : boolean = false;
-    private _finalPrice                 :number = 0;
+    private _finalPrice                 : number = 0;
     private _maxGarnishFoodElements     : number = 0;
     private _garnishFoodElementsCount   : number = 0;
     private _numberColums               : number = 3;
@@ -117,6 +116,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         this._additionsSub = MeteorObservable.subscribe( 'additionsByRestaurant', this.restaurantId ).subscribe( () => {
             this._ngZone.run( () =>{
                 this._additions = Additions.find( { } ).zone();
+                this._additions.subscribe( () => { this.buildCustomerMenu(); });
                 Additions.collection.find( { } ).fetch().forEach( ( add ) => {
                     let control: FormControl = new FormControl( false );
                     this._additionsFormGroup.addControl( add.name, control );
@@ -185,6 +185,12 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
                 this.orderMenuSetup.push( new OrderMenu( s.name, { id: s._id, type: 'Se' }, [] ) );
             }
         });
+
+        let _lAdditions: number = Additions.collection.find( { } ).count();
+        if( _lAdditions > 0 ){
+            this.orderMenuSetup.push( new OrderMenu( 'Adiciones', { id: 9999, type: 'Ad' }, [] ) );
+        }
+
         this._navigation.setOrderMenus( this.orderMenuSetup );
         this._navigation.orderMenus.subscribe( orderMenus => {
             this._orderMenus = orderMenus;
@@ -202,6 +208,8 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
             this._items = Items.find( { categoryId: { $in: [ ''+_any.id+'' ] } } ).zone();
         } else if( _any.type === 'Sub' ){
             this._items = Items.find( { subcategoryId: { $in: [ ''+_any.id+'' ] } } ).zone();
+        } else if( _any.type === 'Ad' ){
+            alert('Bazinga!');
         }
     }
 
@@ -219,7 +227,6 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     showItemInformation( _pItem:Item ):void {
         this._itemDetail = Items.find( { _id: _pItem._id } ).zone();
         this._finalPrice = this.getItemPrice( _pItem );
-        this._showItemDetails = true;
         this._unitPrice = this.getItemPrice( _pItem );
         this.resetItemDetailVariables();
         this.viewItemDetail( false );
