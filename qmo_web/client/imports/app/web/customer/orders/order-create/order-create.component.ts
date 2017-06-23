@@ -40,6 +40,8 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     private _newOrderForm               : FormGroup;
     private _garnishFormGroup           : FormGroup = new FormGroup({});
     private _additionsFormGroup         : FormGroup = new FormGroup({});
+    private _additionsDetailFormGroup   : FormGroup = new FormGroup({});
+    private _additionQuantityFormGroup  : FormGroup = new FormGroup({});
    
     private _sectionsSub                : Subscription;
     private _categoriesSub              : Subscription;
@@ -116,11 +118,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         this._additionsSub = MeteorObservable.subscribe( 'additionsByRestaurant', this.restaurantId ).subscribe( () => {
             this._ngZone.run( () =>{
                 this._additions = Additions.find( { } ).zone();
-                this._additions.subscribe( () => { this.buildCustomerMenu(); });
-                Additions.collection.find( { } ).fetch().forEach( ( add ) => {
-                    let control: FormControl = new FormControl( false );
-                    this._additionsFormGroup.addControl( add.name, control );
-                });
+                this._additions.subscribe( () => { this.buildCustomerMenu(); this.buildAdditionsForms(); });
             });
         });
         this._sectionsSub = MeteorObservable.subscribe( 'sectionsByRestaurant', this.restaurantId ).subscribe( () => {
@@ -188,12 +186,33 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
 
         let _lAdditions: number = Additions.collection.find( { } ).count();
         if( _lAdditions > 0 ){
-            this.orderMenuSetup.push( new OrderMenu( 'Adiciones', { id: 9999, type: 'Ad' }, [] ) );
+            this.orderMenuSetup.push( new OrderMenu( this.itemNameTraduction( 'ORDER_CREATE.ADDITIONS' ), { id: 9999, type: 'Ad' }, [] ) );
         }
 
         this._navigation.setOrderMenus( this.orderMenuSetup );
         this._navigation.orderMenus.subscribe( orderMenus => {
             this._orderMenus = orderMenus;
+        });
+    }
+
+    /**
+     * Build controls in additions forms
+     */
+    buildAdditionsForms():void{
+        Additions.collection.find( { } ).fetch().forEach( ( add ) => {
+            if( this._additionsFormGroup.contains( add.name ) ){
+                this._additionsFormGroup.controls[ add.name ].setValue( false );
+            } else {
+                let control: FormControl = new FormControl( false );
+                this._additionsFormGroup.addControl( add.name, control );
+            }
+
+            if( this._additionsDetailFormGroup.contains( add._id ) ){
+                this._additionsDetailFormGroup.controls[ add._id ].setValue( false );
+            } else {
+                let control: FormControl = new FormControl( false );
+                this._additionsDetailFormGroup.addControl( add._id, control );
+            }
         });
     }
 
@@ -209,7 +228,9 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         } else if( _any.type === 'Sub' ){
             this._items = Items.find( { subcategoryId: { $in: [ ''+_any.id+'' ] } } ).zone();
         } else if( _any.type === 'Ad' ){
-            alert('Bazinga!');
+            this._additionsDetailFormGroup.reset();            
+            this.viewItemDetail( true );
+            this.viewAdditionetail( false );
         }
     }
 
@@ -229,6 +250,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         this._finalPrice = this.getItemPrice( _pItem );
         this._unitPrice = this.getItemPrice( _pItem );
         this.resetItemDetailVariables();
+        this.viewAdditionetail( true );        
         this.viewItemDetail( false );
     }
 
@@ -304,6 +326,21 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      */
     viewItemDetail( _boolean : boolean ):void {
         var card = document.getElementById("item-selected");
+
+        if(!_boolean){
+            card.style.width = "396px";
+        } else {
+            card.style.width = "0";
+            card.removeAttribute("style");
+        }
+    }
+
+    /**
+     * This function allow view additions
+     * @param {boolean} _boolean 
+     */
+    viewAdditionetail( _boolean : boolean ):void {
+        var card = document.getElementById("addition-detail");
 
         if(!_boolean){
             card.style.width = "396px";
@@ -436,6 +473,26 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      */
     getGarnishFoodInformation( _pGarnishFood:GarnishFood ):string{
         return _pGarnishFood.name + ' - ' + _pGarnishFood.restaurants.filter( r => r.restaurantId === this.restaurantId )[0].price + ' ';
+    }
+
+    /**
+     * Return traduction
+     * @param {string} itemName 
+     */
+    itemNameTraduction(itemName: string): string{
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res; 
+        });
+        return wordTraduced;
+    }
+
+    /**
+     * Return Addition price
+     * @param {Addition} _pAddition 
+     */
+    getAdditionPrice( _pAddition: Addition ):string{
+        return _pAddition.restaurants.filter( r => r.restaurantId === this.restaurantId )[0].price + ' ';
     }
 
     /**

@@ -177,6 +177,37 @@
                         </div>
                     </div>
                 </div>
+                <div id="addition-detail" class="item-detail">
+                    <div class="header-detail" #headerDetailCard>
+                        <label>{{'ORDER_CREATE.ADDITIONS' | translate}}</label>
+                        <button class="btn-close" md-raised-button (click)="viewAdditionetail(true)">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="item-detail-card">
+                        <div class="card-content">
+                            <div class="crop"></div>
+                            <div class="content" style="margin-top: 15%;">
+                                <p>Selecciona las adiciones que desees agregar a la orden e indica su cantidad:</p>
+                                <form [formGroup]="_additionsDetailFormGroup">
+                                    <div *ngFor="let add of _additions | async">
+                                        <md-checkbox [formControlName]="add._id" [class.invalid]="!_additionsDetailFormGroup.controls.valid">
+                                            {{ add.name }}
+                                            <div>
+                                                <p style="display: inline;vertical-align: middle;">
+                                                    Precio: {{getAdditionPrice(add)}} {{_currencyCode}}
+                                                    <md-input-container style="width: 40%;margin-left: 5%;">
+                                                        <input mdInput type="number" placeholder="Cantidad" maxlength="3" #additionQuantity>
+                                                    </md-input-container>
+                                                </p>
+                                            </div>
+                                        </md-checkbox>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
