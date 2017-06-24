@@ -1,0 +1,31 @@
+<md-card *ngIf="(_restaurants | async)?.length > 0">
+    <md-card-title>{{'TABLES.TABLES_CREATION' | translate}}</md-card-title>
+    <md-card-subtitle>{{'TABLES.TABLES_TEXT' | translate}}</md-card-subtitle>
+    <md-card-content style="background: #FFF">
+        <form [formGroup]="_tableForm" (ngSubmit)="addTables();">
+            <table style="width: 100%">
+                <tr>
+                    <th style="width: 10%">
+                        <label>{{'TABLES.RESTAURANT' | translate}}</label>
+                    </th>
+                    <td style="width: 35%">
+                        <md-select formControlName="restaurant" placeholder="{{'TABLES.SELECT_RESTAURANT' | translate}}" style="width: 95%;" [(ngModel)]="selectedRestaurantValue">
+                            <md-option *ngFor="let rest of _restaurants | async" (click)="changeRestaurant(rest._id);" value="{{rest._id}}">{{rest.name}}</md-option>
+                        </md-select>
+                    </td>
+                    <td style="width: 30%">
+                        <md-input-container style="width: 95%">
+                            <input mdInput required formControlName="tables_number" placeholder="{{'TABLES.NUMBER_TABLES' | translate}}" minlength="1"
+                                maxlength="3" #inputTables>
+                            <md-hint align="end">{{inputTables.value.length}} / 3</md-hint>
+                        </md-input-container>
+                    </td>
+                    <td style="width: 25%; text-align:center">
+                        <button md-raised-button class="button-secundary" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
+                        <button md-raised-button class="button-primary" type="submit">{{'CREATE' | translate}}</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </md-card-content>
+</md-card>

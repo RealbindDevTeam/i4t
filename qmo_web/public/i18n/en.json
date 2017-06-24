@@ -177,7 +177,7 @@
         "ADMINISTRATION": {
             "MANAGEMENT": "Administration",
             "RESTAURANTS": "Restaurants",
-            "TABLES": "Tables",
+            "TABLES": "Tables Search",
             "COLLABORATORS": "Collaborators",
             "MONTHLY_CONFIG": "Monthly config"
         },
@@ -275,7 +275,8 @@
         "ACTIVATION_MESSAGE": "Se activará el cobro mensual del servicio Iurest por restaurante",
         "CLARIFICATION_MESSAGE": "Iurest performs the service charge on the 1st day of each month, the first charge is over ",
         "ACCEPT_CREATION": "Accept",
-        "CANCEL_CREATION": "Cancel"
+        "CANCEL_CREATION": "Cancel",
+        "INITIAL_TABLES_NUMBER": "Initial tables number"
     },
     "WEEK": {
         "MONDAY": "Monday",
@@ -750,7 +751,8 @@
         "INVOICE_PERIOD": "Invoice period: ",
         "TO": "to",
         "NEXT_PAY_MSG": "Payment option will be enabled from: ",
-        "MAX_PAY_TERM": " - Maximum term of payment: "
+        "MAX_PAY_TERM": " - Maximum term of payment: ",
+        "FREE_DAYS_MSG":"We do not charge this month, enjoy it"
     },
     "ORDER_PAYMENT_TRANS":{
         "ORDER_TO_CONFIRM": "When someone accompanying your table wishes to pay one of your orders, you must confirm this process. In this section will appear those orders that other users want to pay for you.",
@@ -785,5 +787,14 @@
         "QUANTITY": "Quant. ",
         "PRICE": "Price: ",
         "CLOSE_PAYMENTS": "Close Payments"
+    },
+    "MONTHLY_CONFIG":{
+        "TITLE":"Enable/Disable Restaurants and Tables",
+        "SUBTITLE":"Enable or disable restaurants and tables that you want",
+        "REST_NAME": "Restaurant Name",
+        "TABLES_NUMBER": "Tables number",
+        "TABLES_ENABLED": "Tables enabled",
+        "REST_STATUS": "Restaurant Status",
+        "CONFIG": "Configuration"
     }
 }

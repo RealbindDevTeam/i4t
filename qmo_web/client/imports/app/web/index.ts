@@ -63,6 +63,9 @@ import { CreateConfirmComponent } from './restaurant/restaurant/restaurant-regis
 import { MonthlyPaymentComponent } from './payment/monthly-payment/monthly-payment.component';
 import { PaymentConfirmComponent } from './waiter/payment-confirm/payment-confirm.component';
 import { SupervisorDashboardComponent } from './supervisor-dashboard/supervisor-dashboard.component';
+import { MonthlyConfigComponent } from './restaurant/monthly-config/monthly-config.component';
+import { RestaurantListComponent } from './restaurant/monthly-config/restaurant-list.component';
+import { EnableDisableComponent } from './restaurant/monthly-config/enable-disable.component'; 
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -106,7 +109,10 @@ export const WEB_DECLARATIONS = [
     ColombiaItemDetailComponent,
     OrderPaymentTranslateComponent,
     MonthlyPaymentComponent,
-    SupervisorDashboardComponent
+    SupervisorDashboardComponent,
+    MonthlyConfigComponent,
+    RestaurantListComponent,
+    EnableDisableComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [
