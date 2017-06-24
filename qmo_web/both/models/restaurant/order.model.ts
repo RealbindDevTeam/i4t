@@ -14,6 +14,7 @@ export interface Order extends CollectionObject{
     orderItemCount: number;
     translateInfo: OrderTranslateInfo;
     toPay: boolean;
+    additions: OrderAddition[];
 }
 
 /**
@@ -37,4 +38,13 @@ export interface OrderTranslateInfo{
     markedToTranslate: boolean;
     lastOrderOwner: string;
     confirmedToTranslate: false;
+}
+
+/**
+ * Order Addition Model
+ */
+export interface OrderAddition{
+    additionId: string;
+    quantity: number;
+    paymentAddition: number;
 }

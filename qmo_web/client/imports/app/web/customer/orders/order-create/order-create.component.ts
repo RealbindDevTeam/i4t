@@ -18,7 +18,7 @@ import { GarnishFood } from '../../../../../../../both/models/administration/gar
 import { GarnishFoodCol } from '../../../../../../../both/collections/administration/garnish-food.collection';
 import { Addition } from '../../../../../../../both/models/administration/addition.model';
 import { Additions } from '../../../../../../../both/collections/administration/addition.collection';
-import { Order, OrderItem } from '../../../../../../../both/models/restaurant/order.model';
+import { Order, OrderItem, OrderAddition } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
 import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
 
@@ -208,9 +208,9 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
             }
 
             if( this._additionsDetailFormGroup.contains( add._id ) ){
-                this._additionsDetailFormGroup.controls[ add._id ].setValue( false );
+                this._additionsDetailFormGroup.controls[ add._id ].setValue( '' );
             } else {
-                let control: FormControl = new FormControl( false );
+                let control: FormControl = new FormControl( '', [ Validators.minLength(1), Validators.maxLength(2) ] );
                 this._additionsDetailFormGroup.addControl( add._id, control );
             }
         });
@@ -228,7 +228,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         } else if( _any.type === 'Sub' ){
             this._items = Items.find( { subcategoryId: { $in: [ ''+_any.id+'' ] } } ).zone();
         } else if( _any.type === 'Ad' ){
-            this._additionsDetailFormGroup.reset();            
+            this._additionsDetailFormGroup.reset();          
             this.viewItemDetail( true );
             this.viewAdditionetail( false );
         }
@@ -491,8 +491,29 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * Return Addition price
      * @param {Addition} _pAddition 
      */
-    getAdditionPrice( _pAddition: Addition ):string{
-        return _pAddition.restaurants.filter( r => r.restaurantId === this.restaurantId )[0].price + ' ';
+    getAdditionPrice( _pAddition: Addition ):number{
+        return _pAddition.restaurants.filter( r => r.restaurantId === this.restaurantId )[0].price;
+    }
+
+    /**
+     * Add Additions to Order
+     */
+    AddAdditionsToOrder():void{
+        let arrAdd:any[] = Object.keys( this._additionsDetailFormGroup.value );
+        let _lOrderAdditionsToInsert:OrderAddition[] = [];
+
+        arrAdd.forEach( ( add ) => {
+            if( this._additionsDetailFormGroup.value[ add ] ){
+                let _lAddition:Addition = Additions.findOne( { _id: add } );
+                let _lOrderAddition:OrderAddition = {
+                    additionId: add,
+                    quantity: this._additionsDetailFormGroup.value[ add ],
+                    paymentAddition: ( this.getAdditionPrice( _lAddition ) * ( this._additionsDetailFormGroup.value[ add ] ) )
+                }
+                _lOrderAdditionsToInsert.push( _lOrderAddition );
+            }
+        });
+        console.log(_lOrderAdditionsToInsert);
     }
 
     /**

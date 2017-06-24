@@ -83,7 +83,8 @@ if (Meteor.isServer) {
                         lastOrderOwner: '',
                         confirmedToTranslate: false
                     },
-                    toPay: false
+                    toPay: false,
+                    additions: []
                 });
             }
         },
@@ -156,7 +157,8 @@ if (Meteor.isServer) {
                         lastOrderOwner: '',
                         confirmedToTranslate: false
                     },
-                    toPay: false
+                    toPay: false,
+                    additions: []
                 });
             }
         }
