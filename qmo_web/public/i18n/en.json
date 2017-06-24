@@ -100,9 +100,9 @@
         "INACTIVATE": "INACTIVATE",
         "SECTION_CREATED": "Section Created Correctly",
         "SECTION_EDITED": "Edited Section Correctly",
-        "THERE_NOT_RESTAURANTS" :"No restaurants yet register",
-        "RESTAURANT_REGISTER" : "Restaurant register",
-        "MESSAGE" : "Register one to enable this option"
+        "THERE_NOT_RESTAURANTS": "No restaurants yet register",
+        "RESTAURANT_REGISTER": "Restaurant register",
+        "MESSAGE": "Register one to enable this option"
     },
     "CATEGORIES": {
         "CATEGORIES_CREATION": "Categories creation",
@@ -519,7 +519,7 @@
         "ACTIVATE": "ACTIVATE",
         "INACTIVATE": "INACTIVATE",
         "COOKING_TIME": "Approximate Cooking Time",
-        "MESSAGE" : "No items yet register"
+        "MESSAGE": "No items yet register"
     },
     "ROLE": {
         "ADMINISTRATOR": "Administrator",
@@ -662,7 +662,7 @@
         "ORDER_CANT_CONFIRM": "Order can not be confirmed",
         "COOKING_TIME": "Cooking Time"
     },
-   "PAYMENTS": {
+    "PAYMENTS": {
         "COLOMBIA": {
             "GARNISH_FOOD": "Garnish Food",
             "ADDITION": "Addition",
@@ -734,7 +734,7 @@
         "CODE_NOT_FOUND": "Code Not Found",
         "TRY_AGAIN": "Please try again"
     },
-    "MONTHLY_INVOICE": {
+    "MONTHLY_PAYMENT": {
         "TITLE": "Iurest service invoicing",
         "SUBTITLE": "Here you can see the cost by restaurant and tables number",
         "RESTAURANT_NAME": "Restaurant name",
@@ -752,9 +752,9 @@
         "TO": "to",
         "NEXT_PAY_MSG": "Payment option will be enabled from: ",
         "MAX_PAY_TERM": " - Maximum term of payment: ",
-        "FREE_DAYS_MSG":"We do not charge this month, enjoy it"
+        "FREE_DAYS_MSG": "We do not charge this month, enjoy it"
     },
-    "ORDER_PAYMENT_TRANS":{
+    "ORDER_PAYMENT_TRANS": {
         "ORDER_TO_CONFIRM": "When someone accompanying your table wishes to pay one of your orders, you must confirm this process. In this section will appear those orders that other users want to pay for you.",
         "NO_ORDERS": "Orders Not Found",
         "ORDERS": "Order",
@@ -788,13 +788,16 @@
         "PRICE": "Price: ",
         "CLOSE_PAYMENTS": "Close Payments"
     },
-    "MONTHLY_CONFIG":{
-        "TITLE":"Enable/Disable Restaurants and Tables",
-        "SUBTITLE":"Enable or disable restaurants and tables that you want",
+    "MONTHLY_CONFIG": {
+        "TITLE": "Configure restaurants and tables",
+        "SUBTITLE": "Activate or inactivate restaurants and tables that you want",
         "REST_NAME": "Restaurant Name",
         "TABLES_NUMBER": "Tables number",
-        "TABLES_ENABLED": "Tables enabled",
+        "ACTIVE_TABLES": "Active tables",
         "REST_STATUS": "Restaurant Status",
-        "CONFIG": "Configuration"
+        "CONFIG": "Configuration",
+        "STATUS_ACTIVE": "Active",
+        "STATUS_INACTIVE": "Inactive",
+        "BTN_EDIT": "Edit"
     }
 }

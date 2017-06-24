@@ -9,16 +9,22 @@
             <table class="striped" width="100%" style="border:0.5px solid; border-color: lightgrey">
                 <thead>
                     <tr>
-                        <th data-field="name_restaurant" style="width: 50%">{{'MONTHLY_CONFIG.REST_NAME' | translate}}</th>
+                        <th data-field="name_restaurant" style="width: 60%">{{'MONTHLY_CONFIG.REST_NAME' | translate}}</th>
                         <th data-field="tables_number" style="width: 10%">{{'MONTHLY_CONFIG.TABLES_NUMBER' | translate}}</th>
-                        <th data-field="tables_actives" style="width: 10%">{{'MONTHLY_CONFIG.TABLES_ENABLED' | translate}}</th>
-                        <th data-field="status_restaurant" style="width: 15%">{{'MONTHLY_CONFIG.REST_STATUS' | translate}}</th>
-                        <th data-field="configuration" style="width: 15%">{{'MONTHLY_CONFIG.CONFIG' | translate}}</th>
+                        <th data-field="tables_actives" style="width: 10%">{{'MONTHLY_CONFIG.ACTIVE_TABLES' | translate}}</th>
+                        <th data-field="status_restaurant" style="width: 10%">{{'MONTHLY_CONFIG.REST_STATUS' | translate}}</th>
+                        <th data-field="configuration" style="width: 10%">{{'MONTHLY_CONFIG.CONFIG' | translate}}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let restaurant of _restaurants | async">
+                    <tr *ngFor="let restaurant of _restaurants | async" style="background-color: whitesmoke !important">
                         <td *ngIf="restaurant.currencyId === currency._id">{{restaurant.name}}</td>
+                        <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">{{getAllTables(restaurant)}}</td>
+                        <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">{{getActiveTables(restaurant)}}</td>
+                        <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">{{getRestaurant(restaurant) | translate}}</td>
+                        <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">
+                            <button md-raised-button>{{'MONTHLY_CONFIG.BTN_EDIT' | translate}}</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

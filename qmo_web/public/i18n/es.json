@@ -790,12 +790,15 @@
         "CLOSE_PAYMENTS": "Cerrar Pagos"
     },
     "MONTHLY_CONFIG": {
-        "TITLE": "Habilitar/Deshabilitar Restaurantes y Mesas",
-        "SUBTITLE": "Habilita o deshabilita los restaurantes y mesas que desees",
+        "TITLE": "Configurar restaurantes y mesas",
+        "SUBTITLE": "Activa o inactiva los restaurantes y mesas que desees",
         "REST_NAME": "Nombre Restaurante",
         "TABLES_NUMBER": "Número de mesas",
-        "TABLES_ENABLED": "Mesas habilitadas",
+        "ACTIVE_TABLES": "Mesas activas",
         "REST_STATUS": "Estado del restaurante",
-        "CONFIG": "Configuración"
+        "CONFIG": "Configuración",
+        "STATUS_ACTIVE": "Activo",
+        "STATUS_INACTIVE": "Inactivo",
+        "BTN_EDIT": "Editar"
     }
 }

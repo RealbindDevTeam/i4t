@@ -52,7 +52,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _citiesSub: Subscription;
     private _paymentMethodsSub: Subscription;
     private _restaurantImagesSub: Subscription;
-    private _tableSub: Subscription;
 
     private _hours: Observable<Hour[]>;
     private _countries: Observable<Country[]>;
@@ -620,6 +619,5 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._restaurantImagesSub.unsubscribe();
         this._currencySub.unsubscribe();
         this._paymentMethodsSub.unsubscribe();
-        this._tableSub.unsubscribe();
     }
 }

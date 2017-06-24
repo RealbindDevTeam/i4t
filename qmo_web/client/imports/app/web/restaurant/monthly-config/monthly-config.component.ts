@@ -20,8 +20,6 @@ import { Country } from '../../../../../../both/models/settings/country.model';
 import template from './monthly-config.component.html';
 import style from './monthly-config.component.scss';
 
-import * as QRious from 'qrious';
-
 @Component({
     selector: 'monthly-config',
     template,
@@ -50,27 +48,13 @@ export class MonthlyConfigComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this._tableForm = new FormGroup({
-            restaurant: new FormControl('', [Validators.required]),
-            tables_number: new FormControl('', [Validators.required])
-        });
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe(() => {
             this._restaurants = Restaurants.find({}).zone();
         });
-        this._tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe(() => {
-            this._tables = this._tables = Tables.find({}).zone();
-        });
-        this._currencySub = MeteorObservable.subscribe('getCurrenciesByUserId').subscribe(() => {
-            this._currencies = Currencies.find({}).zone();
-        });
-        this._countrySub = MeteorObservable.subscribe('countries').subscribe();
 
     }
 
     ngOnDestroy() {
         this._restaurantSub.unsubscribe();
-        this._tableSub.unsubscribe();
-        this._currencySub.unsubscribe();
-        this._countrySub.unsubscribe();
     }
 }

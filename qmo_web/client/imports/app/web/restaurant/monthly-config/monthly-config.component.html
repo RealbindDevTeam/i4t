@@ -21,4 +21,5 @@
     </md-card-content>
 </md-card>
 
-
+<restaurant-list *ngIf="(_restaurants | async)?.length > 0"></restaurant-list>
+<enable-disable *ngIf="(_restaurants | async)?.length > 0"></enable-disable>

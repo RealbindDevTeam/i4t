@@ -72,6 +72,49 @@ export class RestaurantListComponent implements OnInit, OnDestroy {
         }
     }
 
+    /**
+     * This function gets all tables by restaurant
+     * @param {Restaurant} _restaurant
+     * @return {number}
+     */
+    getAllTables(_restaurant: Restaurant): number {
+        let tables_length: number;
+        tables_length = Tables.find({ restaurantId: _restaurant._id }).fetch().length;
+        if (tables_length) {
+            return tables_length;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * This function gets the active tables by restaurant
+     * @param {Restaurant} _restaurant
+     * @return {number}
+     */
+    getActiveTables(_restaurant: Restaurant): number {
+        let tables_length: number;
+        tables_length = Tables.find({ restaurantId: _restaurant._id, is_active: true }).fetch().length;
+        if (tables_length) {
+            return tables_length;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * This function gets the restaurant status
+     * @param {Restaurant} _restaurant
+     * @return {string}
+     */
+    getRestaurant(_restaurant: Restaurant): string{
+        if(_restaurant.isActive === true){
+            return 'MONTHLY_CONFIG.STATUS_ACTIVE';
+        }else{
+            return 'MONTHLY_CONFIG.STATUS_INACTIVE';
+        }
+    }
+
     ngOnDestroy() {
         this._restaurantSub.unsubscribe();
         this._tableSub.unsubscribe();
