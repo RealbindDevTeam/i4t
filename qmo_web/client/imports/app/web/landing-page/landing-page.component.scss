@@ -395,33 +395,25 @@ p {
   }
 }
 
-.parallax-img1 {
+.parallax {
   height: 400px; 
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url("/images/background1.png");
-
  }
 
-.parallax-img2 {
-  height: 400px; 
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-image: url("/images/background1.png");
-}
+ .img-1 {
+  background-image: url("/images/landing-1.png");
+ }
 
-.parallax-img3 {
-  height: 400px; 
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-image: url("/images/background1.png");
-}
+ .img-2 {
+  background-image: url("/images/landing-2.png");
+ }
+
+ .img-3 {
+  background-image: url("/images/landing-3.png");
+ }
 
 .section {
   padding-top: 1rem;
