@@ -666,6 +666,9 @@
         "COOKING_TIME": "Tiempo de Cocción"
     },
     "PAYMENTS": {
+        "THERE_IS_NOT_REST" : "No te encuentras en un restaurante",
+        "THERE_IS_NOT_REST_MSG" : "Ve a la opción de ordenes e ingresa el código",
+        "GO_TO_ORDERS":"Ir a ordenes",
         "COLOMBIA": {
             "GARNISH_FOOD": "Guarnicion",
             "ADDITION": "Adicion",

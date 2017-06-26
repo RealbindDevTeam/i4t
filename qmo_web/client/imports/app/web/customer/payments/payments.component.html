@@ -3,3 +3,26 @@
     <iu-colombia-payment *ngSwitchCase="'1900'" [restId]="_currentRestaurant._id" [currId]="_currentRestaurant.currencyId" [tabId]="_currentTable"></iu-colombia-payment>
   </div> 
 </div>
+
+<md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" *ngIf="!_showPaymentInfo">
+    <md-card-content>
+        <div class="card_initial">
+            <div class="card_initial has-image">
+              <div class="card_initial-image-container">
+                <img class="card_initial-image" src="/images/payment-desabled.png"/>
+              </div>
+              <div class="card_initial-copy">
+                <div class="card_initial-tagline">
+                  {{'PAYMENTS.THERE_IS_NOT_REST' | translate}}
+                </div>
+                <div class="card_initial-additional-links">
+                  {{'PAYMENTS.THERE_IS_NOT_REST_MSG' | translate}}
+                </div>
+              </div>
+              <div class="card_initial-button">
+                <button md-raised-button (click)="goToOrders()">{{'PAYMENTS.GO_TO_ORDERS' | translate}}</button>
+              </div>
+            </div>
+        </div>
+    </md-card-content>
+</md-card>
