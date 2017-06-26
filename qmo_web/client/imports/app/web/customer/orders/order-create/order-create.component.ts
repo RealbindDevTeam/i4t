@@ -228,9 +228,10 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         } else if( _any.type === 'Sub' ){
             this._items = Items.find( { subcategoryId: { $in: [ ''+_any.id+'' ] } } ).zone();
         } else if( _any.type === 'Ad' ){
+            this.showAllItems();
             this._additionsDetailFormGroup.reset();          
             this.viewItemDetail( true );
-            this.viewAdditionetail( false );
+            this.viewAdditionDetail( false );
         }
     }
 
@@ -250,7 +251,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         this._finalPrice = this.getItemPrice( _pItem );
         this._unitPrice = this.getItemPrice( _pItem );
         this.resetItemDetailVariables();
-        this.viewAdditionetail( true );        
+        this.viewAdditionDetail( true );        
         this.viewItemDetail( false );
     }
 
@@ -339,7 +340,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * This function allow view additions
      * @param {boolean} _boolean 
      */
-    viewAdditionetail( _boolean : boolean ):void {
+    viewAdditionDetail( _boolean : boolean ):void {
         var card = document.getElementById("addition-detail");
 
         if(!_boolean){
@@ -499,8 +500,9 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * Add Additions to Order
      */
     AddAdditionsToOrder():void{
-        let arrAdd:any[] = Object.keys( this._additionsDetailFormGroup.value );
         let _lOrderAdditionsToInsert:OrderAddition[] = [];
+        let _lAdditionsPrice:number = 0;
+        let arrAdd:any[] = Object.keys( this._additionsDetailFormGroup.value );
 
         arrAdd.forEach( ( add ) => {
             if( this._additionsDetailFormGroup.value[ add ] ){
@@ -509,11 +511,15 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
                     additionId: add,
                     quantity: this._additionsDetailFormGroup.value[ add ],
                     paymentAddition: ( this.getAdditionPrice( _lAddition ) * ( this._additionsDetailFormGroup.value[ add ] ) )
-                }
+                };
+                _lAdditionsPrice += _lOrderAddition.paymentAddition;
                 _lOrderAdditionsToInsert.push( _lOrderAddition );
             }
         });
-        console.log(_lOrderAdditionsToInsert);
+        MeteorObservable.call( 'AddAdditionsToOrder', _lOrderAdditionsToInsert, this.restaurantId, this.tableQRCode, _lAdditionsPrice ).subscribe( () => {
+            
+        }, ( error ) => { alert( `Error: ${error}` ) ; } );
+        this.viewAdditionDetail( true );
     }
 
     /**
