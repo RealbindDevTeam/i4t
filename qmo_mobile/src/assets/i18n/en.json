@@ -103,7 +103,8 @@
                 "CONFIRM_TITLE": "Password",
                 "CONFIRM_BTN": "Ok",
                 "ERROR_TITLE": "Error"
-            }
+            },
+            "SIGN_OUT":"Sign out"
         },
         "CODE_TYPE_SELECT": {
             "TITTLE": "Code type",

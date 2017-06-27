@@ -15,8 +15,14 @@
                                 <md-select formControlName="city" placeholder="{{'RESTAURANT_REGISTER.SELECT_CITY' | translate}}" style="width: 45%;margin-left: 2%;"
                                     [(ngModel)]="_selectedCityValue">
                                     <md-option *ngFor="let city of _cities | async" (click)="changeCity(city._id);" value="{{city._id}}">{{city.name}}</md-option>
+                                    <md-option *ngIf="(_cities | async)?.length > 0" (click)="changeCity('0000');" value="0000">{{'OTHER' | translate}}</md-option>
                                 </md-select>
                             </div>
+                            
+                            <div *ngIf="_showMessage" style="margin-top: 1%;">
+                                <p style="font-weight: bold;">{{'RESTAURANT.CITY_OTHER' | translate}}</p>
+                            </div>
+
                             <div style="margin-top: 1%;">
                                 <md-input-container style="width: 45%">
                                     <textarea mdInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="70" #inputName></textarea>
@@ -31,7 +37,7 @@
                             <div style="margin-top: 1%;">
                                 <div style="width: 30%; display: inline-block;text-align: center;">
                                     <p*ngIf="_restaurantCurrency === ''">{{'RESTAURANT_REGISTER.NO_CURRENCY_FOUND' | translate}}</p>
-                                        <p *ngIf="_restaurantCurrency !== ''" style="font-weight: bold;">{{'RESTAURANT_REGISTER.CURRENCY_ACCEPTED' | translate}}: {{_restaurantCurrency}}</p>
+                                    <p *ngIf="_restaurantCurrency !== ''" style="font-weight: bold;">{{'RESTAURANT_REGISTER.CURRENCY_ACCEPTED' | translate}}: {{_restaurantCurrency}}</p>
                                 </div>
                                 <md-input-container style="width: 30%">
                                     <input mdInput required formControlName="phone" type="tel" placeholder="{{'RESTAURANT_REGISTER.PHONE' | translate}}" minlength="1"

@@ -29,6 +29,7 @@
     "TIP_PERCENTAGE": "Tip percentage",
     "CLOSE": "Close",
     "VIEW_DETAIL": "View Detail",
+    "OTHER" : "Other",
     "ORDER_STATUS": {
         "REGISTERED": "Registered",
         "IN_PROCESS": "In Process",
@@ -433,7 +434,8 @@
         "PHONE": "Phone",
         "WEBPAGE": "Webpage",
         "EMAIL": "Email",
-        "MSG_INITIAL": "Manage your restaurant information"
+        "MSG_INITIAL": "Manage your restaurant information",
+        "CITY_OTHER" : "If the city of your restaurant is not in the cities option, you can specify it in the address field"
     },
     "TABLES": {
         "TABLES_CREATION": "Creating tables",

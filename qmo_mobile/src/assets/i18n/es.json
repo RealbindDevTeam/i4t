@@ -103,7 +103,8 @@
                 "CONFIRM_TITLE": "Contraseña",
                 "CONFIRM_BTN": "Ok",
                 "ERROR_TITLE": "Error"
-            }
+            },
+            "SIGN_OUT":"Cerrar sesión"
         },
         "CODE_TYPE_SELECT": {
             "TITTLE": "Tipo de código",

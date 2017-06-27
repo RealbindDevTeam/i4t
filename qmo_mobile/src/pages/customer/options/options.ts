@@ -5,6 +5,7 @@ import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs';
 
 import { SettingsPage } from './settings/settings';
+import { InitialComponent } from '../../auth/initial/initial';
 import { Users } from 'qmo_web/both/collections/auth/user.collection';
 import { User } from 'qmo_web/both/models/auth/user.model';
 
@@ -20,17 +21,26 @@ export class OptionsPage implements OnInit, OnDestroy {
   private _imageProfile: string;
   private _userObservable;
 
+  /**
+   * OptionsPage constructor
+   * @param _navCtrl 
+   * @param _navParams 
+   * @param _app 
+   * @param _translate 
+   */
   constructor(public _navCtrl: NavController, 
               public _navParams: NavParams, 
               public _app : App,
               private _translate: TranslateService) {
-      var _userLang = navigator.language.split('-')[0];
-      _translate.setDefaultLang('en');
-      _translate.use(_userLang);
+    var _userLang = navigator.language.split('-')[0];
+    _translate.setDefaultLang('en');
+    _translate.use(_userLang);
   }
 
+  /**
+   * ngOnInit implementation
+   */
   ngOnInit() {
-
     this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() =>{
         this._user = Users.collection.findOne({_id: Meteor.userId()});
         if(this._user.username){
@@ -56,11 +66,25 @@ export class OptionsPage implements OnInit, OnDestroy {
 
   }
 
+  /**
+   * This method is responsible for go to settings option
+   */
   goToSettings(){
-      this._navCtrl = this._app.getRootNav();
-      this._navCtrl.push(SettingsPage);
+    this._navCtrl = this._app.getRootNav();
+    this._navCtrl.push(SettingsPage);
   }
 
+  /**
+   * User account sign out
+   */
+  signOut(){
+    this._navCtrl.push(InitialComponent);
+    Meteor.logout();
+  }
+
+  /**
+   * ngOnDestroy Implementation
+   */
   ngOnDestroy(){
     this._userSubscription.unsubscribe();
   }
