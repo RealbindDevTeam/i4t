@@ -41,7 +41,6 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     private _garnishFormGroup           : FormGroup = new FormGroup({});
     private _additionsFormGroup         : FormGroup = new FormGroup({});
     private _additionsDetailFormGroup   : FormGroup = new FormGroup({});
-    private _additionQuantityFormGroup  : FormGroup = new FormGroup({});
    
     private _sectionsSub                : Subscription;
     private _categoriesSub              : Subscription;

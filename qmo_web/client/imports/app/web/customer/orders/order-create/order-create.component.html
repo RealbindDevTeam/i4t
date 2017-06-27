@@ -180,7 +180,7 @@
                 <div id="addition-detail" class="item-detail">
                     <div class="header-detail" #headerDetailCard>
                         <label>{{'ORDER_CREATE.ADDITIONS' | translate}}</label>
-                        <button class="btn-close" md-raised-button (click)="viewAdditionetail(true)">
+                        <button class="btn-close" md-raised-button (click)="viewAdditionDetail(true)">
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                     </div>
@@ -188,7 +188,7 @@
                         <div class="card-content">
                             <div class="crop"></div>
                             <div class="content" style="margin-top: 20%;">
-                                <p>Selecciona las adiciones que desees agregar a la orden e indica su cantidad:</p>
+                                <p>{{'ORDER_CREATE.ADD_ADDITIONS' | translate}}:</p>
                                 <form [formGroup]="_additionsDetailFormGroup">
                                     <div *ngFor="let add of _additions | async">
                                         <md-input-container style="width: 100%;">
@@ -196,7 +196,7 @@
                                         </md-input-container>
                                     </div>
                                 </form>
-                                <button md-button class="button-primary" style="margin-top: 5%;" (click)="AddAdditionsToOrder()">Agregar adicion a la Orden</button>
+                                <button md-button class="button-primary" style="margin-top: 5%;" (click)="AddAdditionsToOrder()">{{'ORDER_CREATE.ADD_ADDITION_ORDER' | translate}}</button>
                             </div>
                         </div>
                     </div>

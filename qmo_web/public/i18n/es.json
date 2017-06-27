@@ -630,7 +630,9 @@
         "TOTAL_PRICE": "Precio Total",
         "ADD_ITEM": "Agregar Item a la Orden",
         "SHOW_ALL": "Mostrar todos",
-        "COOKING_TIME": "Tiempo de Cocción"
+        "COOKING_TIME": "Tiempo de Cocción",
+        "ADD_ADDITIONS": "Selecciona las adiciones que desees agregar a la orden e indica su cantidad",
+        "ADD_ADDITION_ORDER": "Agregar adicion a la Orden"
     },
     "ORDER_LIST": {
         "TABLE_ORDERS": "Órdenes de la mesa",
@@ -663,7 +665,13 @@
         "CONFIRM_ORDER_MESSAGE": "Esta seguro de confirmar la orden?",
         "ORDER_ITEMS_UNAVAILABLE": "La orden presenta items que no se encuentran disponibles. Verifica tu order por favor.",
         "ORDER_CANT_CONFIRM": "La orden no se puede confirmar",
-        "COOKING_TIME": "Tiempo de Cocción"
+        "COOKING_TIME": "Tiempo de Cocción",
+        "ADDITION": "Adicion",
+        "QUANT": "Cant. ",
+        "ADD_ADDITIONS": "Selecciona las adiciones que desees agregar a la orden e indica su cantidad",
+        "MODIFY_ADDITION_ORDER": "Modificar Adicion",
+        "DELETE_ADDITION_ORDER": "Eliminar Adicion",
+        "DELETE_ADDITION_CONFIRM": "Esta seguro de eliminar la adicion de la orden?"
     },
     "PAYMENTS": {
         "COLOMBIA": {
