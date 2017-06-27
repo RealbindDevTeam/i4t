@@ -29,7 +29,7 @@
     "TIP_PERCENTAGE": "Tip percentage",
     "CLOSE": "Close",
     "VIEW_DETAIL": "View Detail",
-    "OTHER" : "Other",
+    "OTHER" : "Other...",
     "ORDER_STATUS": {
         "REGISTERED": "Registered",
         "IN_PROCESS": "In Process",

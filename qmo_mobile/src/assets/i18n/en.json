@@ -32,6 +32,10 @@
         "CHOOSE_FILE": "Choose a file",
         "CLOSE" : "Close",
         "VIEW" : "Ver",
+        "LANGUAGE" : {
+            "ES" : "Spanish",
+            "EN" : "English"
+        },
         "INITIAL": {
             "SIGNUP": "Sign Up",
             "SIGNIN": "Log In"
@@ -104,7 +108,8 @@
                 "CONFIRM_BTN": "Ok",
                 "ERROR_TITLE": "Error"
             },
-            "SIGN_OUT":"Sign out"
+            "SIGN_OUT":"Sign out",
+            "MSG_COMFIRM" : "Your data has been updated"
         },
         "CODE_TYPE_SELECT": {
             "TITTLE": "Code type",
@@ -196,7 +201,8 @@
             "CALL_LABEL_CUSTOMER" : "Customer's call",
             "CALL_LABEL_CUSTOMER_PAYMENT" : "Customer's payment",
             "PAY_CONFIRM" : "Payment confirm",
-            "PAY_CLOSE" : "Payments close"
+            "PAY_CLOSE" : "Payments close",
+            "NO_WAITERS" : "No waiters assignment in the restaurant"
         },
         "SECTIONS": {
             "MENU": "Menu",

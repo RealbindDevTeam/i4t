@@ -23,3 +23,14 @@ Meteor.publish( 'getUsersByRestaurant', function( _restaurant_work:string ){
         return Users.find( { _id: { $in: _lUserDetails }} );
     }
 });
+
+/**
+ * Get users with role '200' by current restaurant.
+ * @param { string } _usrId
+ */;
+Meteor.publish('getWaitersByCurrentRestaurant', function ( _usrId : string ) {
+    let _lUserDetail = UserDetails.collection.find({ user_id: _usrId }).fetch()[0];
+    if(_lUserDetail){
+        return UserDetails.find({restaurant_work: _lUserDetail.current_restaurant, role_id : '200'});
+    }
+});

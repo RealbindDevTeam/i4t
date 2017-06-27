@@ -8,12 +8,6 @@
   <button ion-button block class="btn-facebook button-social" type="submit" (click)="loginWithFacebook()">
     <i class="fa fa-facebook icon-social" aria-hidden="true"></i>Facebook
   </button>
-  <button ion-button block class="btn-twitter button-social" (click)="loginWithTwitter()">
-    <i class="fa fa-twitter icon-social" aria-hidden="true"></i>Twitter
-  </button>
-  <button ion-button block class="btn-google button-social" (click)="loginWithGoogle()">
-    <i class="fa fa-google icon-social" aria-hidden="true"></i>Google
-  </button>
 
   <form [formGroup]="signinForm" (ngSubmit)="login()" novalidate>
     <ion-list>
