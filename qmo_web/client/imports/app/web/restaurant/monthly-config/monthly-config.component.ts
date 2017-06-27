@@ -16,6 +16,8 @@ import { Currencies } from '../../../../../../both/collections/general/currency.
 import { Currency } from '../../../../../../both/models/general/currency.model';
 import { Countries } from '../../../../../../both/collections/settings/country.collection';
 import { Country } from '../../../../../../both/models/settings/country.model';
+import { Parameters } from '../../../../../../both/collections/general/parameter.collection';
+import { Parameter } from '../../../../../../both/models/general/parameter.model';
 
 import template from './monthly-config.component.html';
 import style from './monthly-config.component.scss';
@@ -36,25 +38,39 @@ export class MonthlyConfigComponent implements OnInit, OnDestroy {
     private _tables: Observable<Table[]>;
     private _tableSub: Subscription;
     private _countrySub: Subscription;
-    private selectedRestaurantValue: string;
-    private restaurantCode: string = '';
-    private tables_count: number = 0;
+    private _selectedRestaurantValue: string;
+    private _showRestaurantList: boolean = false;
+    private _showEnableDisable: boolean = false;
+    private _currentDate: Date;
+    private _parameterSub: Subscription;
+    private _restaurantId: string = "";
 
     constructor(private translate: TranslateService, private _router: Router, public snackBar: MdSnackBar) {
         var userLang = navigator.language.split('-')[0];
         translate.setDefaultLang('en');
         translate.use(userLang);
-        this.selectedRestaurantValue = "";
+        this._selectedRestaurantValue = "";
     }
 
     ngOnInit() {
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe(() => {
             this._restaurants = Restaurants.find({}).zone();
+            if (this._restaurants) {
+                this._showRestaurantList = true;
+            }
         });
+        this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
+    }
 
+    goToEnableDisable(event) {
+        console.log('desde config > ' + event);
+        this._restaurantId = event;
+        this._showEnableDisable = true;
+        this._showRestaurantList = false;
     }
 
     ngOnDestroy() {
         this._restaurantSub.unsubscribe();
+        this._parameterSub.unsubscribe();
     }
 }

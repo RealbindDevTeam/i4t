@@ -21,9 +21,9 @@
                         <td *ngIf="restaurant.currencyId === currency._id">{{restaurant.name}}</td>
                         <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">{{getAllTables(restaurant)}}</td>
                         <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">{{getActiveTables(restaurant)}}</td>
-                        <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">{{getRestaurant(restaurant) | translate}}</td>
+                        <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">{{getRestaurantStatus(restaurant) | translate}}</td>
                         <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">
-                            <button md-raised-button>{{'MONTHLY_CONFIG.BTN_EDIT' | translate}}</button>
+                            <button md-raised-button (click)="goToEnableDisable(restaurant._id)">{{'MONTHLY_CONFIG.BTN_EDIT' | translate}}</button>
                         </td>
                     </tr>
                 </tbody>

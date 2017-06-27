@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MdSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
@@ -26,6 +26,9 @@ import * as QRious from 'qrious';
 
 export class EnableDisableComponent implements OnInit, OnDestroy {
 
+    @Input()
+    restaurantId: string;
+
     private _tableForm: FormGroup;
     private _restaurants: Observable<Restaurant[]>;
     private _restaurantSub: Subscription;
@@ -44,14 +47,13 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this._tableForm = new FormGroup({
-            restaurant: new FormControl('', [Validators.required]),
             tables_number: new FormControl('', [Validators.required])
         });
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe(() => {
-            this._restaurants = Restaurants.find({}).zone();
+            this._restaurants = Restaurants.find({ _id: this.restaurantId }).zone();
         });
         this._tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe(() => {
-            this._tables = this._tables = Tables.find({}).zone();
+            this._tables = this._tables = Tables.find({ restaurantId: this.restaurantId }).zone();
         });
     }
 
@@ -67,10 +69,10 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
         }
 
         if (this._tableForm.valid) {
-            let _lRestau: Restaurant = Restaurants.findOne({ _id: this._tableForm.value.restaurant });
+            let _lRestau: Restaurant = Restaurants.findOne({ _id: this.restaurantId });
             let _lTableNumber: number = this._tableForm.value.tables_number;
             this.restaurantCode = _lRestau.restaurant_code;
-            this.tables_count = Tables.collection.find({ restaurantId: this._tableForm.value.restaurant }).count();
+            this.tables_count = Tables.collection.find({ restaurantId: this.restaurantId }).count();
 
             for (let _i = 0; _i < _lTableNumber; _i++) {
                 let _lRestaurantTableCode: string = '';
@@ -96,7 +98,7 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
                 let _lNewTable: Table = {
                     creation_user: Meteor.userId(),
                     creation_date: new Date(),
-                    restaurantId: this._tableForm.value.restaurant,
+                    restaurantId: this.restaurantId,
                     table_code: _lTableCode,
                     is_active: true,
                     QR_code: _lCodeGenerator.getQRCode(),
@@ -110,7 +112,7 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
                     _number: this.tables_count + (_i + 1)
                 };
                 Tables.insert(_lNewTable);
-                Restaurants.update({ _id: this._tableForm.value.restaurant }, { $set: { tables_quantity: _lRestau.tables_quantity + (_i + 1) } })
+                Restaurants.update({ _id: this.restaurantId }, { $set: { tables_quantity: _lRestau.tables_quantity + (_i + 1) } })
             }
             this._tableForm.reset();
             this.snackBar.open('Mesas creadas', '', {
@@ -129,6 +131,19 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
             }
         }
         return _lCode;
+    }
+
+    /**
+ * This function gets the table status
+ * @param {Restaurant} _restaurant
+ * @return {string}
+ */
+    getTableStatus(_table: Table): string {
+        if (_table.is_active === true) {
+            return 'MONTHLY_CONFIG.STATUS_ACTIVE';
+        } else {
+            return 'MONTHLY_CONFIG.STATUS_INACTIVE';
+        }
     }
 
     cancel(): void {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, OnDestroy, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -25,6 +25,9 @@ import style from './restaurant-list.component.scss';
 })
 
 export class RestaurantListComponent implements OnInit, OnDestroy {
+
+    @Output('gotoenabledisabled')
+    restaurantId: EventEmitter<any> = new EventEmitter<any>();
 
     private _tableForm: FormGroup;
     private _restaurants: Observable<Restaurant[]>;
@@ -107,12 +110,16 @@ export class RestaurantListComponent implements OnInit, OnDestroy {
      * @param {Restaurant} _restaurant
      * @return {string}
      */
-    getRestaurant(_restaurant: Restaurant): string{
-        if(_restaurant.isActive === true){
+    getRestaurantStatus(_restaurant: Restaurant): string {
+        if (_restaurant.isActive === true) {
             return 'MONTHLY_CONFIG.STATUS_ACTIVE';
-        }else{
+        } else {
             return 'MONTHLY_CONFIG.STATUS_INACTIVE';
         }
+    }
+
+    goToEnableDisable(restaurantId: string){
+        this.restaurantId.emit(restaurantId);
     }
 
     ngOnDestroy() {
