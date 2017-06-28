@@ -16,24 +16,48 @@
         <div *ngIf="_showDetailsInProcess">
             <div *ngFor="let order of _ordersInProcessDetail | async;">
                 <md-card-title class="title">{{'ORDER_ATTENTION.TITLE' | translate}} # {{order.code}}</md-card-title>
-                <button md-raised-button color="primary" style="float: right;" (click)="setPreparedState(order)">{{'ORDER_ATTENTION.ORDER_PREPARED' | translate}}</button>
+                <button md-raised-button color="primary" class="prepared-button" (click)="setPreparedState(order)">{{'ORDER_ATTENTION.ORDER_PREPARED' | translate}}</button>
                 <md-card-content>
                     <md-divider></md-divider>
-                    <md-list>
-                        <span *ngFor="let item of _items | async">
-                            <span *ngFor="let it of order.items">
-                                <template [ngIf]="item._id === it.itemId">
-                                    <md-list-item class="list">
-                                        <img class="image" src="{{ getItemImage(item._id) }}">
-                                        <p md-line class="item-name">{{item.name}}</p>
-                                        <p md-line class="item-quantity">{{'ORDER_ATTENTION.ITEM_QUANTITY' | translate}}: {{it.quantity}}</p>
-                                        <p md-line *ngIf="it.observations" class="message">{{'ORDER_ATTENTION.OBSERVATIONS' | translate}}: {{it.observations}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
-                                </template>
-                            </span>
+                    <span *ngFor="let item of _items | async">
+                        <span *ngFor="let it of order.items">
+                            <template [ngIf]="item._id === it.itemId">
+                                <h2 class="name">{{it.quantity}} - {{item.name}}</h2>
+                                <p *ngIf="it.observations" class="observations">{{'ORDER_ATTENTION.OBSERVATIONS' | translate}}: {{it.observations}}</p>
+                                <p *ngIf="(it.garnishFood.length <= 0)" class="no-garnish">{{'ORDER_ATTENTION.NO_GARNISH_FOOD' | translate}}</p>
+                                <div *ngIf="(it.garnishFood.length > 0)" class="garnish-food">
+                                    <p class="garnish-title">{{'ORDER_ATTENTION.GARNISH_FOOD' | translate}}:</p>
+                                    <span *ngFor="let garnish of _garnishFoodCol | async">
+                                        <span *ngFor="let gar of it.garnishFood">
+                                            <template [ngIf]="gar === garnish._id">
+                                                <p class="garnish-name">- {{garnish.name}}</p>     
+                                            </template>
+                                        </span>
+                                    </span>
+                                </div>
+                                <p class="no-addition" *ngIf="(it.additions.length <= 0)">- {{'ORDER_ATTENTION.NO_ADDITIONS' | translate}}</p>
+                                <div *ngIf="(it.additions.length > 0)" class="addition">
+                                    <p class="addition-title">{{'ORDER_ATTENTION.ADDITIONS' | translate}}:</p>
+                                    <span *ngFor="let addition of _additions | async">
+                                        <span *ngFor="let add of it.additions">
+                                            <template [ngIf]="add === addition._id">
+                                                <p class="addition-name">- {{it.quantity}} {{addition.name}}</p>  
+                                            </template>
+                                        </span>
+                                    </span>
+                                </div>
+                                <md-divider></md-divider>
+                            </template>
                         </span>
-                    </md-list>
+                    </span>
+                    <span *ngFor="let addit of _additions | async">
+                        <span *ngFor="let ad of order.additions">
+                            <template [ngIf]="addit._id === ad.additionId">
+                                <h2 class="name">{{ad.quantity}} {{'ORDER_ATTENTION.ADDITION' | translate}} - {{addit.name}}</h2>
+                                <md-divider></md-divider>
+                            </template>
+                        </span>
+                    </span>
                 </md-card-content>
             </div>
         </div>

@@ -630,7 +630,9 @@
         "TOTAL_PRICE": "Total Price",
         "ADD_ITEM": "Add Item to Order",
         "SHOW_ALL": "Show All",
-        "COOKING_TIME": "Cooking Time"
+        "COOKING_TIME": "Cooking Time",
+        "ADD_ADDITIONS": "Select the additions you wish to add to the order and indicate the quantity",
+        "ADD_ADDITION_ORDER": "Add addition to the Order"
     },
     "ORDER_LIST": {
         "TABLE_ORDERS": "Table Orders",
@@ -663,7 +665,13 @@
         "CONFIRM_ORDER_MESSAGE": "Are you sure to confirm the order?",
         "ORDER_ITEMS_UNAVAILABLE": "The order displays items that are not available. Please verify your order.",
         "ORDER_CANT_CONFIRM": "Order can not be confirmed",
-        "COOKING_TIME": "Cooking Time"
+        "COOKING_TIME": "Cooking Time",
+        "ADDITION": "Addition",
+        "QUANT": "Quant. ",
+        "ADD_ADDITIONS": "Select the additions you wish to add to the order and indicate the quantity",
+        "MODIFY_ADDITION_ORDER": "Modify Addition",
+        "DELETE_ADDITION_ORDER": "Delete Addition",
+        "DELETE_ADDITION_CONFIRM": "Are you sure to delete the addition from the order?"
     },
    "PAYMENTS": {
         "COLOMBIA": {
@@ -711,11 +719,13 @@
         "TABLE": "Table",
         "MESSAGE": "Select the order you want to consult",
         "TITLE": "Order Items",
-        "ORDER_IN_PROCESS": "ORDER IN PROCESS",
-        "ITEM_QUANTITY": "Quantity",
         "OBSERVATIONS": "Observations",
-        "ORDERS_IN_PROCESS": "Orders In Process",
-        "ORDER_PREPARED": "ORDER PREPARED"
+        "ORDER_PREPARED": "ORDER PREPARED",
+        "NO_GARNISH_FOOD": "No Garnish Food",
+        "GARNISH_FOOD": "Garnish Food",
+        "NO_ADDITIONS": "No Additions",
+        "ADDITIONS": "Additions",
+        "ADDITION": "Addition(s)"
     },
     "FINANCIAL_INFO": {
         "COLOMBIA": {
@@ -787,5 +797,18 @@
         "QUANTITY": "Quant. ",
         "PRICE": "Price: ",
         "CLOSE_PAYMENTS": "Close Payments"
+    },
+    "SEND_ORDER": {
+        "ORDER": "Order",
+        "TABLE": "Table",
+        "CODE": "Code: ",
+        "CUSTOMER": "Customer",
+        "OBSERVATIONS": "Observations",
+        "NO_GARNISH_FOOD":"No Garnish Food",
+        "GARNISH_FOOD": "Garnish Food",
+        "NO_ADDITIONS": "No Additions",
+        "ADDITIONS": "Additions",
+        "ADDITION": "Addition(s)",
+        "ORDER_DELIVERED": "Order Delivered"
     }
 }

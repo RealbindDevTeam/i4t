@@ -1,0 +1,53 @@
+<div *ngFor="let order of _orders | async" class="order">
+    <md-card>
+        <md-card-title>{{ 'SEND_ORDER.ORDER' | translate }} # {{order.code}} - {{ 'SEND_ORDER.TABLE' | translate }} {{_tableNumber}} ( {{ 'SEND_ORDER.CODE' | translate }} {{_tableQRCode}} )</md-card-title>
+        <md-card-subtitle>{{ 'SEND_ORDER.CUSTOMER' | translate }}: {{ getUserName(order.creation_user) }}</md-card-subtitle>
+        <md-card-content>
+            <md-divider></md-divider>
+            <span *ngFor="let it of order.items">
+                <span *ngFor="let item of _items | async">
+                    <template [ngIf]="it.itemId === item._id">
+                        <h2 class="name">{{it.quantity}} - {{item.name}}</h2>
+                        <p *ngIf="it.observations" class="observations">{{ 'SEND_ORDER.OBSERVATIONS' | translate }}: {{it.observations}}</p>
+                        <p *ngIf="(it.garnishFood.length <= 0)" class="no-garnish">{{ 'SEND_ORDER.NO_GARNISH_FOOD' | translate }}</p>
+                        <div *ngIf="(it.garnishFood.length > 0)" class="garnish-food">
+                            <p class="garnish-title">{{ 'SEND_ORDER.GARNISH_FOOD' | translate }}:</p>
+                            <span *ngFor="let garnish of _garnishFood | async">
+                                <span *ngFor="let gar of it.garnishFood">
+                                    <template [ngIf]="gar === garnish._id">
+                                        <p class="garnish-name">- {{garnish.name}}</p>     
+                                    </template>
+                                </span>
+                            </span>
+                        </div>
+                        <p class="no-addition" *ngIf="(it.additions.length <= 0)">- {{ 'SEND_ORDER.NO_ADDITIONS' | translate }}</p>
+                        <div *ngIf="(it.additions.length > 0)" class="addition">
+                            <p class="addition-title">{{ 'SEND_ORDER.ADDITIONS' | translate }}:</p>
+                            <span *ngFor="let addition of _additions | async">
+                                <span *ngFor="let add of it.additions">
+                                    <template [ngIf]="add === addition._id">
+                                        <p class="addition-name">- {{it.quantity}} {{addition.name}}</p>  
+                                    </template>
+                                </span>
+                            </span>
+                        </div>
+                        <md-divider></md-divider>
+                    </template>
+                </span>
+            </span>
+            <span *ngFor="let addit of _additions | async">
+                <span *ngFor="let ad of order.additions">
+                    <template [ngIf]="addit._id === ad.additionId">
+                        <h2 class="name">{{ad.quantity}} {{ 'SEND_ORDER.ADDITION' | translate }} - {{addit.name}}</h2>
+                        <md-divider></md-divider>
+                    </template>
+                </span>
+            </span>
+        </md-card-content>
+        <button md-raised-button color="primary" (click)="close()">{{ 'CLOSE' | translate }}</button>
+        <button md-raised-button color="primary" (click)="closeCall()">{{ 'SEND_ORDER.ORDER_DELIVERED' | translate }}</button>
+    </md-card>
+</div>
+<div class="loading" *ngIf="_loading">
+    <md-spinner></md-spinner>
+</div>
