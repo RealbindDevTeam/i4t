@@ -719,11 +719,13 @@
         "TABLE": "Table",
         "MESSAGE": "Select the order you want to consult",
         "TITLE": "Order Items",
-        "ORDER_IN_PROCESS": "ORDER IN PROCESS",
-        "ITEM_QUANTITY": "Quantity",
         "OBSERVATIONS": "Observations",
-        "ORDERS_IN_PROCESS": "Orders In Process",
-        "ORDER_PREPARED": "ORDER PREPARED"
+        "ORDER_PREPARED": "ORDER PREPARED",
+        "NO_GARNISH_FOOD": "No Garnish Food",
+        "GARNISH_FOOD": "Garnish Food",
+        "NO_ADDITIONS": "No Additions",
+        "ADDITIONS": "Additions",
+        "ADDITION": "Addition(s)"
     },
     "FINANCIAL_INFO": {
         "COLOMBIA": {

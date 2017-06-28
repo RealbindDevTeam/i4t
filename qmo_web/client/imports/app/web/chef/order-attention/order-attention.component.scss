@@ -32,28 +32,58 @@
         display: inline-block;
     }
 
-    .list {
-        margin-bottom: 1%;
-        margin-top: 1%;
+    .prepared-button{
+        float: right;
+    }
 
-        .image {
-            width: 20%;
-            height: 80px;
-        }
+    .name{
+        margin-bottom: 0%;
+    }
 
-        .item-name {
-            font-size: 20px;
-            font-weight: 400;
-            white-space: normal;
-            color: black;
-            text-align: center;
-        }
+    .observations{
+        margin-bottom: 0%;
+    }
 
-        .item-quantity {
-            font-size: 20px;
-            color: #114b5f;
+    .no-garnish{
+        display: inline-block;
+        color: green;
+        font-weight: bold;
+        margin-bottom: 0%;
+    }
+
+    .garnish-food{
+        .garnish-title{
+            display: inline-block;
+            color: green;
             font-weight: bold;
-            text-align: center;
+            margin-bottom: 0%
+        }
+
+        .garnish-name{
+            display: inline-block;
+            color: green;
+            font-weight: bold;
+            margin-bottom: 0%;
+        }
+    }
+
+    .no-addition{
+        display: inline-block;
+        color: darkgoldenrod;
+        font-weight: bold;
+    }
+
+    .addition{
+        .addition-title{
+            display: inline-block;
+            color: darkgoldenrod;
+            font-weight: bold;
+        }
+
+        .addition-name{
+            display: inline-block;
+            color: darkgoldenrod;
+            font-weight: bold;
         }
     }
 }

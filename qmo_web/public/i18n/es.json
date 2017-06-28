@@ -719,11 +719,13 @@
         "TABLE": "Mesa",
         "MESSAGE": "Seleccione la orden que desea consultar",
         "TITLE": "Items de la Orden",
-        "ORDER_IN_PROCESS": "ORDEN EN PROCESO",
-        "ITEM_QUANTITY": "Cantidad",
         "OBSERVATIONS": "Observaciones",
-        "ORDERS_IN_PROCESS": "Ordenes en Proceso",
-        "ORDER_PREPARED": "ORDEN PREPARADA"
+        "ORDER_PREPARED": "ORDEN PREPARADA",
+        "NO_GARNISH_FOOD": "Sin Guarniciones",
+        "GARNISH_FOOD": "Guarniciones",
+        "NO_ADDITIONS": "Sin Adiciones",
+        "ADDITIONS": "Adiciones",
+        "ADDITION": "Adicion(es)"
     },
     "FINANCIAL_INFO": {
         "COLOMBIA": {
