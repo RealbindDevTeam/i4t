@@ -66,7 +66,11 @@
         "MIN_LENGTH_PASSWORD": "La contraseña debe tener minimo 8 caracteres",
         "MAX_LENGTH_PASSWORD": "La contraseña debe tener maximo 20 caracteres",
         "REQUIRED_CONFIRM": "Debe confirmar la contraseña",
-        "PASSWORD_NOT_MATCH": "Las contraseñas no coinciden"
+        "PASSWORD_NOT_MATCH": "Las contraseñas no coinciden",
+        "LABEL_LEGAL" : "Al dar clic en 'Registrarse', ",
+        "LABEL_LEGAL_END" : "aceptas los terminos y condiciones.",
+        "SLOGAN" : "Slogan",
+        "OR":"ó"
     },
     "SIGNIN": {
         "EMAIL_USERNAME": "Correo electronico/Nombre usuario",
