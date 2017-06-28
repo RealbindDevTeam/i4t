@@ -59,7 +59,6 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     private _itemDetail                 : Observable<Item[]>;
     private _garnishFoodCol             : Observable<GarnishFood[]>;
     private _additions                  : Observable<Addition[]>;
-    private _itemImages                 : Observable<ItemImage[]>
 
     private _finalPrice                 : number = 0;
     private _maxGarnishFoodElements     : number = 0;
@@ -99,11 +98,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
                 this._items = Items.find( { } ).zone();
             });
         });
-        this._itemImagesSub = MeteorObservable.subscribe( 'itemImagesByRestaurant', this.restaurantId ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._itemImages = ItemImages.find( { } ).zone();
-            });
-        });
+        this._itemImagesSub = MeteorObservable.subscribe( 'itemImagesByRestaurant', this.restaurantId ).subscribe();
         this._ordersSub = MeteorObservable.subscribe( 'getOrders', this.restaurantId, this.tableQRCode,[ 'ORDER_STATUS.REGISTERED' ] ).subscribe( () => { } );
         this._garnishFoodSub = MeteorObservable.subscribe( 'garnishFoodByRestaurant', this.restaurantId ).subscribe( () => {
             this._ngZone.run( () => {
@@ -260,6 +255,19 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      */
     getItemPrice( _pItem:Item ): number{
         return _pItem.restaurants.filter( r => r.restaurantId === this.restaurantId )[0].price;
+    }
+
+    /**
+     * Return item image
+     * @param {string} _itemId
+     */
+    getItemImage( _itemId:string ):string{
+        let _lItemImage: ItemImage = ItemImages.findOne( { itemId: _itemId } );
+        if( _lItemImage ){
+            return _lItemImage.url;
+        } else{
+            return '/images/default-plate.png';
+        }
     }
 
     /**

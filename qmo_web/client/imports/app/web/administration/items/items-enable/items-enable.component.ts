@@ -16,17 +16,18 @@ import style from '../item.component.scss';
 })
 export class ItemEnableComponent implements OnInit, OnDestroy {
     
-    private _itemsSub: Subscription;
-    private _itemImagesSub: Subscription;
-    private _items: Observable<Item[]>;
-    private _itemImages: Observable<ItemImage[]>;
-    private _itemsFilter: Item[] = [];
+    private _itemsSub           : Subscription;
+    private _itemImagesSub      : Subscription;
+    private _items              : Observable<Item[]>;
+    private _itemsFilter        : Item[] = [];
 
     /**
      * ItemEnableComponent Constructor
-     * @param {TranslateService} _translate 
+     * @param {TranslateService} _translate
+     * @param {NgZone} _ngZone
      */
-    constructor( private _translate: TranslateService, private _ngZone: NgZone ){
+    constructor( private _translate: TranslateService, 
+                 private _ngZone: NgZone ){
         var _userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
@@ -42,7 +43,6 @@ export class ItemEnableComponent implements OnInit, OnDestroy {
                 this._itemsFilter = Items.collection.find( { } ).fetch();
             });
         });
-        this._itemImages = ItemImages.find( { } ).zone();
         this._itemImagesSub = MeteorObservable.subscribe( 'itemImages', Meteor.userId() ).subscribe();
     }
 
@@ -58,6 +58,19 @@ export class ItemEnableComponent implements OnInit, OnDestroy {
                 modification_user: Meteor.userId()
             }
         });
+    }
+
+    /**
+     * Return item image
+     * @param {string} _itemId
+     */
+    getItemImage( _itemId:string ):string{
+        let _lItemImage: ItemImage = ItemImages.findOne( { itemId: _itemId } );
+        if( _lItemImage ){
+            return _lItemImage.url;
+        } else{
+            return '/images/default-plate.png';
+        }
     }
 
     /**

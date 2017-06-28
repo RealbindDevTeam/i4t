@@ -160,6 +160,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         let _lItemImage: ItemImageThumb = ItemImagesThumbs.findOne( { itemId: _pItemId } );
         if( _lItemImage ){
             return _lItemImage.url;
+        } else{
+            return '/images/default-plate.png';
         }
     }
 
@@ -171,6 +173,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         let _lItemImage: ItemImage = ItemImages.findOne( { itemId: _pItemId } );
         if( _lItemImage ){
             return _lItemImage.url;
+        } else{
+            return '/images/default-plate.png';
         }
     }
 

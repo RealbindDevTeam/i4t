@@ -522,7 +522,9 @@
         "ACTIVATE": "ACTIVAR",
         "INACTIVATE": "INACTIVAR",
         "COOKING_TIME": "Tiempo Aprox de Cocción",
-        "MESSAGE" : "Aún no hay items registrados"
+        "MESSAGE" : "Aún no hay items registrados",
+        "SELECT_ALL_GARNISH_FOOD": "Seleccionar todas las Guarniciones",
+        "SELECT_ALL_ADDITIONS": "Seleccionar todas las Adiciones"
     },
     "ROLE": {
         "ADMINISTRATOR": "Administrador",

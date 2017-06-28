@@ -522,7 +522,9 @@
         "ACTIVATE": "ACTIVATE",
         "INACTIVATE": "INACTIVATE",
         "COOKING_TIME": "Approximate Cooking Time",
-        "MESSAGE" : "No items yet register"
+        "MESSAGE" : "No items yet register",
+        "SELECT_ALL_GARNISH_FOOD": "Select All Garnish Food",
+        "SELECT_ALL_ADDITIONS": "Select All Additions"
     },
     "ROLE": {
         "ADMINISTRATOR": "Administrator",

@@ -37,65 +37,65 @@ import style from './item-edition.component.scss';
 export class ItemEditionComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    public _itemToEdit: Item;
-    private _itemEditionForm: FormGroup;
-    private _garnishFormGroup: FormGroup = new FormGroup({}); 
-    private _additionsFormGroup: FormGroup = new FormGroup({});
-    private _restaurantsFormGroup: FormGroup = new FormGroup({});
-    private _currenciesFormGroup: FormGroup = new FormGroup({});
-    private _taxesFormGroup: FormGroup = new FormGroup({});
+    public _itemToEdit                  : Item;
+    private _itemEditionForm            : FormGroup;
+    private _garnishFormGroup           : FormGroup = new FormGroup({}); 
+    private _additionsFormGroup         : FormGroup = new FormGroup({});
+    private _restaurantsFormGroup       : FormGroup = new FormGroup({});
+    private _currenciesFormGroup        : FormGroup = new FormGroup({});
+    private _taxesFormGroup             : FormGroup = new FormGroup({});
 
-    private _sections: Observable<Section[]>;
-    private _categories: Observable<Category[]>;
-    private _subcategories: Observable<Subcategory[]>;
-    private _currencies: Observable<Currency[]>;
+    private _sections                   : Observable<Section[]>;
+    private _categories                 : Observable<Category[]>;
+    private _subcategories              : Observable<Subcategory[]>;
+    private _currencies                 : Observable<Currency[]>;
 
-    private _itemsSub: Subscription;
-    private _itemImagesSub: Subscription;
-    private _itemImageThumbsSub: Subscription;
-    private _sectionsSub: Subscription;    
-    private _categorySub: Subscription;
-    private _subcategorySub: Subscription;
-    private _restaurantSub: Subscription;
-    private _garnishFoodSub: Subscription;
-    private _additionSub: Subscription;
-    private _currenciesSub: Subscription;
-    private _countriesSub: Subscription;
+    private _itemsSub                   : Subscription;
+    private _itemImagesSub              : Subscription;
+    private _itemImageThumbsSub         : Subscription;
+    private _sectionsSub                : Subscription;    
+    private _categorySub                : Subscription;
+    private _subcategorySub             : Subscription;
+    private _restaurantSub              : Subscription;
+    private _garnishFoodSub             : Subscription;
+    private _additionSub                : Subscription;
+    private _currenciesSub              : Subscription;
+    private _countriesSub               : Subscription;
 
-    public _selectedIndex: number = 0;
-    private _showGarnishFood: boolean = true;
-    private _showAddition: boolean = true;
-    private _garnishFoodQuantity: number = 0;
-    private _showRestaurants = false;
-    private _showCurrencies: boolean = false;
-    private _showTaxes: boolean = false;
+    public _selectedIndex               : number = 0;
+    private _showGarnishFood            : boolean = true;
+    private _showAddition               : boolean = true;
+    private _garnishFoodQuantity        : number = 0;
+    private _showRestaurants            : boolean = false;
+    private _showCurrencies             : boolean = false;
+    private _showTaxes                  : boolean = false;
 
-    private _itemSection: string;
-    private _itemCategory: string;
-    private _itemSubcategory: string;
-    private _selectedCategory: string = "";
-    private _selectedSection: string = "";
-    private _selectedSubcategory: string = "";
-    private _selectedTime: string;
+    private _itemSection                : string;
+    private _itemCategory               : string;
+    private _itemSubcategory            : string;
+    private _selectedCategory           : string = "";
+    private _selectedSection            : string = "";
+    private _selectedSubcategory        : string = "";
+    private _selectedTime               : string;
 
-    private _garnishFoodList: GarnishFood[];
-    private _itemGarnishFood: string[];
-    private _restaurantsGarnishFood: string[];
-    private _edition_garnishFood: string[];
-    private _itemAdditions: string[];
-    private _additionList: Addition[];
-    private _edition_addition: string[];
-    private _restaurantList:Restaurant[] = [];
-    private _itemRestaurants: ItemRestaurant[] = [];
-    private _restaurantCurrencies: string [] = [];
-    private _restaurantTaxes: string [] = [];
+    private _garnishFoodList            : GarnishFood[];
+    private _itemGarnishFood            : string[];
+    private _restaurantsGarnishFood     : string[];
+    private _edition_garnishFood        : string[];
+    private _itemAdditions              : string[];
+    private _additionList               : Addition[];
+    private _edition_addition           : string[];
+    private _restaurantList             : Restaurant[] = [];
+    private _itemRestaurants            : ItemRestaurant[] = [];
+    private _restaurantCurrencies       : string [] = [];
+    private _restaurantTaxes            : string [] = [];
 
-    private _editImage: boolean = false;
-    private _editFilesToUpload: Array<File>;
-    private _editItemImageToInsert: File;
-    private _nameImageFileEdit: string;
-    private _itemEditImage: string;
-    private _restaurantsSelectedCount: number = 0;
+    private _editImage                  : boolean = false;
+    private _editFilesToUpload          : Array<File>;
+    private _editItemImageToInsert      : File;
+    private _nameImageFileEdit          : string;
+    private _itemEditImage              : string;
+    private _restaurantsSelectedCount   : number = 0;
 
     /**
      * ItemEditionComponent constructor
@@ -104,7 +104,10 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
      * @param {NgZone} _ngZone
      * @param {MdDialogRef<any>} _dialogRef
      */
-    constructor( private _formBuilder: FormBuilder, private _translate: TranslateService, private _ngZone: NgZone, public _dialogRef: MdDialogRef<any> ){
+    constructor( private _formBuilder: FormBuilder, 
+                 private _translate: TranslateService, 
+                 private _ngZone: NgZone, 
+                 public _dialogRef: MdDialogRef<any> ){
         var _userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
@@ -168,7 +171,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                 if( _lItemImage ){ 
                     this._itemEditImage = _lItemImage.url;
                  } else {
-                    this._itemEditImage = '';
+                    this._itemEditImage = '/images/default-plate.png';
                  }
             });
         });
@@ -196,11 +199,11 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
 
                     if( find.length > 0 ){
                         let control: FormControl = new FormControl( true );                                          
-                        this._restaurantsFormGroup.addControl( rest.name, control );  
+                        this._restaurantsFormGroup.addControl( rest._id, control );  
                         this._restaurantList.push( rest );
                     } else {
                         let control: FormControl = new FormControl( false );                                          
-                        this._restaurantsFormGroup.addControl( rest.name, control );  
+                        this._restaurantsFormGroup.addControl( rest._id, control );  
                         this._restaurantList.push( rest );
                     }
                 });
@@ -235,11 +238,11 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
 
                     if( find.length > 0 ){
                         let control: FormControl = new FormControl( true );
-                        this._garnishFormGroup.addControl( garnishF.name, control );
+                        this._garnishFormGroup.addControl( garnishF._id, control );
                         this._garnishFoodList.push( garnishF );
                     } else {
                         let control: FormControl = new FormControl( false );
-                        this._garnishFormGroup.addControl( garnishF.name, control );
+                        this._garnishFormGroup.addControl( garnishF._id, control );
                         this._garnishFoodList.push( garnishF );
                     }
                 });
@@ -255,11 +258,11 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
 
                     if( findAdd.length > 0 ){
                         let control: FormControl = new FormControl( true );
-                        this._additionsFormGroup.addControl( addition.name, control );
+                        this._additionsFormGroup.addControl( addition._id, control );
                         this._additionList.push( addition );
                     } else {
                         let control: FormControl = new FormControl( false );
-                        this._additionsFormGroup.addControl( addition.name, control );
+                        this._additionsFormGroup.addControl( addition._id, control );
                         this._additionList.push( addition );
                     }
                 });
@@ -355,11 +358,11 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         if( Restaurants.find( { _id: { $in: _lSection.restaurants } } ).zone().isEmpty ){
             this._showRestaurants = true;
             Restaurants.collection.find( { _id: { $in: _lSection.restaurants } } ).fetch().forEach( (r) => {
-                if( this._restaurantsFormGroup.contains( r.name ) ){
-                    this._restaurantsFormGroup.controls[ r.name ].setValue( false );
+                if( this._restaurantsFormGroup.contains( r._id ) ){
+                    this._restaurantsFormGroup.controls[ r._id ].setValue( false );
                 } else {
                     let control: FormControl = new FormControl( false );
-                    this._restaurantsFormGroup.addControl( r.name, control );
+                    this._restaurantsFormGroup.addControl( r._id, control );
                 }
                 _restaurantSectionsIds.push( r._id );
                 this._restaurantList.push( r );
@@ -369,11 +372,11 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         if( GarnishFoodCol.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).zone().isEmpty ){
             this._showGarnishFood = true;
             GarnishFoodCol.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).fetch().forEach( ( gar ) => {
-                if( this._garnishFormGroup.contains( gar.name ) ){
-                    this._garnishFormGroup.controls[ gar.name ].setValue( false );
+                if( this._garnishFormGroup.contains( gar._id ) ){
+                    this._garnishFormGroup.controls[ gar._id ].setValue( false );
                 } else {
                     let control: FormControl = new FormControl( false );
-                    this._garnishFormGroup.addControl( gar.name, control );
+                    this._garnishFormGroup.addControl( gar._id, control );
                 }
             });
             this._garnishFoodList = GarnishFoodCol.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).fetch();
@@ -382,11 +385,11 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         if( Additions.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).zone().isEmpty ){
             this._showAddition = true;
             Additions.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).fetch().forEach( ( ad ) => {
-                if( this._additionsFormGroup.contains( ad.name ) ){
-                    this._additionsFormGroup.controls[ ad.name ].setValue( false );
+                if( this._additionsFormGroup.contains( ad._id ) ){
+                    this._additionsFormGroup.controls[ ad._id ].setValue( false );
                 } else {
                     let control: FormControl = new FormControl( false );
-                    this._additionsFormGroup.addControl( ad.name, control );
+                    this._additionsFormGroup.addControl( ad._id, control );
                 }
             });
             this._additionList = Additions.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).fetch();
@@ -439,11 +442,10 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
             arrCur.forEach( ( cur ) => {
                 let find: Restaurant[] = this._restaurantList.filter( r => r.currencyId === cur );
                 for( let res of find ){
-                    if( this._itemEditionForm.value.editRestaurants[ res.name ] ){
-                        let rest: Restaurant = Restaurants.findOne( { name: res.name } );
+                    if( this._itemEditionForm.value.editRestaurants[ res._id ] ){
                         let _lItemRestaurant: ItemRestaurant = { restaurantId: '', price: 0 };
 
-                        _lItemRestaurant.restaurantId = rest._id;
+                        _lItemRestaurant.restaurantId = res._id;
                         _lItemRestaurant.price = this._itemEditionForm.value.editCurrencies[ cur ];
 
                         if( this._itemEditionForm.value.editTaxes[ cur ] !== undefined ){
@@ -468,16 +470,14 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
 
             arr.forEach( ( gar ) => {
                 if( this._itemEditionForm.value.editGarnishFood[ gar ] ){
-                    let garnishF:GarnishFood = GarnishFoodCol.findOne( { name: gar } );
-                    this._edition_garnishFood.push( garnishF._id );
+                    this._edition_garnishFood.push( gar );
                 }
             });
 
             let arrAdd:any[] = Object.keys( this._itemEditionForm.value.editAdditions );
             arrAdd.forEach( ( add ) => {
                 if( this._itemEditionForm.value.editAdditions[ add ] ){
-                    let addition:Addition = Additions.findOne( { name: add } );
-                    this._edition_addition.push( addition._id );
+                    this._edition_addition.push( add );
                 }
             });
 
@@ -583,6 +583,46 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         }
         this._restaurantCurrencies.length > 0 ? this._showCurrencies = true : this._showCurrencies = false;
         this._restaurantTaxes.length > 0 ? this._showTaxes = true : this._showTaxes = false;
+    }
+
+    /**
+     * Allow mark all garnish food
+     * @param {any} _event
+     */
+    markAllGarnishFood( _event:any ):void{
+        if( _event.checked ){
+            GarnishFoodCol.collection.find( { } ).fetch().forEach( ( gar ) => {
+                if( this._garnishFormGroup.contains( gar._id ) ){
+                    this._garnishFormGroup.controls[ gar._id ].setValue( true );
+                } 
+            });
+        } else {
+            GarnishFoodCol.collection.find( { } ).fetch().forEach( ( gar ) => {
+                if( this._garnishFormGroup.contains( gar._id ) ){
+                    this._garnishFormGroup.controls[ gar._id ].setValue( false );
+                } 
+            });
+        }
+    }
+
+    /**
+     * Allow mark all additions
+     * @param {any} _event
+     */
+    markAllAdditions( _event:any ):void{
+        if( _event.checked ){
+            Additions.collection.find( { } ).fetch().forEach( ( ad ) => {
+                if( this._additionsFormGroup.contains( ad._id ) ){
+                    this._additionsFormGroup.controls[ ad._id ].setValue( true );
+                }
+            });
+        } else {
+            Additions.collection.find( { } ).fetch().forEach( ( ad ) => {
+                if( this._additionsFormGroup.contains( ad._id ) ){
+                    this._additionsFormGroup.controls[ ad._id ].setValue( false );
+                }
+            });
+        }
     }
 
     /**
