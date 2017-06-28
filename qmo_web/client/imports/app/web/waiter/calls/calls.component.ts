@@ -11,7 +11,8 @@ import { WaiterCallDetails } from '../../../../../../both/collections/restaurant
 import { User } from '../../../../../../both/models/auth/user.model';
 import { Users } from '../../../../../../both/collections/auth/user.collection';
 import { CallCloseConfirmComponent } from './call-close-confirm/call-close-confirm.component';
-import { PaymentConfirmComponent } from '../payment-confirm/payment-confirm.component';
+import { PaymentConfirmComponent } from './payment-confirm/payment-confirm.component';
+import { SendOrderConfirmComponent } from './send-order-confirm/send-order-confirm.component';
 
 import template from './calls.component.html';
 import style from './calls.component.scss';
@@ -102,6 +103,22 @@ export class CallsComponent {
      */
     showPayment( _call: WaiterCallDetail ){
         this._mdDialogRef = this._mdDialog.open( PaymentConfirmComponent, {
+            disableClose : true,
+            width: '50%',
+            height: '90%'
+        });
+        this._mdDialogRef.componentInstance.call = _call;
+        this._mdDialogRef.afterClosed().subscribe( result => {
+            this._mdDialogRef = null;
+        });
+    }
+
+    /**
+     * This function show modal dialog with order information
+     * @param {WaiterCallDetail} _call 
+     */
+    showSendOrder( _call:WaiterCallDetail ):void{
+        this._mdDialogRef = this._mdDialog.open( SendOrderConfirmComponent, {
             disableClose : true,
             width: '50%',
             height: '90%'

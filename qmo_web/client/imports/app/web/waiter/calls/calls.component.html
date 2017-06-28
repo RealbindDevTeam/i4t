@@ -35,10 +35,9 @@
                                 <p style="margin-bottom: 0px; margin-top: 0px;" *ngIf="_call.type === 'CALL_OF_CUSTOMER'">{{ 'WAITER_CALL.CALL_LABEL_CUSTOMER' | translate }}</p>
                                 <p style="margin-bottom: 0px; margin-top: 0px;" *ngIf="_call.type === 'PAYMENT'">{{ 'WAITER_CALL.CALL_LABEL_CUSTOMER_PAYMENT' | translate }}</p>
                             </div>
-                            <button md-raised-button *ngIf="_call.type === 'SEND_ORDER' || _call.type === 'CALL_OF_CUSTOMER'" (click)="showConfirm(_call)" style="background-color: #679436; color: #eee">
-                                {{ 'CLOSE' | translate }}
-                            </button>
+                            <button md-raised-button *ngIf="_call.type === 'CALL_OF_CUSTOMER'" (click)="showConfirm(_call)" style="background-color: #679436; color: #eee">{{ 'CLOSE' | translate }}</button>
                             <button md-raised-button *ngIf="_call.type === 'PAYMENT'" (click)="showPayment(_call)" style="background-color: #679436; color: #eee">{{ 'VIEW_DETAIL' | translate }}</button>
+                            <button md-raised-button *ngIf="_call.type === 'SEND_ORDER'" (click)="showSendOrder(_call)" style="background-color: #679436; color: #eee">{{ 'VIEW_DETAIL' | translate }}</button>
                         </div>
                     </div>
                 </md-card-content>
