@@ -66,6 +66,7 @@ import { SupervisorDashboardComponent } from './supervisor-dashboard/supervisor-
 import { MonthlyConfigComponent } from './restaurant/monthly-config/monthly-config.component';
 import { RestaurantListComponent } from './restaurant/monthly-config/restaurant-list.component';
 import { EnableDisableComponent } from './restaurant/monthly-config/enable-disable.component'; 
+import { DisableConfirmComponent } from './restaurant/monthly-config/disable-confirm/disable-confirm.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -135,7 +136,8 @@ export const MODAL_DIALOG_DECLARATIONS = [
     OrderToTranslateComponent,
     ColombiaPaymentDetailComponent,
     CreateConfirmComponent,
-    PaymentConfirmComponent
+    PaymentConfirmComponent,
+    DisableConfirmComponent
     /*
     CollaboratorsEditionComponent,
     */

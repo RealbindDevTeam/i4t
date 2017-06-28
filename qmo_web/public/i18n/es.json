@@ -67,10 +67,10 @@
         "MAX_LENGTH_PASSWORD": "La contraseña debe tener maximo 20 caracteres",
         "REQUIRED_CONFIRM": "Debe confirmar la contraseña",
         "PASSWORD_NOT_MATCH": "Las contraseñas no coinciden",
-        "LABEL_LEGAL" : "Al dar clic en 'Registrarse', ",
-        "LABEL_LEGAL_END" : "aceptas los terminos y condiciones.",
-        "SLOGAN" : "Slogan",
-        "OR":"ó"
+        "LABEL_LEGAL": "Al dar clic en 'Registrarse', ",
+        "LABEL_LEGAL_END": "aceptas los terminos y condiciones.",
+        "SLOGAN": "Slogan",
+        "OR": "ó"
     },
     "SIGNIN": {
         "EMAIL_USERNAME": "Correo electronico/Nombre usuario",
@@ -106,8 +106,7 @@
         "SECTION_EDITED": "Seccion Editada Correctamente",
         "THERE_NOT_RESTAURANTS": "Aún no hay restaurantes registrados",
         "RESTAURANT_REGISTER": "Registrar restaurante",
-        "MESSAGE": "Regístra uno para habilitar esta opción",
-        "INITIAL_TABLES_NUMBER": "Número inicial de mesas"
+        "MESSAGE": "Regístra uno para habilitar esta opción"
     },
     "CATEGORIES": {
         "CATEGORIES_CREATION": "Creación de categorias",
@@ -808,6 +807,11 @@
         "DESC_ADD_TABLES": "Ingresa el número de mesas a crear",
         "ACTIVE_INACTIVE_REST": "Activar/Inactivar Restaurante y Mesas",
         "ACTIVE_INACTIVE_REST_DESC": "Inactiva el restaurante si no deseas que se siga realizando cobro",
-        "TABLE_ENUM": "Mesa # "
+        "TABLE_ENUM": "Mesa # ",
+        "ACTIVATE_RES": "ACTIVAR",
+        "INACTIVATE_RES": "INACTIVAR",
+        "DIALOG_ACTIVATE": "Activar Restaurante",
+        "DIALOG_INACTIVATE": "Inactivar Restaurante",
+        "DIALOG_SURE_ACTION": "Estas seguro que quieres realizar esta acción?"
     }
 }

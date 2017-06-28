@@ -25,7 +25,6 @@ import { FinancialDropDown } from '../../../../../../../both/shared-components/r
 import { FinancialTextBox } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-textbox';
 import { FinancialText } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-text';
 import { FinancialSlider } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-slider';
-import { PayuPaymenteService } from './payment-plan/payu-payment.service';
 import { CreateConfirmComponent } from './create-confirm/create-confirm.component';
 import { Table } from '../../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
@@ -86,7 +85,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _loading: boolean;
     private _mdDialogRef: MdDialogRef<any>;
 
-
     /**
      * RestaurantRegisterComponent constructor
      * @param {FormBuilder} _formBuilder
@@ -95,7 +93,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * @param {Router} _router
      */
     constructor(private _formBuilder: FormBuilder, private _translate: TranslateService, private _ngZone: NgZone, private _router: Router,
-        private payuPayment: PayuPaymenteService, public _mdDialog: MdDialog) {
+        public _mdDialog: MdDialog) {
         var _userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang('en');
         _translate.use(_userLang);
@@ -107,29 +105,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._createImage = false;
 
         this.align = "";
-
-
-        this.payuPayment.getPosts().subscribe(
-            posts => {
-                this.post = posts;
-                console.log('>>>>>');
-                console.log(this.post);
-            },
-            error => {
-                console.log(error);
-            }
-        );
-
-        this.payuPayment.getPlans().subscribe(
-            plans => {
-                this.planObj = plans;
-                console.log('>>>>>');
-                console.log(this.planObj);
-            },
-            error => {
-                console.log(error);
-            }
-        );
     }
 
     /**

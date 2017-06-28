@@ -63,7 +63,6 @@ export class MonthlyConfigComponent implements OnInit, OnDestroy {
     }
 
     goToEnableDisable(event) {
-        console.log('desde config > ' + event);
         this._restaurantId = event;
         this._showEnableDisable = true;
         this._showRestaurantList = false;

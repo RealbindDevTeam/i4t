@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { MdSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -7,6 +8,7 @@ import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
 import { generateQRCode, createTableCode } from '../../../../../../both/methods/restaurant/restaurant.methods';
+import { DisableConfirmComponent } from './disable-confirm/disable-confirm.component';
 
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
@@ -38,7 +40,9 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
     private restaurantCode: string = '';
     private tables_count: number = 0;
 
-    constructor(private translate: TranslateService, private _router: Router, public snackBar: MdSnackBar) {
+    private _mdDialogRef: MdDialogRef<any>;
+
+    constructor(private translate: TranslateService, private _router: Router, public snackBar: MdSnackBar, public _mdDialog: MdDialog) {
         var userLang = navigator.language.split('-')[0];
         translate.setDefaultLang('en');
         translate.use(userLang);
@@ -116,7 +120,7 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
             }
             this._tableForm.reset();
             this.snackBar.open('Mesas creadas', '', {
-                duration: 1000,
+                duration: 1500,
             });
         }
     }
@@ -134,16 +138,64 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
     }
 
     /**
- * This function gets the table status
- * @param {Restaurant} _restaurant
- * @return {string}
- */
+     * This function gets the table status
+     * @param {Restaurant} _restaurant
+     * @return {string}
+     */
     getTableStatus(_table: Table): string {
         if (_table.is_active === true) {
             return 'MONTHLY_CONFIG.STATUS_ACTIVE';
         } else {
             return 'MONTHLY_CONFIG.STATUS_INACTIVE';
         }
+    }
+
+    /**
+     * This function update table status
+     * @param {Table} _table
+     */
+    updateTableStatus(_table: Table) {
+        Tables.update({ _id: _table._id }, {
+            $set: {
+                is_active: !_table.is_active,
+                modification_date: new Date(),
+                modification_user: Meteor.userId()
+            }
+        });
+    }
+
+    /**
+     * This function update restaurant status
+     * @param {Restaurant} _restaurant
+     */
+    updateStatus(_restaurant: Restaurant) {
+
+        let titleMsg: string;
+
+        if (_restaurant.isActive) {
+            titleMsg = 'MONTHLY_CONFIG.DIALOG_INACTIVATE';
+        } else {
+            titleMsg = 'MONTHLY_CONFIG.DIALOG_ACTIVATE';
+        }
+
+        this._mdDialogRef = this._mdDialog.open(DisableConfirmComponent, {
+            disableClose: true,
+            data: titleMsg
+        });
+
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+
+            if (result.success) {
+                Restaurants.update({ _id: _restaurant._id }, {
+                    $set: {
+                        isActive: !_restaurant.isActive,
+                        modification_user: Meteor.userId(),
+                        modification_date: new Date()
+                    }
+                });
+            }
+        });
     }
 
     cancel(): void {

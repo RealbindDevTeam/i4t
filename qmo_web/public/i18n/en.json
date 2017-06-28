@@ -807,6 +807,11 @@
         "DESC_ADD_TABLES": "Enter the tables number to create",
         "ACTIVE_INACTIVE_REST": "Active/Inactive Restaurant and Tables",
         "ACTIVE_INACTIVE_REST_DESC": "Inactivates the restaurant if you do not want to be charged",
-        "TABLE_ENUM": "Table # "
+        "TABLE_ENUM": "Table # ",
+        "ACTIVATE_RES": "ACTIVATE",
+        "INACTIVATE_RES": "INACTIVATE",
+        "DIALOG_ACTIVATE": "Activate Restaurant",
+        "DIALOG_INACTIVATE": "Inactivate Restaurant",
+        "DIALOG_SURE_ACTION": "Are you sure you want to do this action?"
     }
 }
