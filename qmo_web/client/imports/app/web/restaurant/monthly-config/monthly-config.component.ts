@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
@@ -26,7 +27,7 @@ export class MonthlyConfigComponent implements OnInit, OnDestroy {
     private _parameterSub: Subscription;
     private _restaurantId: string = "";
 
-    constructor(private translate: TranslateService) {
+    constructor(private translate: TranslateService, private _router: Router,) {
         var userLang = navigator.language.split('-')[0];
         translate.setDefaultLang('en');
         translate.use(userLang);
@@ -58,6 +59,10 @@ export class MonthlyConfigComponent implements OnInit, OnDestroy {
     goToRestaurantList(event) {
         this._showEnableDisable = false;
         this._showRestaurantList = event;
+    }
+
+    goToAddRestaurant(){
+        this._router.navigate(['/app/restaurantRegister']);
     }
 
     ngOnDestroy() {
