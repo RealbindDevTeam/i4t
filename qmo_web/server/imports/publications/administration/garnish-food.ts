@@ -11,7 +11,7 @@ import { check } from 'meteor/check';
  */
 Meteor.publish('garnishFood', function (_userId: string) {
     check(_userId, String);
-    return GarnishFoodCol.collection.find({ creation_user: _userId, is_active: true });
+    return GarnishFoodCol.collection.find({ creation_user: _userId });
 });
 
 /**

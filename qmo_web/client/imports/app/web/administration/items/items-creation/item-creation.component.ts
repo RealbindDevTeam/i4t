@@ -339,22 +339,22 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
             });
         }
 
-        if( GarnishFoodCol.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).zone().isEmpty ){
+        if( GarnishFoodCol.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds }, is_active: true } ).zone().isEmpty ){
             this._showGarnishFood = true;
-            GarnishFoodCol.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).fetch().forEach( ( gar ) => {
+            GarnishFoodCol.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds }, is_active: true } ).fetch().forEach( ( gar ) => {
                 let control: FormControl = new FormControl( false );
                 this._garnishFormGroup.addControl( gar._id, control );
             });
-            this._garnishFood = GarnishFoodCol.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).fetch();
+            this._garnishFood = GarnishFoodCol.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds }, is_active: true } ).fetch();
         }
 
-        if( Additions.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).zone().isEmpty ){
+        if( Additions.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds }, is_active: true } ).zone().isEmpty ){
             this._showAdditions = true;
-            Additions.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).fetch().forEach( ( ad ) => {
+            Additions.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds }, is_active: true } ).fetch().forEach( ( ad ) => {
                 let control: FormControl = new FormControl( false );
                 this._additionsFormGroup.addControl( ad._id, control );
             });
-            this._additions = Additions.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).fetch();
+            this._additions = Additions.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds }, is_active: true } ).fetch();
         }
     }
 

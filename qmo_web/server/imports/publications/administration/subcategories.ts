@@ -10,7 +10,7 @@ import { check } from 'meteor/check';
  */
 Meteor.publish( 'subcategories', function( _userId:string ){
     check( _userId, String );
-    return Subcategories.collection.find( { creation_user: _userId, is_active: true } );
+    return Subcategories.collection.find( { creation_user: _userId } );
 });
 
 /**

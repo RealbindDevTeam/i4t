@@ -231,6 +231,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                            } 
                          );
             this._showOrderItemDetail = false;
+            this._currentOrder = Orders.findOne( { _id: this._currentOrder._id } );
             this.viewItemDetail( true );
             let _lMessage:string = this.itemNameTraduction( 'ORDER_LIST.ITEM_DELETED' );
             this.snackBar.open( _lMessage, '',{
@@ -256,6 +257,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                                     } 
                             } 
                         );
+            this._currentOrder = Orders.findOne( { _id: this._currentOrder._id } );
             this.viewAdditionDetail( true );
             let _lMessage:string = this.itemNameTraduction( 'ORDER_LIST.ADDITION_DELETED' );
             this.snackBar.open( _lMessage, '',{
@@ -612,7 +614,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         let _lOrderAdditionToremove:OrderAddition = this._currentOrder.additions.filter( ad => ad.additionId === _lOrderAddition.additionId )[0];
         let _lNewTotalPayment:number = this._currentOrder.totalPayment - _lOrderAdditionToremove.paymentAddition;
 
-        Orders.update( { _id: this._currentOrder._id },{ $pull: { additions:{ additionId: _lOrderAddition.additionId } } } );
+        Orders.update( { _id: this._currentOrder._id },{ $pull: { additions:{ additionId: _lOrderAdditionToremove.additionId } } } );
         Orders.update( { _id: this._currentOrder._id }, 
                         { $set: { totalPayment: _lNewTotalPayment, 
                                   modification_user: this._user, 
