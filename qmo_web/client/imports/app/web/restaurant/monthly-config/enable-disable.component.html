@@ -1,7 +1,10 @@
 <div *ngFor="let restaurant of _restaurants | async">
-
     <md-card>
-        <md-card-title>{{'MONTHLY_CONFIG.ACTIVE_INACTIVE_REST' | translate}}</md-card-title>
+        <md-card-title>{{'MONTHLY_CONFIG.ACTIVE_INACTIVE_REST' | translate}}
+            <button md-fab style="float:right" (click)="backToList()">
+                <md-icon style="color: white;">chevron_left</md-icon>
+            </button>
+        </md-card-title>
         <md-card-subtitle>{{'MONTHLY_CONFIG.ACTIVE_INACTIVE_REST_DESC' | translate}}</md-card-subtitle>
         <md-card-content>
             <label style="margin-right: 20px">{{restaurant.name}}</label>
@@ -44,4 +47,10 @@
         {{'MONTHLY_CONFIG.TABLE_ENUM' | translate}} {{table._number}}
         <md-slide-toggle [(checked)]="table.is_active" (change)="updateTableStatus(table)">{{getTableStatus(table) | translate}}</md-slide-toggle>
     </md-card>
+
+    <div *ngIf="false" class="fixed-action-btn">
+        <button md-fab style="float:right" (click)="backToList()">
+            <md-icon style="color: white;">chevron_left</md-icon>
+        </button>
+    </div>
 </div>

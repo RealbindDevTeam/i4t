@@ -277,7 +277,8 @@
         "MORE": "más",
         "RESTAURANT_CREATION": "Creación de restaurante",
         "ACTIVATION_MESSAGE": "Se activará el cobro mensual del servicio Iurest por restaurante",
-        "CLARIFICATION_MESSAGE": "Iurest realiza el cobro de servicio el 1er día de cada mes, el primer cobro es sobre el ",
+        "CLARIFICATION_MESSAGE_1": "Iurest realiza el cobro de servicio el ",
+        "CLARIFICATION_MESSAGE_2": " día de cada mes, el primer cobro es sobre el ",
         "ACCEPT_CREATION": "Aceptar",
         "CANCEL_CREATION": "Cancelar",
         "INITIAL_TABLES_NUMBER": "Número inicial de mesas"
@@ -812,7 +813,7 @@
         "CONFIG": "Configuración",
         "STATUS_ACTIVE": "Activo",
         "STATUS_INACTIVE": "Inactivo",
-        "BTN_EDIT": "Editar",
+        "BTN_EDIT": "Configurar",
         "ADD_TABLES": "Agregar mesas",
         "DESC_ADD_TABLES": "Ingresa el número de mesas a crear",
         "ACTIVE_INACTIVE_REST": "Activar/Inactivar Restaurante y Mesas",

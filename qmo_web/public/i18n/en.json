@@ -277,7 +277,8 @@
         "MORE": "more",
         "RESTAURANT_CREATION": "Restaurant creation",
         "ACTIVATION_MESSAGE": "Se activará el cobro mensual del servicio Iurest por restaurante",
-        "CLARIFICATION_MESSAGE": "Iurest performs the service charge on the 1st day of each month, the first charge is over ",
+        "CLARIFICATION_MESSAGE_1": "Iurest performs the service charge on the " ,
+        "CLARIFICATION_MESSAGE_2": " day of each month, the first charge is over",
         "ACCEPT_CREATION": "Accept",
         "CANCEL_CREATION": "Cancel",
         "INITIAL_TABLES_NUMBER": "Initial tables number"
@@ -812,7 +813,7 @@
         "CONFIG": "Configuration",
         "STATUS_ACTIVE": "Active",
         "STATUS_INACTIVE": "Inactive",
-        "BTN_EDIT": "Edit",
+        "BTN_EDIT": "Configure",
         "ADD_TABLES": "Add tables",
         "DESC_ADD_TABLES": "Enter the tables number to create",
         "ACTIVE_INACTIVE_REST": "Active/Inactive Restaurant and Tables",

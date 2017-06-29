@@ -6,7 +6,7 @@
             <md-toolbar color="primary">
                 <span>{{getCountryByCurrency(currency._id) | translate}}</span>
             </md-toolbar>
-            <table class="striped" width="100%" style="border:0.5px solid; border-color: lightgrey">
+            <table class="striped" width="100%" style="border:0.5px solid; border-color: lightgrey; margin-bottom: 20px">
                 <thead>
                     <tr>
                         <th data-field="name_restaurant" style="width: 60%">{{'MONTHLY_CONFIG.REST_NAME' | translate}}</th>
@@ -23,7 +23,7 @@
                         <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">{{getActiveTables(restaurant)}}</td>
                         <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">{{getRestaurantStatus(restaurant) | translate}}</td>
                         <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">
-                            <button md-raised-button [disabled]="!restaurant.freeDays || !validatePeriodDays()" (click)="goToEnableDisable(restaurant._id)">{{'MONTHLY_CONFIG.BTN_EDIT' | translate}}</button>
+                            <button md-raised-button [disabled]="!validatePeriodDays() && !restaurant.freeDays" (click)="goToEnableDisable(restaurant._id)">{{'MONTHLY_CONFIG.BTN_EDIT' | translate}}</button>
                         </td>
                     </tr>
                 </tbody>

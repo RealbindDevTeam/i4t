@@ -55,9 +55,9 @@ export class MonthlyConfigComponent implements OnInit, OnDestroy {
      * This function go torestaurant list component
      * @param {$event} event
      */
-    goToRestaurantList($event) {
+    goToRestaurantList(event) {
         this._showEnableDisable = false;
-        this._showRestaurantList = true;
+        this._showRestaurantList = event;
     }
 
     ngOnDestroy() {

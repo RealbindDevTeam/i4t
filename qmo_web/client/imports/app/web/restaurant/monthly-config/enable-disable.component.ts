@@ -228,6 +228,12 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * This function back to de restaurant list
+     */
+    backToList() {
+        this.restaurantStatus.emit(true);
+    }
+    /**
      * This function cleans the tables_number fields form
      */
     cancel(): void {
