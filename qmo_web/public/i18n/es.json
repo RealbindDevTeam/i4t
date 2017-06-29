@@ -823,13 +823,17 @@
         "DIALOG_ACTIVATE": "Activar Restaurante",
         "DIALOG_INACTIVATE": "Inactivar Restaurante",
         "DIALOG_SURE_ACTION": "Estas seguro que quieres realizar esta acción?",
+        "RESTAURANT_MODIFIED": "Restaurante modificado",
+        "TABLES_CREATE": "Mesas creadas",
+        "TABLE_MODIFIED": "Mesa modificada"
+    },
     "SEND_ORDER": {
         "ORDER": "Orden",
         "TABLE": "Mesa",
         "CODE": "Código: ",
         "CUSTOMER": "Cliente",
         "OBSERVATIONS": "Observaciones",
-        "NO_GARNISH_FOOD":"Sin Guarniciones",
+        "NO_GARNISH_FOOD": "Sin Guarniciones",
         "GARNISH_FOOD": "Guarniciones",
         "NO_ADDITIONS": "Sin Adiciones",
         "ADDITIONS": "Adiciones",

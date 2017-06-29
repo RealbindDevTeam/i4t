@@ -1,8 +1,7 @@
-import { Component, OnInit, OnDestroy, Input, Output } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { MdSnackBar } from '@angular/material';
-import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
@@ -31,6 +30,9 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
     @Input()
     restaurantId: string;
 
+    @Output('gotorestaurantlist')
+    restaurantStatus: EventEmitter<any> = new EventEmitter<any>();
+
     private _tableForm: FormGroup;
     private _restaurants: Observable<Restaurant[]>;
     private _restaurantSub: Subscription;
@@ -42,7 +44,7 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
 
     private _mdDialogRef: MdDialogRef<any>;
 
-    constructor(private translate: TranslateService, private _router: Router, public snackBar: MdSnackBar, public _mdDialog: MdDialog) {
+    constructor(private translate: TranslateService, public snackBar: MdSnackBar, public _mdDialog: MdDialog) {
         var userLang = navigator.language.split('-')[0];
         translate.setDefaultLang('en');
         translate.use(userLang);
@@ -61,12 +63,12 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
         });
     }
 
-    changeRestaurant(_pRestaurant) {
-        this.selectedRestaurantValue = _pRestaurant;
-        this._tableForm.controls['restaurant'].setValue(_pRestaurant);
-    }
-
+    /**
+     * This function adds the number indicated of tables to the restaurant
+     */
     addTables() {
+        let snackMsg: string = this.itemNameTraduction('MONTHLY_CONFIG.TABLES_CREATE');
+
         if (!Meteor.userId()) {
             alert('Please log in to add a restaurant');
             return;
@@ -119,12 +121,16 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
                 Restaurants.update({ _id: this.restaurantId }, { $set: { tables_quantity: _lRestau.tables_quantity + (_i + 1) } })
             }
             this._tableForm.reset();
-            this.snackBar.open('Mesas creadas', '', {
+            this.snackBar.open(snackMsg, '', {
                 duration: 1500,
             });
         }
     }
 
+    /**
+     * This function generates de table code
+     * @return {string}
+     */
     generateTableCode(): string {
         let _lCode: string = '';
 
@@ -139,7 +145,7 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
 
     /**
      * This function gets the table status
-     * @param {Restaurant} _restaurant
+     * @param {Table} _table
      * @return {string}
      */
     getTableStatus(_table: Table): string {
@@ -151,10 +157,11 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * This function update table status
+     * This function updates table status
      * @param {Table} _table
      */
     updateTableStatus(_table: Table) {
+        let snackMsg: string = this.itemNameTraduction('MONTHLY_CONFIG.TABLE_MODIFIED');
         Tables.update({ _id: _table._id }, {
             $set: {
                 is_active: !_table.is_active,
@@ -162,15 +169,19 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
                 modification_user: Meteor.userId()
             }
         });
+        this.snackBar.open(snackMsg, '', {
+            duration: 1000,
+        });
     }
 
     /**
-     * This function update restaurant status
+     * This function updates restaurant status and goes to restaurant list component
      * @param {Restaurant} _restaurant
      */
     updateStatus(_restaurant: Restaurant) {
 
         let titleMsg: string;
+        let snackMsg: string = this.itemNameTraduction('MONTHLY_CONFIG.RESTAURANT_MODIFIED');
 
         if (_restaurant.isActive) {
             titleMsg = 'MONTHLY_CONFIG.DIALOG_INACTIVATE';
@@ -194,10 +205,31 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
                         modification_date: new Date()
                     }
                 });
+                this.restaurantStatus.emit(true);
+
+                this.snackBar.open(snackMsg, '', {
+                    duration: 1500,
+                });
             }
         });
     }
 
+    /**
+     * This function cleans the tables_number fields form
+     * @param {string} itemName
+     * @return {string}
+     */
+    itemNameTraduction(itemName: string): string {
+        var wordTraduced: string;
+        this.translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res;
+        });
+        return wordTraduced;
+    }
+
+    /**
+     * This function cleans the tables_number fields form
+     */
     cancel(): void {
         if (this.selectedRestaurantValue !== "") { this.selectedRestaurantValue = ""; }
         this._tableForm.controls['tables_number'].reset();

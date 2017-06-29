@@ -63,7 +63,6 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
         this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
         this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
         this._firstNextMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 1);
-        this._maxPaymentDay = new Date(this._firstMonthDay);
     }
 
     /**
@@ -243,6 +242,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
      * @return {Date}
      */
     getMaxPaymentDay(): Date {
+        this._maxPaymentDay = new Date(this._firstMonthDay);
         let endDay = Parameters.findOne({ name: 'end_payment_day' });
         if (endDay) {
             this._maxPaymentDay.setDate(this._maxPaymentDay.getDate() + (Number(endDay.value) - 1));

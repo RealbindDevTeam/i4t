@@ -14,6 +14,8 @@ import { Currencies } from '../../../../../../both/collections/general/currency.
 import { Currency } from '../../../../../../both/models/general/currency.model';
 import { Countries } from '../../../../../../both/collections/settings/country.collection';
 import { Country } from '../../../../../../both/models/settings/country.model';
+import { Parameters } from '../../../../../../both/collections/general/parameter.collection';
+import { Parameter } from '../../../../../../both/models/general/parameter.model';
 
 import template from './restaurant-list.component.html';
 import style from './restaurant-list.component.scss';
@@ -37,6 +39,9 @@ export class RestaurantListComponent implements OnInit, OnDestroy {
     private _tables: Observable<Table[]>;
     private _tableSub: Subscription;
     private _countrySub: Subscription;
+    private _currentDate: Date;
+    private _parameters: Observable<Parameter[]>;
+    private _parameterSub: Subscription;
 
     constructor(private translate: TranslateService, private _router: Router) {
         var userLang = navigator.language.split('-')[0];
@@ -59,11 +64,15 @@ export class RestaurantListComponent implements OnInit, OnDestroy {
             this._currencies = Currencies.find({}).zone();
         });
         this._countrySub = MeteorObservable.subscribe('countries').subscribe();
+        this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
+
+        this._currentDate = new Date(2017, 5, 3);
     }
 
     /**
-    * This function gets the coutry accordint to currency
+    * This function gets the coutry according to currency
     * @param {string} _currencyId
+    * @return {string}
     */
     getCountryByCurrency(_currencyId: string): string {
         let country_name: Country;
@@ -118,8 +127,31 @@ export class RestaurantListComponent implements OnInit, OnDestroy {
         }
     }
 
-    goToEnableDisable(restaurantId: string){
+    /**
+     * This function goes to the enable disable component
+     * @param {string} _restaurant
+     */
+    goToEnableDisable(restaurantId: string) {
         this.restaurantId.emit(restaurantId);
+    }
+
+    /**
+     * This function validate the current day to return or not the customer payment
+     * @return {boolean}
+     */
+    validatePeriodDays(): boolean {
+        let startDay = Parameters.findOne({ name: 'start_payment_day' });
+        let endDay = Parameters.findOne({ name: 'end_payment_day' });
+        let currentDay = this._currentDate.getDate();
+        let restaurants = Restaurants.collection.find({ creation_user: Meteor.userId() }).fetch();
+
+        if (startDay && endDay && restaurants) {
+            if (currentDay >= Number(startDay.value) && currentDay <= Number(endDay.value) && (restaurants.length > 0)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
     ngOnDestroy() {
@@ -127,5 +159,6 @@ export class RestaurantListComponent implements OnInit, OnDestroy {
         this._tableSub.unsubscribe();
         this._currencySub.unsubscribe();
         this._countrySub.unsubscribe();
+        this._parameterSub.unsubscribe();
     }
 }

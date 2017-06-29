@@ -22,4 +22,4 @@
 </md-card>
 
 <restaurant-list *ngIf="(_restaurants | async)?.length > 0 && _showRestaurantList" (gotoenabledisabled)="goToEnableDisable($event)"></restaurant-list>
-<enable-disable *ngIf="(_restaurants | async)?.length > 0 && _showEnableDisable" [restaurantId]="_restaurantId"></enable-disable>
+<enable-disable *ngIf="(_restaurants | async)?.length > 0 && _showEnableDisable" [restaurantId]="_restaurantId" (gotorestaurantlist)="goToRestaurantList($event)"></enable-disable>

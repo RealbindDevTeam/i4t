@@ -67,10 +67,10 @@
         "MAX_LENGTH_PASSWORD": "Your password cannot exceed 20 characteres long",
         "REQUIRED_CONFIRM": "Your must confirm password",
         "PASSWORD_NOT_MATCH": "Passwords doesn't match",
-        "LABEL_LEGAL" : "By clicking on 'Register', ",
-        "LABEL_LEGAL_END" : "you accept the terms and conditions.",
-        "SLOGAN" : "Slogan",
-        "OR":"or"
+        "LABEL_LEGAL": "By clicking on 'Register', ",
+        "LABEL_LEGAL_END": "you accept the terms and conditions.",
+        "SLOGAN": "Slogan",
+        "OR": "or"
     },
     "SIGNIN": {
         "EMAIL_USERNAME": "Email/Username",
@@ -823,13 +823,17 @@
         "DIALOG_ACTIVATE": "Activate Restaurant",
         "DIALOG_INACTIVATE": "Inactivate Restaurant",
         "DIALOG_SURE_ACTION": "Are you sure you want to do this action?",
+        "RESTAURANT_MODIFIED": "Modified restaurant",
+        "TABLES_CREATE": "Created tables",
+        "TABLE_MODIFIED": "Modified table"
+    },
     "SEND_ORDER": {
         "ORDER": "Order",
         "TABLE": "Table",
         "CODE": "Code: ",
         "CUSTOMER": "Customer",
         "OBSERVATIONS": "Observations",
-        "NO_GARNISH_FOOD":"No Garnish Food",
+        "NO_GARNISH_FOOD": "No Garnish Food",
         "GARNISH_FOOD": "Garnish Food",
         "NO_ADDITIONS": "No Additions",
         "ADDITIONS": "Additions",

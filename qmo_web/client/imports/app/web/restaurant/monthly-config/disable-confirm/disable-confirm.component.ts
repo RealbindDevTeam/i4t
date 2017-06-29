@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit, OnDestroy, Inject } from '@angular/core';
+import { Component, NgZone, Inject } from '@angular/core';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { MeteorObservable } from "meteor-rxjs";
 import { Observable, Subscription } from 'rxjs';
@@ -12,7 +12,7 @@ import style from './disable-confirm.component.scss';
     styles: [style]
 })
 
-export class DisableConfirmComponent implements OnInit, OnDestroy {
+export class DisableConfirmComponent {
 
     /**
      * CallCloseConfirmComponent constructor
