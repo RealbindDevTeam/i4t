@@ -23,6 +23,7 @@ export class OrdersPage implements OnInit, OnDestroy {
     private _userDetail;
     private _userDetailSub: Subscription;
     private _orders;
+    private _allOrders;
     private _ordersSub: Subscription;
     private _restaurants;
     private _restaurantSub: Subscription;
@@ -46,7 +47,7 @@ export class OrdersPage implements OnInit, OnDestroy {
         _translate.use(this._userLang);
         this._currentUserId = Meteor.userId();
         this._statusArray = ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED'];
-        this.selected = "me";
+        this.selected = "all";
     }
 
     ngOnInit() {
@@ -57,7 +58,8 @@ export class OrdersPage implements OnInit, OnDestroy {
         this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
 
         this._ordersSub = MeteorObservable.subscribe('getOrdersByUserId', Meteor.userId(), this._statusArray).subscribe(() => {
-            this._orders = Orders.find({ creation_user: this._currentUserId, status: { $in: this._statusArray } });
+            this._orders = Orders.find({ status: { $in: this._statusArray } });
+            this._allOrders = Orders.find({ status: { $in: this._statusArray } });
         });
         this._itemsSub = MeteorObservable.subscribe('itemsByUser', Meteor.userId()).subscribe(() => {
             this._items = Items.find({});
@@ -104,7 +106,8 @@ export class OrdersPage implements OnInit, OnDestroy {
         this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
 
         this._ordersSub = MeteorObservable.subscribe('getOrdersByUserId', Meteor.userId(), this._statusArray).subscribe(() => {
-            this._orders = Orders.find({ creation_user: this._currentUserId, status: { $in: this._statusArray } });
+            this._orders = Orders.find({ status: { $in: this._statusArray } });
+            this._allOrders = Orders.find({ status: { $in: this._statusArray } });
         });
         this._itemsSub = MeteorObservable.subscribe('itemsByUser', Meteor.userId()).subscribe(() => {
             this._items = Items.find({});

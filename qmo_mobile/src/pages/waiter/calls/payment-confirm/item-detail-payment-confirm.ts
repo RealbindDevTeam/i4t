@@ -11,6 +11,7 @@ import { Items } from 'qmo_web/both/collections/administration/item.collection';
 export class ItemDetailPaymentConfirmComponent implements OnInit, OnDestroy {
 
   @Input() itemId      : string;
+  @Input() currency    : string;
   @Input() quantity    : number;
   @Input() paymentItem : number;
 

@@ -3,14 +3,12 @@ import { AlertController, LoadingController, NavParams, NavController, ToastCont
 import { TranslateService } from 'ng2-translate';
 import { MeteorObservable } from "meteor-rxjs";
 import { Subscription } from "rxjs";
-import { Account } from 'qmo_web/both/models/restaurant/account.model';
 import { Payment } from 'qmo_web/both/models/restaurant/payment.model';
-import { Accounts } from 'qmo_web/both/collections/restaurant/account.collection';
 import { Payments } from 'qmo_web/both/collections/restaurant/payment.collection';
+import { Currencies } from 'qmo_web/both/collections/general/currency.collection';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 import { Users } from 'qmo_web/both/collections/auth/user.collection';
-import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
 import { WaiterCallDetail } from 'qmo_web/both/models/restaurant/waiter-call-detail.model';
 
 @Component({
@@ -23,13 +21,15 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
   private _paymentsSubscription     : Subscription;
   private _ordersSubscription       : Subscription;
   private _tablesSubscription       : Subscription;
+  private _currencySubscription     : Subscription;
   private _call                 : WaiterCallDetail;
   private _payments             : any;
   private _orders               : any;
   private _paymentsToPay        : any;
-  private _user                 : any;
+  private _table                : any;
   private _restauranId          : string;
   private _tableId              : string;
+  private _currencyCode         : string;
   private _totalPayment         : number = 0;
   private _ordersTotalPay       : number = 0;
 
@@ -55,6 +55,7 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
   ngOnInit(){
     this._usersDetailSubscription = MeteorObservable.subscribe('getUsers').subscribe();
     this._tablesSubscription = MeteorObservable.subscribe('getTablesByRestaurant', this._restauranId).subscribe();
+    this._currencySubscription = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', [ this._restauranId ] ).subscribe();
 
     this._ordersSubscription = MeteorObservable.subscribe('getOrdersByTableId',this._restauranId, this._tableId, ['ORDER_STATUS.DELIVERED']).subscribe(()=>{
       this._orders = Orders.find({});
@@ -74,6 +75,8 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
         this.totalPayment();
       });
     });
+
+    this._table = Tables.collection.find({_id : this._tableId}).fetch()[0];
   }
 
   /**
@@ -87,6 +90,16 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
   }
 
   /**
+   * This function allow get currency code
+   * @param _currencyId 
+   */
+  getCurrency ( _currencyId : string ){
+    let _currency = Currencies.collection.find({_id : _currencyId}).fetch()[0];
+    this._currencyCode = _currency.code;
+    return this._currencyCode;
+  }
+
+  /**
    * Calculate the payment total
    */
   totalPayment(){
@@ -94,15 +107,6 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
     Payments.find({restaurantId : this._restauranId, tableId : this._tableId}).fetch().forEach((pay)=>{
       this._totalPayment += pay.totalToPayment;
     });
-  }
-
-  /**
-   * This function allow get table number
-   * @param _table_id 
-   */
-  getTable ( _table_id : string ){
-    let table = Tables.collection.find({_id : _table_id}).fetch()[0];
-    return table._number;
   }
 
   /**
@@ -125,9 +129,9 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
     if(this._paymentsToPay.count() > 0){
         this.showComfirmPay();
       } else {
+        let msg = this.itemNameTraduction('MOBILE.PAYMENTS.PAY_CONFIRM_MODAL'); 
         let alert = this._alertCtrl.create({
-          title: 'New Friend!',
-          subTitle: 'Your friend, Obi wan Kenobi, just accepted your friend request!',
+          subTitle: msg,
           buttons: ['OK']
         });
         alert.present();
@@ -213,12 +217,22 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
   }
 
   /**
+   * 
+   */
+  receivedAllPayments(event : any){
+    Payments.find({restaurantId : this._restauranId, tableId : this._tableId}).fetch().forEach((pay)=>{
+      Payments.update({ _id : pay._id }, { $set : { received : event.checked } });
+    });
+  }
+
+  /**
    * Set to Payment received value
    * @param _pay 
    */
   received ( _pay : Payment ) {
     Payments.update({ _id : _pay._id }, { $set : { received : !_pay.received } });
   }
+
 
   /**
    * ngOnDestroy Implementation
@@ -228,6 +242,7 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
     this._paymentsSubscription.unsubscribe();
     this._ordersSubscription.unsubscribe();
     this._tablesSubscription.unsubscribe();
+    this._currencySubscription.unsubscribe();
   }
 
 }

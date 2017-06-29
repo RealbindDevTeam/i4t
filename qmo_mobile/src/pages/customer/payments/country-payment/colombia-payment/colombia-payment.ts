@@ -44,7 +44,7 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
   private _userLang       : string;
   private _currencyCode   : string;
   private _type           : string = "PAYMENT";
-  private _paymentMethod  : string = "MOBILE.PAYMENTS.PAYMENT_METHOD";
+  private _paymentMethod  : string = "PAYMENT_METHODS.CASH";
   private _paymentCreated : boolean = false;
 
   constructor(public _navCtrl     : NavController, 

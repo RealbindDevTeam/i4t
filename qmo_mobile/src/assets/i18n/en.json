@@ -182,7 +182,10 @@
             "SUCCESSFUL_PAY_OTHER_USER" : "Payment of order has been transferred",
             "PAYMENTS_TO_BE_CONFIRM" : "You have pending orders by confirmation",
             "MOMENT_ANSWER" : "In a moment we will answer you",
-            "MOMENT_PAY_ANSWER" : "In a moment we will receive your payment"
+            "MOMENT_PAY_ANSWER" : "In a moment we will receive your payment",
+            "PAY_CONFIRM_MODAL" : "No payments received",
+            "SELECT_ALL_PAYMENTS" : "Select all payments",
+            "PAY_PENDING" : "Payment pending to receive"
         },
         "WAITER_CALL": {
             "TITTLE": "Call waiter",
@@ -201,8 +204,9 @@
             "CALL_LABEL_CUSTOMER" : "Customer's call",
             "CALL_LABEL_CUSTOMER_PAYMENT" : "Customer's payment",
             "PAY_CONFIRM" : "Payment confirm",
-            "PAY_CLOSE" : "Payments close",
-            "NO_WAITERS" : "No waiters assignment in the restaurant"
+            "PAY_CLOSE" : "Close payments received",
+            "NO_WAITERS" : "No waiters assignment in the restaurant",
+            "ALPHANUMERIC_CODE" : "Table code"
         },
         "SECTIONS": {
             "MENU": "Menu",

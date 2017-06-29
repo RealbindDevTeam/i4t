@@ -8,7 +8,6 @@ import { ChangeEmailPage } from './change-email/change-email';
 import { ChangePasswordPage } from './change-password/change-password';
 
 import { Users } from 'qmo_web/both/collections/auth/user.collection';
-import { Languages } from 'qmo_web/both/collections/settings/language.collection';
 
 @Component({
   selector: 'page-settings',
@@ -29,7 +28,6 @@ export class SettingsPage implements OnInit, OnDestroy {
   private _imageProfile : string;
   private _userLang     : string;
   
-  private _languages      : any;
   private _user           : any;
   private _userObservable : any;
 
