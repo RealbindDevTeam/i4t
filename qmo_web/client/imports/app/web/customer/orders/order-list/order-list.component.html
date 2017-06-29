@@ -178,7 +178,7 @@
                                                                 <p *ngFor="let garnish of _garnishFoodCol | async">
                                                                     <span *ngFor="let gar of item.garnishFood">
                                                                         <template [ngIf]="garnish._id === gar">
-                                                                            <md-checkbox [disabled]="!_customerCanEdit" [formControlName]="garnish.name" (change)="calculateFinalPriceGarnishFood($event, garnish)" [class.invalid]="!_editOrderItemForm.controls.garnishFood.valid">{{ getGarnishFoodInformation(garnish) }} {{_currencyCode}}<div class="inline-block"> x {{_quantityCount}}</div></md-checkbox> 
+                                                                            <md-checkbox [disabled]="!_customerCanEdit" [formControlName]="garnish._id" (change)="calculateFinalPriceGarnishFood($event, garnish)" [class.invalid]="!_editOrderItemForm.controls.garnishFood.valid">{{ getGarnishFoodInformation(garnish) }} {{_currencyCode}}<div class="inline-block"> x {{_quantityCount}}</div></md-checkbox> 
                                                                         </template>
                                                                     </span>
                                                                 </p>
@@ -191,7 +191,7 @@
                                                                 <p *ngFor="let addition of _additions | async">
                                                                     <span *ngFor="let add of item.additions">
                                                                         <template [ngIf]="addition._id === add">
-                                                                            <md-checkbox [disabled]="!_customerCanEdit" [formControlName]="addition.name" (change)="calculateFinalPriceAddition($event, addition)" [class.invalid]="!_editOrderItemForm.controls.additions.valid">{{ getAdditionInformation(addition) }} {{_currencyCode}}<div class="inline-block"> x {{_quantityCount}}</div></md-checkbox> 
+                                                                            <md-checkbox [disabled]="!_customerCanEdit" [formControlName]="addition._id" (change)="calculateFinalPriceAddition($event, addition)" [class.invalid]="!_editOrderItemForm.controls.additions.valid">{{ getAdditionInformation(addition) }} {{_currencyCode}}<div class="inline-block"> x {{_quantityCount}}</div></md-checkbox> 
                                                                         </template>
                                                                     </span>
                                                                 </p>

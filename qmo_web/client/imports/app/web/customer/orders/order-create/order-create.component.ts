@@ -105,7 +105,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
                 this._garnishFoodCol = GarnishFoodCol.find( { } ).zone();
                 GarnishFoodCol.collection.find( { } ).fetch().forEach( ( gar ) => {
                     let control: FormControl = new FormControl( false );
-                    this._garnishFormGroup.addControl( gar.name, control );
+                    this._garnishFormGroup.addControl( gar._id, control );
                 });
             });
         });
@@ -194,11 +194,11 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      */
     buildAdditionsForms():void{
         Additions.collection.find( { } ).fetch().forEach( ( add ) => {
-            if( this._additionsFormGroup.contains( add.name ) ){
-                this._additionsFormGroup.controls[ add.name ].setValue( false );
+            if( this._additionsFormGroup.contains( add._id ) ){
+                this._additionsFormGroup.controls[ add._id ].setValue( false );
             } else {
                 let control: FormControl = new FormControl( false );
-                this._additionsFormGroup.addControl( add.name, control );
+                this._additionsFormGroup.addControl( add._id, control );
             }
 
             if( this._additionsDetailFormGroup.contains( add._id ) ){
@@ -290,8 +290,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
 
             arr.forEach( ( gar ) => {
                 if( this._newOrderForm.value.garnishFood[ gar ] ){
-                    let _lGarnishF:GarnishFood = GarnishFoodCol.findOne( { name: gar } );
-                    _lGarnishFoodToInsert.push( _lGarnishF._id );
+                    _lGarnishFoodToInsert.push( gar );
                 }
             });
 
@@ -300,8 +299,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
 
             arrAdd.forEach( ( add ) => {
                 if( this._newOrderForm.value.additions[ add ] ){
-                    let _lAddition:Addition = Additions.findOne( { name: add } );
-                    _lAdditionsToInsert.push( _lAddition._id );
+                    _lAdditionsToInsert.push( add );
                 }
             });
 
