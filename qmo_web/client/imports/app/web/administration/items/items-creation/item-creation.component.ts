@@ -70,6 +70,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
     private _showRestaurants            : boolean = false;
     private _showCurrencies             : boolean = false;
     private _showTaxes                  : boolean = false;
+    private _loading                    : boolean = false;
 
     public _selectedIndex               : number = 0;
     private _filesToUpload              : Array<File>;
@@ -224,88 +225,93 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
         }
 
         if( this._itemForm.valid ){
-            let arrCur:any[] = Object.keys( this._itemForm.value.currencies );
-            let _lItemRestaurantsToInsert: ItemRestaurant[] = [];
-            let _lItemPricesToInsert: ItemPrice[] = [];
+            this._loading = true;
+            setTimeout(() => {
+                let arrCur:any[] = Object.keys( this._itemForm.value.currencies );
+                let _lItemRestaurantsToInsert: ItemRestaurant[] = [];
+                let _lItemPricesToInsert: ItemPrice[] = [];
 
-            arrCur.forEach( ( cur ) => {
-                let find: Restaurant[] = this._restaurantList.filter( r => r.currencyId === cur );
-                for( let res of find ){
-                    if( this._itemForm.value.restaurants[ res._id ] ){
-                        let _lItemRestaurant: ItemRestaurant = { restaurantId: '', price: 0 };
+                arrCur.forEach( ( cur ) => {
+                    let find: Restaurant[] = this._restaurantList.filter( r => r.currencyId === cur );
+                    for( let res of find ){
+                        if( this._itemForm.value.restaurants[ res._id ] ){
+                            let _lItemRestaurant: ItemRestaurant = { restaurantId: '', price: 0 };
 
-                        _lItemRestaurant.restaurantId = res._id;
-                        _lItemRestaurant.price = this._itemForm.value.currencies[ cur ];
+                            _lItemRestaurant.restaurantId = res._id;
+                            _lItemRestaurant.price = this._itemForm.value.currencies[ cur ];
 
-                        if( this._itemForm.value.taxes[ cur ] !== undefined ){
-                            _lItemRestaurant.itemTax = this._itemForm.value.taxes[ cur ];
+                            if( this._itemForm.value.taxes[ cur ] !== undefined ){
+                                _lItemRestaurant.itemTax = this._itemForm.value.taxes[ cur ];
+                            }
+
+                            _lItemRestaurantsToInsert.push( _lItemRestaurant );
                         }
-
-                        _lItemRestaurantsToInsert.push( _lItemRestaurant );
                     }
-                }
-                if( cur !== null && this._itemForm.value.currencies[ cur ] !== null  ){
-                    let _lItemPrice: ItemPrice = { currencyId: '', price: 0 };
-                    _lItemPrice.currencyId = cur;
-                    _lItemPrice.price = this._itemForm.value.currencies[ cur ];
-                    if( this._itemForm.value.taxes[ cur ] !== undefined ){
-                        _lItemPrice.itemTax = this._itemForm.value.taxes[ cur ];
+                    if( cur !== null && this._itemForm.value.currencies[ cur ] !== null  ){
+                        let _lItemPrice: ItemPrice = { currencyId: '', price: 0 };
+                        _lItemPrice.currencyId = cur;
+                        _lItemPrice.price = this._itemForm.value.currencies[ cur ];
+                        if( this._itemForm.value.taxes[ cur ] !== undefined ){
+                            _lItemPrice.itemTax = this._itemForm.value.taxes[ cur ];
+                        }
+                        _lItemPricesToInsert.push( _lItemPrice );
                     }
-                    _lItemPricesToInsert.push( _lItemPrice );
+                });
+
+                let arr:any[] = Object.keys( this._itemForm.value.garnishFood );
+                let _lGarnishFoodToInsert:string[] = [];
+
+                arr.forEach( ( gar ) => {
+                    if( this._itemForm.value.garnishFood[ gar ] ){
+                        _lGarnishFoodToInsert.push( gar );
+                    }
+                });
+
+                let arrAdd:any[] = Object.keys( this._itemForm.value.additions );
+                let _lAdditionsToInsert:string[] = [];
+
+                arrAdd.forEach( ( add ) => {
+                    if( this._itemForm.value.additions[ add ] ){
+                        _lAdditionsToInsert.push( add );
+                    }
+                });
+
+                let _lNewItem = Items.collection.insert({
+                    creation_user: this._user,
+                    creation_date: new Date(),
+                    modification_user: '-',
+                    modification_date: new Date(),
+                    is_active: true,
+                    sectionId: this._itemForm.value.section,
+                    categoryId: this._itemForm.value.category,
+                    subcategoryId: this._itemForm.value.subcategory,
+                    name: this._itemForm.value.name,
+                    time: this._itemForm.value.cookingTime,
+                    description: this._itemForm.value.description,
+                    restaurants: _lItemRestaurantsToInsert,
+                    prices: _lItemPricesToInsert,
+                    observations: this._itemForm.value.observations,
+                    garnishFoodQuantity: this._itemForm.value.garnishFoodQuantity,
+                    garnishFood: _lGarnishFoodToInsert,
+                    additions: _lAdditionsToInsert,
+                    isAvailable: true
+                });  
+
+                if( this._createImage ){
+                    uploadItemImage( this._itemImageToInsert, 
+                                     this._user,
+                                     _lNewItem ).then( ( result ) => {
+
+                    }).catch( ( error ) => {
+                        alert( 'Upload image error. Only accept .png, .jpg, .jpeg files.' );
+                    });   
                 }
-            });
-
-            let arr:any[] = Object.keys( this._itemForm.value.garnishFood );
-            let _lGarnishFoodToInsert:string[] = [];
-
-            arr.forEach( ( gar ) => {
-                if( this._itemForm.value.garnishFood[ gar ] ){
-                    _lGarnishFoodToInsert.push( gar );
-                }
-            });
-
-            let arrAdd:any[] = Object.keys( this._itemForm.value.additions );
-            let _lAdditionsToInsert:string[] = [];
-
-            arrAdd.forEach( ( add ) => {
-                if( this._itemForm.value.additions[ add ] ){
-                    let _lAddition:Addition = Additions.findOne( { name: add } );
-                    _lAdditionsToInsert.push( add );
-                }
-            });
-
-            let _lNewItem = Items.collection.insert({
-                creation_user: this._user,
-                creation_date: new Date(),
-                modification_user: '-',
-                modification_date: new Date(),
-                is_active: true,
-                sectionId: this._itemForm.value.section,
-                categoryId: this._itemForm.value.category,
-                subcategoryId: this._itemForm.value.subcategory,
-                name: this._itemForm.value.name,
-                time: this._itemForm.value.cookingTime,
-                description: this._itemForm.value.description,
-                restaurants: _lItemRestaurantsToInsert,
-                prices: _lItemPricesToInsert,
-                observations: this._itemForm.value.observations,
-                garnishFoodQuantity: this._itemForm.value.garnishFoodQuantity,
-                garnishFood: _lGarnishFoodToInsert,
-                additions: _lAdditionsToInsert,
-                isAvailable: true
-            });  
-
-            if( this._createImage ){
-                uploadItemImage( this._itemImageToInsert, 
-                                 Meteor.userId(),
-                                 _lNewItem ).then( ( result ) => {
-
-                }).catch( ( error ) => {
-                    alert( 'Upload image error. Only accept .png, .jpg, .jpeg files.' );
-                });   
-            }
+                this._loading = false;
+                this.cancel();
+            }, 2200);
+        } else {
+            this.cancel();
         }
-        this.cancel();
     }
 
     /**

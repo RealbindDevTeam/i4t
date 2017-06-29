@@ -524,7 +524,8 @@
         "COOKING_TIME": "Approximate Cooking Time",
         "MESSAGE" : "No items yet register",
         "SELECT_ALL_GARNISH_FOOD": "Select All Garnish Food",
-        "SELECT_ALL_ADDITIONS": "Select All Additions"
+        "SELECT_ALL_ADDITIONS": "Select All Additions",
+        "ITEM_EDITED": "Item Edited Correctly"
     },
     "ROLE": {
         "ADMINISTRATOR": "Administrator",
@@ -634,7 +635,9 @@
         "SHOW_ALL": "Show All",
         "COOKING_TIME": "Cooking Time",
         "ADD_ADDITIONS": "Select the additions you wish to add to the order and indicate the quantity",
-        "ADD_ADDITION_ORDER": "Add addition to the Order"
+        "ADD_ADDITION_ORDER": "Add addition to the Order",
+        "ITEM_AGGREGATED": "Correctly Aggregated Item",
+        "ADDITON_AGGREGATED": "Correctly Aggregated Addition"
     },
     "ORDER_LIST": {
         "TABLE_ORDERS": "Table Orders",
@@ -673,7 +676,11 @@
         "ADD_ADDITIONS": "Select the additions you wish to add to the order and indicate the quantity",
         "MODIFY_ADDITION_ORDER": "Modify Addition",
         "DELETE_ADDITION_ORDER": "Delete Addition",
-        "DELETE_ADDITION_CONFIRM": "Are you sure to delete the addition from the order?"
+        "DELETE_ADDITION_CONFIRM": "Are you sure to delete the addition from the order?",
+        "ITEM_DELETED": "Item Deleted from Order",
+        "ADDITION_DELETED": "Addition Deleted from Order",
+        "ITEM_EDITED": "Item Edited Correctly",
+        "ADDITION_EDITED": "Edited Adition Correctly"
     },
    "PAYMENTS": {
         "COLOMBIA": {

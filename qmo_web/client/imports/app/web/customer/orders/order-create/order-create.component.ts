@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
+import { MdSnackBar } from '@angular/material';
 import { Section } from '../../../../../../../both/models/administration/section.model';
 import { Sections } from '../../../../../../../both/collections/administration/section.collection';
 import { Category } from '../../../../../../../both/models/administration/category.model';
@@ -79,11 +80,13 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate 
      * @param {OrderNavigationService} _navigation 
      * @param {NgZone} _ngZone 
+     * @param {MdSnackBar} snackBar
      */
     constructor( private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
                  private _navigation: OrderNavigationService, 
-                 private _ngZone: NgZone ){
+                 private _ngZone: NgZone,
+                 public snackBar: MdSnackBar ){
         var _userLang = navigator.language.split( '-' )[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
@@ -312,7 +315,10 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
                                            paymentItem: this._finalPrice
                                          };
             MeteorObservable.call( 'AddItemToOrder', _lOrderItem, this.restaurantId, this.tableQRCode, this.finalPrice ).subscribe( () => {
-                
+                let _lMessage:string = this.itemNameTraduction( 'ORDER_CREATE.ITEM_AGGREGATED' );
+                this.snackBar.open( _lMessage, '',{
+                    duration: 2500
+                });
             }, ( error ) => { alert( `Error: ${error}` ) ; } );
             this.viewItemDetail( true );
         }
@@ -522,7 +528,10 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
             }
         });
         MeteorObservable.call( 'AddAdditionsToOrder', _lOrderAdditionsToInsert, this.restaurantId, this.tableQRCode, _lAdditionsPrice ).subscribe( () => {
-            
+            let _lMessage:string = this.itemNameTraduction( 'ORDER_CREATE.ADDITON_AGGREGATED' );
+            this.snackBar.open( _lMessage, '',{
+                duration: 2500
+            });
         }, ( error ) => { alert( `Error: ${error}` ) ; } );
         this.viewAdditionDetail( true );
     }

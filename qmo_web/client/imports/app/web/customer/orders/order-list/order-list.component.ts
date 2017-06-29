@@ -4,6 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
+import { MdSnackBar } from '@angular/material';
 import { Order, OrderItem, OrderAddition } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
 import { Item, ItemImage, ItemImageThumb } from '../../../../../../../both/models/administration/item.model';
@@ -78,10 +79,14 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     private _orderOthersIndex               : number = -1;
 
     /**
-     * OrdersComponent Constructor
+     * OrdersListComponent Constructor
      * @param {TranslateService} _translate 
+     * @param {NgZone} _ngZone
+     * @param {MdSnackBar} snackBar
      */
-    constructor( private _translate: TranslateService, private _ngZone: NgZone ) {
+    constructor( private _translate: TranslateService, 
+                 private _ngZone: NgZone, 
+                 public snackBar: MdSnackBar ) {
         var _userLang = navigator.language.split( '-' )[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
@@ -227,6 +232,10 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                          );
             this._showOrderItemDetail = false;
             this.viewItemDetail( true );
+            let _lMessage:string = this.itemNameTraduction( 'ORDER_LIST.ITEM_DELETED' );
+            this.snackBar.open( _lMessage, '',{
+                duration: 2500
+            });
         }
     }
 
@@ -248,6 +257,10 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                             } 
                         );
             this.viewAdditionDetail( true );
+            let _lMessage:string = this.itemNameTraduction( 'ORDER_LIST.ADDITION_DELETED' );
+            this.snackBar.open( _lMessage, '',{
+                duration: 2500
+            });
         }
     }
     
@@ -276,6 +289,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
 
         this._showOrderItemDetail = false;
         this._showDetails = true;
+        this.viewAdditionDetail( true );
         this.viewItemDetail( true );
     }
 
@@ -298,6 +312,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
 
         this._showOrderItemDetail = false;
         this._showDetails = true;
+        this.viewAdditionDetail( true );
         this.viewItemDetail( true );
     }
 
@@ -320,6 +335,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         this.prepareAdditionsToEdit();
 
         this._showOrderItemDetail = true;
+        this.viewAdditionDetail( true );
         this.viewItemDetail( false );
     }
 
@@ -336,6 +352,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         let control: FormControl = new FormControl( _pAdition.quantity, [ Validators.minLength(1), Validators.maxLength(2) ] );
         this._additionsDetailFormGroup.addControl( _pAdition.additionId, control );
         this._additionDetails = Additions.find( { _id: _pAdition.additionId } ).zone();
+        this.viewItemDetail( true );
         this.viewAdditionDetail( false );
     }
 
@@ -568,6 +585,10 @@ export class OrdersListComponent implements OnInit, OnDestroy {
             this._currentOrder = Orders.findOne( { _id: this._currentOrder._id } );
             this._showOrderItemDetail = false;
             this.viewItemDetail( true );
+            let _lMessage:string = this.itemNameTraduction( 'ORDER_LIST.ITEM_EDITED' );
+            this.snackBar.open( _lMessage, '',{
+                duration: 2500
+            });
         }
     }
 
@@ -616,6 +637,10 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                      );
         this._currentOrder = Orders.findOne( { _id: this._currentOrder._id } );
         this.viewAdditionDetail( true );
+        let _lMessage:string = this.itemNameTraduction( 'ORDER_LIST.ADDITION_EDITED' );
+        this.snackBar.open( _lMessage, '',{
+            duration: 2500
+        });
     }
 
     /**

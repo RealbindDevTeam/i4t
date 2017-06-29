@@ -11,7 +11,7 @@ import { check } from 'meteor/check';
  */
 Meteor.publish('additions', function (_userId: string) {
     check(_userId, String);
-    return Additions.collection.find({ creation_user: _userId });
+    return Additions.collection.find({ creation_user: _userId, is_active: true });
 });
 
 /**

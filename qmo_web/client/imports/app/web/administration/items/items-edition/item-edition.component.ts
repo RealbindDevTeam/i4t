@@ -6,6 +6,7 @@ import { TranslateService } from 'ng2-translate';
 import { MdDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
+import { MdSnackBar } from '@angular/material';
 import { Item, ItemImage, ItemImageThumb, ItemRestaurant, ItemPrice } from '../../../../../../../both/models/administration/item.model';
 import { Items, ItemImages, ItemImagesThumbs } from '../../../../../../../both/collections/administration/item.collection';
 import { uploadItemImage } from '../../../../../../../both/methods/administration/item.methods';
@@ -103,11 +104,13 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate
      * @param {NgZone} _ngZone
      * @param {MdDialogRef<any>} _dialogRef
+     * @param {MdSnackBar} snackBar
      */
     constructor( private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
                  private _ngZone: NgZone, 
-                 public _dialogRef: MdDialogRef<any> ){
+                 public _dialogRef: MdDialogRef<any>,
+                 public snackBar: MdSnackBar ){
         var _userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
@@ -519,8 +522,25 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                     alert( 'Update image error. Only accept .png, .jpg, .jpeg files.' );
                 });
             }
+
+            let _lMessage:string = this.itemNameTraduction( 'ITEMS.ITEM_EDITED' );
+            this.snackBar.open( _lMessage, '',{
+                duration: 2500
+            });
             this._dialogRef.close();
         }        
+    }
+
+    /**
+     * Return traduction
+     * @param {string} itemName 
+     */
+    itemNameTraduction(itemName: string): string{
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res; 
+        });
+        return wordTraduced;
     }
 
     /**
