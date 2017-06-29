@@ -33,13 +33,13 @@ export class GarnishFoodEditComponent implements OnInit, OnDestroy {
 
     private _garnishFoodCol         : Observable<GarnishFood[]>;
     private _currencies             : Observable<Currency[]>;
+    private _restaurants            : Observable<Restaurant[]>;
 
     private _garnishFoodSub         : Subscription;
     private _restaurantSub          : Subscription;
     private _currenciesSub          : Subscription;
     private _countriesSub           : Subscription;
 
-    private _restaurantsList        : Restaurant[];
     private _restaurantCurrencies   : string [] = [];
     private _showCurrencies         : boolean = false;
     private _restaurantTaxes        : string [] = [];
@@ -50,6 +50,8 @@ export class GarnishFoodEditComponent implements OnInit, OnDestroy {
      * @param {FormBuilder} _formBuilder
      * @param {TranslateService} _translate
      * @param {MdDialogRef<any>} _dialogRef
+     * @param {NgZone} _ngZone
+     * @param {MdSnackBar} snackBar
      */
     constructor( private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
@@ -59,14 +61,12 @@ export class GarnishFoodEditComponent implements OnInit, OnDestroy {
         var userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( userLang );
-        this._restaurantsList = [];
     }
 
     /**
      * Implements ngOnInit function
      */
     ngOnInit(){
-        let _lRestaurantsId: string[] = [];
         this._editForm = this._formBuilder.group({
             editId: [ this._garnishFoodToEdit._id ],
             editName: [ this._garnishFoodToEdit.name, Validators.required ],
@@ -75,68 +75,95 @@ export class GarnishFoodEditComponent implements OnInit, OnDestroy {
             editTaxes: this._taxesFormGroup
         });
 
-        this._garnishFoodCol = GarnishFoodCol.find( { } ).zone();
-        this._garnishFoodSub = MeteorObservable.subscribe( 'garnishFood', this._user ).subscribe();
+        this._garnishFoodSub = MeteorObservable.subscribe( 'garnishFood', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._garnishFoodCol = GarnishFoodCol.find( { } ).zone();
+            });
+        });
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
             this._ngZone.run( () => {
-                this._restaurantsList = Restaurants.collection.find({}).fetch();
-                Restaurants.collection.find({}).fetch().forEach( ( res ) =>{
-                    _lRestaurantsId.push( res._id );
-                });
-                this._countriesSub = MeteorObservable.subscribe( 'getCountriesByRestaurantsId', _lRestaurantsId ).subscribe();
-                this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', _lRestaurantsId ).subscribe( () => {
-                    this._ngZone.run( () => {
-                        if( this._garnishFoodToEdit.prices.length > 0 ){
-                            this._showCurrencies = true;
-                            this._garnishFoodToEdit.prices.forEach( (p) => {
-                                let control: FormControl = new FormControl( p.price, [ Validators.required ] );
-                                this._currenciesFormGroup.addControl( p.currencyId, control );
-                                this._restaurantCurrencies.push( p.currencyId );
+                this._restaurants = Restaurants.find( { } ).zone();
+                this._restaurants.subscribe( () => { this.buildControls(); });
+            });
+        });
+    }
 
-                                if( p.garnishFoodTax !== undefined ){
-                                    this._showTaxes = true;
-                                    let controlTax: FormControl = new FormControl( p.garnishFoodTax, [ Validators.required ] );
-                                    this._taxesFormGroup.addControl( p.currencyId, controlTax );
-                                    this._restaurantTaxes.push( p.currencyId );
-                                }
-                            });
+    /**
+     * Function to build form controls
+     */
+    buildControls():void{
+        let _lRestaurantsId: string[] = [];
+        this._restaurantCurrencies = [];
+        this._restaurantTaxes = [];
+
+        if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
+        if( this._countriesSub ){ this._countriesSub.unsubscribe(); }
+
+        Restaurants.collection.find({}).fetch().forEach( ( res ) =>{
+            _lRestaurantsId.push( res._id );
+        });
+        this._countriesSub = MeteorObservable.subscribe( 'getCountriesByRestaurantsId', _lRestaurantsId ).subscribe();
+        this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', _lRestaurantsId ).subscribe( () => {
+            this._ngZone.run( () => {
+                if( this._garnishFoodToEdit.prices.length > 0 ){
+                    this._showCurrencies = true;
+                    this._garnishFoodToEdit.prices.forEach( (p) => {
+                        if( this._currenciesFormGroup.contains( p.currencyId ) ){
+                            this._currenciesFormGroup.controls[ p.currencyId ].setValue( p.price );
+                        } else {
+                            let control: FormControl = new FormControl( p.price, [ Validators.required ] );
+                            this._currenciesFormGroup.addControl( p.currencyId, control );
                         }
-                        Restaurants.collection.find({}).fetch().forEach( ( restaurant ) => {
-                            let _lCountry: Country = Countries.findOne( { _id: restaurant.countryId } );
-                            if( this._restaurantCurrencies.indexOf( restaurant.currencyId ) <= -1 ){
-                                let _lCurrency: Currency = Currencies.findOne( { _id: restaurant.currencyId } );
-                                let _initValue: string = '';
-                                if( _lCurrency.decimal !== 0 ){
-                                    for( let i = 0; i < ( _lCurrency.decimal ).toString().slice( ( _lCurrency.decimal.toString().indexOf( '.' ) ), ( _lCurrency.decimal.toString().length ) ).length - 1; i++ ){
-                                        _initValue += '0';
-                                    }
-                                    _initValue = '.' + _initValue;
-                                } else {
-                                    _initValue = '0';
-                                }
-                                if( this._currenciesFormGroup.contains( restaurant.currencyId ) ){
-                                    this._currenciesFormGroup.controls[ restaurant.currencyId ].setValue( _initValue );
-                                } else {
-                                    let control: FormControl = new FormControl( _initValue, [ Validators.required ] );
-                                    this._currenciesFormGroup.addControl( restaurant.currencyId, control );
-                                }
-                                this._restaurantCurrencies.push( restaurant.currencyId );
-                                if( _lCountry.itemsWithDifferentTax === true ){
-                                    if( this._taxesFormGroup.contains( restaurant.currencyId ) ){
-                                        this._taxesFormGroup.controls[ restaurant.currencyId ].setValue( '' );
-                                    } else {
-                                        let control: FormControl = new FormControl( '', [ Validators.required ] );
-                                        this._taxesFormGroup.addControl( restaurant.currencyId, control );
-                                    }
-                                    this._restaurantTaxes.push( restaurant.currencyId );
-                                }
+                        this._restaurantCurrencies.push( p.currencyId );
+
+                        if( p.garnishFoodTax !== undefined ){
+                            this._showTaxes = true;
+                            if( this._taxesFormGroup.contains( p.currencyId ) ){
+                                this._taxesFormGroup.controls[ p.currencyId ].setValue( p.garnishFoodTax );
+                            } else {
+                                let controlTax: FormControl = new FormControl( p.garnishFoodTax, [ Validators.required ] );
+                                this._taxesFormGroup.addControl( p.currencyId, controlTax );
                             }
-                        });
-                        this._restaurantCurrencies.length > 0 ? this._showCurrencies = true : this._showCurrencies = false;
-                        this._restaurantTaxes.length > 0 ? this._showTaxes = true : this._showTaxes = false;
-                        this._currencies = Currencies.find( { } ).zone();
+                            this._restaurantTaxes.push( p.currencyId );
+                        }
                     });
+                }
+
+                Restaurants.collection.find({}).fetch().forEach( ( restaurant ) => {
+                    let _lCountry: Country = Countries.findOne( { _id: restaurant.countryId } );
+                    if( this._restaurantCurrencies.indexOf( restaurant.currencyId ) <= -1 ){
+                        let _lCurrency: Currency = Currencies.findOne( { _id: restaurant.currencyId } );
+                        let _initValue: string = '';
+                        if( _lCurrency.decimal !== 0 ){
+                            for( let i = 0; i < ( _lCurrency.decimal ).toString().slice( ( _lCurrency.decimal.toString().indexOf( '.' ) ), ( _lCurrency.decimal.toString().length ) ).length - 1; i++ ){
+                                _initValue += '0';
+                            }
+                            _initValue = '.' + _initValue;
+                        } else {
+                            _initValue = '0';
+                        }
+                        if( this._currenciesFormGroup.contains( restaurant.currencyId ) ){
+                            this._currenciesFormGroup.controls[ restaurant.currencyId ].setValue( _initValue );
+                        } else {
+                            let control: FormControl = new FormControl( _initValue, [ Validators.required ] );
+                            this._currenciesFormGroup.addControl( restaurant.currencyId, control );
+                        }
+                        this._restaurantCurrencies.push( restaurant.currencyId );
+
+                        if( _lCountry.itemsWithDifferentTax === true ){
+                            if( this._taxesFormGroup.contains( restaurant.currencyId ) ){
+                                this._taxesFormGroup.controls[ restaurant.currencyId ].setValue( '' );
+                            } else {
+                                let control: FormControl = new FormControl( '0', [ Validators.required ] );
+                                this._taxesFormGroup.addControl( restaurant.currencyId, control );
+                            }
+                            this._restaurantTaxes.push( restaurant.currencyId );
+                        }
+                    }
                 });
+                this._restaurantCurrencies.length > 0 ? this._showCurrencies = true : this._showCurrencies = false;
+                this._restaurantTaxes.length > 0 ? this._showTaxes = true : this._showTaxes = false;
+                this._currencies = Currencies.find( { } ).zone();
             });
         });
     }
@@ -156,12 +183,10 @@ export class GarnishFoodEditComponent implements OnInit, OnDestroy {
             let _lGarnishFoodPricesToInsert: GarnishFoodPrice[] = [];
 
             arrCur.forEach( ( cur ) => {
-                let find: Restaurant[] = this._restaurantsList.filter( r => r.currencyId === cur );
+                let find: Restaurant[] = Restaurants.collection.find({}).fetch().filter( r => r.currencyId === cur );
                 for( let res of find ){
-                    let _lGarnishFoodRestaurant: GarnishFoodRestaurant = { restaurantId: '', price: 0 };
-                    let restau:Restaurant = Restaurants.findOne( { name: res.name } );
-                    
-                    _lGarnishFoodRestaurant.restaurantId = restau._id;
+                    let _lGarnishFoodRestaurant: GarnishFoodRestaurant = { restaurantId: '', price: 0 };                    
+                    _lGarnishFoodRestaurant.restaurantId = res._id;
                     _lGarnishFoodRestaurant.price = this._editForm.value.editCurrencies[ cur ];
                     
                     if( this._editForm.value.editTaxes[ cur ] !== undefined ){
@@ -217,7 +242,7 @@ export class GarnishFoodEditComponent implements OnInit, OnDestroy {
     ngOnDestroy(){
         this._garnishFoodSub.unsubscribe();
         this._restaurantSub.unsubscribe();
-        this._currenciesSub.unsubscribe();
-        this._countriesSub.unsubscribe();
+        if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
+        if( this._countriesSub ){ this._countriesSub.unsubscribe(); }
     }
 }

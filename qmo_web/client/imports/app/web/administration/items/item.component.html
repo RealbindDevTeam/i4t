@@ -54,11 +54,7 @@
             </md-card-header>
 
             <div class="crop">
-                <span *ngFor="let image of _itemImages | async">
-                    <template [ngIf]="image.itemId == item._id">
-                        <img src="{{image.url}}">
-                    </template>
-                </span>
+                <img src="{{ getItemImage(item._id) }}">                
             </div>
             <div style="position: relative">
                 <button md-tooltip="{{'ITEMS.EDIT_ITEM' | translate}}" md-fab class="btn-position-create" (click)="open(item)"> <md-icon style="color: white;" class="md-24">create</md-icon></button>
@@ -77,7 +73,7 @@
     </div>
     
     <div class="fixed-action-btn">
-        <button md-tooltip="{{'ITEMS.CREATE_NEW_ITEM' | translate}}" class="fixed-action-btn" md-fab (click)="openItemCreation()">
+        <button md-tooltip="{{'ITEMS.CREATE_NEW_ITEM' | translate}}" mdTooltipPosition="above" class="fixed-action-btn" md-fab (click)="openItemCreation()">
             <md-icon style="color: white;">
                 add
             </md-icon>

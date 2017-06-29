@@ -9,7 +9,7 @@ import { check } from 'meteor/check';
  */
 Meteor.publish( 'categories', function( _userId:string ){
     check( _userId, String );
-    return Categories.collection.find( { creation_user: _userId } );
+    return Categories.collection.find( { creation_user: _userId, is_active: true } );
 });
 
 /**

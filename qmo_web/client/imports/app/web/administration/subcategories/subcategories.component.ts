@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
@@ -40,12 +40,19 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
 
     /**
      * SubcategoryComponent constructor
+     * @param {MdDialog} _dialog
+     * @param {MdSnackBar} snackBar
+     * @param {FormBuilder} _formBuilder
+     * @param {TranslateService} _translate
+     * @param {Router} _router
+     * @param {NgZone} _ngZone
      */
     constructor( public _dialog: MdDialog, 
                  public snackBar: MdSnackBar,
                  private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
-                 private _router: Router ){
+                 private _router: Router,
+                 private _ngZone: NgZone ){
         var _userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
@@ -61,12 +68,20 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
             category: new FormControl( '' )  
         });
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
-            this._restaurants = Restaurants.find( { } ).zone();
+            this._ngZone.run( () => {
+                this._restaurants = Restaurants.find( { } ).zone();
+            });
         });
-        this._categories = Categories.find( { } ).zone();
-        this._categoriesSub = MeteorObservable.subscribe( 'categories', this._user ).subscribe();
-        this._subcategories = Subcategories.find( { } ).zone();
-        this._subcategorySub = MeteorObservable.subscribe( 'subcategories', this._user ).subscribe();
+        this._categoriesSub = MeteorObservable.subscribe( 'categories', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._categories = Categories.find( { } ).zone();
+            });
+        });
+        this._subcategorySub = MeteorObservable.subscribe( 'subcategories', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._subcategories = Subcategories.find( { } ).zone();
+            });
+        });
     }
 
     /**

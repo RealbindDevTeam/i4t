@@ -36,58 +36,63 @@ import style from './item-creation.component.scss';
 export class ItemCreationComponent implements OnInit, OnDestroy { 
     
     private _user = Meteor.userId();
-    private _itemForm: FormGroup;
-    private _garnishFormGroup: FormGroup = new FormGroup({});    
-    private _additionsFormGroup: FormGroup = new FormGroup({});
-    private _restaurantsFormGroup: FormGroup = new FormGroup({});
-    private _currenciesFormGroup: FormGroup = new FormGroup({});
-    private _taxesFormGroup: FormGroup = new FormGroup({});
+    private _itemForm                   : FormGroup;
+    private _garnishFormGroup           : FormGroup = new FormGroup({});    
+    private _additionsFormGroup         : FormGroup = new FormGroup({});
+    private _restaurantsFormGroup       : FormGroup = new FormGroup({});
+    private _currenciesFormGroup        : FormGroup = new FormGroup({});
+    private _taxesFormGroup             : FormGroup = new FormGroup({});
 
-    private _sections: Observable<Section[]>;
-    private _categories: Observable<Category[]>;
-    private _subcategories: Observable<Subcategory[]>;
-    private _currencies: Observable<Currency[]>;
+    private _sections                   : Observable<Section[]>;
+    private _categories                 : Observable<Category[]>;
+    private _subcategories              : Observable<Subcategory[]>;
+    private _currencies                 : Observable<Currency[]>;
 
-    private _itemsSub: Subscription;
-    private _sectionsSub: Subscription;    
-    private _categorySub: Subscription;
-    private _subcategorySub: Subscription;
-    private _restaurantSub: Subscription;
-    private _garnishFoodSub: Subscription;
-    private _additionSub: Subscription;
-    private _currenciesSub: Subscription;
-    private _countriesSub: Subscription;
+    private _itemsSub                   : Subscription;
+    private _sectionsSub                : Subscription;    
+    private _categorySub                : Subscription;
+    private _subcategorySub             : Subscription;
+    private _restaurantSub              : Subscription;
+    private _garnishFoodSub             : Subscription;
+    private _additionSub                : Subscription;
+    private _currenciesSub              : Subscription;
+    private _countriesSub               : Subscription;
 
-    private _restaurantList:Restaurant[] = [];
-    private _restaurantCurrencies: string [] = [];
-    private _restaurantTaxes: string [] = [];
-    private _garnishFood: GarnishFood[] = [];
-    private _additions: Addition[] = [];
+    private _restaurantList             : Restaurant[] = [];
+    private _restaurantCurrencies       : string [] = [];
+    private _restaurantTaxes            : string [] = [];
+    private _garnishFood                : GarnishFood[] = [];
+    private _additions                  : Addition[] = [];
 
-    private _showGarnishFood: boolean = false;
-    private _createImage: boolean = false;
-    private _showAdditions: boolean = false;
-    private _showRestaurants = false;
-    private _showCurrencies: boolean = false;
-    private _showTaxes: boolean = false;
+    private _showGarnishFood            : boolean = false;
+    private _createImage                : boolean = false;
+    private _showAdditions              : boolean = false;
+    private _showRestaurants            : boolean = false;
+    private _showCurrencies             : boolean = false;
+    private _showTaxes                  : boolean = false;
+    private _loading                    : boolean = false;
 
-    public _selectedIndex: number = 0;
-    private _filesToUpload: Array<File>;
-    private _itemImageToInsert: File;
-    private _nameImageFile: string;
-    private _restaurantsSelectedCount: number = 0;
+    public _selectedIndex               : number = 0;
+    private _filesToUpload              : Array<File>;
+    private _itemImageToInsert          : File;
+    private _nameImageFile              : string;
+    private _restaurantsSelectedCount   : number = 0;
 
-    private _selectedSectionValue: string;
-    private _selectedCategoryValue: string;
-    private _selectedSubcategoryValue: string;
+    private _selectedSectionValue       : string;
+    private _selectedCategoryValue      : string;
+    private _selectedSubcategoryValue   : string;
 
     /**
      * ItemComponent constructor
      * @param {FormBuilder} _formBuilder
      * @param {TranslateService} _translate
      * @param {NgZone} _ngZone
+     * @param {Router} _router
      */
-    constructor( private _formBuilder: FormBuilder, private _translate: TranslateService, private _ngZone: NgZone, private _router: Router ){
+    constructor( private _formBuilder: FormBuilder, 
+                 private _translate: TranslateService, 
+                 private _ngZone: NgZone, 
+                 private _router: Router ){
         var _userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang ); 
@@ -220,90 +225,93 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
         }
 
         if( this._itemForm.valid ){
-            let arrCur:any[] = Object.keys( this._itemForm.value.currencies );
-            let _lItemRestaurantsToInsert: ItemRestaurant[] = [];
-            let _lItemPricesToInsert: ItemPrice[] = [];
+            this._loading = true;
+            setTimeout(() => {
+                let arrCur:any[] = Object.keys( this._itemForm.value.currencies );
+                let _lItemRestaurantsToInsert: ItemRestaurant[] = [];
+                let _lItemPricesToInsert: ItemPrice[] = [];
 
-            arrCur.forEach( ( cur ) => {
-                let find: Restaurant[] = this._restaurantList.filter( r => r.currencyId === cur );
-                for( let res of find ){
-                    if( this._itemForm.value.restaurants[ res.name ] ){
-                        let rest: Restaurant = Restaurants.findOne( { name: res.name } );
-                        let _lItemRestaurant: ItemRestaurant = { restaurantId: '', price: 0 };
+                arrCur.forEach( ( cur ) => {
+                    let find: Restaurant[] = this._restaurantList.filter( r => r.currencyId === cur );
+                    for( let res of find ){
+                        if( this._itemForm.value.restaurants[ res._id ] ){
+                            let _lItemRestaurant: ItemRestaurant = { restaurantId: '', price: 0 };
 
-                        _lItemRestaurant.restaurantId = rest._id;
-                        _lItemRestaurant.price = this._itemForm.value.currencies[ cur ];
+                            _lItemRestaurant.restaurantId = res._id;
+                            _lItemRestaurant.price = this._itemForm.value.currencies[ cur ];
 
-                        if( this._itemForm.value.taxes[ cur ] !== undefined ){
-                            _lItemRestaurant.itemTax = this._itemForm.value.taxes[ cur ];
+                            if( this._itemForm.value.taxes[ cur ] !== undefined ){
+                                _lItemRestaurant.itemTax = this._itemForm.value.taxes[ cur ];
+                            }
+
+                            _lItemRestaurantsToInsert.push( _lItemRestaurant );
                         }
-
-                        _lItemRestaurantsToInsert.push( _lItemRestaurant );
                     }
-                }
-                if( cur !== null && this._itemForm.value.currencies[ cur ] !== null  ){
-                    let _lItemPrice: ItemPrice = { currencyId: '', price: 0 };
-                    _lItemPrice.currencyId = cur;
-                    _lItemPrice.price = this._itemForm.value.currencies[ cur ];
-                    if( this._itemForm.value.taxes[ cur ] !== undefined ){
-                        _lItemPrice.itemTax = this._itemForm.value.taxes[ cur ];
+                    if( cur !== null && this._itemForm.value.currencies[ cur ] !== null  ){
+                        let _lItemPrice: ItemPrice = { currencyId: '', price: 0 };
+                        _lItemPrice.currencyId = cur;
+                        _lItemPrice.price = this._itemForm.value.currencies[ cur ];
+                        if( this._itemForm.value.taxes[ cur ] !== undefined ){
+                            _lItemPrice.itemTax = this._itemForm.value.taxes[ cur ];
+                        }
+                        _lItemPricesToInsert.push( _lItemPrice );
                     }
-                    _lItemPricesToInsert.push( _lItemPrice );
+                });
+
+                let arr:any[] = Object.keys( this._itemForm.value.garnishFood );
+                let _lGarnishFoodToInsert:string[] = [];
+
+                arr.forEach( ( gar ) => {
+                    if( this._itemForm.value.garnishFood[ gar ] ){
+                        _lGarnishFoodToInsert.push( gar );
+                    }
+                });
+
+                let arrAdd:any[] = Object.keys( this._itemForm.value.additions );
+                let _lAdditionsToInsert:string[] = [];
+
+                arrAdd.forEach( ( add ) => {
+                    if( this._itemForm.value.additions[ add ] ){
+                        _lAdditionsToInsert.push( add );
+                    }
+                });
+
+                let _lNewItem = Items.collection.insert({
+                    creation_user: this._user,
+                    creation_date: new Date(),
+                    modification_user: '-',
+                    modification_date: new Date(),
+                    is_active: true,
+                    sectionId: this._itemForm.value.section,
+                    categoryId: this._itemForm.value.category,
+                    subcategoryId: this._itemForm.value.subcategory,
+                    name: this._itemForm.value.name,
+                    time: this._itemForm.value.cookingTime,
+                    description: this._itemForm.value.description,
+                    restaurants: _lItemRestaurantsToInsert,
+                    prices: _lItemPricesToInsert,
+                    observations: this._itemForm.value.observations,
+                    garnishFoodQuantity: this._itemForm.value.garnishFoodQuantity,
+                    garnishFood: _lGarnishFoodToInsert,
+                    additions: _lAdditionsToInsert,
+                    isAvailable: true
+                });  
+
+                if( this._createImage ){
+                    uploadItemImage( this._itemImageToInsert, 
+                                     this._user,
+                                     _lNewItem ).then( ( result ) => {
+
+                    }).catch( ( error ) => {
+                        alert( 'Upload image error. Only accept .png, .jpg, .jpeg files.' );
+                    });   
                 }
-            });
-
-            let arr:any[] = Object.keys( this._itemForm.value.garnishFood );
-            let _lGarnishFoodToInsert:string[] = [];
-
-            arr.forEach( ( gar ) => {
-                if( this._itemForm.value.garnishFood[ gar ] ){
-                    let _lGarnishF:GarnishFood = GarnishFoodCol.findOne( { name: gar } );
-                    _lGarnishFoodToInsert.push( _lGarnishF._id );
-                }
-            });
-
-            let arrAdd:any[] = Object.keys( this._itemForm.value.additions );
-            let _lAdditionsToInsert:string[] = [];
-
-            arrAdd.forEach( ( add ) => {
-                if( this._itemForm.value.additions[ add ] ){
-                    let _lAddition:Addition = Additions.findOne( { name: add } );
-                    _lAdditionsToInsert.push( _lAddition._id );
-                }
-            });
-
-            let _lNewItem = Items.collection.insert({
-                creation_user: this._user,
-                creation_date: new Date(),
-                modification_user: '-',
-                modification_date: new Date(),
-                is_active: true,
-                sectionId: this._itemForm.value.section,
-                categoryId: this._itemForm.value.category,
-                subcategoryId: this._itemForm.value.subcategory,
-                name: this._itemForm.value.name,
-                time: this._itemForm.value.cookingTime,
-                description: this._itemForm.value.description,
-                restaurants: _lItemRestaurantsToInsert,
-                prices: _lItemPricesToInsert,
-                observations: this._itemForm.value.observations,
-                garnishFoodQuantity: this._itemForm.value.garnishFoodQuantity,
-                garnishFood: _lGarnishFoodToInsert,
-                additions: _lAdditionsToInsert,
-                isAvailable: true
-            });  
-
-            if( this._createImage ){
-                uploadItemImage( this._itemImageToInsert, 
-                                 Meteor.userId(),
-                                 _lNewItem ).then( ( result ) => {
-
-                }).catch( ( error ) => {
-                    alert( 'Upload image error. Only accept .png, .jpg, .jpeg files.' );
-                });   
-            }
+                this._loading = false;
+                this.cancel();
+            }, 2200);
+        } else {
+            this.cancel();
         }
-        this.cancel();
     }
 
     /**
@@ -325,7 +333,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
             this._showRestaurants = true;
             Restaurants.collection.find( { _id: { $in: _lSection.restaurants } } ).fetch().forEach( (r) => {
                 let control: FormControl = new FormControl( false );
-                this._restaurantsFormGroup.addControl( r.name, control );
+                this._restaurantsFormGroup.addControl( r._id, control );
                 _restaurantSectionsIds.push( r._id );
                 this._restaurantList.push( r );
             });
@@ -335,7 +343,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
             this._showGarnishFood = true;
             GarnishFoodCol.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).fetch().forEach( ( gar ) => {
                 let control: FormControl = new FormControl( false );
-                this._garnishFormGroup.addControl( gar.name, control );
+                this._garnishFormGroup.addControl( gar._id, control );
             });
             this._garnishFood = GarnishFoodCol.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).fetch();
         }
@@ -344,7 +352,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
             this._showAdditions = true;
             Additions.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).fetch().forEach( ( ad ) => {
                 let control: FormControl = new FormControl( false );
-                this._additionsFormGroup.addControl( ad.name, control );
+                this._additionsFormGroup.addControl( ad._id, control );
             });
             this._additions = Additions.collection.find( { 'restaurants.restaurantId': { $in: _restaurantSectionsIds } } ).fetch();
         }
@@ -448,6 +456,46 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
         this._filesToUpload = <Array<File>> _fileInput.target.files;
         this._itemImageToInsert = this._filesToUpload[0];
         this._nameImageFile = this._itemImageToInsert.name;
+    }
+
+    /**
+     * Allow mark all garnish food
+     * @param {any} _event
+     */
+    markAllGarnishFood( _event:any ):void{
+        if( _event.checked ){
+            GarnishFoodCol.collection.find( { } ).fetch().forEach( ( gar ) => {
+                if( this._garnishFormGroup.contains( gar._id ) ){
+                    this._garnishFormGroup.controls[ gar._id ].setValue( true );
+                } 
+            });
+        } else {
+            GarnishFoodCol.collection.find( { } ).fetch().forEach( ( gar ) => {
+                if( this._garnishFormGroup.contains( gar._id ) ){
+                    this._garnishFormGroup.controls[ gar._id ].setValue( false );
+                } 
+            });
+        }
+    }
+
+    /**
+     * Allow mark all additions
+     * @param {any} _event
+     */
+    markAllAdditions( _event:any ):void{
+        if( _event.checked ){
+            Additions.collection.find( { } ).fetch().forEach( ( ad ) => {
+                if( this._additionsFormGroup.contains( ad._id ) ){
+                    this._additionsFormGroup.controls[ ad._id ].setValue( true );
+                }
+            });
+        } else {
+            Additions.collection.find( { } ).fetch().forEach( ( ad ) => {
+                if( this._additionsFormGroup.contains( ad._id ) ){
+                    this._additionsFormGroup.controls[ ad._id ].setValue( false );
+                }
+            });
+        }
     }
 
     /**

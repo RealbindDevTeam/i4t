@@ -1,0 +1,24 @@
+.section-name{
+    width: 50%;
+}
+
+.checkbox{
+    padding-right: 15px;
+}
+
+.section{
+    width: 44%;
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 1%;
+
+    .inactive-button{
+        background-color: red;
+        color: white;
+    }
+
+    .active-button{
+        background-color: green;
+        color: white;
+    }
+}

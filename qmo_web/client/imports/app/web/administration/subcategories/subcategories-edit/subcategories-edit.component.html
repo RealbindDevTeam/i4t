@@ -2,11 +2,11 @@
   <md-card-title>{{'SUBCATEGORIES.SUBCATEGORY_EDIT' | translate}}</md-card-title>
   <md-card-content>
     <form [formGroup]="_editForm" (ngSubmit)="editSubCategory();">
-      <md-input-container style="width: 50%">
+      <md-input-container class="name">
           <input mdInput required formControlName="editName" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #editInputName>
           <md-hint align="end">{{editInputName.value.length}} / 50</md-hint>
       </md-input-container>
-      <md-select style="width: 40%; margin-left:2%" formControlName="editCategory" placeholder="{{'SUBCATEGORIES.CATEGORY_SELECTION' | translate}}">
+      <md-select class="select" formControlName="editCategory" placeholder="{{'SUBCATEGORIES.CATEGORY_SELECTION' | translate}}">
           <md-option *ngFor="let category of _categories | async" value="{{category._id}}" (click)="changeCategoryEdit(category._id);" ng-selected="_subcategoryCategory === category._id">{{category.name}}</md-option>
       </md-select>
       <md-slide-toggle formControlName="editActive">{{'STATE' | translate}}</md-slide-toggle>

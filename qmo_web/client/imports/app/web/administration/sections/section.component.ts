@@ -33,8 +33,6 @@ export class SectionComponent implements OnInit, OnDestroy {
     private _sectionSub             : Subscription;
     private _restaurantSub          : Subscription;
 
-    private _restaurantList         : Restaurant[];
-    private _create_restaurants     : string[];              
     public _dialogRef               : MdDialogRef<any>;
     private _showRestaurants        : boolean = true;
 
@@ -54,8 +52,6 @@ export class SectionComponent implements OnInit, OnDestroy {
         var userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang('en');
         _translate.use(userLang);
-        this._restaurantList = [];
-        this._create_restaurants = [];
     }
 
     /**
@@ -70,19 +66,33 @@ export class SectionComponent implements OnInit, OnDestroy {
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
             this._ngZone.run(() => {
                 this._restaurants = Restaurants.find( { } ).zone();
-                this._restaurantList = Restaurants.collection.find({}).fetch();
-                for ( let res of this._restaurantList ) {
-                    let control: FormControl = new FormControl( false );
-                    this._restaurantsFormGroup.addControl( res.name, control );
-                }
-                if( this._restaurantList.length === 0 ){
-                    this._showRestaurants = false;
-                }
+                this._restaurants.subscribe( () => { this.createRestaurantForm(); });
             });
         });
 
-        this._sections = Sections.find( { } ).zone();        
-        this._sectionSub = MeteorObservable.subscribe( 'sections', this._user ).subscribe();
+        this._sectionSub = MeteorObservable.subscribe( 'sections', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._sections = Sections.find( { } ).zone();        
+            });
+        });
+    }
+
+    /**
+     * Create restaurants controls in form
+     */
+    createRestaurantForm():void{
+        Restaurants.collection.find( { } ).fetch().forEach( ( res ) => {
+            if( this._restaurantsFormGroup.contains( res._id ) ){
+                this._restaurantsFormGroup.controls[ res._id ].setValue( false );
+            } else {
+                let control: FormControl = new FormControl( false );
+                this._restaurantsFormGroup.addControl( res._id, control );
+            }
+        });
+
+        if( Restaurants.collection.find( { } ).count() === 0 ){
+            this._showRestaurants = false;
+        }
     }
 
     /**
@@ -95,12 +105,12 @@ export class SectionComponent implements OnInit, OnDestroy {
         }
 
         if( this._sectionForm.valid ){
+            let _create_restaurants: string[] = [];
             let arr:any[] = Object.keys( this._sectionForm.value.restaurants );
 
             arr.forEach( ( rest ) => {
                 if( this._sectionForm.value.restaurants[ rest ]){
-                    let restau:Restaurant = Restaurants.findOne( { name: rest } );
-                    this._create_restaurants.push( restau._id );               
+                    _create_restaurants.push( rest);               
                 }            
             });
 
@@ -109,7 +119,7 @@ export class SectionComponent implements OnInit, OnDestroy {
                 creation_date: new Date(),
                 modification_user: '-',
                 modification_date: new Date(),
-                restaurants: this._create_restaurants,
+                restaurants: _create_restaurants,
                 is_active: true,
                 name: this._sectionForm.value.name
             });
@@ -121,8 +131,7 @@ export class SectionComponent implements OnInit, OnDestroy {
                 });
             }
 
-            this._sectionForm.reset();
-            this._create_restaurants = [];
+            this.cancel();
         }
     }
 
@@ -145,7 +154,6 @@ export class SectionComponent implements OnInit, OnDestroy {
      */
     cancel():void{
         this._sectionForm.reset();
-        this._create_restaurants = [];
     }
 
     /**

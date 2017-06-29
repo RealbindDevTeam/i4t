@@ -24,25 +24,29 @@ import style from './item.component.scss';
 })
 export class ItemComponent implements OnInit, OnDestroy {
 
-    private _itemsSub: Subscription;
-    private _itemImagesSub: Subscription;
-    private _currenciesSub: Subscription;
-    private _restaurantSub: Subscription;
+    private _itemsSub           : Subscription;
+    private _itemImagesSub      : Subscription;
+    private _currenciesSub      : Subscription;
+    private _restaurantSub      : Subscription;
 
-    private _items: Observable<Item[]>;
-    private _itemImages: Observable<ItemImage[]>;
-    private _restaurants: Observable<Restaurant[]>;
+    private _items              : Observable<Item[]>;
+    private _restaurants        : Observable<Restaurant[]>;
 
-    public _dialogRef: MdDialogRef<any>;
+    public _dialogRef           : MdDialogRef<any>;
 
     /**
      * ItemComponent contructor
      * @param {Router} _router
      * @param {FormBuilder} _formBuilder
      * @param {TranslateService} _translate
+     * @param {NgZone} _ngZone
      * @param {MdDialog} _dialog
      */
-    constructor( private _router: Router, private _formBuilder: FormBuilder, private _translate: TranslateService, public _dialog: MdDialog ){
+    constructor( private _router: Router, 
+                 private _formBuilder: FormBuilder, 
+                 private _translate: TranslateService, 
+                 private _ngZone: NgZone,
+                 public _dialog: MdDialog ){
         var _userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
@@ -54,11 +58,12 @@ export class ItemComponent implements OnInit, OnDestroy {
     ngOnInit(){
         this._items = Items.find( { } ).zone();
         this._itemsSub = MeteorObservable.subscribe( 'items', Meteor.userId() ).subscribe();
-        this._itemImages = ItemImages.find( { } ).zone();
         this._itemImagesSub = MeteorObservable.subscribe( 'itemImages', Meteor.userId() ).subscribe();
         this._currenciesSub = MeteorObservable.subscribe( 'currencies' ).subscribe();
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', Meteor.userId() ).subscribe( () => {
-            this._restaurants = Restaurants.find( { } ).zone();
+            this._ngZone.run( () => {
+                this._restaurants = Restaurants.find( { } ).zone();
+            });
         });
    }
 
@@ -137,6 +142,19 @@ export class ItemComponent implements OnInit, OnDestroy {
      */
     goToAddRestaurant(){
         this._router.navigate(['/app/restaurantRegister']);
+    }
+
+    /**
+     * Return item image
+     * @param {string} _itemId
+     */
+    getItemImage( _itemId:string ):string{
+        let _lItemImage: ItemImage = ItemImages.findOne( { itemId: _itemId } );
+        if( _lItemImage ){
+            return _lItemImage.url;
+        } else{
+            return '/images/default-plate.png';
+        }
     }
 
     /**

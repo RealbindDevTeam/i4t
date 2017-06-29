@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
+import { MdSnackBar } from '@angular/material';
 import { Section } from '../../../../../../../both/models/administration/section.model';
 import { Sections } from '../../../../../../../both/collections/administration/section.collection';
 import { Category } from '../../../../../../../both/models/administration/category.model';
@@ -59,7 +60,6 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     private _itemDetail                 : Observable<Item[]>;
     private _garnishFoodCol             : Observable<GarnishFood[]>;
     private _additions                  : Observable<Addition[]>;
-    private _itemImages                 : Observable<ItemImage[]>
 
     private _finalPrice                 : number = 0;
     private _maxGarnishFoodElements     : number = 0;
@@ -80,11 +80,13 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate 
      * @param {OrderNavigationService} _navigation 
      * @param {NgZone} _ngZone 
+     * @param {MdSnackBar} snackBar
      */
     constructor( private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
                  private _navigation: OrderNavigationService, 
-                 private _ngZone: NgZone ){
+                 private _ngZone: NgZone,
+                 public snackBar: MdSnackBar ){
         var _userLang = navigator.language.split( '-' )[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
@@ -99,18 +101,14 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
                 this._items = Items.find( { } ).zone();
             });
         });
-        this._itemImagesSub = MeteorObservable.subscribe( 'itemImagesByRestaurant', this.restaurantId ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._itemImages = ItemImages.find( { } ).zone();
-            });
-        });
+        this._itemImagesSub = MeteorObservable.subscribe( 'itemImagesByRestaurant', this.restaurantId ).subscribe();
         this._ordersSub = MeteorObservable.subscribe( 'getOrders', this.restaurantId, this.tableQRCode,[ 'ORDER_STATUS.REGISTERED' ] ).subscribe( () => { } );
         this._garnishFoodSub = MeteorObservable.subscribe( 'garnishFoodByRestaurant', this.restaurantId ).subscribe( () => {
             this._ngZone.run( () => {
                 this._garnishFoodCol = GarnishFoodCol.find( { } ).zone();
                 GarnishFoodCol.collection.find( { } ).fetch().forEach( ( gar ) => {
                     let control: FormControl = new FormControl( false );
-                    this._garnishFormGroup.addControl( gar.name, control );
+                    this._garnishFormGroup.addControl( gar._id, control );
                 });
             });
         });
@@ -199,11 +197,11 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      */
     buildAdditionsForms():void{
         Additions.collection.find( { } ).fetch().forEach( ( add ) => {
-            if( this._additionsFormGroup.contains( add.name ) ){
-                this._additionsFormGroup.controls[ add.name ].setValue( false );
+            if( this._additionsFormGroup.contains( add._id ) ){
+                this._additionsFormGroup.controls[ add._id ].setValue( false );
             } else {
                 let control: FormControl = new FormControl( false );
-                this._additionsFormGroup.addControl( add.name, control );
+                this._additionsFormGroup.addControl( add._id, control );
             }
 
             if( this._additionsDetailFormGroup.contains( add._id ) ){
@@ -263,6 +261,19 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Return item image
+     * @param {string} _itemId
+     */
+    getItemImage( _itemId:string ):string{
+        let _lItemImage: ItemImage = ItemImages.findOne( { itemId: _itemId } );
+        if( _lItemImage ){
+            return _lItemImage.url;
+        } else{
+            return '/images/default-plate.png';
+        }
+    }
+
+    /**
      * Add item in order with REGISTERED state
      * @param {string} _pItemToInsert 
      */
@@ -282,8 +293,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
 
             arr.forEach( ( gar ) => {
                 if( this._newOrderForm.value.garnishFood[ gar ] ){
-                    let _lGarnishF:GarnishFood = GarnishFoodCol.findOne( { name: gar } );
-                    _lGarnishFoodToInsert.push( _lGarnishF._id );
+                    _lGarnishFoodToInsert.push( gar );
                 }
             });
 
@@ -292,8 +302,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
 
             arrAdd.forEach( ( add ) => {
                 if( this._newOrderForm.value.additions[ add ] ){
-                    let _lAddition:Addition = Additions.findOne( { name: add } );
-                    _lAdditionsToInsert.push( _lAddition._id );
+                    _lAdditionsToInsert.push( add );
                 }
             });
 
@@ -306,7 +315,10 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
                                            paymentItem: this._finalPrice
                                          };
             MeteorObservable.call( 'AddItemToOrder', _lOrderItem, this.restaurantId, this.tableQRCode, this.finalPrice ).subscribe( () => {
-                
+                let _lMessage:string = this.itemNameTraduction( 'ORDER_CREATE.ITEM_AGGREGATED' );
+                this.snackBar.open( _lMessage, '',{
+                    duration: 2500
+                });
             }, ( error ) => { alert( `Error: ${error}` ) ; } );
             this.viewItemDetail( true );
         }
@@ -516,7 +528,10 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
             }
         });
         MeteorObservable.call( 'AddAdditionsToOrder', _lOrderAdditionsToInsert, this.restaurantId, this.tableQRCode, _lAdditionsPrice ).subscribe( () => {
-            
+            let _lMessage:string = this.itemNameTraduction( 'ORDER_CREATE.ADDITON_AGGREGATED' );
+            this.snackBar.open( _lMessage, '',{
+                duration: 2500
+            });
         }, ( error ) => { alert( `Error: ${error}` ) ; } );
         this.viewAdditionDetail( true );
     }
