@@ -29,6 +29,7 @@
     "TIP_PERCENTAGE": "Porcentaje de propina",
     "CLOSE": "Cerrar",
     "VIEW_DETAIL": "Ver Detalle",
+    "OTHER" : "Otro...",
     "ORDER_STATUS": {
         "REGISTERED": "Registrado",
         "IN_PROCESS": "En Proceso",
@@ -435,7 +436,8 @@
         "PHONE": "Telefono",
         "WEBPAGE": "Pagina de Internet",
         "EMAIL": "Correo Electronico",
-        "MSG_INITIAL": "Administra la información de tus restaurantes"
+        "MSG_INITIAL": "Administra la información de tus restaurantes",
+        "CITY_OTHER" : "Si la ciudad de tu restaurante no se encuentra en la opción de ciudades, la puedes especificar en el campo dirección"
     },
     "TABLES": {
         "TABLES_CREATION": "Creación de mesas",
@@ -465,13 +467,15 @@
         "COLLABORATORS_REGISTER": "Registro de colaborador",
         "COLLABORATORS_TEXT": "Seleccione el restaurante que deseé para la consulta",
         "MSG_INITIAL": "Vincula a todos tus colaboradores de a cuerdo al rol que desempeña",
-        "BTN": "Registrar colaborador"
+        "BTN": "Registrar colaborador",
+        "TABLE_INIT" : "Mesa inicial",
+        "TABLE_END" : "Mesa final"
     },
     "COLLABORATORS_REGISTER": {
         "COLLABORATORS_LABEL": "Colaborador",
         "USER_LABEL": "Usuario",
         "GENERAL_INFO": "Información personal",
-        "GENERAL_INFO_TEXT": "Por favor ingresa la información personal de tu colaboradore",
+        "GENERAL_INFO_TEXT": "Por favor ingresa la información personal de tu colaborador",
         "USER_INFO": "Información de usuario",
         "USER_INFO_TEXT": "Por favor ingresa la información del usuario de tu colaborador",
         "RESTAURANT": "Restaurante",
@@ -685,6 +689,9 @@
         "ADDITION_EDITED": "Adicion Editada Correctamente"
     },
     "PAYMENTS": {
+        "THERE_IS_NOT_REST" : "No te encuentras en un restaurante",
+        "THERE_IS_NOT_REST_MSG" : "Ve a la opción de ordenes e ingresa el código",
+        "GO_TO_ORDERS":"Ir a ordenes",
         "COLOMBIA": {
             "GARNISH_FOOD": "Guarnicion",
             "ADDITION": "Adicion",

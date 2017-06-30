@@ -2,16 +2,28 @@
     <div class="ion-content-custom">
         <h3 style="padding-left: 16px">{{'MOBILE.PAYMENTS.BILL' | translate}}</h3>
 
+        <!--ion-card>
+            <img src="assets/img/payment-pending.png" width="100px"/>
+            <ion-card-content>
+                <ion-card-title>
+                    {{'MOBILE.PAYMENTS.PAY_PENDING' | translate}}
+                </ion-card-title>
+                <p>
+                    The most popular industrial group ever, and largely
+                    responsible for bringing the music to a mass audience.
+                </p>
+            </ion-card-content>
+        </ion-card-->
+
         <ion-card (click)="goToAddOrders()">
             <ion-card-content>
                 <div class="item-block">
-                    <img class="img-cards" src="assets/img/pago.png">
+                    <img class="img-cards" src="assets/img/add-order.png">
                     <div class="header-title">
                         <div class="label">
                             <span>
-                                {{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}
                             </span>
-                            <p>Ordenes</p>
+                            <p>{{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}</p>
                         </div>
                     </div>
                 </div>
@@ -21,13 +33,12 @@
         <ion-card (click)="goToPaymentDetails()">
             <ion-card-content>
                 <div class="item-block">
-                    <img class="img-cards" src="assets/img/pago.png">
+                    <img class="img-cards" src="assets/img/view-detail.png">
                     <div class="header-title">
                         <div class="label">
                             <span>
-                                {{'MOBILE.PAYMENTS.VIEW_DETAIL' | translate}}
                             </span>
-                            <p>Detalle</p>
+                            <p>{{'MOBILE.PAYMENTS.VIEW_DETAIL' | translate}}</p>
                         </div>
                     </div>
                 </div>
@@ -37,11 +48,11 @@
         <ion-card (click)="presentModal()">
             <ion-card-content>
                 <div class="item-block">
-                    <img *ngIf="_paymentMethod == 'MOBILE.PAYMENTS.PAYMENT_METHOD'" class="img-cards" src="assets/img/pagopng">
+                    <img *ngIf="_paymentMethod == 'MOBILE.PAYMENTS.PAYMENT_METHOD'" class="img-cards" src="assets/img/payment-methods.png">
                     <img *ngIf="_paymentMethod == 'PAYMENT_METHODS.CASH'" class="img-cards" src="assets/img/pago.png">
                     <img *ngIf="_paymentMethod == 'PAYMENT_METHODS.CREDIT_CARD'" class="img-cards" src="assets/img/pago_tarjeta_credito.png">
                     <img *ngIf="_paymentMethod == 'PAYMENT_METHODS.DEBIT_CARD'" class="img-cards" src="assets/img/pago_tarjeta_debito.png">
-                    <img *ngIf="_paymentMethod == 'PAYMENT_METHODS.ONLINE'" class="img-cards" src="assets/img/pagopng">
+                    <img *ngIf="_paymentMethod == 'PAYMENT_METHODS.ONLINE'" class="img-cards" src="assets/img/payment-online.png">
                     <div class="header-title">
                         <div class="label">
                             <span>
@@ -56,10 +67,10 @@
         </ion-card>
     </div>
 
-    <div class="ion-footer-custom" padding *ngIf="(_orders | async)?.length > 0">
+    <div class="ion-footer-custom" padding>
         <h3 style="display: inline-block;">{{'MOBILE.PAYMENTS.TOTAL_BILL' | translate}}</h3>
         <h3 style="display: inline-block; position: absolute; right: 15px; -webkit-margin-before: 0em;">{{_totalToPayment}} {{_currencyCode}}</h3>    
-        <div>
+        <div *ngIf="(_orders | async)?.length > 0">
             <button *ngIf="!_paymentCreated"  ion-button block (click)="pay()">{{'MOBILE.PAYMENTS.PAY_BTN' | translate}}</button>
             <p *ngIf="_paymentCreated" style="font-weight: bold;color: red;">Pago Pendiente por Confirmar por parte del Mesero</p>
         </div>

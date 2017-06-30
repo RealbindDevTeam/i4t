@@ -75,11 +75,14 @@
                     <ion-input #inputLastName value="{{user.profile.last_name}}" type="text" [disabled]="!_disabled"></ion-input>
                 </ion-item>
                 <ion-item>
-                    <ion-label floating>{{'MOBILE.SETTINGS.LANGUAGE' | translate}}</ion-label>
-                    <ion-input #inputLanguageCode value="{{user.profile.language_code}}" type="text" [disabled]="!_disabled"></ion-input>
+                    <ion-label>{{'MOBILE.SETTINGS.LANGUAGE' | translate}}</ion-label>
+                    <ion-select #inputLanguageCode [(ngModel)]="user.profile.language_code" >
+                        <ion-option value="es">{{'MOBILE.LANGUAGE.ES' | translate}}</ion-option>
+                        <ion-option value="en">{{'MOBILE.LANGUAGE.EN' | translate}}</ion-option>
+                    </ion-select>
                 </ion-item>
             </ion-list>
-            <button ion-button block class="button-primary" [disabled]="!_disabled" type="submit" (click)="editUserDetail(inputUserName._value, inputFirstName._value, inputLastName._value, inputLanguageCode._value)">{{'MOBILE.UPDATE' | translate}}</button>
+            <button ion-button block class="button-primary" [disabled]="!_disabled" type="submit" (click)="editUserDetail(inputUserName._value, inputFirstName._value, inputLastName._value, user.profile.language_code)">{{'MOBILE.UPDATE' | translate}}</button>
         </div>
     </div>
     

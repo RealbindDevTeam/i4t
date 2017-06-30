@@ -90,7 +90,9 @@
             </md-card-header>
 
             <md-card-content>
-                <button md-mini-fab class="btn_edit"> <md-icon style="color: white;">edit</md-icon></button>
+                <button md-mini-fab class="btn_edit" (click)="editCollaborator(userdetail, user)"> 
+                    <md-icon style="color: white;">edit</md-icon>
+                </button>
                 <ul class="list">
                     <li *ngFor="let role of _roles | async">
                         <template [ngIf]="role._id == userdetail.role_id">

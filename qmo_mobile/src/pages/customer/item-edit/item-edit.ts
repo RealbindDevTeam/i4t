@@ -132,6 +132,10 @@ export class ItemEditPage implements OnInit, OnDestroy {
             this._quantityCount = itemOrder.quantity;
             this._finalPrice = itemOrder.paymentItem;
             this._garnishFoodElementsCount = itemOrder.garnishFood.length;
+
+            if(itemOrder.quantity > 1){
+              this._disabledMinusBtn = false;
+            }
           }
         }
         //this._orderAux.items.forEach((itemOrder) => {

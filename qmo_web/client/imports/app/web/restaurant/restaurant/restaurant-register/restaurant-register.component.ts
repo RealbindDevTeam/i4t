@@ -83,6 +83,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private post: any;
     align: string;
     private _loading: boolean;
+    private _showMessage : boolean = false;
     private _mdDialogRef: MdDialogRef<any>;
 
     /**
@@ -469,6 +470,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * @param {string} _city
      */
     changeCity(_city) {
+        this._showMessage = false;
+        _city === '0000' ? this._showMessage = true : this._showMessage = false ;
         this._selectedCityValue = _city;
         this._restaurantForm.controls['city'].setValue(_city);
     }

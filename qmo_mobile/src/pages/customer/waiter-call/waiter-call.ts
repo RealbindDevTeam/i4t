@@ -12,15 +12,17 @@ import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-ca
 })
 export class WaiterCallPage implements OnInit, OnDestroy {
 
-  private _userDetailSubscription : Subscription;
+  private _userDetailSubscription       : Subscription;
   private _waiterCallDetailSubscription : Subscription;
+  private _waitersSubscription          : Subscription;
 
-  private _userDetail : any;
+  private _userDetail  : any;
   private _userDetails : any;
+  private _waiters     : any;
 
-  private _countDetails : number;
-  private _userLang : string;
-  private _userRestaurant : boolean;
+  private _countDetails       : number;
+  private _userLang           : string;
+  private _userRestaurant     : boolean;
   private _validatedWaterCall : boolean;
 
   /**
@@ -52,6 +54,44 @@ export class WaiterCallPage implements OnInit, OnDestroy {
             this._userRestaurant = true;
           }
         });
+    });
+
+    this._waitersSubscription = MeteorObservable.subscribe('getWaitersByCurrentRestaurant', Meteor.userId()).subscribe(()=> {
+      this._waiters = UserDetails.find({role_id : '200'});
+    });
+    
+    this._waiterCallDetailSubscription = MeteorObservable.subscribe('countWaiterCallDetailByUsrId', Meteor.userId()).subscribe( () => {
+      MeteorObservable.autorun().subscribe(() => {
+        if (this._userRestaurant) {
+          this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).count();
+          if ( this._countDetails > 0 ){
+            this._validatedWaterCall = true;
+          } else {
+            this._validatedWaterCall = false;
+          }
+        }
+      });
+    });
+  }
+
+  /**
+   * ionViewWillEnter implementation
+   */
+  ionViewWillEnter() {
+    this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe( () => {
+      MeteorObservable.autorun().subscribe(() => {
+        this._userDetails = UserDetails.find({ user_id: Meteor.userId() });
+        this._userDetail  = UserDetails.collection.find({ user_id: Meteor.userId()}).fetch()[0];
+          if (this._userDetail.current_table == "" && this._userDetail.current_restaurant == "") {
+            this._userRestaurant = false;
+          } else {
+            this._userRestaurant = true;
+          }
+        });
+    });
+
+    this._waitersSubscription = MeteorObservable.subscribe('getWaitersByCurrentRestaurant', Meteor.userId()).subscribe(()=> {
+      this._waiters = UserDetails.find({role_id : '200'});
     });
     
     this._waiterCallDetailSubscription = MeteorObservable.subscribe('countWaiterCallDetailByUsrId', Meteor.userId()).subscribe( () => {
@@ -115,10 +155,20 @@ export class WaiterCallPage implements OnInit, OnDestroy {
   }
 
   /**
+   * ionViewWillLeave implementation
+   */
+  ionViewWillLeave() {
+    this._waiterCallDetailSubscription.unsubscribe();
+    this._userDetailSubscription.unsubscribe();
+    this._waitersSubscription.unsubscribe();
+  }
+
+  /**
    * ngOnDestroy implementation
    */
   ngOnDestroy(){
     this._waiterCallDetailSubscription.unsubscribe();
     this._userDetailSubscription.unsubscribe();
+    this._waitersSubscription.unsubscribe();
   }
 }

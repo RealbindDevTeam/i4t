@@ -29,6 +29,7 @@
     "TIP_PERCENTAGE": "Tip percentage",
     "CLOSE": "Close",
     "VIEW_DETAIL": "View Detail",
+    "OTHER" : "Other...",
     "ORDER_STATUS": {
         "REGISTERED": "Registered",
         "IN_PROCESS": "In Process",
@@ -435,7 +436,8 @@
         "PHONE": "Phone",
         "WEBPAGE": "Webpage",
         "EMAIL": "Email",
-        "MSG_INITIAL": "Manage your restaurant information"
+        "MSG_INITIAL": "Manage your restaurant information",
+        "CITY_OTHER" : "If the city of your restaurant is not in the cities option, you can specify it in the address field"
     },
     "TABLES": {
         "TABLES_CREATION": "Creating tables",
@@ -465,7 +467,9 @@
         "COLLABORATORS_REGISTER": "Collaborator register",
         "COLLABORATORS_TEXT": "Select the restaurant you want for search",
         "MSG_INITIAL": "Link to all your collaborators an agreement to the role they play",
-        "BTN": "Collaborator register"
+        "BTN": "Collaborator register",
+        "TABLE_INIT" : "Table init",
+        "TABLE_END" : "Table End"
     },
     "COLLABORATORS_REGISTER": {
         "COLLABORATORS_LABEL": "Collaborator",
@@ -684,7 +688,10 @@
         "ITEM_EDITED": "Item Edited Correctly",
         "ADDITION_EDITED": "Edited Adition Correctly"
     },
-    "PAYMENTS": {
+   "PAYMENTS": {
+        "THERE_IS_NOT_REST" : "You are not in a restaurant",
+        "THERE_IS_NOT_REST_MSG" : "Go to the order option and enter the code",
+        "GO_TO_ORDERS":"Go to orders",
         "COLOMBIA": {
             "GARNISH_FOOD": "Garnish Food",
             "ADDITION": "Addition",

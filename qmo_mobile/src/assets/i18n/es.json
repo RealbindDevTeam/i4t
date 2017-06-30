@@ -32,6 +32,10 @@
         "CHOOSE_FILE": "Seleccionar archivo",
         "CLOSE" : "Cerrar",
         "VIEW" : "Ver",
+        "LANGUAGE" : {
+            "ES" : "Español",
+            "EN" : "Ingles"
+        },
         "INITIAL": {
             "SIGNUP": "Registrarse",
             "SIGNIN": "Iniciar sesión"
@@ -103,7 +107,9 @@
                 "CONFIRM_TITLE": "Contraseña",
                 "CONFIRM_BTN": "Ok",
                 "ERROR_TITLE": "Error"
-            }
+            },
+            "SIGN_OUT":"Cerrar sesión",
+            "MSG_COMFIRM" : "Tus datos han sido actualizados"
         },
         "CODE_TYPE_SELECT": {
             "TITTLE": "Tipo de código",
@@ -176,7 +182,10 @@
             "SUCCESSFUL_PAY_OTHER_USER" : "Se ha transferido el pago de la orden",
             "PAYMENTS_TO_BE_CONFIRM" : "Tienes ordenes en estado pendiente por confirmación",
             "MOMENT_ANSWER" : "En un momento te atenderemos",
-            "MOMENT_PAY_ANSWER" : "En un momento recibiremos tu pago"
+            "MOMENT_PAY_ANSWER" : "En un momento recibiremos tu pago",
+            "PAY_CONFIRM_MODAL" : "No hay pagos recibidos",
+            "SELECT_ALL_PAYMENTS" : "Seleccionar todos los pagos",
+            "PAY_PENDING" : "Pago pendiente por recibir"
         },
         "WAITER_CALL": {
             "TITTLE": "Solicitar mesero",
@@ -195,7 +204,9 @@
             "CALL_LABEL_CUSTOMER" : "Llamado de cliente",
             "CALL_LABEL_CUSTOMER_PAYMENT" : "Pago de cliente",
             "PAY_CONFIRM" : "Confirmación de pago",
-            "PAY_CLOSE" : "Cerrar pagos"
+            "PAY_CLOSE" : "Cerrar pagos recibidos",
+            "NO_WAITERS" : "No hay meseros asignados en el restaurante",
+            "ALPHANUMERIC_CODE" : "Código de la mesa"
         },
         "SECTIONS": {
             "MENU": "Menú",

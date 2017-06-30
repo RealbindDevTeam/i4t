@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content padding>
-    <div *ngIf="(_orders | async)?.length > 0">
+    <div *ngIf="(_allOrders | async)?.length > 0">
         <ion-item *ngFor="let _res of _restaurants | async">
             <ion-thumbnail item-left>
                 <img src="{{getRestaurantThumb(_res._id)}}">
@@ -21,8 +21,8 @@
                 <ion-label>{{'MOBILE.SECTIONS.SELECTION' | translate}}</ion-label>
                 <ion-select [(ngModel)]="selected" interface="action-sheet" (ionChange)="filterOrders(selected)" cancelText="{{'MOBILE.SECTIONS.CANCEL'| translate}}"
                     class="custom-select">
-                    <ion-option value="all">{{'MOBILE.ORDERS.ALL_ORDERS' | translate}}</ion-option>
-                    <ion-option value="me" selected="true">{{'MOBILE.ORDERS.MY_ORDERS' | translate}}</ion-option>
+                    <ion-option value="all" selected="true">{{'MOBILE.ORDERS.ALL_ORDERS' | translate}}</ion-option>
+                    <ion-option value="me">{{'MOBILE.ORDERS.MY_ORDERS' | translate}}</ion-option>
                     <ion-option value="other">{{'MOBILE.ORDERS.OTHER_ORDERS' | translate}}</ion-option>
                     </ion-select>
             </ion-item>
@@ -76,7 +76,7 @@
             </div>
         </div>
     </div>
-    <div *ngIf="(_orders | async)?.length <= 0">
+    <div *ngIf="(_allOrders | async)?.length <= 0">
         <div class="img">
             <img src="assets/img/platos-orden.png">
         </div>

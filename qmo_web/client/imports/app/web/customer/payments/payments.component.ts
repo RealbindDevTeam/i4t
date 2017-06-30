@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -33,7 +34,8 @@ export class PaymentsComponent implements OnInit, OnDestroy {
      * @param { NgZone } _ngZone 
      */
     constructor( private _translate: TranslateService, 
-                 private _ngZone: NgZone ) {
+                 private _ngZone: NgZone,
+                 private _router: Router ) {
         var _userLang = navigator.language.split( '-' )[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
@@ -62,6 +64,13 @@ export class PaymentsComponent implements OnInit, OnDestroy {
                 }
             });
         });
+    }
+
+    /**
+     * This function allow go to Orders
+     */
+    goToOrders(){
+        this._router.navigate(['/app/orders']);
     }
 
     /**

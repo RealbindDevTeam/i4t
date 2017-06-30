@@ -138,11 +138,9 @@ export const MODAL_DIALOG_DECLARATIONS = [
     ColombiaPaymentDetailComponent,
     CreateConfirmComponent,
     PaymentConfirmComponent,
+    CollaboratorsEditionComponent,
     DisableConfirmComponent,
     SendOrderConfirmComponent
-    /*
-    CollaboratorsEditionComponent,
-    */
 ];
 
 export const SERVICES_DECLARATIONS = [
