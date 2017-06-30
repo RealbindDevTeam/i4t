@@ -53,10 +53,7 @@ export function createCrons() {
         return parser.cron(country.cronEmailExpireSoon);
       },
       job: function () {
-        /*
-        var numbersCrunched = Meteor.call('validateTrialPeriod', country._id);
-        return numbersCrunched;
-        */
+        var numbersCrunched = Meteor.call('sendEmailExpireSoon', country._id);
       }
     });
 
