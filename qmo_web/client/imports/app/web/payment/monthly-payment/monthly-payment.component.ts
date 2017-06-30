@@ -36,9 +36,11 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     private _tableSub: Subscription;
     private _parameterSub: Subscription;
     private _restaurantsArray: Restaurant[];
-    private _date: Date;
-    private _firstDay: Date;
-    private _lastDay: Date;
+    private _currentDate: Date;
+    private _firstMonthDay: Date;
+    private _lastMonthDay: Date;
+    private _firstNextMonthDay: Date;
+    private _maxPaymentDay: Date;
 
     constructor(private router: Router,
         private _formBuilder: FormBuilder,
@@ -57,14 +59,16 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
         this._tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe();
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
 
-        this._date = new Date();
-        this._firstDay = new Date(this._date.getFullYear(), this._date.getMonth(), 1);
-        this._lastDay = new Date(this._date.getFullYear(), this._date.getMonth() + 1, 0);
+        this._currentDate = new Date(2017, 5, 3);
+        this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
+        this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
+        this._firstNextMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 1);
     }
 
     /**
      * This function gets the restaurant price according to the country
      * @param {Restaurant} _restaurant
+     * @return {number}
      */
     getRestaurantPrice(_restaurant: Restaurant): number {
         let country: Country;
@@ -77,6 +81,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     /**
      * This function gets the active tables by restaurant
      * @param {Restaurant} _restaurant
+     * @return {number}
      */
     getActiveTables(_restaurant: Restaurant): number {
         let tables_length: number;
@@ -91,6 +96,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     /**
      * This function gets de tables price by restaurant and country cost
      * @param {Restaurant} _restaurant
+     * @return {number}
      */
     getTablePrice(_restaurant: Restaurant): number {
         let tables_length: number;
@@ -109,6 +115,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     /**
      * This function gets the coutry accordint to currency
      * @param {string} _currencyId
+     * @return {string}
      */
     getCountryByCurrency(_currencyId: string): string {
         let country_name: Country;
@@ -123,6 +130,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     /**
      * This function gets the unit table price according to the currency
      * @param {string} _currencyId
+     * @return {number}
      */
     getUnitTablePrice(_currencyId: string): number {
         let country_table_price: Country;
@@ -135,6 +143,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     /**
      * This function gets the total cost by restaurant to pay for first and forward pays
      * @param {Restaurant} _restaurant
+     * @return {number}
      */
     getTotalRestaurant(_restaurant: Restaurant): number {
         let country: Country;
@@ -146,14 +155,18 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
         discount = Parameters.findOne({ name: 'first_pay_discount' });
 
         if (country && tables_length && discount) {
-            if (_restaurant.firstPay) {
+            if (_restaurant.firstPay && !_restaurant.freeDays) {
                 return ((country.restaurantPrice + (country.tablePrice * tables_length))) * Number(discount.value) / 100;
+            } else if (_restaurant.firstPay && _restaurant.freeDays) {
+                return 0;
             } else {
                 return country.restaurantPrice + (country.tablePrice * tables_length);
             }
         } else if (country && !tables_length && discount) {
-            if (_restaurant.firstPay) {
+            if (_restaurant.firstPay && !_restaurant.freeDays) {
                 return country.restaurantPrice * Number(discount.value) / 100;
+            } else if (_restaurant.firstPay && _restaurant.freeDays) {
+                return 0;
             } else {
                 return country.restaurantPrice;
             }
@@ -163,6 +176,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     /**
      * This function gets the total cost by restaurant to pay
      * @param {Restaurant} _restaurant
+     * @return {number}
      */
     getTotalRestaurantNoDiscount(_restaurant: Restaurant): number {
         let country: Country;
@@ -182,6 +196,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     /**
      * This function gets the total cost by currency
      * @param {string} _currencyId
+     * @return {number}
      */
     getTotalByCurrency(_currencyId: string): number {
         let price: number = 0;
@@ -193,7 +208,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
 
     /**
      * This function gets the discount
-     * @param {string} _currencyId
+     * @return {string}
      */
     getDiscount(): string {
         let discount: Parameter;
@@ -202,7 +217,39 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
             return discount.value;
         }
     }
-    
+
+    /**
+     * This function validate the current day to return or not the customer payment
+     * @return {boolean}
+     */
+    validatePeriodDays(): boolean {
+        let startDay = Parameters.findOne({ name: 'start_payment_day' });
+        let endDay = Parameters.findOne({ name: 'end_payment_day' });
+        let currentDay = this._currentDate.getDate();
+        let restaurants = Restaurants.collection.find({ creation_user: Meteor.userId() }).fetch();
+
+        if (startDay && endDay && restaurants) {
+            if (currentDay >= Number(startDay.value) && currentDay <= Number(endDay.value) && (restaurants.length > 0)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    /**
+     * This function return the max day to pay
+     * @return {Date}
+     */
+    getMaxPaymentDay(): Date {
+        this._maxPaymentDay = new Date(this._firstMonthDay);
+        let endDay = Parameters.findOne({ name: 'end_payment_day' });
+        if (endDay) {
+            this._maxPaymentDay.setDate(this._maxPaymentDay.getDate() + (Number(endDay.value) - 1));
+            return this._maxPaymentDay;
+        }
+    }
+
     ngOnDestroy() {
         this._restaurantSub.unsubscribe();
         this._currencySub.unsubscribe();
@@ -211,4 +258,3 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
         this._parameterSub.unsubscribe();
     }
 }
-

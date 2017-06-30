@@ -61,8 +61,13 @@ import { OrderToTranslateComponent } from './customer/payments/order-payment-tra
 import { ColombiaPaymentDetailComponent } from './customer/payments/country-payment/colombia-payment/colombia-payment-detail/colombia-payment-detail.component';
 import { CreateConfirmComponent } from './restaurant/restaurant/restaurant-register/create-confirm/create-confirm.component';
 import { MonthlyPaymentComponent } from './payment/monthly-payment/monthly-payment.component';
-import { PaymentConfirmComponent } from './waiter/payment-confirm/payment-confirm.component';
+import { PaymentConfirmComponent } from './waiter/calls/payment-confirm/payment-confirm.component';
 import { SupervisorDashboardComponent } from './supervisor-dashboard/supervisor-dashboard.component';
+import { MonthlyConfigComponent } from './restaurant/monthly-config/monthly-config.component';
+import { RestaurantListComponent } from './restaurant/monthly-config/restaurant-list.component';
+import { EnableDisableComponent } from './restaurant/monthly-config/enable-disable.component'; 
+import { DisableConfirmComponent } from './restaurant/monthly-config/disable-confirm/disable-confirm.component';
+import { SendOrderConfirmComponent } from './waiter/calls/send-order-confirm/send-order-confirm.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -106,7 +111,10 @@ export const WEB_DECLARATIONS = [
     ColombiaItemDetailComponent,
     OrderPaymentTranslateComponent,
     MonthlyPaymentComponent,
-    SupervisorDashboardComponent
+    SupervisorDashboardComponent,
+    MonthlyConfigComponent,
+    RestaurantListComponent,
+    EnableDisableComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [
@@ -130,7 +138,9 @@ export const MODAL_DIALOG_DECLARATIONS = [
     ColombiaPaymentDetailComponent,
     CreateConfirmComponent,
     PaymentConfirmComponent,
-    CollaboratorsEditionComponent
+    CollaboratorsEditionComponent,
+    DisableConfirmComponent,
+    SendOrderConfirmComponent
 ];
 
 export const SERVICES_DECLARATIONS = [

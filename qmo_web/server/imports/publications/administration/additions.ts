@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Additions } from '../../../../both/collections/administration/addition.collection';
 import { Items } from '../../../../both/collections/administration/item.collection';
+import { UserDetails } from '../../../../both/collections/auth/user-detail.collection';
+import { UserDetail } from '../../../../both/models/auth/user-detail.model';
 import { check } from 'meteor/check';
 
 /**
@@ -34,5 +36,19 @@ Meteor.publish('additionsByItem', function (_itemId: string) {
         return Additions.collection.find({ _id: { $in: item.additions } });
     }else{
         return Additions.collection.find({ _id: { $in: [] } });
+    }
+});
+
+/**
+ * Meteor publication additions by restaurant work
+ * @param {string} _userId
+ */
+Meteor.publish('additionsByRestaurantWork', function (_userId: string) {
+    check(_userId, String);
+    let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
+    if( _lUserDetail ){
+        return Additions.collection.find({ 'restaurants.restaurantId': { $in: [_lUserDetail.restaurant_work] }, is_active: true });
+    } else {
+        return;
     }
 });

@@ -37,6 +37,16 @@ export class CreateConfirmComponent implements OnInit, OnDestroy{
     }
 
     /**
+     * Function to gets de first day of charge
+     */
+    getFirstDay(): string{
+        let firstDay = Parameters.findOne({ name: 'start_payment_day' });
+        if(firstDay){
+            return firstDay.value;
+        }
+    }
+
+    /**
      * Function that returns true to Parent component
      */
     closeConfirm() {

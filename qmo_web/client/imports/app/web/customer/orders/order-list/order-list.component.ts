@@ -4,7 +4,8 @@ import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
-import { Order, OrderItem } from '../../../../../../../both/models/restaurant/order.model';
+import { MdSnackBar } from '@angular/material';
+import { Order, OrderItem, OrderAddition } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
 import { Item, ItemImage, ItemImageThumb } from '../../../../../../../both/models/administration/item.model';
 import { Items, ItemImages, ItemImagesThumbs } from '../../../../../../../both/collections/administration/item.collection';
@@ -30,56 +31,62 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     @Output() createNewOrder = new EventEmitter();
     
     private _user = Meteor.userId();
-    private _ordersSub: Subscription;
-    private _itemsSub: Subscription;
-    private _garnishFoodSub: Subscription;
-    private _additionsSub: Subscription;
-    private _itemImagesSub: Subscription;
-    private _itemImageThumbsSub: Subscription;
-    private _currenciesSub: Subscription;
+    private _ordersSub                      : Subscription;
+    private _itemsSub                       : Subscription;
+    private _garnishFoodSub                 : Subscription;
+    private _additionsSub                   : Subscription;
+    private _itemImagesSub                  : Subscription;
+    private _itemImageThumbsSub             : Subscription;
+    private _currenciesSub                  : Subscription;
 
-    private _orders: Observable<Order[]>;
-    private _ordersTable: Observable<Order[]>;
-    private _items: Observable<Item[]>;
-    private _itemsToShowDetail: Observable<Item[]>;
-    private _garnishFoodCol: Observable<GarnishFood[]>;
-    private _additions: Observable<Addition[]>;
+    private _orders                         : Observable<Order[]>;
+    private _ordersTable                    : Observable<Order[]>;
+    private _items                          : Observable<Item[]>;
+    private _itemsToShowDetail              : Observable<Item[]>;
+    private _garnishFoodCol                 : Observable<GarnishFood[]>;
+    private _additions                      : Observable<Addition[]>;
+    private _additionDetails                : Observable<Addition[]>;
 
-    private _showOrderItemDetail:boolean = false;
-    private _currentOrder: Order;
-    private _customerCanEdit: boolean = false;
-    private _showDetails: boolean = false;
+    private _showOrderItemDetail            : boolean = false;
+    private _currentOrder                   : Order;
+    private _customerCanEdit                : boolean = false;
+    private _showDetails                    : boolean = false;
 
-    private _editOrderItemForm: FormGroup;
-    private _garnishFormGroup: FormGroup = new FormGroup({});
-    private _additionsFormGroup: FormGroup= new FormGroup({});
+    private _editOrderItemForm              : FormGroup;
+    private _garnishFormGroup               : FormGroup = new FormGroup({});
+    private _additionsFormGroup             : FormGroup = new FormGroup({});
+    private _additionsDetailFormGroup       : FormGroup = new FormGroup({});
 
-    private _orderItemGarnishFood:string[] = [];
-    private _orderItemAdditions: string[] = [];
+    private _orderItemGarnishFood           : string[] = [];
+    private _orderItemAdditions             : string[] = [];
 
-    private _maxGarnishFoodElements: number = 0;
-    private _garnishFoodElementsCount: number = 0;
-    private _showGarnishFoodError: boolean = false;
+    private _maxGarnishFoodElements         : number = 0;
+    private _garnishFoodElementsCount       : number = 0;
+    private _showGarnishFoodError           : boolean = false;
 
-    private _lastQuantity: number = 1;
-    private _quantityCount: number = 1;
-    private _finalPrice:number = 0;
-    private _unitPrice: number = 0;
-    private _orderItemIndex: number = -1;
-    private _currencyCode: string;
+    private _lastQuantity                   : number = 1;
+    private _quantityCount                  : number = 1;
+    private _finalPrice                     : number = 0;
+    private _unitPrice                      : number = 0;
+    private _orderItemIndex                 : number = -1;
+    private _currencyCode                   : string;
 
-    private _showCustomerOrders: boolean = true;
-    private _showOtherOrders: boolean = false;
-    private _showAllOrders: boolean = false;
     _initialValue = 'customer';
-    private _orderCustomerIndex: number = -1;
-    private _orderOthersIndex:number = -1;
+    private _showCustomerOrders             : boolean = true;
+    private _showOtherOrders                : boolean = false;
+    private _showAllOrders                  : boolean = false;
+    private _orderCustomerIndex             : number = -1;
+    private _orderOthersIndex               : number = -1;
 
     /**
-     * OrdersComponent Constructor
+     * OrdersListComponent Constructor
      * @param {TranslateService} _translate 
+     * @param {NgZone} _ngZone
+     * @param {MdSnackBar} snackBar
      */
-    constructor( private _translate: TranslateService, private _ngZone: NgZone ) {
+    constructor( private _translate: TranslateService, 
+                 private _ngZone: NgZone, 
+                 public snackBar: MdSnackBar ) {
         var _userLang = navigator.language.split( '-' )[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
@@ -158,6 +165,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         let _lItemImage: ItemImageThumb = ItemImagesThumbs.findOne( { itemId: _pItemId } );
         if( _lItemImage ){
             return _lItemImage.url;
+        } else{
+            return '/images/default-plate.png';
         }
     }
 
@@ -169,6 +178,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         let _lItemImage: ItemImage = ItemImages.findOne( { itemId: _pItemId } );
         if( _lItemImage ){
             return _lItemImage.url;
+        } else{
+            return '/images/default-plate.png';
         }
     }
 
@@ -187,16 +198,31 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * This function allow view additions
+     * @param {boolean} _boolean 
+     */
+    viewAdditionDetail( _boolean : boolean ):void {
+        var card = document.getElementById("addition-detail");
+
+        if(!_boolean){
+            card.style.width = "396px";
+        } else {
+            card.style.width = "0";
+            card.removeAttribute("style");
+        }
+    }
+
+    /**
      * Delete OrderItem in order
      * @param {Order} _pOrder 
      * @param {string} _pItemId 
      */
     deleteOrderItem( _pItemId:string ):void{
         if( confirm( this.itemNameTraduction("ORDER_LIST.DELETE_ORDER") ) ) {
-            let _lOrderItemToremove:OrderItem = this._currentOrder.items.filter( o => _pItemId === o.itemId )[0];
+            let _lOrderItemToremove:OrderItem = this._currentOrder.items.filter( o => _pItemId === o.itemId && o.index === this._orderItemIndex )[0];
             let _lNewTotalPayment:number = this._currentOrder.totalPayment - _lOrderItemToremove.paymentItem;
 
-            Orders.update( { _id: this._currentOrder._id },{ $pull: { items:{ itemId: _pItemId } } } );
+            Orders.update( { _id: this._currentOrder._id },{ $pull: { items:{ itemId: _pItemId, index: this._orderItemIndex } } } );
             Orders.update( { _id: this._currentOrder._id }, 
                            { $set: { totalPayment: _lNewTotalPayment, 
                                      modification_user: this._user, 
@@ -205,7 +231,38 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                            } 
                          );
             this._showOrderItemDetail = false;
+            this._currentOrder = Orders.findOne( { _id: this._currentOrder._id } );
             this.viewItemDetail( true );
+            let _lMessage:string = this.itemNameTraduction( 'ORDER_LIST.ITEM_DELETED' );
+            this.snackBar.open( _lMessage, '',{
+                duration: 2500
+            });
+        }
+    }
+
+    /**
+     * Delete OrderAddition in order
+     * @param {string} _pAdditionId 
+     */
+    deleteOrderAddition( _pAdditionId: string ):void{
+        if( confirm( this.itemNameTraduction("ORDER_LIST.DELETE_ADDITION_CONFIRM") ) ) {
+            let _lOrderAdditionToremove:OrderAddition = this._currentOrder.additions.filter( ad => ad.additionId === _pAdditionId )[0];
+            let _lNewTotalPayment:number = this._currentOrder.totalPayment - _lOrderAdditionToremove.paymentAddition;
+
+            Orders.update( { _id: this._currentOrder._id },{ $pull: { additions:{ additionId: _pAdditionId } } } );
+            Orders.update( { _id: this._currentOrder._id }, 
+                            { $set: { totalPayment: _lNewTotalPayment, 
+                                      modification_user: this._user, 
+                                      modification_date: new Date() 
+                                    } 
+                            } 
+                        );
+            this._currentOrder = Orders.findOne( { _id: this._currentOrder._id } );
+            this.viewAdditionDetail( true );
+            let _lMessage:string = this.itemNameTraduction( 'ORDER_LIST.ADDITION_DELETED' );
+            this.snackBar.open( _lMessage, '',{
+                duration: 2500
+            });
         }
     }
     
@@ -234,6 +291,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
 
         this._showOrderItemDetail = false;
         this._showDetails = true;
+        this.viewAdditionDetail( true );
         this.viewItemDetail( true );
     }
 
@@ -256,6 +314,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
 
         this._showOrderItemDetail = false;
         this._showDetails = true;
+        this.viewAdditionDetail( true );
         this.viewItemDetail( true );
     }
 
@@ -278,7 +337,25 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         this.prepareAdditionsToEdit();
 
         this._showOrderItemDetail = true;
+        this.viewAdditionDetail( true );
         this.viewItemDetail( false );
+    }
+
+    /**
+     * Show order additions detail
+     * @param {OrderAddition} _pAdition
+     */
+    showAdditionsDetail( _pAdition:OrderAddition ):void{
+        Additions.collection.find( { } ).fetch().forEach( ( add ) => {
+            if( this._additionsDetailFormGroup.contains( add._id ) ){
+                this._additionsDetailFormGroup.removeControl( add._id );
+            }
+        });
+        let control: FormControl = new FormControl( _pAdition.quantity, [ Validators.minLength(1), Validators.maxLength(2) ] );
+        this._additionsDetailFormGroup.addControl( _pAdition.additionId, control );
+        this._additionDetails = Additions.find( { _id: _pAdition.additionId } ).zone();
+        this.viewItemDetail( true );
+        this.viewAdditionDetail( false );
     }
 
     /**
@@ -303,18 +380,18 @@ export class OrdersListComponent implements OnInit, OnDestroy {
             let find = this._orderItemGarnishFood.filter( g => g === _lGarnishFood._id );
 
             if( find.length > 0 ){
-                if( this._garnishFormGroup.contains( gar.name ) ){
-                    this._garnishFormGroup.controls[ gar.name ].setValue( true );
+                if( this._garnishFormGroup.contains( gar._id ) ){
+                    this._garnishFormGroup.controls[ gar._id ].setValue( true );
                 } else {
                     let control: FormControl = new FormControl( true );
-                    this._garnishFormGroup.addControl( gar.name, control );
+                    this._garnishFormGroup.addControl( gar._id, control );
                 }
             } else {
-                if( this._garnishFormGroup.contains( gar.name ) ){
-                    this._garnishFormGroup.controls[ gar.name ].setValue( false );
+                if( this._garnishFormGroup.contains( gar._id ) ){
+                    this._garnishFormGroup.controls[ gar._id ].setValue( false );
                 } else {
                     let control: FormControl = new FormControl( false );
-                    this._garnishFormGroup.addControl( gar.name, control );
+                    this._garnishFormGroup.addControl( gar._id, control );
                 }
             }
         });
@@ -329,18 +406,18 @@ export class OrdersListComponent implements OnInit, OnDestroy {
             let find = this._orderItemAdditions.filter( a => a === _lAddition._id );
 
             if( find.length > 0 ){
-                if( this._additionsFormGroup.contains( add.name ) ){
-                    this._additionsFormGroup.controls[ add.name ].setValue( true );
+                if( this._additionsFormGroup.contains( add._id ) ){
+                    this._additionsFormGroup.controls[ add._id ].setValue( true );
                 } else {
                     let control: FormControl = new FormControl( true );
-                    this._additionsFormGroup.addControl( add.name, control );
+                    this._additionsFormGroup.addControl( add._id, control );
                 }
             } else {
-                if( this._additionsFormGroup.contains( add.name ) ){
-                    this._additionsFormGroup.controls[ add.name ].setValue( false );
+                if( this._additionsFormGroup.contains( add._id ) ){
+                    this._additionsFormGroup.controls[ add._id ].setValue( false );
                 } else {
                     let control: FormControl = new FormControl( false );
-                    this._additionsFormGroup.addControl( add.name, control );
+                    this._additionsFormGroup.addControl( add._id, control );
                 }
             }
         });
@@ -457,8 +534,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
 
             arr.forEach( ( gar ) => {
                 if( this._editOrderItemForm.value.garnishFood[ gar ] ){
-                    let _lGarnishF:GarnishFood = GarnishFoodCol.findOne( { name: gar } );
-                    _lGarnishFoodToInsert.push( _lGarnishF._id );
+                    _lGarnishFoodToInsert.push( gar );
                 }
             });
 
@@ -467,8 +543,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
 
             arrAdd.forEach( ( add ) => {
                 if( this._editOrderItemForm.value.additions[ add ] ){
-                    let _lAddition:Addition = Additions.findOne( { name: add } );
-                    _lAdditionsToInsert.push( _lAddition._id );
+                    _lAdditionsToInsert.push( add );
                 }
             });
 
@@ -512,7 +587,70 @@ export class OrdersListComponent implements OnInit, OnDestroy {
             this._currentOrder = Orders.findOne( { _id: this._currentOrder._id } );
             this._showOrderItemDetail = false;
             this.viewItemDetail( true );
+            let _lMessage:string = this.itemNameTraduction( 'ORDER_LIST.ITEM_EDITED' );
+            this.snackBar.open( _lMessage, '',{
+                duration: 2500
+            });
         }
+    }
+
+    /**
+     * Modify addition in order
+     */
+    editOrderAddition():void{
+        let arrAdd:any[] = Object.keys( this._additionsDetailFormGroup.value );
+        let _lOrderAddition:OrderAddition;
+
+        arrAdd.forEach( ( add ) => {
+            if( this._additionsDetailFormGroup.value[ add ] ){
+                let _lAddition:Addition = Additions.findOne( { _id: add } );
+                _lOrderAddition = {
+                    additionId: add,
+                    quantity: this._additionsDetailFormGroup.value[ add ],
+                    paymentAddition: ( this.getAdditionPrice( _lAddition ) * ( this._additionsDetailFormGroup.value[ add ] ) )
+                };
+            }
+        });
+        let _lOrderAdditionToremove:OrderAddition = this._currentOrder.additions.filter( ad => ad.additionId === _lOrderAddition.additionId )[0];
+        let _lNewTotalPayment:number = this._currentOrder.totalPayment - _lOrderAdditionToremove.paymentAddition;
+
+        Orders.update( { _id: this._currentOrder._id },{ $pull: { additions:{ additionId: _lOrderAdditionToremove.additionId } } } );
+        Orders.update( { _id: this._currentOrder._id }, 
+                        { $set: { totalPayment: _lNewTotalPayment, 
+                                  modification_user: this._user, 
+                                  modification_date: new Date() 
+                                } 
+                        } 
+                     );
+        let _lOrder = Orders.findOne( { _id: this._currentOrder._id } );
+        let _lTotalPaymentAux: number = Number.parseInt(_lOrder.totalPayment.toString()) + Number.parseInt(_lOrderAddition.paymentAddition.toString());
+
+        Orders.update( { _id: _lOrder._id },
+                       { $push: { additions: _lOrderAddition } }
+                     );
+        Orders.update({ _id: _lOrder._id },
+                      {
+                        $set: {
+                                modification_user: this._user,
+                                modification_date: new Date(),
+                                totalPayment: _lTotalPaymentAux
+                              }
+                      }
+                     );
+        this._currentOrder = Orders.findOne( { _id: this._currentOrder._id } );
+        this.viewAdditionDetail( true );
+        let _lMessage:string = this.itemNameTraduction( 'ORDER_LIST.ADDITION_EDITED' );
+        this.snackBar.open( _lMessage, '',{
+            duration: 2500
+        });
+    }
+
+    /**
+     * Return Addition price
+     * @param {Addition} _pAddition 
+     */
+    getAdditionPrice( _pAddition: Addition ):number{
+        return _pAddition.restaurants.filter( r => r.restaurantId === this.restaurantId )[0].price;
     }
 
     /**

@@ -71,7 +71,7 @@
                             <div class="restaurants">
                                 <p *ngIf="!_showRestaurants">{{'ITEMS.NO_RESTAURANTS' | translate}}</p>
                                 <div *ngIf="_showRestaurants" formGroupName="editRestaurants">
-                                    <md-checkbox *ngFor="let restaurant of _restaurantList" [formControlName]="restaurant.name" [class.invalid]="!_itemEditionForm.controls.editRestaurants.valid" class="checkbox" (change)="onCheckRestaurant(restaurant.name, $event)">{{restaurant.name}}</md-checkbox>
+                                    <md-checkbox *ngFor="let restaurant of _restaurantList" [formControlName]="restaurant._id" [class.invalid]="!_itemEditionForm.controls.editRestaurants.valid" class="checkbox" (change)="onCheckRestaurant(restaurant.name, $event)">{{restaurant.name}}</md-checkbox>
                                 </div>
                             </div>
                             <div>
@@ -115,15 +115,20 @@
                                 <md-input-container style="width: 25%;margin-top: 1%;">
                                     <input mdInput required type="number" formControlName="editGarnishFoodQuantity" placeholder="{{'ITEMS.GARNISHFOOD_ALLOWED' | translate}}" min="0" #inputGarnishQuantity>
                                 </md-input-container>
+                                <br/>
+                                <md-checkbox style="font-weight: bold;" (change)="markAllGarnishFood($event)">{{'ITEMS.SELECT_ALL_GARNISH_FOOD' | translate}}</md-checkbox>
+                                <br/>
                                 <div formGroupName="editGarnishFood">
-                                    <md-checkbox *ngFor="let garnish of _garnishFoodList" [formControlName]="garnish.name" [class.invalid]="!_itemEditionForm.controls.editGarnishFood.valid" class="checkbox">{{garnish.name}}</md-checkbox>
+                                    <md-checkbox *ngFor="let garnish of _garnishFoodList" [formControlName]="garnish._id" [class.invalid]="!_itemEditionForm.controls.editGarnishFood.valid" class="checkbox">{{garnish.name}}</md-checkbox>
                                 </div>
                             </div>
                             <p *ngIf="!_showAddition">{{'ITEMS.NOT_ADDITIONS' | translate}}</p>
                             <div *ngIf="_showAddition">
                                 <p>{{'ITEMS.ADDITIONS_TEXT' | translate}}:</p>
+                                <md-checkbox style="font-weight: bold;" (change)="markAllAdditions($event)">{{'ITEMS.SELECT_ALL_ADDITIONS' | translate}}</md-checkbox>
+                                <br/>
                                 <div formGroupName="editAdditions">
-                                    <md-checkbox *ngFor="let addition of _additionList" [formControlName]="addition.name" [class.invalid]="!_itemEditionForm.controls.editAdditions.valid" class="checkbox">{{addition.name}}</md-checkbox>
+                                    <md-checkbox *ngFor="let addition of _additionList" [formControlName]="addition._id" [class.invalid]="!_itemEditionForm.controls.editAdditions.valid" class="checkbox">{{addition.name}}</md-checkbox>
                                 </div>
                             </div>
                         </md-card-content>

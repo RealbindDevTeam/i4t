@@ -25,11 +25,7 @@
                     <md-card-title>{{item.name}}</md-card-title>
                 </md-card-header>
                 <div class="crop">
-                    <span *ngFor="let image of _itemImages | async">
-                        <template [ngIf]="image.itemId == item._id">
-                            <img src="{{image.url}}">
-                        </template>
-                    </span>
+                    <img src="{{ getItemImage(item._id) }}">
                 </div>
                 <br/>
                 <md-card-content>

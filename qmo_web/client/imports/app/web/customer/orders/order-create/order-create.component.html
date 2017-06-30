@@ -23,10 +23,9 @@
                                 <md-card class="cards">
                                     <md-card-header>
                                         <md-card-title>{{item.name}}</md-card-title>
-                                        <!--md-card-subtitle>{{'ORDER_CREATE.PRICE' | translate}}: {{ getItemPrice( item ) }} {{_currencyCode}}</md-card-subtitle-->
                                     </md-card-header>
                                     <div class="crop">
-                                        <img src="{{ getItemImage(item._id) }}">
+                                        <img src="{{ getItemImage(item._id) }}">  
                                     </div>
                                     <md-card-actions>
                                         <button md-button (click)="showItemInformation(item)">{{'ORDER_CREATE.VIEW_DETAIL' | translate}}</button>
@@ -43,10 +42,9 @@
                                         <md-card class="cards">
                                             <md-card-header>
                                                 <md-card-title>{{item.name}}</md-card-title>
-                                                <!--md-card-subtitle>{{'ORDER_CREATE.PRICE' | translate}}: {{ getItemPrice( item ) }} {{_currencyCode}}</md-card-subtitle-->
                                             </md-card-header>
                                             <div class="crop">
-                                                <img md-card-image src="{{ getItemImage(item._id) }}">
+                                                <img src="{{ getItemImage(item._id) }}">
                                             </div>
                                             <md-card-actions>
                                                 <button md-button (click)="showItemInformation(item)">{{'ORDER_CREATE.VIEW_DETAIL' | translate}}</button>
@@ -63,7 +61,6 @@
                                                 <md-card id="card-main" class="cards">
                                                     <md-card-header>
                                                         <md-card-title>{{item.name}}</md-card-title>
-                                                        <!--md-card-subtitle>{{'ORDER_CREATE.PRICE' | translate}}: {{ getItemPrice( item ) }} {{_currencyCode}}</md-card-subtitle-->
                                                     </md-card-header>
                                                     <div class="crop">
                                                         <img src="{{ getItemImage(item._id) }}">
@@ -135,7 +132,7 @@
                                                         <p *ngFor="let garnish of _garnishFoodCol | async">
                                                             <span *ngFor="let gar of itemDet.garnishFood">
                                                                 <template [ngIf]="garnish._id === gar">
-                                                                    <md-checkbox [formControlName]="garnish.name" (change)="calculateFinalPriceGarnishFood($event, garnish)" [class.invalid]="!_newOrderForm.controls.garnishFood.valid">{{ getGarnishFoodInformation(garnish) }} {{_currencyCode}}<div class="inline-block"> x {{_quantityCount}}</div></md-checkbox> 
+                                                                    <md-checkbox [formControlName]="garnish._id" (change)="calculateFinalPriceGarnishFood($event, garnish)" [class.invalid]="!_newOrderForm.controls.garnishFood.valid">{{ getGarnishFoodInformation(garnish) }} {{_currencyCode}}<div class="inline-block"> x {{_quantityCount}}</div></md-checkbox> 
                                                                 </template>
                                                             </span>
                                                         </p>
@@ -148,7 +145,7 @@
                                                         <p *ngFor="let addition of _additions | async">
                                                             <span *ngFor="let add of itemDet.additions">
                                                                 <template [ngIf]="addition._id === add">
-                                                                    <md-checkbox [formControlName]="addition.name" (change)="calculateFinalPriceAddition($event, addition)" [class.invalid]="!_newOrderForm.controls.additions.valid">{{ getAdditionInformation(addition) }} {{_currencyCode}}<div class="inline-block">x {{_quantityCount}}</div></md-checkbox> 
+                                                                    <md-checkbox [formControlName]="addition._id" (change)="calculateFinalPriceAddition($event, addition)" [class.invalid]="!_newOrderForm.controls.additions.valid">{{ getAdditionInformation(addition) }} {{_currencyCode}}<div class="inline-block">x {{_quantityCount}}</div></md-checkbox> 
                                                                 </template>
                                                             </span>
                                                         </p>
@@ -160,6 +157,30 @@
                                     <h3>{{'ORDER_CREATE.TOTAL_PRICE' | translate}}: {{ _finalPrice }} {{_currencyCode}}</h3>
                                     <button *ngIf="itemDet.isAvailable" md-button class="button-primary" [disabled]="!_newOrderForm.valid || _showGarnishFoodError" (click)="AddItemToOrder(itemDet._id)">{{'ORDER_CREATE.ADD_ITEM' | translate}}</button>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="addition-detail" class="item-detail">
+                    <div class="header-detail" #headerDetailCard>
+                        <label>{{'ORDER_CREATE.ADDITIONS' | translate}}</label>
+                        <button class="btn-close" md-raised-button (click)="viewAdditionDetail(true)">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="item-detail-card">
+                        <div class="card-content">
+                            <div class="crop"></div>
+                            <div class="content" style="margin-top: 20%;">
+                                <p>{{'ORDER_CREATE.ADD_ADDITIONS' | translate}}:</p>
+                                <form [formGroup]="_additionsDetailFormGroup">
+                                    <div *ngFor="let add of _additions | async">
+                                        <md-input-container style="width: 100%;">
+                                            <input mdInput [formControlName]="add._id" type="number" placeholder="{{ getAdditionInformation(add) }} {{_currencyCode}}" min="0" max="99">
+                                        </md-input-container>
+                                    </div>
+                                </form>
+                                <button md-button class="button-primary" style="margin-top: 5%;" (click)="AddAdditionsToOrder()">{{'ORDER_CREATE.ADD_ADDITION_ORDER' | translate}}</button>
                             </div>
                         </div>
                     </div>

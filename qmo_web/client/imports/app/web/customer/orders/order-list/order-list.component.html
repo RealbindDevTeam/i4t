@@ -27,13 +27,34 @@
                                                         <md-list-item>
                                                             <img md-list-avatar class="item-image" src="{{ getItemImage(item._id) }}">
                                                             <h4 md-line>{{item.name}}</h4>
-                                                            <p md-line>{{'ORDER_LIST.PRICE' | translate}}: {{it.paymentItem}} {{_currencyCode}}</p>
+                                                            <h5 md-line>
+                                                                {{'ORDER_LIST.PRICE' | translate}}: {{it.paymentItem}} {{_currencyCode}} - {{'ORDER_LIST.QUANT' | translate}} {{it.quantity}}
+                                                                <div *ngIf="it.garnishFood.length > 0" class="order-item-garnishFood"> - {{'ORDER_LIST.GARNISH_FOOD' | translate}}: {{it.garnishFood.length}}</div>
+                                                                <div *ngIf="it.additions.length > 0" class="order-item-additions"> - {{'ORDER_LIST.ADDITIONS' | translate}}: {{it.additions.length}}</div>
+                                                            </h5>
                                                             <p md-line *ngIf="!item.isAvailable" class="item-unavailable">{{'ORDER_LIST.UNAVAILABLE' | translate}}</p>
                                                             <button md-icon-button *ngIf="or.status === 'ORDER_STATUS.REGISTERED'" (click)="showOrderItemDetail(it)">
                                                                 <md-icon class="item-icon">mode_edit</md-icon>
                                                             </button>
                                                             <button md-icon-button *ngIf="or.status !== 'ORDER_STATUS.REGISTERED'" (click)="showOrderItemDetail(it)">
                                                                 <md-icon class="item-icon">visibility</md-icon>
+                                                            </button>
+                                                        </md-list-item>
+                                                        <md-divider></md-divider>
+                                                    </template>
+                                                </span>
+                                            </span>
+                                        </md-list>
+                                        <md-list *ngIf="(or.additions.length > 0)">
+                                            <span *ngFor="let addition of _additions | async">
+                                                <span *ngFor="let ad of or.additions">
+                                                    <template [ngIf]="addition._id === ad.additionId">
+                                                        <md-list-item>
+                                                            <img md-list-avatar class="item-image" src="/images/default-plate.png">
+                                                            <h4 md-line>{{addition.name}} <div style="display: inline-block;font-size: smaller;">({{'ORDER_LIST.ADDITION' | translate}})</div></h4>
+                                                            <p md-line>{{'ORDER_LIST.PRICE' | translate}}: {{ad.paymentAddition}} {{_currencyCode}} - {{'ORDER_LIST.QUANT' | translate}} {{ad.quantity}}</p>
+                                                            <button md-icon-button *ngIf="or.status === 'ORDER_STATUS.REGISTERED'" (click)="showAdditionsDetail(ad)">
+                                                                <md-icon class="item-icon">mode_edit</md-icon>
                                                             </button>
                                                         </md-list-item>
                                                         <md-divider></md-divider>
@@ -67,11 +88,29 @@
                                                         <md-list-item>
                                                             <img md-list-avatar class="item-image" src="{{ getItemImage(item._id) }}">
                                                             <h4 md-line>{{item.name}}</h4>
-                                                            <p md-line>{{'ORDER_LIST.PRICE' | translate}}: {{it.paymentItem}} {{_currencyCode}}</p>
+                                                            <h5 md-line>
+                                                                {{'ORDER_LIST.PRICE' | translate}}: {{it.paymentItem}} {{_currencyCode}} - {{'ORDER_LIST.QUANT' | translate}} {{it.quantity}}
+                                                                <div *ngIf="it.garnishFood.length > 0" class="order-item-garnishFood"> - {{'ORDER_LIST.GARNISH_FOOD' | translate}}: {{it.garnishFood.length}}</div>
+                                                                <div *ngIf="it.additions.length > 0" class="order-item-additions"> - {{'ORDER_LIST.ADDITIONS' | translate}}: {{it.additions.length}}</div>
+                                                            </h5>
                                                             <p md-line *ngIf="!item.isAvailable" class="item-unavailable">{{'ORDER_LIST.UNAVAILABLE' | translate}}</p>
                                                             <button md-icon-button (click)="showOrderItemDetail(it)">
                                                                 <md-icon class="item-icon">visibility</md-icon>
                                                             </button>
+                                                        </md-list-item>
+                                                        <md-divider></md-divider>
+                                                    </template>
+                                                </span>
+                                            </span>
+                                        </md-list>
+                                        <md-list *ngIf="(or.additions.length > 0)">
+                                            <span *ngFor="let addition of _additions | async">
+                                                <span *ngFor="let ad of or.additions">
+                                                    <template [ngIf]="addition._id === ad.additionId">
+                                                        <md-list-item>
+                                                            <img md-list-avatar class="item-image" src="/images/default-plate.png">
+                                                            <h4 md-line>{{addition.name}} <div class="addition-message">({{'ORDER_LIST.ADDITION' | translate}})</div></h4>
+                                                            <p md-line>{{'ORDER_LIST.PRICE' | translate}}: {{ad.paymentAddition}} {{_currencyCode}} - {{'ORDER_LIST.QUANT' | translate}} {{ad.quantity}}</p>
                                                         </md-list-item>
                                                         <md-divider></md-divider>
                                                     </template>
@@ -139,7 +178,7 @@
                                                                 <p *ngFor="let garnish of _garnishFoodCol | async">
                                                                     <span *ngFor="let gar of item.garnishFood">
                                                                         <template [ngIf]="garnish._id === gar">
-                                                                            <md-checkbox [disabled]="!_customerCanEdit" [formControlName]="garnish.name" (change)="calculateFinalPriceGarnishFood($event, garnish)" [class.invalid]="!_editOrderItemForm.controls.garnishFood.valid">{{ getGarnishFoodInformation(garnish) }} {{_currencyCode}}<div class="inline-block"> x {{_quantityCount}}</div></md-checkbox> 
+                                                                            <md-checkbox [disabled]="!_customerCanEdit" [formControlName]="garnish._id" (change)="calculateFinalPriceGarnishFood($event, garnish)" [class.invalid]="!_editOrderItemForm.controls.garnishFood.valid">{{ getGarnishFoodInformation(garnish) }} {{_currencyCode}}<div class="inline-block"> x {{_quantityCount}}</div></md-checkbox> 
                                                                         </template>
                                                                     </span>
                                                                 </p>
@@ -152,7 +191,7 @@
                                                                 <p *ngFor="let addition of _additions | async">
                                                                     <span *ngFor="let add of item.additions">
                                                                         <template [ngIf]="addition._id === add">
-                                                                            <md-checkbox [disabled]="!_customerCanEdit" [formControlName]="addition.name" (change)="calculateFinalPriceAddition($event, addition)" [class.invalid]="!_editOrderItemForm.controls.additions.valid">{{ getAdditionInformation(addition) }} {{_currencyCode}}<div class="inline-block"> x {{_quantityCount}}</div></md-checkbox> 
+                                                                            <md-checkbox [disabled]="!_customerCanEdit" [formControlName]="addition._id" (change)="calculateFinalPriceAddition($event, addition)" [class.invalid]="!_editOrderItemForm.controls.additions.valid">{{ getAdditionInformation(addition) }} {{_currencyCode}}<div class="inline-block"> x {{_quantityCount}}</div></md-checkbox> 
                                                                         </template>
                                                                     </span>
                                                                 </p>
@@ -168,6 +207,31 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="addition-detail" class="item-detail">
+                    <div *ngFor="let add of _additionDetails | async">
+                        <div class="header-detail" #headerDetailCard>
+                            <label>{{'ORDER_LIST.ADDITIONS' | translate}}</label>
+                            <button class="btn-close" md-raised-button (click)="viewAdditionDetail(true)">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="item-detail-card">
+                            <div class="card-content">
+                                <div class="crop"></div>
+                                <div class="content" style="margin-top: 20%;">
+                                    <p>{{'ORDER_LIST.ADD_ADDITIONS' | translate}}:</p>
+                                    <form [formGroup]="_additionsDetailFormGroup">
+                                        <md-input-container style="width: 100%;">
+                                            <input mdInput [formControlName]="add._id" type="number" placeholder="{{ getAdditionInformation(add) }} {{_currencyCode}}" min="0" max="99">
+                                        </md-input-container>
+                                    </form>
+                                    <button md-button class="button-primary" *ngIf="_customerCanEdit" style="margin-top: 5%;" (click)="deleteOrderAddition(add._id)">{{'ORDER_LIST.DELETE_ADDITION_ORDER' | translate}}</button>
+                                    <button md-button class="button-primary" *ngIf="_customerCanEdit" style="margin-top: 5%;" (click)="editOrderAddition()">{{'ORDER_LIST.MODIFY_ADDITION_ORDER' | translate}}</button>
                                 </div>
                             </div>
                         </div>
