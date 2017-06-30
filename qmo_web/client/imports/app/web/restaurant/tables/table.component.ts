@@ -43,8 +43,6 @@ export class TableComponent implements OnInit, OnDestroy {
   private isChecked: false;
   private tooltip_msg: string = '';
   private show_cards: boolean;
-
-
   finalImg: any;
 
   constructor(private _formBuilder: FormBuilder, private translate: TranslateService, private _router: Router) {

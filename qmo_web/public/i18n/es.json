@@ -67,10 +67,10 @@
         "MAX_LENGTH_PASSWORD": "La contraseña debe tener maximo 20 caracteres",
         "REQUIRED_CONFIRM": "Debe confirmar la contraseña",
         "PASSWORD_NOT_MATCH": "Las contraseñas no coinciden",
-        "LABEL_LEGAL" : "Al dar clic en 'Registrarse', ",
-        "LABEL_LEGAL_END" : "aceptas los terminos y condiciones.",
-        "SLOGAN" : "Slogan",
-        "OR":"ó"
+        "LABEL_LEGAL": "Al dar clic en 'Registrarse', ",
+        "LABEL_LEGAL_END": "aceptas los terminos y condiciones.",
+        "SLOGAN": "Slogan",
+        "OR": "ó"
     },
     "SIGNIN": {
         "EMAIL_USERNAME": "Correo electronico/Nombre usuario",
@@ -104,9 +104,9 @@
         "INACTIVATE": "INACTIVAR",
         "SECTION_CREATED": "Seccion Creada Correctamente",
         "SECTION_EDITED": "Seccion Editada Correctamente",
-        "THERE_NOT_RESTAURANTS" :"Aún no hay restaurantes registrados",
-        "RESTAURANT_REGISTER" : "Registrar restaurante",
-        "MESSAGE" : "Regístra uno para habilitar esta opción"
+        "THERE_NOT_RESTAURANTS": "Aún no hay restaurantes registrados",
+        "RESTAURANT_REGISTER": "Registrar restaurante",
+        "MESSAGE": "Regístra uno para habilitar esta opción"
     },
     "CATEGORIES": {
         "CATEGORIES_CREATION": "Creación de categorias",
@@ -181,7 +181,7 @@
         "ADMINISTRATION": {
             "MANAGEMENT": "Administración",
             "RESTAURANTS": "Restaurantes",
-            "TABLES": "Mesas",
+            "TABLES": "Buscar Mesas",
             "COLLABORATORS": "Colaboradores",
             "MONTHLY_CONFIG": "Configuración mensual"
         },
@@ -277,9 +277,11 @@
         "MORE": "más",
         "RESTAURANT_CREATION": "Creación de restaurante",
         "ACTIVATION_MESSAGE": "Se activará el cobro mensual del servicio Iurest por restaurante",
-        "CLARIFICATION_MESSAGE": "Iurest realiza el cobro de servicio el 1er día de cada mes, el primer cobro es sobre el ",
+        "CLARIFICATION_MESSAGE_1": "Iurest realiza el cobro de servicio el ",
+        "CLARIFICATION_MESSAGE_2": " día de cada mes, el primer cobro es sobre el ",
         "ACCEPT_CREATION": "Aceptar",
-        "CANCEL_CREATION": "Cancelar"
+        "CANCEL_CREATION": "Cancelar",
+        "INITIAL_TABLES_NUMBER": "Número inicial de mesas"
     },
     "WEEK": {
         "MONDAY": "Lunes",
@@ -762,8 +764,8 @@
         "CODE_NOT_FOUND": "Código no encontrado",
         "TRY_AGAIN": "Por favor intenta nuevamente"
     },
-    "MONTHLY_INVOICE": {
-        "TITLE": "Facturación del servicio Iurest Mensual",
+    "MONTHLY_PAYMENT": {
+        "TITLE": "Pago del servicio mensual de Iurest",
         "SUBTITLE": "Aquí puedes visualizar el costo total por el servicio iurest por restaurante y número de mesas",
         "RESTAURANT_NAME": "Nombre del restaurante",
         "RESTAURANT_PRICE": "Precio del restaurante",
@@ -777,7 +779,10 @@
         "DISCOUNT_TOOLTIP_1": "Tienes un descuento de ",
         "DISCOUNT_TOOLTIP_2": "para el primer pago",
         "INVOICE_PERIOD": "Periodo de facturación: ",
-        "TO": "a"
+        "TO": "a",
+        "NEXT_PAY_MSG": "La opción de pagos estará habilitada a partir de: ",
+        "MAX_PAY_TERM": " - Plazo máximo para pagar: ",
+        "FREE_DAYS_MSG": "No te cobramos este mes, disfrutalo"
     },
     "ORDER_PAYMENT_TRANS": {
         "ORDER_TO_CONFIRM": "Cuando algun acompañante de tu mesa desea pagar una de tus ordenes, debes confirmar este proceso. En esta seccion apareceran aquellas ordenes que otros usuarios desean pagar por ti.",
@@ -813,13 +818,38 @@
         "PRICE": "Precio: ",
         "CLOSE_PAYMENTS": "Cerrar Pagos"
     },
+    "MONTHLY_CONFIG": {
+        "TITLE": "Configurar restaurantes y mesas",
+        "SUBTITLE": "Activa o inactiva los restaurantes y mesas que desees",
+        "REST_NAME": "Nombre Restaurante",
+        "TABLES_NUMBER": "Número de mesas",
+        "ACTIVE_TABLES": "Mesas activas",
+        "REST_STATUS": "Estado del restaurante",
+        "CONFIG": "Configuración",
+        "STATUS_ACTIVE": "Activo",
+        "STATUS_INACTIVE": "Inactivo",
+        "BTN_EDIT": "Configurar",
+        "ADD_TABLES": "Agregar mesas",
+        "DESC_ADD_TABLES": "Ingresa el número de mesas a crear",
+        "ACTIVE_INACTIVE_REST": "Activar/Inactivar Restaurante y Mesas",
+        "ACTIVE_INACTIVE_REST_DESC": "Inactiva el restaurante si no deseas que se siga realizando cobro",
+        "TABLE_ENUM": "Mesa # ",
+        "ACTIVATE_RES": "ACTIVAR",
+        "INACTIVATE_RES": "INACTIVAR",
+        "DIALOG_ACTIVATE": "Activar Restaurante",
+        "DIALOG_INACTIVATE": "Inactivar Restaurante",
+        "DIALOG_SURE_ACTION": "Estas seguro que quieres realizar esta acción?",
+        "RESTAURANT_MODIFIED": "Restaurante modificado",
+        "TABLES_CREATE": "Mesas creadas",
+        "TABLE_MODIFIED": "Mesa modificada"
+    },
     "SEND_ORDER": {
         "ORDER": "Orden",
         "TABLE": "Mesa",
         "CODE": "Código: ",
         "CUSTOMER": "Cliente",
         "OBSERVATIONS": "Observaciones",
-        "NO_GARNISH_FOOD":"Sin Guarniciones",
+        "NO_GARNISH_FOOD": "Sin Guarniciones",
         "GARNISH_FOOD": "Guarniciones",
         "NO_ADDITIONS": "Sin Adiciones",
         "ADDITIONS": "Adiciones",

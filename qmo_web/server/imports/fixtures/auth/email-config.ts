@@ -71,7 +71,7 @@ Accounts.emailTemplates = {
             }
 
             if (user.profile.language_code === 'es') {
-                return "Cambio de password en " + Accounts.emailTemplates.siteName;
+                return "Cambio de contraseña en " + Accounts.emailTemplates.siteName;
             }
 
         },

@@ -39,6 +39,7 @@ import { SuperChefGuard } from './web/auth/navigation/super-chef-guard.service';
 import { PaymentsComponent } from './web/customer/payments/payments.component';
 import { MonthlyPaymentComponent } from './web/payment/monthly-payment/monthly-payment.component';
 import { SupervisorDashboardComponent } from './web/supervisor-dashboard/supervisor-dashboard.component';
+import { MonthlyConfigComponent } from './web/restaurant/monthly-config/monthly-config.component';
 
 export const routes: Route[] = [
     {
@@ -67,7 +68,8 @@ export const routes: Route[] = [
             { path: 'calls', component: CallsComponent, canActivate: [WaiterGuard] },
             { path: 'payments', component: PaymentsComponent, canActivate: [CustomerGuard] },
             { path: 'monthly_invoice', component: MonthlyPaymentComponent, canActivate: [AdminGuard]},
-            { path: 'dashboards', component: SupervisorDashboardComponent, canActivate: [SupervisorGuard]}
+            { path: 'dashboards', component: SupervisorDashboardComponent, canActivate: [SupervisorGuard]},
+            { path: 'monthly-config', component: MonthlyConfigComponent, canActivate: [AdminGuard]}
         ]
     },
     { path: '', component: LandingPageComponent },
