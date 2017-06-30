@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -35,11 +35,17 @@ export class SubcategoryEditComponent implements OnInit, OnDestroy {
 
     /**
      * SubcategoryEditComponent constructor
+     * @param {FormBuilder} _formBuilder
+     * @param {TranslateService} _translate
+     * @param {MdDialogRef<any>} _dialogRef
+     * @param {MdSnackBar} snackBar
+     * @param {NgZone} _ngZone
      */
     constructor( private _formBuilder: FormBuilder,     
                  private _translate: TranslateService, 
                  public _dialogRef: MdDialogRef<any>, 
-                 public snackBar: MdSnackBar ){
+                 public snackBar: MdSnackBar,
+                 private _ngZone: NgZone ){
         var _userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
@@ -56,10 +62,16 @@ export class SubcategoryEditComponent implements OnInit, OnDestroy {
             editCategory: [ this._subcategoryToEdit.category ]
         });
         this._subcategoryCategory = this._subcategoryToEdit.category;
-        this._categories = Categories.find( { } ).zone();
-        this._categoriesSub = MeteorObservable.subscribe( 'categories', this._user ).subscribe();
-        this._subcategories = Subcategories.find( { } ).zone();
-        this._subcategorySub = MeteorObservable.subscribe( 'subcategories', this._user ).subscribe();
+        this._categoriesSub = MeteorObservable.subscribe( 'categories', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._categories = Categories.find( { } ).zone();
+            });
+        });
+        this._subcategorySub = MeteorObservable.subscribe( 'subcategories', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._subcategories = Subcategories.find( { } ).zone();
+            });
+        });
     }
 
     /**

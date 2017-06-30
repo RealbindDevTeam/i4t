@@ -25,11 +25,7 @@
                                         <md-card-title>{{item.name}}</md-card-title>
                                     </md-card-header>
                                     <div class="crop">
-                                        <span *ngFor="let itemImg of _itemImages | async">
-                                            <template [ngIf]="itemImg.itemId === item._id">
-                                                <img src="{{ itemImg.url }}">
-                                            </template>
-                                        </span>
+                                        <img src="{{ getItemImage(item._id) }}">  
                                     </div>
                                     <md-card-actions>
                                         <button md-button (click)="showItemInformation(item)">{{'ORDER_CREATE.VIEW_DETAIL' | translate}}</button>
@@ -48,11 +44,7 @@
                                                 <md-card-title>{{item.name}}</md-card-title>
                                             </md-card-header>
                                             <div class="crop">
-                                                <span *ngFor="let itemImg of _itemImages | async">
-                                                    <template [ngIf]="itemImg.itemId === item._id">
-                                                        <img src="{{ itemImg.url }}">
-                                                    </template>
-                                                </span>
+                                                <img src="{{ getItemImage(item._id) }}">
                                             </div>
                                             <md-card-actions>
                                                 <button md-button (click)="showItemInformation(item)">{{'ORDER_CREATE.VIEW_DETAIL' | translate}}</button>
@@ -71,11 +63,7 @@
                                                         <md-card-title>{{item.name}}</md-card-title>
                                                     </md-card-header>
                                                     <div class="crop">
-                                                        <span *ngFor="let itemImg of _itemImages | async">
-                                                            <template [ngIf]="itemImg.itemId === item._id">
-                                                                <img src="{{ itemImg.url }}">
-                                                            </template>
-                                                        </span>
+                                                        <img src="{{ getItemImage(item._id) }}">
                                                     </div>
                                                     <md-card-actions>
                                                         <button md-button (click)="showItemInformation(item)">{{'ORDER_CREATE.VIEW_DETAIL' | translate}}</button>
@@ -110,11 +98,7 @@
                         <div class="item-detail-card">
                             <div class="card-content">
                                 <div class="crop">
-                                    <span *ngFor="let itemImg of _itemImages | async">
-                                        <template [ngIf]="itemImg.itemId === itemDet._id">
-                                            <img src="{{ itemImg.url }}">
-                                        </template>
-                                    </span>
+                                    <img src="{{ getItemImage(itemDet._id) }}">
                                 </div>
                                 <div class="content">
                                     <md-card-subtitle class="description">{{itemDet.description}}</md-card-subtitle>
@@ -148,7 +132,7 @@
                                                         <p *ngFor="let garnish of _garnishFoodCol | async">
                                                             <span *ngFor="let gar of itemDet.garnishFood">
                                                                 <template [ngIf]="garnish._id === gar">
-                                                                    <md-checkbox [formControlName]="garnish.name" (change)="calculateFinalPriceGarnishFood($event, garnish)" [class.invalid]="!_newOrderForm.controls.garnishFood.valid">{{ getGarnishFoodInformation(garnish) }} {{_currencyCode}}<div class="inline-block"> x {{_quantityCount}}</div></md-checkbox> 
+                                                                    <md-checkbox [formControlName]="garnish._id" (change)="calculateFinalPriceGarnishFood($event, garnish)" [class.invalid]="!_newOrderForm.controls.garnishFood.valid">{{ getGarnishFoodInformation(garnish) }} {{_currencyCode}}<div class="inline-block"> x {{_quantityCount}}</div></md-checkbox> 
                                                                 </template>
                                                             </span>
                                                         </p>
@@ -161,7 +145,7 @@
                                                         <p *ngFor="let addition of _additions | async">
                                                             <span *ngFor="let add of itemDet.additions">
                                                                 <template [ngIf]="addition._id === add">
-                                                                    <md-checkbox [formControlName]="addition.name" (change)="calculateFinalPriceAddition($event, addition)" [class.invalid]="!_newOrderForm.controls.additions.valid">{{ getAdditionInformation(addition) }} {{_currencyCode}}<div class="inline-block">x {{_quantityCount}}</div></md-checkbox> 
+                                                                    <md-checkbox [formControlName]="addition._id" (change)="calculateFinalPriceAddition($event, addition)" [class.invalid]="!_newOrderForm.controls.additions.valid">{{ getAdditionInformation(addition) }} {{_currencyCode}}<div class="inline-block">x {{_quantityCount}}</div></md-checkbox> 
                                                                 </template>
                                                             </span>
                                                         </p>

@@ -524,7 +524,10 @@
         "ACTIVATE": "ACTIVAR",
         "INACTIVATE": "INACTIVAR",
         "COOKING_TIME": "Tiempo Aprox de Cocción",
-        "MESSAGE": "Aún no hay items registrados"
+        "MESSAGE" : "Aún no hay items registrados",
+        "SELECT_ALL_GARNISH_FOOD": "Seleccionar todas las Guarniciones",
+        "SELECT_ALL_ADDITIONS": "Seleccionar todas las Adiciones",
+        "ITEM_EDITED": "Item Editado Correctamente"
     },
     "ROLE": {
         "ADMINISTRATOR": "Administrador",
@@ -634,7 +637,9 @@
         "SHOW_ALL": "Mostrar todos",
         "COOKING_TIME": "Tiempo de Cocción",
         "ADD_ADDITIONS": "Selecciona las adiciones que desees agregar a la orden e indica su cantidad",
-        "ADD_ADDITION_ORDER": "Agregar adicion a la Orden"
+        "ADD_ADDITION_ORDER": "Agregar adicion a la Orden",
+        "ITEM_AGGREGATED": "Item Agregado Correctamente",
+        "ADDITON_AGGREGATED": "Adicion Agregada Correctamente"
     },
     "ORDER_LIST": {
         "TABLE_ORDERS": "Órdenes de la mesa",
@@ -673,7 +678,11 @@
         "ADD_ADDITIONS": "Selecciona las adiciones que desees agregar a la orden e indica su cantidad",
         "MODIFY_ADDITION_ORDER": "Modificar Adicion",
         "DELETE_ADDITION_ORDER": "Eliminar Adicion",
-        "DELETE_ADDITION_CONFIRM": "Esta seguro de eliminar la adicion de la orden?"
+        "DELETE_ADDITION_CONFIRM": "Esta seguro de eliminar la adicion de la orden?",
+        "ITEM_DELETED": "Item Eliminado de la Orden",
+        "ADDITION_DELETED": "Adicion Eliminada de la Orden",
+        "ITEM_EDITED": "Item Editado Correctamente",
+        "ADDITION_EDITED": "Adicion Editada Correctamente"
     },
     "PAYMENTS": {
         "COLOMBIA": {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -38,11 +38,14 @@ export class CategoriesEditComponent implements OnInit, OnDestroy {
      * @param {FormBuilder} _formBuilder 
      * @param {TranslateService} _translate
      * @param {MdDialogRef<any>} _dialogRef 
+     * @param {MdSnackBar} snackBar
+     * @param {NgZone} _ngZone
      */
     constructor( private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
                  public _dialogRef: MdDialogRef<any>, 
-                 public snackBar: MdSnackBar ){
+                 public snackBar: MdSnackBar,
+                 private _ngZone:NgZone ){
         var userLang = navigator.language.split( '-' )[0];
         _translate.setDefaultLang( 'en' );
         _translate.use(userLang);
@@ -59,10 +62,16 @@ export class CategoriesEditComponent implements OnInit, OnDestroy {
             editSection: [ this._categoryToEdit.section ]
         });
         this._categorySection = this._categoryToEdit.section;
-        this._categories = Categories.find( { } ).zone();
-        this._categoriesSub = MeteorObservable.subscribe( 'categories', this._user ).subscribe();
-        this._sections = Sections.find( { } ).zone();
-        this._sectionsSub = MeteorObservable.subscribe( 'sections', this._user ).subscribe();
+        this._categoriesSub = MeteorObservable.subscribe( 'categories', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._categories = Categories.find( { } ).zone();
+            });
+        });
+        this._sectionsSub = MeteorObservable.subscribe( 'sections', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._sections = Sections.find( { } ).zone();
+            });
+        });
     }
 
     /**

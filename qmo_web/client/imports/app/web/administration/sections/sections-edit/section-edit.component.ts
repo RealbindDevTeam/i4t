@@ -33,15 +33,14 @@ export class SectionEditComponent implements OnInit, OnDestroy {
     private _restaurantSub          : Subscription;
 
     private _sectionRestaurants     : string[];    
-    private _restaurantsList        : Restaurant[];
-    private _edition_restaurants    : string[];
-    private _createdRestaurants     : Restaurant[];
-        
+
     /**
      * SectionEditComponent constructor
      * @param {FormBuilder} _formBuilder
      * @param {TranslateService} _translate
      * @param {MdDialogRef<any>} _dialogRef 
+     * @param {NgZone} _ngZone
+     * @param {MdSnackBar} snackBar
      */    
     constructor( private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
@@ -52,9 +51,6 @@ export class SectionEditComponent implements OnInit, OnDestroy {
         _translate.setDefaultLang('en');
         _translate.use(userLang);
         this._sectionRestaurants = [];
-        this._restaurantsList = [];
-        this._edition_restaurants = [];
-        this._createdRestaurants = [];
     }
 
     /**
@@ -68,28 +64,33 @@ export class SectionEditComponent implements OnInit, OnDestroy {
             editRestaurants: this._restaurantsFormGroup
         });
         this._sectionRestaurants = this._sectionToEdit.restaurants;
-        this._sections = Sections.find( { } ).zone();
-        this._sectionsSub = MeteorObservable.subscribe( 'sections', this._user ).subscribe();
+        this._sectionsSub = MeteorObservable.subscribe( 'sections', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._sections = Sections.find( { } ).zone();
+            });
+        });
 
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
             this._ngZone.run( () => {
-                this._restaurants = Restaurants.find( { } );
-                this._createdRestaurants = Restaurants.collection.find({}).fetch();
-                for( let rest of this._createdRestaurants ){ 
-                    let restaurant:Restaurant = rest;    
-                    let find = this._sectionRestaurants.filter( r => r == restaurant._id );
-
-                    if( find.length > 0 ){
-                        let control: FormControl = new FormControl( true );                                          
-                        this._restaurantsFormGroup.addControl( restaurant.name, control );  
-                        this._restaurantsList.push( restaurant );
-                    } else {
-                        let control: FormControl = new FormControl( false );                                          
-                        this._restaurantsFormGroup.addControl( restaurant.name, control );  
-                        this._restaurantsList.push( restaurant );
-                    }                 
-                }
+                this._restaurants = Restaurants.find( { } ).zone();
+                this._restaurants.subscribe( () => { this.createRestaurantForm(); });
             });
+        });
+    }
+
+    /**
+     * Create restaurants controls in form
+     */
+    createRestaurantForm():void{
+        Restaurants.collection.find( { } ).fetch().forEach( ( res ) => {
+            let find = this._sectionRestaurants.filter( r => r == res._id );
+            if( find.length > 0 ){
+                let control: FormControl = new FormControl( true );                                          
+                this._restaurantsFormGroup.addControl( res._id, control );  
+            } else {
+                let control: FormControl = new FormControl( false );                                          
+                this._restaurantsFormGroup.addControl( res._id, control );  
+            }                 
         });
     }
 
@@ -103,12 +104,12 @@ export class SectionEditComponent implements OnInit, OnDestroy {
         }
 
         if( this._editForm.valid ){
+            let _edition_restaurants: string[] = [];
             let arr:any[] = Object.keys( this._editForm.value.editRestaurants );
 
             arr.forEach( ( rest ) => {
                 if( this._editForm.value.editRestaurants[ rest ] ){
-                    let restau:Restaurant = Restaurants.findOne( { name: rest } );
-                    this._edition_restaurants.push( restau._id );               
+                    _edition_restaurants.push( rest );               
                 }            
             });
             
@@ -118,7 +119,7 @@ export class SectionEditComponent implements OnInit, OnDestroy {
                     modification_date: new Date(),
                     name: this._editForm.value.editName,
                     is_active: this._editForm.value.editIsActive,
-                    restaurants: this._edition_restaurants
+                    restaurants: _edition_restaurants
                 }
             });
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
@@ -31,24 +31,28 @@ export class CategoryComponent implements OnInit, OnDestroy{
     private _sections           : Observable<Section[]>;
     private _restaurants        : Observable<Restaurant[]>;
 
-    private _categoriesSub        : Subscription;
-    private _sectionsSub          : Subscription;
-    private _restaurantSub        : Subscription;
+    private _categoriesSub      : Subscription;
+    private _sectionsSub        : Subscription;
+    private _restaurantSub      : Subscription;
 
     private _selectedValue      : string;
     public _dialogRef           : MdDialogRef<any>;
     
     /**
      * CategoryComponent constructor
+     * @param {MdSnackBar} snackBar
      * @param {FormBuilder} _formBuilder
      * @param {TranslateService} _translate
      * @param {MdDialog} _dialog
+     * @param {Router} _router
+     * @param {NgZone} _ngZone
      */
     constructor( public snackBar: MdSnackBar,
                  public _dialog: MdDialog, 
                  private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
-                 private _router: Router ){
+                 private _router: Router,
+                 private _ngZone: NgZone ){
         var _userLang = navigator.language.split( '-' )[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );           
@@ -64,12 +68,20 @@ export class CategoryComponent implements OnInit, OnDestroy{
             section: new FormControl( '' )  
         });    
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
-            this._restaurants = Restaurants.find( { } ).zone();
+            this._ngZone.run( () => {
+                this._restaurants = Restaurants.find( { } ).zone();
+            });
         });
-        this._sections = Sections.find( { } ).zone();
-        this._sectionsSub = MeteorObservable.subscribe( 'sections', this._user ).subscribe();                
-        this._categories = Categories.find( { } ).zone();
-        this._categoriesSub = MeteorObservable.subscribe( 'categories', this._user ).subscribe();                
+        this._sectionsSub = MeteorObservable.subscribe( 'sections', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._sections = Sections.find( { } ).zone();
+            });
+        });
+        this._categoriesSub = MeteorObservable.subscribe( 'categories', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._categories = Categories.find( { } ).zone();
+            });
+        });
     }
 
     /**
