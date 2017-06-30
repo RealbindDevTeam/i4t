@@ -700,7 +700,13 @@
             "CONSULT_PAYMENTS": "Consult Payment Detail",
             "SELECT_PAYMENT_METHOD": "Select Payment Method",
             "STATUS": "Status",
-            "FULL_PAYMENT": "Full order payment"
+            "FULL_PAYMENT": "Full order payment",
+            "RETURN_ORDER_USER": "Do you want to return the order to the user ",
+            "ORDER_PENDING_STATUS": "You have Orders pending status by confirmation. You must confirm them or wait for them to confirm you.",
+            "NO_ONLINE_PAYMENT": "Online payment is not yet available in Iurest",
+            "PLEASE_SELECT_PAYMENT_METHOD": "Please Select Payment Method",
+            "PAYMENT_UNAVAILABLE": "Payment option is currently unavailable.",
+            "WAITER_ATTEND": "In a moment a waiter will attend you at your table"
         }
     },
     "WAITER_CALL": {

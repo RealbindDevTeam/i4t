@@ -148,7 +148,8 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
      * @param {Order} _pOrder 
      */
     returnOrderToFirstOwner( _pOrder:Order ):void{
-        if( confirm( 'Desea devolver la orden al usuario ' + _pOrder.translateInfo.firstOrderOwner + ' ?' ) ) {
+        let _lMessage:string = this.itemNameTraduction( 'PAYMENTS.COLOMBIA.RETURN_ORDER_USER' );
+        if( confirm( _lMessage + _pOrder.translateInfo.firstOrderOwner + ' ?' ) ) {
             let _lOrderTranslateInfo: OrderTranslateInfo = { firstOrderOwner: _pOrder.translateInfo.firstOrderOwner, confirmedToTranslate: false, 
                                                              lastOrderOwner: '', markedToTranslate: false };
             Orders.update( { _id: _pOrder._id }, { $set: { creation_user: _pOrder.translateInfo.firstOrderOwner,
@@ -235,6 +236,10 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
      * This function validate the payment method.
      */
     pay(){
+        let _lMessage1:string = this.itemNameTraduction( 'PAYMENTS.COLOMBIA.ORDER_PENDING_STATUS' );
+        let _lMessage2:string = this.itemNameTraduction( 'PAYMENTS.COLOMBIA.NO_ONLINE_PAYMENT' );
+        let _lMessage3:string = this.itemNameTraduction( 'PAYMENTS.COLOMBIA.PLEASE_SELECT_PAYMENT_METHOD' );
+        let _lMessage4:string = this.itemNameTraduction( 'PAYMENTS.COLOMBIA.PAYMENT_UNAVAILABLE' );
         if ( this.tabId !== "" && this.restId !== "" ) {
             if ( this._paymentMethodId === '10' || this._paymentMethodId === '20' || this._paymentMethodId === '30' ){
                 let _lOrdersWithPendingConfim:number = Orders.collection.find( { creation_user: this._user, restaurantId: this.restId, tableId: this.tabId, 
@@ -270,17 +275,17 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                     });
                     this.waiterCallForPay();
                 } else {
-                    alert('Tienes Ordenes con estado pendiente por confirmacion. Debes confirmarlas o esperar a que te confirmen.');
+                    alert( _lMessage1 );
                 } 
             } else {
                 if( this._paymentMethodId === '40' ){
-                    alert('El pago Online aun no se encuentra habilitado en Iurest');
+                    alert( _lMessage2 );
                 } else {
-                    alert('Por favor seleccione un medio de pago');
+                    alert( _lMessage3 );
                 }
             }
         } else {
-            alert('La opcion de pagos no se encuentra disponible por el momento');
+            alert( _lMessage4 );
         }
     }
 
@@ -299,9 +304,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
         let isWaiterCalls = WaiterCallDetails.collection.find({ restaurant_id : this.restId, 
                                                                 table_id : this.tabId, 
                                                                 type : data.type }).count();
-        if( isWaiterCalls === 0 ){
-            let loading_msg = 'Un momento Por favor'; 
-            
+        if( isWaiterCalls === 0 ){            
             this._loading = true;
             setTimeout(() => {
                 MeteorObservable.call( 'findQueueByRestaurant', data ).subscribe( () => {
@@ -309,7 +312,8 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                 });
             }, 1500 );
         } else {
-            alert('En un momento te atenderemos en tu mesa');
+            let _lMessage:string = this.itemNameTraduction( 'PAYMENTS.COLOMBIA.WAITER_ATTEND' );            
+            alert( _lMessage );
         }
     }
 
@@ -319,6 +323,18 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     validateUserPayments():void{
         let _lPayments: number = Payments.collection.find( { status: 'PAYMENT.NO_PAID' } ).count();
         _lPayments > 0 ? this._paymentCreated = true : this._paymentCreated = false;
+    }
+
+    /**
+     * Return traduction
+     * @param {string} itemName 
+     */
+    itemNameTraduction(itemName: string): string{
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res; 
+        });
+        return wordTraduced;
     }
 
     /**
