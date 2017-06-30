@@ -56,7 +56,7 @@ export function loadMenus() {
                         _id: "1004",
                         is_active: true,
                         name: "MENUS.ADMINISTRATION.MONTHLY_CONFIG",
-                        url: "/app/monthly_config",
+                        url: "/app/monthly-config",
                         icon_name: "",
                         order: 1004
                     }
@@ -135,26 +135,26 @@ export function loadMenus() {
                         icon_name: "",
                         order: 3004
                     }, {
-                        _id: "3006",
+                        _id: "3005",
                         is_active: true,
                         name: "MENUS.MENU_DEFINITION.GARNISHFOOD",
                         url: "/app/garnishFood",
+                        icon_name: "",
+                        order: 3005
+                    }, {
+                        _id: "3006",
+                        is_active: true,
+                        name: "MENUS.MENU_DEFINITION.ITEMS",
+                        url: "/app/items",
                         icon_name: "",
                         order: 3006
                     }, {
                         _id: "3007",
                         is_active: true,
-                        name: "MENUS.MENU_DEFINITION.ITEMS",
-                        url: "/app/items",
-                        icon_name: "",
-                        order: 3007
-                    }, {
-                        _id: "3008",
-                        is_active: true,
                         name: "MENUS.MENU_DEFINITION.ITEMS_ENABLE",
                         url: "/app/itemsEnable",
                         icon_name: "",
-                        order: 3008
+                        order: 3007
                     }
                 ]
             },

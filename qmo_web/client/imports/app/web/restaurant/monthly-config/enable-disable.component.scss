@@ -1,0 +1,17 @@
+.cust-center-align{
+  text-align:center !important;
+}
+
+.fixed-action-btn {		
+    position: relative;
+
+    button {
+        position: absolute;
+        bottom: 30px;
+        right: 35px;
+        width: 56px;
+        -webkit-transition: all 0.3s ease;
+        -moz-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+    }
+ }

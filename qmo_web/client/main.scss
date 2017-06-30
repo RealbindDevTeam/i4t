@@ -362,3 +362,7 @@ select:focus {
   background-color: transparent;
   border: 0;
 }
+
+.md-tooltip {
+    font-size: $tooltip-fontsize-sm !important;
+}

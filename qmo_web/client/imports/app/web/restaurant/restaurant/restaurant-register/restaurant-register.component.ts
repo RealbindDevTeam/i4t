@@ -18,18 +18,21 @@ import { Countries } from '../../../../../../../both/collections/settings/countr
 import { Country } from '../../../../../../../both/models/settings/country.model';
 import { City } from '../../../../../../../both/models/settings/city.model';
 import { Cities } from '../../../../../../../both/collections/settings/city.collection';
-import { uploadRestaurantImage, createRestaurantCode } from '../../../../../../../both/methods/restaurant/restaurant.methods';
+import { uploadRestaurantImage, createRestaurantCode, generateQRCode, createTableCode } from '../../../../../../../both/methods/restaurant/restaurant.methods';
 import { FinancialBase } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-base';
 import { FinancialCheckBox } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-checkbox';
 import { FinancialDropDown } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-dropdown';
 import { FinancialTextBox } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-textbox';
 import { FinancialText } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-text';
 import { FinancialSlider } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-slider';
-import { PayuPaymenteService } from './payment-plan/payu-payment.service';
 import { CreateConfirmComponent } from './create-confirm/create-confirm.component';
+import { Table } from '../../../../../../../both/models/restaurant/table.model';
+import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
 
 import template from './restaurant-register.component.html';
 import style from './restaurant-register.component.scss';
+
+import * as QRious from 'qrious';
 
 @Component({
     selector: 'restaurant-register',
@@ -54,6 +57,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _cities: Observable<City[]>;
     private _paymentMethods: Observable<PaymentMethod[]>;
     private _paymentMethodsList: PaymentMethod[];
+    private _tables: Observable<Table[]>;
 
     private _filesToUpload: Array<File>;
     private _restaurantImageToInsert: File;
@@ -73,13 +77,12 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _showFinancialElements: boolean = false;
     private _restaurantFinancialInformation: Object = {};
     private _financialInformation: RestaurantFinancialElement[] = [];
+    private restaurantCode: string = '';
 
     private planObj: any;
     private post: any;
-
     align: string;
     private _loading: boolean;
-
     private _mdDialogRef: MdDialogRef<any>;
 
     /**
@@ -90,7 +93,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * @param {Router} _router
      */
     constructor(private _formBuilder: FormBuilder, private _translate: TranslateService, private _ngZone: NgZone, private _router: Router,
-        private payuPayment: PayuPaymenteService, public _mdDialog: MdDialog) {
+        public _mdDialog: MdDialog) {
         var _userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang('en');
         _translate.use(_userLang);
@@ -102,29 +105,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._createImage = false;
 
         this.align = "";
-
-
-        this.payuPayment.getPosts().subscribe(
-            posts => {
-                this.post = posts;
-                console.log('>>>>>');
-                console.log(this.post);
-            },
-            error => {
-                console.log(error);
-            }
-        );
-
-        this.payuPayment.getPlans().subscribe(
-            plans => {
-                this.planObj = plans;
-                console.log('>>>>>');
-                console.log(this.planObj);
-            },
-            error => {
-                console.log(error);
-            }
-        );
     }
 
     /**
@@ -139,6 +119,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             phone: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]),
             webPage: new FormControl('', [Validators.minLength(1), Validators.maxLength(40)]),
             email: new FormControl('', [Validators.minLength(1), Validators.maxLength(40)]),
+            tables_number: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(3)]),
             image: new FormControl(''),
             paymentMethods: this._paymentsFormGroup
         });
@@ -294,6 +275,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._restaurantForm.controls['phone'].reset();
         this._restaurantForm.controls['webPage'].reset();
         this._restaurantForm.controls['email'].reset();
+        this._restaurantForm.controls['tables_number'].reset();
         this._restaurantFinancialInformation = {};
         this._router.navigate(['app/restaurant']);
     }
@@ -332,14 +314,10 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         });
 
         this._mdDialogRef.afterClosed().subscribe(result => {
-
             this._mdDialogRef = result;
 
             this._loading = true;
             setTimeout(() => {
-
-
-
                 if (result.success) {
 
                     let arrPay: any[] = Object.keys(this._restaurantForm.value.paymentMethods);
@@ -392,10 +370,56 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                                 alert('Upload image error. Only accept .png, .jpg, .jpeg files.');
                             });
                     }
+
+                    //Insert tables
+                    let _lRestau: Restaurant = Restaurants.findOne({ _id: _lNewRestaurant });
+                    let _lTableNumber: number = this._restaurantForm.value.tables_number;
+                    this.restaurantCode = _lRestau.restaurant_code;
+
+                    for (let _i = 0; _i < _lTableNumber; _i++) {
+                        let _lRestaurantTableCode: string = '';
+                        let _lTableCode: string = '';
+
+                        _lTableCode = this.generateTableCode();
+                        _lRestaurantTableCode = this.restaurantCode + _lTableCode;
+                        let _lCodeGenerator = generateQRCode(_lRestaurantTableCode);
+
+                        let _lQrCode = new QRious({
+                            background: 'white',
+                            backgroundAlpha: 1.0,
+                            foreground: 'black',
+                            foregroundAlpha: 1.0,
+                            level: 'H',
+                            mime: 'image/svg',
+                            padding: null,
+                            size: 150,
+                            value: _lCodeGenerator.getQRCode()
+                        });
+
+                        let _lNewTable: Table = {
+                            creation_user: Meteor.userId(),
+                            creation_date: new Date(),
+                            restaurantId: _lNewRestaurant,
+                            table_code: _lTableCode,
+                            is_active: true,
+                            QR_code: _lCodeGenerator.getQRCode(),
+                            QR_information: {
+                                significativeBits: _lCodeGenerator.getSignificativeBits(),
+                                bytes: _lCodeGenerator.getFinalBytes()
+                            },
+                            amount_people: 0,
+                            status: 'FREE',
+                            QR_URI: _lQrCode.toDataURL(),
+                            _number: _i + 1
+                        };
+                        Tables.insert(_lNewTable);
+                        Restaurants.update({ _id: _lNewRestaurant }, { $set: { tables_quantity: _i + 1 } })
+                    }
+                    //
                     this.cancel();
                 }
                 this._loading = false;
-            }, 1500);
+            }, 3000);
         });
     }
 
@@ -541,6 +565,22 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      */
     setRestaurantFinancialInfo(_event: Object): void {
         this._restaurantFinancialInformation = _event;
+    }
+
+    /**
+     * Set Restaurant Financial Information
+     * @return {string} 
+     */
+    generateTableCode(): string {
+        let _lCode: string = '';
+
+        while (true) {
+            _lCode = createTableCode();
+            if (Tables.find({ table_code: _lCode }).cursor.count() === 0) {
+                break;
+            }
+        }
+        return _lCode;
     }
 
     /**
