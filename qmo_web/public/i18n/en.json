@@ -465,7 +465,9 @@
         "COLLABORATORS_REGISTER": "Collaborator register",
         "COLLABORATORS_TEXT": "Select the restaurant you want for search",
         "MSG_INITIAL": "Link to all your collaborators an agreement to the role they play",
-        "BTN": "Collaborator register"
+        "BTN": "Collaborator register",
+        "TABLE_INIT" : "Table init",
+        "TABLE_END" : "Table End"
     },
     "COLLABORATORS_REGISTER": {
         "COLLABORATORS_LABEL": "Collaborator",

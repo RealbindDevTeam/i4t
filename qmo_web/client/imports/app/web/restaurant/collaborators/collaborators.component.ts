@@ -94,12 +94,13 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
      * Collaboratos edition
      * @param _userdetail 
      */
-    editCollaborator( _userdetail : UserDetail ){
+    editCollaborator( _userdetail : UserDetail, _user : User ){
         this._dialogRef = this._dialog.open( CollaboratorsEditionComponent, {
             disableClose : true,
             width: '75%'
         });
-        this._dialogRef.componentInstance._selectUserDetail = _userdetail;
+        this._dialogRef.componentInstance.selectUserDetail = _userdetail;
+        this._dialogRef.componentInstance.selectUser       = _user;
         this._dialogRef.afterClosed().subscribe( result => {
             this._dialogRef = null;
         });
