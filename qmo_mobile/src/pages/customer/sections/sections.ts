@@ -3,6 +3,7 @@ import { NavController, NavParams, Content } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
+import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
 import { Restaurants, RestaurantImageThumbs } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { Cities } from 'qmo_web/both/collections/settings/city.collection';
 import { Countries } from 'qmo_web/both/collections/settings/country.collection';
@@ -11,6 +12,7 @@ import { Categories } from 'qmo_web/both/collections/administration/category.col
 import { Subcategories } from 'qmo_web/both/collections/administration/subcategory.collection';
 import { Items, ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
 import { ItemDetailPage } from '../item-detail/item-detail';
+import { AdditionsPage } from './additions/additions';
 import { Storage } from '@ionic/storage';
 
 @Component({
@@ -39,11 +41,14 @@ export class SectionsPage implements OnInit, OnDestroy {
   private _imageThumbs;
   private _imageThumbSub: Subscription;
   private _restaurantThumbSub: Subscription;
+  private _additions;
+  private _additionsSub: Subscription;
 
   private _res_code: string = '';
   private _table_code: string = '';
   private selected: string;
   private _item_code: string;
+  private _additionsShow: boolean = false;
 
   constructor(public _navCtrl: NavController, public _navParams: NavParams, public _translate: TranslateService, public _storage: Storage) {
     this._userLang = navigator.language.split('-')[0];
@@ -94,6 +99,14 @@ export class SectionsPage implements OnInit, OnDestroy {
       this._imageThumbs = ItemImagesThumbs.find({});
     });
     this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByRestaurantId', this._res_code).subscribe();
+
+    this._additionsSub = MeteorObservable.subscribe( 'additionsByRestaurant', this._res_code ).subscribe( () => {
+        this._additions = Additions.find({});
+        this._additions.subscribe( () => { 
+          let _lAdditions: number = Additions.collection.find( { } ).count();
+          _lAdditions > 0 ? this._additionsShow = true : this._additionsShow = false;
+        });
+    });
   }
 
   validateSection(section_selected) {
@@ -101,7 +114,10 @@ export class SectionsPage implements OnInit, OnDestroy {
       this._items = Items.find({});
       this._categories = Categories.find({});
       this._subcategories = Subcategories.find({});
-    } else {
+    } else if(section_selected === 'addition'){
+      this.goToAddAdditions();
+    }
+    else {
       this._items = Items.find({ sectionId: section_selected });
       this._categories = Categories.find({ section: section_selected });
       this._subcategories = Subcategories.find({});
@@ -121,6 +137,10 @@ export class SectionsPage implements OnInit, OnDestroy {
     this._navCtrl.push(ItemDetailPage, { item_id: this._item_code, res_id: this._res_code, table_id: this._table_code });
   }
 
+  goToAddAdditions(){
+    this._navCtrl.push(AdditionsPage, { res_id: this._res_code, table_id: this._table_code });
+  }
+
   getRestaurantThumb(_id: string): string {
     let _imageThumb;
     _imageThumb = RestaurantImageThumbs.find().fetch().filter((i) => i.restaurantId === _id)[0];
@@ -138,5 +158,6 @@ export class SectionsPage implements OnInit, OnDestroy {
     this._subcategorySub.unsubscribe();
     this._itemSub.unsubscribe();
     this._restaurantThumbSub.unsubscribe();
+    this._additionsSub.unsubscribe();
   }
 }

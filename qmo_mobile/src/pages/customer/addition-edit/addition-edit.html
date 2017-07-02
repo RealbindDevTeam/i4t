@@ -1,0 +1,24 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>{{'MOBILE.SECTIONS.ADDITION' | translate}}</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <p>
+        {{'MOBILE.ORDERS.ADD_ADDITIONS' | translate}}
+    </p>
+
+    <form [formGroup]="_additionsDetailFormGroup">
+        <ion-item>
+            <ion-label floating>{{ getAdditionInformation() }} {{_currencyCode}}</ion-label>
+            <ion-input formControlName="control" type="number" min="0" max="99"></ion-input>
+        </ion-item>
+    </form>
+</ion-content>
+
+<ion-footer>
+    <!--button ion-button block class="button-primary" type="submit" (click)="AddAdditionsToOrder()">
+        {{'MOBILE.ORDERS.ADD_ADDITION_ORDER' | translate}}
+    </button-->
+</ion-footer>

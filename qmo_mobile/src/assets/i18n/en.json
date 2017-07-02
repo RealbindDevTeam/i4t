@@ -143,7 +143,11 @@
             "NO_ANSWER": "No",
             "ORDER": "Order #: ",
             "TOTAL": "Total: ",
-            "STATUS": "Status: "
+            "STATUS": "Status: ",
+            "ADD_ADDITIONS": "Select the additions you wish to add to the order and indicate the quantity",
+            "ADD_ADDITION_ORDER" : "Add addition to the order",
+            "ADDITON_AGGREGATED": "Correct Aggregate Addition",
+            "ADDITION" : "(Addition)"
         },
         "PAYMENTS": {
             "TITTLE": "Payments",
@@ -231,7 +235,8 @@
             "LOADING_MSG": "Adding to order ...",
             "TOAST_MSG": "Item was added successfully",
             "WAIT_QR": "Please wait ...",
-            "TIME" : "Approximate Cooking Time:"
+            "TIME" : "Approximate Cooking Time:",
+            "ADDITION" : "Adiciones"
         },
         "ITEM_EDIT": {
             "MODIFY": "Modify",

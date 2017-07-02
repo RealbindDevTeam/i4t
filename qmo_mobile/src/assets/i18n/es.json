@@ -143,7 +143,11 @@
             "NO_ANSWER": "No",
             "ORDER": "Orden #: ",
             "TOTAL": "Total: ",
-            "STATUS": "Estado: "
+            "STATUS": "Estado: ",
+            "ADD_ADDITIONS": "Selecciona las adiciones que desees agregar a la orden e indica su cantidad",
+            "ADD_ADDITION_ORDER" : "Agregar adición a la orden",
+            "ADDITON_AGGREGATED": "Adicion Agregada Correctamente",
+            "ADDITION" : "(Adición)"
         },
         "PAYMENTS": {
             "TITTLE": "Pagos",
@@ -231,7 +235,8 @@
             "LOADING_MSG": "Agregando a la orden ...",
             "TOAST_MSG": "Item agregado exitosamente",
             "WAIT_QR": "Espera por favor  ...",
-            "TIME" : "Tiempo de cocción:"
+            "TIME" : "Tiempo de cocción:",
+            "ADDITION" : "Adiciones"
         },
         "ITEM_EDIT": {
             "MODIFY": "Modificar",
