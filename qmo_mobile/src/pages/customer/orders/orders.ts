@@ -4,7 +4,7 @@ import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
-import { Order, OrderItem, OrderAddition } from 'qmo_web/both/models/restaurant/order.model';
+import { Order, OrderAddition } from 'qmo_web/both/models/restaurant/order.model';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
 import { Items } from 'qmo_web/both/collections/administration/item.collection';
 import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
@@ -36,7 +36,6 @@ export class OrdersPage implements OnInit, OnDestroy {
     private _currentUserId: string;
     private _orderIndex: number = -1;
     private selected: string = "";
-    private alert_not: string;
 
     private _userDetail;
     private _orders;
@@ -262,18 +261,12 @@ export class OrdersPage implements OnInit, OnDestroy {
      * Show order additions detail
      * @param {OrderAddition} _pAdition
      */
-    showAdditionsDetail( _pAdition : OrderAddition ):void{
-        /*Additions.collection.find( { } ).fetch().forEach( ( add ) => {
-            if( this._additionsDetailFormGroup.contains( add._id ) ){
-                this._additionsDetailFormGroup.removeControl( add._id );
-            }
-        });
-        let control: FormControl = new FormControl( _pAdition.quantity, [ Validators.minLength(1), Validators.maxLength(2) ] );
-        this._additionsDetailFormGroup.addControl( _pAdition.additionId, control );
-        this._additionDetails = Additions.find( { _id: _pAdition.additionId } ).zone();
-        this.viewItemDetail( true );
-        this.viewAdditionDetail( false );*/
-        this._navCtrl.push(AdditionEditPage, { addition : _pAdition });
+    showAdditionsDetail( _pAdition : OrderAddition, _pOrder : Order ):void{
+        let _lUserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+        if(_lUserDetail.current_restaurant && _lUserDetail.current_table){
+            this._res_code   = _lUserDetail.current_restaurant;
+        }
+        this._navCtrl.push(AdditionEditPage, { order_addition : _pAdition, order : _pOrder, restaurant : this._res_code });
     }
 
     ionViewDidEnter() {

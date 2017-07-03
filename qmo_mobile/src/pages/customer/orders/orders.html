@@ -62,7 +62,7 @@
                                                     <h2 style="white-space: normal;">{{addition.name}} {{'MOBILE.ORDERS.ADDITION' | translate}}</h2> 
                                                     <p style="white-space: normal;">{{'MOBILE.PRICING' | translate}}: {{ad.paymentAddition}} {{_currencyCode}}</p>
                                                     <p style="white-space: normal;">{{'MOBILE.SECTIONS.QUANTITY' | translate}} {{ad.quantity}}</p>
-                                                    <button *ngIf="order.creation_user === _currentUserId && order.status === 'ORDER_STATUS.REGISTERED'" (click)="showAdditionsDetail(ad)" ion-button icon-only clear item-right >
+                                                    <button *ngIf="order.creation_user === _currentUserId && order.status === 'ORDER_STATUS.REGISTERED'" (click)="showAdditionsDetail(ad, order)" ion-button icon-only clear item-right >
                                                         <ion-icon name="create"></ion-icon>
                                                     </button>
                                                 </ion-item>

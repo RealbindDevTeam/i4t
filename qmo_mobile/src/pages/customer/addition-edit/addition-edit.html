@@ -9,16 +9,22 @@
         {{'MOBILE.ORDERS.ADD_ADDITIONS' | translate}}
     </p>
 
-    <form [formGroup]="_additionsDetailFormGroup">
-        <ion-item>
-            <ion-label floating>{{ getAdditionInformation() }} {{_currencyCode}}</ion-label>
-            <ion-input formControlName="control" type="number" min="0" max="99"></ion-input>
-        </ion-item>
-    </form>
+    <div *ngFor="let add of _additionDetails | async">
+        <form [formGroup]="_additionsDetailFormGroup">
+            <ion-item>
+                <ion-label floating>{{ getAdditionInformation(add) }} {{_currencyCode}}</ion-label>
+                <!--ion-label floating>{{add.name}}</ion-label-->
+                <ion-input formControlName="control" type="number" min="0" max="99"></ion-input>
+            </ion-item>
+        </form>
+    </div>
 </ion-content>
 
-<ion-footer>
-    <!--button ion-button block class="button-primary" type="submit" (click)="AddAdditionsToOrder()">
-        {{'MOBILE.ORDERS.ADD_ADDITION_ORDER' | translate}}
-    </button-->
+<ion-footer padding>
+    <button ion-button block class="button-primary" (click)="showComfirmClose()" style="width: 48%; display: inline-block">
+        {{'MOBILE.ORDERS.DELETE_ADDITION_ORDER' | translate}}
+    </button>
+    <button ion-button block class="button-primary" (click)="editOrderAddition()" style="width: 48%; display: inline-block">
+        {{'MOBILE.ORDERS.MODIFY_ADDITION_ORDER' | translate}}
+    </button>
 </ion-footer>

@@ -147,7 +147,12 @@
             "ADD_ADDITIONS": "Select the additions you wish to add to the order and indicate the quantity",
             "ADD_ADDITION_ORDER" : "Add addition to the order",
             "ADDITON_AGGREGATED": "Correct Aggregate Addition",
-            "ADDITION" : "(Addition)"
+            "ADDITION" : "(Addition)",
+            "MODIFY_ADDITION_ORDER": "Modify Addition",
+            "DELETE_ADDITION_ORDER": "Delete Addition",
+            "DELETE_ADDITION_CONFIRM": "Are you sure to delete the addition from the order?",
+            "ADDITION_DELETED": "Addition Deleted from Order",
+            "ADDITION_EDITED": "Edited Adition Correctly"
         },
         "PAYMENTS": {
             "TITTLE": "Payments",

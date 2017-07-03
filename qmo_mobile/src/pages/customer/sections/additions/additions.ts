@@ -1,21 +1,12 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { NavController, NavParams, Content } from 'ionic-angular';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Addition } from 'qmo_web/both/models/administration/addition.model';
 import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
-import { Restaurants, RestaurantImageThumbs } from 'qmo_web/both/collections/restaurant/restaurant.collection';
-import { Cities } from 'qmo_web/both/collections/settings/city.collection';
-import { Countries } from 'qmo_web/both/collections/settings/country.collection';
-import { Sections } from 'qmo_web/both/collections/administration/section.collection';
-import { Categories } from 'qmo_web/both/collections/administration/category.collection';
-import { Subcategories } from 'qmo_web/both/collections/administration/subcategory.collection';
-import { Items, ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
-import { Order, OrderItem, OrderAddition } from 'qmo_web/both/models/restaurant/order.model';
-import { ItemDetailPage } from '../item-detail/item-detail';
-import { Storage } from '@ionic/storage';
+import { OrderAddition } from 'qmo_web/both/models/restaurant/order.model';
 
 @Component({
   selector: 'page-add-additions',
@@ -34,9 +25,10 @@ export class AdditionsPage implements OnInit, OnDestroy {
     /**
      * AdditionsPage constructor
      */
-    constructor( public _navCtrl: NavController,
-                 public _navParams: NavParams,
-                 private _translate: TranslateService ){
+    constructor( public _navCtrl    : NavController,
+                 public _navParams  : NavParams,
+                 private _translate : TranslateService,
+                 private _toastCtrl : ToastController ){
         this._restaurantId = this._navParams.get("res_id");
         this._tableId      = this._navParams.get("table_id");
     }
@@ -101,10 +93,15 @@ export class AdditionsPage implements OnInit, OnDestroy {
             }
         });
         MeteorObservable.call( 'AddAdditionsToOrder2', _lOrderAdditionsToInsert, this._restaurantId, this._tableId, _lAdditionsPrice ).subscribe( () => {
-            let _lMessage:string = this.itemNameTraduction( 'MOBILE.ORDERS.ADDITON_AGGREGATED' );
-            /**this.snackBar.open( _lMessage, '',{
-                duration: 2500
-            });*/
+            let _lMessage : string = this.itemNameTraduction( 'MOBILE.ORDERS.ADDITON_AGGREGATED' );
+            let toast = this._toastCtrl.create({
+                message: _lMessage,
+                duration: 1500,
+                position: 'middle'
+            });
+            toast.onDidDismiss(() => {
+            });
+            toast.present();
         }, ( error ) => { alert( `Error: ${error}` ) ; } );
         this._navCtrl.pop();
     }
