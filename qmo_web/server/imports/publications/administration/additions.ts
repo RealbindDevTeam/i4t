@@ -24,6 +24,29 @@ Meteor.publish('additionsByRestaurant', function (_restaurantId: string) {
 });
 
 /**
+ * Meteor publication return additions with id condition
+ * @param {string} _pId
+ */
+Meteor.publish('additionsById', function ( _pId: string) {
+    check(_pId, String);
+    return Additions.collection.find({ _id : _pId });
+});
+
+/**
+ * Meteor publication return additions with userId condition
+ * @param {string} _restaurantId
+ */
+Meteor.publish('additionsByCurrentRestaurant', function ( _userId : string ) {
+    check(_userId, String);
+    let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
+    if( _lUserDetail ){
+        return Additions.collection.find({ 'restaurants.restaurantId': { $in: [_lUserDetail.current_restaurant] }, is_active: true });
+    } else {
+        return;
+    }
+});
+
+/**
  * Meteor publication return addtions by itemId  condition
  * @param {string} _itemId
 */

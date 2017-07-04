@@ -143,7 +143,16 @@
             "NO_ANSWER": "No",
             "ORDER": "Orden #: ",
             "TOTAL": "Total: ",
-            "STATUS": "Estado: "
+            "STATUS": "Estado: ",
+            "ADD_ADDITIONS": "Selecciona las adiciones que desees agregar a la orden e indica su cantidad",
+            "ADD_ADDITION_ORDER" : "Agregar adición a la orden",
+            "ADDITON_AGGREGATED": "Adicion Agregada Correctamente",
+            "ADDITION" : "(Adición)",
+            "MODIFY_ADDITION_ORDER": "Modificar Adicion",
+            "DELETE_ADDITION_ORDER": "Eliminar Adicion",
+            "DELETE_ADDITION_CONFIRM": "Esta seguro de eliminar la adicion de la orden?",
+            "ADDITION_DELETED": "Adicion Eliminada de la Orden",
+            "ADDITION_EDITED": "Adicion Editada Correctamente"
         },
         "PAYMENTS": {
             "TITTLE": "Pagos",
@@ -231,7 +240,8 @@
             "LOADING_MSG": "Agregando a la orden ...",
             "TOAST_MSG": "Item agregado exitosamente",
             "WAIT_QR": "Espera por favor  ...",
-            "TIME" : "Tiempo de cocción:"
+            "TIME" : "Tiempo de cocción:",
+            "ADDITION" : "Adiciones"
         },
         "ITEM_EDIT": {
             "MODIFY": "Modificar",
@@ -242,6 +252,20 @@
             "NO_ANSWER": "No",
             "TOAST_MSG_EDIT":"Item modificado exitosamente",
             "TOAST_MSG_REMOVE": "Item removido exitosamente"
+        },
+        "SEND_ORDER": {
+            "ORDER": "Orden",
+            "TABLE": "Mesa",
+            "CODE": "Código: ",
+            "CUSTOMER": "Cliente",
+            "OBSERVATIONS": "Observaciones",
+            "NO_GARNISH_FOOD": "Sin Guarniciones",
+            "GARNISH_FOOD": "Guarniciones",
+            "NO_ADDITIONS": "Sin Adiciones",
+            "ADDITIONS": "Adiciones",
+            "ADDITION": "Adicion(es)",
+            "ORDER_DELIVERED": "Orden Entregada",
+            "ORDER_DETAIL": "Orden Entregada"
         }
     },
     "CURRENCIES": {

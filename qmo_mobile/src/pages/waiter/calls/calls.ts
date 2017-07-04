@@ -8,6 +8,7 @@ import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 import { WaiterCallDetail } from 'qmo_web/both/models/restaurant/waiter-call-detail.model';
 import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-call-detail.collection';
 import { PaymentConfirmPage } from "./payment-confirm/payment-confirm";
+import { SendOrderDetailsPage } from './send-order-detail/send-order-detail';
 
 @Component({
   selector : 'calls-page',
@@ -155,6 +156,14 @@ export class CallsPage implements OnInit, OnDestroy {
   */
   goToPaymentConfirm( _call : WaiterCallDetail ){
     this._navCtrl.push(PaymentConfirmPage, { call : _call });
+  }
+
+  /**
+   * Go to view Order detail send
+   * @param _call 
+   */
+  goToViewOrderDetailSend( _call : WaiterCallDetail ){
+    this._navCtrl.push(SendOrderDetailsPage, { call : _call });
   }
 
 

@@ -19,6 +19,7 @@ import { ChangePasswordPage } from '../pages/customer/options/settings/change-pa
 import { CodeTypeSelectPage } from '../pages/customer/code-type-select/code-type-select';
 import { AlphanumericCodePage } from '../pages/customer/alphanumeric-code/alphanumeric-code';
 import { SectionsPage } from '../pages/customer/sections/sections';
+import { AdditionsPage } from '../pages/customer/sections/additions/additions';
 import { ItemDetailPage } from '../pages/customer/item-detail/item-detail';
 import { ModalObservations } from '../pages/customer/item-detail/modal-observations';
 import { ItemEditPage } from '../pages/customer/item-edit/item-edit';
@@ -38,6 +39,11 @@ import { OrderPaymentDetailComponent } from '../pages/customer/payments/country-
 import { PaymentConfirmPage } from "../pages/waiter/calls/payment-confirm/payment-confirm";
 import { PaymentDetailConfirmComponent } from "../pages/waiter/calls/payment-confirm/payment-detail-confirm";
 import { ItemDetailPaymentConfirmComponent } from "../pages/waiter/calls/payment-confirm/item-detail-payment-confirm";
+import { AdditionEditPage } from "../pages/customer/addition-edit/addition-edit";
+import { SendOrderDetailsPage } from "../pages/waiter/calls/send-order-detail/send-order-detail";
+import { ItemDetailSendOrderComponent } from "../pages/waiter/calls/send-order-detail/item-detail-send-order";
+import { GarnishSendOrderComponent } from "../pages/waiter/calls/send-order-detail/garnish-food";
+import { AdditionsSendOrderComponent } from "../pages/waiter/calls/send-order-detail/addition";
 
 export function createTranslateLoader(http: Http) {
   return new TranslateStaticLoader(http, 'assets/i18n', '.json');
@@ -61,6 +67,7 @@ export function createTranslateLoader(http: Http) {
     AlphanumericCodePage,
     SigninComponent,
     SectionsPage,
+    AdditionsPage,
     ItemDetailPage,
     ModalObservations,
     ItemEditPage,
@@ -78,7 +85,12 @@ export function createTranslateLoader(http: Http) {
     OrderPaymentDetailComponent,
     PaymentConfirmPage,
     PaymentDetailConfirmComponent,
-    ItemDetailPaymentConfirmComponent
+    ItemDetailPaymentConfirmComponent,
+    AdditionEditPage,
+    SendOrderDetailsPage,
+    ItemDetailSendOrderComponent,
+    GarnishSendOrderComponent,
+    AdditionsSendOrderComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -119,6 +131,7 @@ export function createTranslateLoader(http: Http) {
     AlphanumericCodePage,
     SigninComponent,
     SectionsPage,
+    AdditionsPage,
     ItemDetailPage,
     ModalObservations,
     ItemEditPage,
@@ -136,7 +149,12 @@ export function createTranslateLoader(http: Http) {
     OrderPaymentDetailComponent,
     PaymentConfirmPage,
     PaymentDetailConfirmComponent,
-    ItemDetailPaymentConfirmComponent
+    ItemDetailPaymentConfirmComponent,
+    AdditionEditPage,
+    SendOrderDetailsPage,
+    ItemDetailSendOrderComponent,
+    GarnishSendOrderComponent,
+    AdditionsSendOrderComponent
   ],
   providers: [
     {

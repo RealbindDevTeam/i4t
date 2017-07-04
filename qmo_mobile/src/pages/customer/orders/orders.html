@@ -48,9 +48,28 @@
                                 </ion-col>
                             </ion-row>
                             <div *ngIf="order">
-                            <div *ngFor="let itemId of order.items">
-                                <order-item-detail [order]="order" [orderItem]="itemId" [resCode]="_res_code" (gotoedititem)="goToItemEdit($event, order)"></order-item-detail>
-                            </div>
+                                <div *ngFor="let itemId of order.items">
+                                    <order-item-detail [order]="order" [orderItem]="itemId" [resCode]="_res_code" (gotoedititem)="goToItemEdit($event, order)"></order-item-detail>
+                                </div>
+                                <div *ngIf="(order.additions.length > 0)">
+                                    <span *ngFor="let addition of _additions | async">
+                                        <span *ngFor="let ad of order.additions">
+                                            <template [ngIf]="addition._id === ad.additionId">
+                                                <ion-item>
+                                                    <ion-thumbnail item-left>
+                                                        <img src="/assets/img/default-plate.png">
+                                                    </ion-thumbnail>
+                                                    <h2 style="white-space: normal;">{{addition.name}} {{'MOBILE.ORDERS.ADDITION' | translate}}</h2> 
+                                                    <p style="white-space: normal;">{{'MOBILE.PRICING' | translate}}: {{ad.paymentAddition}} {{_currencyCode}}</p>
+                                                    <p style="white-space: normal;">{{'MOBILE.SECTIONS.QUANTITY' | translate}} {{ad.quantity}}</p>
+                                                    <button *ngIf="order.creation_user === _currentUserId && order.status === 'ORDER_STATUS.REGISTERED'" (click)="showAdditionsDetail(ad, order)" ion-button icon-only clear item-right >
+                                                        <ion-icon name="create"></ion-icon>
+                                                    </button>
+                                                </ion-item>
+                                            </template>
+                                        </span>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </ion-list>

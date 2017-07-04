@@ -38,12 +38,17 @@
                             </div>
                             <button ion-button item-right (click)="showComfirmClose(_call)" 
                                     style="height: 36px; font-size: 1.2rem; background-color: #679436;"
-                                    *ngIf="_call.type == 'SEND_ORDER' || _call.type == 'CALL_OF_CUSTOMER'">
+                                    *ngIf="_call.type == 'CALL_OF_CUSTOMER'">
                                 {{'MOBILE.CLOSE' | translate}}
                             </button>
                             <button ion-button item-right (click)="goToPaymentConfirm(_call)" 
                                     style="height: 36px; font-size: 1.2rem; background-color: #679436;"
                                     *ngIf="_call.type == 'PAYMENT'">
+                                {{'MOBILE.VIEW' | translate}}
+                            </button>
+                            <button ion-button item-right (click)="goToViewOrderDetailSend(_call)" 
+                                    style="height: 36px; font-size: 1.2rem; background-color: #679436;"
+                                    *ngIf="_call.type == 'SEND_ORDER'">
                                 {{'MOBILE.VIEW' | translate}}
                             </button>
                         </div>

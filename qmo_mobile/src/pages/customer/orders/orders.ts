@@ -3,6 +3,8 @@ import { App, NavController, NavParams, AlertController, LoadingController } fro
 import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
+import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
+import { Order, OrderAddition } from 'qmo_web/both/models/restaurant/order.model';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
 import { Items } from 'qmo_web/both/collections/administration/item.collection';
 import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
@@ -12,6 +14,7 @@ import { Storage } from '@ionic/storage';
 import { CodeTypeSelectPage } from '../code-type-select/code-type-select';
 import { SectionsPage } from '../sections/sections';
 import { ItemEditPage } from '../item-edit/item-edit';
+import { AdditionEditPage } from '../addition-edit/addition-edit';
 
 @Component({
     selector: 'page-orders',
@@ -19,16 +22,14 @@ import { ItemEditPage } from '../item-edit/item-edit';
 })
 export class OrdersPage implements OnInit, OnDestroy {
 
-    private _userLang: string;
-    private _userDetail;
     private _userDetailSub: Subscription;
-    private _orders;
-    private _allOrders;
-    private _ordersSub: Subscription;
-    private _restaurants;
     private _restaurantSub: Subscription;
-    private _items;
+    private _ordersSub: Subscription;
+    private _additionsSub: Subscription;
     private _itemsSub: Subscription;
+    private _restaurantThumbSub: Subscription;
+    
+    private _userLang: string;
     private _table_code: string = "";
     private _res_code: string = "";
     private _statusArray: string[];
@@ -36,9 +37,13 @@ export class OrdersPage implements OnInit, OnDestroy {
     private _orderIndex: number = -1;
     private selected: string = "";
 
-    private _restaurantThumbSub: Subscription;
+    private _userDetail;
+    private _orders;
+    private _allOrders;
+    private _restaurants;
+    private _items;
+    private _additions : any;
 
-    alert_not: string;
 
     constructor(public _navCtrl: NavController, public _navParams: NavParams, public _app: App, public _translate: TranslateService,
         public _storage: Storage, public alertCtrl: AlertController, public _loadingCtrl: LoadingController) {
@@ -63,6 +68,9 @@ export class OrdersPage implements OnInit, OnDestroy {
         });
         this._itemsSub = MeteorObservable.subscribe('itemsByUser', Meteor.userId()).subscribe(() => {
             this._items = Items.find({});
+        });
+        this._additionsSub = MeteorObservable.subscribe( 'additionsByCurrentRestaurant', Meteor.userId() ).subscribe( () => {
+            this._additions = Additions.find( { } ).zone();
         });
 
         this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByUserId', Meteor.userId()).subscribe();
@@ -247,6 +255,18 @@ export class OrdersPage implements OnInit, OnDestroy {
                                            creation_user: _order.creation_user,
                                            res_code: this._res_code,
                                            table_code: this._table_code});
+    }
+
+    /**
+     * Show order additions detail
+     * @param {OrderAddition} _pAdition
+     */
+    showAdditionsDetail( _pAdition : OrderAddition, _pOrder : Order ):void{
+        let _lUserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+        if(_lUserDetail.current_restaurant && _lUserDetail.current_table){
+            this._res_code   = _lUserDetail.current_restaurant;
+        }
+        this._navCtrl.push(AdditionEditPage, { order_addition : _pAdition, order : _pOrder, restaurant : this._res_code });
     }
 
     ionViewDidEnter() {

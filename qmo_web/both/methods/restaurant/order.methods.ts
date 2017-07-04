@@ -234,6 +234,71 @@ if (Meteor.isServer) {
                 });
             }
         },
+        
+        AddAdditionsToOrder2: function ( _additionsToInsert: OrderAddition[], _restaurantId: string, _tableId: string, _AdditionsPrice: number ) {
+            let _lTable: Table = Tables.collection.findOne({ _id: _tableId });
+            let _lAccount: Account = Accounts.collection.findOne({
+                restaurantId: _restaurantId,
+                tableId: _lTable._id,
+                status: 'OPEN'
+            });
+
+            let _lOrder: Order = Orders.collection.findOne({
+                creation_user: Meteor.userId(),
+                restaurantId: _restaurantId,
+                tableId: _lTable._id,
+                accountId: _lAccount._id,
+                status: 'ORDER_STATUS.REGISTERED',
+                toPay: false
+            });
+            if ( _lOrder ) {
+                let _lTotalPaymentAux: number = Number.parseInt( _lOrder.totalPayment.toString() ) + Number.parseInt( _AdditionsPrice.toString() );
+                let _lAdditions:OrderAddition[] = Meteor.call('compareAdditionsToInsert', _additionsToInsert, _lOrder );
+
+                Orders.update({
+                    creation_user: Meteor.userId(),
+                    restaurantId: _restaurantId,
+                    tableId: _lTable._id,
+                    accountId: _lAccount._id,
+                    status: 'ORDER_STATUS.REGISTERED'
+                },
+                    {
+                        $set: {
+                            modification_user: Meteor.userId(),
+                            modification_date: new Date(),
+                            totalPayment: _lTotalPaymentAux,
+                            additions: _lAdditions
+                        }
+                    }
+                );
+            } else {
+                let _lRestaurant: Restaurant = Restaurants.collection.findOne({ _id: _restaurantId });
+                let _orderCount: number = _lRestaurant.orderNumberCount + 1;
+                _lRestaurant.orderNumberCount = _orderCount;
+
+                Restaurants.update({ _id: _lRestaurant._id }, _lRestaurant);
+                Orders.insert({
+                    creation_user: Meteor.userId(),
+                    creation_date: new Date(),
+                    restaurantId: _restaurantId,
+                    tableId: _lTable._id,
+                    code: _orderCount,
+                    status: 'ORDER_STATUS.REGISTERED',
+                    accountId: _lAccount._id,
+                    items: [],
+                    totalPayment: _AdditionsPrice,
+                    orderItemCount: 0,
+                    translateInfo: {
+                        firstOrderOwner: Meteor.userId(),
+                        markedToTranslate: false,
+                        lastOrderOwner: '',
+                        confirmedToTranslate: false
+                    },
+                    toPay: false,
+                    additions: _additionsToInsert
+                });
+            }
+        },
         /**
          * This function compare additions to insert and create new array
          * @param {OrderAddition[]} _pAdditionsToInsert 

@@ -1,0 +1,41 @@
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { MeteorObservable } from 'meteor-rxjs';
+import { Subscription } from 'rxjs';
+import { Items } from 'qmo_web/both/collections/administration/item.collection'; 
+
+@Component({
+    selector: 'item-detail-send-order-component',
+    templateUrl: 'item-detail-send-order.html'
+})
+
+export class ItemDetailSendOrderComponent implements OnInit, OnDestroy {
+
+  @Input() item : any;
+  
+  private _itemsSubscription : Subscription;
+  private _items             : any;
+
+  /**
+   * ItemDetailSendOrderComponent constructor
+   */
+  constructor(){
+  }
+
+  /**
+   * ngOnInit Implementation
+   */
+  ngOnInit(){
+    console
+    this._itemsSubscription = MeteorObservable.subscribe( 'itemById', this.item.itemId ).subscribe( () => {
+        this._items = Items.find({});
+    });
+  }
+
+  /**
+   * ngOnDestroy Implementation
+   */
+  ngOnDestroy(){
+    this._itemsSubscription.unsubscribe();
+  }
+
+}
