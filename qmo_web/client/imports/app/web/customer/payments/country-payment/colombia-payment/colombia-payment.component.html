@@ -1,71 +1,65 @@
 <div>
-    <div>
-        <md-card class="payment-info">
-            <md-card-title>{{'PAYMENTS.COLOMBIA.PAYMENT_OPTIONS' | translate}}</md-card-title>
-            <md-card-content>      
-                <md-checkbox class="tipValue" (change)="allowTip($event)">{{'PAYMENTS.COLOMBIA.TIPS' | translate}} ({{_tipValue}}%)</md-checkbox> 
-                <p class="tipTotal">{{_tipTotalString}} {{_currencyCode}}</p>
-                <div>
-                    <md-checkbox class="tipValue" (change)="allowOtherTip($event)">{{'PAYMENTS.COLOMBIA.OTHER_VALUE' | translate}}:</md-checkbox> 
-                    <div class="otherTip-content">
-                        <md-input-container class="otherTip">
-                            <input mdInput type="number" min="0" [(disabled)]="_otherTipAllowed" [(ngModel)]="_otherTip" (input)="sumOtherTip($event.target.value)">
-                        </md-input-container>{{_currencyCode}}                
-                    </div>
+    <md-card class="payment-info">
+        <md-card-title>{{'PAYMENTS.COLOMBIA.PAYMENT_OPTIONS' | translate}}</md-card-title>
+        <md-card-content>      
+            <md-checkbox class="tipValue" (change)="allowTip($event)">{{'PAYMENTS.COLOMBIA.TIPS' | translate}} ({{_tipValue}}%)</md-checkbox> 
+            <p class="tipTotal">{{_tipTotalString}} {{_currencyCode}}</p>
+            <div>
+                <md-checkbox class="tipValue" (change)="allowOtherTip($event)">{{'PAYMENTS.COLOMBIA.OTHER_VALUE' | translate}}:</md-checkbox> 
+                <div class="otherTip-content">
+                    <md-input-container class="otherTip">
+                        <input mdInput type="number" min="0" [(disabled)]="_otherTipAllowed" [(ngModel)]="_otherTip" (input)="sumOtherTip($event.target.value)">
+                    </md-input-container>{{_currencyCode}}                
                 </div>
-                <md-select class="payment-method" placeholder="{{'PAYMENTS.COLOMBIA.SELECT_PAYMENT_METHOD' | translate}}">
-                    <md-option *ngFor="let paymentMethod of _paymentMethods | async" (click)="setPaymentMethod(paymentMethod._id);" value="{{paymentMethod._id}}">{{paymentMethod.name | translate}}</md-option>
-                </md-select>
-                <div>
-                    <div class="block">
-                        <div class="item-inner">
-                            <div class="input">
-                                <div class="label">
-                                    <h2>{{'PAYMENTS.COLOMBIA.TOTAL_TO_PAY' | translate}}</h2>
-                                </div>
+            </div>
+            <md-select class="payment-method" placeholder="{{'PAYMENTS.COLOMBIA.SELECT_PAYMENT_METHOD' | translate}}">
+                <md-option *ngFor="let paymentMethod of _paymentMethods | async" (click)="setPaymentMethod(paymentMethod._id);" value="{{paymentMethod._id}}">{{paymentMethod.name | translate}}</md-option>
+            </md-select>
+            <div>
+                <div class="block">
+                    <div class="item-inner">
+                        <div class="input">
+                            <div class="label">
+                                <h2>{{'PAYMENTS.COLOMBIA.TOTAL_TO_PAY' | translate}}</h2>
                             </div>
-                            <div>
-                                <h2>{{_totalToPayment}} {{_currencyCode}}</h2>
-                            </div>
+                        </div>
+                        <div>
+                            <h2>{{_totalToPayment}} {{_currencyCode}}</h2>
                         </div>
                     </div>
                 </div>
-                <div>
-                    <button md-raised-button class="pay-button" color="primary" *ngIf="!_paymentCreated" (click)="pay()">{{'PAYMENTS.COLOMBIA.PAY' | translate}}</button>
-                    <p *ngIf="_paymentCreated" class="waiter-message">{{'PAYMENTS.COLOMBIA.PENDING_PAYMENT' | translate}}</p>
-                </div>
-            </md-card-content>
+            </div>
+            <div>
+                <button md-raised-button class="pay-button" color="primary" *ngIf="!_paymentCreated" (click)="pay()">{{'PAYMENTS.COLOMBIA.PAY' | translate}}</button>
+                <p *ngIf="_paymentCreated" class="waiter-message">{{'PAYMENTS.COLOMBIA.PENDING_PAYMENT' | translate}}</p>
+            </div>
+        </md-card-content>
+    </md-card>
+    <div style="width: 55%;margin: 0 auto;display: inline-block;margin-left: 2%;">
+        <md-card>
+            <md-list>
+                <md-list-item>
+                    <img md-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="/images/aditions.png">
+                    <h2 md-line style="font-size: 1.5rem;color: #114b5f;font-weight: 500;">{{'PAYMENTS.COLOMBIA.ORDER_DETAILS' | translate}}</h2>
+                    <p md-line style="font-size: 1rem;">{{'PAYMENTS.COLOMBIA.VIEW_ORDERS_DETAIL' | translate}}</p>
+                    <button md-raised-button color="primary" style="width: 50%;" (click)="viewOrderDetail()">{{'PAYMENTS.COLOMBIA.VIEW_DETAIL' | translate}}</button>
+                </md-list-item>
+            </md-list>
         </md-card>
-        <md-card class="order-info">
-            <md-card-title class="order-detail">{{'PAYMENTS.COLOMBIA.ORDER_DETAILS' | translate}}</md-card-title>
-            <button md-raised-button class="pay-detail" color="primary" (click)="open()">{{'PAYMENTS.COLOMBIA.CONSULT_PAYMENTS' | translate}}</button>
-            <md-card-content>
-                <div class="orders-list">
-                    <table class="centered striped">
-                        <thead>
-                            <tr>
-                                <th data-field="order">{{'PAYMENTS.COLOMBIA.PAY_ORDER' | translate}}</th>
-                                <th data-field="status">{{'PAYMENTS.COLOMBIA.STATUS' | translate}}</th>
-                                <th data-field="payment">{{'PAYMENTS.COLOMBIA.FULL_PAYMENT' | translate}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let order of _orders | async">
-                                <td>{{ 'PAYMENTS.COLOMBIA.PAY_ORDER' | translate }} # {{order.code}}</td>
-                                <td>{{order.status | translate}}</td>
-                                <td>{{order.totalPayment}} {{_currencyCode}}</td>
-                                <td *ngIf="isAvailableToReturn(order)">
-                                    <button md-icon-button (click)="returnOrderToFirstOwner(order)"><md-icon class="md-24">repeat</md-icon></button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </md-card-content>
+        <md-card>
+            <md-list>
+                <md-list-item>
+                    <img md-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="/images/aditions.png">
+                    <h2 md-line style="font-size: 1.5rem;color: #114b5f;font-weight: 500;">{{'PAYMENTS.COLOMBIA.ADD_ORDER' | translate}}</h2>
+                    <p md-line style="font-size: 1rem;">{{'PAYMENTS.COLOMBIA.VIEW_ORDERS_DETAIL' | translate}}</p>
+                    <button md-raised-button color="primary" style="width: 50%;" (click)="open()">{{'PAYMENTS.COLOMBIA.VIEW_DETAIL' | translate}}</button>
+                </md-list-item>
+            </md-list>
         </md-card>
     </div>
-    <order-payment-translate [resId]="restId" [currId]="currId" [tabId]="tabId" (recalculate)="reCalculateValues($event)"></order-payment-translate>
 </div>
+<!--order-payment-translate [resId]="restId" [currId]="currId" [tabId]="tabId" (recalculate)="reCalculateValues($event)"></order-payment-translate-->
+
 <div class="loading" *ngIf="_loading">
     <md-spinner></md-spinner>
 </div>

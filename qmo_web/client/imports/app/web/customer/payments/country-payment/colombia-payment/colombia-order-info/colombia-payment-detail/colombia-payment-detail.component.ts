@@ -3,8 +3,8 @@ import { MeteorObservable } from "meteor-rxjs";
 import { TranslateService } from 'ng2-translate';
 import { Subscription, Observable } from 'rxjs';
 import { MdDialogRef } from '@angular/material';
-import { Orders } from "../../../../../../../../../both/collections/restaurant/order.collection";
-import { Order } from '../../../../../../../../../both/models/restaurant/order.model';
+import { Orders } from "../../../../../../../../../../both/collections/restaurant/order.collection";
+import { Order } from '../../../../../../../../../../both/models/restaurant/order.model';
 
 import template from './colombia-payment-detail.component.html';
 import style from './colombia-payment-detail.component.scss';
