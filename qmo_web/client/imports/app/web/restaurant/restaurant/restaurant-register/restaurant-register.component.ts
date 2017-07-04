@@ -28,6 +28,8 @@ import { FinancialSlider } from '../../../../../../../both/shared-components/res
 import { CreateConfirmComponent } from './create-confirm/create-confirm.component';
 import { Table } from '../../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
+import { HistoryPayments } from '../../../../../../../both/collections/payment/history-payment.collection';
+import { HistoryPayment } from '../../../../../../../both/models/payment/history-payment.model';
 
 import template from './restaurant-register.component.html';
 import style from './restaurant-register.component.scss';
@@ -83,8 +85,11 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private post: any;
     align: string;
     private _loading: boolean;
-    private _showMessage : boolean = false;
+    private _showMessage: boolean = false;
     private _mdDialogRef: MdDialogRef<any>;
+    private _currentDate: Date;
+    private _firstMonthDay: Date;
+    private _lastMonthDay: Date;
 
     /**
      * RestaurantRegisterComponent constructor
@@ -182,6 +187,10 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                 closing_time: ''
             }
         };
+
+        this._currentDate = new Date();
+        this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
+        this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
     }
 
     /**
@@ -320,7 +329,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             this._loading = true;
             setTimeout(() => {
                 if (result.success) {
-
                     let arrPay: any[] = Object.keys(this._restaurantForm.value.paymentMethods);
                     let _lPaymentMethodsToInsert: string[] = [];
 
@@ -416,6 +424,15 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                         Tables.insert(_lNewTable);
                         Restaurants.update({ _id: _lNewRestaurant }, { $set: { tables_quantity: _i + 1 } })
                     }
+
+                    HistoryPayments.collection.insert({
+                        restaurantId: _lNewRestaurant,
+                        startDate: this._firstMonthDay,
+                        endDate: this._lastMonthDay,
+                        month: (this._currentDate.getMonth()+1).toString(),
+                        year: (this._currentDate.getFullYear()).toString(),
+                        status: "PAID"
+                    });
                     //
                     this.cancel();
                 }
@@ -471,7 +488,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      */
     changeCity(_city) {
         this._showMessage = false;
-        _city === '0000' ? this._showMessage = true : this._showMessage = false ;
+        _city === '0000' ? this._showMessage = true : this._showMessage = false;
         this._selectedCityValue = _city;
         this._restaurantForm.controls['city'].setValue(_city);
     }

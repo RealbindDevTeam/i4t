@@ -50,7 +50,7 @@
                 </tbody>
             </table>
 
-            <div style="text-align: right">
+            <div *ngIf="getOnlyOneRestaurant(currency._id)" style="text-align: right">
                 <h2> <span style="margin-right: 10px"> 
                     <button color="accent" md-raised-button>{{'MONTHLY_PAYMENT.PAY' | translate}}</button>
                     </span>{{'MONTHLY_PAYMENT.TOTAL_PRICE' | translate}}{{getTotalByCurrency(currency._id)}} {{currency.code}}

@@ -6,19 +6,6 @@ export function createCrons() {
   let activeCountries = Countries.collection.find({ is_active: true }).fetch();
   activeCountries.forEach(country => {
     /**
-     * This cron evaluates the isActive flag on restaurants with value true, and insert them on history_payment collection
-     */
-    SyncedCron.add({
-      name: 'cronValidateActive.' + country.name,
-      schedule: function (parser) {
-        return parser.cron(country.cronValidateActive);
-      },
-      job: function () {
-        Meteor.call('validateActiveRestaurants', country._id);
-      }
-    });
-
-    /**
     * This cron evaluates the freeDays flag on restaurants with value true, and change it to false
     */
     SyncedCron.add({
@@ -30,7 +17,6 @@ export function createCrons() {
         Meteor.call('changeFreeDaysToFalse', country._id);
       }
     });
-
     /**
     * This cron sends email to warn the charge soon of iurest service
     */
@@ -43,7 +29,6 @@ export function createCrons() {
         Meteor.call('sendEmailChargeSoon', country._id);
       }
     });
-
     /**
     * This cron sends email to warn the expire soon the iurest service
     */
@@ -56,7 +41,18 @@ export function createCrons() {
         var numbersCrunched = Meteor.call('sendEmailExpireSoon', country._id);
       }
     });
-
+    /**
+     * This cron evaluates the isActive flag on restaurants with value true, and insert them on history_payment collection
+     */
+    SyncedCron.add({
+      name: 'cronValidateActive.' + country.name,
+      schedule: function (parser) {
+        return parser.cron(country.cronValidateActive);
+      },
+      job: function () {
+        Meteor.call('validateActiveRestaurants', country._id);
+      }
+    });
     /**
     * This cron sends an email to warn that the service has expired
     */

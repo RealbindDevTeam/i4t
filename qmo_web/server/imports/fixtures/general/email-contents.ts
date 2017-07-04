@@ -15,7 +15,8 @@ export function loadEmailContents() {
                     { label: 'beforeMsgVar', traduction: 'If you do not want to change the password, ignore this message.' },
                     { label: 'regardVar', traduction: 'Thanks, Iurest team.' },
                     { label: 'followMsgVar', traduction: 'Follow us on social networks' },
-                    { label: 'reminderChargeSoonMsgVar', traduction: 'Remember that your monthly Iurest service period end at: ' },
+                    { label: 'reminderChargeSoonMsgVar', traduction: 'Remember that your monthly Iurest service period for: ' },
+                    { label: 'reminderChargeSoonMsgVar2', traduction: 'End at: '},
                     { label: 'instructionchargeSoonMsgVar', traduction: 'If you want to continue using all the system features, entering with your email or username and select the menu Restaurants > Administration > Edit restaurant > # Tables' }
                 ]
             },
@@ -30,7 +31,8 @@ export function loadEmailContents() {
                     { label: 'beforeMsgVar', traduction: 'Si no quieres cambiar la contraseña, ignora este mensaje.' },
                     { label: 'regardVar', traduction: 'Gracias, equipo Iurest' },
                     { label: 'followMsgVar', traduction: 'Siguenos en redes sociales' },
-                    { label: 'reminderChargeSoonMsgVar', traduction: 'Recuerda que tu servicio de Iurest mensual finaliza el: ' },
+                    { label: 'reminderChargeSoonMsgVar', traduction: 'Recuerda que tu servicio mensual de Iurest para: ' },
+                    { label: 'reminderChargeSoonMsgVar2', traduction: 'Finaliza el: '},
                     { label: 'instructionchargeSoonMsgVar', traduction: 'Si deseas seguir usando todas las funcionalidades del sistema, ingresa con tu usuario o correo y selecciona el menú Restaurante > Administración > Editar restaurante > # Mesas' }
                 ]
             }
