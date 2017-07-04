@@ -24,6 +24,15 @@ Meteor.publish('additionsByRestaurant', function (_restaurantId: string) {
 });
 
 /**
+ * Meteor publication return additions with id condition
+ * @param {string} _pId
+ */
+Meteor.publish('additionsById', function ( _pId: string) {
+    check(_pId, String);
+    return Additions.collection.find({ _id : _pId });
+});
+
+/**
  * Meteor publication return additions with userId condition
  * @param {string} _restaurantId
  */

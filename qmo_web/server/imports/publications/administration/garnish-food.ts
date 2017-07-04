@@ -24,6 +24,15 @@ Meteor.publish('garnishFoodByRestaurant', function (_restaurantId: string) {
 });
 
 /**
+ * Meteor publication return garnish food with _id
+ * @param {string} _pId
+ */
+Meteor.publish('garnishFoodById', function ( _pId: string) {
+    check(_pId, String);
+    return GarnishFoodCol.collection.find({ _id : _pId });
+});
+
+/**
  * Meteor publication return garnish food by itemId  condition
  * @param {string}
  */

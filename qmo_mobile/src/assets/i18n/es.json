@@ -252,6 +252,20 @@
             "NO_ANSWER": "No",
             "TOAST_MSG_EDIT":"Item modificado exitosamente",
             "TOAST_MSG_REMOVE": "Item removido exitosamente"
+        },
+        "SEND_ORDER": {
+            "ORDER": "Orden",
+            "TABLE": "Mesa",
+            "CODE": "Código: ",
+            "CUSTOMER": "Cliente",
+            "OBSERVATIONS": "Observaciones",
+            "NO_GARNISH_FOOD": "Sin Guarniciones",
+            "GARNISH_FOOD": "Guarniciones",
+            "NO_ADDITIONS": "Sin Adiciones",
+            "ADDITIONS": "Adiciones",
+            "ADDITION": "Adicion(es)",
+            "ORDER_DELIVERED": "Orden Entregada",
+            "ORDER_DETAIL": "Orden Entregada"
         }
     },
     "CURRENCIES": {

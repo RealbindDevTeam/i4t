@@ -252,6 +252,20 @@
             "NO_ANSWER": "No",
             "TOAST_MSG_EDIT": "Item was modified successfully",
             "TOAST_MSG_REMOVE": "Item was removed successfully"
+        },
+        "SEND_ORDER": {
+            "ORDER": "Order",
+            "TABLE": "Table",
+            "CODE": "Code: ",
+            "CUSTOMER": "Customer",
+            "OBSERVATIONS": "Observations",
+            "NO_GARNISH_FOOD": "No Garnish Food",
+            "GARNISH_FOOD": "Garnish Food",
+            "NO_ADDITIONS": "No Additions",
+            "ADDITIONS": "Additions",
+            "ADDITION": "Addition(s)",
+            "ORDER_DELIVERED": "Order Delivered",
+            "ORDER_DETAIL": "Order detail"
         }
     },
     "CURRENCIES": {

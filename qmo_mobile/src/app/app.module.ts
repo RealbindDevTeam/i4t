@@ -40,6 +40,10 @@ import { PaymentConfirmPage } from "../pages/waiter/calls/payment-confirm/paymen
 import { PaymentDetailConfirmComponent } from "../pages/waiter/calls/payment-confirm/payment-detail-confirm";
 import { ItemDetailPaymentConfirmComponent } from "../pages/waiter/calls/payment-confirm/item-detail-payment-confirm";
 import { AdditionEditPage } from "../pages/customer/addition-edit/addition-edit";
+import { SendOrderDetailsPage } from "../pages/waiter/calls/send-order-detail/send-order-detail";
+import { ItemDetailSendOrderComponent } from "../pages/waiter/calls/send-order-detail/item-detail-send-order";
+import { GarnishSendOrderComponent } from "../pages/waiter/calls/send-order-detail/garnish-food";
+import { AdditionsSendOrderComponent } from "../pages/waiter/calls/send-order-detail/addition";
 
 export function createTranslateLoader(http: Http) {
   return new TranslateStaticLoader(http, 'assets/i18n', '.json');
@@ -82,7 +86,11 @@ export function createTranslateLoader(http: Http) {
     PaymentConfirmPage,
     PaymentDetailConfirmComponent,
     ItemDetailPaymentConfirmComponent,
-    AdditionEditPage
+    AdditionEditPage,
+    SendOrderDetailsPage,
+    ItemDetailSendOrderComponent,
+    GarnishSendOrderComponent,
+    AdditionsSendOrderComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -142,7 +150,11 @@ export function createTranslateLoader(http: Http) {
     PaymentConfirmPage,
     PaymentDetailConfirmComponent,
     ItemDetailPaymentConfirmComponent,
-    AdditionEditPage
+    AdditionEditPage,
+    SendOrderDetailsPage,
+    ItemDetailSendOrderComponent,
+    GarnishSendOrderComponent,
+    AdditionsSendOrderComponent
   ],
   providers: [
     {
