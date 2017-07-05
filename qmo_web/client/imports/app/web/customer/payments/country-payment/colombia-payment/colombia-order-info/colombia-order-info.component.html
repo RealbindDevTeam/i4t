@@ -50,6 +50,23 @@
                     </tbody>
                 </table>
             </div>
+            <div class="block">
+                <div class="item-inner">
+                    <div class="input">
+                        <div class="label">
+                            <h3>{{'PAYMENTS.COLOMBIA.SUBTOTAL' | translate}}</h3>
+                            <h3>{{'PAYMENTS.COLOMBIA.INC' | translate}} (8%)</h3>
+                            <h2>{{'PAYMENTS.COLOMBIA.TOTAL' | translate}}</h2>
+                        </div>
+                    </div>
+                    <div style="text-align: end">
+                        <p>{{_ipoComBaseString}} {{_currencyCode}}</p>
+                        <p>{{_ipoComString}} {{_currencyCode}}</p>
+                        <h2>{{_totalValue}} {{_currencyCode}}</h2>
+                    </div>
+                </div>
+            </div>
+            <md-divider></md-divider>
         </md-card-content>
     </md-card>
     <div class="fixed-action-btn">
