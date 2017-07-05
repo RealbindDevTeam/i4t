@@ -10,6 +10,8 @@ import { Item, ItemImage, ItemImageThumb } from '../../../../../../../../both/mo
 import { Items, ItemImages, ItemImagesThumbs } from '../../../../../../../../both/collections/administration/item.collection';
 import { Currency } from '../../../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../../../both/collections/general/currency.collection';
+import { Addition } from '../../../../../../../../both/models/administration/addition.model';
+import { Additions } from '../../../../../../../../both/collections/administration/addition.collection';
 
 import template from './order-to-translate.component.html';
 import style from './order-to-translate.component.scss';
@@ -22,20 +24,22 @@ import style from './order-to-translate.component.scss';
 export class OrderToTranslateComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    public _restaurantId: string;
-    public _tableId: string;
-    public _currencyId: string;
+    public _restaurantId                : string;
+    public _tableId                     : string;
+    public _currencyId                  : string;
 
-    private _ordersSub: Subscription;
-    private _itemsSub: Subscription;
-    private _itemImageThumbsSub: Subscription;
-    private _currencySub: Subscription;
+    private _ordersSub                  : Subscription;
+    private _itemsSub                   : Subscription;
+    private _itemImageThumbsSub         : Subscription;
+    private _currencySub                : Subscription;
+    private _additionsSub               : Subscription;
 
-    private _ordersTable: Observable<Order[]>;
-    private _items: Observable<Item[]>;
+    private _ordersTable                : Observable<Order[]>;
+    private _items                      : Observable<Item[]>;
+    private _additions                  : Observable<Addition[]>;
     
-    private _orderOthersIndex:number = -1;
-    private _currencyCode: string;
+    private _orderOthersIndex           : number = -1;
+    private _currencyCode               : string;
 
     /**
      * OrderToTranslateComponent constructor
@@ -43,7 +47,9 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
      * @param {MdDialogRef<any>} _dialogRef
      * @param {NgZone} _ngZone
      */
-    constructor( private _translate: TranslateService, public _dialogRef: MdDialogRef<any>, private _ngZone: NgZone ){
+    constructor( private _translate: TranslateService, 
+                 public _dialogRef: MdDialogRef<any>, 
+                 private _ngZone: NgZone ){
         var userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang('en');
         _translate.use(userLang);  
@@ -71,6 +77,11 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
                 this._currencyCode = _lCurrency.code;
             });
         });
+        this._additionsSub = MeteorObservable.subscribe( 'additionsByRestaurant', this._restaurantId ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._additions = Additions.find( { } ).zone();
+            });
+        });
     }
 
     /**
@@ -81,6 +92,8 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
         let _lItemImage: ItemImageThumb = ItemImagesThumbs.findOne( { itemId: _pItemId } );
         if( _lItemImage ){
             return _lItemImage.url;
+        } else{
+            return '/images/default-plate.png';
         }
     }
 
@@ -106,9 +119,13 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
 
     /**
      * Mark order to confirm if is accepted to translate payment
+     * @param {Order} _pOrder
      */
     markOrderToPay( _pOrder: Order ):void{
-        if( confirm( 'Desea realizar el pago de la orden ' + _pOrder.code + '?' ) ) {
+        let _lMessagePay:string = this.itemNameTraduction( 'ORDER_TRANS.ORDER_PAY' );
+        let _lMessageUser: string = this.itemNameTraduction( 'ORDER_TRANS.USER_CONFIRM' );
+        let _lMessageNoPay: string = this.itemNameTraduction( 'ORDER_TRANS.NO_PAY_POSSIBLE' );
+        if( confirm( _lMessagePay + _pOrder.code + '?' ) ) {
             if( _pOrder.status === 'ORDER_STATUS.DELIVERED' ){
                 let _lOrderTranslate: OrderTranslateInfo = { firstOrderOwner: _pOrder.creation_user, markedToTranslate: true, lastOrderOwner: this._user, confirmedToTranslate: false };
                 Orders.update( { _id: _pOrder._id }, { $set: { status: 'ORDER_STATUS.PENDING_CONFIRM', modification_user: this._user,
@@ -116,11 +133,23 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
                                                              } 
                                                      } 
                              );
-                alert( 'El usuario que creo la orden debe confirmar que tu la pagaras' );
+                alert( _lMessageUser );
             }else {
-                alert( 'No es posible pagar una orden que no se haya entregado aun' );
+                alert( _lMessageNoPay );
             }
         }
+    }
+
+    /**
+     * Return traduction
+     * @param {string} itemName 
+     */
+    itemNameTraduction(itemName: string): string{
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res; 
+        });
+        return wordTraduced;
     }
 
     /**
@@ -131,5 +160,6 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
         this._itemsSub.unsubscribe();
         this._itemImageThumbsSub.unsubscribe();
         this._currencySub.unsubscribe();
+        this._additionsSub.unsubscribe();
     }
 }

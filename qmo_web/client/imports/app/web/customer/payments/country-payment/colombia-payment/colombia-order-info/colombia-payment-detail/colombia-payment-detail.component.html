@@ -8,8 +8,15 @@
                 </div>
                 <h3> {{order.totalPayment}} {{currencyCode}}</h3>
             </div>
-            <div *ngFor="let itemId of order.items">
-                <colombia-item-detail [orderItem]="itemId" [resCode]="order.restaurantId" [cur]="currId" [curCode]="currencyCode"></colombia-item-detail>
+            <div *ngIf="order.items.length > 0">
+                <span *ngFor="let itemId of order.items">
+                    <colombia-item-detail [orderItem]="itemId" [resCode]="order.restaurantId" [cur]="currId" [curCode]="currencyCode"></colombia-item-detail>
+                </span>
+            </div>
+            <div *ngIf="order.additions.length > 0">
+                <span *ngFor="let add of order.additions">
+                    <colombia-addition-detail [orderAdd]="add" [resCode]="order.restaurantId" [cur]="currId" [curCode]="currencyCode"></colombia-addition-detail>
+                </span>
             </div>
         </div>
         <div class="block">
