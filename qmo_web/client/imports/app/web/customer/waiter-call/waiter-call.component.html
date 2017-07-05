@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="card_initial-button">
-                    <button md-raised-button (click)="addWaiterCall()">Solicitar mesero</button>
+                    <button md-raised-button (click)="addWaiterCall()">{{'WAITER_CALL.BTN_CALL_WAITER' | translate}}</button>
                 </div>
             </div>
             
@@ -85,6 +85,9 @@
                     <div class="card_initial-additional-links">
                         {{'WAITER_CALL.ONE_MOMENT' | translate}}
                     </div>
+                </div>
+                <div class="card_initial-button">
+                    <button md-raised-button >{{'WAITER_CALL.BTN_CANCEL_WAITER' | translate}}</button>
                 </div>
             </div>
         </div>

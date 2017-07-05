@@ -735,7 +735,9 @@
         "TABLE": "Mesa",
         "CALL_LABEL_SEND_ORDER": "Entrega de orden",
         "CALL_LABEL_CUSTOMER": "Llamado de cliente",
-        "CALL_LABEL_CUSTOMER_PAYMENT": "Pago de cliente"
+        "CALL_LABEL_CUSTOMER_PAYMENT": "Pago de cliente",
+        "BTN_CALL_WAITER" : "Solicitar mesero",
+        "BTN_CANCEL_WAITER" : "Cancelar"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Ordenes Confirmadas",

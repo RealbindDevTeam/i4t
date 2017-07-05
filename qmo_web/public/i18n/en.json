@@ -735,7 +735,9 @@
         "TABLE": "Table",
         "CALL_LABEL_SEND_ORDER": "Order to deliver",
         "CALL_LABEL_CUSTOMER": "Customer's call",
-        "CALL_LABEL_CUSTOMER_PAYMENT": "Customer's payment"
+        "CALL_LABEL_CUSTOMER_PAYMENT": "Customer's payment",
+        "BTN_CALL_WAITER" : "Request waiter",
+        "BTN_CANCEL_WAITER" : "Cancel"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Orders Confirmed",
