@@ -14,6 +14,8 @@ import { Restaurant } from '../../../../../../../../../both/models/restaurant/re
 import { Restaurants } from '../../../../../../../../../both/collections/restaurant/restaurant.collection';
 import { Currency } from '../../../../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../../../../both/collections/general/currency.collection';
+import { Users } from '../../../../../../../../../both/collections/auth/user.collection';
+import { User } from '../../../../../../../../../both/models/auth/user.model';
 import { ColombiaPaymentDetailComponent } from './colombia-payment-detail/colombia-payment-detail.component';
 
 import template from './colombia-order-info.component.html';
@@ -32,6 +34,7 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
     private _restaurantSub      : Subscription;
     private _currencySub        : Subscription;
     private _tableSub           : Subscription;
+    private _usersSub           : Subscription;
 
     private _orders             : Observable<Order[]>;
     
@@ -77,18 +80,19 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
                                     this._currencyCode = _lCurrency.code;
                                 });
                             });
+                            this._tableSub = MeteorObservable.subscribe( 'getTableByCurrentTable', this._user ).subscribe( () => {
+                                this._ngZone.run( () => {
+                                    let _lTable:Table = Tables.findOne( { _id: _lUserDetail.current_table } );    
+                                    this._tableId = _lTable._id;     
+                                    this._ordersSub = MeteorObservable.subscribe( 'getOrdersByAccount', this._user ).subscribe( () => {
+                                        this._ngZone.run( () => {
+                                            this._orders = Orders.find( { creation_user: this._user, restaurantId: this._restaurantId, tableId: this._tableId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] } } ).zone();
+                                        }); 
+                                    });
+                                    this._usersSub = MeteorObservable.subscribe('getUserByTableId', this._restaurantId, this._tableId ).subscribe();                                               
+                                });
+                            });
                         });
-                    });
-                    this._tableSub = MeteorObservable.subscribe( 'getTableByCurrentTable', this._user ).subscribe( () => {
-                        this._ngZone.run( () => {
-                            let _lTable:Table = Tables.findOne( { _id: _lUserDetail.current_table } );    
-                            this._tableId = _lTable._id;                                                    
-                        });
-                    });
-                    this._ordersSub = MeteorObservable.subscribe( 'getOrdersByAccount', this._user ).subscribe( () => {
-                        this._ngZone.run( () => {
-                            this._orders = Orders.find( { creation_user: this._user, restaurantId: this._restaurantId, tableId: this._tableId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] } } ).zone();
-                        }); 
                     });
                     this._showPaymentInfo = true;
                 } else {
@@ -136,7 +140,7 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
      */
     returnOrderToFirstOwner( _pOrder:Order ):void{
         let _lMessage:string = this.itemNameTraduction( 'PAYMENTS.COLOMBIA.RETURN_ORDER_USER' );
-        if( confirm( _lMessage + _pOrder.translateInfo.firstOrderOwner + ' ?' ) ) {
+        if( confirm( _lMessage + this.getUserName( _pOrder.translateInfo.firstOrderOwner ) + ' ?' ) ) {
             let _lOrderTranslateInfo: OrderTranslateInfo = { firstOrderOwner: _pOrder.translateInfo.firstOrderOwner, confirmedToTranslate: false, 
                                                              lastOrderOwner: '', markedToTranslate: false };
             Orders.update( { _id: _pOrder._id }, { $set: { creation_user: _pOrder.translateInfo.firstOrderOwner,
@@ -145,6 +149,22 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
                                                          } 
                                                  }
                          );
+        }
+    }
+
+    /**
+     * Return User Name
+     * @param {string} _pUserId 
+     */
+    getUserName( _pUserId:string ):string{
+        let _user:User = Users.collection.find( { } ).fetch().filter( u => u._id === _pUserId )[0];
+        if( _user ){
+            if( _user.username ){
+                return _user.username;
+            }
+            else if( _user.profile.name ){
+                return _user.profile.name;
+            }
         }
     }
 
@@ -176,5 +196,6 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
         if( this._restaurantSub ){  this._restaurantSub.unsubscribe(); }
         if( this._currencySub ){ this._currencySub.unsubscribe(); }
         if( this._tableSub ){ this._tableSub.unsubscribe(); }
+        if( this._usersSub ){ this._usersSub.unsubscribe(); }
     }
 }

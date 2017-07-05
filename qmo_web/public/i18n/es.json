@@ -820,7 +820,14 @@
         "STATUS": "Estado",
         "PRICE": "Precio",
         "PAY": "Pagar",
-        "NO_ORDERS": "No se Encuentran ordenes en la mesa que se hayan entregado y esten listas para ser pagadas"
+        "NO_ORDERS": "No se Encuentran ordenes en la mesa que se hayan entregado y esten listas para ser pagadas",
+        "QUANT": "Cant. ",
+        "GARNISH_FOOD": "Guarniciones",
+        "ADDITIONS": "Adiciones",
+        "ADDITION": "Adicion",
+        "ORDER_PAY": "Desea realizar el pago de la orden ",
+        "USER_CONFIRM": "El usuario que creo la orden debe confirmar que tu la pagaras",
+        "NO_PAY_POSSIBLE": "No es posible pagar una orden que no se haya entregado aun"
     },
     "PAYMENT_CONFIRM": {
         "TABLE": "Mesa ",

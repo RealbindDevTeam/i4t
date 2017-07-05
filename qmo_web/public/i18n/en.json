@@ -820,7 +820,14 @@
         "STATUS": "Status",
         "PRICE": "Price",
         "PAY": "Pay",
-        "NO_ORDERS": "No Orders found on the table that have been delivered and are ready to be paid."
+        "NO_ORDERS": "No Orders found on the table that have been delivered and are ready to be paid.",
+        "QUANT": "Quant. ",
+        "GARNISH_FOOD": "Garnish Food",
+        "ADDITIONS": "Additions",
+        "ADDITION": "Addition",
+        "ORDER_PAY": "Do you want to pay for the order ",
+        "USER_CONFIRM": "The user who created the order must confirm that you will pay",
+        "NO_PAY_POSSIBLE": "It is not possible to pay for an order that has not yet been delivered"
     },
     "PAYMENT_CONFIRM": {
         "TABLE": "Table ",

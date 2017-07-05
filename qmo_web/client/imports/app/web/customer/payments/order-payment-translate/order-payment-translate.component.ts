@@ -16,7 +16,8 @@ import { Table } from '../../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
-
+import { Users } from '../../../../../../../both/collections/auth/user.collection';
+import { User } from '../../../../../../../both/models/auth/user.model';
 
 import template from './order-payment-translate.component.html';
 import style from './order-payment-translate.component.scss';
@@ -34,6 +35,7 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
     private _tableSub                           : Subscription;
     private _ordersSub                          : Subscription;
     private _currencySub                        : Subscription;
+    private _usersSub                           : Subscription;
     
     private _ordersToConfirm                    : Observable<Order[]>;
     private _ordersWithPendingConfirmation      : Observable<Order[]>;
@@ -92,7 +94,8 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
                                             this._ordersWithPendingConfirmation = Orders.find( { status: 'ORDER_STATUS.PENDING_CONFIRM', 
                                                                                                 'translateInfo.lastOrderOwner': this._user } ).zone();
                                         });
-                                    });                                                    
+                                    });
+                                    this._usersSub = MeteorObservable.subscribe('getUserByTableId', this._restaurantId, this._tableId ).subscribe();                                                    
                                 });
                             });
                         });
@@ -130,7 +133,7 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
         let _lMessageUSer: string = this.itemNameTraduction( 'ORDER_PAYMENT_TRANS.THE_USER' );
         let _lMessageWantsToPay: string = this.itemNameTraduction( 'ORDER_PAYMENT_TRANS.WANTS_PAY' );
         let _lMessageAgree: string = this.itemNameTraduction( 'ORDER_PAYMENT_TRANS.AGREE' );
-        if( confirm( _lMessageUSer + _pOrder.translateInfo.lastOrderOwner + _lMessageWantsToPay + _pOrder.code + _lMessageAgree ) ) {
+        if( confirm( _lMessageUSer + this.getUserName( _pOrder.translateInfo.lastOrderOwner ) + _lMessageWantsToPay + _pOrder.code + _lMessageAgree ) ) {
             let _lUser = _pOrder.translateInfo.lastOrderOwner;
             Orders.update( { _id: _pOrder._id }, { $set: { creation_user: _lUser, modification_user: this._user, modification_date: new Date(), 
                                                            'translateInfo.confirmedToTranslate': true, status: 'ORDER_STATUS.DELIVERED'
@@ -144,6 +147,22 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
                                                          } 
                                                  } 
                          );
+        }
+    }
+
+    /**
+     * Return User Name
+     * @param {string} _pUserId 
+     */
+    getUserName( _pUserId:string ):string{
+        let _user:User = Users.collection.find( { } ).fetch().filter( u => u._id === _pUserId )[0];
+        if( _user ){
+            if( _user.username ){
+                return _user.username;
+            }
+            else if( _user.profile.name ){
+                return _user.profile.name;
+            }
         }
     }
 
@@ -175,5 +194,6 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
         if( this._tableSub ){ this._tableSub.unsubscribe(); }
         if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
         if( this._currencySub ){ this._currencySub.unsubscribe(); }
+        if( this._usersSub ){ this._usersSub.unsubscribe(); }
     }
 }
