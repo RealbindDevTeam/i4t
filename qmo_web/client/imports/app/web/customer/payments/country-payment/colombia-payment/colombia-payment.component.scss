@@ -77,42 +77,79 @@
     
 }
 
-.tipTotal{
-    font-size: 1.17em;
-    font-weight: bold;
-    color: black;
-    display: inline-block;
-    width: 49%;
-    text-align: right;
-}
+.main{
+    width: 55%;
+    margin: 0 auto;
 
-.payment-info{
-    
-    .tipValue{
-        display: inline-block;
+    .image{
+        border-radius: 50%; 
+        width: 100px; 
+        height: 100px;
+    }
+
+    .card-title{
+        font-size: 1.5rem;
+        color: #114b5f;
+        font-weight: 500;
+    }
+
+    .card-subtitle{
+        font-size: 1rem;
+    }
+
+    .card-button{
         width: 50%;
     }
 
-    .otherTip-content{
-        width: 49%;
-        display: inline-block;
+    .show-alert{
         text-align: right;
 
-        .otherTip{
-            width: 40%;
+        .confirm{
+            color: red;
+        }
+
+        .pending-confirm{
+            color: darkgoldenrod
         }
     }
 
-    .payment-method{
-        margin-top: 2%;
-    }
+    .payment-info{
+    
+        .tipValue{
+            display: inline-block;
+            width: 50%;
+        }
 
-    .pay-button{
-        width: 50%;
-    }
+        .tipTotal{
+            font-size: 1.17em;
+            font-weight: bold;
+            color: black;
+            display: inline-block;
+            width: 49%;
+            text-align: right;
+        }
 
-    .waiter-message{
-        font-weight: bold;
-        color: red;
+        .otherTip-content{
+            width: 49%;
+            display: inline-block;
+            text-align: right;
+
+            .otherTip{
+                width: 40%;
+            }
+        }
+
+        .payment-method{
+            margin-top: 2%;
+        }
+
+        .pay-button{
+            width: 35%;
+        }
+
+        .waiter-message{
+            font-weight: bold;
+            color: red;
+        }
     }
 }

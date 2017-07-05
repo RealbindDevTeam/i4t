@@ -1,23 +1,29 @@
-<div style="width: 55%;margin: 0 auto;">
+<div class="main">
     <md-card>
         <md-list>
             <md-list-item>
-                <img md-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="/images/aditions.png">
-                <h2 md-line style="font-size: 1.5rem;color: #114b5f;font-weight: 500;">{{'PAYMENTS.COLOMBIA.ORDER_DETAILS' | translate}}</h2>
-                <p md-line style="font-size: 1rem;">{{'PAYMENTS.COLOMBIA.VIEW_ORDERS_DETAIL' | translate}}</p>
-                <button md-raised-button color="primary" style="width: 50%;" (click)="viewOrderDetail()">{{'PAYMENTS.COLOMBIA.VIEW_DETAIL' | translate}}</button>
+                <img md-list-avatar class="image" src="/images/aditions.png">
+                <h2 md-line class="card-title">{{'PAYMENTS.COLOMBIA.ORDER_DETAILS' | translate}}</h2>
+                <p md-line class="card-subtitle">{{'PAYMENTS.COLOMBIA.VIEW_ORDERS_DETAIL' | translate}}</p>
+                <button md-raised-button color="primary" class="card-button" (click)="viewOrderDetail()">{{'PAYMENTS.COLOMBIA.VIEW_DETAIL' | translate}}</button>
             </md-list-item>
         </md-list>
     </md-card>
     <md-card>
         <md-list>
             <md-list-item>
-                <img md-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="/images/aditions.png">
-                <h2 md-line style="font-size: 1.5rem;color: #114b5f;font-weight: 500;">{{'PAYMENTS.COLOMBIA.ADD_ORDER' | translate}}</h2>
-                <p md-line style="font-size: 1rem;">{{'PAYMENTS.COLOMBIA.VIEW_ORDERS_DETAIL' | translate}}</p>
-                <button md-raised-button color="primary" style="width: 50%;" (click)="viewOrderTranslate()">{{'PAYMENTS.COLOMBIA.VIEW_DETAIL' | translate}}</button>
+                <img md-list-avatar class="image" src="/images/aditions.png">
+                <h2 md-line class="card-title">{{'PAYMENTS.COLOMBIA.ADD_ORDER' | translate}}</h2>
+                <p md-line class="card-subtitle">{{'PAYMENTS.COLOMBIA.ADD_ORDER_MSG' | translate}}</p>
+                <button md-raised-button color="primary" class="card-button" (click)="viewOrderTranslate()">{{'PAYMENTS.COLOMBIA.VIEW_DETAIL' | translate}}</button>
             </md-list-item>
         </md-list>
+        <div *ngIf="_showAlertToConfirm" class="show-alert">
+            <md-icon class="confirm" md-tooltip="{{'PAYMENTS.COLOMBIA.ORDERS_TO_CONFIRM_MSG' | translate}}" mdTooltipPosition="right">info</md-icon>
+        </div>
+        <div *ngIf="_showAlertWithPendingConf" class="show-alert">
+            <md-icon class="pending-confirm" md-tooltip="{{'PAYMENTS.COLOMBIA.ORDERS_PENDIING_CONFIRM_MSG' | translate}}" mdTooltipPosition="right">info</md-icon>
+        </div>
     </md-card>
     <md-card class="payment-info">
         <md-card-title>{{'PAYMENTS.COLOMBIA.PAYMENT_OPTIONS' | translate}}</md-card-title>

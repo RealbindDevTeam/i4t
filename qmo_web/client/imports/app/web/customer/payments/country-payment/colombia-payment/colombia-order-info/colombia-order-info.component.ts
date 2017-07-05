@@ -45,6 +45,13 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
     private _currencyCode       : string;
     private _showPaymentInfo    : boolean = false;
 
+    private _totalValue         : number = 0;
+    private _ipoComBaseValue    : number = 0;
+    private _ipoComValue        : number = 0;
+    private _ipoCom             : number = 108;
+    private _ipoComBaseString   : string;
+    private _ipoComString       : string;
+
     /**
      * ColombiaOrderInfoComponent Constructor
      * @param {TranslateService} _translate 
@@ -87,6 +94,7 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
                                     this._ordersSub = MeteorObservable.subscribe( 'getOrdersByAccount', this._user ).subscribe( () => {
                                         this._ngZone.run( () => {
                                             this._orders = Orders.find( { creation_user: this._user, restaurantId: this._restaurantId, tableId: this._tableId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] } } ).zone();
+                                            this._orders.subscribe( () => { this.calculateValues(); });
                                         }); 
                                     });
                                     this._usersSub = MeteorObservable.subscribe('getUserByTableId', this._restaurantId, this._tableId ).subscribe();                                               
@@ -100,6 +108,21 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
                 }
             });
         });
+    }
+
+    /**
+     * Function to calculate this values corresponding to Payment
+     */
+    calculateValues():void{
+        this._totalValue = 0;
+        Orders.collection.find( { creation_user: this._user, restaurantId: this._restaurantId, tableId: this._tableId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] } } ).fetch().forEach( ( order ) => {
+            this._totalValue += order.totalPayment;
+        });
+        this._ipoComBaseValue  = (this._totalValue * 100 ) / this._ipoCom;
+        this._ipoComBaseString = (this._ipoComBaseValue).toFixed(2);
+
+        this._ipoComValue      = this._totalValue - this._ipoComBaseValue;
+        this._ipoComString     = (this._ipoComValue).toFixed(2);
     }
 
     /**
