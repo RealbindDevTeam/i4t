@@ -66,7 +66,7 @@ export class RestaurantListComponent implements OnInit, OnDestroy {
         this._countrySub = MeteorObservable.subscribe('countries').subscribe();
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
 
-        this._currentDate = new Date(2017, 6, 1);
+        this._currentDate = new Date(2017, 6, 6);
     }
 
     /**

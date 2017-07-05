@@ -38,7 +38,7 @@ export function createCrons() {
         return parser.cron(country.cronEmailExpireSoon);
       },
       job: function () {
-        var numbersCrunched = Meteor.call('sendEmailExpireSoon', country._id);
+        Meteor.call('sendEmailExpireSoon', country._id);
       }
     });
     /**
@@ -62,10 +62,7 @@ export function createCrons() {
         return parser.cron(country.cronEmailResExpired);
       },
       job: function () {
-        /*
-        var numbersCrunched = Meteor.call('validateTrialPeriod', country._id);
-        return numbersCrunched;
-        */
+        Meteor.call('sendEmailResExpired', country._id);
       }
     });
 

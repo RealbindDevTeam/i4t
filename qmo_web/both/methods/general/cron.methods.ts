@@ -32,7 +32,6 @@ if (Meteor.isServer) {
             let parameter: Parameter = Parameters.collection.findOne({ name: 'from_email' });
             let currentDate = new Date(2017, 6, 28);
             let lastMonthDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-
             let auxArray: string[] = [];
 
             Restaurants.collection.find({ countryId: _countryId, isActive: true }).forEach((restaurant: Restaurant) => {
@@ -45,11 +44,10 @@ if (Meteor.isServer) {
             });
 
             Users.collection.find({ _id: { $in: auxArray } }).forEach((user: User) => {
-
                 let auxRestaurants: string[] = [];
                 Restaurants.collection.find({ creation_user: user._id }, { fields: { _id: 0, name: 1 } }).forEach((name: Restaurant) => {
                     auxRestaurants.push(name.name);
-                })
+                });
 
                 let emailContent: EmailContent = EmailContents.collection.findOne({ language: user.profile.language_code });
                 let greetVar = Meteor.call('getEmailContent', emailContent.lang_dictionary, 'greetVar');
@@ -65,6 +63,7 @@ if (Meteor.isServer) {
                     regardVar: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'regardVar'),
                     followMsgVar: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'followMsgVar')
                 }
+
                 Email.send({
                     to: user.emails[0].address,
                     from: parameter.value,
@@ -84,24 +83,92 @@ if (Meteor.isServer) {
             let maxPaymentDay = new Date(firstMonthDay);
             let endDay = Parameters.collection.findOne({ name: 'end_payment_day' });
             maxPaymentDay.setDate(maxPaymentDay.getDate() + (Number(endDay.value) - 1));
+            let auxArray: string[] = [];
 
-            console.log('*** currentDate' + currentDate);
-            console.log('*** firstMonthDay' + firstMonthDay);
-            console.log('*** maxPaymentDay' + maxPaymentDay);
+            Restaurants.collection.find({ countryId: _countryId, isActive: true, freeDays: false }).forEach((restaurant: Restaurant) => {
+                let user: User = Users.collection.findOne({ _id: restaurant.creation_user });
+                let indexofvar = auxArray.indexOf(user._id);
+
+                if (indexofvar < 0) {
+                    auxArray.push(user._id);
+                }
+            });
+
+            Users.collection.find({ _id: { $in: auxArray } }).forEach((user: User) => {
+                let auxRestaurants: string[] = [];
+                Restaurants.collection.find({ creation_user: user._id }, { fields: { _id: 0, name: 1 } }).forEach((name: Restaurant) => {
+                    auxRestaurants.push(name.name);
+                });
+
+                let emailContent: EmailContent = EmailContents.collection.findOne({ language: user.profile.language_code });
+                let greetVar = Meteor.call('getEmailContent', emailContent.lang_dictionary, 'greetVar');
+                let greeting: string = (user.profile && user.profile.first_name) ? (greetVar + ' ' + user.profile.first_name + ",") : greetVar;
+                SSR.compileTemplate('expireSoonEmailHtml', Assets.getText('expire-soon-email.html'));
+
+                var emailData = {
+                    greeting: greeting,
+                    reminderMsgVar: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'reminderExpireSoonMsgVar'),
+                    restaurantListVar: auxRestaurants.toString(),
+                    reminderMsgVar2: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'reminderExpireSoonMsgVar2'),
+                    dateVar: Meteor.call('convertDateToSimple', maxPaymentDay),
+                    reminderMsgVar3: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'reminderExpireSoonMsgVar3'),
+                    regardVar: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'regardVar'),
+                    followMsgVar: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'followMsgVar')
+                }
+
+                Email.send({
+                    to: user.emails[0].address,
+                    from: parameter.value,
+                    subject: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'expireSoonEmailSubjectVar'),
+                    html: SSR.render('expireSoonEmailHtml', emailData),
+                });
+            });
         },
         /**
-         * This function insert active restraurants in history_payment
+         * This function validate the restaurant registered in history_payment and change isActive to false if is not 
          * @param {string} _countryId
          */
         validateActiveRestaurants: function (_countryId: string) {
-            let _currentDate = new Date(2017, 5, 1);
-            let _firstMonthDay = new Date(_currentDate.getFullYear(), _currentDate.getMonth(), 1);
-            let _lastMonthDay = new Date(_firstMonthDay.getFullYear(), _firstMonthDay.getMonth() + 1, 0);
-            let _month = (_firstMonthDay.getMonth() + 1).toString();
-            let _year = _firstMonthDay.getFullYear().toString();
+            let currentDate: Date = new Date();
+            let currentMonth: string = (currentDate.getMonth() + 1).toString();
+            let currentYear: string = currentDate.getFullYear().toString();
+
+            console.log('currentMonth > ' + currentMonth);
+            console.log('currentDay > ' + currentYear);
 
             Restaurants.collection.find({ countryId: _countryId, isActive: true, freeDays: false }).forEach((restaurant: Restaurant) => {
+                let historyPayment: HistoryPayment;
+                historyPayment = HistoryPayments.collection.findOne({ restaurantId: restaurant._id, month: currentMonth, year: currentYear, status: 'PAID' });
+                console.log('historyPayment > ' + historyPayment);
+                if (!historyPayment) {
+                    Restaurants.collection.update({ _id: restaurant._id }, { $set: { isActive: false, firstPay: false } });
+                }
+            });
+        },
+        /**
+         * This function send email to warn that the service has expired
+         * @param {string} _countryId
+         */
+        sendEmailResExpired: function (_countryId: string) {
+            let auxArray: string[] = [];
+            Restaurants.collection.find({ countryId: _countryId, isActive: false }).forEach((restaurant: Restaurant) => {
+                let user: User = Users.collection.findOne({ _id: restaurant.creation_user });
+                let indexofvar = auxArray.indexOf(user._id);
 
+                if (indexofvar < 0) {
+                    auxArray.push(user._id);
+                }
+            });
+
+            Users.collection.find({ _id: { $in: auxArray } }).forEach((user: User) => {
+                let auxRestaurants: string[] = [];
+                Restaurants.collection.find({ creation_user: user._id, isActive: false }, { fields: { _id: 0, name: 1 } }).forEach((name: Restaurant) => {
+                    auxRestaurants.push(name.name);
+                });
+
+                let emailContent: EmailContent = EmailContents.collection.findOne({ language: user.profile.language_code });
+                let greetVar = Meteor.call('getEmailContent', emailContent.lang_dictionary, 'greetVar');
+                let greeting: string = (user.profile && user.profile.first_name) ? (greetVar + ' ' + user.profile.first_name + ",") : greetVar;
             });
         },
         /**
