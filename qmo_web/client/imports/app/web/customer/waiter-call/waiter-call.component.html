@@ -85,9 +85,9 @@
                     <div class="card_initial-additional-links">
                         {{'WAITER_CALL.ONE_MOMENT' | translate}}
                     </div>
-                </div>
-                <div class="card_initial-button">
-                    <button md-raised-button >{{'WAITER_CALL.BTN_CANCEL_WAITER' | translate}}</button>
+                    <div style="margin-top: 10px;">
+                        <button md-raised-button (click)="cancelWaiterCall()">{{'WAITER_CALL.BTN_CANCEL_WAITER' | translate}}</button>
+                    </div>
                 </div>
             </div>
         </div>

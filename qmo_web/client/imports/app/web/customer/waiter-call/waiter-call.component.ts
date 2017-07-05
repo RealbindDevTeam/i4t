@@ -71,8 +71,6 @@ export class WaiterCallComponent implements OnInit, OnDestroy {
         }
       }
     });
-
-
   }
 
   /**
@@ -102,6 +100,19 @@ export class WaiterCallComponent implements OnInit, OnDestroy {
           });
         }, 1500);
     }
+  }
+
+  /**
+   * Function taht allow cancel calls to waiter
+   */
+  cancelWaiterCall(){
+    this._loading = true;
+    setTimeout(() => {
+      let waiterCall = WaiterCallDetails.collection.find({ user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).fetch()[0];
+      MeteorObservable.call('cancelCallClient', waiterCall, Meteor.userId()).subscribe(() => {
+        this._loading = false;
+      });
+    });
   }
 
   /**
