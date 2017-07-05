@@ -296,6 +296,13 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Show Orders Translate
+     */
+    viewOrderTranslate():void{
+        this._router.navigate(['app/OrdersTranslate']);
+    }
+
+    /**
      * ngOnDestroy Implementation
      */
     ngOnDestroy(){

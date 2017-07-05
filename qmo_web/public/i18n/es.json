@@ -799,13 +799,20 @@
         "FREE_DAYS_MSG": "No te cobramos este mes, disfrutalo"
     },
     "ORDER_PAYMENT_TRANS": {
-        "ORDER_TO_CONFIRM": "Cuando algun acompañante de tu mesa desea pagar una de tus ordenes, debes confirmar este proceso. En esta seccion apareceran aquellas ordenes que otros usuarios desean pagar por ti.",
+        "ORDER_TO_CONFIRM": "Cuando algun acompañante de tu mesa desea pagar una de tus ordenes, debes confirmar este proceso. Aca podras ver aquellas ordenes que otros usuarios desean pagar por ti.",
         "NO_ORDERS": "No Se Encuentran Ordenes",
         "ORDERS": "Orden",
         "TOTAL": "Total",
         "CONFIRM": "Confirmar",
         "PENDING_ORDERS": "Si deseas pagar ordenes de algun acompañante de tu mesa, esta seccion mostrara aquellas ordenes que se encuentran pendientes por confirmar para agregar a tu pago.",
-        "CONSULT_TABLE_ORDERS": "Consultar ordenes de la mesa"
+        "CONSULT_TABLE_ORDERS": "Consultar Ordenes",
+        "CONSULT_TABLE_ORDERS_TITLE": "Consultar Ordenes de la Mesa",
+        "CONSULT_TABLE_ORDERS_SUBTITLE": "Consulta las ordenes de tus acompañantes y selecciona aquellas que desees pagar",
+        "ORDERS_TO_CONFIRM_TITLE": "Ordenes que otros usuarios desean pagar por ti",
+        "ORDERS_TO_PAY_TITLE": "Ordenes pendientes para agregar a tu pago",
+        "THE_USER": "El usuario ",
+        "WANTS_PAY": " desea pagar la orden ",
+        "AGREE": ", usted esta de acuerdo?"
     },
     "ORDER_TRANS": {
         "ORDERS": "Orden",

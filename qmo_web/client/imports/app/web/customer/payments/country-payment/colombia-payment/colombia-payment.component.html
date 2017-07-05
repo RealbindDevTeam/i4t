@@ -52,13 +52,12 @@
                     <img md-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="/images/aditions.png">
                     <h2 md-line style="font-size: 1.5rem;color: #114b5f;font-weight: 500;">{{'PAYMENTS.COLOMBIA.ADD_ORDER' | translate}}</h2>
                     <p md-line style="font-size: 1rem;">{{'PAYMENTS.COLOMBIA.VIEW_ORDERS_DETAIL' | translate}}</p>
-                    <button md-raised-button color="primary" style="width: 50%;" (click)="open()">{{'PAYMENTS.COLOMBIA.VIEW_DETAIL' | translate}}</button>
+                    <button md-raised-button color="primary" style="width: 50%;" (click)="viewOrderTranslate()">{{'PAYMENTS.COLOMBIA.VIEW_DETAIL' | translate}}</button>
                 </md-list-item>
             </md-list>
         </md-card>
     </div>
 </div>
-<!--order-payment-translate [resId]="restId" [currId]="currId" [tabId]="tabId" (recalculate)="reCalculateValues($event)"></order-payment-translate-->
 
 <div class="loading" *ngIf="_loading">
     <md-spinner></md-spinner>

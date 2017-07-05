@@ -22,20 +22,20 @@ import style from './order-to-translate.component.scss';
 export class OrderToTranslateComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    public _restaurantId: string;
-    public _tableId: string;
-    public _currencyId: string;
+    public _restaurantId                : string;
+    public _tableId                     : string;
+    public _currencyId                  : string;
 
-    private _ordersSub: Subscription;
-    private _itemsSub: Subscription;
-    private _itemImageThumbsSub: Subscription;
-    private _currencySub: Subscription;
+    private _ordersSub                  : Subscription;
+    private _itemsSub                   : Subscription;
+    private _itemImageThumbsSub         : Subscription;
+    private _currencySub                : Subscription;
 
-    private _ordersTable: Observable<Order[]>;
-    private _items: Observable<Item[]>;
+    private _ordersTable                : Observable<Order[]>;
+    private _items                      : Observable<Item[]>;
     
-    private _orderOthersIndex:number = -1;
-    private _currencyCode: string;
+    private _orderOthersIndex           : number = -1;
+    private _currencyCode               : string;
 
     /**
      * OrderToTranslateComponent constructor
@@ -43,7 +43,9 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
      * @param {MdDialogRef<any>} _dialogRef
      * @param {NgZone} _ngZone
      */
-    constructor( private _translate: TranslateService, public _dialogRef: MdDialogRef<any>, private _ngZone: NgZone ){
+    constructor( private _translate: TranslateService, 
+                 public _dialogRef: MdDialogRef<any>, 
+                 private _ngZone: NgZone ){
         var userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang('en');
         _translate.use(userLang);  
@@ -81,6 +83,8 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
         let _lItemImage: ItemImageThumb = ItemImagesThumbs.findOne( { itemId: _pItemId } );
         if( _lItemImage ){
             return _lItemImage.url;
+        } else{
+            return '/images/default-plate.png';
         }
     }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, NgZone, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { MeteorObservable } from "meteor-rxjs";
 import { TranslateService } from 'ng2-translate';

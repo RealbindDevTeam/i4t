@@ -41,6 +41,7 @@ import { MonthlyPaymentComponent } from './web/payment/monthly-payment/monthly-p
 import { SupervisorDashboardComponent } from './web/supervisor-dashboard/supervisor-dashboard.component';
 import { MonthlyConfigComponent } from './web/restaurant/monthly-config/monthly-config.component';
 import { ColombiaOrderInfoComponent } from './web/customer/payments/country-payment/colombia-payment/colombia-order-info/colombia-order-info.component';
+import { OrderPaymentTranslateComponent } from './web/customer/payments/order-payment-translate/order-payment-translate.component';
 
 export const routes: Route[] = [
     {
@@ -71,7 +72,8 @@ export const routes: Route[] = [
             { path: 'monthly_invoice', component: MonthlyPaymentComponent, canActivate: [AdminGuard]},
             { path: 'dashboards', component: SupervisorDashboardComponent, canActivate: [SupervisorGuard]},
             { path: 'monthly-config', component: MonthlyConfigComponent, canActivate: [AdminGuard]},
-            { path: 'colOrdersInfo', component: ColombiaOrderInfoComponent, canActivate: [CustomerGuard] }
+            { path: 'colOrdersInfo', component: ColombiaOrderInfoComponent, canActivate: [CustomerGuard] },
+            { path: 'OrdersTranslate', component: OrderPaymentTranslateComponent, canActivate: [CustomerGuard] }
         ]
     },
     { path: '', component: LandingPageComponent },
