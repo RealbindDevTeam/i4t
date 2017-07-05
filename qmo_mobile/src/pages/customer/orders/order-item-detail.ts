@@ -37,7 +37,6 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
             this._items = Items.find({_id: this.orderItem.itemId});
         });
 
-        //this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByRestaurant', this.resCode).subscribe();
         this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByUserId', Meteor.userId()).subscribe();
     }
 

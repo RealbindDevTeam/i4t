@@ -28,6 +28,10 @@
                             <div *ngFor="let itemId of order?.items">
                                 <order-item-detail [order]="order" [orderItem]="itemId" [resCode]="_res_code" (gotoedititem)="goToItemEdit($event, order)"></order-item-detail>
                             </div>
+
+                            <div *ngFor="let ad of order?.additions">
+                                <addition-order-detail [addition]="ad"></addition-order-detail>
+                            </div>
                         </div>
                     </div>
                 </ion-list>
