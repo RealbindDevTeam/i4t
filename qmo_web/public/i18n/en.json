@@ -696,7 +696,7 @@
         "COLOMBIA": {
             "GARNISH_FOOD": "Garnish Food",
             "ADDITION": "Addition",
-            "ORDER_DETAILS": "Order Details",
+            "ORDER_DETAILS": "View Order Details",
             "PAY_ORDER": "Order",
             "SUBTOTAL": "SubTotal",
             "INC": "Inc",
@@ -716,7 +716,14 @@
             "NO_ONLINE_PAYMENT": "Online payment is not yet available in Iurest",
             "PLEASE_SELECT_PAYMENT_METHOD": "Please Select Payment Method",
             "PAYMENT_UNAVAILABLE": "Payment option is currently unavailable.",
-            "WAITER_ATTEND": "In a moment a waiter will attend you at your table"
+            "WAITER_ATTEND": "In a moment a waiter will attend you at your table",
+            "VIEW_ORDERS_DETAIL": "View your Orders Details",
+            "VIEW_DETAIL": "View Detail",
+            "ADD_ORDER": "Add Order",
+            "ADD_ORDER_MSG": "Add or remove orders for your payment",
+            "VIEW_ORDER_DETAILS": "On this page you can see your orders and detail",
+            "IN_PROCESS_PAYMENT": "In Process Payment",
+            "RETURN_ORDER": "Devolver Orden"
         }
     },
     "WAITER_CALL": {
@@ -793,13 +800,20 @@
         "FREE_DAYS_MSG": "We do not charge this month, enjoy it"
     },
     "ORDER_PAYMENT_TRANS": {
-        "ORDER_TO_CONFIRM": "When someone accompanying your table wishes to pay one of your orders, you must confirm this process. In this section will appear those orders that other users want to pay for you.",
+        "ORDER_TO_CONFIRM": "When someone accompanying your table wishes to pay one of your orders, you must confirm this process. Here you can see the orders that other users wish to pay for you.",
         "NO_ORDERS": "Orders Not Found",
         "ORDERS": "Order",
         "TOTAL": "Total",
         "CONFIRM": "Confirm",
         "PENDING_ORDERS": "If you want to pay for orders from a companion of your table, this section will show that there are orders that are pending to confirm to add to your payment.",
-        "CONSULT_TABLE_ORDERS": "Consult table orders"
+        "CONSULT_TABLE_ORDERS": "Consult Orders",
+        "CONSULT_TABLE_ORDERS_TITLE": "Consult Table Orders",
+        "CONSULT_TABLE_ORDERS_SUBTITLE": "Check the orders of your companions and select the ones you want to pay",
+        "ORDERS_TO_CONFIRM_TITLE": "Orders that other users wish to pay for you",
+        "ORDERS_TO_PAY_TITLE": "Pending orders to add to your payment",
+        "THE_USER": "The user ",
+        "WANTS_PAY": " wants to pay the order ",
+        "AGREE": ", Do you agree?"
     },
     "ORDER_TRANS": {
         "ORDERS": "Order",
@@ -807,7 +821,14 @@
         "STATUS": "Status",
         "PRICE": "Price",
         "PAY": "Pay",
-        "NO_ORDERS": "No Orders found on the table that have been delivered and are ready to be paid."
+        "NO_ORDERS": "No Orders found on the table that have been delivered and are ready to be paid.",
+        "QUANT": "Quant. ",
+        "GARNISH_FOOD": "Garnish Food",
+        "ADDITIONS": "Additions",
+        "ADDITION": "Addition",
+        "ORDER_PAY": "Do you want to pay for the order ",
+        "USER_CONFIRM": "The user who created the order must confirm that you will pay",
+        "NO_PAY_POSSIBLE": "It is not possible to pay for an order that has not yet been delivered"
     },
     "PAYMENT_CONFIRM": {
         "TABLE": "Table ",
