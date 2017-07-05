@@ -87,9 +87,9 @@
 }
 
 .payment-info{
-    width: 35%;
+    width: 38%;
     display: inline-block;
-    height: 18rem;
+    height: 17rem;
 
     .tipValue{
         display: inline-block;
@@ -117,26 +117,5 @@
     .waiter-message{
         font-weight: bold;
         color: red;
-    }
-}
-
-.order-info{
-    width: 55%;
-    display: inline-block;
-    margin-left: 1%;
-    vertical-align: top;
-    height: 18rem;
-
-    .order-detail{
-        display: inline-block;
-    }
-
-    .pay-detail{
-        float:right;
-    }
-
-    .orders-list{
-        overflow: auto;
-        height: 16rem;
     }
 }

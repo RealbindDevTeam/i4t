@@ -1,15 +1,15 @@
 import { Component, Input, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { Orders } from "../../../../../../../../../both/collections/restaurant/order.collection";
-import { Order, OrderItem } from "../../../../../../../../../both/models/restaurant/order.model";
-import { Items } from "../../../../../../../../../both/collections/administration/item.collection";
-import { Item } from "../../../../../../../../../both/models/administration/item.model";
+import { Orders } from "../../../../../../../../../../../both/collections/restaurant/order.collection";
+import { Order, OrderItem } from "../../../../../../../../../../../both/models/restaurant/order.model";
+import { Items } from "../../../../../../../../../../../both/collections/administration/item.collection";
+import { Item } from "../../../../../../../../../../../both/models/administration/item.model";
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription, Observable } from 'rxjs';
 import { TranslateService } from 'ng2-translate';
-import { GarnishFood } from '../../../../../../../../../both/models/administration/garnish-food.model';
-import { GarnishFoodCol } from '../../../../../../../../../both/collections/administration/garnish-food.collection';
-import { Addition } from '../../../../../../../../../both/models/administration/addition.model';
-import { Additions } from '../../../../../../../../../both/collections/administration/addition.collection';
+import { GarnishFood } from '../../../../../../../../../../../both/models/administration/garnish-food.model';
+import { GarnishFoodCol } from '../../../../../../../../../../../both/collections/administration/garnish-food.collection';
+import { Addition } from '../../../../../../../../../../../both/models/administration/addition.model';
+import { Additions } from '../../../../../../../../../../../both/collections/administration/addition.collection';
 
 import template from './colombia-payment-item.component.html';
 import style from './colombia-payment-item.component.scss';
@@ -26,20 +26,21 @@ export class ColombiaItemDetailComponent implements OnInit, OnDestroy {
     @Input() cur: string;
     @Input() curCode: string;
 
-    private _items: Observable<Item[]>;
-    private _garnishFood: Observable<GarnishFood[]>;
-    private _additions: Observable<Addition[]>;
+    private _items              : Observable<Item[]>;
+    private _garnishFood        : Observable<GarnishFood[]>;
+    private _additions          : Observable<Addition[]>;
 
-    private _itemsSub: Subscription;
-    private _garnishFoodSub: Subscription;
-    private _additionSub: Subscription;
+    private _itemsSub           : Subscription;
+    private _garnishFoodSub     : Subscription;
+    private _additionSub        : Subscription;
 
     /**
-     * PaymentItemDetailsComponent constructor
+     * ColombiaItemDetailComponent constructor
      * @param {TranslateService} _translate
      * @param {NgZone} _ngZone
      */
-    constructor( private _translate: TranslateService, private _ngZone: NgZone ) {
+    constructor( private _translate: TranslateService, 
+                 private _ngZone: NgZone ) {
         var _userLang = navigator.language.split( '-' )[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );

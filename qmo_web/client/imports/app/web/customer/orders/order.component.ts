@@ -22,21 +22,21 @@ import style from './order.component.scss';
 export class OrdersComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    private _ordersForm: FormGroup;
+    private _ordersForm                 : FormGroup;
 
-    private _tablesSub: Subscription;
-    private _userDetailsSub: Subscription;
-    private _restaurantSub: Subscription;
+    private _tablesSub                  : Subscription;
+    private _userDetailsSub             : Subscription;
+    private _restaurantSub              : Subscription;
 
-    private _currentRestaurant: Restaurant;
-    private _currentQRCode: string;
+    private _currentRestaurant          : Restaurant;
+    private _currentQRCode              : string;
 
-    private _showError: boolean = false;
-    private _showAlphanumericCodeCard: boolean = false;
-    private _showRestaurantInformation: boolean = false;
-    private _showNewOrderButton: boolean = false;
-    private _showOrderCreation: boolean = false;
-    private _showOrderList: boolean = false;
+    private _showError                  : boolean = false;
+    private _showAlphanumericCodeCard   : boolean = false;
+    private _showRestaurantInformation  : boolean = false;
+    private _showNewOrderButton         : boolean = false;
+    private _showOrderCreation          : boolean = false;
+    private _showOrderList              : boolean = false;
 
     /**
      * OrdersComponent Constructor

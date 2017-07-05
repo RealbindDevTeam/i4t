@@ -1,0 +1,10 @@
+<table class="bordered">
+    <tbody>
+        <tr *ngFor="let add of _additions | async">
+            <td class="name">{{add.name}} ({{'PAYMENTS.COLOMBIA.ADDITION' | translate}})</td>
+            <td class="quantity">{{orderAdd.quantity}}</td>
+            <td class="unitPrice">{{getAdditionUnitPrice(add)}} {{curCode}}</td>
+            <td class="totalPrice">{{orderAdd.paymentAddition}} {{curCode}}</td>
+        </tr>
+    </tbody>
+</table>
