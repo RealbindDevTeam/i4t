@@ -723,7 +723,9 @@
             "ADD_ORDER_MSG": "Agrega o elimina ordenes para tu pago",
             "VIEW_ORDER_DETAILS": "En esta pagina puedes ver tus ordenes y su detalle",
             "IN_PROCESS_PAYMENT": "En Proceso de Pago",
-            "RETURN_ORDER": "Devolver Orden"
+            "RETURN_ORDER": "Devolver Orden",
+            "ORDERS_TO_CONFIRM_MSG": "Tienes Ordenes para Confirmar",
+            "ORDERS_PENDIING_CONFIRM_MSG": "Tienes Ordenes Pendientes por Confirmacion"
         }
     },
     "WAITER_CALL": {

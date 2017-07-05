@@ -30,36 +30,41 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     @Input() tabId: string;
 
     private _user = Meteor.userId();
-    private _totalValue    : number = 0;
+    private _totalValue                         : number = 0;
 
-    private _ordersSubscription : Subscription;
-    private _currencySub        : Subscription;
-    private _restaurantsSub     : Subscription;
-    private _paymentMethodsSub  : Subscription;
-    private _paymentsSub        : Subscription;
+    private _ordersSubscription                 : Subscription;
+    private _currencySub                        : Subscription;
+    private _restaurantsSub                     : Subscription;
+    private _paymentMethodsSub                  : Subscription;
+    private _paymentsSub                        : Subscription;
+    private _ordersTransfSub                    : Subscription;
     
-    private _orders             : Observable<Order[]>;
-    private _paymentMethods     : Observable<PaymentMethod[]>;
-    private _payments           : Observable<Payment[]>;
+    private _orders                             : Observable<Order[]>;
+    private _paymentMethods                     : Observable<PaymentMethod[]>;
+    private _payments                           : Observable<Payment[]>;
+    private _ordersToConfirm                    : Observable<Order[]>;
+    private _ordersWithPendingConfirmation      : Observable<Order[]>;
 
-    private _tipTotal           : number = 0;
-    private _ipoCom             : number = 108;
-    private _ipoComValue        : number = 0;
-    private _ipoComBaseValue    : number = 0;
-    private _totalToPayment     : number = 0;
-    private _otherTip           : number = 0;
-    private _oldOtherTip        : number = 0;
-    private _ipoComBaseString   : string;
-    private _ipoComString       : string;
-    private _tipTotalString     : string;
-    private _currencyCode       : string;
-    private _tipValue           : string;
+    private _tipTotal                           : number = 0;
+    private _ipoCom                             : number = 108;
+    private _ipoComValue                        : number = 0;
+    private _ipoComBaseValue                    : number = 0;
+    private _totalToPayment                     : number = 0;
+    private _otherTip                           : number = 0;
+    private _oldOtherTip                        : number = 0;
+    private _ipoComBaseString                   : string;
+    private _ipoComString                       : string;
+    private _tipTotalString                     : string;
+    private _currencyCode                       : string;
+    private _tipValue                           : string;
 
-    private _otherTipAllowed    : boolean = true;
-    private _paymentMethodId    : string;
-    private _loading            : boolean;
-    private _userIncludeTip     : boolean = false;
-    private _paymentCreated     : boolean = false;
+    private _otherTipAllowed                    : boolean = true;
+    private _paymentMethodId                    : string;
+    private _loading                            : boolean;
+    private _userIncludeTip                     : boolean = false;
+    private _paymentCreated                     : boolean = false;
+    private _showAlertToConfirm                 : boolean = false;
+    private _showAlertWithPendingConf           : boolean = false;
 
     /**
      * ColombiaPaymentComponent Constructor
@@ -103,6 +108,17 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                 this._payments.subscribe( () => { this.validateUserPayments() } );
             });
         });
+        this._ordersTransfSub = MeteorObservable.subscribe( 'getOrdersWithConfirmationPending', this.restId, this.tabId ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._ordersToConfirm = Orders.find( { status: 'ORDER_STATUS.PENDING_CONFIRM', 
+                                                    'translateInfo.firstOrderOwner': this._user, 
+                                                    'translateInfo.lastOrderOwner': { $not: '' } } ).zone();
+                this._ordersToConfirm.subscribe( () => { this.showAlertOrdersToConfirm(); });
+                this._ordersWithPendingConfirmation = Orders.find( { status: 'ORDER_STATUS.PENDING_CONFIRM', 
+                                                                    'translateInfo.lastOrderOwner': this._user } ).zone();
+                this._ordersWithPendingConfirmation.subscribe( () => { this.showAlertOrdersWithPendingConfirm(); });
+            });
+        });
     }
 
     /**
@@ -115,9 +131,11 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
         });
 
         let _lRestaurant:Restaurant = Restaurants.findOne( { _id: this.restId } );
-        if( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] > 0 ){
-            this._tipValue = _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ];
-            this._tipTotal = this._totalValue * ( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] / 100 );
+        if( _lRestaurant ){
+            if( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] > 0 ){
+                this._tipValue = _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ];
+                this._tipTotal = this._totalValue * ( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] / 100 );
+            }
         }
 
         this._ipoComBaseValue  = (this._totalValue * 100 ) / this._ipoCom;
@@ -128,6 +146,33 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
 
         this._tipTotalString   = (this._tipTotal).toFixed(2);
         this._totalToPayment   = this._totalValue;
+    }
+
+    /**
+     * Show alert with orders to confirm
+     */
+    showAlertOrdersToConfirm():void{
+        let _lOrdersToConfirmCount: number = Orders.collection.find( { status: 'ORDER_STATUS.PENDING_CONFIRM', 
+                                                                               'translateInfo.firstOrderOwner': this._user, 
+                                                                               'translateInfo.lastOrderOwner': { $not: '' } } ).fetch().length;
+        if( _lOrdersToConfirmCount > 0 ){
+            this._showAlertToConfirm = true;
+        } else {
+            this._showAlertToConfirm = false;
+        }
+    }
+
+    /**
+     * Show alert with orders with pending confirmation
+     */
+    showAlertOrdersWithPendingConfirm():void{
+        let _lOrdersWithPendingConfirmationCount: number = Orders.collection.find( { status: 'ORDER_STATUS.PENDING_CONFIRM', 
+                                                                                        'translateInfo.lastOrderOwner': this._user } ).fetch().length;
+        if( _lOrdersWithPendingConfirmationCount > 0 ){
+            this._showAlertWithPendingConf = true;
+        } else {
+            this._showAlertWithPendingConf = false;
+        }
     }
 
     /**
@@ -311,5 +356,6 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
         this._restaurantsSub.unsubscribe();
         this._paymentMethodsSub.unsubscribe();
         this._paymentsSub.unsubscribe();
+        this._ordersTransfSub.unsubscribe();
     }
 }
