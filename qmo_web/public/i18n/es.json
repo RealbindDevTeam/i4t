@@ -486,7 +486,8 @@
         "ERROR_INSERT": "Error al insertar colaborador",
         "MESSAGE_NOT_LOGIN": "Por favor ingresar al sistema para agregar un colaborador",
         "SELECT_RANGE_VALID_TABLES": "Seleccionar un rango valido de mesas",
-        "TABLES_ASSIGNMENT": "Asignación de mesas"
+        "TABLES_ASSIGNMENT": "Asignación de mesas",
+        "MESSAGE_COLLABORATOR_EDIT" : "Colaborador actualizado exitosamente"
     },
     "ITEMS": {
         "ITEMS_MANAGEMENT": "Administracion de items",

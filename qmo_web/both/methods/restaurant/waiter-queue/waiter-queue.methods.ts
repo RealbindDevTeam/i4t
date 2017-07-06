@@ -212,7 +212,7 @@ if (Meteor.isServer) {
                                                          role_id : "200", 
                                                          jobs : {$lt : _maxJobs},
                                                          table_assignment_init : {$lte : table._number},
-                                                         table_assignment_end  : {$gte : table._number}, });
+                                                         table_assignment_end  : {$gte : table._number} });
       var count =  waiterEnableds.count();
 
       if( count > 0 ) {
