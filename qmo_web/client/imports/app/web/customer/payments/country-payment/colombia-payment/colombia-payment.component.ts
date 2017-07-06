@@ -90,7 +90,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     ngOnInit(){
         this._ordersSubscription = MeteorObservable.subscribe( 'getOrdersByAccount', this._user ).subscribe( () => {
            this._ngZone.run( () => {
-                this._orders = Orders.find( { creation_user: this._user, restaurantId: this.restId, tableId: this.tabId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] } } ).zone();
+                this._orders = Orders.find( { creation_user: this._user, restaurantId: this.restId, tableId: this.tabId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] }, toPay : false } ).zone();
                 this._orders.subscribe( () => { this.calculateValues(); });
            }); 
         });
@@ -131,7 +131,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
      */
     calculateValues():void{
         this._totalValue = 0;
-        Orders.collection.find( { creation_user: this._user, restaurantId: this.restId, tableId: this.tabId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] } } ).fetch().forEach( ( order ) => {
+        Orders.collection.find( { creation_user: this._user, restaurantId: this.restId, tableId: this.tabId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] }, toPay : false } ).fetch().forEach( ( order ) => {
             this._totalValue += order.totalPayment;
         });
 
@@ -245,17 +245,16 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
         if ( this.tabId !== "" && this.restId !== "" ) {
             if ( this._paymentMethodId === '10' || this._paymentMethodId === '20' || this._paymentMethodId === '30' ){
                 let _lOrdersWithPendingConfim:number = Orders.collection.find( { creation_user: this._user, restaurantId: this.restId, tableId: this.tabId, 
-                                                                                    status: 'ORDER_STATUS.PENDING_CONFIRM' } ).count();
+                                                                                 status: 'ORDER_STATUS.PENDING_CONFIRM', toPay : false } ).count();
                 if( _lOrdersWithPendingConfim === 0 ){
                     let _lOrdersToInsert:string[] = [];
                     let _lTotalValue: number = 0;
                     let _lTotalTip: number = 0;
                     let _lAccountId: string;
                     Orders.collection.find( { creation_user: this._user, restaurantId: this.restId, 
-                                              tableId: this.tabId, status: 'ORDER_STATUS.DELIVERED' } ).fetch().forEach( ( order ) => {
+                                              tableId: this.tabId, status: 'ORDER_STATUS.DELIVERED', toPay : false } ).fetch().forEach( ( order ) => {
                                                   _lAccountId = order.accountId;
                                                   _lOrdersToInsert.push( order._id );
-                                                  Orders.update( { _id : order._id },{ $set : { toPay : true } } );
                                                   _lTotalValue += order.totalPayment;
                                               });
                     if( this._userIncludeTip ){ _lTotalTip += this._tipTotal }
@@ -278,6 +277,22 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                         status: 'PAYMENT.NO_PAID',
                         received : false,
                     });
+                    Orders.collection.find( { creation_user: this._user, restaurantId: this.restId, 
+                                              tableId: this.tabId, status: 'ORDER_STATUS.DELIVERED', toPay : false } ).fetch().forEach( ( order ) => {
+                                                  Orders.update( { _id : order._id },{ $set : { toPay : true } } );
+                                            });
+                    this._userIncludeTip = false;
+                    this._otherTipAllowed = true;
+                    this._otherTip = 0;
+                    this._tipTotal = 0;
+                    this._totalValue = 0;
+                    this._ipoComBaseValue = 0;
+                    this._ipoComValue = 0;
+                    this._OutstandingBalance = true;
+                    this._totalToPayment = 0;
+                    this._paymentMethodId = '';
+                    _lTotalValue = 0;
+                    _lTotalTip = 0;
                     this.waiterCallForPay();
                 } else {
                     alert( _lMessage1 );

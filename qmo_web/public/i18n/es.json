@@ -692,6 +692,7 @@
         "THERE_IS_NOT_REST" : "No te encuentras en un restaurante",
         "THERE_IS_NOT_REST_MSG" : "Ve a la opción de ordenes e ingresa el código",
         "GO_TO_ORDERS":"Ir a ordenes",
+        "NO_ORDERS": "No tienes órdenes entregadas en este momento",
         "COLOMBIA": {
             "GARNISH_FOOD": "Guarnicion",
             "ADDITION": "Adicion",
