@@ -14,21 +14,6 @@
                 </p>
             </ion-card-content>
         </ion-card-->
-
-        <ion-card (click)="goToAddOrders()">
-            <ion-card-content>
-                <div class="item-block">
-                    <img class="img-cards" src="assets/img/add-order.png">
-                    <div class="header-title">
-                        <div class="label">
-                            <span>
-                            </span>
-                            <p>{{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}</p>
-                        </div>
-                    </div>
-                </div>
-            </ion-card-content>
-        </ion-card>
         
         <ion-card (click)="goToPaymentDetails()">
             <ion-card-content>
@@ -39,6 +24,21 @@
                             <span>
                             </span>
                             <p>{{'MOBILE.PAYMENTS.VIEW_DETAIL' | translate}}</p>
+                        </div>
+                    </div>
+                </div>
+            </ion-card-content>
+        </ion-card>
+
+        <ion-card (click)="goToAddOrders()">
+            <ion-card-content>
+                <div class="item-block">
+                    <img class="img-cards" src="assets/img/add-order.png">
+                    <div class="header-title">
+                        <div class="label">
+                            <span>
+                            </span>
+                            <p>{{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}</p>
                         </div>
                     </div>
                 </div>

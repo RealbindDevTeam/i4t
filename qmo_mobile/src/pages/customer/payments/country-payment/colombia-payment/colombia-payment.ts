@@ -46,6 +46,7 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
   private _type           : string = "PAYMENT";
   private _paymentMethod  : string = "PAYMENT_METHODS.CASH";
   private _paymentCreated : boolean = false;
+  private _ordersValidate : boolean = false;
 
   constructor(public _navCtrl     : NavController, 
               public _navParams   : NavParams, 
@@ -103,10 +104,15 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
         this._orders = Orders.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : { $ne : true } } ).zone();
         this._orders.subscribe(()=>{
           this._totalValue = 0;
-          Orders.collection.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : { $ne : true } } ).fetch().forEach( ( order ) => {
+          let _lOrders = Orders.collection.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : { $ne : true } } );
+          _lOrders.fetch().forEach((order)=>{
             this._totalValue += order.totalPayment;
           });
           this._totalToPayment = this._totalValue;
+          
+          if(_lOrders.count() >= 0){
+            this._ordersValidate = false;
+          }
         });
     });
 
@@ -130,7 +136,9 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
    * Allow navegate to ColombiaPaymentDetailsPage
    */
   goToPaymentDetails(){
-    this._navCtrl.push(ColombiaPaymentDetailsPage, { currency : this._currencyCode });
+    if(this._ordersValidate){
+      this._navCtrl.push(ColombiaPaymentDetailsPage, { currency : this._currencyCode });
+    }
   }
   
   /**
