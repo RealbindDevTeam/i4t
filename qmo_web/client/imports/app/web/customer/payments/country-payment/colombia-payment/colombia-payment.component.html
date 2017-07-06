@@ -1,4 +1,16 @@
 <div class="main">
+    <md-card *ngIf="_paymentCreated">
+        <md-list>
+            <md-list-item>
+                <img md-list-avatar class="image" src="/images/payment-pending.png">
+                <h2 md-line class="card-title">{{'PAYMENTS.COLOMBIA.PENDING_PAYMENT_TITLE' | translate}}</h2>
+                <p md-line class="card-waiter-msg">{{'PAYMENTS.COLOMBIA.PENDING_PAYMENT_MSG' | translate}}</p>
+                <p md-line class="card-pay" *ngFor="let pay of _paymentsNoPaid | async">
+                    {{'PAYMENTS.COLOMBIA.BALANCE' | translate}}: {{pay.totalToPayment}} {{_currencyCode}}
+                </p>
+            </md-list-item>
+        </md-list>
+    </md-card>
     <md-card>
         <md-list>
             <md-list-item>
@@ -56,13 +68,8 @@
                 </div>
             </div>
             <div>
-                <button md-raised-button class="pay-button" color="primary" *ngIf="!_paymentCreated" (click)="pay()">{{'PAYMENTS.COLOMBIA.PAY' | translate}}</button>
-                <p *ngIf="_paymentCreated" class="waiter-message">{{'PAYMENTS.COLOMBIA.PENDING_PAYMENT' | translate}}</p>
+                <button md-raised-button class="pay-button" color="primary" [disabled]="_OutstandingBalance" (click)="pay()">{{'PAYMENTS.COLOMBIA.PAY' | translate}}</button>
             </div>
         </md-card-content>
     </md-card>
-</div>
-
-<div class="loading" *ngIf="_loading">
-    <md-spinner></md-spinner>
 </div>
