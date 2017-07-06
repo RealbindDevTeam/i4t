@@ -6,6 +6,8 @@ import { EmailContent } from '../../models/general/email-content.model';
 import { LangDictionary } from '../../models/general/email-content.model';
 import { Restaurants } from '../../collections/restaurant/restaurant.collection';
 import { Restaurant } from '../../models/restaurant/restaurant.model';
+import { Tables } from '../../collections/restaurant/table.collection';
+import { Table } from '../../models/restaurant/table.model';
 import { HistoryPayments } from '../../collections/payment/history-payment.collection';
 import { HistoryPayment } from '../../models/payment/history-payment.model';
 import { Users } from '../../collections/auth/user.collection';
@@ -139,6 +141,10 @@ if (Meteor.isServer) {
 
                 if (!historyPayment) {
                     Restaurants.collection.update({ _id: restaurant._id }, { $set: { isActive: false, firstPay: false } });
+
+                    Tables.collection.find({ restaurantId: restaurant._id }).forEach((table: Table) => {
+                        Tables.collection.update({ _id: table._id }, { $set: { is_active: false } });
+                    });
                 }
             });
         },

@@ -27,15 +27,15 @@
                             <label>{{restaurant.name}}</label>
                         </td>
                         <td style="width: 30%">
-                            <md-input-container style="width: 95%">
+                            <md-input-container style="width: 95%" >
                                 <input mdInput required formControlName="tables_number" placeholder="{{'TABLES.NUMBER_TABLES' | translate}}" minlength="1"
-                                    maxlength="3" #inputTables>
+                                    maxlength="3" [disabled]="!restaurant.isActive" #inputTables>
                                 <md-hint align="end">{{inputTables.value.length}} / 3</md-hint>
                             </md-input-container>
                         </td>
                         <td style="width: 25%; text-align:center">
-                            <button md-raised-button class="button-secundary" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
-                            <button md-raised-button class="button-primary" type="submit">{{'CREATE' | translate}}</button>
+                            <button md-raised-button class="button-secundary" type="button" (click)="cancel()" [disabled]="!restaurant.isActive">{{'CANCEL' | translate}}</button>
+                            <button md-raised-button class="button-primary" type="submit" [disabled]="!restaurant.isActive">{{'CREATE' | translate}}</button>
                         </td>
                     </tr>
                 </table>
@@ -45,7 +45,7 @@
 
     <md-card *ngFor="let table of _tables | async" style="width: 13.4%; display: inline-block; margin-right: 20px;">
         {{'MONTHLY_CONFIG.TABLE_ENUM' | translate}} {{table._number}}
-        <md-slide-toggle [(checked)]="table.is_active" (change)="updateTableStatus(table)">{{getTableStatus(table) | translate}}</md-slide-toggle>
+        <md-slide-toggle [(checked)]="table.is_active" (change)="updateTableStatus(table)" [disabled]="!restaurant.isActive">{{getTableStatus(table) | translate}}</md-slide-toggle>
     </md-card>
 
     <div *ngIf="false" class="fixed-action-btn">
