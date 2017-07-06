@@ -133,13 +133,10 @@ if (Meteor.isServer) {
             let currentMonth: string = (currentDate.getMonth() + 1).toString();
             let currentYear: string = currentDate.getFullYear().toString();
 
-            console.log('currentMonth > ' + currentMonth);
-            console.log('currentDay > ' + currentYear);
-
             Restaurants.collection.find({ countryId: _countryId, isActive: true, freeDays: false }).forEach((restaurant: Restaurant) => {
                 let historyPayment: HistoryPayment;
                 historyPayment = HistoryPayments.collection.findOne({ restaurantId: restaurant._id, month: currentMonth, year: currentYear, status: 'PAID' });
-                console.log('historyPayment > ' + historyPayment);
+
                 if (!historyPayment) {
                     Restaurants.collection.update({ _id: restaurant._id }, { $set: { isActive: false, firstPay: false } });
                 }
@@ -149,9 +146,11 @@ if (Meteor.isServer) {
          * This function send email to warn that the service has expired
          * @param {string} _countryId
          */
-        sendEmailResExpired: function (_countryId: string) {
+        sendEmailRestExpired: function (_countryId: string) {
+            let parameter: Parameter = Parameters.collection.findOne({ name: 'from_email' });
             let auxArray: string[] = [];
-            Restaurants.collection.find({ countryId: _countryId, isActive: false }).forEach((restaurant: Restaurant) => {
+
+            Restaurants.collection.find({ countryId: _countryId, isActive: false, freeDays: false, firstPay: false }).forEach((restaurant: Restaurant) => {
                 let user: User = Users.collection.findOne({ _id: restaurant.creation_user });
                 let indexofvar = auxArray.indexOf(user._id);
 
@@ -162,13 +161,31 @@ if (Meteor.isServer) {
 
             Users.collection.find({ _id: { $in: auxArray } }).forEach((user: User) => {
                 let auxRestaurants: string[] = [];
-                Restaurants.collection.find({ creation_user: user._id, isActive: false }, { fields: { _id: 0, name: 1 } }).forEach((name: Restaurant) => {
+                Restaurants.collection.find({ creation_user: user._id, isActive: false, freeDays: false }, { fields: { _id: 0, name: 1 } }).forEach((name: Restaurant) => {
                     auxRestaurants.push(name.name);
                 });
 
                 let emailContent: EmailContent = EmailContents.collection.findOne({ language: user.profile.language_code });
                 let greetVar = Meteor.call('getEmailContent', emailContent.lang_dictionary, 'greetVar');
                 let greeting: string = (user.profile && user.profile.first_name) ? (greetVar + ' ' + user.profile.first_name + ",") : greetVar;
+                SSR.compileTemplate('restExpiredEmailHtml', Assets.getText('rest-expired-email.html'));
+
+                var emailData = {
+                    greeting: greeting,
+                    reminderMsgVar: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'reminderRestExpiredVar'),
+                    restaurantListVar: auxRestaurants.toString(),
+                    reminderMsgVar2: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'reminderRestExpiredVar2'),
+                    reminderMsgVar3: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'reminderRestExpiredVar3'),
+                    regardVar: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'regardVar'),
+                    followMsgVar: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'followMsgVar')
+                }
+
+                Email.send({
+                    to: user.emails[0].address,
+                    from: parameter.value,
+                    subject: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'restExpiredEmailSubjectVar'),
+                    html: SSR.render('restExpiredEmailHtml', emailData),
+                });
             });
         },
         /**

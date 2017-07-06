@@ -57,12 +57,12 @@ export function createCrons() {
     * This cron sends an email to warn that the service has expired
     */
     SyncedCron.add({
-      name: 'cronEmailResExpired.' + country.name,
+      name: 'cronEmailRestExpired.' + country.name,
       schedule: function (parser) {
-        return parser.cron(country.cronEmailResExpired);
+        return parser.cron(country.cronEmailRestExpired);
       },
       job: function () {
-        Meteor.call('sendEmailResExpired', country._id);
+        Meteor.call('sendEmailRestExpired', country._id);
       }
     });
 

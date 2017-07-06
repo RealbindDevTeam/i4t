@@ -21,7 +21,11 @@ export function loadEmailContents() {
                     { label: 'reminderExpireSoonMsgVar', traduction: 'Remember that your monthly Iurest service for: ' },
                     { label: 'reminderExpireSoonMsgVar2', traduction: 'Expires on: ' },
                     { label: 'reminderExpireSoonMsgVar3', traduction: 'If you want to continue using all the system features, entering with your email or username and select the menu Payments > Monthly payment' },
-                    { label: 'expireSoonEmailSubjectVar', traduction: 'Your Iurest service will expire soon'}
+                    { label: 'expireSoonEmailSubjectVar', traduction: 'Your Iurest service will expire soon'},
+                    { label: 'reminderRestExpiredVar', traduction: 'Your monthly Iurest service for: '},
+                    { label: 'reminderRestExpiredVar2', traduction: 'Has expired'},
+                    { label: 'reminderRestExpiredVar3', traduction: 'If you want to continue using all the system features, entering with your email or username and select the menu Payments > Reactivate '},
+                    { label: 'restExpiredEmailSubjectVar', traduction: 'Your Iurest service has expired'}
                 ]
             },
             {
@@ -41,8 +45,11 @@ export function loadEmailContents() {
                     { label: 'reminderExpireSoonMsgVar', traduction: 'Recuerda que tu servicio mensual de Iurest para: ' },
                     { label: 'reminderExpireSoonMsgVar2', traduction: 'Expira el: ' },
                     { label: 'reminderExpireSoonMsgVar3', traduction: 'Si deseas seguir usando todas las funcionalidades del sistema, ingresa con tu usuario o correo y selecciona el menú Pagos > Pago mensual' },
-                    { label: 'expireSoonEmailSubjectVar', traduction: 'Tu servicio Iurest expirará pronto'}
-
+                    { label: 'expireSoonEmailSubjectVar', traduction: 'Tu servicio Iurest expirará pronto'},
+                    { label: 'reminderRestExpiredVar', traduction: 'Tu servicio mensual de Iurest para: '},
+                    { label: 'reminderRestExpiredVar2', traduction: 'ha expirado'},
+                    { label: 'reminderRestExpiredVar3', traduction: 'Si deseas seguir usando todas las funcionalidades del sistema, ingresa con tu usuario o correo y selecciona la opción Pagos > Reactivar '},
+                    { label: 'restExpiredEmailSubjectVar', traduction: 'Tu servicio de Iurest ha expirado'}
                 ]
             }
         ];
