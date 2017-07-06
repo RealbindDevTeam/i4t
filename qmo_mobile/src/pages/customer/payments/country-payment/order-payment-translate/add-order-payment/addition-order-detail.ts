@@ -1,9 +1,7 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
-import { Order, OrderItem } from 'qmo_web/both/models/restaurant/order.model';
-import { ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
-import { Items } from 'qmo_web/both/collections/administration/item.collection';
 
 @Component({
     selector: 'addition-order-detail',
@@ -12,20 +10,31 @@ import { Items } from 'qmo_web/both/collections/administration/item.collection';
 
 export class AdditionOrderDetailComponent implements OnInit, OnDestroy {
 
-    @Input() addition : any;
+    @Input() additionId : string;
+    @Input() currency   : string;
+    @Input() price      : number;
+    @Input() quantity   : number;
     private _additionsSubscription : Subscription;
     private _additions             : any;
 
+    /**
+     * AdditionOrderDetailComponent constructor
+     */
     constructor(){
-        console.log(this.addition);
     }
 
+    /**
+     * ngOnInit implementation
+     */
     ngOnInit(){
-        this._additionsSubscription = MeteorObservable.subscribe('additionsById', this.addition.additionId).subscribe(()=>{
-            //this._additions
+        this._additionsSubscription = MeteorObservable.subscribe('additionsById', this.additionId).subscribe(()=>{
+            this._additions = Additions.find({_id : this.additionId});
         });
     }
 
+    /**
+     * ngOnDestroy implimentation
+     */
     ngOnDestroy(){
         this._additionsSubscription.unsubscribe();
     }

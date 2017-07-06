@@ -152,7 +152,13 @@
             "DELETE_ADDITION_ORDER": "Eliminar Adicion",
             "DELETE_ADDITION_CONFIRM": "Esta seguro de eliminar la adicion de la orden?",
             "ADDITION_DELETED": "Adicion Eliminada de la Orden",
-            "ADDITION_EDITED": "Adicion Editada Correctamente"
+            "ADDITION_EDITED": "Adicion Editada Correctamente",
+            "QUANT":"Cant."
+        },
+        "ORDER_PAYMENT_TRANSLATE" : {
+            "MSG1" : "Cuando algun acompañante de tu mesa desea pagar una de tus ordenes, debes confirmar este proceso. En esta seccion apareceran aquellas ordenes que otros usuarios desean pagar por ti",
+            "MSG2" : "Si deseas pagar ordenes de algun acompañante de tu mesa, esta seccion mostrara aquellas ordenes que se encuentran pendientes por confirmar para agregar a tu pago.",
+            "NO_ORDERS" : "No hay ordenes"
         },
         "PAYMENTS": {
             "TITTLE": "Pagos",

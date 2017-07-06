@@ -152,7 +152,8 @@
             "DELETE_ADDITION_ORDER": "Delete Addition",
             "DELETE_ADDITION_CONFIRM": "Are you sure to delete the addition from the order?",
             "ADDITION_DELETED": "Addition Deleted from Order",
-            "ADDITION_EDITED": "Edited Adition Correctly"
+            "ADDITION_EDITED": "Edited Adition Correctly",
+            "QUANT": "Quant. "
         },
         "PAYMENTS": {
             "TITTLE": "Payments",

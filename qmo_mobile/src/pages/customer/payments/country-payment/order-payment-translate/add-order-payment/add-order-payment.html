@@ -26,11 +26,11 @@
                         </ion-row>
                         <div *ngIf="order">
                             <div *ngFor="let itemId of order?.items">
-                                <order-item-detail [order]="order" [orderItem]="itemId" [resCode]="_res_code" (gotoedititem)="goToItemEdit($event, order)"></order-item-detail>
+                                <order-item-detail [order]="order" [orderItem]="itemId" [resCode]="_res_code" (gotoedititem)="goToItemEdit($event, order)" [currency]="_currency"></order-item-detail>
                             </div>
 
                             <div *ngFor="let ad of order?.additions">
-                                <addition-order-detail [addition]="ad"></addition-order-detail>
+                                <addition-order-detail [additionId]="ad.additionId" [price]="ad.paymentAddition" [quantity]="ad.quantity" [currency]="_currency"></addition-order-detail>
                             </div>
                         </div>
                     </div>
