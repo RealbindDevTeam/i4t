@@ -62,7 +62,7 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
         this._ordersSub = MeteorObservable.subscribe( 'getOrdersByTableId', this._restaurantId, this._tableId,[ 'ORDER_STATUS.DELIVERED' ] ).subscribe( () => {
             this._ngZone.run( () => {
                 this._ordersTable = Orders.find( { creation_user: { $not: this._user }, status: 'ORDER_STATUS.DELIVERED', 'translateInfo.lastOrderOwner': '',
-                                                   'translateInfo.markedToTranslate': false, 'translateInfo.confirmedToTranslate': false } ).zone();
+                                                   'translateInfo.markedToTranslate': false, 'translateInfo.confirmedToTranslate': false, toPay : false } ).zone();
             });
         });
         this._itemsSub = MeteorObservable.subscribe( 'itemsByRestaurant', this._restaurantId ).subscribe( () => {

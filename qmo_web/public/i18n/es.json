@@ -693,6 +693,7 @@
         "THERE_IS_NOT_REST" : "No te encuentras en un restaurante",
         "THERE_IS_NOT_REST_MSG" : "Ve a la opción de ordenes e ingresa el código",
         "GO_TO_ORDERS":"Ir a ordenes",
+        "NO_ORDERS": "No tienes órdenes entregadas en este momento",
         "COLOMBIA": {
             "GARNISH_FOOD": "Guarnicion",
             "ADDITION": "Adicion",
@@ -725,7 +726,11 @@
             "IN_PROCESS_PAYMENT": "En Proceso de Pago",
             "RETURN_ORDER": "Devolver Orden",
             "ORDERS_TO_CONFIRM_MSG": "Tienes Ordenes para Confirmar",
-            "ORDERS_PENDIING_CONFIRM_MSG": "Tienes Ordenes Pendientes por Confirmacion"
+            "ORDERS_PENDIING_CONFIRM_MSG": "Tienes Ordenes Pendientes por Confirmacion",
+            "PENDING_PAYMENT_TITLE": "Pago Pendiente",
+            "PENDING_PAYMENT_MSG": "En un momento un mesero recibira tu(s) pago(s)",
+            "BALANCE": "Saldo",
+            "PAYMENT_CREATED": "Pago Creado Correctamente"
         }
     },
     "WAITER_CALL": {

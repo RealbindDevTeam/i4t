@@ -44,6 +44,7 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
     private _currencyId         : string;
     private _currencyCode       : string;
     private _showPaymentInfo    : boolean = false;
+    private _showOrderDetails   : boolean = false;
 
     private _totalValue         : number = 0;
     private _ipoComBaseValue    : number = 0;
@@ -93,7 +94,7 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
                                     this._tableId = _lTable._id;     
                                     this._ordersSub = MeteorObservable.subscribe( 'getOrdersByAccount', this._user ).subscribe( () => {
                                         this._ngZone.run( () => {
-                                            this._orders = Orders.find( { creation_user: this._user, restaurantId: this._restaurantId, tableId: this._tableId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] } } ).zone();
+                                            this._orders = Orders.find( { creation_user: this._user, restaurantId: this._restaurantId, tableId: this._tableId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] }, toPay : false } ).zone();
                                             this._orders.subscribe( () => { this.calculateValues(); });
                                         }); 
                                     });
@@ -115,7 +116,7 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
      */
     calculateValues():void{
         this._totalValue = 0;
-        Orders.collection.find( { creation_user: this._user, restaurantId: this._restaurantId, tableId: this._tableId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] } } ).fetch().forEach( ( order ) => {
+        Orders.collection.find( { creation_user: this._user, restaurantId: this._restaurantId, tableId: this._tableId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] }, toPay : false } ).fetch().forEach( ( order ) => {
             this._totalValue += order.totalPayment;
         });
         this._ipoComBaseValue  = (this._totalValue * 100 ) / this._ipoCom;
@@ -123,6 +124,7 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
 
         this._ipoComValue      = this._totalValue - this._ipoComBaseValue;
         this._ipoComString     = (this._ipoComValue).toFixed(2);
+        this._totalValue > 0 ? this._showOrderDetails = true : this._showOrderDetails = false;
     }
 
     /**
@@ -208,6 +210,13 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
      */
     returnToPaymentsComponent():void{
         this._router.navigate(['app/payments']);
+    }
+
+    /**
+     * This function allow go to Orders
+     */
+    goToOrders(){
+        this._router.navigate(['/app/orders']);
     }
 
     /**
