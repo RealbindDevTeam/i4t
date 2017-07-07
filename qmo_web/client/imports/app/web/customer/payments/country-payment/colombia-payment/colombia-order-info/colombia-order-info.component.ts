@@ -43,7 +43,7 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
     private _tableId            : string;
     private _currencyId         : string;
     private _currencyCode       : string;
-    private _showOrderstInfo    : boolean = false;
+    private _showOrdersInfo    : boolean = false;
     private _showOrderDetails   : boolean = false;
 
     private _totalValue         : number = 0;
@@ -103,9 +103,9 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
                             });
                         });
                     });
-                    this._showOrderstInfo = true;
+                    this._showOrdersInfo = true;
                 } else {
-                    this._showOrderstInfo = false;
+                    this._showOrdersInfo = false;
                 }
             });
         });
@@ -152,7 +152,7 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
     isAvailableToReturn( _pOrder:Order ):boolean{
         if( _pOrder.translateInfo.firstOrderOwner !== '' && _pOrder.translateInfo.lastOrderOwner !== '' 
             && _pOrder.translateInfo.confirmedToTranslate && _pOrder.translateInfo.markedToTranslate
-            && _pOrder.status === 'ORDER_STATUS.DELIVERED' ){
+            && _pOrder.status === 'ORDER_STATUS.DELIVERED' && _pOrder.toPay === false ){
             return true;
         } else {
             return false;

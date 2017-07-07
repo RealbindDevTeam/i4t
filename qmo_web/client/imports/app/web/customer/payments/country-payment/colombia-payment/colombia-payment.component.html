@@ -5,9 +5,7 @@
                 <img md-list-avatar class="image" src="/images/payment-pending.png">
                 <h2 md-line class="card-title">{{'PAYMENTS.COLOMBIA.PENDING_PAYMENT_TITLE' | translate}}</h2>
                 <p md-line class="card-waiter-msg">{{'PAYMENTS.COLOMBIA.PENDING_PAYMENT_MSG' | translate}}</p>
-                <p md-line class="card-pay" *ngFor="let pay of _paymentsNoPaid | async">
-                    {{'PAYMENTS.COLOMBIA.BALANCE' | translate}}: {{pay.totalToPayment}} {{_currencyCode}}
-                </p>
+                <button md-raised-button color="primary" class="card-button" (click)="viewPaymentDetail()">{{'PAYMENTS.COLOMBIA.VIEW_DETAIL' | translate}}</button>                
             </md-list-item>
         </md-list>
     </md-card>

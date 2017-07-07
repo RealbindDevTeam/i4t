@@ -70,6 +70,7 @@ import { DisableConfirmComponent } from './restaurant/monthly-config/disable-con
 import { SendOrderConfirmComponent } from './waiter/calls/send-order-confirm/send-order-confirm.component';
 import { ColombiaAdditionDetailComponent } from './customer/payments/country-payment/colombia-payment/colombia-order-info/colombia-payment-detail/colombia-payment-addition/colombia-payment-addition.component';
 import { ColombiaOrderInfoComponent } from './customer/payments/country-payment/colombia-payment/colombia-order-info/colombia-order-info.component';
+import { ColombiaPayInfoComponent } from './customer/payments/country-payment/colombia-payment/colombia-pay-info/colombia-pay-info.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -118,7 +119,8 @@ export const WEB_DECLARATIONS = [
     RestaurantListComponent,
     EnableDisableComponent,
     ColombiaAdditionDetailComponent,
-    ColombiaOrderInfoComponent
+    ColombiaOrderInfoComponent,
+    ColombiaPayInfoComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [

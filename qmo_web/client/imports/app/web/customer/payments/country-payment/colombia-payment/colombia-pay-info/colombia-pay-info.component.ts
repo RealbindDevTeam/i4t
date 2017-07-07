@@ -38,9 +38,11 @@ export class ColombiaPayInfoComponent implements OnInit, OnDestroy{
     private _tableSub           : Subscription;
     private _usersSub           : Subscription;
     private _paymentMethodsSub  : Subscription;
+    private _ordersSub          : Subscription;
 
     private _payments           : Observable<Payment[]>;
     private _paymentMethods     : Observable<PaymentMethod[]>;
+    private _orders             : Observable<Order[]>;
 
     private _showPaymentsInfo   : boolean = false;
     private _restaurantId       : string;
@@ -91,6 +93,11 @@ export class ColombiaPayInfoComponent implements OnInit, OnDestroy{
                                         });
                                     });
                                     this._usersSub = MeteorObservable.subscribe('getUserByTableId', this._restaurantId, this._tableId ).subscribe();                                               
+                                    this._ordersSub = MeteorObservable.subscribe( 'getOrdersByAccount', this._user ).subscribe( () => {
+                                        this._ngZone.run( () => {
+                                            this._orders = Orders.find( { creation_user: this._user, restaurantId: this._restaurantId, tableId: this._tableId, status: { $in: [ 'ORDER_STATUS.DELIVERED'] } } ).zone();
+                                        }); 
+                                    });
                                 });
                             });
                         });
@@ -119,5 +126,6 @@ export class ColombiaPayInfoComponent implements OnInit, OnDestroy{
         if( this._tableSub ){ this._tableSub.unsubscribe(); }
         if( this._usersSub ){ this._usersSub.unsubscribe(); }
         this._paymentMethodsSub.unsubscribe();
+        if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
     }
 }

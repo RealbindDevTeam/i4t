@@ -1,0 +1,36 @@
+<md-card>
+    <md-card-title>Detalle de Pagos</md-card-title>
+    <md-card-subtitle>Consulta los pagos que tienes en proceso</md-card-subtitle>
+    <md-card-content>
+        <div>
+            <table class="centered striped">
+                <thead>
+                    <tr>
+                        <th data-field="creationDate">Fecha de Creacion</th>
+                        <th data-field="orders">Ordenes</th>
+                        <th data-field="orders">Total Ordenes</th>
+                        <th data-field="orders">Total Propina</th>
+                        <th data-field="orders">Total A Pagar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let pay of _payments | async">
+                        <td>{{pay.creation_date | date: 'dd/MM/yyyy HH:mm'}}</td>
+                        <td>
+                            <span *ngFor="let or of pay.orders">
+                                <span *ngFor="let order of _orders | async">
+                                    <template [ngIf]="order._id === or">
+                                        - Orden # {{order.code}}
+                                    </template>
+                                </span>
+                            </span>
+                        </td>
+                        <td>{{pay.totalOrdersPrice}} {{_currencyCode}}</td>
+                        <td>{{pay.totalTip}} {{_currencyCode}}</td>
+                        <td>{{pay.totalToPayment}} {{_currencyCode}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </md-card-content>
+</md-card>

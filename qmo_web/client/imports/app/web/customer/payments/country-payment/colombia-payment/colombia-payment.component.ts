@@ -379,6 +379,13 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Show payment details
+     */
+    viewPaymentDetail():void{
+        this._router.navigate(['app/colPayInfo']);
+    }
+
+    /**
      * ngOnDestroy Implementation
      */
     ngOnDestroy(){

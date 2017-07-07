@@ -727,7 +727,7 @@
             "ORDERS_TO_CONFIRM_MSG": "Tienes Ordenes para Confirmar",
             "ORDERS_PENDIING_CONFIRM_MSG": "Tienes Ordenes Pendientes por Confirmacion",
             "PENDING_PAYMENT_TITLE": "Pago Pendiente",
-            "PENDING_PAYMENT_MSG": "En un momento un mesero recibira tu(s) pago(s)",
+            "PENDING_PAYMENT_MSG": "Un mesero recibira tu(s) pago(s)",
             "BALANCE": "Saldo",
             "PAYMENT_CREATED": "Pago Creado Correctamente"
         }
