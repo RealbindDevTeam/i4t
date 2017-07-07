@@ -195,7 +195,8 @@
             "MOMENT_PAY_ANSWER" : "In a moment we will receive your payment",
             "PAY_CONFIRM_MODAL" : "No payments received",
             "SELECT_ALL_PAYMENTS" : "Select all payments",
-            "PAY_PENDING" : "Payment pending to receive"
+            "PAY_PENDING" : "Payment pending to receive",
+            "PENDING_PAYMENT_MSG": "In a moment a waiter will receive your payment(s)"
         },
         "WAITER_CALL": {
             "TITTLE": "Call waiter",

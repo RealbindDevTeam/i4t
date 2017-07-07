@@ -200,7 +200,8 @@
             "MOMENT_PAY_ANSWER" : "En un momento recibiremos tu pago",
             "PAY_CONFIRM_MODAL" : "No hay pagos recibidos",
             "SELECT_ALL_PAYMENTS" : "Seleccionar todos los pagos",
-            "PAY_PENDING" : "Pago pendiente por recibir"
+            "PAY_PENDING" : "Pago pendiente por recibir",
+            "PENDING_PAYMENT_MSG": "En un momento un mesero recibira tu(s) pago(s)"
         },
         "WAITER_CALL": {
             "TITTLE": "Solicitar mesero",
