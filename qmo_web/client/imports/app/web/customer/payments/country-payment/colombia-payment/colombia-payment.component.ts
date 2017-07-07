@@ -61,12 +61,14 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     private _tipValue                           : string;
 
     private _otherTipAllowed                    : boolean = true;
-    private _paymentMethodId                    : string;
+    private _paymentMethodId                    : string = '';
     private _userIncludeTip                     : boolean = false;
     private _paymentCreated                     : boolean = false;
     private _OutstandingBalance                 : boolean = true;
     private _showAlertToConfirm                 : boolean = false;
     private _showAlertWithPendingConf           : boolean = false;
+    private _isCheckedTip                       : boolean = false;
+    private _isCheckedOtherTip                  : boolean = false; 
 
     /**
      * ColombiaPaymentComponent Constructor
@@ -285,6 +287,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                     this._otherTipAllowed = true;
                     this._otherTip = 0;
                     this._tipTotal = 0;
+                    this._tipTotalString = (this._tipTotal).toFixed(2);
                     this._totalValue = 0;
                     this._ipoComBaseValue = 0;
                     this._ipoComValue = 0;
@@ -293,6 +296,8 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                     this._paymentMethodId = '';
                     _lTotalValue = 0;
                     _lTotalTip = 0;
+                    this._isCheckedTip = false;
+                    this._isCheckedOtherTip = false;
                     this.waiterCallForPay();
                 } else {
                     alert( _lMessage1 );

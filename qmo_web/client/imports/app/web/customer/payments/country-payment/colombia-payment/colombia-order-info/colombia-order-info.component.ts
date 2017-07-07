@@ -43,7 +43,7 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
     private _tableId            : string;
     private _currencyId         : string;
     private _currencyCode       : string;
-    private _showPaymentInfo    : boolean = false;
+    private _showOrderstInfo    : boolean = false;
     private _showOrderDetails   : boolean = false;
 
     private _totalValue         : number = 0;
@@ -103,9 +103,9 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
                             });
                         });
                     });
-                    this._showPaymentInfo = true;
+                    this._showOrderstInfo = true;
                 } else {
-                    this._showPaymentInfo = false;
+                    this._showOrderstInfo = false;
                 }
             });
         });

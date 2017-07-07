@@ -40,17 +40,17 @@
     <md-card class="payment-info">
         <md-card-title>{{'PAYMENTS.COLOMBIA.PAYMENT_OPTIONS' | translate}}</md-card-title>
         <md-card-content>      
-            <md-checkbox class="tipValue" (change)="allowTip($event)">{{'PAYMENTS.COLOMBIA.TIPS' | translate}} ({{_tipValue}}%)</md-checkbox> 
+            <md-checkbox class="tipValue" (change)="allowTip($event)" [(ngModel)]="_isCheckedTip">{{'PAYMENTS.COLOMBIA.TIPS' | translate}} ({{_tipValue}}%)</md-checkbox> 
             <p class="tipTotal">{{_tipTotalString}} {{_currencyCode}}</p>
             <div>
-                <md-checkbox class="tipValue" (change)="allowOtherTip($event)">{{'PAYMENTS.COLOMBIA.OTHER_VALUE' | translate}}:</md-checkbox> 
+                <md-checkbox class="tipValue" (change)="allowOtherTip($event)" [(ngModel)]="_isCheckedOtherTip">{{'PAYMENTS.COLOMBIA.OTHER_VALUE' | translate}}:</md-checkbox> 
                 <div class="otherTip-content">
                     <md-input-container class="otherTip">
                         <input mdInput type="number" min="0" [(disabled)]="_otherTipAllowed" [(ngModel)]="_otherTip" (input)="sumOtherTip($event.target.value)">
                     </md-input-container>{{_currencyCode}}                
                 </div>
             </div>
-            <md-select class="payment-method" placeholder="{{'PAYMENTS.COLOMBIA.SELECT_PAYMENT_METHOD' | translate}}">
+            <md-select class="payment-method" placeholder="{{'PAYMENTS.COLOMBIA.SELECT_PAYMENT_METHOD' | translate}}" [(ngModel)]="_paymentMethodId">
                 <md-option *ngFor="let paymentMethod of _paymentMethods | async" (click)="setPaymentMethod(paymentMethod._id);" value="{{paymentMethod._id}}">{{paymentMethod.name | translate}}</md-option>
             </md-select>
             <div>
