@@ -2,31 +2,15 @@
     <div class="ion-content-custom">
         <h3 style="padding-left: 16px">{{'MOBILE.PAYMENTS.BILL' | translate}}</h3>
 
-        <!--ion-card>
+        <ion-card *ngIf="_paymentCreated">
             <img src="assets/img/payment-pending.png" width="100px"/>
             <ion-card-content>
                 <ion-card-title>
                     {{'MOBILE.PAYMENTS.PAY_PENDING' | translate}}
                 </ion-card-title>
                 <p>
-                    The most popular industrial group ever, and largely
-                    responsible for bringing the music to a mass audience.
+                    {{'MOBILE.PAYMENTS.PENDING_PAYMENT_MSG' | translate}}
                 </p>
-            </ion-card-content>
-        </ion-card-->
-
-        <ion-card (click)="goToAddOrders()">
-            <ion-card-content>
-                <div class="item-block">
-                    <img class="img-cards" src="assets/img/add-order.png">
-                    <div class="header-title">
-                        <div class="label">
-                            <span>
-                            </span>
-                            <p>{{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}</p>
-                        </div>
-                    </div>
-                </div>
             </ion-card-content>
         </ion-card>
         
@@ -40,6 +24,23 @@
                             </span>
                             <p>{{'MOBILE.PAYMENTS.VIEW_DETAIL' | translate}}</p>
                         </div>
+                    </div>
+                </div>
+            </ion-card-content>
+        </ion-card>
+
+        <ion-card (click)="goToAddOrders()">
+            <ion-card-content>
+                <div class="item-block">
+                    <img class="img-cards" src="assets/img/add-order.png">
+                    <div class="header-title">
+                        <div class="label">
+                            <span>
+                            </span>
+                            <p>{{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}</p>
+                        </div>
+                        <ion-icon *ngIf="_showAlertToConfirm" style="color: red" name="information-circle"></ion-icon>
+                        <ion-icon *ngIf="_showAlertWithPendingConf" style="color: darkgoldenrod" name="information-circle"></ion-icon>
                     </div>
                 </div>
             </ion-card-content>
@@ -72,7 +73,6 @@
         <h3 style="display: inline-block; position: absolute; right: 15px; -webkit-margin-before: 0em;">{{_totalToPayment}} {{_currencyCode}}</h3>    
         <div *ngIf="(_orders | async)?.length > 0">
             <button *ngIf="!_paymentCreated"  ion-button block (click)="pay()">{{'MOBILE.PAYMENTS.PAY_BTN' | translate}}</button>
-            <p *ngIf="_paymentCreated" style="font-weight: bold;color: red;">Pago Pendiente por Confirmar por parte del Mesero</p>
         </div>
         <div showWhen="ios" style="height: 42px">
         </div>

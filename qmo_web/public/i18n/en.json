@@ -486,7 +486,8 @@
         "ERROR_INSERT": "Error inserting collaborator",
         "MESSAGE_NOT_LOGIN": "Please log in to add a restaurant",
         "SELECT_RANGE_VALID_TABLES": "Select a valid range of the tables",
-        "TABLES_ASSIGNMENT": "Assignment of tables"
+        "TABLES_ASSIGNMENT": "Assignment of tables",
+        "MESSAGE_COLLABORATOR_EDIT" : "Collaborator updated successfully"
     },
     "ITEMS": {
         "ITEMS_MANAGEMENT": "Item management",
@@ -692,6 +693,7 @@
         "THERE_IS_NOT_REST" : "You are not in a restaurant",
         "THERE_IS_NOT_REST_MSG" : "Go to the order option and enter the code",
         "GO_TO_ORDERS":"Go to orders",
+        "NO_ORDERS": "You have no orders delivered at this time",
         "COLOMBIA": {
             "GARNISH_FOOD": "Garnish Food",
             "ADDITION": "Addition",
@@ -724,7 +726,11 @@
             "IN_PROCESS_PAYMENT": "In Process Payment",
             "RETURN_ORDER": "Return Order",
             "ORDERS_TO_CONFIRM_MSG": "You have orders to confirm",
-            "ORDERS_PENDIING_CONFIRM_MSG": "You have pending orders for confirmation"
+            "ORDERS_PENDIING_CONFIRM_MSG": "You have pending orders for confirmation",
+            "PENDING_PAYMENT_TITLE": "Pending Payment",
+            "PENDING_PAYMENT_MSG": "In a moment a waiter will receive your payment(s)",
+            "BALANCE": "Balance",
+            "PAYMENT_CREATED": "Payment Created Correctly"
         }
     },
     "WAITER_CALL": {
@@ -744,7 +750,9 @@
         "TABLE": "Table",
         "CALL_LABEL_SEND_ORDER": "Order to deliver",
         "CALL_LABEL_CUSTOMER": "Customer's call",
-        "CALL_LABEL_CUSTOMER_PAYMENT": "Customer's payment"
+        "CALL_LABEL_CUSTOMER_PAYMENT": "Customer's payment",
+        "BTN_CALL_WAITER" : "Request waiter",
+        "BTN_CANCEL_WAITER" : "Cancel"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Orders Confirmed",

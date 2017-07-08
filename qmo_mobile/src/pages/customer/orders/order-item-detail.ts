@@ -19,6 +19,9 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
 
     @Input()
     resCode: string;
+    
+    @Input()
+    currency: string;
 
     @Output('gotoedititem')
     itemIdOut: EventEmitter<any> = new EventEmitter<any>();
@@ -37,7 +40,6 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
             this._items = Items.find({_id: this.orderItem.itemId});
         });
 
-        //this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByRestaurant', this.resCode).subscribe();
         this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByUserId', Meteor.userId()).subscribe();
     }
 
@@ -46,6 +48,8 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
         _imageThumb = ItemImagesThumbs.find().fetch().filter((i) => i.itemId === _itemId)[0];
         if (_imageThumb) {
             return _imageThumb.url;
+        } else {
+            return '/assets/img/default-plate.png';
         }
     }
 

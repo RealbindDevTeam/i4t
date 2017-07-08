@@ -203,7 +203,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                     if (this._collaboratorRegisterForm.valid) {
                         
                         if( this._collaboratorRegisterForm.value.role === '200' ){
-                            if ( this._collaboratorRegisterForm.value.table_init === 0 && this._collaboratorRegisterForm.value.table_end === 0 ){
+                            if ( this._disabledTablesAssignment || (this._collaboratorRegisterForm.value.table_init === 0 && this._collaboratorRegisterForm.value.table_end === 0) ){
                                 this._collaboratorRegisterForm.value.table_end = Tables.collection.find({}).count();
                                 if (this._collaboratorRegisterForm.value.table_end > 0 ){
                                     this._collaboratorRegisterForm.value.table_init = 1;

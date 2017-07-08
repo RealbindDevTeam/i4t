@@ -170,6 +170,31 @@ if (Meteor.isServer) {
       });
       return;
     },
+
+    /**
+     * This meteor method allow cancel call to waiter by the user
+     * @param {WaiterCallDetail} _jobDetail
+     * @param {string} _userId
+     */
+    cancelCallClient : function ( _jobDetail : WaiterCallDetail, _userId : string ){
+      Job.getJob(_jobDetail.queue, _jobDetail.job_id, function (err, job) {
+        if(job._doc.status !== 'completed'){
+          job.cancel();
+        }
+        job.remove(function (err, result){
+          WaiterCallDetails.update({ job_id : _jobDetail.job_id },
+            { $set : { "status" : "cancel", modification_user : _userId, modification_date : new Date() }
+          });
+
+          let waiterDetail = WaiterCallDetails.collection.findOne({job_id : _jobDetail.job_id});
+          if( waiterDetail.type === "CALL_OF_CUSTOMER" && waiterDetail.waiter_id !== '' ){
+            let usr_detail = UserDetails.collection.findOne({ user_id : waiterDetail.waiter_id });
+            let jobs = usr_detail.jobs - 1;
+            UserDetails.update({user_id : waiterDetail.waiter_id} , { $set : { "enabled" : true, "jobs" : jobs } });
+          }
+        });
+      });
+    },
   
     /**
      * This function validate waiters enabled
@@ -187,7 +212,7 @@ if (Meteor.isServer) {
                                                          role_id : "200", 
                                                          jobs : {$lt : _maxJobs},
                                                          table_assignment_init : {$lte : table._number},
-                                                         table_assignment_end  : {$gte : table._number}, });
+                                                         table_assignment_end  : {$gte : table._number} });
       var count =  waiterEnableds.count();
 
       if( count > 0 ) {

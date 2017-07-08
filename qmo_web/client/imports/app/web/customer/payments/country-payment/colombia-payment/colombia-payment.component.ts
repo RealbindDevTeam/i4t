@@ -3,6 +3,7 @@ import { MeteorObservable } from "meteor-rxjs";
 import { TranslateService } from 'ng2-translate';
 import { Subscription, Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { MdSnackBar } from '@angular/material';
 import { Orders } from "../../../../../../../../both/collections/restaurant/order.collection";
 import { Order, OrderTranslateInfo } from '../../../../../../../../both/models/restaurant/order.model';
 import { Currency } from '../../../../../../../../both/models/general/currency.model';
@@ -41,7 +42,8 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     
     private _orders                             : Observable<Order[]>;
     private _paymentMethods                     : Observable<PaymentMethod[]>;
-    private _payments                           : Observable<Payment[]>;
+    private _paymentsNoPaid                     : Observable<Payment[]>;
+    private _paymentsPaid                       : Observable<Payment[]>;
     private _ordersToConfirm                    : Observable<Order[]>;
     private _ordersWithPendingConfirmation      : Observable<Order[]>;
 
@@ -60,9 +62,9 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
 
     private _otherTipAllowed                    : boolean = true;
     private _paymentMethodId                    : string;
-    private _loading                            : boolean;
     private _userIncludeTip                     : boolean = false;
     private _paymentCreated                     : boolean = false;
+    private _OutstandingBalance                 : boolean = true;
     private _showAlertToConfirm                 : boolean = false;
     private _showAlertWithPendingConf           : boolean = false;
 
@@ -71,10 +73,12 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate 
      * @param {NgZone} _ngZone 
      * @param {Router} _router
+     * @param {MdSnackBar} _snackBar
      */
     constructor( private _translate: TranslateService, 
                  private _ngZone: NgZone,
-                 private _router: Router ) {
+                 private _router: Router,
+                 public _snackBar: MdSnackBar ) {
         var _userLang = navigator.language.split( '-' )[0];
         _translate.setDefaultLang( 'en' );
         _translate.use( _userLang );
@@ -86,7 +90,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     ngOnInit(){
         this._ordersSubscription = MeteorObservable.subscribe( 'getOrdersByAccount', this._user ).subscribe( () => {
            this._ngZone.run( () => {
-                this._orders = Orders.find( { creation_user: this._user, restaurantId: this.restId, tableId: this.tabId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] } } ).zone();
+                this._orders = Orders.find( { creation_user: this._user, restaurantId: this.restId, tableId: this.tabId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] }, toPay : false } ).zone();
                 this._orders.subscribe( () => { this.calculateValues(); });
            }); 
         });
@@ -102,10 +106,11 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                 this._paymentMethods = PaymentMethods.find( { } ).zone();
             });
         });
-        this._paymentsSub = MeteorObservable.subscribe( 'getUserPaymentsByRestaurantAndTable', this._user, this.restId, this.tabId, ['PAYMENT.NO_PAID'] ).subscribe( () => {
+        this._paymentsSub = MeteorObservable.subscribe( 'getUserPaymentsByRestaurantAndTable', this._user, this.restId, this.tabId, ['PAYMENT.NO_PAID', 'PAYMENT.PAID'] ).subscribe( () => {
             this._ngZone.run( () => {
-                this._payments = Payments.find( { } ).zone();
-                this._payments.subscribe( () => { this.validateUserPayments() } );
+                this._paymentsNoPaid = Payments.find( { status: 'PAYMENT.NO_PAID' } ).zone();
+                this._paymentsNoPaid.subscribe( () => { this.validateUserPayments() } );
+                this._paymentsPaid = Payments.find( { status: 'PAYMENT.PAID' } ).zone();
             });
         });
         this._ordersTransfSub = MeteorObservable.subscribe( 'getOrdersWithConfirmationPending', this.restId, this.tabId ).subscribe( () => {
@@ -126,7 +131,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
      */
     calculateValues():void{
         this._totalValue = 0;
-        Orders.collection.find( { creation_user: this._user, restaurantId: this.restId, tableId: this.tabId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] } } ).fetch().forEach( ( order ) => {
+        Orders.collection.find( { creation_user: this._user, restaurantId: this.restId, tableId: this.tabId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] }, toPay : false } ).fetch().forEach( ( order ) => {
             this._totalValue += order.totalPayment;
         });
 
@@ -146,6 +151,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
 
         this._tipTotalString   = (this._tipTotal).toFixed(2);
         this._totalToPayment   = this._totalValue;
+        this._totalToPayment > 0 ? this._OutstandingBalance = false : this._OutstandingBalance = true;
     }
 
     /**
@@ -239,15 +245,16 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
         if ( this.tabId !== "" && this.restId !== "" ) {
             if ( this._paymentMethodId === '10' || this._paymentMethodId === '20' || this._paymentMethodId === '30' ){
                 let _lOrdersWithPendingConfim:number = Orders.collection.find( { creation_user: this._user, restaurantId: this.restId, tableId: this.tabId, 
-                                                                                    status: 'ORDER_STATUS.PENDING_CONFIRM' } ).count();
+                                                                                 status: 'ORDER_STATUS.PENDING_CONFIRM', toPay : false } ).count();
                 if( _lOrdersWithPendingConfim === 0 ){
                     let _lOrdersToInsert:string[] = [];
                     let _lTotalValue: number = 0;
                     let _lTotalTip: number = 0;
+                    let _lAccountId: string;
                     Orders.collection.find( { creation_user: this._user, restaurantId: this.restId, 
-                                              tableId: this.tabId, status: 'ORDER_STATUS.DELIVERED' } ).fetch().forEach( ( order ) => {
+                                              tableId: this.tabId, status: 'ORDER_STATUS.DELIVERED', toPay : false } ).fetch().forEach( ( order ) => {
+                                                  _lAccountId = order.accountId;
                                                   _lOrdersToInsert.push( order._id );
-                                                  Orders.update( { _id : order._id },{ $set : { toPay : true } } );
                                                   _lTotalValue += order.totalPayment;
                                               });
                     if( this._userIncludeTip ){ _lTotalTip += this._tipTotal }
@@ -259,6 +266,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                         modification_date: new Date(),
                         restaurantId: this.restId,
                         tableId: this.tabId,
+                        accountId:_lAccountId,
                         userId: this._user,
                         orders: _lOrdersToInsert,
                         paymentMethodId: this._paymentMethodId,
@@ -269,6 +277,22 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                         status: 'PAYMENT.NO_PAID',
                         received : false,
                     });
+                    Orders.collection.find( { creation_user: this._user, restaurantId: this.restId, 
+                                              tableId: this.tabId, status: 'ORDER_STATUS.DELIVERED', toPay : false } ).fetch().forEach( ( order ) => {
+                                                  Orders.update( { _id : order._id },{ $set : { toPay : true } } );
+                                            });
+                    this._userIncludeTip = false;
+                    this._otherTipAllowed = true;
+                    this._otherTip = 0;
+                    this._tipTotal = 0;
+                    this._totalValue = 0;
+                    this._ipoComBaseValue = 0;
+                    this._ipoComValue = 0;
+                    this._OutstandingBalance = true;
+                    this._totalToPayment = 0;
+                    this._paymentMethodId = '';
+                    _lTotalValue = 0;
+                    _lTotalTip = 0;
                     this.waiterCallForPay();
                 } else {
                     alert( _lMessage1 );
@@ -301,10 +325,12 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                                                                 table_id : this.tabId, 
                                                                 type : data.type }).count();
         if( isWaiterCalls === 0 ){            
-            this._loading = true;
             setTimeout(() => {
                 MeteorObservable.call( 'findQueueByRestaurant', data ).subscribe( () => {
-                    this._loading = false;
+                    let _lMessage:string = this.itemNameTraduction( 'PAYMENTS.COLOMBIA.PAYMENT_CREATED' );
+                    this._snackBar.open( _lMessage, '',{
+                        duration: 2500
+                    });
                 });
             }, 1500 );
         } else {
@@ -317,7 +343,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
      * Validate User Payments
      */
     validateUserPayments():void{
-        let _lPayments: number = Payments.collection.find( { status: 'PAYMENT.NO_PAID' } ).count();
+        let _lPayments: number = Payments.collection.find( { status: 'PAYMENT.NO_PAID' } ).fetch().length;
         _lPayments > 0 ? this._paymentCreated = true : this._paymentCreated = false;
     }
 

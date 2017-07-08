@@ -27,7 +27,7 @@ export class ItemDetailSendOrderComponent implements OnInit, OnDestroy {
   ngOnInit(){
     console
     this._itemsSubscription = MeteorObservable.subscribe( 'itemById', this.item.itemId ).subscribe( () => {
-        this._items = Items.find({});
+        this._items = Items.find({_id: this.item.itemId});
     });
   }
 

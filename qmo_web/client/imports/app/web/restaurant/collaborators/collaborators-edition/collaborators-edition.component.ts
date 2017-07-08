@@ -151,6 +151,12 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
 
                         if( this._collaboratorEditionForm.value.role === '200' ) {
                             console.log(!this._disabledTablesAssignment);
+                            if ( this._disabledTablesAssignment || (this._collaboratorEditionForm.value.table_init === 0 && this._collaboratorEditionForm.value.table_end === 0) ){
+                                this._collaboratorEditionForm.value.table_end = Tables.collection.find({}).count();
+                                if (this._collaboratorEditionForm.value.table_end > 0 ){
+                                    this._collaboratorEditionForm.value.table_init = 1;
+                                }
+                            }
                             if(!this._disabledTablesAssignment && this._collaboratorEditionForm.value.table_end < this._collaboratorEditionForm.value.table_init){
                                 this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.SELECT_RANGE_VALID_TABLES');
                                 alert(this._message);
@@ -172,8 +178,8 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
                                                         this._collaboratorEditionForm.value.birthdate_mm + "-" + 
                                                         this._collaboratorEditionForm.value.birthdate_dd + ">"),
                                     phone : this._collaboratorEditionForm.value.phone,
-                                    table_assignment_init : this._collaboratorEditionForm.value.table_init,
-                                    table_assignment_end : this._collaboratorEditionForm.value.table_end
+                                    table_assignment_init : Number.parseInt(this._collaboratorEditionForm.value.table_init.toString()),
+                                    table_assignment_end  : Number.parseInt(this._collaboratorEditionForm.value.table_end.toString())
                                 }
                             });
                         } else {
@@ -187,7 +193,7 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
                             });
                         }
                         this._dialogRef.close();
-                        this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.MESSAGE_COLLABORATOR');
+                        this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.MESSAGE_COLLABORATOR_EDIT');
                         alert(this._message);
                         this.cancel();
                     }
