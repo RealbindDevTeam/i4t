@@ -39,7 +39,8 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     private _paymentMethodsSub                  : Subscription;
     private _paymentsSub                        : Subscription;
     private _ordersTransfSub                    : Subscription;
-    
+    private _waiterCallsPaySub                  : Subscription;
+
     private _orders                             : Observable<Order[]>;
     private _paymentMethods                     : Observable<PaymentMethod[]>;
     private _paymentsNoPaid                     : Observable<Payment[]>;
@@ -61,12 +62,14 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     private _tipValue                           : string;
 
     private _otherTipAllowed                    : boolean = true;
-    private _paymentMethodId                    : string;
+    private _paymentMethodId                    : string = '';
     private _userIncludeTip                     : boolean = false;
     private _paymentCreated                     : boolean = false;
     private _OutstandingBalance                 : boolean = true;
     private _showAlertToConfirm                 : boolean = false;
     private _showAlertWithPendingConf           : boolean = false;
+    private _isCheckedTip                       : boolean = false;
+    private _isCheckedOtherTip                  : boolean = false; 
 
     /**
      * ColombiaPaymentComponent Constructor
@@ -124,6 +127,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                 this._ordersWithPendingConfirmation.subscribe( () => { this.showAlertOrdersWithPendingConfirm(); });
             });
         });
+        this._waiterCallsPaySub = MeteorObservable.subscribe('WaiterCallDetailForPayment', this.restId, this.tabId, 'PAYMENT' ).subscribe();
     }
 
     /**
@@ -285,6 +289,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                     this._otherTipAllowed = true;
                     this._otherTip = 0;
                     this._tipTotal = 0;
+                    this._tipTotalString = (this._tipTotal).toFixed(2);
                     this._totalValue = 0;
                     this._ipoComBaseValue = 0;
                     this._ipoComValue = 0;
@@ -293,6 +298,8 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                     this._paymentMethodId = '';
                     _lTotalValue = 0;
                     _lTotalTip = 0;
+                    this._isCheckedTip = false;
+                    this._isCheckedOtherTip = false;
                     this.waiterCallForPay();
                 } else {
                     alert( _lMessage1 );
@@ -323,7 +330,8 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
         }
         let isWaiterCalls = WaiterCallDetails.collection.find({ restaurant_id : this.restId, 
                                                                 table_id : this.tabId, 
-                                                                type : data.type }).count();
+                                                                type : data.type,
+                                                                status: { $in : [ 'waiting', 'completed']} }).count();
         if( isWaiterCalls === 0 ){            
             setTimeout(() => {
                 MeteorObservable.call( 'findQueueByRestaurant', data ).subscribe( () => {
@@ -374,6 +382,13 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Show payment details
+     */
+    viewPaymentDetail():void{
+        this._router.navigate(['app/colPayInfo']);
+    }
+
+    /**
      * ngOnDestroy Implementation
      */
     ngOnDestroy(){
@@ -383,5 +398,6 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
         this._paymentMethodsSub.unsubscribe();
         this._paymentsSub.unsubscribe();
         this._ordersTransfSub.unsubscribe();
+        this._waiterCallsPaySub.unsubscribe();
     }
 }

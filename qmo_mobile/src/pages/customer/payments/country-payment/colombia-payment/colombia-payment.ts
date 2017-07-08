@@ -323,7 +323,8 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
     }
     let isWaiterCalls = WaiterCallDetails.collection.find({ restaurant_id : this.restId, 
                                                             table_id : this.tabId, 
-                                                            type : data.type }).count();
+                                                            type : data.type,
+                                                            status: { $in : [ 'waiting', 'completed']} }).count();
     let title = "";
     let subTitle = this.itemNameTraduction('MOBILE.PAYMENTS.MOMENT_ANSWER');
     
