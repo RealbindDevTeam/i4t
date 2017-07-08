@@ -163,7 +163,7 @@
             "CONFIRM": "Confirm",
             "PENDING_ORDERS": "If you want to pay for orders from a companion of your table, this section will show that there are orders that are pending to confirm to add to your payment.",
             "CONSULT_TABLE_ORDERS": "Consult Orders",
-            "CONSULT_TABLE_ORDERS_TITLE": "Consult Table Orders",
+            "CONSULT_TABLE_ORDERS_TITLE": "Table Orders",
             "CONSULT_TABLE_ORDERS_SUBTITLE": "Check the orders of your companions and select the ones you want to pay",
             "ORDERS_TO_CONFIRM_TITLE": "Orders that other users wish to pay for you",
             "ORDERS_TO_PAY_TITLE": "Pending orders to add to your payment",

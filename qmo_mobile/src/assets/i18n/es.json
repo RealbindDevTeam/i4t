@@ -178,7 +178,7 @@
             "CONFIRM": "Confirmar",
             "PENDING_ORDERS": "Si deseas pagar ordenes de algun acompañante de tu mesa, esta seccion mostrara aquellas ordenes que se encuentran pendientes por confirmar para agregar a tu pago.",
             "CONSULT_TABLE_ORDERS": "Consultar Ordenes",
-            "CONSULT_TABLE_ORDERS_TITLE": "Consultar Ordenes de la Mesa",
+            "CONSULT_TABLE_ORDERS_TITLE": "Ordenes de la Mesa",
             "CONSULT_TABLE_ORDERS_SUBTITLE": "Consulta las ordenes de tus acompañantes y selecciona aquellas que desees pagar",
             "ORDERS_TO_CONFIRM_TITLE": "Ordenes que otros usuarios desean pagar por ti",
             "ORDERS_TO_PAY_TITLE": "Ordenes pendientes para agregar a tu pago",
