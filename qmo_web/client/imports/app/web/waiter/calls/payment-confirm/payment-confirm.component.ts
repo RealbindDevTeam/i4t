@@ -19,6 +19,10 @@ import { PaymentMethods } from '../../../../../../../both/collections/general/pa
 import { Table } from '../../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
 import { WaiterCallDetail } from '../../../../../../../both/models/restaurant/waiter-call-detail.model';
+import { Additions } from '../../../../../../../both/collections/administration/addition.collection';
+import { Addition } from '../../../../../../../both/models/administration/addition.model';
+import { GarnishFood } from '../../../../../../../both/models/administration/garnish-food.model';
+import { GarnishFoodCol } from '../../../../../../../both/collections/administration/garnish-food.collection';
 
 import template from './payment-confirm.component.html';
 import style from './payment-confirm.component.scss';
@@ -40,11 +44,15 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy{
     private _itemsSub           : Subscription;
     private _paymentMethodsSub  : Subscription;
     private _tablesSub          : Subscription;
+    private _additionsSub       : Subscription;
+    private _garnishFoodSub     : Subscription;
 
     private _payments           : Observable<Payment[]>;
     private _orders             : Observable<Order[]>;
     private _items              : Observable<Item[]>;
     private _paymentMethods     : Observable<PaymentMethod[]>;
+    private _additions          : Observable<Addition[]>;
+    private _garnishFood        : Observable<GarnishFood[]>;
 
     private _orderIndex         : number = -1;
     private _paymentIndex       : number = -1;
@@ -60,7 +68,9 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy{
      * @param {MdDialogRef<any>} _dialogRef
      * @param {NgZone} _ngZone
      */
-    constructor( private _translate: TranslateService, public _dialogRef: MdDialogRef<any>, private _ngZone: NgZone ){
+    constructor( private _translate: TranslateService, 
+                 public _dialogRef: MdDialogRef<any>, 
+                 private _ngZone: NgZone ){
         var userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang('en');
         _translate.use(userLang);  
@@ -103,6 +113,18 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy{
                 let _lTable:Table = Tables.collection.find( { _id : this.call.table_id } ).fetch()[0];
                 this._tableNumber = _lTable._number + '';
                 this._tableQRCode = _lTable.QR_code;
+            });
+        });
+
+        this._additionsSub = MeteorObservable.subscribe( 'additionsByRestaurantWork', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._additions = Additions.find( { } ).zone();
+            });
+        });
+
+        this._garnishFoodSub = MeteorObservable.subscribe( 'garnishFoodByRestaurantWork', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._garnishFood = GarnishFoodCol.find( { } ).zone();
             });
         });
     }
@@ -217,6 +239,29 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy{
     }
 
     /**
+     * Return Total price
+     * @param {Item} _pItem 
+     */
+    getTotalPrice( _pItem:Item, _pOrderItemQuantity:number ): number {
+        return _pItem.restaurants.filter( p => p.restaurantId === this.call.restaurant_id )[0].price * _pOrderItemQuantity;
+    }
+
+    /**
+     * Return Total Garnish Food Price
+     */
+    getGarnishFoodTotalPrice( _pGarnishFood: GarnishFood, _pOrderItemQuantity:number ): number {
+        return _pGarnishFood.restaurants.filter( g  => g.restaurantId === this.call.restaurant_id )[0].price * _pOrderItemQuantity;
+    }
+
+    /**
+     * Return Total addition Price
+     * @param {Addition} _pAddition 
+     */
+    getAdditionTotalPrice( _pAddition: Addition, _pOrderItemQuantity:number ): number {
+        return _pAddition.restaurants.filter( a => a.restaurantId === this.call.restaurant_id )[0].price * _pOrderItemQuantity;
+    }
+
+    /**
      * ngOnDestroy Implementation
      */
     ngOnDestroy(){
@@ -227,5 +272,7 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy{
         this._itemsSub.unsubscribe();
         this._paymentMethodsSub.unsubscribe();
         this._tablesSub.unsubscribe();
+        this._additionsSub.unsubscribe();
+        this._garnishFoodSub.unsubscribe();
     }
 }

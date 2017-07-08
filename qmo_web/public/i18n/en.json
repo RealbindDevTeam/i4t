@@ -854,7 +854,9 @@
         "STATUS": "Status",
         "QUANTITY": "Quant. ",
         "PRICE": "Price: ",
-        "CLOSE_PAYMENTS": "Close Payments"
+        "CLOSE_PAYMENTS": "Close Payments",
+        "GARNISH_FOOD": "Garnish Food",
+        "ADDITION": "Addition"
     },
     "MONTHLY_CONFIG": {
         "TITLE": "Configure restaurants and tables",

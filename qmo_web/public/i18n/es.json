@@ -854,7 +854,9 @@
         "STATUS": "Estado",
         "QUANTITY": "Cant. ",
         "PRICE": "Precio: ",
-        "CLOSE_PAYMENTS": "Cerrar Pagos"
+        "CLOSE_PAYMENTS": "Cerrar Pagos",
+        "GARNISH_FOOD": "Guarnicion",
+        "ADDITION": "Adicion"
     },
     "MONTHLY_CONFIG": {
         "TITLE": "Configurar restaurantes y mesas",
