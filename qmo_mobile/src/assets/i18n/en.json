@@ -155,6 +155,37 @@
             "ADDITION_EDITED": "Edited Adition Correctly",
             "QUANT": "Quant. "
         },
+        "ORDER_PAYMENT_TRANS": {
+            "ORDER_TO_CONFIRM": "When someone accompanying your table wishes to pay one of your orders, you must confirm this process. Here you can see the orders that other users wish to pay for you.",
+            "NO_ORDERS": "Orders Not Found",
+            "ORDERS": "Order",
+            "TOTAL": "Total",
+            "CONFIRM": "Confirm",
+            "PENDING_ORDERS": "If you want to pay for orders from a companion of your table, this section will show that there are orders that are pending to confirm to add to your payment.",
+            "CONSULT_TABLE_ORDERS": "Consult Orders",
+            "CONSULT_TABLE_ORDERS_TITLE": "Consult Table Orders",
+            "CONSULT_TABLE_ORDERS_SUBTITLE": "Check the orders of your companions and select the ones you want to pay",
+            "ORDERS_TO_CONFIRM_TITLE": "Orders that other users wish to pay for you",
+            "ORDERS_TO_PAY_TITLE": "Pending orders to add to your payment",
+            "THE_USER": "The user ",
+            "WANTS_PAY": " wants to pay the order ",
+            "AGREE": ", Do you agree?"
+        },
+        "ORDER_TRANS": {
+            "ORDERS": "Order",
+            "TOTAL": "Total",
+            "STATUS": "Status",
+            "PRICE": "Price",
+            "PAY": "Pay",
+            "NO_ORDERS": "No Orders found on the table that have been delivered and are ready to be paid.",
+            "QUANT": "Quant. ",
+            "GARNISH_FOOD": "Garnish Food",
+            "ADDITIONS": "Additions",
+            "ADDITION": "Addition",
+            "ORDER_PAY": "Do you want to pay for the order ",
+            "USER_CONFIRM": "The user who created the order must confirm that you will pay",
+            "NO_PAY_POSSIBLE": "It is not possible to pay for an order that has not yet been delivered"
+        },
         "PAYMENTS": {
             "TITTLE": "Payments",
             "TITTLE_CONTENT": "Your bill",
@@ -196,7 +227,9 @@
             "PAY_CONFIRM_MODAL" : "No payments received",
             "SELECT_ALL_PAYMENTS" : "Select all payments",
             "PAY_PENDING" : "Payment pending to receive",
-            "PENDING_PAYMENT_MSG": "In a moment a waiter will receive your payment(s)"
+            "PENDING_PAYMENT_MSG": "In a moment a waiter will receive your payment(s)",
+            "RETURN_ORDER_USER": "¿Do you want to return the order to the user?",
+            "ORDER_RETURNED" : "Order returned"
         },
         "WAITER_CALL": {
             "TITTLE": "Call waiter",

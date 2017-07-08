@@ -10,7 +10,10 @@
     <ion-item-group *ngFor="let order of _orders | async">
         <ion-item-divider color="light">
             <h2>{{ 'MOBILE.PAYMENTS.PAY_ORDER' | translate }} # {{order.code}}</h2>
-            <h2 item-right> {{order.totalPayment}} {{_currency}}</h2>
+            <h2> {{order.totalPayment}} {{_currency}}</h2>
+            <button *ngIf="isAvailableToReturn(order)" ion-button icon-only item-right style="color: #E53935; background-color: transparent;" (click)="showComfirmClose(order)">
+                <ion-icon name="repeat"></ion-icon>
+            </button>
         </ion-item-divider>
         <div *ngFor="let itemId of order.items">
             <colombia-payment-item-detail [order]="order" [orderItem]="itemId" [resCode]="order.restaurantId" [currencyCode]="_currency"></colombia-payment-item-detail>

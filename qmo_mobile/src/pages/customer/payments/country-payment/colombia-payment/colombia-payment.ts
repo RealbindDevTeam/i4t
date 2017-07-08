@@ -83,10 +83,17 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
         this._orders = Orders.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : { $ne : true } } ).zone();
         this._orders.subscribe(()=>{
           this._totalValue = 0;
-          Orders.collection.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : { $ne : true } } ).fetch().forEach( ( order ) => {
+          let _lOrders = Orders.collection.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : { $ne : true } } );
+          _lOrders.fetch().forEach((order)=>{
             this._totalValue += order.totalPayment;
           });
           this._totalToPayment = this._totalValue;
+          
+          if(_lOrders.count() <= 0){
+            this._ordersValidate = false;
+          } else {
+            this._ordersValidate = true;
+          }
         });
     });
 
@@ -134,8 +141,10 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
           });
           this._totalToPayment = this._totalValue;
           
-          if(_lOrders.count() >= 0){
+          if(_lOrders.count() <= 0){
             this._ordersValidate = false;
+          } else {
+            this._ordersValidate = true;
           }
         });
     });
