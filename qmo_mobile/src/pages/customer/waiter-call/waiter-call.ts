@@ -141,6 +141,24 @@ export class WaiterCallPage implements OnInit, OnDestroy {
       }, 1500);
     }
   }
+
+  /**
+   * Function taht allow cancel calls to waiter
+   */
+  cancelWaiterCall(){
+    let loading_msg = this.itemNameTraduction('MOBILE.WAITER_CALL.LOADING'); 
+
+    let loading = this._loadingCtrl.create({
+        content: loading_msg
+      });
+      loading.present();
+      setTimeout(() => {
+        let waiterCall = WaiterCallDetails.collection.find({ user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).fetch()[0];
+        MeteorObservable.call('cancelCallClient', waiterCall, Meteor.userId()).subscribe(() => {
+          loading.dismiss();
+        });
+      }, 1500);
+  }
   
   /**
    * This function allow translate strings
@@ -153,6 +171,8 @@ export class WaiterCallPage implements OnInit, OnDestroy {
     });
     return wordTraduced;
   }
+
+  
 
   /**
    * ionViewWillLeave implementation

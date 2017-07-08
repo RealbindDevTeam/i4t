@@ -3,6 +3,7 @@ import { AlertController, LoadingController, ModalController, NavController, Nav
 import { TranslateService } from 'ng2-translate';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
+import { Accounts } from 'qmo_web/both/collections/restaurant/account.collection';
 import { Currencies } from 'qmo_web/both/collections/general/currency.collection';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-call-detail.collection';
@@ -28,24 +29,33 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
   @Input() currId             : string;
   @Input() tabId              : string;
   
-  private _ordersSubscription         : Subscription;
-  private _currencySubscription       : Subscription;
-  private _restaurantsSubscription    : Subscription;
-  private _waiterCallsPaySubscription : Subscription;
-  private _paymentSubscription        : Subscription;
+  private _accountSubscription         : Subscription;
+  private _ordersSubscription          : Subscription;
+  private _ordersTransSubscription     : Subscription;
+  private _currencySubscription        : Subscription;
+  private _restaurantsSubscription     : Subscription;
+  private _waiterCallsPaySubscription  : Subscription;
+  private _paymentSubscription         : Subscription;
   
-  private _orders         : any;
-  private _payments       : any;
-  private _totalValue     : number = 0;
-  private _tipTotal       : number = 0;
-  private _tipSuggested   : number = 0;
-  private _tipOtherTotal  : number = 0;
-  private _totalToPayment : number = 0;
-  private _userLang       : string;
-  private _currencyCode   : string;
-  private _type           : string = "PAYMENT";
-  private _paymentMethod  : string = "PAYMENT_METHODS.CASH";
-  private _paymentCreated : boolean = false;
+  private _account                       : any;
+  private _orders                        : any;
+  private _payments                      : any;
+  private _paymentsPaid                  : any;
+  private _ordersToConfirm               : any;
+  private _ordersWithPendingConfirmation : any;
+  private _totalValue      : number = 0;
+  private _tipTotal        : number = 0;
+  private _tipSuggested    : number = 0;
+  private _tipOtherTotal   : number = 0;
+  private _totalToPayment  : number = 0;
+  private _userLang        : string;
+  private _currencyCode    : string;
+  private _type            : string = "PAYMENT";
+  private _paymentMethod   : string = "PAYMENT_METHODS.CASH";
+  private _paymentCreated           : boolean = false;
+  private _ordersValidate           : boolean = false;
+  private _showAlertToConfirm       : boolean = false;
+  private _showAlertWithPendingConf : boolean = false;
 
   constructor(public _navCtrl     : NavController, 
               public _navParams   : NavParams, 
@@ -63,6 +73,9 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
    * ngOnInit Implementation. Calculated the total to payment
    */
   ngOnInit() {
+    this._accountSubscription = MeteorObservable.subscribe('getAccountsByUserId', Meteor.userId()).subscribe(()=>{
+      this._account = Accounts.collection.find({}).fetch()[0];
+    });
 
     this._restaurantsSubscription = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', Meteor.userId() ).subscribe();
 
@@ -70,10 +83,17 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
         this._orders = Orders.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : { $ne : true } } ).zone();
         this._orders.subscribe(()=>{
           this._totalValue = 0;
-          Orders.collection.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : { $ne : true } } ).fetch().forEach( ( order ) => {
+          let _lOrders = Orders.collection.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : { $ne : true } } );
+          _lOrders.fetch().forEach((order)=>{
             this._totalValue += order.totalPayment;
           });
           this._totalToPayment = this._totalValue;
+          
+          if(_lOrders.count() <= 0){
+            this._ordersValidate = false;
+          } else {
+            this._ordersValidate = true;
+          }
         });
     });
 
@@ -84,12 +104,20 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
 
     this._waiterCallsPaySubscription = MeteorObservable.subscribe('WaiterCallDetailForPayment', this.restId, this.tabId, this._type ).subscribe();
 
-    this._paymentSubscription = MeteorObservable.subscribe('getUserPaymentsByRestaurantAndTable', Meteor.userId(), this.restId, this.tabId).subscribe( ()=>{
-      this._payments = Payments.find({});
-      this._payments.subscribe(() =>{
-        let _lPayments: number = Payments.collection.find( { status: 'PAYMENT.NO_PAID' } ).count();
-        _lPayments > 0 ? this._paymentCreated = true : this._paymentCreated = false;
-      });
+    this._paymentSubscription = MeteorObservable.subscribe('getUserPaymentsByRestaurantAndTable', Meteor.userId(), this.restId, this.tabId, ['PAYMENT.NO_PAID', 'PAYMENT.PAID']).subscribe( ()=>{
+      this._payments = Payments.find({ status: 'PAYMENT.NO_PAID' });
+      this._payments.subscribe( () => { this.validateUserPayments() } );
+      this._paymentsPaid = Payments.find( { status: 'PAYMENT.PAID' } );
+    });
+
+    this._ordersTransSubscription = MeteorObservable.subscribe( 'getOrdersWithConfirmationPending', this.restId, this.tabId ).subscribe( () => {
+      this._ordersToConfirm = Orders.find( { status: 'ORDER_STATUS.PENDING_CONFIRM', 
+                                            'translateInfo.firstOrderOwner': Meteor.userId(), 
+                                            'translateInfo.lastOrderOwner': { $not: '' } } ).zone();
+      this._ordersToConfirm.subscribe( () => { this.showAlertOrdersToConfirm(); });
+      this._ordersWithPendingConfirmation = Orders.find( { status: 'ORDER_STATUS.PENDING_CONFIRM', 
+                                                          'translateInfo.lastOrderOwner': Meteor.userId() } ).zone();
+      this._ordersWithPendingConfirmation.subscribe( () => { this.showAlertOrdersWithPendingConfirm(); });
     });
   }
 
@@ -97,16 +125,27 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
    * ionViewWillEnter Implementation. Calculated the total to payment
    */
   ionViewWillEnter() {
+    this._accountSubscription = MeteorObservable.subscribe('getAccountsByUserId', Meteor.userId()).subscribe(()=>{
+      this._account = Accounts.collection.find({}).fetch()[0];
+    });
+
     this._restaurantsSubscription = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', Meteor.userId() ).subscribe();
 
     this._ordersSubscription = MeteorObservable.subscribe( 'getOrdersByAccount', Meteor.userId() ).subscribe( () => {
         this._orders = Orders.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : { $ne : true } } ).zone();
         this._orders.subscribe(()=>{
           this._totalValue = 0;
-          Orders.collection.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : { $ne : true } } ).fetch().forEach( ( order ) => {
+          let _lOrders = Orders.collection.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : { $ne : true } } );
+          _lOrders.fetch().forEach((order)=>{
             this._totalValue += order.totalPayment;
           });
           this._totalToPayment = this._totalValue;
+          
+          if(_lOrders.count() <= 0){
+            this._ordersValidate = false;
+          } else {
+            this._ordersValidate = true;
+          }
         });
     });
 
@@ -117,12 +156,20 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
 
     this._waiterCallsPaySubscription = MeteorObservable.subscribe('WaiterCallDetailForPayment', this.restId, this.tabId, this._type ).subscribe();
     
-    this._paymentSubscription = MeteorObservable.subscribe('getUserPaymentsByRestaurantAndTable', Meteor.userId(), this.restId, this.tabId).subscribe( ()=>{
-      this._payments = Payments.find({});
-      this._payments.subscribe(() =>{
-        let _lPayments: number = Payments.collection.find( { status: 'PAYMENT.NO_PAID' } ).count();
-        _lPayments > 0 ? this._paymentCreated = true : this._paymentCreated = false;
-      });
+    this._paymentSubscription = MeteorObservable.subscribe('getUserPaymentsByRestaurantAndTable', Meteor.userId(), this.restId, this.tabId, ['PAYMENT.NO_PAID', 'PAYMENT.PAID']).subscribe( ()=>{
+      this._payments = Payments.find({ status: 'PAYMENT.NO_PAID' });
+      this._payments.subscribe( () => { this.validateUserPayments() } );
+      this._paymentsPaid = Payments.find( { status: 'PAYMENT.PAID' } );
+    });
+
+    this._ordersTransSubscription = MeteorObservable.subscribe( 'getOrdersWithConfirmationPending', this.restId, this.tabId ).subscribe( () => {
+      this._ordersToConfirm = Orders.find( { status: 'ORDER_STATUS.PENDING_CONFIRM', 
+                                            'translateInfo.firstOrderOwner': Meteor.userId(), 
+                                            'translateInfo.lastOrderOwner': { $not: '' } } ).zone();
+      this._ordersToConfirm.subscribe( () => { this.showAlertOrdersToConfirm(); });
+      this._ordersWithPendingConfirmation = Orders.find( { status: 'ORDER_STATUS.PENDING_CONFIRM', 
+                                                          'translateInfo.lastOrderOwner': Meteor.userId() } ).zone();
+      this._ordersWithPendingConfirmation.subscribe( () => { this.showAlertOrdersWithPendingConfirm(); });
     });
   }
   
@@ -130,7 +177,9 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
    * Allow navegate to ColombiaPaymentDetailsPage
    */
   goToPaymentDetails(){
-    this._navCtrl.push(ColombiaPaymentDetailsPage, { currency : this._currencyCode });
+    if(this._ordersValidate){
+      this._navCtrl.push(ColombiaPaymentDetailsPage, { currency : this._currencyCode });
+    }
   }
   
   /**
@@ -174,7 +223,7 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
         
         let _lOrdersWithPendingConfim : number = Orders.collection.find( { creation_user: Meteor.userId(), restaurantId: this.restId, tableId: this.tabId, status: 'ORDER_STATUS.PENDING_CONFIRM' } ).count();
         
-        if( _lOrdersWithPendingConfim === 0 ) {
+        if( _lOrdersWithPendingConfim === 0 && this._account) {
 
             let loading_msg = this.itemNameTraduction('MOBILE.WAITER_CALL.LOADING'); 
             let _lOrdersToInsert  : string[] = [];
@@ -210,13 +259,14 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
                                           Orders.update({_id : order._id},{ $set : { toPay : true }});
                                         });
 
-              Payments.insert( {
+              Payments.insert({
                   creation_user : Meteor.userId(),
                   creation_date : new Date(),
                   modification_user : '-',
                   modification_date : new Date(),
                   restaurantId : this.restId,
                   tableId : this.tabId,
+                  accountId: this._account._id,
                   userId : Meteor.userId(),
                   orders : _lOrdersToInsert,
                   paymentMethodId : _lPaymentMethodId,
@@ -299,23 +349,62 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
   }
 
   /**
+   * Validate User Payments
+   */
+  validateUserPayments():void{
+      let _lPayments: number = Payments.collection.find( { status: 'PAYMENT.NO_PAID' } ).fetch().length;
+      _lPayments > 0 ? this._paymentCreated = true : this._paymentCreated = false;
+  }
+
+  /**
+   * Show alert with orders to confirm
+   */
+  showAlertOrdersToConfirm():void{
+    let _lOrdersToConfirmCount: number = Orders.collection.find( { status: 'ORDER_STATUS.PENDING_CONFIRM', 
+                                                                   'translateInfo.firstOrderOwner': Meteor.userId(), 
+                                                                   'translateInfo.lastOrderOwner': { $not: '' } } ).fetch().length;
+    if( _lOrdersToConfirmCount > 0 ){
+      this._showAlertToConfirm = true;
+    } else {
+      this._showAlertToConfirm = false;
+    }
+  }
+
+  /**
+   * Show alert with orders with pending confirmation
+   */
+  showAlertOrdersWithPendingConfirm():void{
+    let _lOrdersWithPendingConfirmationCount: number = Orders.collection.find( { status: 'ORDER_STATUS.PENDING_CONFIRM', 
+                                                                                 'translateInfo.lastOrderOwner': Meteor.userId() } ).fetch().length;
+    if( _lOrdersWithPendingConfirmationCount > 0 ){
+      this._showAlertWithPendingConf = true;
+    } else {
+      this._showAlertWithPendingConf = false;
+    }
+  }
+
+  /**
    * ionViewWillLeave Implementation. Subscription unsubscribe
    */
   ionViewWillLeave() {
+    this._accountSubscription.unsubscribe();
     this._ordersSubscription.unsubscribe();
     this._currencySubscription.unsubscribe();
     this._restaurantsSubscription.unsubscribe();
     this._waiterCallsPaySubscription.unsubscribe();
+    this._ordersTransSubscription.unsubscribe();
   }
 
   /**
    * ngOnDestroy Implementation. Subscription unsubscribe
    */
   ngOnDestroy() { 
+    this._accountSubscription.unsubscribe();
     this._ordersSubscription.unsubscribe();
     this._currencySubscription.unsubscribe();
     this._restaurantsSubscription.unsubscribe();
     this._waiterCallsPaySubscription.unsubscribe();
+    this._ordersTransSubscription.unsubscribe();
   }
 
 }

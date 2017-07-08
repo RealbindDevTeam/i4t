@@ -55,7 +55,7 @@ export class AddOrderPaymentPage implements OnInit, OnDestroy {
   ngOnInit(){
     this._ordersSubscription = MeteorObservable.subscribe( 'getOrdersByTableId', this._restaurantId, this._tableId,[ 'ORDER_STATUS.DELIVERED' ] ).subscribe( () => {
       this._ordersTable = Orders.find( { creation_user: { $not: Meteor.userId() }, status: 'ORDER_STATUS.DELIVERED', 'translateInfo.lastOrderOwner': '',
-                                         'translateInfo.markedToTranslate': false, 'translateInfo.confirmedToTranslate': false } ).zone();
+                                         'translateInfo.markedToTranslate': false, 'translateInfo.confirmedToTranslate': false, toPay : false } ).zone();
     });
 
     this._itemsSubscription = MeteorObservable.subscribe( 'itemsByRestaurant', this._restaurantId ).subscribe( () => {

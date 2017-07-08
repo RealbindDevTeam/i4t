@@ -35,6 +35,7 @@ import { ColombiaPaymentDetailsPage } from '../pages/customer/payments/country-p
 import { ColombiaPaymentItemDetailComponent } from '../pages/customer/payments/country-payment/colombia-payment/colombia-payment-details/colombia-payment-item-detail';
 import { OrderPaymentTranslatePage } from '../pages/customer/payments/country-payment/order-payment-translate/order-payment-translate';
 import { AddOrderPaymentPage } from '../pages/customer/payments/country-payment/order-payment-translate/add-order-payment/add-order-payment';
+import { AdditionOrderDetailComponent } from '../pages/customer/payments/country-payment/order-payment-translate/add-order-payment/addition-order-detail';
 import { OrderPaymentDetailComponent } from '../pages/customer/payments/country-payment/order-payment-translate/order-payment-detail';
 import { PaymentConfirmPage } from "../pages/waiter/calls/payment-confirm/payment-confirm";
 import { PaymentDetailConfirmComponent } from "../pages/waiter/calls/payment-confirm/payment-detail-confirm";
@@ -82,6 +83,7 @@ export function createTranslateLoader(http: Http) {
     ColombiaPaymentItemDetailComponent,
     OrderPaymentTranslatePage,
     AddOrderPaymentPage,
+    AdditionOrderDetailComponent,
     OrderPaymentDetailComponent,
     PaymentConfirmPage,
     PaymentDetailConfirmComponent,
@@ -146,6 +148,7 @@ export function createTranslateLoader(http: Http) {
     ColombiaPaymentItemDetailComponent,
     OrderPaymentTranslatePage,
     AddOrderPaymentPage,
+    AdditionOrderDetailComponent,
     OrderPaymentDetailComponent,
     PaymentConfirmPage,
     PaymentDetailConfirmComponent,
