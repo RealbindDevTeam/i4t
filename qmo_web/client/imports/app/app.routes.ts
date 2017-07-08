@@ -42,9 +42,13 @@ import { SupervisorDashboardComponent } from './web/supervisor-dashboard/supervi
 import { MonthlyConfigComponent } from './web/restaurant/monthly-config/monthly-config.component';
 import { ColombiaOrderInfoComponent } from './web/customer/payments/country-payment/colombia-payment/colombia-order-info/colombia-order-info.component';
 import { OrderPaymentTranslateComponent } from './web/customer/payments/order-payment-translate/order-payment-translate.component';
+<<<<<<< HEAD
 import { PayuPaymentFormComponent } from './web/payment/payu-payment-form/payu-payment-form.component';
 import { HistoryPaymentComponent } from './web/payment/history-payment/history-payment.component';
 import { ReactivateRestaurantComponent } from './web/payment/reactivate-restaurant/reactivate-restaurant.component';
+=======
+import { ColombiaPayInfoComponent } from './web/customer/payments/country-payment/colombia-payment/colombia-pay-info/colombia-pay-info.component';
+>>>>>>> aa82e843e80cea7595f699cae7fce68a082fe589
 
 export const routes: Route[] = [
     {
@@ -77,9 +81,13 @@ export const routes: Route[] = [
             { path: 'monthly-config', component: MonthlyConfigComponent, canActivate: [AdminGuard]},
             { path: 'colOrdersInfo', component: ColombiaOrderInfoComponent, canActivate: [CustomerGuard] },
             { path: 'OrdersTranslate', component: OrderPaymentTranslateComponent, canActivate: [CustomerGuard] },
+<<<<<<< HEAD
             { path: 'payment-form/:param', component: PayuPaymentFormComponent, canActivate: [AdminGuard]},
             { path: 'history-payment', component: HistoryPaymentComponent, canActivate: [AdminGuard]},
             { path: 'reactivate-restaurant', component: ReactivateRestaurantComponent, canActivate: [AdminGuard]}
+=======
+            { path: 'colPayInfo', component: ColombiaPayInfoComponent, canActivate: [CustomerGuard] }            
+>>>>>>> aa82e843e80cea7595f699cae7fce68a082fe589
         ]
     },
     { path: '', component: LandingPageComponent },

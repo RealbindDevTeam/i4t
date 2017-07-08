@@ -152,7 +152,39 @@
             "DELETE_ADDITION_ORDER": "Eliminar Adicion",
             "DELETE_ADDITION_CONFIRM": "Esta seguro de eliminar la adicion de la orden?",
             "ADDITION_DELETED": "Adicion Eliminada de la Orden",
-            "ADDITION_EDITED": "Adicion Editada Correctamente"
+            "ADDITION_EDITED": "Adicion Editada Correctamente",
+            "QUANT":"Cant."
+        },
+        "ORDER_TRANS": {
+            "ORDERS": "Orden",
+            "TOTAL": "Total",
+            "STATUS": "Estado",
+            "PRICE": "Precio",
+            "PAY": "Pagar",
+            "NO_ORDERS": "No se encuentran ordenes en la mesa que se hayan entregado y esten listas para ser pagadas",
+            "QUANT": "Cant. ",
+            "GARNISH_FOOD": "Guarniciones",
+            "ADDITIONS": "Adiciones",
+            "ADDITION": "Adicion",
+            "ORDER_PAY": "Desea realizar el pago de la orden ",
+            "USER_CONFIRM": "El usuario que creo la orden debe confirmar que tu la pagaras",
+            "NO_PAY_POSSIBLE": "No es posible pagar una orden que no se haya entregado aun"
+        },
+        "ORDER_PAYMENT_TRANS": {
+            "ORDER_TO_CONFIRM": "Cuando algun acompañante de tu mesa desea pagar una de tus ordenes, debes confirmar este proceso. Aca podras ver aquellas ordenes que otros usuarios desean pagar por ti.",
+            "NO_ORDERS": "No se encuentran ordenes",
+            "ORDERS": "Orden",
+            "TOTAL": "Total",
+            "CONFIRM": "Confirmar",
+            "PENDING_ORDERS": "Si deseas pagar ordenes de algun acompañante de tu mesa, esta seccion mostrara aquellas ordenes que se encuentran pendientes por confirmar para agregar a tu pago.",
+            "CONSULT_TABLE_ORDERS": "Consultar Ordenes",
+            "CONSULT_TABLE_ORDERS_TITLE": "Ordenes de la Mesa",
+            "CONSULT_TABLE_ORDERS_SUBTITLE": "Consulta las ordenes de tus acompañantes y selecciona aquellas que desees pagar",
+            "ORDERS_TO_CONFIRM_TITLE": "Ordenes que otros usuarios desean pagar por ti",
+            "ORDERS_TO_PAY_TITLE": "Ordenes pendientes para agregar a tu pago",
+            "THE_USER": "El usuario ",
+            "WANTS_PAY": " desea pagar la orden ",
+            "AGREE": ", usted esta de acuerdo?"
         },
         "PAYMENTS": {
             "TITTLE": "Pagos",
@@ -194,7 +226,10 @@
             "MOMENT_PAY_ANSWER" : "En un momento recibiremos tu pago",
             "PAY_CONFIRM_MODAL" : "No hay pagos recibidos",
             "SELECT_ALL_PAYMENTS" : "Seleccionar todos los pagos",
-            "PAY_PENDING" : "Pago pendiente por recibir"
+            "PAY_PENDING" : "Pago pendiente por recibir",
+            "PENDING_PAYMENT_MSG": "En un momento un mesero recibira tu(s) pago(s)",
+            "RETURN_ORDER_USER": "¿Desea devolver la orden al usuario?",
+            "ORDER_RETURNED" : "Orden devuelta"
         },
         "WAITER_CALL": {
             "TITTLE": "Solicitar mesero",

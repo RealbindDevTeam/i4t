@@ -488,7 +488,8 @@
         "ERROR_INSERT": "Error al insertar colaborador",
         "MESSAGE_NOT_LOGIN": "Por favor ingresar al sistema para agregar un colaborador",
         "SELECT_RANGE_VALID_TABLES": "Seleccionar un rango valido de mesas",
-        "TABLES_ASSIGNMENT": "Asignación de mesas"
+        "TABLES_ASSIGNMENT": "Asignación de mesas",
+        "MESSAGE_COLLABORATOR_EDIT" : "Colaborador actualizado exitosamente"
     },
     "ITEMS": {
         "ITEMS_MANAGEMENT": "Administracion de items",
@@ -694,6 +695,7 @@
         "THERE_IS_NOT_REST" : "No te encuentras en un restaurante",
         "THERE_IS_NOT_REST_MSG" : "Ve a la opción de ordenes e ingresa el código",
         "GO_TO_ORDERS":"Ir a ordenes",
+        "NO_ORDERS": "No tienes órdenes entregadas en este momento",
         "COLOMBIA": {
             "GARNISH_FOOD": "Guarnicion",
             "ADDITION": "Adicion",
@@ -726,7 +728,11 @@
             "IN_PROCESS_PAYMENT": "En Proceso de Pago",
             "RETURN_ORDER": "Devolver Orden",
             "ORDERS_TO_CONFIRM_MSG": "Tienes Ordenes para Confirmar",
-            "ORDERS_PENDIING_CONFIRM_MSG": "Tienes Ordenes Pendientes por Confirmacion"
+            "ORDERS_PENDIING_CONFIRM_MSG": "Tienes Ordenes Pendientes por Confirmacion",
+            "PENDING_PAYMENT_TITLE": "Pago Pendiente",
+            "PENDING_PAYMENT_MSG": "Un mesero recibira tu(s) pago(s)",
+            "BALANCE": "Saldo",
+            "PAYMENT_CREATED": "Pago Creado Correctamente"
         }
     },
     "WAITER_CALL": {
@@ -746,7 +752,9 @@
         "TABLE": "Mesa",
         "CALL_LABEL_SEND_ORDER": "Entrega de orden",
         "CALL_LABEL_CUSTOMER": "Llamado de cliente",
-        "CALL_LABEL_CUSTOMER_PAYMENT": "Pago de cliente"
+        "CALL_LABEL_CUSTOMER_PAYMENT": "Pago de cliente",
+        "BTN_CALL_WAITER" : "Solicitar mesero",
+        "BTN_CANCEL_WAITER" : "Cancelar"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Ordenes Confirmadas",
@@ -824,7 +832,7 @@
         "STATUS": "Estado",
         "PRICE": "Precio",
         "PAY": "Pagar",
-        "NO_ORDERS": "No se Encuentran ordenes en la mesa que se hayan entregado y esten listas para ser pagadas",
+        "NO_ORDERS": "No se encuentran ordenes en la mesa que se hayan entregado y esten listas para ser pagadas",
         "QUANT": "Cant. ",
         "GARNISH_FOOD": "Guarniciones",
         "ADDITIONS": "Adiciones",

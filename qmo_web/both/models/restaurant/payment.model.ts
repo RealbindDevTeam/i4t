@@ -6,6 +6,7 @@ import { CollectionObject } from '../collection-object.model';
 export interface Payment extends CollectionObject{
     restaurantId: string;
     tableId: string;
+    accountId: string;
     userId: string;
     orders: string[];
     paymentMethodId: string;

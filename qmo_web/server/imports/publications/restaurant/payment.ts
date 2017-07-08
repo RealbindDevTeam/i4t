@@ -2,6 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Payment } from '../../../../both/models/restaurant/payment.model';
 import { Payments } from '../../../../both/collections/restaurant/payment.collection';
+import { UserDetails } from '../../../../both/collections/auth/user-detail.collection';
+import { UserDetail } from '../../../../both/models/auth/user-detail.model';
+import { Account } from '../../../../both/models/restaurant/account.model';
+import { Accounts } from '../../../../both/collections/restaurant/account.collection';
 
 /**
  * Meteor publication payments with userId condition
@@ -28,12 +32,21 @@ Meteor.publish( 'getUserPaymentsByRestaurant', function( _userId: string, _resta
  * @param {string} _userId
  * @param {string} _restaurantId
  * @param {string} _tableId
+ * @param {string[]} _status
  */
 Meteor.publish( 'getUserPaymentsByRestaurantAndTable', function( _userId: string, _restaurantId: string, _tableId: string, _status: string[] ) {
     check( _userId, String );
     check( _restaurantId, String );
     check( _tableId, String );
-    //return Payments.collection.find( { creation_user: _userId, restaurantId: _restaurantId, tableId: _tableId, status: { $in: _status } } );
+    let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
+    if( _lUserDetail ){
+        let _lAccount: Account = Accounts.findOne({restaurantId: _lUserDetail.current_restaurant, 
+                                                    tableId: _lUserDetail.current_table,
+                                                    status: 'OPEN'});
+        return Payments.collection.find( { creation_user: _userId, restaurantId: _restaurantId, tableId: _tableId, accountId: _lAccount._id, status: { $in: _status } } );
+    } else {
+        return;
+    }
 });
 
 /**

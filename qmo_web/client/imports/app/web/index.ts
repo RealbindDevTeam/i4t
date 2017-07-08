@@ -73,6 +73,7 @@ import { ColombiaOrderInfoComponent } from './customer/payments/country-payment/
 import { PayuPaymentFormComponent } from './payment/payu-payment-form/payu-payment-form.component';
 import { HistoryPaymentComponent } from './payment/history-payment/history-payment.component';
 import { ReactivateRestaurantComponent } from './payment/reactivate-restaurant/reactivate-restaurant.component'; 
+import { ColombiaPayInfoComponent } from './customer/payments/country-payment/colombia-payment/colombia-pay-info/colombia-pay-info.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -124,7 +125,8 @@ export const WEB_DECLARATIONS = [
     ColombiaOrderInfoComponent,
     PayuPaymentFormComponent,
     HistoryPaymentComponent,
-    ReactivateRestaurantComponent
+    ReactivateRestaurantComponent,
+    ColombiaPayInfoComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [

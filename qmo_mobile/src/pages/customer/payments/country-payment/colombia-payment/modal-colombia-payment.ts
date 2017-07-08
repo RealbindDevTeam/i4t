@@ -7,6 +7,7 @@ import { Restaurants } from 'qmo_web/both/collections/restaurant/restaurant.coll
 import { PaymentMethods } from 'qmo_web/both/collections/general/paymentMethod.collection';
 
 @Component({
+  selector: 'modal-colombia-payment',
   templateUrl: 'modal-colombia-payment.html'
 })
 
@@ -21,7 +22,6 @@ export class ModalColombiaPayment implements OnInit, OnDestroy {
   private _tipTotal      : number = 0;
   private _totalValue    : number = 0;
   private _otherTip      : number = 0;
-  //private _tipFinal      : number = 0;
 
   private _paymentMethod : any = "";
   private _currencyCode  : string;
@@ -29,9 +29,15 @@ export class ModalColombiaPayment implements OnInit, OnDestroy {
   private _disabledSubggestedTip : boolean = false ;
   private _disabledBtnOtherTip   : boolean = false ;
 
-  constructor(public _viewCtrl: ViewController, 
-              public _translate: TranslateService, 
-              public _params: NavParams) {
+  /**
+   * ModalColombiaPayment constructor
+   * @param _viewCtrl 
+   * @param _translate 
+   * @param _params 
+   */
+  constructor(public _viewCtrl  : ViewController, 
+              public _translate : TranslateService, 
+              public _params    : NavParams) {
 
     this._tipTotal      = this._params.get('tip');
     this._otherTip      = this._params.get('other_tip');
@@ -117,8 +123,6 @@ export class ModalColombiaPayment implements OnInit, OnDestroy {
     if(this._paymentMethod === ''){
       this._paymentMethod = 'MOBILE.PAYMENTS.PAYMENT_METHOD';
     }
-    //this._tipFinal = Number.parseInt(this._tipTotal.toString()) + Number.parseInt(this._otherTip.toString());
-    //this._viewCtrl.dismiss({ tip :  this._tipFinal, payment : this._paymentMethod });
     this._viewCtrl.dismiss({ tip :  this._tipTotal, other_tip: this._otherTip, payment : this._paymentMethod });
   }
 
