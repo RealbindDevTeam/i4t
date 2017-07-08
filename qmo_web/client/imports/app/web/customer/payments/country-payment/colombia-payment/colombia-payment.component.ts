@@ -39,7 +39,8 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     private _paymentMethodsSub                  : Subscription;
     private _paymentsSub                        : Subscription;
     private _ordersTransfSub                    : Subscription;
-    
+    private _waiterCallsPaySub                  : Subscription;
+
     private _orders                             : Observable<Order[]>;
     private _paymentMethods                     : Observable<PaymentMethod[]>;
     private _paymentsNoPaid                     : Observable<Payment[]>;
@@ -126,6 +127,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                 this._ordersWithPendingConfirmation.subscribe( () => { this.showAlertOrdersWithPendingConfirm(); });
             });
         });
+        this._waiterCallsPaySub = MeteorObservable.subscribe('WaiterCallDetailForPayment', this.restId, this.tabId, 'PAYMENT' ).subscribe();
     }
 
     /**
@@ -328,7 +330,8 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
         }
         let isWaiterCalls = WaiterCallDetails.collection.find({ restaurant_id : this.restId, 
                                                                 table_id : this.tabId, 
-                                                                type : data.type }).count();
+                                                                type : data.type,
+                                                                status: { $in : [ 'waiting', 'completed']} }).count();
         if( isWaiterCalls === 0 ){            
             setTimeout(() => {
                 MeteorObservable.call( 'findQueueByRestaurant', data ).subscribe( () => {
@@ -395,5 +398,6 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
         this._paymentMethodsSub.unsubscribe();
         this._paymentsSub.unsubscribe();
         this._ordersTransfSub.unsubscribe();
+        this._waiterCallsPaySub.unsubscribe();
     }
 }
