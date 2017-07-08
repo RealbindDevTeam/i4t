@@ -29,12 +29,12 @@ import { ChefGuard } from './web/auth/navigation/chef-guard.service';
 import { CashierGuard } from './web/auth/navigation/cashier-guard.service';
 import { SuperChefGuard } from './web/auth/navigation/super-chef-guard.service';
 
-import { PayuPaymenteService } from './web/restaurant/restaurant/restaurant-register/payment-plan/payu-payment.service';
+import { PayuPaymenteService } from './web/payment/payu-payment-service/payu-payment.service';
 
 const defaultOptions: AppConfigOptions = {
-  appTitle : 'QMO',
-  openSidenavStyle : 'side',
-  closedSidenavStyle : 'icon overlay'
+  appTitle: 'QMO',
+  openSidenavStyle: 'side',
+  closedSidenavStyle: 'icon overlay'
 };
 
 let moduleDefinition;
@@ -44,60 +44,60 @@ export function createTranslateLoader(http: Http) {
 }
 
 moduleDefinition = {
-    imports: [
-      BrowserModule,
-      FormsModule,
-      ReactiveFormsModule,
-      RouterModule.forRoot(routes),
-      MaterialModule,
-      FlexLayoutModule,
-      NavigationModule.forRoot(),
-      TranslateModule.forRoot({
-        provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [Http]
-      }),
-      SharedModule.forRoot(),
-      Ng2PageScrollModule.forRoot(),
-      NgxPaginationModule,
-      /*AgmCoreModule.forRoot({
-        apiKey: 'AIzaSyBXJSlwWRSHoRiZdqlOfHPqxxDRdqm8_Jk'
-      })*/
-    ],
-    declarations: [
-      ...WEB_DECLARATIONS,
-      ...MODAL_DIALOG_DECLARATIONS,
-      ...SHARED_DECLARATIONS,
-    ],
-    providers: [
-      ColorService,
-      MdSnackBar,
-      {provide : 'AppConfigOptions', useValue : defaultOptions},
-      ...ROUTES_PROVIDERS,
-      CustomerGuard,
-      AdminGuard,
-      WaiterGuard,
-      SupervisorGuard,
-      ChefGuard,
-      CashierGuard,
-      PayuPaymenteService,
-      SuperChefGuard
-    ],
-    bootstrap: [
-      AppComponent
-    ],
-    entryComponents: [
-      AppComponent,
-      ...MODAL_DIALOG_DECLARATIONS
-    ]
-  }
+  imports: [
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule.forRoot(routes),
+    MaterialModule,
+    FlexLayoutModule,
+    NavigationModule.forRoot(),
+    TranslateModule.forRoot({
+      provide: TranslateLoader,
+      useFactory: (createTranslateLoader),
+      deps: [Http]
+    }),
+    SharedModule.forRoot(),
+    Ng2PageScrollModule.forRoot(),
+    NgxPaginationModule,
+    /*AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBXJSlwWRSHoRiZdqlOfHPqxxDRdqm8_Jk'
+    })*/
+  ],
+  declarations: [
+    ...WEB_DECLARATIONS,
+    ...MODAL_DIALOG_DECLARATIONS,
+    ...SHARED_DECLARATIONS,
+  ],
+  providers: [
+    ColorService,
+    MdSnackBar,
+    { provide: 'AppConfigOptions', useValue: defaultOptions },
+    ...ROUTES_PROVIDERS,
+    CustomerGuard,
+    AdminGuard,
+    WaiterGuard,
+    SupervisorGuard,
+    ChefGuard,
+    CashierGuard,
+    PayuPaymenteService,
+    SuperChefGuard
+  ],
+  bootstrap: [
+    AppComponent
+  ],
+  entryComponents: [
+    AppComponent,
+    ...MODAL_DIALOG_DECLARATIONS
+  ]
+}
 
 @NgModule(moduleDefinition)
-export class AppModule { 
+export class AppModule {
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule : AppModule,
-      providers : [ SERVICES_DECLARATIONS ]
+      ngModule: AppModule,
+      providers: [SERVICES_DECLARATIONS]
     };
   }
 }

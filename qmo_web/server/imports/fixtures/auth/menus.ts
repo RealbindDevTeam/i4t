@@ -83,7 +83,7 @@ export function loadMenus() {
                         _id: "2001",
                         is_active: true,
                         name: "MENUS.PAYMENTS.MONTHLY_PAYMENT",
-                        url: "/app/monthly_invoice",
+                        url: "/app/monthly-payment",
                         icon_name: "",
                         order: 2001
                     },
@@ -91,9 +91,17 @@ export function loadMenus() {
                         _id: "2002",
                         is_active: true,
                         name: "MENUS.PAYMENTS.PAYMENT_HISTORY",
-                        url: "/app/invoicing_history",
+                        url: "/app/history-payment",
                         icon_name: "",
                         order: 2002
+                    },
+                    {
+                        _id: "2003",
+                        is_active: true,
+                        name: "MENUS.PAYMENTS.REACTIVATE_RESTAURANT",
+                        url: "/app/reactivate-restaurant",
+                        icon_name: "",
+                        order: 2003 
                     }
                 ]
             },

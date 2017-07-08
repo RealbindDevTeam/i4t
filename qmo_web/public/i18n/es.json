@@ -189,7 +189,8 @@
         "PAYMENTS": {
             "PAYMENTS": "Pagos",
             "MONTHLY_PAYMENT": "Pago mensual",
-            "PAYMENT_HISTORY": "Historial de Pagos"
+            "PAYMENT_HISTORY": "Historial de Pagos",
+            "REACTIVATE_RESTAURANT": "Reactivar restaurante"
         },
         "MENU_DEFINITION": {
             "MENU_DEFINITION": "Menú",

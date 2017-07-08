@@ -20,7 +20,7 @@ import template from './monthly-payment.component.html';
 import style from './monthly-payment.component.scss';
 
 @Component({
-    selector: 'billing',
+    selector: 'monthly-payment',
     template,
     styles: [style]
 })
@@ -59,7 +59,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
         this._tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe();
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
 
-        this._currentDate = new Date(2017, 6, 1);
+        this._currentDate = new Date(2017, 6, 3);
         this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
         this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
         this._firstNextMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 1);
@@ -256,14 +256,15 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
         let restaurantCount: number = Restaurants.collection.find({ creation_user: Meteor.userId(), currencyId: _currencyId }).count();
         let restaurantFreeDaysCount: number = Restaurants.collection.find({ creation_user: Meteor.userId(), currencyId: _currencyId, freeDays: true }).count();
 
-        console.log('restaurantCount ' + restaurantCount + 'restaurantFreeDaysCount' + restaurantFreeDaysCount);
-
         if (restaurantCount === restaurantFreeDaysCount) {
             return false;
         } else if (restaurantCount !== restaurantFreeDaysCount) {
             return true;
         }
+    }
 
+    goToPaymentForm(){
+        this.router.navigate(['app/payment-form', 'leo sirve'], { skipLocationChange: true });
     }
 
     ngOnDestroy() {
