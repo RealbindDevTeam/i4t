@@ -7,7 +7,7 @@ SyncedCron.config({
     logger: null,
 
     // Name of collection to use for synchronisation and logging
-    collectionName: 'cronHistory',
+    collectionName: 'cron_history',
 
     // Default to using localTime
     utc: false,

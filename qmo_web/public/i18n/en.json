@@ -29,7 +29,7 @@
     "TIP_PERCENTAGE": "Tip percentage",
     "CLOSE": "Close",
     "VIEW_DETAIL": "View Detail",
-    "OTHER" : "Other...",
+    "OTHER": "Other...",
     "ORDER_STATUS": {
         "REGISTERED": "Registered",
         "IN_PROCESS": "In Process",
@@ -189,7 +189,8 @@
         "PAYMENTS": {
             "PAYMENTS": "Payments",
             "MONTHLY_PAYMENT": "Monthly Payment",
-            "PAYMENT_HISTORY": "Payment History"
+            "PAYMENT_HISTORY": "Payment History",
+            "REACTIVATE_RESTAURANT": "Reactivate restaurant"
         },
         "MENU_DEFINITION": {
             "MENU_DEFINITION": "Menu",
@@ -278,7 +279,7 @@
         "MORE": "more",
         "RESTAURANT_CREATION": "Restaurant creation",
         "ACTIVATION_MESSAGE": "Se activará el cobro mensual del servicio Iurest por restaurante",
-        "CLARIFICATION_MESSAGE_1": "Iurest performs the service charge on the " ,
+        "CLARIFICATION_MESSAGE_1": "Iurest performs the service charge on the ",
         "CLARIFICATION_MESSAGE_2": " day of each month, the first charge is over",
         "ACCEPT_CREATION": "Accept",
         "CANCEL_CREATION": "Cancel",
@@ -437,7 +438,7 @@
         "WEBPAGE": "Webpage",
         "EMAIL": "Email",
         "MSG_INITIAL": "Manage your restaurant information",
-        "CITY_OTHER" : "If the city of your restaurant is not in the cities option, you can specify it in the address field"
+        "CITY_OTHER": "If the city of your restaurant is not in the cities option, you can specify it in the address field"
     },
     "TABLES": {
         "TABLES_CREATION": "Creating tables",
@@ -469,8 +470,8 @@
         "COLLABORATORS_TEXT": "Select the restaurant you want for search",
         "MSG_INITIAL": "Link to all your collaborators an agreement to the role they play",
         "BTN": "Collaborator register",
-        "TABLE_INIT" : "Table init",
-        "TABLE_END" : "Table End"
+        "TABLE_INIT": "Table init",
+        "TABLE_END": "Table End"
     },
     "COLLABORATORS_REGISTER": {
         "COLLABORATORS_LABEL": "Collaborator",
@@ -488,7 +489,7 @@
         "MESSAGE_NOT_LOGIN": "Please log in to add a restaurant",
         "SELECT_RANGE_VALID_TABLES": "Select a valid range of the tables",
         "TABLES_ASSIGNMENT": "Assignment of tables",
-        "MESSAGE_COLLABORATOR_EDIT" : "Collaborator updated successfully"
+        "MESSAGE_COLLABORATOR_EDIT": "Collaborator updated successfully"
     },
     "ITEMS": {
         "ITEMS_MANAGEMENT": "Item management",
@@ -530,7 +531,7 @@
         "ACTIVATE": "ACTIVATE",
         "INACTIVATE": "INACTIVATE",
         "COOKING_TIME": "Approximate Cooking Time",
-        "MESSAGE" : "No items yet register",
+        "MESSAGE": "No items yet register",
         "SELECT_ALL_GARNISH_FOOD": "Select All Garnish Food",
         "SELECT_ALL_ADDITIONS": "Select All Additions",
         "ITEM_EDITED": "Item Edited Correctly"
@@ -690,10 +691,10 @@
         "ITEM_EDITED": "Item Edited Correctly",
         "ADDITION_EDITED": "Edited Adition Correctly"
     },
-   "PAYMENTS": {
-        "THERE_IS_NOT_REST" : "You are not in a restaurant",
-        "THERE_IS_NOT_REST_MSG" : "Go to the order option and enter the code",
-        "GO_TO_ORDERS":"Go to orders",
+    "PAYMENTS": {
+        "THERE_IS_NOT_REST": "You are not in a restaurant",
+        "THERE_IS_NOT_REST_MSG": "Go to the order option and enter the code",
+        "GO_TO_ORDERS": "Go to orders",
         "NO_ORDERS": "You have no orders delivered at this time",
         "COLOMBIA": {
             "GARNISH_FOOD": "Garnish Food",
@@ -752,8 +753,8 @@
         "CALL_LABEL_SEND_ORDER": "Order to deliver",
         "CALL_LABEL_CUSTOMER": "Customer's call",
         "CALL_LABEL_CUSTOMER_PAYMENT": "Customer's payment",
-        "BTN_CALL_WAITER" : "Request waiter",
-        "BTN_CANCEL_WAITER" : "Cancel"
+        "BTN_CALL_WAITER": "Request waiter",
+        "BTN_CANCEL_WAITER": "Cancel"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Orders Confirmed",
@@ -894,5 +895,14 @@
         "ADDITIONS": "Additions",
         "ADDITION": "Addition(s)",
         "ORDER_DELIVERED": "Order Delivered"
+    },
+    "PAYU_PAYMENT_FORM": {
+        "TITLE": "Payment method",
+        "SUBTITLE": "Please, fill all the fields to do the payment ",
+        "SELECT_METHOD": "Select payment method *",
+        "CARD_NUMBER": "Card number *",
+        "EXPIRATION_YEAR": "Expiration year *",
+        "EXPIRATION_MONTH": "Expiration month *",
+        "SECURITY_CODE": "Security code *"
     }
 }

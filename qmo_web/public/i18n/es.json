@@ -29,7 +29,7 @@
     "TIP_PERCENTAGE": "Porcentaje de propina",
     "CLOSE": "Cerrar",
     "VIEW_DETAIL": "Ver Detalle",
-    "OTHER" : "Otro...",
+    "OTHER": "Otro...",
     "ORDER_STATUS": {
         "REGISTERED": "Registrado",
         "IN_PROCESS": "En Proceso",
@@ -438,7 +438,7 @@
         "WEBPAGE": "Pagina de Internet",
         "EMAIL": "Correo Electronico",
         "MSG_INITIAL": "Administra la información de tus restaurantes",
-        "CITY_OTHER" : "Si la ciudad de tu restaurante no se encuentra en la opción de ciudades, la puedes especificar en el campo dirección"
+        "CITY_OTHER": "Si la ciudad de tu restaurante no se encuentra en la opción de ciudades, la puedes especificar en el campo dirección"
     },
     "TABLES": {
         "TABLES_CREATION": "Creación de mesas",
@@ -470,8 +470,8 @@
         "COLLABORATORS_TEXT": "Seleccione el restaurante que deseé para la consulta",
         "MSG_INITIAL": "Vincula a todos tus colaboradores de a cuerdo al rol que desempeña",
         "BTN": "Registrar colaborador",
-        "TABLE_INIT" : "Mesa inicial",
-        "TABLE_END" : "Mesa final"
+        "TABLE_INIT": "Mesa inicial",
+        "TABLE_END": "Mesa final"
     },
     "COLLABORATORS_REGISTER": {
         "COLLABORATORS_LABEL": "Colaborador",
@@ -489,7 +489,7 @@
         "MESSAGE_NOT_LOGIN": "Por favor ingresar al sistema para agregar un colaborador",
         "SELECT_RANGE_VALID_TABLES": "Seleccionar un rango valido de mesas",
         "TABLES_ASSIGNMENT": "Asignación de mesas",
-        "MESSAGE_COLLABORATOR_EDIT" : "Colaborador actualizado exitosamente"
+        "MESSAGE_COLLABORATOR_EDIT": "Colaborador actualizado exitosamente"
     },
     "ITEMS": {
         "ITEMS_MANAGEMENT": "Administracion de items",
@@ -531,7 +531,7 @@
         "ACTIVATE": "ACTIVAR",
         "INACTIVATE": "INACTIVAR",
         "COOKING_TIME": "Tiempo Aprox de Cocción",
-        "MESSAGE" : "Aún no hay items registrados",
+        "MESSAGE": "Aún no hay items registrados",
         "SELECT_ALL_GARNISH_FOOD": "Seleccionar todas las Guarniciones",
         "SELECT_ALL_ADDITIONS": "Seleccionar todas las Adiciones",
         "ITEM_EDITED": "Item Editado Correctamente"
@@ -692,9 +692,9 @@
         "ADDITION_EDITED": "Adicion Editada Correctamente"
     },
     "PAYMENTS": {
-        "THERE_IS_NOT_REST" : "No te encuentras en un restaurante",
-        "THERE_IS_NOT_REST_MSG" : "Ve a la opción de ordenes e ingresa el código",
-        "GO_TO_ORDERS":"Ir a ordenes",
+        "THERE_IS_NOT_REST": "No te encuentras en un restaurante",
+        "THERE_IS_NOT_REST_MSG": "Ve a la opción de ordenes e ingresa el código",
+        "GO_TO_ORDERS": "Ir a ordenes",
         "NO_ORDERS": "No tienes órdenes entregadas en este momento",
         "COLOMBIA": {
             "GARNISH_FOOD": "Guarnicion",
@@ -753,8 +753,8 @@
         "CALL_LABEL_SEND_ORDER": "Entrega de orden",
         "CALL_LABEL_CUSTOMER": "Llamado de cliente",
         "CALL_LABEL_CUSTOMER_PAYMENT": "Pago de cliente",
-        "BTN_CALL_WAITER" : "Solicitar mesero",
-        "BTN_CANCEL_WAITER" : "Cancelar"
+        "BTN_CALL_WAITER": "Solicitar mesero",
+        "BTN_CANCEL_WAITER": "Cancelar"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Ordenes Confirmadas",
@@ -895,5 +895,14 @@
         "ADDITIONS": "Adiciones",
         "ADDITION": "Adicion(es)",
         "ORDER_DELIVERED": "Orden Entregada"
+    },
+    "PAYU_PAYMENT_FORM": {
+        "TITLE": "Medio de pago",
+        "SUBTITLE": "Por favor diligencia todos los campos para realizar el pago",
+        "SELECT_METHOD": "Seleccióna el medio de pago *",
+        "CARD_NUMBER": "Número de tarjeta *",
+        "EXPIRATION_YEAR": "Año de caducidad *",
+        "EXPIRATION_MONTH": "Mes de caducidad *",
+        "SECURITY_CODE": "Código de seguridad *"
     }
 }

@@ -29,6 +29,10 @@ export class HistoryPaymentComponent implements OnInit, OnDestroy {
 
     }
 
+    ngOnDestroy(){
+        
+    }
+
     goToPaymentForm() {
 
     }

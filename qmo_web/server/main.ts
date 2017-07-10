@@ -33,6 +33,7 @@ import './imports/publications/general/email-content';
 import './imports/publications/general/parameter';
 import './imports/publications/restaurant/payment';
 import './imports/publications/payment/history-payment';
+import './imports/publications/payment/cc-payment-method';
 
 import { loadRoles } from './imports/fixtures/auth/roles';
 import { loadMenus } from './imports/fixtures/auth/menus';
@@ -44,6 +45,7 @@ import { loadCities } from './imports/fixtures/settings/cities';
 import { loadLanguages } from './imports/fixtures/settings/languages';
 import { loadEmailContents } from './imports/fixtures/general/email-contents';
 import { loadParameters } from './imports/fixtures/general/parameters';
+import { loadCcPaymentMethods } from './imports/fixtures/payments/cc-payment-methods';
 import { createdbindexes } from './imports/indexes/indexdb';
 import { createCrons } from './cron';
 
@@ -59,5 +61,6 @@ Meteor.startup(() => {
     createdbindexes();
     loadEmailContents();
     loadParameters();
+    loadCcPaymentMethods();
     createCrons();
 });

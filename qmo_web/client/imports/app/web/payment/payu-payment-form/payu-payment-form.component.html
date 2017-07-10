@@ -1,0 +1,39 @@
+<md-card>
+    <md-card-title>{{'PAYU_PAYMENT_FORM.TITLE' | translate }}</md-card-title>
+    <md-card-subtitle>{{'PAYU_PAYMENT_FORM.SUBTITLE' | translate}}</md-card-subtitle>
+    <md-card-content>
+        <form [formGroup]="_paymentForm">
+            <div style="margin-top: 3%">
+                <md-select formControlName="paymentMethod" [(ngModel)]="_selectedPaymentMethod" placeholder="{{'PAYU_PAYMENT_FORM.SELECT_METHOD' | translate}}"
+                    style="width: 40%">
+                    <md-option *ngFor="let cCPaymentMethod of _cCPaymentMethods | async" value="{{cCPaymentMethod.payu_code}}">{{cCPaymentMethod.name}}</md-option>
+                </md-select>
+            </div>
+            <div style="margin-top: 1%">
+                <md-input-container style="width: 40%">
+                    <input mdInput formControlName="cardNumber" placeholder="{{'PAYU_PAYMENT_FORM.CARD_NUMBER' | translate}}">
+                </md-input-container>
+                <md-select formControlName="expirationMonth" [(ngModel)]="_selectedCardMonth" placeholder="{{'PAYU_PAYMENT_FORM.EXPIRATION_MONTH' | translate}}"
+                    style="width: 18%; margin-left: 2%;">
+                    <md-option *ngFor="let month of _monthsArray" value="{{month.value}}">{{month.viewValue}}</md-option>
+                </md-select>
+
+                <md-select formControlName="expirationYear" [(ngModel)]="_selectedCardYear" placeholder="{{'PAYU_PAYMENT_FORM.EXPIRATION_YEAR' | translate}}"
+                    style="width: 18%;">
+                    <md-option *ngFor="let year of _yearsArray" value="{{year.value}}">{{year.viewValue}}</md-option>
+                </md-select>
+
+                <md-input-container style="width: 15%; margin-left: 2%;">
+                    <input mdInput formControlName="securityCode" placeholder="{{'PAYU_PAYMENT_FORM.SECURITY_CODE' | translate}}" type="number">
+                </md-input-container>
+            </div>
+            <div>
+                <div *ngIf="_paymentForm.controls['cardNumber'].hasError('required') && _paymentForm.controls['cardNumber'].touched" class="error-message">requerido</div>
+                <div *ngIf="_paymentForm.controls['cardNumber'].hasError('minlength') && _paymentForm.controls['cardNumber'].touched" class="error-message">minimo</div>
+                <div *ngIf="_paymentForm.controls['cardNumber'].hasError('maxlength') && _paymentForm.controls['cardNumber'].touched" class="error-message">maximo</div>
+                <div *ngIf="_paymentForm.controls['cardNumber'].hasError('invalidNumericField') && _paymentForm.controls['cardNumber'].touched" class="error-message">no numero</div>
+            </div>
+        </form>
+        <h6>{{_selectedPaymentMethod}}-{{_selectedCardMonth}}-{{_selectedCardYear}}</h6>
+    </md-card-content>
+</md-card>
