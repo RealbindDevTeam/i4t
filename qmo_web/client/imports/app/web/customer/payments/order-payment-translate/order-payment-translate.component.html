@@ -1,68 +1,84 @@
-<md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" *ngIf="!_showPaymentInfo">
-    <md-card-content>
-        <div class="card_initial">
-            <div class="card_initial has-image">
-              <div class="card_initial-image-container">
-                <img class="card_initial-image" src="/images/payment-desabled.png"/>
-              </div>
-              <div class="card_initial-copy">
-                <div class="card_initial-tagline">
-                  {{'PAYMENTS.THERE_IS_NOT_REST' | translate}}
+<div class="order-form-1">
+    <div class="order-form-2">
+        <div class="menu-items">
+            <div class="menu-items-content">
+                <div class="content">
+                    <md-card md-cell="12" class="demo-card demo-basic payment-info" *ngIf="!_showPaymentInfo">
+                        <md-card-content>
+                            <div class="card_initial">
+                                <div class="card_initial has-image">
+                                <div class="card_initial-image-container">
+                                    <img class="card_initial-image" src="/images/payment-desabled.png"/>
+                                </div>
+                                <div class="card_initial-copy">
+                                    <div class="card_initial-tagline">
+                                    {{'PAYMENTS.THERE_IS_NOT_REST' | translate}}
+                                    </div>
+                                    <div class="card_initial-additional-links">
+                                    {{'PAYMENTS.THERE_IS_NOT_REST_MSG' | translate}}
+                                    </div>
+                                </div>
+                                <div class="card_initial-button">
+                                    <button md-raised-button (click)="goToOrders()">{{'PAYMENTS.GO_TO_ORDERS' | translate}}</button>
+                                </div>
+                                </div>
+                            </div>
+                        </md-card-content>
+                    </md-card>
+
+                    <div class="payment-info" *ngIf="_showPaymentInfo">
+                        <md-card class="main-card">
+                            <md-list>
+                                <md-list-item>
+                                    <img md-list-avatar class="image" src="/images/orders.png">
+                                    <h2 md-line class="title">{{'ORDER_PAYMENT_TRANS.CONSULT_TABLE_ORDERS_TITLE' | translate}}</h2>
+                                    <p md-line class="subtitle">{{'ORDER_PAYMENT_TRANS.CONSULT_TABLE_ORDERS_SUBTITLE_1' | translate}}</p>
+                                    <p md-line class="subtitle">{{'ORDER_PAYMENT_TRANS.CONSULT_TABLE_ORDERS_SUBTITLE_2' | translate}}</p>
+                                    <button md-raised-button color="primary" class="button" (click)="open()">{{'ORDER_PAYMENT_TRANS.CONSULT_TABLE_ORDERS' | translate}}</button>
+                                </md-list-item>
+                            </md-list>
+                        </md-card>
+
+                        <md-card>
+                            <md-card-title> {{'ORDER_PAYMENT_TRANS.ORDERS_TO_CONFIRM_TITLE' | translate}}</md-card-title>
+                            <md-card-subtitle>{{'ORDER_PAYMENT_TRANS.ORDER_TO_CONFIRM' | translate}}</md-card-subtitle>
+                            <p *ngIf="(_ordersToConfirm | async)?.length <= 0">{{'ORDER_PAYMENT_TRANS.NO_ORDERS' | translate}}</p>
+                            <div *ngFor="let orderCon of _ordersToConfirm | async">
+                                <md-toolbar class="order">
+                                    <i class="fa fa-list-alt" aria-hidden="true" class="order-icon"></i>
+                                    <span class="order-code">{{'ORDER_PAYMENT_TRANS.ORDERS' | translate}} # {{orderCon.code}}</span>
+                                    <span>{{'ORDER_PAYMENT_TRANS.TOTAL' | translate}}: {{orderCon.totalPayment}} {{_currencyCode}}</span>
+                                    <span class="app-flex-filler"></span>
+                                    <button md-raised-button class="confirm-button" (click)="confirmOrderToPay(orderCon)">{{'ORDER_PAYMENT_TRANS.CONFIRM' | translate}}</button>
+                                </md-toolbar>
+                            </div>
+                        </md-card>
+                        
+                        <md-card>
+                            <md-card-title>{{'ORDER_PAYMENT_TRANS.ORDERS_TO_PAY_TITLE' | translate}}</md-card-title>        
+                            <md-card-subtitle>{{'ORDER_PAYMENT_TRANS.PENDING_ORDERS' | translate}}</md-card-subtitle>
+                            <p *ngIf="(_ordersWithPendingConfirmation | async)?.length <= 0">{{'ORDER_PAYMENT_TRANS.NO_ORDERS' | translate}}</p>  
+                            <div *ngFor="let orderPenCon of _ordersWithPendingConfirmation | async">
+                                <md-toolbar class="order">
+                                    <i class="fa fa-list-alt" aria-hidden="true" class="order-icon"></i>
+                                    <span class="order-code">{{'ORDER_PAYMENT_TRANS.ORDERS' | translate}} # {{orderPenCon.code}}</span>
+                                    <span class="app-flex-filler"></span>
+                                    <span class="order-status">{{orderPenCon.status | translate}}</span>
+                                </md-toolbar>
+                            </div>
+                        </md-card>
+                    </div>
                 </div>
-                <div class="card_initial-additional-links">
-                  {{'PAYMENTS.THERE_IS_NOT_REST_MSG' | translate}}
+                
+                <div class="fixed-action-btn">
+                    <button id="fb" md-fab (click)="returnToPaymentsComponent()">
+                        <md-icon class="color-button-icon">keyboard_arrow_left</md-icon>
+                    </button>
                 </div>
-              </div>
-              <div class="card_initial-button">
-                <button md-raised-button (click)="goToOrders()">{{'PAYMENTS.GO_TO_ORDERS' | translate}}</button>
-              </div>
+
             </div>
         </div>
-    </md-card-content>
-</md-card>
-<div *ngIf="_showPaymentInfo">
-    <div class="main-card">
-        <md-card>
-            <md-list>
-                <md-list-item>
-                    <img md-list-avatar class="image" src="/images/aditions.png">
-                    <h2 md-line class="title">{{'ORDER_PAYMENT_TRANS.CONSULT_TABLE_ORDERS_TITLE' | translate}}</h2>
-                    <p md-line class="subtitle">{{'ORDER_PAYMENT_TRANS.CONSULT_TABLE_ORDERS_SUBTITLE' | translate}}</p>
-                    <button md-raised-button color="primary" class="button" (click)="open()">{{'ORDER_PAYMENT_TRANS.CONSULT_TABLE_ORDERS' | translate}}</button>
-                </md-list-item>
-            </md-list>
-        </md-card>
-    </div>
-    <md-card class="orders-to-confirm">
-        <md-card-title> {{'ORDER_PAYMENT_TRANS.ORDERS_TO_CONFIRM_TITLE' | translate}}</md-card-title>
-        <md-card-subtitle>{{'ORDER_PAYMENT_TRANS.ORDER_TO_CONFIRM' | translate}}</md-card-subtitle>
-        <p *ngIf="(_ordersToConfirm | async)?.length <= 0">{{'ORDER_PAYMENT_TRANS.NO_ORDERS' | translate}}</p>
-        <div *ngFor="let orderCon of _ordersToConfirm | async">
-            <md-toolbar class="order">
-                <i class="fa fa-list-alt" aria-hidden="true" class="order-icon"></i>
-                <span class="order-code">{{'ORDER_PAYMENT_TRANS.ORDERS' | translate}} # {{orderCon.code}}</span>
-                <span>{{'ORDER_PAYMENT_TRANS.TOTAL' | translate}}: {{orderCon.totalPayment}} {{_currencyCode}}</span>
-                <span class="app-flex-filler"></span>
-                <button md-raised-button class="confirm-button" (click)="confirmOrderToPay(orderCon)">{{'ORDER_PAYMENT_TRANS.CONFIRM' | translate}}</button>
-            </md-toolbar>
-        </div>
-    </md-card>
-    <md-card class="orders-to-pay">
-        <md-card-title>{{'ORDER_PAYMENT_TRANS.ORDERS_TO_PAY_TITLE' | translate}}</md-card-title>        
-        <md-card-subtitle>{{'ORDER_PAYMENT_TRANS.PENDING_ORDERS' | translate}}</md-card-subtitle>
-        <p *ngIf="(_ordersWithPendingConfirmation | async)?.length <= 0">{{'ORDER_PAYMENT_TRANS.NO_ORDERS' | translate}}</p>  
-        <div *ngFor="let orderPenCon of _ordersWithPendingConfirmation | async">
-            <md-toolbar class="order">
-                <i class="fa fa-list-alt" aria-hidden="true" class="order-icon"></i>
-                <span class="order-code">{{'ORDER_PAYMENT_TRANS.ORDERS' | translate}} # {{orderPenCon.code}}</span>
-                <span class="app-flex-filler"></span>
-                <span class="order-status">{{orderPenCon.status | translate}}</span>
-            </md-toolbar>
-        </div>
-    </md-card>
-    <div class="fixed-action-btn">
-        <button id="fb" md-fab (click)="returnToPaymentsComponent()">
-            <md-icon class="color-button-icon">keyboard_arrow_left</md-icon>
-        </button>
     </div>
 </div>
+<!--
+-->
