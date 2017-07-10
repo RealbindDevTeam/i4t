@@ -732,7 +732,15 @@
             "PENDING_PAYMENT_TITLE": "Pago Pendiente",
             "PENDING_PAYMENT_MSG": "Un mesero recibira tu(s) pago(s)",
             "BALANCE": "Saldo",
-            "PAYMENT_CREATED": "Pago Creado Correctamente"
+            "PAYMENT_CREATED": "Pago Creado Correctamente",
+            "PAYMENTS_DETAILS": "Detalle de Pagos",
+            "PAYMENTS_DETAILS_MSG": "Consulta el Estado de tus Pagos",
+            "NO_PAYED": "No Pagado",
+            "PAYED": "Pagado",
+            "TOTAL_ORDERS": "Total Ordenes",
+            "TOTAL_TIP": "Total Propina",
+            "PRICE": "Precio",
+            "QUANT": "Cant. "
         }
     },
     "WAITER_CALL": {
@@ -818,8 +826,9 @@
         "CONFIRM": "Confirmar",
         "PENDING_ORDERS": "Si deseas pagar ordenes de algun acompañante de tu mesa, esta seccion mostrara aquellas ordenes que se encuentran pendientes por confirmar para agregar a tu pago.",
         "CONSULT_TABLE_ORDERS": "Consultar Ordenes",
-        "CONSULT_TABLE_ORDERS_TITLE": "Consultar Ordenes de la Mesa",
-        "CONSULT_TABLE_ORDERS_SUBTITLE": "Consulta las ordenes de tus acompañantes y selecciona aquellas que desees pagar",
+        "CONSULT_TABLE_ORDERS_TITLE": "Ordenes de la Mesa",
+        "CONSULT_TABLE_ORDERS_SUBTITLE_1": "Consulta las ordenes de tus acompañantes",
+        "CONSULT_TABLE_ORDERS_SUBTITLE_2": "y selecciona aquellas que desees pagar",
         "ORDERS_TO_CONFIRM_TITLE": "Ordenes que otros usuarios desean pagar por ti",
         "ORDERS_TO_PAY_TITLE": "Ordenes pendientes para agregar a tu pago",
         "THE_USER": "El usuario ",
@@ -856,7 +865,9 @@
         "STATUS": "Estado",
         "QUANTITY": "Cant. ",
         "PRICE": "Precio: ",
-        "CLOSE_PAYMENTS": "Cerrar Pagos"
+        "CLOSE_PAYMENTS": "Cerrar Pagos Recibidos",
+        "GARNISH_FOOD": "Guarnicion",
+        "ADDITION": "Adicion"
     },
     "MONTHLY_CONFIG": {
         "TITLE": "Configurar restaurantes y mesas",

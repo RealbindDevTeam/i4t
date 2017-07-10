@@ -732,7 +732,15 @@
             "PENDING_PAYMENT_TITLE": "Pending Payment",
             "PENDING_PAYMENT_MSG": "A waiter will receive your payment(s)",
             "BALANCE": "Balance",
-            "PAYMENT_CREATED": "Payment Created Correctly"
+            "PAYMENT_CREATED": "Payment Created Correctly",
+            "PAYMENTS_DETAILS": "Payment Details",
+            "PAYMENTS_DETAILS_MSG": "Check the Status of your Payments",
+            "NO_PAYED": "No Payed",
+            "PAYED": "Payed",
+            "TOTAL_ORDERS": "Total Orders",
+            "TOTAL_TIP": "Total Tip",
+            "PRICE": "Price",
+            "QUANT": "Quant. "
         }
     },
     "WAITER_CALL": {
@@ -818,8 +826,9 @@
         "CONFIRM": "Confirm",
         "PENDING_ORDERS": "If you want to pay for orders from a companion of your table, this section will show that there are orders that are pending to confirm to add to your payment.",
         "CONSULT_TABLE_ORDERS": "Consult Orders",
-        "CONSULT_TABLE_ORDERS_TITLE": "Consult Table Orders",
-        "CONSULT_TABLE_ORDERS_SUBTITLE": "Check the orders of your companions and select the ones you want to pay",
+        "CONSULT_TABLE_ORDERS_TITLE": "Table Orders",
+        "CONSULT_TABLE_ORDERS_SUBTITLE_1": "Check the orders of your companions",
+        "CONSULT_TABLE_ORDERS_SUBTITLE_2": "and select the ones you want to pay",
         "ORDERS_TO_CONFIRM_TITLE": "Orders that other users wish to pay for you",
         "ORDERS_TO_PAY_TITLE": "Pending orders to add to your payment",
         "THE_USER": "The user ",
@@ -856,7 +865,9 @@
         "STATUS": "Status",
         "QUANTITY": "Quant. ",
         "PRICE": "Price: ",
-        "CLOSE_PAYMENTS": "Close Payments"
+        "CLOSE_PAYMENTS": "Close Payments Received",
+        "GARNISH_FOOD": "Garnish Food",
+        "ADDITION": "Addition"
     },
     "MONTHLY_CONFIG": {
         "TITLE": "Configure restaurants and tables",

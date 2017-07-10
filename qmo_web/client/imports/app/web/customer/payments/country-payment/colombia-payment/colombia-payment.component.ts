@@ -44,7 +44,6 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     private _orders                             : Observable<Order[]>;
     private _paymentMethods                     : Observable<PaymentMethod[]>;
     private _paymentsNoPaid                     : Observable<Payment[]>;
-    private _paymentsPaid                       : Observable<Payment[]>;
     private _ordersToConfirm                    : Observable<Order[]>;
     private _ordersWithPendingConfirmation      : Observable<Order[]>;
 
@@ -109,11 +108,10 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                 this._paymentMethods = PaymentMethods.find( { } ).zone();
             });
         });
-        this._paymentsSub = MeteorObservable.subscribe( 'getUserPaymentsByRestaurantAndTable', this._user, this.restId, this.tabId, ['PAYMENT.NO_PAID', 'PAYMENT.PAID'] ).subscribe( () => {
+        this._paymentsSub = MeteorObservable.subscribe( 'getUserPaymentsByRestaurantAndTable', this._user, this.restId, this.tabId, ['PAYMENT.NO_PAID'] ).subscribe( () => {
             this._ngZone.run( () => {
                 this._paymentsNoPaid = Payments.find( { status: 'PAYMENT.NO_PAID' } ).zone();
                 this._paymentsNoPaid.subscribe( () => { this.validateUserPayments() } );
-                this._paymentsPaid = Payments.find( { status: 'PAYMENT.PAID' } ).zone();
             });
         });
         this._ordersTransfSub = MeteorObservable.subscribe( 'getOrdersWithConfirmationPending', this.restId, this.tabId ).subscribe( () => {

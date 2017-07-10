@@ -45,7 +45,10 @@ Meteor.publish('getOrdersByUserId', function (_userId: string, _status: string[]
     let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
     if( _lUserDetail ){
         if(_lUserDetail.current_restaurant && _lUserDetail.current_table){
-            return Orders.collection.find({ restaurantId: _lUserDetail.current_restaurant, tableId: _lUserDetail.current_table, status: { $in: _status } });
+            let _lAccount: Account = Accounts.findOne({restaurantId: _lUserDetail.current_restaurant, 
+                                                       tableId: _lUserDetail.current_table,
+                                                       status: 'OPEN'});
+            return Orders.collection.find({ creation_user: _userId, restaurantId: _lAccount.restaurantId, tableId: _lAccount.tableId, status: { $in: _status } });
         } else {
             return;
         }
