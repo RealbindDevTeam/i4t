@@ -730,7 +730,15 @@
             "PENDING_PAYMENT_TITLE": "Pending Payment",
             "PENDING_PAYMENT_MSG": "A waiter will receive your payment(s)",
             "BALANCE": "Balance",
-            "PAYMENT_CREATED": "Payment Created Correctly"
+            "PAYMENT_CREATED": "Payment Created Correctly",
+            "PAYMENTS_DETAILS": "Payment Details",
+            "PAYMENTS_DETAILS_MSG": "Check the Status of your Payments",
+            "NO_PAYED": "No Payed",
+            "PAYED": "Payed",
+            "TOTAL_ORDERS": "Total Orders",
+            "TOTAL_TIP": "Total Tip",
+            "PRICE": "Price",
+            "QUANT": "Quant. "
         }
     },
     "WAITER_CALL": {
@@ -854,7 +862,9 @@
         "STATUS": "Status",
         "QUANTITY": "Quant. ",
         "PRICE": "Price: ",
-        "CLOSE_PAYMENTS": "Close Payments"
+        "CLOSE_PAYMENTS": "Close Payments Received",
+        "GARNISH_FOOD": "Garnish Food",
+        "ADDITION": "Addition"
     },
     "MONTHLY_CONFIG": {
         "TITLE": "Configure restaurants and tables",

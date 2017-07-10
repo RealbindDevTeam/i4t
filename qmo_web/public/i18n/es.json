@@ -730,7 +730,15 @@
             "PENDING_PAYMENT_TITLE": "Pago Pendiente",
             "PENDING_PAYMENT_MSG": "Un mesero recibira tu(s) pago(s)",
             "BALANCE": "Saldo",
-            "PAYMENT_CREATED": "Pago Creado Correctamente"
+            "PAYMENT_CREATED": "Pago Creado Correctamente",
+            "PAYMENTS_DETAILS": "Detalle de Pagos",
+            "PAYMENTS_DETAILS_MSG": "Consulta el Estado de tus Pagos",
+            "NO_PAYED": "No Pagado",
+            "PAYED": "Pagado",
+            "TOTAL_ORDERS": "Total Ordenes",
+            "TOTAL_TIP": "Total Propina",
+            "PRICE": "Precio",
+            "QUANT": "Cant. "
         }
     },
     "WAITER_CALL": {
@@ -854,7 +862,9 @@
         "STATUS": "Estado",
         "QUANTITY": "Cant. ",
         "PRICE": "Precio: ",
-        "CLOSE_PAYMENTS": "Cerrar Pagos"
+        "CLOSE_PAYMENTS": "Cerrar Pagos Recibidos",
+        "GARNISH_FOOD": "Guarnicion",
+        "ADDITION": "Adicion"
     },
     "MONTHLY_CONFIG": {
         "TITLE": "Configurar restaurantes y mesas",

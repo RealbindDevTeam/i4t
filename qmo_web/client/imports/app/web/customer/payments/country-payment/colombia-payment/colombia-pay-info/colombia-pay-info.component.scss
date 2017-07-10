@@ -1,0 +1,68 @@
+.main{
+    width: 55%;
+    margin: 0 auto;
+
+    .divider{
+        margin-left: 7rem; 
+        width:80%
+    }
+
+    .payment{
+        .icon{
+            width: 100px; 
+            height: 100px;
+        }
+
+        .total-pay{
+            font-weight: bold;
+            display: inline;
+        }
+
+        .no-payed{
+            font-weight: bold;
+            color:red;
+            display: inline
+        }
+
+        .payed{
+            font-weight: bold;
+            color:green;
+            display: inline
+        }
+    }
+
+    .payment-detail{
+        .element{
+            margin-left: 7rem;
+
+            .element-price{
+                display: inline;
+            }
+
+            .element-quantity{
+                display: inline;
+                margin-left: 2rem;
+            }
+
+            .element-total-price{
+                display: inline;
+                margin-left: 3rem;
+                color: black;
+            }
+        }
+    }
+}
+
+.fixed-action-btn {		
+    position: relative;
+
+    button {
+        position: absolute;
+        bottom: 30px;
+        right: 35px;
+        width: 56px;
+        -webkit-transition: all 0.3s ease;
+        -moz-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+    }
+ }
