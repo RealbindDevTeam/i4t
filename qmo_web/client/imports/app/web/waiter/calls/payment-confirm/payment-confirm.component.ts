@@ -205,8 +205,8 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy{
      * Function to verify all table payments received status is recived
      */
     verifyReceivedPayments():void{
-        let _lPaymentsNoReceived = Payments.collection.find( { restaurantId : this.call.restaurant_id, tableId : this.call.table_id, received: false } ).count();
-        _lPaymentsNoReceived === 0 ? this._payAllowed = true : this._payAllowed = false;
+        let _lPaymentsReceived = Payments.collection.find( { restaurantId : this.call.restaurant_id, tableId : this.call.table_id, status: 'PAYMENT.NO_PAID', received: true } ).count();
+        _lPaymentsReceived > 0 ? this._payAllowed = true : this._payAllowed = false;
     }
 
     /**
@@ -217,7 +217,10 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy{
         setTimeout( () => {
             MeteorObservable.call( 'closePay', this.call.restaurant_id, this.call.table_id, this.call ).subscribe( () => {
                 this._loading = false;
-                this.close();
+                let _lPaymentsNoReceived = Payments.collection.find( { restaurantId : this.call.restaurant_id, tableId : this.call.table_id, status: 'PAYMENT.NO_PAID', received: false } ).count();                
+                if( _lPaymentsNoReceived === 0 ){
+                    this.close();
+                }
             });
         }, 1500 );
     }
