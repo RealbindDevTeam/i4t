@@ -42,7 +42,7 @@
             </div>
         </md-card-content>
     </md-card>
-    <md-card *ngIf="_showOrderDetails">
+    <!--md-card *ngIf="_showOrderDetails">
         <md-card-title class="title">{{'PAYMENTS.COLOMBIA.ORDER_DETAILS' | translate}}</md-card-title>
         <button md-raised-button class="button-detail" color="primary" (click)="openDetail()">{{'PAYMENTS.COLOMBIA.CONSULT_PAYMENTS' | translate}}</button>
         <md-card-subtitle>{{'PAYMENTS.COLOMBIA.VIEW_ORDER_DETAILS' | translate}}</md-card-subtitle>
@@ -85,6 +85,96 @@
                 </div>
             </div>
             <md-divider></md-divider>
+        </md-card-content>
+    </md-card-->
+    <md-card style="width: 55%;margin: 0 auto;" *ngIf="_showOrderDetails">
+         <md-card-title>{{'PAYMENTS.COLOMBIA.ORDER_DETAILS' | translate}}</md-card-title>
+        <md-card-subtitle>{{'PAYMENTS.COLOMBIA.VIEW_ORDER_DETAILS' | translate}}</md-card-subtitle>
+        <md-card-content>
+            <div *ngFor="let order of _orders | async">
+                <md-list>
+                    <md-list-item>
+                        <img md-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="/images/orders.png">
+                        <h2 md-line>{{ 'PAYMENTS.COLOMBIA.PAY_ORDER' | translate }} # {{order.code}}</h2>
+                        <p md-line>{{'PAYMENTS.COLOMBIA.STATUS' | translate}}: {{order.status | translate}} - {{'PAYMENTS.COLOMBIA.FULL_PAYMENT' | translate}}: {{order.totalPayment}} {{_currencyCode}}</p>
+                        <button md-icon-button *ngIf="isAvailableToReturn(order)" md-tooltip="{{ 'PAYMENTS.COLOMBIA.RETURN_ORDER' | translate }}" mdTooltipPosition="above" (click)="returnOrderToFirstOwner(order)"><md-icon class="md-24">repeat</md-icon></button>                
+                    </md-list-item>
+                </md-list>
+                <md-list>
+                    <div *ngIf="(order.items.length > 0)">
+                        <span *ngFor="let it of order.items">
+                            <span *ngFor="let item of _items | async">
+                                <template [ngIf]="item._id === it.itemId">
+                                    <md-list-item style="margin-left: 7rem;">
+                                        <img md-list-avatar src="{{ getItemImage(item._id) }}">
+                                        <h4 md-line>{{item.name}}</h4>
+                                        <div md-line>
+                                            <p style="display: inline;">{{'PAYMENTS.COLOMBIA.PRICE' | translate}}: {{ getUnitPrice(item) }} {{_currencyCode}}</p>
+                                            <p style="display: inline;margin-left: 2rem;">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{it.quantity}}</p>
+                                            <p style="display: inline;margin-left: 3rem;color: black;">{{'PAYMENTS.COLOMBIA.TOTAL' | translate}}: {{ getTotalPrice(item, it.quantity) }} {{_currencyCode}}</p>
+                                        </div>
+                                    </md-list-item>
+                                    <md-divider style="margin-left: 7rem;width: 80%;"></md-divider>                                            
+                                    <div *ngIf="(it.garnishFood.length > 0)">
+                                        <span *ngFor="let gar of it.garnishFood">
+                                            <span *ngFor="let garnish of _garnishFood | async">
+                                                <template [ngIf]="gar === garnish._id">
+                                                    <md-list-item style="margin-left: 7rem;">
+                                                        <img md-list-avatar src="/images/default-plate.png">
+                                                        <h4 md-line>{{garnish.name}}</h4>
+                                                        <div md-line>
+                                                            <p style="display: inline;">{{'PAYMENTS.COLOMBIA.PRICE' | translate}}: {{ getGarnisFoodUnitPrice(garnish) }} {{_currencyCode}}</p>
+                                                            <p style="display: inline;margin-left: 2rem;">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{it.quantity}}</p>
+                                                            <p style="display: inline;margin-left: 3rem;color: black;">{{'PAYMENTS.COLOMBIA.TOTAL' | translate}}: {{ getGarnishFoodTotalPrice(garnish, it.quantity) }} {{_currencyCode}}</p>
+                                                        </div>
+                                                    </md-list-item>
+                                                </template>
+                                            </span>
+                                            <md-divider class="divider"></md-divider>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="(it.additions.length > 0)">
+                                        <span *ngFor="let ad of it.additions">
+                                            <span *ngFor="let addition of _additions | async">
+                                                <template [ngIf]="ad === addition._id">
+                                                    <md-list-item style="margin-left: 7rem;">
+                                                        <img md-list-avatar src="/images/default-plate.png">
+                                                        <h4 md-line>{{addition.name}}</h4>
+                                                        <div md-line>
+                                                            <p style="display: inline;">{{'PAYMENTS.COLOMBIA.PRICE' | translate}}: {{ getAdditionUnitPrice(addition) }} {{_currencyCode}}</p>
+                                                            <p style="display: inline;margin-left: 2rem;">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{it.quantity}}</p>
+                                                            <p style="display: inline;margin-left: 3rem;color: black;">{{'PAYMENTS.COLOMBIA.TOTAL' | translate}}: {{ getAdditionTotalPrice(addition, it.quantity) }} {{_currencyCode}}</p>
+                                                        </div>
+                                                    </md-list-item>
+                                                </template>
+                                            </span>
+                                            <md-divider class="divider"></md-divider>                                                
+                                        </span>
+                                    </div>
+                                </template>
+                            </span>
+                        </span>
+                    </div>
+                    <div *ngIf="(order.additions.length > 0)">
+                        <span *ngFor="let add of order.additions">
+                            <span *ngFor="let addition of _additions | async">
+                                <template [ngIf]="add.additionId === addition._id">
+                                    <md-list-item style="margin-left: 7rem;">
+                                        <img md-list-avatar src="/images/default-plate.png">
+                                        <h4 md-line>{{addition.name}}</h4>
+                                        <div md-line>
+                                            <p style="display: inline;">{{'PAYMENTS.COLOMBIA.PRICE' | translate}}: {{ getAdditionUnitPrice(addition) }} {{_currencyCode}}</p>
+                                            <p style="display: inline;margin-left: 2rem;">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{add.quantity}}</p>
+                                            <p style="display: inline;margin-left: 3rem;color: black;">{{'PAYMENTS.COLOMBIA.TOTAL' | translate}}: {{add.paymentAddition}} {{_currencyCode}}</p>
+                                        </div>
+                                    </md-list-item>
+                                </template>
+                            </span>
+                            <md-divider class="divider"></md-divider>                                                                                
+                        </span>
+                    </div>
+                </md-list>
+            </div>
         </md-card-content>
     </md-card>
     <div class="fixed-action-btn">

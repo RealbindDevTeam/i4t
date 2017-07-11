@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+//import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { MeteorObservable } from "meteor-rxjs";
 import { TranslateService } from 'ng2-translate';
 import { Subscription, Observable } from 'rxjs';
@@ -16,7 +16,13 @@ import { Currency } from '../../../../../../../../../both/models/general/currenc
 import { Currencies } from '../../../../../../../../../both/collections/general/currency.collection';
 import { Users } from '../../../../../../../../../both/collections/auth/user.collection';
 import { User } from '../../../../../../../../../both/models/auth/user.model';
-import { ColombiaPaymentDetailComponent } from './colombia-payment-detail/colombia-payment-detail.component';
+import { Items, ItemImagesThumbs } from '../../../../../../../../../both/collections/administration/item.collection';
+import { Item, ItemImageThumb } from '../../../../../../../../../both/models/administration/item.model';
+import { GarnishFood } from '../../../../../../../../../both/models/administration/garnish-food.model';
+import { GarnishFoodCol } from '../../../../../../../../../both/collections/administration/garnish-food.collection';
+import { Addition } from '../../../../../../../../../both/models/administration/addition.model';
+import { Additions } from '../../../../../../../../../both/collections/administration/addition.collection';
+//import { ColombiaPaymentDetailComponent } from './colombia-payment-detail/colombia-payment-detail.component';
 
 import template from './colombia-order-info.component.html';
 import style from './colombia-order-info.component.scss';
@@ -35,10 +41,17 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
     private _currencySub        : Subscription;
     private _tableSub           : Subscription;
     private _usersSub           : Subscription;
+    private _itemsSub           : Subscription;
+    private _garnishFoodSub     : Subscription;
+    private _additionSub        : Subscription;
+    private _itemImageThumbsSub : Subscription;
 
     private _orders             : Observable<Order[]>;
+    private _items              : Observable<Item[]>;
+    private _garnishFood        : Observable<GarnishFood[]>;
+    private _additions          : Observable<Addition[]>;
     
-    public _dialogRef           : MdDialogRef<any>;
+    //public _dialogRef           : MdDialogRef<any>;
     private _restaurantId       : string;
     private _tableId            : string;
     private _currencyId         : string;
@@ -57,12 +70,11 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
      * ColombiaOrderInfoComponent Constructor
      * @param {TranslateService} _translate 
      * @param {NgZone} _ngZone 
-     * @param {MdDialog} _dialog
      * @param {Router} _router
      */
     constructor( private _translate: TranslateService, 
                  private _ngZone:NgZone, 
-                 public _dialog: MdDialog,
+                 //public _dialog: MdDialog,
                  private _router: Router ) {
         var _userLang = navigator.language.split( '-' )[0];
         _translate.setDefaultLang( 'en' );
@@ -98,7 +110,23 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
                                             this._orders.subscribe( () => { this.calculateValues(); });
                                         }); 
                                     });
-                                    this._usersSub = MeteorObservable.subscribe('getUserByTableId', this._restaurantId, this._tableId ).subscribe();                                               
+                                    this._usersSub = MeteorObservable.subscribe('getUserByTableId', this._restaurantId, this._tableId ).subscribe();
+                                    this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this._restaurantId).subscribe(() => {
+                                        this._ngZone.run( () => {
+                                            this._items = Items.find( { } ).zone();
+                                        });
+                                    });
+                                    this._garnishFoodSub = MeteorObservable.subscribe( 'garnishFoodByRestaurant', this._restaurantId ).subscribe( () => {
+                                        this._ngZone.run( () => {
+                                            this._garnishFood = GarnishFoodCol.find( { } ).zone();
+                                        });
+                                    });
+                                    this._additionSub = MeteorObservable.subscribe( 'additionsByRestaurant', this._restaurantId ).subscribe( () => {
+                                        this._ngZone.run( () => {
+                                            this._additions = Additions.find( { } ).zone();
+                                        });
+                                    });
+                                    this._itemImageThumbsSub = MeteorObservable.subscribe( 'itemImageThumbsByRestaurant', this._restaurantId ).subscribe();
                                 });
                             });
                         });
@@ -129,7 +157,7 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
 
     /**
      * When user wants see payment detail, this function open dialog with orders information
-     */
+     
     openDetail(){
         this._dialogRef = this._dialog.open( ColombiaPaymentDetailComponent, {
             disableClose : true,
@@ -143,7 +171,7 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
         this._dialogRef.afterClosed().subscribe( result => {
             this._dialogRef = null;
         });
-    }
+    }*/
 
     /**
      * Function to evaluate if the order is available to return to the first owner
@@ -206,6 +234,66 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
     }
 
     /**
+     * Get Item Image
+     * @param {string} _pItemId
+     */
+    getItemImage( _pItemId: string ):string{
+        let _lItemImage: ItemImageThumb = ItemImagesThumbs.findOne( { itemId: _pItemId } );
+        if( _lItemImage ){
+            return _lItemImage.url;
+        } else{
+            return '/images/default-plate.png';
+        }
+    }
+
+    /**
+     * Return unit price
+     * @param {Item} _pItem 
+     */
+    getUnitPrice( _pItem:Item ):number {
+        return _pItem.prices.filter( p => p.currencyId === this._currencyId )[0].price;
+    }
+
+    /**
+     * Return Total price
+     * @param {Item} _pItem 
+     */
+    getTotalPrice( _pItem:Item, _pOrderItemQuantity:number ): number {
+        return _pItem.restaurants.filter( p => p.restaurantId === this._restaurantId )[0].price * _pOrderItemQuantity;
+    }
+
+    /**
+     * Return Unit garnish food price
+     * @param {GarnishFood} _pGarnishFood
+     */
+    getGarnisFoodUnitPrice( _pGarnishFood: GarnishFood ): number {
+        return _pGarnishFood.prices.filter( g  => g.currencyId === this._currencyId )[0].price;
+    }
+
+    /**
+     * Return Total Garnish Food Price
+     */
+    getGarnishFoodTotalPrice( _pGarnishFood: GarnishFood, _pOrderItemQuantity:number ): number {
+        return _pGarnishFood.restaurants.filter( g  => g.restaurantId === this._restaurantId )[0].price * _pOrderItemQuantity;
+    }
+
+    /**
+     * Return Unit addition price
+     * @param {Addition} _pAddition 
+     */
+    getAdditionUnitPrice( _pAddition: Addition ): number {
+        return _pAddition.prices.filter( a => a.currencyId === this._currencyId )[0].price;
+    }
+
+    /**
+     * Return Total addition Price
+     * @param {Addition} _pAddition 
+     */
+    getAdditionTotalPrice( _pAddition: Addition, _pOrderItemQuantity:number ): number {
+        return _pAddition.restaurants.filter( a => a.restaurantId === this._restaurantId )[0].price * _pOrderItemQuantity;
+    }
+
+    /**
      * Return To Payments Component
      */
     returnToPaymentsComponent():void{
@@ -229,5 +317,9 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
         if( this._currencySub ){ this._currencySub.unsubscribe(); }
         if( this._tableSub ){ this._tableSub.unsubscribe(); }
         if( this._usersSub ){ this._usersSub.unsubscribe(); }
+        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
+        if( this._garnishFoodSub ){ this._garnishFoodSub.unsubscribe(); }
+        if( this._additionSub ){ this._additionSub.unsubscribe(); }
+        if( this._itemImageThumbsSub ){ this._itemImageThumbsSub.unsubscribe(); }
     }
 }
