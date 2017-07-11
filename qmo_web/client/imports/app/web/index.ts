@@ -55,10 +55,8 @@ import { IurestFinancialElementComponent } from './custom/financial-info/financi
 import { IurestSliderComponent } from './custom/slider/slider.component';
 import { PaymentsComponent } from './customer/payments/payments.component';
 import { ColombiaPaymentComponent } from './customer/payments/country-payment/colombia-payment/colombia-payment.component';
-import { ColombiaItemDetailComponent } from './customer/payments/country-payment/colombia-payment/colombia-order-info/colombia-payment-detail/colombia-payment-item/colombia-payment-item.component';
 import { OrderPaymentTranslateComponent } from './customer/payments/order-payment-translate/order-payment-translate.component';
 import { OrderToTranslateComponent } from './customer/payments/order-payment-translate/order-to-translate/order-to-translate.component';
-import { ColombiaPaymentDetailComponent } from './customer/payments/country-payment/colombia-payment/colombia-order-info/colombia-payment-detail/colombia-payment-detail.component';
 import { CreateConfirmComponent } from './restaurant/restaurant/restaurant-register/create-confirm/create-confirm.component';
 import { MonthlyPaymentComponent } from './payment/monthly-payment/monthly-payment.component';
 import { PaymentConfirmComponent } from './waiter/calls/payment-confirm/payment-confirm.component';
@@ -68,7 +66,6 @@ import { RestaurantListComponent } from './restaurant/monthly-config/restaurant-
 import { EnableDisableComponent } from './restaurant/monthly-config/enable-disable.component'; 
 import { DisableConfirmComponent } from './restaurant/monthly-config/disable-confirm/disable-confirm.component';
 import { SendOrderConfirmComponent } from './waiter/calls/send-order-confirm/send-order-confirm.component';
-import { ColombiaAdditionDetailComponent } from './customer/payments/country-payment/colombia-payment/colombia-order-info/colombia-payment-detail/colombia-payment-addition/colombia-payment-addition.component';
 import { ColombiaOrderInfoComponent } from './customer/payments/country-payment/colombia-payment/colombia-order-info/colombia-order-info.component';
 import { ColombiaPayInfoComponent } from './customer/payments/country-payment/colombia-payment/colombia-pay-info/colombia-pay-info.component';
 
@@ -111,14 +108,12 @@ export const WEB_DECLARATIONS = [
     IurestSliderComponent,
     PaymentsComponent,
     ColombiaPaymentComponent,
-    ColombiaItemDetailComponent,
     OrderPaymentTranslateComponent,
     MonthlyPaymentComponent,
     SupervisorDashboardComponent,
     MonthlyConfigComponent,
     RestaurantListComponent,
     EnableDisableComponent,
-    ColombiaAdditionDetailComponent,
     ColombiaOrderInfoComponent,
     ColombiaPayInfoComponent
 ];
@@ -141,7 +136,6 @@ export const MODAL_DIALOG_DECLARATIONS = [
     RestaurantScheduleComponent,
     CallCloseConfirmComponent,
     OrderToTranslateComponent,
-    ColombiaPaymentDetailComponent,
     CreateConfirmComponent,
     PaymentConfirmComponent,
     CollaboratorsEditionComponent,

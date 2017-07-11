@@ -104,7 +104,7 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
                                 this._ngZone.run( () => {
                                     let _lTable:Table = Tables.findOne( { _id: _lUserDetail.current_table } );    
                                     this._tableId = _lTable._id;     
-                                    this._ordersSub = MeteorObservable.subscribe( 'getOrdersByAccount', this._user ).subscribe( () => {
+                                    this._ordersSub = MeteorObservable.subscribe( 'getOrdersByUserId', this._user, [ 'ORDER_STATUS.DELIVERED', 'ORDER_STATUS.PENDING_CONFIRM' ] ).subscribe( () => {
                                         this._ngZone.run( () => {
                                             this._orders = Orders.find( { creation_user: this._user, restaurantId: this._restaurantId, tableId: this._tableId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] }, toPay : false } ).zone();
                                             this._orders.subscribe( () => { this.calculateValues(); });
@@ -154,24 +154,6 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
         this._ipoComString     = (this._ipoComValue).toFixed(2);
         this._totalValue > 0 ? this._showOrderDetails = true : this._showOrderDetails = false;
     }
-
-    /**
-     * When user wants see payment detail, this function open dialog with orders information
-     
-    openDetail(){
-        this._dialogRef = this._dialog.open( ColombiaPaymentDetailComponent, {
-            disableClose : true,
-            width: '50%',
-            height: '85%'
-        });
-        this._dialogRef.componentInstance.currId = this._currencyId;
-        this._dialogRef.componentInstance.currencyCode = this._currencyCode;
-        this._dialogRef.componentInstance.restId = this._restaurantId;
-        this._dialogRef.componentInstance.tabId = this._tableId;
-        this._dialogRef.afterClosed().subscribe( result => {
-            this._dialogRef = null;
-        });
-    }*/
 
     /**
      * Function to evaluate if the order is available to return to the first owner
