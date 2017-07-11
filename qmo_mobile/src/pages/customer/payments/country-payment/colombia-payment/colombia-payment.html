@@ -2,7 +2,7 @@
     <div class="ion-content-custom">
         <h3 style="padding-left: 16px">{{'MOBILE.PAYMENTS.BILL' | translate}}</h3>
 
-        <ion-card *ngIf="_paymentCreated">
+        <ion-card *ngIf="_paymentCreated" (click)="goToPaymentInfo()">
             <img src="assets/img/payment-pending.png" width="100px"/>
             <ion-card-content>
                 <ion-card-title>

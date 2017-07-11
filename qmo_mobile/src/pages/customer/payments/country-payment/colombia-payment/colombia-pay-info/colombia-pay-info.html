@@ -1,0 +1,25 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            {{ 'MOBILE.PAYMENTS.PAY_DETAIL' | translate }}
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <div *ngFor="let pay of _payments | async">
+        <ion-item style="padding-left: 0;">
+            <ion-avatar item-left>
+                <img *ngIf="pay.paymentMethodId == '10'" class="img-cards" src="assets/img/pago.png">
+                <img *ngIf="pay.paymentMethodId == '20'" class="img-cards" src="assets/img/pago_tarjeta_credito.png">
+                <img *ngIf="pay.paymentMethodId == '30'" class="img-cards" src="assets/img/pago_tarjeta_debito.png">
+                <img *ngIf="pay.paymentMethodId == '40'" class="img-cards" src="assets/img/payment-online.png">
+            </ion-avatar>
+            <h2 style="font-weight: bold;">{{ 'MOBILE.PAYMENTS.TOTAL_TO_PAY' | translate }}: {{pay.totalToPayment}} {{_currency}}</h2>
+            <p> {{ 'MOBILE.PAYMENTS.TOTAL' | translate }}: {{pay.totalOrdersPrice}} {{_currency}}</p>
+            <p> {{ 'MOBILE.PAYMENTS.TIP' | translate }}: {{pay.totalTip}} {{_currency}}</p>
+        </ion-item>
+
+        <order-detail-pay-info *ngFor="let orderId of pay.orders" [orderId]="orderId" [restaurantId]="_restaurantId" [currency]="_currency"></order-detail-pay-info>
+    </div>
+</ion-content>

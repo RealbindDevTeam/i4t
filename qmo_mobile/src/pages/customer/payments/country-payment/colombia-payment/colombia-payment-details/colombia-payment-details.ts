@@ -8,7 +8,7 @@ import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { Users } from 'qmo_web/both/collections/auth/user.collection';
 
 /*
-  Generated class for the Payment-Details page.
+  Generated class for the ColombiaPaymentDetailsPage page.
 
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
