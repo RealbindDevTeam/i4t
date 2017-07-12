@@ -9,6 +9,7 @@ import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-call-detail.collection';
 import { Payments } from 'qmo_web/both/collections/restaurant/payment.collection';
 import { ColombiaPaymentDetailsPage } from "./colombia-payment-details/colombia-payment-details";
+import { ColombiaPayInfoPage } from "./colombia-pay-info/colombia-pay-info";
 import { ModalColombiaPayment } from "./modal-colombia-payment";
 import { OrderPaymentTranslatePage } from "../order-payment-translate/order-payment-translate";
 
@@ -172,7 +173,7 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
       this._ordersWithPendingConfirmation.subscribe( () => { this.showAlertOrdersWithPendingConfirm(); });
     });
   }
-  
+
   /**
    * Allow navegate to ColombiaPaymentDetailsPage
    */
@@ -181,12 +182,19 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
       this._navCtrl.push(ColombiaPaymentDetailsPage, { currency : this._currencyCode });
     }
   }
-  
+
   /**
    * Allow navegate to OrderPaymentTranslatePage
    */
   goToAddOrders(){
     this._navCtrl.push(OrderPaymentTranslatePage, { restaurant : this.restId, currency : this._currencyCode, table : this.tabId });
+  }
+
+  /**
+   * Allow navegate to ColombiaPayInfoPage
+   */
+  goToPaymentInfo(){
+    this._navCtrl.push(ColombiaPayInfoPage, { restaurant : this.restId, currency : this._currencyCode, table : this.tabId });
   }
 
   /**

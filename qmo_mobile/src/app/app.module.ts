@@ -45,6 +45,10 @@ import { SendOrderDetailsPage } from "../pages/waiter/calls/send-order-detail/se
 import { ItemDetailSendOrderComponent } from "../pages/waiter/calls/send-order-detail/item-detail-send-order";
 import { GarnishSendOrderComponent } from "../pages/waiter/calls/send-order-detail/garnish-food";
 import { AdditionsSendOrderComponent } from "../pages/waiter/calls/send-order-detail/addition";
+import { ColombiaPayInfoPage } from '../pages/customer/payments/country-payment/colombia-payment/colombia-pay-info/colombia-pay-info';
+import { OrderDetailPayInfoPage } from '../pages/customer/payments/country-payment/colombia-payment/colombia-pay-info/order-detail-pay-info';
+import { ItemPayInfoComponent } from '../pages/customer/payments/country-payment/colombia-payment/colombia-pay-info/item-pay-info/item-pay-info';
+import { AdditionPayInfoComponent } from '../pages/customer/payments/country-payment/colombia-payment/colombia-pay-info/addition-pay-info/addition-pay-info';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateStaticLoader(http, 'assets/i18n', '.json');
@@ -92,7 +96,11 @@ export function createTranslateLoader(http: Http) {
     SendOrderDetailsPage,
     ItemDetailSendOrderComponent,
     GarnishSendOrderComponent,
-    AdditionsSendOrderComponent
+    AdditionsSendOrderComponent,
+    ColombiaPayInfoPage,
+    OrderDetailPayInfoPage,
+    ItemPayInfoComponent,
+    AdditionPayInfoComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -157,7 +165,11 @@ export function createTranslateLoader(http: Http) {
     SendOrderDetailsPage,
     ItemDetailSendOrderComponent,
     GarnishSendOrderComponent,
-    AdditionsSendOrderComponent
+    AdditionsSendOrderComponent,
+    ColombiaPayInfoPage,
+    OrderDetailPayInfoPage,
+    ItemPayInfoComponent,
+    AdditionPayInfoComponent
   ],
   providers: [
     {

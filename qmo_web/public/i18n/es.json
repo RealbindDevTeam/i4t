@@ -774,7 +774,8 @@
         "GARNISH_FOOD": "Guarniciones",
         "NO_ADDITIONS": "Sin Adiciones",
         "ADDITIONS": "Adiciones",
-        "ADDITION": "Adicion(es)"
+        "ADDITION": "Adicion(es)",
+        "NO_ORDERS" : "Aún no hay ordenes por preparar"
     },
     "FINANCIAL_INFO": {
         "COLOMBIA": {
@@ -794,7 +795,10 @@
         "CANCEL": "Cancelar",
         "ENTER": "Ingresar código",
         "CODE_NOT_FOUND": "Código no encontrado",
-        "TRY_AGAIN": "Por favor intenta nuevamente"
+        "TRY_AGAIN": "Por favor intenta nuevamente",
+        "MSG_1" : "Puedes ordenar lo que deseas",
+        "NO_ORDERS" : "Aún no tienes ordenes, puedes crear una orden nueva",
+        "ORDER" : "Ordenar"
     },
     "MONTHLY_PAYMENT": {
         "TITLE": "Pago del servicio mensual de Iurest",
