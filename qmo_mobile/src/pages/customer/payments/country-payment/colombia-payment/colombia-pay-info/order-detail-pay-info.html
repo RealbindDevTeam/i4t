@@ -13,7 +13,7 @@
                             <h2 style="white-space: normal;">{{garnish.name}}</h2>
                             <p style="white-space: normal;">{{'MOBILE.ORDER_TRANS.PRICE' | translate}}: {{getGarnisFoodUnitPrice(garnish)}} {{currency}}</p>
                             <p style="white-space: normal;">{{'MOBILE.ORDERS.QUANT' | translate}} {{item.quantity}}</p>
-                            <!--p style="white-space: normal;">{{'MOBILE.ORDERS.TOTAL' | translate}}: {{ getGarnishFoodTotalPrice(garnish, item.quantity) }} {{currency}}</p-->
+                            <p style="white-space: normal;">{{'MOBILE.ORDERS.TOTAL' | translate}} {{ getGarnishFoodTotalPrice(garnish, item.quantity) }} {{currency}}</p>
                         </ion-item>
                     </template>
                 </span>
@@ -28,9 +28,9 @@
                             <img src="/assets/img/default-plate.png">
                         </ion-thumbnail>
                         <h2 style="white-space: normal;">{{addition.name}}</h2> 
-                        <p style="white-space: normal;">{{'MOBILE.ORDER_TRANS.PRICE' | translate}}: {{price}} {{currency}}</p>
+                        <p style="white-space: normal;">{{'MOBILE.ORDER_TRANS.PRICE' | translate}}: {{ getAdditionUnitPrice(addition) }} {{currency}}</p>
                         <p style="white-space: normal;">{{'MOBILE.ORDERS.QUANT' | translate}} {{item.quantity}}</p>
-                        <p style="white-space: normal;">{{'MOBILE.ORDERS.TOTAL' | translate}} {{price}} {{currency}}</p>
+                        <p style="white-space: normal;">{{'MOBILE.ORDERS.TOTAL' | translate}} {{ getAdditionTotalPrice(addition, item.quantity) }} {{currency}}</p>
                     </ion-item>
                 </div>
             </div>

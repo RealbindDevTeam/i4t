@@ -4,6 +4,7 @@ import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs';
 import { Payments } from 'qmo_web/both/collections/restaurant/payment.collection';
 import { Order, OrderTranslateInfo } from 'qmo_web/both/models/restaurant/order.model';
+import { Addition } from 'qmo_web/both/models/administration/addition.model';
 import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { Users } from 'qmo_web/both/collections/auth/user.collection';
@@ -40,7 +41,6 @@ export class OrderDetailPayInfoPage implements OnInit, OnDestroy {
   }
 
   ngOnInit(){
-    console.log(this.currency);
     this._ordersSubscription = MeteorObservable.subscribe( 'getOrderById', this.orderId ).subscribe(()=>{
       this._orders = Orders.find({_id : this.orderId});
     });
@@ -52,10 +52,8 @@ export class OrderDetailPayInfoPage implements OnInit, OnDestroy {
     });
     this._restaurantSubscription = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', Meteor.userId() ).subscribe( () => {
       let _lRestaurant = Restaurants.collection.find( { _id: this.restaurantId } ).fetch()[0];
-      console.log(_lRestaurant);
       this._currencyId = _lRestaurant.currencyId;
     });
-
   }
 
   /**
@@ -63,14 +61,38 @@ export class OrderDetailPayInfoPage implements OnInit, OnDestroy {
    * @param {GarnishFood} _pGarnishFood
    */
   getGarnisFoodUnitPrice( _pGarnishFood : GarnishFood ): number {
-    return _pGarnishFood.prices.filter( g  => g.currencyId === this._currencyId )[0].price;
+    if(this._currencyId){
+      return _pGarnishFood.prices.filter( g  => g.currencyId === this._currencyId )[0].price;
+    } else {
+      return 0;
+    }
   }
 
   /**
    * Return Total Garnish Food Price
    */
   getGarnishFoodTotalPrice( _pGarnishFood: GarnishFood, _pOrderItemQuantity : number ): number {
-      return _pGarnishFood.restaurants.filter( g  => g.restaurantId === this.restaurantId )[0].price * _pOrderItemQuantity;
+    return _pGarnishFood.restaurants.filter( g  => g.restaurantId === this.restaurantId )[0].price * _pOrderItemQuantity;
+  }
+
+  /**
+   * Return Unit addition price
+   * @param {Addition} _pAddition 
+   */
+  getAdditionUnitPrice( _pAddition: Addition ): number {
+    if(this._currencyId){
+      return _pAddition.prices.filter( a => a.currencyId === this._currencyId )[0].price;
+    } else {
+      return 0;
+    }
+  }
+
+  /**
+   * Return Total addition Price
+   * @param {Addition} _pAddition 
+   */
+  getAdditionTotalPrice( _pAddition: Addition, _pOrderItemQuantity:number ): number {
+    return _pAddition.restaurants.filter( a => a.restaurantId === this.restaurantId )[0].price * _pOrderItemQuantity;
   }
 
   ngOnDestroy(){
