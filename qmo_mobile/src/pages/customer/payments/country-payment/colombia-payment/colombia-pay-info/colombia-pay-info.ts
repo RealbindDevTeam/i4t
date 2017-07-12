@@ -1,12 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AlertController, LoadingController, ToastController, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs'
-import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs';
 import { Payments } from 'qmo_web/both/collections/restaurant/payment.collection';
-import { Order, OrderTranslateInfo } from 'qmo_web/both/models/restaurant/order.model';
-import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
-import { Users } from 'qmo_web/both/collections/auth/user.collection';
 
 /*
   Generated class for the ColombiaPayInfoPage page.

@@ -1,13 +1,9 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs'
-import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs';
-import { Payments } from 'qmo_web/both/collections/restaurant/payment.collection';
-import { Order, OrderTranslateInfo } from 'qmo_web/both/models/restaurant/order.model';
 import { Addition } from 'qmo_web/both/models/administration/addition.model';
 import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
-import { Users } from 'qmo_web/both/collections/auth/user.collection';
 import { GarnishFood } from 'qmo_web/both/models/administration/garnish-food.model';
 import { GarnishFoodCol } from 'qmo_web/both/collections/administration/garnish-food.collection';
 import { Restaurants } from 'qmo_web/both/collections/restaurant/restaurant.collection';

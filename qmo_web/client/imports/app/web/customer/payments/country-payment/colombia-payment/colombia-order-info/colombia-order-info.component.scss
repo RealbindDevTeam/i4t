@@ -12,89 +12,106 @@
     }
  }
 
- .title{
-     display: inline-block;
+ .main{
+     width: 55%;
+     margin: 0 auto;
+
+     .order-info{
+
+         .image{
+             border-radius: 50%; 
+             width: 100px; 
+             height: 100px;
+         }
+         .title{
+             color: black;
+             font-weight: bold;
+         }
+     }
+
+     .divider{
+         margin-left: 7rem;
+         width: 80%;
+     }
+
+     .order-details{
+
+         .element{
+             margin-left: 7rem;
+
+             .price{
+                 display: inline;
+             }
+
+             .quantity{
+                 display: inline;
+                 margin-left: 2rem;
+             }
+
+             .total{
+                 display: inline;
+                 margin-left: 3rem;
+                 color: black;
+             }
+         }
+     }
  }
 
- .button-detail{
-     float: right;
- }
-
-.block{
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    overflow: hidden;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-justify-content: space-between;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    margin: 0;
-    padding: 0;
+ .order-form-1 {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    border: 0;
-    font-weight: normal;
-    line-height: normal;
-    text-align: initial;
-    text-decoration: none;
-    color: inherit;
-}
+    
+    .order-form-2 {
+        position: relative;
+        overflow: hidden;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        
+        .menu-items {
+            position: relative;
+            -webkit-flex: 1 1 auto;
+            flex: 1 1 auto;
+            height: 100%;
 
-.item-inner {
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    overflow: hidden;
-    -webkit-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-    -webkit-flex-direction: inherit;
-    -ms-flex-direction: inherit;
-    flex-direction: inherit;
-    -webkit-align-items: inherit;
-    -ms-flex-align: inherit;
-    align-items: inherit;
-    -webkit-align-self: stretch;
-    -ms-flex-item-align: stretch;
-    align-self: stretch;
-    margin: 0;
-    padding: 0;
-    min-height: inherit;
-    border: 0;
-}
+                .menu-items-content {
+                    height: 100%;
+                    width: 100%;
+                    top: 0;
+                    -webkit-flex-direction: row;
+                    flex-direction: row;
+                    display: -webkit-box;
+                    display: -moz-box;
+                    display: -ms-flexbox;
+                    display: -webkit-flex;
+                    display: flex;
+                    
+                    .content {
+                        overflow: scroll;
+                        margin-top: 20px;
+                        margin-left: 20px;
+                        display: -webkit-box;
+                        display: -moz-box;
+                        display: -ms-flexbox;
+                        display: -webkit-flex;
+                        display: flex;
+                        height: calc( 100vh - 90px);
+                        width: 100%;
+                        -webkit-flex-direction: column;
+                        flex-direction: column;
+                        overflow-x: hidden;
+                        overflow-y: auto;
+                        -webkit-flex: 1 1 auto;
+                        flex: 1 1 auto;
 
-.input{
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    overflow: hidden;
-    -webkit-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-    -webkit-flex-direction: inherit;
-    -ms-flex-direction: inherit;
-    flex-direction: inherit;
-    -webkit-align-items: inherit;
-    -ms-flex-align: inherit;
-    align-items: inherit;
-    -webkit-align-self: stretch;
-    -ms-flex-item-align: stretch;
-    align-self: stretch;
-    text-overflow: ellipsis;
-    text-align: right;
-    margin-right: 10%;
-}
-
-.label{
-    display: block;
-    overflow: hidden;
-    -webkit-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-    margin: 0;
-    font-size: inherit;
-    text-overflow: ellipsis;
-    white-space: nowrap;   
+                    }
+            }
+        }
+    }
 }

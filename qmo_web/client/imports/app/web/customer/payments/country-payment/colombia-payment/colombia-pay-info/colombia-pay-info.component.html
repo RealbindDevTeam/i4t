@@ -46,7 +46,7 @@
                                                                             <template [ngIf]="gar === garnish._id">
                                                                                 <md-list-item class="element">
                                                                                     <img md-list-avatar src="/images/default-plate.png">
-                                                                                    <h4 md-line>{{garnish.name}}</h4>
+                                                                                    <h4 md-line>{{garnish.name}} ({{'PAYMENTS.COLOMBIA.GARNISH_FOOD' | translate}})</h4>
                                                                                     <div md-line>
                                                                                         <p class="element-price">{{'PAYMENTS.COLOMBIA.PRICE' | translate}}: {{ getGarnisFoodUnitPrice(garnish) }} {{_currencyCode}}</p>
                                                                                         <p class="element-quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{it.quantity}}</p>
@@ -64,7 +64,7 @@
                                                                             <template [ngIf]="ad === addition._id">
                                                                                 <md-list-item class="element">
                                                                                     <img md-list-avatar src="/images/default-plate.png">
-                                                                                    <h4 md-line>{{addition.name}}</h4>
+                                                                                    <h4 md-line>{{addition.name}} ({{'PAYMENTS.COLOMBIA.ADDITION' | translate}})</h4>
                                                                                     <div md-line>
                                                                                         <p class="element-price">{{'PAYMENTS.COLOMBIA.PRICE' | translate}}: {{ getAdditionUnitPrice(addition) }} {{_currencyCode}}</p>
                                                                                         <p class="element-quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{it.quantity}}</p>
@@ -86,7 +86,7 @@
                                                             <template [ngIf]="add.additionId === addition._id">
                                                                 <md-list-item class="element">
                                                                     <img md-list-avatar src="/images/default-plate.png">
-                                                                    <h4 md-line>{{addition.name}}</h4>
+                                                                    <h4 md-line>{{addition.name}} ({{'PAYMENTS.COLOMBIA.ADDITION' | translate}})</h4>
                                                                     <div md-line>
                                                                         <p class="element-price">{{'PAYMENTS.COLOMBIA.PRICE' | translate}}: {{ getAdditionUnitPrice(addition) }} {{_currencyCode}}</p>
                                                                         <p class="element-quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{add.quantity}}</p>

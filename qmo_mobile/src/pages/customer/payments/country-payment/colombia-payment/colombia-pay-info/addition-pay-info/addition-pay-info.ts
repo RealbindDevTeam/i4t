@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
-import { ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
 

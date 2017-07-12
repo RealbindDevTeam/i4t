@@ -229,7 +229,12 @@
             "PAY_PENDING" : "Payment pending to receive",
             "PENDING_PAYMENT_MSG": "In a moment a waiter will receive your payment(s)",
             "RETURN_ORDER_USER": "¿Do you want to return the order to the user?",
-            "ORDER_RETURNED" : "Order returned"
+            "ORDER_RETURNED" : "Order returned",
+            "GARNISH_FOOD": "Garnish Food",
+            "ADDITION": "Addition",
+            "PAY_DETAIL" : "Payment Detail",
+            "NO_PAYED" : "No payed",
+            "PAYED" : "Payed"
         },
         "WAITER_CALL": {
             "TITTLE": "Call waiter",
