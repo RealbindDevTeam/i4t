@@ -229,7 +229,12 @@
             "PAY_PENDING" : "Pago pendiente por recibir",
             "PENDING_PAYMENT_MSG": "En un momento un mesero recibira tu(s) pago(s)",
             "RETURN_ORDER_USER": "¿Desea devolver la orden al usuario?",
-            "ORDER_RETURNED" : "Orden devuelta"
+            "ORDER_RETURNED" : "Orden devuelta",
+            "GARNISH_FOOD": "Guarnición",
+            "ADDITION": "Adición",
+            "PAY_DETAIL" : "Detalle del Pago",
+            "NO_PAYED" : "No pagado",
+            "PAYED" : "Pagado"
         },
         "WAITER_CALL": {
             "TITTLE": "Solicitar mesero",

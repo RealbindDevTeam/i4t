@@ -1,0 +1,43 @@
+<div *ngFor="let order of _orders | async" padding>
+    <div *ngFor="let item of order.items">
+        <item-pay-info [itemId]="item.itemId" [currency]="currency" [price]="item.paymentItem" [quantity]="item.quantity"></item-pay-info>
+        
+        <div *ngIf="(item.garnishFood.length > 0)">
+            <span *ngFor="let gar of item.garnishFood">
+                <span *ngFor="let garnish of _garnishFood | async">
+                    <template [ngIf]="gar === garnish._id">
+                        <ion-item>
+                            <ion-thumbnail item-left>
+                                <img md-list-avatar src="/assets/img/default-plate.png">
+                            </ion-thumbnail>
+                            <h2 style="white-space: normal;">{{garnish.name}} ({{'MOBILE.PAYMENTS.GARNISH_FOOD' | translate }})</h2>
+                            <p style="white-space: normal;">{{'MOBILE.ORDER_TRANS.PRICE' | translate}}: {{getGarnisFoodUnitPrice(garnish)}} {{currency}}</p>
+                            <p style="white-space: normal;">{{'MOBILE.ORDERS.QUANT' | translate}} {{item.quantity}}</p>
+                            <p style="white-space: normal;">{{'MOBILE.ORDERS.TOTAL' | translate}} {{ getGarnishFoodTotalPrice(garnish, item.quantity) }} {{currency}}</p>
+                        </ion-item>
+                    </template>
+                </span>
+            </span>
+        </div>
+        
+        <div *ngIf="(item.additions.length > 0)">
+            <div *ngFor="let ad of item.additions">
+                <div *ngFor="let addition of _additions | async">
+                    <ion-item *ngIf="ad == addition._id">
+                        <ion-thumbnail item-left>
+                            <img src="/assets/img/default-plate.png">
+                        </ion-thumbnail>
+                        <h2 style="white-space: normal;">{{addition.name}} ({{'MOBILE.PAYMENTS.ADDITION' | translate }})</h2> 
+                        <p style="white-space: normal;">{{'MOBILE.ORDER_TRANS.PRICE' | translate}}: {{ getAdditionUnitPrice(addition) }} {{currency}}</p>
+                        <p style="white-space: normal;">{{'MOBILE.ORDERS.QUANT' | translate}} {{item.quantity}}</p>
+                        <p style="white-space: normal;">{{'MOBILE.ORDERS.TOTAL' | translate}} {{ getAdditionTotalPrice(addition, item.quantity) }} {{currency}}</p>
+                    </ion-item>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngFor="let addition of order.additions">
+        <addition-pay-info [additionId]="addition.additionId" [currency]="currency" [price]="addition.paymentAddition" [quantity]="addition.quantity"></addition-pay-info>
+    </div>
+</div>

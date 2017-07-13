@@ -1,4 +1,28 @@
-<div class="order-form-1">
+<md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto"  *ngIf="(_orders | async)?.length <= 0">
+    <md-card-content>
+        <div class="card_initial">
+            <div class="card_initial has-image">
+                <div class="card_initial-image-container">
+                    <img class="card_initial-image" 
+                        src="/images/items.png"/>
+                </div>
+                <div class="card_initial-copy">
+                    <div class="card_initial-tagline">
+                        {{'ORDERS.MSG_1' | translate}}
+                    </div>
+                    <div class="card_initial-additional-links">
+                        {{'ORDERS.NO_ORDERS' | translate}}
+                    </div>
+                </div>
+                <div class="card_initial-button">
+                    <button md-raised-button (click)="createNewOrderEvent()">{{'ORDERS.ORDER' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </md-card-content>
+</md-card>
+
+<div class="order-form-1" *ngIf="(_orders | async)?.length > 0">
     <div class="order-form-2">
         <div class="menu-items">
             <div class="menu-items-content">

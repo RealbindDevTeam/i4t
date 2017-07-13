@@ -776,7 +776,8 @@
         "GARNISH_FOOD": "Garnish Food",
         "NO_ADDITIONS": "No Additions",
         "ADDITIONS": "Additions",
-        "ADDITION": "Addition(s)"
+        "ADDITION": "Addition(s)",
+        "NO_ORDERS" : "No orders yet to be prepared"
     },
     "FINANCIAL_INFO": {
         "COLOMBIA": {
@@ -796,7 +797,10 @@
         "CANCEL": "Cancel",
         "ENTER": "Enter Code",
         "CODE_NOT_FOUND": "Code Not Found",
-        "TRY_AGAIN": "Please try again"
+        "TRY_AGAIN": "Please try again",
+        "MSG_1" : "You can sort what you want",
+        "NO_ORDERS" : "You do not have any orders yet, you can create a new order",
+        "ORDER" : "Order"
     },
     "MONTHLY_PAYMENT": {
         "TITLE": "Iurest service invoicing",
