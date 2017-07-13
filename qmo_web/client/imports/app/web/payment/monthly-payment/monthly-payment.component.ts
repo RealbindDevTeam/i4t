@@ -41,7 +41,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     private _lastMonthDay: Date;
     private _firstNextMonthDay: Date;
     private _maxPaymentDay: Date;
-    private _restaurantTotalPrice: number;
+    private _restaurantsTotalPrice: number;
 
     constructor(private router: Router,
         private _formBuilder: FormBuilder,
@@ -52,7 +52,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
+        this._restaurantSub = MeteorObservable.subscribe('currentRestaurantsNoPayed', Meteor.userId()).subscribe();
         this._restaurants = Restaurants.find({ creation_user: Meteor.userId(), isActive: true }).zone();
         this._currencySub = MeteorObservable.subscribe('getCurrenciesByUserId').subscribe();
         this._currencies = Currencies.find({}).zone();
@@ -157,25 +157,19 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
 
         if (country && tables_length && discount) {
             if (_restaurant.firstPay && !_restaurant.freeDays) {
-                this._restaurantTotalPrice = ((country.restaurantPrice + (country.tablePrice * tables_length))) * Number(discount.value) / 100;
-                return this._restaurantTotalPrice;
+                return ((country.restaurantPrice + (country.tablePrice * tables_length))) * Number(discount.value) / 100;
             } else if (_restaurant.firstPay && _restaurant.freeDays) {
-                this._restaurantTotalPrice = 0;
-                return this._restaurantTotalPrice;
+                return 0;
             } else {
-                this._restaurantTotalPrice = country.restaurantPrice + (country.tablePrice * tables_length);
-                return this._restaurantTotalPrice
+                return country.restaurantPrice + (country.tablePrice * tables_length);
             }
         } else if (country && !tables_length && discount) {
             if (_restaurant.firstPay && !_restaurant.freeDays) {
-                this._restaurantTotalPrice = country.restaurantPrice * Number(discount.value) / 100;
-                return this._restaurantTotalPrice;
+                return country.restaurantPrice * Number(discount.value) / 100;
             } else if (_restaurant.firstPay && _restaurant.freeDays) {
-                this._restaurantTotalPrice = 0;
-                return this._restaurantTotalPrice;
+                return 0;
             } else {
-                this._restaurantTotalPrice = country.restaurantPrice;
-                return this._restaurantTotalPrice
+                return country.restaurantPrice;
             }
         }
     }
@@ -209,6 +203,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
         Restaurants.collection.find({ currencyId: _currencyId, creation_user: Meteor.userId(), isActive: true }).forEach((restaurant) => {
             price = price + this.getTotalRestaurant(restaurant);
         });
+        this._restaurantsTotalPrice = price;
         return price;
     }
 
@@ -260,8 +255,8 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
      * This function return true  if the user has only one restaurant with freeDays true
      */
     getOnlyOneRestaurant(_currencyId: string): boolean {
-        let restaurantCount: number = Restaurants.collection.find({ creation_user: Meteor.userId(), currencyId: _currencyId }).count();
-        let restaurantFreeDaysCount: number = Restaurants.collection.find({ creation_user: Meteor.userId(), currencyId: _currencyId, freeDays: true }).count();
+        let restaurantCount: number = Restaurants.collection.find({ creation_user: Meteor.userId(), currencyId: _currencyId, isActive: true }).count();
+        let restaurantFreeDaysCount: number = Restaurants.collection.find({ creation_user: Meteor.userId(), currencyId: _currencyId, freeDays: true, isActive: true }).count();
 
         if (restaurantCount === restaurantFreeDaysCount) {
             return false;
@@ -271,7 +266,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     }
 
     goToPaymentForm() {
-        this.router.navigate(['app/payment-form', this._restaurantTotalPrice], { skipLocationChange: true });
+        this.router.navigate(['app/payment-form', this._restaurantsTotalPrice], { skipLocationChange: true });
     }
 
     ngOnDestroy() {

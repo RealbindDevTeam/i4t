@@ -15,7 +15,7 @@ import style from './cc-payment-confirm.component.scss';
     styles: [style]
 })
 
-export class CcPaymentConfirmComponent implements OnInit, OnDestroy{
+export class CcPaymentConfirmComponent implements OnInit, OnDestroy {
 
     /**
      * CallCloseConfirmComponent constructor
@@ -44,6 +44,6 @@ export class CcPaymentConfirmComponent implements OnInit, OnDestroy{
     }
 
     ngOnDestroy() {
-        
+
     }
 }

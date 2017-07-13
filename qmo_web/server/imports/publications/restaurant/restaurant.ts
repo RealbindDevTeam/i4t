@@ -4,6 +4,7 @@ import { UserDetails } from '../../../../both/collections/auth/user-detail.colle
 import { check } from 'meteor/check';
 import { Accounts } from '../../../../both/collections/restaurant/account.collection';
 import { UserDetail } from '../../../../both/models/auth/user-detail.model';
+import { HistoryPayments } from '../../../../both/collections/payment/history-payment.collection';
 
 /**
  * Meteor publication restaurants with creation user condition
@@ -101,4 +102,26 @@ Meteor.publish('restaurantImageThumbsByUserId', function (_userId: string) {
     } else {
         return;
     }
+});
+
+/**
+ * Meteor publication restaurants with creation user condition
+ * @param {string} _userId
+ */
+Meteor.publish('currentRestaurantsNoPayed', function (_userId: string) {
+    check(_userId, String);
+
+    let currentDate: Date = new Date();
+    let currentMonth: string = (currentDate.getMonth() + 1).toString();
+    let currentYear: string = currentDate.getFullYear().toString();
+
+    var restaurantsInitial: string[] = Restaurants.collection.find({ creation_user: _userId, isActive: true, freeDays: false }).map(function (restaurant) {
+        return restaurant._id;
+    });
+
+    var historyPayment = HistoryPayments.collection.find({ restaurantId: { $in: restaurantsInitial }, month: currentMonth, year: currentYear, status: 'PAID' }).map(function (historyPayment) {
+        return historyPayment.restaurantId;
+    });
+
+    return Restaurants.collection.find({ _id: { $nin: historyPayment }, creation_user: _userId, isActive: true, freeDays: false});
 });
