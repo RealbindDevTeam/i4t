@@ -1,0 +1,24 @@
+<md-card style="box-shadow: none">
+    <md-card-title>{{'PAYU_PAYMENT_FORM.DIALOG_TITLE' | translate}}</md-card-title>
+    <md-card-subtitle>{{'PAYU_PAYMENT_FORM.DIALOG_PLEASE' | translate}}</md-card-subtitle>
+    <md-card-content>
+        <md-list>
+            <md-list-item>
+                <img md-list-avatar class="image" src="/images/orders.png">
+                <h2 md-line class="card-title">{{'PAYU_PAYMENT_FORM.IUREST_SERVICE' | translate}}</h2>
+                <p md-line>{{'PAYU_PAYMENT_FORM.MONTHLY_SERVICE' | translate}}</p>
+            </md-list-item>
+        </md-list>
+        <md-list>
+            <md-list-item>
+                <img md-list-avatar class="image" src="/images/user_default_image.png">
+                <h2 md-line class="card-title">{{'PAYU_PAYMENT_FORM.PERSONAL_INFO' | translate}}</h2>
+                <p md-line>{{data.uno}}</p>
+            </md-list-item>
+        </md-list>
+    </md-card-content>
+    <md-card-actions align="end">
+        <button md-raised-button class="button-secundary" (click)="cancel()">{{ 'RESTAURANT_REGISTER.CANCEL_CREATION' | translate }}</button>
+        <button md-raised-button class="button-primary" (click)="closeConfirm()" type="submit">{{ 'RESTAURANT_REGISTER.ACCEPT_CREATION' | translate }}</button>
+    </md-card-actions>
+</md-card>

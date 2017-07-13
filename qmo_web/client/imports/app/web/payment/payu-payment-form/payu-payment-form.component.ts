@@ -1,10 +1,13 @@
+import { Meteor } from 'meteor/meteor';
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
 import { CustomValidators } from '../../../../../../both/shared-components/validators/custom-validator';
+import { CcPaymentConfirmComponent } from './cc-payment-confirm/cc-payment-confirm.component';
 
 import { CcPaymentMethods } from '../../../../../../both/collections/payment/cc-payment-methods.collection';
 import { CcPaymentMethod } from '../../../../../../both/models/payment/cc-payment-method.model';
@@ -17,6 +20,8 @@ import { PayuPaymenteService } from '../payu-payment-service/payu-payment.servic
 
 import template from './payu-payment-form.component.html';
 import style from './payu-payment-form.component.scss';
+
+let md5 = require('md5');
 
 @Component({
     selector: 'payu-payment-form',
@@ -42,28 +47,36 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _currentYear: number;
     private _yearsArray: any[];
     private _monthsArray: any[];
+    private _paymentLogoName: string = "";
+    private _deviceSessionId: string;
+    private _mdDialogRef: MdDialogRef<any>;
 
-    private mensaje: string;
-    private planObj: any;
+    private valueToPay: string;
     private post: any;
 
     constructor(private _router: Router, private _activateRoute: ActivatedRoute,
         private _formBuilder: FormBuilder,
         private _translate: TranslateService,
         private _payuPaymentService: PayuPaymenteService,
-        private _ngZone: NgZone) {
+        private _ngZone: NgZone,
+        public _mdDialog: MdDialog) {
 
         var userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang('en');
         _translate.use(userLang);
 
         //this.getCode();
+        console.log(localStorage.getItem('Meteor.loginToken'));
+        this._deviceSessionId = md5(localStorage.getItem('Meteor.loginToken'));
+        console.log(this._deviceSessionId);
     }
 
     ngOnInit() {
         this._activateRoute.params.forEach((params: Params) => {
-            this.mensaje = params['param'];
+            this.valueToPay = params['param'];
         });
+
+        console.log('el precio es > ' + this.valueToPay);
 
         this._paymentForm = new FormGroup({
             paymentMethod: new FormControl('', [Validators.required]),
@@ -77,7 +90,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             country: new FormControl('', [Validators.required]),
             city: new FormControl('', [Validators.required]),
             streetOne: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]),
-            contactPhone: new FormControl('',[Validators.required, Validators.minLength(1), Validators.maxLength(20)])
+            contactPhone: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(20)])
         });
 
         this._cCPaymentMethodSub = MeteorObservable.subscribe('getCcPaymentMethods').subscribe(() => {
@@ -94,11 +107,9 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 
         this._citySub = MeteorObservable.subscribe('cities').subscribe(() => {
             this._ngZone.run(() => {
-                this._cities = Cities.find({country: ''}).zone();
+                this._cities = Cities.find({ country: '' }).zone();
             });
         });
-
-
 
         this._monthsArray = [{ value: '01', viewValue: '01' }, { value: '02', viewValue: '02' }, { value: '03', viewValue: '03' },
         { value: '04', viewValue: '04' }, { value: '05', viewValue: '05' }, { value: '06', viewValue: '06' },
@@ -116,8 +127,37 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         }
     }
 
-    changeCountry(countryId: string){
+    changeCountry(countryId: string) {
         this._cities = Cities.find({ country: countryId }).zone();
+    }
+
+    changeCcPaymentLogo(paymentName: string) {
+        this._paymentLogoName = 'images/' + paymentName + '.png';
+    }
+
+    openConfirmDialog() {
+        console.log(md5('4Vj8eK4rloUd272L48hsrarnUA~508029~TestPayU~3~USD'));
+        console.log(localStorage.getItem('Meteor.loginToken'));
+
+        let auxstreet: string = this._paymentForm.value.streetOne;
+        console.log('&&&&' + auxstreet);
+
+        this._mdDialogRef = this._mdDialog.open(CcPaymentConfirmComponent, {
+            disableClose: true,
+            data: {
+                uno: this._paymentForm.value.streetOne,
+                dos: 'dosp'
+            },
+            height: '90%',
+            width: '40%'
+        });
+
+
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+
+
+        });
     }
 
     getCode() {

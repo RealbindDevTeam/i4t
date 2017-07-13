@@ -809,7 +809,7 @@
         "CURRENCY": "Currency",
         "PRICE_BY_TABLE": "Price by table: ",
         "TOTAL_PRICE": "Total: ",
-        "PAY": "   PAY   ",
+        "PAY": "Pay",
         "DISCOUNT_TOOLTIP_1": "You have a ",
         "DISCOUNT_TOOLTIP_2": " discount for the first payment",
         "INVOICE_PERIOD": "Invoice period: ",
@@ -925,7 +925,7 @@
         "SECURITY_CODE_REQUIRED": "- The code number cannot be empty",
         "BILLING_INFORMATION": "Billing information",
         "PAYER_EMAIL": "Email *",
-        "PAYER_FULLNAME": "First name and Last Name *",
+        "PAYER_FULLNAME": "First and last name printed on the card *",
         "EMAIL_INVALID": "- Invalid email format",
         "EMAIL_MIN": "- The email must be at least 6 characters long",
         "EMAIL_MAX": "- The email cannot exceed 255 characters long",
@@ -938,6 +938,12 @@
         "ADDRESS_MAX": "The address cannot exceed 100 characters long",
         "PHONE_NUMBER": "Phone number *",
         "PHONE_NUMBER_MAX": "The phone number cannot exceed 20 characteres long",
-        "SECURITY_MSG": "* For security, Iurest doesn't save your payment info"
+        "SECURITY_MSG": "* For security, Iurest doesn't save your credit card info",
+        "CONTINUE_PAYMENT": "Continue",
+        "DIALOG_TITLE": "Payment Confirm",
+        "DIALOG_PLEASE": "Please check the information before to confirm",
+        "IUREST_SERVICE": "Iurest service",
+        "MONTHLY_SERVICE": "Monthly",
+        "PERSONAL_INFO": "Billing information"
     }
 }

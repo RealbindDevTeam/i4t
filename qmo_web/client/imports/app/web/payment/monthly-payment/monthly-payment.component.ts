@@ -41,6 +41,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     private _lastMonthDay: Date;
     private _firstNextMonthDay: Date;
     private _maxPaymentDay: Date;
+    private _restaurantTotalPrice: number;
 
     constructor(private router: Router,
         private _formBuilder: FormBuilder,
@@ -156,19 +157,25 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
 
         if (country && tables_length && discount) {
             if (_restaurant.firstPay && !_restaurant.freeDays) {
-                return ((country.restaurantPrice + (country.tablePrice * tables_length))) * Number(discount.value) / 100;
+                this._restaurantTotalPrice = ((country.restaurantPrice + (country.tablePrice * tables_length))) * Number(discount.value) / 100;
+                return this._restaurantTotalPrice;
             } else if (_restaurant.firstPay && _restaurant.freeDays) {
-                return 0;
+                this._restaurantTotalPrice = 0;
+                return this._restaurantTotalPrice;
             } else {
-                return country.restaurantPrice + (country.tablePrice * tables_length);
+                this._restaurantTotalPrice = country.restaurantPrice + (country.tablePrice * tables_length);
+                return this._restaurantTotalPrice
             }
         } else if (country && !tables_length && discount) {
             if (_restaurant.firstPay && !_restaurant.freeDays) {
-                return country.restaurantPrice * Number(discount.value) / 100;
+                this._restaurantTotalPrice = country.restaurantPrice * Number(discount.value) / 100;
+                return this._restaurantTotalPrice;
             } else if (_restaurant.firstPay && _restaurant.freeDays) {
-                return 0;
+                this._restaurantTotalPrice = 0;
+                return this._restaurantTotalPrice;
             } else {
-                return country.restaurantPrice;
+                this._restaurantTotalPrice = country.restaurantPrice;
+                return this._restaurantTotalPrice
             }
         }
     }
@@ -263,8 +270,8 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
         }
     }
 
-    goToPaymentForm(){
-        this.router.navigate(['app/payment-form', 'leo sirve'], { skipLocationChange: true });
+    goToPaymentForm() {
+        this.router.navigate(['app/payment-form', this._restaurantTotalPrice], { skipLocationChange: true });
     }
 
     ngOnDestroy() {
