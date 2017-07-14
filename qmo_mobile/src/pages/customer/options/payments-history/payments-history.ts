@@ -22,7 +22,7 @@ export class PaymentsHistoryPage implements OnInit, OnDestroy {
   }
 
   ngOnInit(){
-    this._invoicesHistorySubscription = MeteorObservable.subscribe('getInvoicesByUserId', Meteor.userId()).subscribe(()=>{
+    this._invoicesHistorySubscription = MeteorObservable.subscribe('getInvoicesByUserId', Meteor.userId()).subscribe(()=> {
       this._invoices = Invoices.find({});
     });
   }

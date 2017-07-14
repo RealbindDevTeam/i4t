@@ -8,6 +8,7 @@ import { Items } from '../../collections/administration/item.collection';
 import { GarnishFoodCol } from '../../collections/administration/garnish-food.collection';
 import { Additions } from '../../collections/administration/addition.collection';
 import { Currencies } from "../../collections/general/currency.collection";
+import { PaymentMethods } from "../../collections/general/paymentMethod.collection";
 
 if (Meteor.isServer) {
     Meteor.methods({
@@ -19,6 +20,7 @@ if (Meteor.isServer) {
             let lRestaurant = Restaurants.findOne({_id : _pPay.restaurantId});
             let lTable = Tables.findOne({_id : _pPay.tableId});
             let lCurrency = Currencies.findOne({_id : lRestaurant.currencyId});
+            let lPayMethod = PaymentMethods.findOne({_id : _pPay.paymentMethodId});
 
             let lInvoiceItems     : InvoiceItem[] = [];
             let lInvoiceAdditions : InvoiceAddition[] = [];
@@ -74,6 +76,7 @@ if (Meteor.isServer) {
                 total_tip       : _pPay.totalTip,
                 customer_id     : _pPay.userId,
                 currency        : lCurrency.code,
+                pay_method      : lPayMethod.name,
                 items           : lInvoiceItems,
                 additions       : lInvoiceAdditions,
                 creation_user   : Meteor.userId(),

@@ -11,6 +11,7 @@ export interface Invoice extends CollectionObject{
     total_tip       : number;
     customer_id     : string;
     currency        : string;
+    pay_method      : string;
     items?          : InvoiceItem[];
     additions?      : InvoiceAddition[];
 }
