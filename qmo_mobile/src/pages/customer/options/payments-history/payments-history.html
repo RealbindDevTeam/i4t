@@ -6,7 +6,7 @@
 
 <ion-content>
     <div *ngFor="let invoice of _invoices | async;">
-        <ion-card>
+        <ion-card (click)="goToPaymentDetail(invoice)">
             <ion-card-content>
                 <div class="display-inline">
                     <ion-avatar item-left>

@@ -308,7 +308,10 @@
             "ORDER_DETAIL": "Order detail"
         },
         "PAYMENTS_HISTORY" : {
-            "TITLE": "Payments history"
+            "TITLE": "Payments history",
+            "TOTAL" : "Total",
+            "TIP" : "Tip",
+            "TOTAL_ORDER" : "Order total"
         }
     },
     "CURRENCIES": {

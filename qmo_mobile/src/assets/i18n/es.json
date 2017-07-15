@@ -308,7 +308,10 @@
             "ORDER_DETAIL": "Orden Entregada"
         },
         "PAYMENTS_HISTORY" : {
-            "TITLE": "Historial de pagos"
+            "TITLE": "Historial de pagos",
+            "TOTAL" : "Total",
+            "TIP" : "Propina",
+            "TOTAL_ORDERS" : "Total orden"
         }
     },
     "CURRENCIES": {
