@@ -1,16 +1,17 @@
 <div>
     <div class="ion-content-custom">
         <h3 style="padding-left: 16px">{{'MOBILE.PAYMENTS.BILL' | translate}}</h3>
-
+        
         <ion-card *ngIf="_paymentCreated" (click)="goToPaymentInfo()">
-            <img src="assets/img/payment-pending.png" width="100px"/>
             <ion-card-content>
-                <ion-card-title>
-                    {{'MOBILE.PAYMENTS.PAY_PENDING' | translate}}
-                </ion-card-title>
-                <p>
-                    {{'MOBILE.PAYMENTS.PENDING_PAYMENT_MSG' | translate}}
-                </p>
+                <div style="display: -webkit-inline-box;">
+                    <ion-avatar item-left>
+                        <img class="img-cards" src="/assets/img/payment-pending.png">
+                    </ion-avatar>
+                    <div style="width: 80%">
+                        <h2>{{'MOBILE.PAYMENTS.PENDING_PAYMENT_MSG' | translate}}</h2>
+                    </div>
+                </div>
             </ion-card-content>
         </ion-card>
         
@@ -72,7 +73,7 @@
         <h3 style="display: inline-block;">{{'MOBILE.PAYMENTS.TOTAL_BILL' | translate}}</h3>
         <h3 style="display: inline-block; position: absolute; right: 15px; -webkit-margin-before: 0em;">{{_totalToPayment}} {{_currencyCode}}</h3>    
         <div *ngIf="(_orders | async)?.length > 0">
-            <button *ngIf="!_paymentCreated"  ion-button block (click)="pay()">{{'MOBILE.PAYMENTS.PAY_BTN' | translate}}</button>
+            <button [disabled]="_outstandingBalance" ion-button block (click)="pay()">{{'MOBILE.PAYMENTS.PAY_BTN' | translate}}</button>
         </div>
         <div showWhen="ios" style="height: 42px">
         </div>

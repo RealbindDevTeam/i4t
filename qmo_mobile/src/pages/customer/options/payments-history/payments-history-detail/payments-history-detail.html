@@ -11,11 +11,10 @@
                 <ion-avatar item-left>
                     <img class="img-cards" src="/assets/img/restaurante.png">
                 </ion-avatar>
-                <h2>{{_invoice.restaurant_name}}</h2>
-            </div>
-            <div style="line-height: 20px">
-                <p>{{_invoice.pay_method | translate}}</p>
-                <p>{{_invoice.creation_date | date: 'dd MMM yyyy HH:mm'}}</p>
+                <div style="display: block">
+                    <h2>{{_invoice.restaurant_name}}</h2>
+                    <p>{{_invoice.creation_date | date: 'dd MMM yyyy HH:mm'}}</p>
+                </div>
             </div>
         </ion-card-content>
     </ion-card>
@@ -34,11 +33,23 @@
 
 <ion-footer class="ion-footer-custom" padding>
     <ion-item>
-        <h2>{{ 'MOBILE.PAYMENTS_HISTORY.TOTAL_ORDERS' | translate }}</h2>
-        <h2>{{ 'MOBILE.PAYMENTS_HISTORY.TIP' | translate }}</h2>
-        <div item-right style="text-align: end;">
-            <p>{{_invoice.total_order}} {{_invoice.currency}}</p>
-            <p>{{_invoice.total_tip}} {{_invoice.currency}}</p>
+        <!--h4>{{'MOBILE.PAYMENTS.PAYMENT_METHOD' | translate}}:</h4-->
+        <div style="display: -webkit-inline-box; width: 100%; line-height: 30px;">
+            <img *ngIf="_invoice.pay_method == 'PAYMENT_METHODS.CASH'" class="img-footer img-cards" src="assets/img/pago.png">
+            <img *ngIf="_invoice.pay_method == 'PAYMENT_METHODS.CREDIT_CARD'" class="img-footer img-cards" src="assets/img/pago_tarjeta_credito.png">
+            <img *ngIf="_invoice.pay_method == 'PAYMENT_METHODS.DEBIT_CARD'" class="img-footer img-cards" src="assets/img/pago_tarjeta_debito.png">
+            <img *ngIf="_invoice.pay_method == 'PAYMENT_METHODS.ONLINE'" class="img-footer img-cards" src="assets/img/payment-online.png">
+            <p style="line-height: inherit">
+                {{_invoice.pay_method | translate}}
+            </p>
+        </div>
+        <div style="position: relative">
+            <h4>{{ 'MOBILE.PAYMENTS_HISTORY.TOTAL_ORDERS' | translate }}</h4>
+            <p style="position: absolute; right: 0; top: 0;">{{_invoice.total_order}} {{_invoice.currency}}</p>
+        </div>
+        <div style="position: relative">
+            <h4>{{ 'MOBILE.PAYMENTS_HISTORY.TIP' | translate }}</h4>
+            <p style="position: absolute; right: 0; top: 0;">{{_invoice.total_tip}} {{_invoice.currency}}</p>
         </div>
     </ion-item>
     <h1 style="display: inline-block;">{{ 'MOBILE.PAYMENTS_HISTORY.TOTAL' | translate }}</h1>
