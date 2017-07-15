@@ -78,7 +78,7 @@ export const routes: Route[] = [
             { path: 'monthly-config', component: MonthlyConfigComponent, canActivate: [AdminGuard]},
             { path: 'colOrdersInfo', component: ColombiaOrderInfoComponent, canActivate: [CustomerGuard] },
             { path: 'OrdersTranslate', component: OrderPaymentTranslateComponent, canActivate: [CustomerGuard] },
-            { path: 'payment-form/:param', component: PayuPaymentFormComponent, canActivate: [AdminGuard]},
+            { path: 'payment-form/:param1/:param2', component: PayuPaymentFormComponent, canActivate: [AdminGuard]},
             { path: 'history-payment', component: HistoryPaymentComponent, canActivate: [AdminGuard]},
             { path: 'reactivate-restaurant', component: ReactivateRestaurantComponent, canActivate: [AdminGuard]},
             { path: 'colPayInfo', component: ColombiaPayInfoComponent, canActivate: [CustomerGuard] }            

@@ -75,7 +75,7 @@
             <div style="margin-top: 1%">
                 <md-select formControlName="country" [(ngModel)]="_selectedCountry" placeholder="{{'PAYU_PAYMENT_FORM.COUNTRY' | translate}}"
                     style="width: 43%;">
-                    <md-option *ngFor="let country of _countries | async" value="{{country.alfaCode2}}" (click)="changeCountry(country._id)">{{country.name | translate}}</md-option>
+                    <md-option *ngFor="let country of _countries | async" value="{{country.alfaCode2}}" (click)="changeCountry(country)">{{country.name | translate}}</md-option>
                 </md-select>
                 <md-select formControlName="city" [(ngModel)]="_selectedCity" placeholder="{{'PAYU_PAYMENT_FORM.CITY' | translate}}" style="width: 54%; margin-left: 2%;">
                     <md-option *ngFor="let city of _cities | async" value="{{city.name}}">{{city.name}}</md-option>
@@ -100,7 +100,7 @@
                 {{'PAYU_PAYMENT_FORM.SECURITY_MSG' | translate}}
             </div>
             <div style="width: 54%; margin-left: 2%; display: inline-block">
-                <button style="float: right" color="accent" md-raised-button type="submit" [disabled]="_paymentForm.valid">{{'PAYU_PAYMENT_FORM.CONTINUE_PAYMENT' | translate}}</button>
+                <button style="float: right" color="accent" md-raised-button type="submit" [disabled]="!_paymentForm.valid">{{'PAYU_PAYMENT_FORM.CONTINUE_PAYMENT' | translate}}</button>
             </div>
         </form>
         <h6 *ngIf="false">{{_selectedPaymentMethod}}-{{_selectedCardMonth}}-{{_selectedCardYear}}</h6>

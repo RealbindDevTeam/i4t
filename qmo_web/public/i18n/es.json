@@ -777,7 +777,7 @@
         "NO_ADDITIONS": "Sin Adiciones",
         "ADDITIONS": "Adiciones",
         "ADDITION": "Adicion(es)",
-        "NO_ORDERS" : "Aún no hay ordenes por preparar"
+        "NO_ORDERS": "Aún no hay ordenes por preparar"
     },
     "FINANCIAL_INFO": {
         "COLOMBIA": {
@@ -798,9 +798,9 @@
         "ENTER": "Ingresar código",
         "CODE_NOT_FOUND": "Código no encontrado",
         "TRY_AGAIN": "Por favor intenta nuevamente",
-        "MSG_1" : "Puedes ordenar lo que deseas",
-        "NO_ORDERS" : "Aún no tienes ordenes, puedes crear una orden nueva",
-        "ORDER" : "Ordenar"
+        "MSG_1": "Puedes ordenar lo que deseas",
+        "NO_ORDERS": "Aún no tienes ordenes, puedes crear una orden nueva",
+        "ORDER": "Ordenar"
     },
     "MONTHLY_PAYMENT": {
         "TITLE": "Pago del servicio mensual de Iurest",
@@ -948,6 +948,12 @@
         "DIALOG_PLEASE": "Por favor revisa la información antes de confirmar",
         "IUREST_SERVICE": "Servicio Iurest",
         "MONTHLY_SERVICE": "Mensual",
-        "PERSONAL_INFO": "Información de facturación"
+        "PERSONAL_INFO": "Información de facturación",
+        "PERSONAL_TEL": "Tel. ",
+        "PAY": "Pago",
+        "CARD_FINISHED_IN": "terminada en ",
+        "PRICE": "Precio: ",
+        "PAY_CONFIRM": "Confirmar",
+        "PAY_CANCEL": "Cancelar"
     }
 }

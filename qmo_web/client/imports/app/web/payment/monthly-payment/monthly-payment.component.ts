@@ -265,8 +265,8 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
         }
     }
 
-    goToPaymentForm() {
-        this.router.navigate(['app/payment-form', this._restaurantsTotalPrice], { skipLocationChange: true });
+    goToPaymentForm(currencyCode: string) {
+        this.router.navigate(['app/payment-form', this._restaurantsTotalPrice, currencyCode], { skipLocationChange: true });
     }
 
     ngOnDestroy() {

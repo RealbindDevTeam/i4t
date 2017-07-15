@@ -948,6 +948,12 @@
         "DIALOG_PLEASE": "Please check the information before to confirm",
         "IUREST_SERVICE": "Iurest service",
         "MONTHLY_SERVICE": "Monthly",
-        "PERSONAL_INFO": "Billing information"
+        "PERSONAL_INFO": "Billing information",
+        "PERSONAL_TEL": "Tel. ",
+        "PAY": "Pay",
+        "CARD_FINISHED_IN": "finished in ",
+        "PRICE": "Price: ",
+        "PAY_CONFIRM": "Confirm",
+        "PAY_CANCEL": "Cancel"
     }
 }

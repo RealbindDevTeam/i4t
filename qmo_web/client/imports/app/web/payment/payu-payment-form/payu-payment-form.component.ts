@@ -8,6 +8,7 @@ import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
 import { CustomValidators } from '../../../../../../both/shared-components/validators/custom-validator';
 import { CcPaymentConfirmComponent } from './cc-payment-confirm/cc-payment-confirm.component';
+import { getPayuMerchantInfo } from '../../../../../../both/methods/general/parameter.methods';
 
 import { CcPaymentMethods } from '../../../../../../both/collections/payment/cc-payment-methods.collection';
 import { CcPaymentMethod } from '../../../../../../both/models/payment/cc-payment-method.model';
@@ -15,6 +16,7 @@ import { Countries } from '../../../../../../both/collections/settings/country.c
 import { Country } from '../../../../../../both/models/settings/country.model';
 import { City } from '../../../../../../both/models/settings/city.model';
 import { Cities } from '../../../../../../both/collections/settings/city.collection';
+import { CcRequestColombia, Merchant, Transaction, Order, Payer, CreditCard, ExtraParameters, AdditionalValues, Buyer, ShippingBillingAddress } from '../../../../../../both/models/payment/cc-request-colombia.model';
 
 import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
 
@@ -50,8 +52,12 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _paymentLogoName: string = "";
     private _deviceSessionId: string;
     private _mdDialogRef: MdDialogRef<any>;
+    private _countryName: string;
+    private _ccMethodPayment: string;
+    private error: string;
 
-    private valueToPay: string;
+    private _valueToPay: number;
+    private _currency: string;
     private post: any;
 
     constructor(private _router: Router, private _activateRoute: ActivatedRoute,
@@ -66,17 +72,19 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         _translate.use(userLang);
 
         //this.getCode();
-        console.log(localStorage.getItem('Meteor.loginToken'));
+        //console.log(localStorage.getItem('Meteor.loginToken'));
         this._deviceSessionId = md5(localStorage.getItem('Meteor.loginToken'));
-        console.log(this._deviceSessionId);
+        //console.log(this._deviceSessionId);
     }
 
     ngOnInit() {
         this._activateRoute.params.forEach((params: Params) => {
-            this.valueToPay = params['param'];
+            this._valueToPay = params['param1'];
+            this._currency = params['param2'];
         });
 
-        console.log('el precio es > ' + this.valueToPay);
+        //console.log('el precio es > ' + this.valueToPay);
+        //console.log('la moneda es > ' + this.currency);
 
         this._paymentForm = new FormGroup({
             paymentMethod: new FormControl('', [Validators.required]),
@@ -127,41 +135,149 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         }
     }
 
-    changeCountry(countryId: string) {
-        this._cities = Cities.find({ country: countryId }).zone();
+    changeCountry(_country: Country) {
+        this._cities = Cities.find({ country: _country._id }).zone();
+        this._countryName = _country.name;
     }
 
-    changeCcPaymentLogo(paymentName: string) {
-        this._paymentLogoName = 'images/' + paymentName + '.png';
+    changeCcPaymentLogo(_paymentName: string) {
+        this._paymentLogoName = 'images/' + _paymentName + '.png';
+        this._ccMethodPayment = _paymentName;
     }
 
     openConfirmDialog() {
-        console.log(md5('4Vj8eK4rloUd272L48hsrarnUA~508029~TestPayU~3~USD'));
-        console.log(localStorage.getItem('Meteor.loginToken'));
+        //console.log(md5('4Vj8eK4rloUd272L48hsrarnUA~508029~TestPayU~3~USD'));
+        //console.log(localStorage.getItem('Meteor.loginToken'));
 
         let auxstreet: string = this._paymentForm.value.streetOne;
-        console.log('&&&&' + auxstreet);
+        //console.log('&&&&' + auxstreet);
 
         this._mdDialogRef = this._mdDialog.open(CcPaymentConfirmComponent, {
             disableClose: true,
             data: {
-                uno: this._paymentForm.value.streetOne,
-                dos: 'dosp'
+                streetone: this._paymentForm.value.streetOne,
+                city: this._selectedCity,
+                country: this._countryName,
+                fullname: this._paymentForm.value.fullName,
+                telephone: this._paymentForm.value.contactPhone,
+                ccmethod: this._paymentLogoName,
+                cardnumber: this._paymentForm.value.cardNumber,
+                price: this._valueToPay,
+                currency: this._currency
             },
-            height: '90%',
-            width: '40%'
+            height: '85%',
+            width: '51,5%'
         });
 
 
         this._mdDialogRef.afterClosed().subscribe(result => {
             this._mdDialogRef = result;
+            if (result.success) {
+                console.log('ENVÍO DE OBJETO A PAYU SERVICE');
 
-
+                //this.getCode();
+                this.fillAuthorizationCaptureObject();
+            }
         });
     }
 
+    /**
+     * This function fills the request object to sends to PayU
+     */
+    fillAuthorizationCaptureObject() {
+
+        let ccRequestColombia = new CcRequestColombia();
+        let merchant = new Merchant();
+        let transaction = new Transaction();
+        let order = new Order();
+        let buyer = new Buyer();
+        let buyerShippingAddress = new ShippingBillingAddress();
+        let additionalValues = new AdditionalValues();
+
+        let apilogin: string;
+        let apikey: string;
+        let credentialArray: string[] = [];
+
+        credentialArray = getPayuMerchantInfo();
+
+        apilogin = credentialArray[0];
+        apikey = credentialArray[1];
+
+        ccRequestColombia.language = 'en';
+        ccRequestColombia.command = 'SUBMIT_TRANSACTION';
+        ccRequestColombia.test = true;
+
+        merchant.apiLogin = apilogin;
+        merchant.apiKey = apikey;
+
+        ccRequestColombia.merchant = merchant;
+
+        order.accountId = 512321;
+        order.referenceCode = 'monthly_payment_000000001';
+        order.description = 'monthly payment for iurest service';
+        order.language = Meteor.user().profile.language_code;
+        order.notifyUrl = 'http://http://192.168.0.3:3000';
+        order.signature = this.generateOrderSignature(apikey, 'monthly_payment_000000001');
+
+        buyer.merchantBuyerId = Meteor.userId();
+        buyer.fullName = 'Don quijote de la mancha';
+        buyer.emailAddress = Meteor.user().emails[0].address;
+        buyer.contactPhone = '9876543213';
+        buyer.dniNumber = '1231238998712'
+
+        //buyer shipping address
+        buyerShippingAddress.street1 = 'Calle falsa 123';
+        buyerShippingAddress.city = 'Bogota';
+        buyerShippingAddress.country = 'Colombia';
+
+        //aditional values
+        additionalValues.TX_VALUE.value = this._valueToPay;
+        additionalValues.TX_VALUE.currency = this._currency;
+
+
+
+        console.log('language > ' + ccRequestColombia.language);
+        console.log('command > ' + ccRequestColombia.command);
+        console.log('test > ' + ccRequestColombia.test);
+        console.log('merchant.apiLogin > ' + merchant.apiLogin);
+        console.log('merchant.apiKey > ' + merchant.apiKey);
+        console.log('order.accountId > ' + order.accountId);
+        console.log('order.referenceCode > ' + order.referenceCode);
+        console.log('order.description > ' + order.description);
+        console.log('order.language > ' + order.language);
+        console.log('order.notifyUrl > ' + order.notifyUrl);
+        console.log('order.signature > ' + order.signature);
+        console.log('buyer.merchantBuyerId > ' + buyer.merchantBuyerId);
+        console.log('buyer.fullName > ' + buyer.fullName);
+        console.log('buyer.emailAddress > ' + buyer.emailAddress);
+        console.log('buyer.contactPhone > ' + buyer.contactPhone);
+        console.log('buyer.dniNumber > ' + buyer.dniNumber);
+        console.log('buyerShippingAddress.street1 > ' + buyerShippingAddress.street1);
+        console.log('buyerShippingAddress.city > ' + buyerShippingAddress.city);
+        console.log('additionalValues.TX_VALUE.value > ' + additionalValues.TX_VALUE.value);
+        console.log('additionalValues.TX_VALUE.currency > ' + additionalValues.TX_VALUE.currency);
+    }
+
+    generateOrderSignature(_apikey: string, _referenceCode): string {
+        let merchantId: string = '508029';
+        let signatureEncoded: string = md5(_apikey + '~' + merchantId + '~' + _referenceCode + '~' + this._valueToPay + '~' + this._currency);
+        return signatureEncoded;
+    }
+
+
     getCode() {
-        this._payuPaymentService.getTestPing().subscribe(
+        let pingObj: {} = {
+            test: false,
+            language: "en",
+            command: "PING",
+            merchant: {
+                apiLogin: "pRRXKOl8ikMmt9u",
+                apiKey: "4Vj8eK4rloUd272L48hsrarnUA"
+            }
+        };
+
+        console.log('obj es: ' + JSON.stringify(pingObj));
+        this._payuPaymentService.getTestPing(pingObj).subscribe(
             pingResult => {
                 this.post = pingResult;
                 console.log('+++');
@@ -173,7 +289,13 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         );
     }
 
-    ngOnDestroy() {
+    cancel() {
+        this._router.navigate(['app/monthly-payment']);
+    }
 
+    ngOnDestroy() {
+        this._cCPaymentMethodSub.unsubscribe();
+        this._countrySub.unsubscribe();
+        this._citySub.unsubscribe();
     }
 }

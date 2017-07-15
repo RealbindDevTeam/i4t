@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Http, Headers } from "@angular/http";
+import { CcRequestColombia } from '../../../../../../both/models/payment/cc-request-colombia.model';
 
 @Injectable()
 export class PayuPaymenteService {
 
-    private apiURI = 'https://sandbox.api.payulatam.com/reports-api/4.0/service.cgi';
+    private apiReportsApiURI = 'https://sandbox.api.payulatam.com/reports-api/4.0/service.cgi';
+    private payuPaymentsApiURI = 'https://sandbox.api.payulatam.com/payments-api/4.0/service.cgi';
 
     private headers = new Headers({
         //'Host': 'sandbox.api.payulatam.com',
@@ -18,18 +20,27 @@ export class PayuPaymenteService {
 
     constructor(private http: Http) { }
 
-    getTestPing(): Observable<any> {
+    /**
+     * This function sends the autorization and capture JSON to PayU platform
+     * @param {CcRequestColombia} requestObject
+     * @return {Observable}
+     */
+    authorizeAndCapture(requestObject: CcRequestColombia): Observable<any> {
         return this.http
-            .post(this.apiURI,
-            JSON.stringify({
-                test: false,
-                language: "en",
-                command: "PING",
-                merchant: {
-                    apiLogin: "pRRXKOl8ikMmt9u",
-                    apiKey: "4Vj8eK4rloUd272L48hsrarnUA"
-                }
-            }),
+            .post(this.payuPaymentsApiURI, JSON.stringify(requestObject),{headers: this.headers})
+            .map(res => res.json())
+            .catch(this.handleError);
+    }
+
+    /**
+     * This function sends the autorization and capture JSON to PayU platform
+     * @param  {any} obj
+     * @return {Observable}
+     */
+    getTestPing(obj: any): Observable<any> {
+        return this.http
+            .post(this.apiReportsApiURI,
+            JSON.stringify(obj),
             { headers: this.headers })
             .map(res => res.json())
             .catch(this.handleError);
