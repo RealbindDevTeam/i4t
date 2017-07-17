@@ -82,10 +82,15 @@ export class ExtraParameters {
  * AdditionalValues model
  */
 export class AdditionalValues {
-    TX_VALUE: {
-        value: number;
-        currency: string;
-    }
+    TX_VALUE: TX_VALUE;
+}
+
+/**
+ * TX_VALUE model
+ */
+export class TX_VALUE {
+    value: number;
+    currency: string;
 }
 
 /**

@@ -10,13 +10,14 @@ import { CustomValidators } from '../../../../../../both/shared-components/valid
 import { CcPaymentConfirmComponent } from './cc-payment-confirm/cc-payment-confirm.component';
 import { getPayuMerchantInfo } from '../../../../../../both/methods/general/parameter.methods';
 
+
 import { CcPaymentMethods } from '../../../../../../both/collections/payment/cc-payment-methods.collection';
 import { CcPaymentMethod } from '../../../../../../both/models/payment/cc-payment-method.model';
 import { Countries } from '../../../../../../both/collections/settings/country.collection';
 import { Country } from '../../../../../../both/models/settings/country.model';
 import { City } from '../../../../../../both/models/settings/city.model';
 import { Cities } from '../../../../../../both/collections/settings/city.collection';
-import { CcRequestColombia, Merchant, Transaction, Order, Payer, CreditCard, ExtraParameters, AdditionalValues, Buyer, ShippingBillingAddress } from '../../../../../../both/models/payment/cc-request-colombia.model';
+import { CcRequestColombia, Merchant, Transaction, Order, Payer, TX_VALUE, CreditCard, ExtraParameters, AdditionalValues, Buyer, ShippingBillingAddress } from '../../../../../../both/models/payment/cc-request-colombia.model';
 
 import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
 
@@ -55,6 +56,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _countryName: string;
     private _ccMethodPayment: string;
     private error: string;
+    private _currentDate: Date;
 
     private _valueToPay: number;
     private _currency: string;
@@ -71,10 +73,14 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         _translate.setDefaultLang('en');
         _translate.use(userLang);
 
-        //this.getCode();
-        //console.log(localStorage.getItem('Meteor.loginToken'));
+        this._currentDate = new Date();
+
+        console.log('Meteor.loginToken > ' + localStorage.getItem('Meteor.loginToken'));
+        console.log('window.performance.now()' + window.performance.now());
+        console.log('Date.getTime()'  + this._currentDate.getTime());
         this._deviceSessionId = md5(localStorage.getItem('Meteor.loginToken'));
-        //console.log(this._deviceSessionId);
+        console.log('Meteor.loginToken encriptado > ' + this._deviceSessionId);
+
     }
 
     ngOnInit() {
@@ -124,7 +130,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         { value: '07', viewValue: '07' }, { value: '08', viewValue: '08' }, { value: '09', viewValue: '09' },
         { value: '10', viewValue: '10' }, { value: '11', viewValue: '11' }, { value: '12', viewValue: '12' }];
 
-        this._currentDate = new Date();
         this._currentYear = this._currentDate.getFullYear();
         this._yearsArray = [];
         this._yearsArray.push({ value: this._currentYear, viewValue: this._currentYear });
@@ -193,23 +198,24 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         let buyer = new Buyer();
         let buyerShippingAddress = new ShippingBillingAddress();
         let additionalValues = new AdditionalValues();
+        let tx_value = new TX_VALUE();
+        let creditCard = new CreditCard();
+        let payer = new Payer();
+        let payerShippingAddress = new ShippingBillingAddress();
 
         let apilogin: string;
         let apikey: string;
         let credentialArray: string[] = [];
 
         credentialArray = getPayuMerchantInfo();
-
         apilogin = credentialArray[0];
         apikey = credentialArray[1];
 
         ccRequestColombia.language = 'en';
         ccRequestColombia.command = 'SUBMIT_TRANSACTION';
         ccRequestColombia.test = true;
-
         merchant.apiLogin = apilogin;
         merchant.apiKey = apikey;
-
         ccRequestColombia.merchant = merchant;
 
         order.accountId = 512321;
@@ -220,7 +226,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         order.signature = this.generateOrderSignature(apikey, 'monthly_payment_000000001');
 
         buyer.merchantBuyerId = Meteor.userId();
-        buyer.fullName = 'Don quijote de la mancha';
+        //buyer.fullName = 'Don quijote de la mancha';
+        buyer.fullName = 'APPROVED';
         buyer.emailAddress = Meteor.user().emails[0].address;
         buyer.contactPhone = '9876543213';
         buyer.dniNumber = '1231238998712'
@@ -228,11 +235,32 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         //buyer shipping address
         buyerShippingAddress.street1 = 'Calle falsa 123';
         buyerShippingAddress.city = 'Bogota';
-        buyerShippingAddress.country = 'Colombia';
+        buyerShippingAddress.country = 'CO';
 
         //aditional values
-        additionalValues.TX_VALUE.value = this._valueToPay;
-        additionalValues.TX_VALUE.currency = this._currency;
+        tx_value.value = this._valueToPay;
+        tx_value.currency = this._currency;
+        additionalValues.TX_VALUE;
+
+        creditCard.number = this._paymentForm.value.cardNumber;
+        creditCard.securityCode = this._paymentForm.value.securityCode;
+        creditCard.expirationDate = this._selectedCardYear + '/' + this._selectedCardMonth;
+        //creditCard.name = this._paymentForm.value.fullName;
+        creditCard.name = 'APPROVED';
+
+        payer.emailAddress = this._paymentForm.value.email;
+        payer.fullName = this._paymentForm.value.fullName;
+
+        payerShippingAddress.street1 = this._paymentForm.value.streetOne;
+        payerShippingAddress.city = this._selectedCity;
+        payerShippingAddress.country = this._selectedCountry;
+
+        payer.contactPhone = this._paymentForm.value.contactPhone;
+        payer.dniNumber = this._paymentForm.value.dniNumber;
+
+        transaction.type = 'AUTHORIZATION_AND_CAPTURE';
+        transaction.paymentMethod = this._selectedPaymentMethod;
+        transaction.paymentCountry = 'CO';
 
 
 
@@ -254,8 +282,24 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         console.log('buyer.dniNumber > ' + buyer.dniNumber);
         console.log('buyerShippingAddress.street1 > ' + buyerShippingAddress.street1);
         console.log('buyerShippingAddress.city > ' + buyerShippingAddress.city);
-        console.log('additionalValues.TX_VALUE.value > ' + additionalValues.TX_VALUE.value);
-        console.log('additionalValues.TX_VALUE.currency > ' + additionalValues.TX_VALUE.currency);
+        console.log('buyerShippingAddress.country > ' + buyerShippingAddress.country);
+        console.log('tx_value.value > ' + tx_value.value);
+        console.log('tx_value.currency > ' + tx_value.currency);
+        console.log('creditCard.number > ' + creditCard.number);
+        console.log('creditCard.securityCode > ' + creditCard.securityCode);
+        console.log('creditCard.expirationDate > ' + creditCard.expirationDate);
+        console.log('creditCard.name > ' + creditCard.name);
+        console.log('payer.emailAddress > ' + payer.emailAddress);
+        console.log('payer.fullName > ' + payer.fullName);
+        console.log('payerShippingAddress.street1 > ' + payerShippingAddress.street1);
+        console.log('payerShippingAddress.city > ' + payerShippingAddress.city);
+        console.log('payerShippingAddress.country > ' + payerShippingAddress.country);
+        console.log('payer.contactPhone > ' + payer.contactPhone);
+        console.log('payer.dniNumber > ' + payer.dniNumber);
+        console.log('transaction.type > ' + transaction.type);
+        console.log('transaction.paymentMethod > ' + transaction.paymentMethod);
+        console.log('transaction.paymentCountry > ' + transaction.paymentCountry);
+
     }
 
     generateOrderSignature(_apikey: string, _referenceCode): string {
