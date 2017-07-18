@@ -219,6 +219,18 @@ export class TopnavComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Traduction of the strings
+   * @param itemName 
+   */
+  itemNameTraduction(itemName: string): string{
+      var wordTraduced: string;
+      this._translate.get(itemName).subscribe((res: string) => {
+          wordTraduced = res; 
+      });
+      return wordTraduced;
+  }
+
   ngOnDestroy(){
     this._subscriptions.forEach(sub => {
       sub.unsubscribe();

@@ -20,13 +20,25 @@
     </ion-card>
 
     <ion-item-group *ngFor="let item of _invoice.items">
-        <ion-item-divider color="light">{{item.quantity}} {{item.item_name}} {{item.price}} {{_invoice.currency}}</ion-item-divider>
-        <ion-item *ngFor="let gf of item.garnish_food">{{item.quantity}} {{gf.garnish_food_name}} {{gf.price}} {{_invoice.currency}}</ion-item>
-        <ion-item *ngFor="let ad of item.additions">{{item.quantity}} {{ad.addition_name}} {{ad.price}} {{_invoice.currency}}</ion-item>
+        <ion-item-divider color="light">
+            <span>{{item.quantity}} {{item.item_name}}</span>
+            <span class="span">{{item.price}} {{_invoice.currency}}</span>
+        </ion-item-divider>
+        <ion-item *ngFor="let gf of item.garnish_food">
+            <span>{{item.quantity}} {{gf.garnish_food_name}}</span>
+            <span class="span">{{gf.price}} {{_invoice.currency}}</span>
+        </ion-item>
+        <ion-item *ngFor="let ad of item.additions">
+            <span>{{item.quantity}} {{ad.addition_name}}</span>
+            <span class="span">{{ad.price}} {{_invoice.currency}}</span>
+        </ion-item>
     </ion-item-group>
     
     <ion-item-group *ngFor="let addition of _invoice.additions">
-        <ion-item-divider color="light">{{addition.quantity}} {{addition.addition_name}} {{addition.price}} {{_invoice.currency}}</ion-item-divider>
+        <ion-item-divider color="light">
+            <span>{{addition.quantity}} {{addition.addition_name}}</span> 
+            <span class="span">{{addition.price}} {{_invoice.currency}}</span>
+        </ion-item-divider>
     </ion-item-group>
 
 </ion-content>

@@ -35,10 +35,18 @@
   </div>
 
   <md-menu #menu="mdMenu" x-position="before">
-    <button md-menu-item><md-icon>refresh</md-icon> Refresh</button>
-    <button md-menu-item [routerLink]="['/app/settings']"><md-icon>settings</md-icon> Settings</button>
-    <button md-menu-item><md-icon>help_outline</md-icon> Help</button>
-    <button md-menu-item (click)="signOut()"><md-icon>launch</md-icon> Sign Out</button>
+    <button md-menu-item *ngIf="_itemsTopMenu == 'customer'" [routerLink]="['/app/payments-history']">
+      <md-icon>payment</md-icon>
+      <span>{{itemNameTraduction('PAYMENTS_HISTORY.TITLE')}}</span>
+    </button>
+    <button md-menu-item [routerLink]="['/app/settings']">
+      <md-icon>settings</md-icon>
+      <span>{{itemNameTraduction('SETTINGS.TITTLE')}}</span>
+    </button>
+    <button md-menu-item (click)="signOut()">
+      <md-icon>launch</md-icon> 
+      <span>{{itemNameTraduction('SIGN_OUT')}}</span>
+    </button>
   </md-menu>
   <md-toolbar-row *ngIf="_navigation.mediumScreenAndDown && _breadcrumbs.length > 0 && !_autoBreadcrumbs">
     <span class="breadcrumb-holder">

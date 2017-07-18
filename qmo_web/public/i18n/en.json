@@ -30,6 +30,7 @@
     "CLOSE": "Close",
     "VIEW_DETAIL": "View Detail",
     "OTHER" : "Other...",
+    "SIGN_OUT" : "Sign Out",
     "ORDER_STATUS": {
         "REGISTERED": "Registered",
         "IN_PROCESS": "In Process",
@@ -908,5 +909,11 @@
         "ADDITIONS": "Additions",
         "ADDITION": "Addition(s)",
         "ORDER_DELIVERED": "Order Delivered"
+    },
+    "PAYMENTS_HISTORY" : {
+        "TITLE": "Payments history",
+        "TOTAL" : "Total",
+        "TIP" : "Tip",
+        "TOTAL_ORDER" : "Order total"
     }
 }

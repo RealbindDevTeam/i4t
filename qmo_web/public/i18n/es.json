@@ -30,6 +30,7 @@
     "CLOSE": "Cerrar",
     "VIEW_DETAIL": "Ver Detalle",
     "OTHER" : "Otro...",
+    "SIGN_OUT" : "Cerrar Sesión",
     "ORDER_STATUS": {
         "REGISTERED": "Registrado",
         "IN_PROCESS": "En Proceso",
@@ -908,5 +909,11 @@
         "ADDITIONS": "Adiciones",
         "ADDITION": "Adicion(es)",
         "ORDER_DELIVERED": "Orden Entregada"
+    },
+    "PAYMENTS_HISTORY" : {
+        "TITLE": "Historial de pagos",
+        "TOTAL" : "Total",
+        "TIP" : "Propina",
+        "TOTAL_ORDERS" : "Total orden"
     }
 }
