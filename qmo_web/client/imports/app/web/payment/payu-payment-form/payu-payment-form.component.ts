@@ -21,6 +21,8 @@ import { CcRequestColombia, Merchant, Transaction, Order, Payer, TX_VALUE, Credi
 
 import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
 
+import { DomSanitizer } from '@angular/platform-browser';
+
 import template from './payu-payment-form.component.html';
 import style from './payu-payment-form.component.scss';
 
@@ -55,19 +57,28 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _mdDialogRef: MdDialogRef<any>;
     private _countryName: string;
     private _ccMethodPayment: string;
-    private error: string;
-    private _currentDate: Date;
+    private _session_id: string;
+    private _timestamp: string;
+    private _ipAddress: string;
+    private _userAgent: string;
+    private _sessionUserId: string;
+    private _scriptFour: string = 'https://maf.pagosonline.net/ws/fp/fp.swf?id=2a06d5ed706bf6c131c04f831822c8cf4kqT7kFYuArD8qdk7';
+    private _scriptFive: string = 'https://maf.pagosonline.net/ws/fp/fp.swf?id=2a06d5ed706bf6c131c04f831822c8cf4kqT7kFYuArD8qdk7';
 
     private _valueToPay: number;
     private _currency: string;
     private post: any;
+    private color: string = 'red';
+    private colorM: any;
+    private scriptOne: any;
 
     constructor(private _router: Router, private _activateRoute: ActivatedRoute,
         private _formBuilder: FormBuilder,
         private _translate: TranslateService,
         private _payuPaymentService: PayuPaymenteService,
         private _ngZone: NgZone,
-        public _mdDialog: MdDialog) {
+        public _mdDialog: MdDialog,
+        private _domSanitizer: DomSanitizer) {
 
         var userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang('en');
@@ -75,11 +86,27 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 
         this._currentDate = new Date();
 
-        console.log('Meteor.loginToken > ' + localStorage.getItem('Meteor.loginToken'));
-        console.log('window.performance.now()' + window.performance.now());
-        console.log('Date.getTime()'  + this._currentDate.getTime());
-        this._deviceSessionId = md5(localStorage.getItem('Meteor.loginToken'));
-        console.log('Meteor.loginToken encriptado > ' + this._deviceSessionId);
+        this._session_id = localStorage.getItem('Meteor.loginToken');
+        this._timestamp = this._currentDate.getTime().toString();
+        this._deviceSessionId = md5(this._session_id + this._timestamp);
+        this._sessionUserId = this._deviceSessionId + Meteor.userId();
+
+        console.log('Meteor.loginToken > ' + this._session_id);
+        //console.log('window.performance.now()' + window.performance.now());
+        console.log('Date.getTime() > ' + this._timestamp);
+        //console.log('Meteor.loginToken encriptado > ' + this._deviceSessionId);
+        console.log('_deviceSessionId > ' + this._deviceSessionId);
+
+        console.log('_sessionUserId > ' + this._sessionUserId);
+
+        this.colorM = this._domSanitizer.bypassSecurityTrustStyle(this.color);
+
+        let _scriptOne: string = 'url(https://maf.pagosonline.net/ws/fp?id=';
+        let _scriptTwo: string = 'https://maf.pagosonline.net/ws/fp/clear.png?id=';
+        let _scriptThree: string = 'https://maf.pagosonline.net/ws/fp/check.js?id=';
+        let _scriptFour: string = 'https://maf.pagosonline.net/ws/fp/fp.swf?id=';
+        console.log('_scriptOne+this._sessionUserId > ' + _scriptOne + this._sessionUserId + ')');
+        this.scriptOne = this._domSanitizer.bypassSecurityTrustStyle(_scriptOne + this._sessionUserId + ')');
 
     }
 
@@ -138,6 +165,17 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             let auxYear = { value: this._currentYear + i, viewValue: this._currentYear + i };
             this._yearsArray.push(auxYear);
         }
+
+        this._payuPaymentService.getPublicIp().subscribe(
+            ipPublic => {
+                this._ipAddress = ipPublic.ip;
+            },
+            error => {
+                console.log(error);
+            }
+        );
+
+        this._userAgent = navigator.userAgent;
     }
 
     changeCountry(_country: Country) {
@@ -148,6 +186,10 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     changeCcPaymentLogo(_paymentName: string) {
         this._paymentLogoName = 'images/' + _paymentName + '.png';
         this._ccMethodPayment = _paymentName;
+    }
+
+    getIP(json) {
+        document.write("My public IP address is: ", json.ip);
     }
 
     openConfirmDialog() {
@@ -201,7 +243,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         let tx_value = new TX_VALUE();
         let creditCard = new CreditCard();
         let payer = new Payer();
-        let payerShippingAddress = new ShippingBillingAddress();
+        let payerBillingAddress = new ShippingBillingAddress();
+        let extraParameters = new ExtraParameters();
 
         let apilogin: string;
         let apikey: string;
@@ -213,17 +256,16 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 
         ccRequestColombia.language = 'en';
         ccRequestColombia.command = 'SUBMIT_TRANSACTION';
-        ccRequestColombia.test = true;
         merchant.apiLogin = apilogin;
         merchant.apiKey = apikey;
         ccRequestColombia.merchant = merchant;
 
         order.accountId = 512321;
-        order.referenceCode = 'monthly_payment_000000001';
+        order.referenceCode = 'monthly_payment_000000005';
         order.description = 'monthly payment for iurest service';
         order.language = Meteor.user().profile.language_code;
         order.notifyUrl = 'http://http://192.168.0.3:3000';
-        order.signature = this.generateOrderSignature(apikey, 'monthly_payment_000000001');
+        order.signature = this.generateOrderSignature(apikey, 'monthly_payment_000000005');
 
         buyer.merchantBuyerId = Meteor.userId();
         //buyer.fullName = 'Don quijote de la mancha';
@@ -238,9 +280,13 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         buyerShippingAddress.country = 'CO';
 
         //aditional values
-        tx_value.value = this._valueToPay;
+        tx_value.value = Number(this._valueToPay);
         tx_value.currency = this._currency;
-        additionalValues.TX_VALUE;
+        additionalValues.TX_VALUE = tx_value;
+
+        order.additionalValues = additionalValues;
+        buyer.shippingAddress = buyerShippingAddress;
+        order.buyer = buyer;
 
         creditCard.number = this._paymentForm.value.cardNumber;
         creditCard.securityCode = this._paymentForm.value.securityCode;
@@ -248,21 +294,34 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         //creditCard.name = this._paymentForm.value.fullName;
         creditCard.name = 'APPROVED';
 
-        payer.emailAddress = this._paymentForm.value.email;
         payer.fullName = this._paymentForm.value.fullName;
-
-        payerShippingAddress.street1 = this._paymentForm.value.streetOne;
-        payerShippingAddress.city = this._selectedCity;
-        payerShippingAddress.country = this._selectedCountry;
-
+        payer.emailAddress = this._paymentForm.value.email;
         payer.contactPhone = this._paymentForm.value.contactPhone;
         payer.dniNumber = this._paymentForm.value.dniNumber;
+
+        payerBillingAddress.street1 = this._paymentForm.value.streetOne;
+        payerBillingAddress.city = this._selectedCity;
+        payerBillingAddress.country = this._selectedCountry;
+        payer.billingAddress = payerBillingAddress;
+
+        extraParameters.INSTALLMENTS_NUMBER = 1;
+
+        transaction.order = order;
+        transaction.payer = payer;
+        transaction.creditCard = creditCard;
+        transaction.extraParameters = extraParameters;
 
         transaction.type = 'AUTHORIZATION_AND_CAPTURE';
         transaction.paymentMethod = this._selectedPaymentMethod;
         transaction.paymentCountry = 'CO';
 
+        transaction.deviceSessionId = this._deviceSessionId;
+        transaction.ipAddress = this._ipAddress;
+        transaction.cookie = this._session_id;
+        transaction.userAgent = this._userAgent;
 
+        ccRequestColombia.transaction = transaction;
+        ccRequestColombia.test = true;
 
         console.log('language > ' + ccRequestColombia.language);
         console.log('command > ' + ccRequestColombia.command);
@@ -291,14 +350,23 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         console.log('creditCard.name > ' + creditCard.name);
         console.log('payer.emailAddress > ' + payer.emailAddress);
         console.log('payer.fullName > ' + payer.fullName);
-        console.log('payerShippingAddress.street1 > ' + payerShippingAddress.street1);
-        console.log('payerShippingAddress.city > ' + payerShippingAddress.city);
-        console.log('payerShippingAddress.country > ' + payerShippingAddress.country);
+        console.log('payerBillingAddress.street1 > ' + payerBillingAddress.street1);
+        console.log('payerBillingAddress.city > ' + payerBillingAddress.city);
+        console.log('payerBillingAddress.country > ' + payerBillingAddress.country);
         console.log('payer.contactPhone > ' + payer.contactPhone);
         console.log('payer.dniNumber > ' + payer.dniNumber);
         console.log('transaction.type > ' + transaction.type);
         console.log('transaction.paymentMethod > ' + transaction.paymentMethod);
         console.log('transaction.paymentCountry > ' + transaction.paymentCountry);
+        console.log('transaction.deviceSessionId > ' + transaction.deviceSessionId);
+        console.log('transaction.ipAddress > ' + transaction.ipAddress);
+        console.log('transaction.cookie > ' + transaction.cookie);
+        console.log('transaction.userAgent > ' + transaction.userAgent);
+
+
+        console.log('OBJETO ES: ');
+        console.log(ccRequestColombia);
+        console.log(JSON.stringify(ccRequestColombia));
 
     }
 

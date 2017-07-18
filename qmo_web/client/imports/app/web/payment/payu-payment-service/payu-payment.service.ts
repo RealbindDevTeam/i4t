@@ -8,6 +8,7 @@ export class PayuPaymenteService {
 
     private apiReportsApiURI = 'https://sandbox.api.payulatam.com/reports-api/4.0/service.cgi';
     private payuPaymentsApiURI = 'https://sandbox.api.payulatam.com/payments-api/4.0/service.cgi';
+    private ipPublicURI = 'https://api.ipify.org?format=json';
 
     private headers = new Headers({
         //'Host': 'sandbox.api.payulatam.com',
@@ -27,9 +28,13 @@ export class PayuPaymenteService {
      */
     authorizeAndCapture(requestObject: CcRequestColombia): Observable<any> {
         return this.http
-            .post(this.payuPaymentsApiURI, JSON.stringify(requestObject),{headers: this.headers})
+            .post(this.payuPaymentsApiURI, JSON.stringify(requestObject), { headers: this.headers })
             .map(res => res.json())
             .catch(this.handleError);
+    }
+
+    getPublicIp() {
+        return this.http.get(this.ipPublicURI).map(res => res.json()).catch(this.handleError);
     }
 
     /**

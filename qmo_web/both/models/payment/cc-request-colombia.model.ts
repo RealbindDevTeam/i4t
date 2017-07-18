@@ -76,6 +76,7 @@ export class CreditCard {
  */
 export class ExtraParameters {
     INSTALLMENTS_NUMBER?: number;
+    RESPONSE_URL?: string;
 }
 
 /**
