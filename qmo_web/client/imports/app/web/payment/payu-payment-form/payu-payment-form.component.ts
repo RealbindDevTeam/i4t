@@ -3,13 +3,13 @@ import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
 import { CustomValidators } from '../../../../../../both/shared-components/validators/custom-validator';
 import { CcPaymentConfirmComponent } from './cc-payment-confirm/cc-payment-confirm.component';
 import { getPayuMerchantInfo } from '../../../../../../both/methods/general/parameter.methods';
-
 
 import { CcPaymentMethods } from '../../../../../../both/collections/payment/cc-payment-methods.collection';
 import { CcPaymentMethod } from '../../../../../../both/models/payment/cc-payment-method.model';
@@ -18,10 +18,12 @@ import { Country } from '../../../../../../both/models/settings/country.model';
 import { City } from '../../../../../../both/models/settings/city.model';
 import { Cities } from '../../../../../../both/collections/settings/city.collection';
 import { CcRequestColombia, Merchant, Transaction, Order, Payer, TX_VALUE, CreditCard, ExtraParameters, AdditionalValues, Buyer, ShippingBillingAddress } from '../../../../../../both/models/payment/cc-request-colombia.model';
+import { PaymentTransaction } from '../../../../../../both/models/payment/payment-transaction.model';
+import { PaymentTransactions } from '../../../../../../both/collections/payment/payment-transaction.collection';
 
 import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
 
-import { DomSanitizer } from '@angular/platform-browser';
+
 
 import template from './payu-payment-form.component.html';
 import style from './payu-payment-form.component.scss';
@@ -48,6 +50,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _countries: Observable<Country[]>;
     private _citySub: Subscription;
     private _cities: Observable<City[]>;
+    private _paymentTransactionSub: Subscription;
+    private _paymentTransactions: Observable<PaymentTransaction[]>;
     private _currentDate: Date;
     private _currentYear: number;
     private _yearsArray: any[];
@@ -62,15 +66,16 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _ipAddress: string;
     private _userAgent: string;
     private _sessionUserId: string;
-    private _scriptFour: string = 'https://maf.pagosonline.net/ws/fp/fp.swf?id=2a06d5ed706bf6c131c04f831822c8cf4kqT7kFYuArD8qdk7';
-    private _scriptFive: string = 'https://maf.pagosonline.net/ws/fp/fp.swf?id=2a06d5ed706bf6c131c04f831822c8cf4kqT7kFYuArD8qdk7';
 
     private _valueToPay: number;
     private _currency: string;
     private post: any;
     private color: string = 'red';
     private colorM: any;
-    private scriptOne: any;
+    private scriptOneSanitized: any;
+    private scriptTwoSanitized: any;
+    private scriptThreeSanitized: any;
+    private scriptFourSanitized: any;
 
     constructor(private _router: Router, private _activateRoute: ActivatedRoute,
         private _formBuilder: FormBuilder,
@@ -106,8 +111,10 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         let _scriptThree: string = 'https://maf.pagosonline.net/ws/fp/check.js?id=';
         let _scriptFour: string = 'https://maf.pagosonline.net/ws/fp/fp.swf?id=';
         console.log('_scriptOne+this._sessionUserId > ' + _scriptOne + this._sessionUserId + ')');
-        this.scriptOne = this._domSanitizer.bypassSecurityTrustStyle(_scriptOne + this._sessionUserId + ')');
-
+        this.scriptOneSanitized = this._domSanitizer.bypassSecurityTrustStyle(_scriptOne + this._sessionUserId + ')');
+        this.scriptTwoSanitized = this._domSanitizer.bypassSecurityTrustUrl(_scriptTwo + this._sessionUserId);
+        this.scriptThreeSanitized = this._domSanitizer.bypassSecurityTrustResourceUrl(_scriptThree + this._sessionUserId);
+        this.scriptFourSanitized = this._domSanitizer.bypassSecurityTrustResourceUrl(_scriptFour + this._sessionUserId);
     }
 
     ngOnInit() {
@@ -115,9 +122,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             this._valueToPay = params['param1'];
             this._currency = params['param2'];
         });
-
-        //console.log('el precio es > ' + this.valueToPay);
-        //console.log('la moneda es > ' + this.currency);
 
         this._paymentForm = new FormGroup({
             paymentMethod: new FormControl('', [Validators.required]),
@@ -151,6 +155,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 this._cities = Cities.find({ country: '' }).zone();
             });
         });
+
+        this._paymentTransactionSub = MeteorObservable.subscribe('getUserTransactions', Meteor.userId()).subscribe();
 
         this._monthsArray = [{ value: '01', viewValue: '01' }, { value: '02', viewValue: '02' }, { value: '03', viewValue: '03' },
         { value: '04', viewValue: '04' }, { value: '05', viewValue: '05' }, { value: '06', viewValue: '06' },
@@ -233,6 +239,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
      */
     fillAuthorizationCaptureObject() {
 
+        let paymentTransaction: PaymentTransaction;
+
         let ccRequestColombia = new CcRequestColombia();
         let merchant = new Merchant();
         let transaction = new Transaction();
@@ -250,6 +258,30 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         let apikey: string;
         let credentialArray: string[] = [];
 
+        paymentTransaction = PaymentTransactions.collection.findOne({ creation_user: Meteor.userId() }, { sort: { count: -1 } });
+        if (paymentTransaction) {
+            console.log('si tiene transaccion');
+
+            PaymentTransactions.collection.insert({
+                count: paymentTransaction.count + 1,
+                referenceName: 'monthly_' + Meteor.userId() + '_' + (paymentTransaction.count + 1),
+                status: 'PENDING',
+                creation_date: new Date(),
+                creation_user: Meteor.userId()
+            });
+        } else {
+            console.log('no tiene transaccion');
+            PaymentTransactions.collection.insert({
+                count: 1,
+                referenceName: 'monthly_' + Meteor.userId() + '_' + 1,
+                status: 'PENDING',
+                creation_date: new Date(),
+                creation_user: Meteor.userId()
+            });
+        }
+
+        paymentTransaction = PaymentTransactions.collection.findOne({ creation_user: Meteor.userId() }, { sort: { count: -1 } });
+
         credentialArray = getPayuMerchantInfo();
         apilogin = credentialArray[0];
         apikey = credentialArray[1];
@@ -261,11 +293,12 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         ccRequestColombia.merchant = merchant;
 
         order.accountId = 512321;
-        order.referenceCode = 'monthly_payment_000000005';
-        order.description = 'monthly payment for iurest service';
+        //order.referenceCode = 'monthly_payment_000000005';
+        order.referenceCode = paymentTransaction.referenceName;
+        order.description = 'monthly payment for ' + paymentTransaction.creation_user + ' number ' + paymentTransaction.count;
         order.language = Meteor.user().profile.language_code;
         order.notifyUrl = 'http://http://192.168.0.3:3000';
-        order.signature = this.generateOrderSignature(apikey, 'monthly_payment_000000005');
+        order.signature = this.generateOrderSignature(apikey, paymentTransaction.referenceName);
 
         buyer.merchantBuyerId = Meteor.userId();
         //buyer.fullName = 'Don quijote de la mancha';
@@ -409,5 +442,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         this._cCPaymentMethodSub.unsubscribe();
         this._countrySub.unsubscribe();
         this._citySub.unsubscribe();
+        this._paymentTransactionSub.unsubscribe();
     }
 }
