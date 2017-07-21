@@ -30,6 +30,7 @@
     "CLOSE": "Cerrar",
     "VIEW_DETAIL": "Ver Detalle",
     "OTHER" : "Otro...",
+    "VALUE" : "Valor",
     "SIGN_OUT" : "Cerrar Sesión",
     "ORDER_STATUS": {
         "REGISTERED": "Registrado",

@@ -31,6 +31,7 @@
     "VIEW_DETAIL": "View Detail",
     "OTHER" : "Other...",
     "SIGN_OUT" : "Sign Out",
+    "VALUE" : "Value",
     "ORDER_STATUS": {
         "REGISTERED": "Registered",
         "IN_PROCESS": "In Process",
