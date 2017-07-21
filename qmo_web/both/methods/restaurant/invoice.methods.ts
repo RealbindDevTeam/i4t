@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { Invoice, InvoiceItem, InvoiceAddition } from '../../models/restaurant/invoice.model';
+import { Invoice, InvoiceItem, InvoiceAddition, FinancialInformation } from '../../models/restaurant/invoice.model';
 import { Invoices } from '../../collections/restaurant/invoice.collection';
 import { Restaurants } from '../../collections/restaurant/restaurant.collection';
 import { Tables } from '../../collections/restaurant/table.collection';
@@ -18,12 +18,13 @@ if (Meteor.isServer) {
          */
         invoiceGenerating : function( _pPay : any ) {
             let lRestaurant = Restaurants.findOne({_id : _pPay.restaurantId});
-            let lTable = Tables.findOne({_id : _pPay.tableId});
-            let lCurrency = Currencies.findOne({_id : lRestaurant.currencyId});
-            let lPayMethod = PaymentMethods.findOne({_id : _pPay.paymentMethodId});
+            let lTable      = Tables.findOne({_id : _pPay.tableId});
+            let lCurrency   = Currencies.findOne({_id : lRestaurant.currencyId});
+            let lPayMethod  = PaymentMethods.findOne({_id : _pPay.paymentMethodId});
 
-            let lInvoiceItems     : InvoiceItem[] = [];
-            let lInvoiceAdditions : InvoiceAddition[] = [];
+            let lInvoiceItems         : InvoiceItem[] = [];
+            let lInvoiceAdditions     : InvoiceAddition[] = [];
+            let lFinantialInformation : FinancialInformation;
             
             _pPay.orders.forEach((order)=> {
                 let lOrder = Orders.findOne({_id : order});
@@ -68,19 +69,30 @@ if (Meteor.isServer) {
                 });
             });
             
+            lFinantialInformation = {
+                business_name        : lRestaurant.financialInformation['BUSINESS_NAME'],
+                nit                  : lRestaurant.financialInformation['NIT'],
+                dian_numeration_from : lRestaurant.financialInformation['DIAN_NUMERATION_FROM'],
+                dian_numeration_to   : lRestaurant.financialInformation['DIAN_NUMERATION_TO'],
+                tip_porcentage       : lRestaurant.financialInformation['TIP_PERCENTAGE'],
+                address              : lRestaurant.address,
+                phone                : lRestaurant.phone,
+            }
+            
             Invoices.insert({
-                restaurant_name : lRestaurant.name,
-                table_number    : lTable._number,
-                total_pay       : _pPay.totalToPayment,
-                total_order     : _pPay.totalOrdersPrice,
-                total_tip       : _pPay.totalTip,
-                customer_id     : _pPay.userId,
-                currency        : lCurrency.code,
-                pay_method      : lPayMethod.name,
-                items           : lInvoiceItems,
-                additions       : lInvoiceAdditions,
-                creation_user   : Meteor.userId(),
-                creation_date   : new Date()
+                restaurant_name       : lRestaurant.name,
+                table_number          : lTable._number,
+                total_pay             : _pPay.totalToPayment,
+                total_order           : _pPay.totalOrdersPrice,
+                total_tip             : _pPay.totalTip,
+                customer_id           : _pPay.userId,
+                currency              : lCurrency.code,
+                pay_method            : lPayMethod.name,
+                items                 : lInvoiceItems,
+                additions             : lInvoiceAdditions,
+                financial_information : lFinantialInformation,
+                creation_user         : Meteor.userId(),
+                creation_date         : new Date()
             });
         }
     });

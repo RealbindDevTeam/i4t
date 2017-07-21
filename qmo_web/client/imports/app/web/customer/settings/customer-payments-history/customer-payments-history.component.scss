@@ -24,13 +24,20 @@
     .order-details{
         .element{
             margin-left: 7rem;
-            .price{
+
+            .display-inline {
                 display: inline;
             }
-
+            
             .quantity{
                 display: inline;
                 margin-left: 2rem;
+            }
+            
+            .price{
+                float: right;
+                -webkit-margin-before: 0;
+                -webkit-margin-after: 0;
             }
 
             .total{

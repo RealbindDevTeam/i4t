@@ -35,7 +35,7 @@
   </div>
 
   <md-menu #menu="mdMenu" x-position="before">
-    <button md-menu-item *ngIf="_itemsTopMenu == 'customer'" [routerLink]="['/app/payments-history']">
+    <button md-menu-item *ngIf="_itemsTopMenu == 'customer'" [routerLink]="['/app/customer-payments-history']">
       <md-icon>payment</md-icon>
       <span>{{itemNameTraduction('PAYMENTS_HISTORY.TITLE')}}</span>
     </button>

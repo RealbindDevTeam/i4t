@@ -8,15 +8,17 @@ import { Restaurants } from '../../../../../../../both/collections/restaurant/re
 import { UserDetails } from '../../../../../../../both/collections/auth/user-detail.collection';
 import { UserDetail } from '../../../../../../../both/models/auth/user-detail.model';
 
-import template from './payments-history.component.html';
-import style from './payments-history.component.scss';
+import template from './customer-payments-history.component.html';
+import style from './customer-payments-history.component.scss';
+
+let jsPDF = require('jspdf');
 
 @Component({
-    selector: 'iu-payments-history',
+    selector: 'iu-customer-payments-history',
     template,
     styles: [ style ]
 })
-export class PaymentsHistoryComponent implements OnInit, OnDestroy {
+export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
 
     private _invoicesHistorySubscription : Subscription;
     private _userDetailsSubscription     : Subscription;
@@ -41,7 +43,7 @@ export class PaymentsHistoryComponent implements OnInit, OnDestroy {
                 this._invoices = Invoices.find({});
                 this._invoices.subscribe(()=> {
                     let _invoicesCount = Invoices.collection.find({}).count();
-                    if(_invoicesCount > 1){
+                    if(_invoicesCount > 0){
                         this._showPayments = true;
                     } else {
                         this._showPayments = false;
@@ -49,6 +51,14 @@ export class PaymentsHistoryComponent implements OnInit, OnDestroy {
                 });
             });
         });
+    }
+
+    invoiceGenerate( _pInvoice : Invoice){
+        let qr_pdf = new jsPDF("portrait", "mm", "a7");
+        qr_pdf.setFontSize(8);
+        qr_pdf.text(_pInvoice.financial_information.business_name, 10, 40)
+        qr_pdf.output('dataurlnewwindow');
+
     }
 
     /**
