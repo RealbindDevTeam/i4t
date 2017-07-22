@@ -929,7 +929,7 @@
         "SECURITY_CODE_REQUIRED": "- El código no puede estar vacio",
         "BILLING_INFORMATION": "Información de facturación",
         "PAYER_EMAIL": "Correo electrónico *",
-        "PAYER_FULLNAME": "Nombres y apellidos impresos en la tarjeta *",
+        "PAYER_FULLNAME": "Nombres y apellidos *",
         "EMAIL_INVALID": "- Formato de correo inválido",
         "EMAIL_MIN": "- El email debe tener mínimo 6 caracteres",
         "EMAIL_MAX": "- EL email debe tener máximo 255 caracteres",

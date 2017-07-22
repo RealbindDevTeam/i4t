@@ -1,7 +1,7 @@
 import { CollectionObject } from '../collection-object.model';
 
 export interface HistoryPayment extends CollectionObject {
-    restaurantId: string;
+    restaurantIds: string[];
     startDate: Date;  
     endDate: Date;
     month: string;

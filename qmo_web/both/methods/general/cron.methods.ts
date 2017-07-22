@@ -137,7 +137,10 @@ if (Meteor.isServer) {
 
             Restaurants.collection.find({ countryId: _countryId, isActive: true, freeDays: false }).forEach((restaurant: Restaurant) => {
                 let historyPayment: HistoryPayment;
-                historyPayment = HistoryPayments.collection.findOne({ restaurantId: restaurant._id, month: currentMonth, year: currentYear, status: 'PAID' });
+                let auxArray: string[] = [];
+                auxArray.push(restaurant._id);
+                //historyPayment = HistoryPayments.collection.findOne({ restaurantIds: restaurant._id, month: currentMonth, year: currentYear, status: 'APPROVED' });
+                historyPayment = HistoryPayments.collection.findOne({ restaurantIds: { $in: auxArray }, month: currentMonth, year: currentYear, status: 'APPROVED' });
 
                 if (!historyPayment) {
                     Restaurants.collection.update({ _id: restaurant._id }, { $set: { isActive: false, firstPay: false } });
@@ -196,7 +199,8 @@ if (Meteor.isServer) {
         },
         /**
          * This function gets the value from EmailContent collection
-         * * @param {string} _countryId
+         * @param {string} _countryId
+         * @return {string}
          */
         getEmailContent(_langDictionary: LangDictionary[], _label: string): string {
             let value = _langDictionary.filter(function (wordTraduced) {
@@ -206,6 +210,8 @@ if (Meteor.isServer) {
         },
         /**
          * This function convert the day and returning in format yyyy-m-d
+         * @param {Date} _date
+         * @return {string}
          */
         convertDateToSimple: function (_date: Date) {
             let year = _date.getFullYear();

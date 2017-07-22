@@ -425,13 +425,16 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                         Restaurants.update({ _id: _lNewRestaurant }, { $set: { tables_quantity: _i + 1 } })
                     }
 
+                    let idsRestaurants: string[] = [];
+                    idsRestaurants.push(_lNewRestaurant);
+
                     HistoryPayments.collection.insert({
-                        restaurantId: _lNewRestaurant,
+                        restaurantIds: idsRestaurants,
                         startDate: this._firstMonthDay,
                         endDate: this._lastMonthDay,
                         month: (this._currentDate.getMonth()+1).toString(),
                         year: (this._currentDate.getFullYear()).toString(),
-                        status: 'PAID'
+                        status: 'APPROVED'
                     });
                     //
                     this.cancel();

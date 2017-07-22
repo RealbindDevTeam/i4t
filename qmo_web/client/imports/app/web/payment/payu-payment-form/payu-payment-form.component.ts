@@ -18,9 +18,15 @@ import { Countries } from '../../../../../../both/collections/settings/country.c
 import { Country } from '../../../../../../both/models/settings/country.model';
 import { City } from '../../../../../../both/models/settings/city.model';
 import { Cities } from '../../../../../../both/collections/settings/city.collection';
-import { CcRequestColombia, Merchant, Transaction, Order, Payer, TX_VALUE, CreditCard, ExtraParameters, AdditionalValues, Buyer, ShippingBillingAddress } from '../../../../../../both/models/payment/cc-request-colombia.model';
 import { PaymentTransaction } from '../../../../../../both/models/payment/payment-transaction.model';
 import { PaymentTransactions } from '../../../../../../both/collections/payment/payment-transaction.collection';
+import { Parameter } from '../../../../../../both/models/general/parameter.model';
+import { Parameters } from '../../../../../../both/collections/general/parameter.collection';
+import { HistoryPayment } from '../../../../../../both/models/payment/history-payment.model';
+import { HistoryPayments } from '../../../../../../both/collections/payment/history-payment.collection';
+import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
+import { CcRequestColombia, Merchant, Transaction, Order, Payer, TX_VALUE, TX_TAX, TX_TAX_RETURN_BASE, CreditCard, ExtraParameters, AdditionalValues, Buyer, ShippingBillingAddress } from '../../../../../../both/models/payment/cc-request-colombia.model';
 
 import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
 
@@ -51,6 +57,13 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _cities: Observable<City[]>;
     private _paymentTransactionSub: Subscription;
     private _paymentTransactions: Observable<PaymentTransaction[]>;
+    private _parameterSub: Subscription;
+    private _parameters: Observable<Parameter[]>;
+    private _historyPaymentSub: Subscription;
+    private _historyPayments: Observable<HistoryPayment[]>;
+    private _restaurants: Observable<Restaurant[]>;
+    private _restaurantsIdsArray: string[];
+    private _restaurantSub: Subscription;
     private _currentDate: Date;
     private _currentYear: number;
     private _yearsArray: any[];
@@ -67,6 +80,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _userAgent: string;
     private _sessionUserId: string;
     private _loading: boolean;
+    private _firstMonthDay: Date;
+    private _lastMonthDay: Date;
 
     private _valueToPay: number;
     private _currency: string;
@@ -104,6 +119,9 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         this.scriptTwoSanitized = this._domSanitizer.bypassSecurityTrustUrl(_scriptTwo + this._sessionUserId);
         this.scriptThreeSanitized = this._domSanitizer.bypassSecurityTrustResourceUrl(_scriptThree + this._sessionUserId);
         this.scriptFourSanitized = this._domSanitizer.bypassSecurityTrustResourceUrl(_scriptFour + this._sessionUserId);
+
+        this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
+        this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
     }
 
     ngOnInit() {
@@ -146,6 +164,9 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         });
 
         this._paymentTransactionSub = MeteorObservable.subscribe('getTransactions').subscribe();
+        this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
+
+        this._restaurantSub = MeteorObservable.subscribe('currentRestaurantsNoPayed', Meteor.userId()).subscribe();
 
         this._monthsArray = [{ value: '01', viewValue: '01' }, { value: '02', viewValue: '02' }, { value: '03', viewValue: '03' },
         { value: '04', viewValue: '04' }, { value: '05', viewValue: '05' }, { value: '06', viewValue: '06' },
@@ -173,20 +194,27 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         this._userAgent = navigator.userAgent;
     }
 
+    /**
+    * This function changes de country to select
+    *@param {Country} _country
+    */
     changeCountry(_country: Country) {
         this._cities = Cities.find({ country: _country._id }).zone();
         this._countryName = _country.name;
     }
 
+    /**
+    * This function changes de credit card payment method to select
+    *@param {string} _paymentName
+    */
     changeCcPaymentLogo(_paymentName: string) {
         this._paymentLogoName = 'images/' + _paymentName + '.png';
         this._ccMethodPayment = _paymentName;
     }
 
-    getIP(json) {
-        document.write("My public IP address is: ", json.ip);
-    }
-
+    /**
+    * This function opens de dialog to confirm the payment
+    */
     openConfirmDialog() {
         let auxstreet: string = this._paymentForm.value.streetOne;
 
@@ -220,7 +248,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * This function fills the request object to sends to PayU
+     * This function fills the request object and sends to PayU Rest service
      */
     fillAuthorizationCaptureObject() {
         let paymentTransaction: PaymentTransaction;
@@ -233,6 +261,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         let buyerShippingAddress = new ShippingBillingAddress();
         let additionalValues = new AdditionalValues();
         let tx_value = new TX_VALUE();
+        let tx_tax = new TX_TAX();
+        let tx_tax_return_base = new TX_TAX_RETURN_BASE();
         let creditCard = new CreditCard();
         let payer = new Payer();
         let payerBillingAddress = new ShippingBillingAddress();
@@ -284,7 +314,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 
         buyer.merchantBuyerId = Meteor.userId();
         //buyer.fullName = 'Don quijote de la mancha';
-        buyer.fullName = this._paymentForm.value.fullName;
+        buyer.fullName = 'Carlos Leonardo Gonzalez';
         buyer.emailAddress = Meteor.user().emails[0].address;
         buyer.contactPhone = '9876543213';
         buyer.dniNumber = '1231238998712'
@@ -299,6 +329,14 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         tx_value.currency = this._currency;
         additionalValues.TX_VALUE = tx_value;
 
+        tx_tax.value = this.getValueTax();
+        tx_tax.currency = this._currency;
+        additionalValues.TX_TAX = tx_tax;
+
+        tx_tax_return_base.value = this.getReturnBase();
+        tx_tax_return_base.currency = this._currency;
+        additionalValues.TX_TAX_RETURN_BASE = tx_tax_return_base;
+
         order.additionalValues = additionalValues;
         buyer.shippingAddress = buyerShippingAddress;
         order.buyer = buyer;
@@ -307,7 +345,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         creditCard.securityCode = this._paymentForm.value.securityCode;
         creditCard.expirationDate = this._selectedCardYear + '/' + this._selectedCardMonth;
         //creditCard.name = this._paymentForm.value.fullName;
-        creditCard.name = 'EXPIRED';
+        creditCard.name = 'APPROVED';
 
         payer.fullName = this._paymentForm.value.fullName;
         payer.emailAddress = this._paymentForm.value.email;
@@ -397,6 +435,53 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 
     }
 
+    /**
+     * This function inserts the history Payment status and update the payment transaction 
+     * @param {string} _status
+     * */
+    insertHistoryUpdateTransaction(_status: string) {
+
+        Restaurants.find({ creation_user: Meteor.userId(), isActive: true }).fetch().forEach((restaurant) => {
+            this._restaurantsIdsArray.push(restaurant._id);
+        });
+
+        HistoryPayments.collection.insert({
+            restaurantIds: this._restaurantsIdsArray,
+            startDate: this._firstMonthDay,
+            endDate: this._lastMonthDay,
+            month: (this._currentDate.getMonth() + 1).toString(),
+            year: (this._currentDate.getFullYear()).toString(),
+            status: _status
+        });
+    }
+
+    /**
+     * This function gets the tax value according to the value
+     * @param {number} _value
+     */
+    getValueTax(): number {
+        let percentValue: number;
+        let parameterTax: Parameter = Parameters.findOne({ name: 'colombia_tax_iva' });
+        percentValue = Number(parameterTax.value);
+        return (this._valueToPay * percentValue) / 100;
+    }
+
+    /**
+     * This function gets the tax value according to the value
+     * @param {number} _value
+     */
+    getReturnBase(): number {
+        let amountPercent: number = this.getValueTax();
+        return this._valueToPay - amountPercent;
+    }
+
+
+    /**
+    * This function generates the order signature to fill request object
+    * @param {string} _apikey
+    * @param {string} _referenceCode
+    * @return {string}
+    */
     generateOrderSignature(_apikey: string, _referenceCode): string {
         let merchantId: string = '508029';
         let signatureEncoded: string = md5(_apikey + '~' + merchantId + '~' + _referenceCode + '~' + this._valueToPay + '~' + this._currency);
@@ -430,6 +515,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     /**
      * Function to translate information
      * @param {string} _itemName
+     * @return {string}
      */
     itemNameTraduction(_itemName: string): string {
         var _wordTraduced: string;
@@ -444,5 +530,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         this._countrySub.unsubscribe();
         this._citySub.unsubscribe();
         this._paymentTransactionSub.unsubscribe();
+        this._parameterSub.unsubscribe();
     }
 }
