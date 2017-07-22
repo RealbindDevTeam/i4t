@@ -95,6 +95,22 @@ export class TX_VALUE {
 }
 
 /**
+ * TX_TAX model
+ */
+export class TX_TAX {
+    value: number;
+    currency: string;
+}
+
+/**
+ * TX_TAX_RETURN_BASE model
+ */
+export class TX_TAX_RETURN_BASE {
+    value: number;
+    currency: string;
+}
+
+/**
  * Buyer model
  */
 export class Buyer {

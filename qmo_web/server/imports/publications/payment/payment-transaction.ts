@@ -4,6 +4,6 @@ import { PaymentTransactions } from '../../../../both/collections/payment/paymen
 /**
  * Meteor publication EmailContents
  */
-Meteor.publish('getUserTransactions', function (userId: string) {
-    return PaymentTransactions.find({ creation_user: userId });
+Meteor.publish('getTransactions', function () {
+    return PaymentTransactions.find({});
 });

@@ -954,6 +954,11 @@
         "CARD_FINISHED_IN": "terminada en ",
         "PRICE": "Precio: ",
         "PAY_CONFIRM": "Confirmar",
-        "PAY_CANCEL": "Cancelar"
+        "PAY_CANCEL": "Cancelar",
+        "TRANSACTION_STATUS": "Estado de la transacción",
+        "TRANSACTION_APPROVED": "El pago ha sido aprobado",
+        "TRANSACTION_DECLINED": "El pago ha sido rechazado",
+        "TRANSACTION_PENDING": "El pago esta pendiente",
+        "ORDER_DESCRIPTION": "Pago mensual de servicio Iurest"
     }
 }

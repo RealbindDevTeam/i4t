@@ -11,7 +11,7 @@ import template from './cc-payment-confirm.component.html';
 import style from './cc-payment-confirm.component.scss';
 
 @Component({
-    selector: 'disable-confirm',
+    selector: 'cc-payment-confirm',
     template,
     styles: [style]
 })

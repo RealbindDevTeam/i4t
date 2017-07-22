@@ -9,6 +9,7 @@ import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
 import { CustomValidators } from '../../../../../../both/shared-components/validators/custom-validator';
 import { CcPaymentConfirmComponent } from './cc-payment-confirm/cc-payment-confirm.component';
+import { TransactionResponseConfirmComponent } from './transaction-response-confirm/transaction-response-confirm';
 import { getPayuMerchantInfo } from '../../../../../../both/methods/general/parameter.methods';
 
 import { CcPaymentMethods } from '../../../../../../both/collections/payment/cc-payment-methods.collection';
@@ -22,8 +23,6 @@ import { PaymentTransaction } from '../../../../../../both/models/payment/paymen
 import { PaymentTransactions } from '../../../../../../both/collections/payment/payment-transaction.collection';
 
 import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
-
-
 
 import template from './payu-payment-form.component.html';
 import style from './payu-payment-form.component.scss';
@@ -59,6 +58,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _paymentLogoName: string = "";
     private _deviceSessionId: string;
     private _mdDialogRef: MdDialogRef<any>;
+    private _mdDialogRef2: MdDialogRef<any>;
     private _countryName: string;
     private _ccMethodPayment: string;
     private _session_id: string;
@@ -66,12 +66,11 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _ipAddress: string;
     private _userAgent: string;
     private _sessionUserId: string;
+    private _loading: boolean;
 
     private _valueToPay: number;
     private _currency: string;
     private post: any;
-    private color: string = 'red';
-    private colorM: any;
     private scriptOneSanitized: any;
     private scriptTwoSanitized: any;
     private scriptThreeSanitized: any;
@@ -96,21 +95,11 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         this._deviceSessionId = md5(this._session_id + this._timestamp);
         this._sessionUserId = this._deviceSessionId + Meteor.userId();
 
-        console.log('Meteor.loginToken > ' + this._session_id);
-        //console.log('window.performance.now()' + window.performance.now());
-        console.log('Date.getTime() > ' + this._timestamp);
-        //console.log('Meteor.loginToken encriptado > ' + this._deviceSessionId);
-        console.log('_deviceSessionId > ' + this._deviceSessionId);
-
-        console.log('_sessionUserId > ' + this._sessionUserId);
-
-        this.colorM = this._domSanitizer.bypassSecurityTrustStyle(this.color);
-
         let _scriptOne: string = 'url(https://maf.pagosonline.net/ws/fp?id=';
         let _scriptTwo: string = 'https://maf.pagosonline.net/ws/fp/clear.png?id=';
         let _scriptThree: string = 'https://maf.pagosonline.net/ws/fp/check.js?id=';
         let _scriptFour: string = 'https://maf.pagosonline.net/ws/fp/fp.swf?id=';
-        console.log('_scriptOne+this._sessionUserId > ' + _scriptOne + this._sessionUserId + ')');
+
         this.scriptOneSanitized = this._domSanitizer.bypassSecurityTrustStyle(_scriptOne + this._sessionUserId + ')');
         this.scriptTwoSanitized = this._domSanitizer.bypassSecurityTrustUrl(_scriptTwo + this._sessionUserId);
         this.scriptThreeSanitized = this._domSanitizer.bypassSecurityTrustResourceUrl(_scriptThree + this._sessionUserId);
@@ -156,7 +145,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             });
         });
 
-        this._paymentTransactionSub = MeteorObservable.subscribe('getUserTransactions', Meteor.userId()).subscribe();
+        this._paymentTransactionSub = MeteorObservable.subscribe('getTransactions').subscribe();
 
         this._monthsArray = [{ value: '01', viewValue: '01' }, { value: '02', viewValue: '02' }, { value: '03', viewValue: '03' },
         { value: '04', viewValue: '04' }, { value: '05', viewValue: '05' }, { value: '06', viewValue: '06' },
@@ -199,11 +188,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     }
 
     openConfirmDialog() {
-        //console.log(md5('4Vj8eK4rloUd272L48hsrarnUA~508029~TestPayU~3~USD'));
-        //console.log(localStorage.getItem('Meteor.loginToken'));
-
         let auxstreet: string = this._paymentForm.value.streetOne;
-        //console.log('&&&&' + auxstreet);
 
         this._mdDialogRef = this._mdDialog.open(CcPaymentConfirmComponent, {
             disableClose: true,
@@ -222,14 +207,14 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             width: '51,5%'
         });
 
-
         this._mdDialogRef.afterClosed().subscribe(result => {
             this._mdDialogRef = result;
             if (result.success) {
-                console.log('ENVÍO DE OBJETO A PAYU SERVICE');
-
-                //this.getCode();
-                this.fillAuthorizationCaptureObject();
+                this._loading = true;
+                setTimeout(() => {
+                    this.fillAuthorizationCaptureObject();
+                    this._loading = false;
+                }, 5000);
             }
         });
     }
@@ -238,7 +223,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
      * This function fills the request object to sends to PayU
      */
     fillAuthorizationCaptureObject() {
-
         let paymentTransaction: PaymentTransaction;
 
         let ccRequestColombia = new CcRequestColombia();
@@ -258,13 +242,11 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         let apikey: string;
         let credentialArray: string[] = [];
 
-        paymentTransaction = PaymentTransactions.collection.findOne({ creation_user: Meteor.userId() }, { sort: { count: -1 } });
+        paymentTransaction = PaymentTransactions.collection.findOne({}, { sort: { count: -1 } });
         if (paymentTransaction) {
-            console.log('si tiene transaccion');
-
             PaymentTransactions.collection.insert({
                 count: paymentTransaction.count + 1,
-                referenceName: 'monthly_' + Meteor.userId() + '_' + (paymentTransaction.count + 1),
+                referenceName: 'MONP' + (paymentTransaction.count + 1),
                 status: 'PENDING',
                 creation_date: new Date(),
                 creation_user: Meteor.userId()
@@ -273,7 +255,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             console.log('no tiene transaccion');
             PaymentTransactions.collection.insert({
                 count: 1,
-                referenceName: 'monthly_' + Meteor.userId() + '_' + 1,
+                referenceName: 'MONP' + 1,
                 status: 'PENDING',
                 creation_date: new Date(),
                 creation_user: Meteor.userId()
@@ -286,7 +268,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         apilogin = credentialArray[0];
         apikey = credentialArray[1];
 
-        ccRequestColombia.language = 'en';
+        ccRequestColombia.language = Meteor.user().profile.language_code;
         ccRequestColombia.command = 'SUBMIT_TRANSACTION';
         merchant.apiLogin = apilogin;
         merchant.apiKey = apikey;
@@ -295,14 +277,14 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         order.accountId = 512321;
         //order.referenceCode = 'monthly_payment_000000005';
         order.referenceCode = paymentTransaction.referenceName;
-        order.description = 'monthly payment for ' + paymentTransaction.creation_user + ' number ' + paymentTransaction.count;
+        order.description = this.itemNameTraduction('PAYU_PAYMENT_FORM.ORDER_DESCRIPTION');
         order.language = Meteor.user().profile.language_code;
         order.notifyUrl = 'http://http://192.168.0.3:3000';
         order.signature = this.generateOrderSignature(apikey, paymentTransaction.referenceName);
 
         buyer.merchantBuyerId = Meteor.userId();
         //buyer.fullName = 'Don quijote de la mancha';
-        buyer.fullName = 'APPROVED';
+        buyer.fullName = this._paymentForm.value.fullName;
         buyer.emailAddress = Meteor.user().emails[0].address;
         buyer.contactPhone = '9876543213';
         buyer.dniNumber = '1231238998712'
@@ -325,7 +307,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         creditCard.securityCode = this._paymentForm.value.securityCode;
         creditCard.expirationDate = this._selectedCardYear + '/' + this._selectedCardMonth;
         //creditCard.name = this._paymentForm.value.fullName;
-        creditCard.name = 'APPROVED';
+        creditCard.name = 'EXPIRED';
 
         payer.fullName = this._paymentForm.value.fullName;
         payer.emailAddress = this._paymentForm.value.email;
@@ -356,50 +338,62 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         ccRequestColombia.transaction = transaction;
         ccRequestColombia.test = true;
 
-        console.log('language > ' + ccRequestColombia.language);
-        console.log('command > ' + ccRequestColombia.command);
-        console.log('test > ' + ccRequestColombia.test);
-        console.log('merchant.apiLogin > ' + merchant.apiLogin);
-        console.log('merchant.apiKey > ' + merchant.apiKey);
-        console.log('order.accountId > ' + order.accountId);
-        console.log('order.referenceCode > ' + order.referenceCode);
-        console.log('order.description > ' + order.description);
-        console.log('order.language > ' + order.language);
-        console.log('order.notifyUrl > ' + order.notifyUrl);
-        console.log('order.signature > ' + order.signature);
-        console.log('buyer.merchantBuyerId > ' + buyer.merchantBuyerId);
-        console.log('buyer.fullName > ' + buyer.fullName);
-        console.log('buyer.emailAddress > ' + buyer.emailAddress);
-        console.log('buyer.contactPhone > ' + buyer.contactPhone);
-        console.log('buyer.dniNumber > ' + buyer.dniNumber);
-        console.log('buyerShippingAddress.street1 > ' + buyerShippingAddress.street1);
-        console.log('buyerShippingAddress.city > ' + buyerShippingAddress.city);
-        console.log('buyerShippingAddress.country > ' + buyerShippingAddress.country);
-        console.log('tx_value.value > ' + tx_value.value);
-        console.log('tx_value.currency > ' + tx_value.currency);
-        console.log('creditCard.number > ' + creditCard.number);
-        console.log('creditCard.securityCode > ' + creditCard.securityCode);
-        console.log('creditCard.expirationDate > ' + creditCard.expirationDate);
-        console.log('creditCard.name > ' + creditCard.name);
-        console.log('payer.emailAddress > ' + payer.emailAddress);
-        console.log('payer.fullName > ' + payer.fullName);
-        console.log('payerBillingAddress.street1 > ' + payerBillingAddress.street1);
-        console.log('payerBillingAddress.city > ' + payerBillingAddress.city);
-        console.log('payerBillingAddress.country > ' + payerBillingAddress.country);
-        console.log('payer.contactPhone > ' + payer.contactPhone);
-        console.log('payer.dniNumber > ' + payer.dniNumber);
-        console.log('transaction.type > ' + transaction.type);
-        console.log('transaction.paymentMethod > ' + transaction.paymentMethod);
-        console.log('transaction.paymentCountry > ' + transaction.paymentCountry);
-        console.log('transaction.deviceSessionId > ' + transaction.deviceSessionId);
-        console.log('transaction.ipAddress > ' + transaction.ipAddress);
-        console.log('transaction.cookie > ' + transaction.cookie);
-        console.log('transaction.userAgent > ' + transaction.userAgent);
-
-
         console.log('OBJETO ES: ');
         console.log(ccRequestColombia);
         console.log(JSON.stringify(ccRequestColombia));
+
+        this._payuPaymentService.authorizeAndCapture(ccRequestColombia).subscribe(
+            response => {
+                console.log(JSON.stringify(response));
+
+                if (response.code == 'ERROR') {
+                    console.log(' *** respuesta de error');
+                } else if (response.code == 'SUCCESS') {
+                    switch (response.transactionResponse.state) {
+                        case "APPROVED": {
+                            console.log(' *** aprobación');
+                            break;
+                        }
+                        case "DECLINED": {
+                            console.log(' *** rechazada');
+                            break;
+                        }
+                        case "PENDING": {
+                            console.log(' *** pendiente');
+                            break;
+                        }
+                        case "EXPIRED": {
+                            console.log(' *** expirada');
+                            break;
+                        }
+                        default: {
+                            console.log("*** error");
+                            break;
+                        }
+                    }
+                }
+
+                /*
+                this._mdDialogRef2 = this._mdDialog.open(TransactionResponseConfirmComponent, {
+                    disableClose: true,
+                    data: {
+                        status: 'APROBADO SI SR',
+                    },
+                });
+
+                this._mdDialogRef2.afterClosed().subscribe(result => {
+                    this._mdDialogRef2 = result;
+                    if (result.success) {
+                        console.log('REENVÍO ');
+                    }
+                });
+
+                */
+            },
+            error => {
+                console.log(error);
+            }
+        );
 
     }
 
@@ -408,7 +402,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         let signatureEncoded: string = md5(_apikey + '~' + merchantId + '~' + _referenceCode + '~' + this._valueToPay + '~' + this._currency);
         return signatureEncoded;
     }
-
 
     getCode() {
         let pingObj: {} = {
@@ -434,8 +427,16 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         );
     }
 
-    cancel() {
-        this._router.navigate(['app/monthly-payment']);
+    /**
+     * Function to translate information
+     * @param {string} _itemName
+     */
+    itemNameTraduction(_itemName: string): string {
+        var _wordTraduced: string;
+        this._translate.get(_itemName).subscribe((res: string) => {
+            _wordTraduced = res;
+        });
+        return _wordTraduced;
     }
 
     ngOnDestroy() {

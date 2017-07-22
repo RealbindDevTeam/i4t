@@ -69,9 +69,10 @@ import { SendOrderConfirmComponent } from './waiter/calls/send-order-confirm/sen
 import { ColombiaOrderInfoComponent } from './customer/payments/country-payment/colombia-payment/colombia-order-info/colombia-order-info.component';
 import { PayuPaymentFormComponent } from './payment/payu-payment-form/payu-payment-form.component';
 import { HistoryPaymentComponent } from './payment/history-payment/history-payment.component';
-import { ReactivateRestaurantComponent } from './payment/reactivate-restaurant/reactivate-restaurant.component'; 
+import { ReactivateRestaurantComponent } from './payment/reactivate-restaurant/reactivate-restaurant.component';
 import { ColombiaPayInfoComponent } from './customer/payments/country-payment/colombia-payment/colombia-pay-info/colombia-pay-info.component';
 import { CcPaymentConfirmComponent } from './payment/payu-payment-form/cc-payment-confirm/cc-payment-confirm.component';
+import { TransactionResponseConfirmComponent } from './payment/payu-payment-form/transaction-response-confirm/transaction-response-confirm';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -148,7 +149,8 @@ export const MODAL_DIALOG_DECLARATIONS = [
     CollaboratorsEditionComponent,
     DisableConfirmComponent,
     SendOrderConfirmComponent,
-    CcPaymentConfirmComponent
+    CcPaymentConfirmComponent,
+    TransactionResponseConfirmComponent
 ];
 
 export const SERVICES_DECLARATIONS = [

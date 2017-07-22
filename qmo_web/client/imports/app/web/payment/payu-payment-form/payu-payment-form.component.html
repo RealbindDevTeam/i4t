@@ -107,9 +107,13 @@
     </md-card-content>
 </md-card>
 
+<div class="loading" *ngIf="_loading">
+    <md-spinner></md-spinner>
+</div>
+
 <p [style.background]="scriptOneSanitized"></p>
 <img [src]="scriptTwoSanitized">
 <script [src]="scriptThreeSanitized"></script>
-<object type="application/x-shockwave-flash" [data]="scriptFourSanitized"width="1" height="1" id="thm_fp">
+<object type="application/x-shockwave-flash" [data]="scriptFourSanitized" width="1" height="1" id="thm_fp">
   <param name="movie" [value]="scriptFourSanitized" />
 </object>
