@@ -26,8 +26,6 @@
                         <div *ngIf="_showPayments" id="pruebaCard" >
                             <md-card class="main" *ngFor="let invoice of _invoices | async">
                                 <button (click)="invoiceGenerate(invoice)">Generar</button>
-                                <!--md-card-title>{{'PAYMENTS.COLOMBIA.ORDER_DETAILS' | translate}}</md-card-title>
-                                <md-card-subtitle>{{'PAYMENTS.COLOMBIA.VIEW_ORDER_DETAILS' | translate}}</md-card-subtitle-->
                                 <md-card-content>
                                     <md-list class="order-info">
                                         <md-list-item>
@@ -46,8 +44,7 @@
                                                 </div>
                                             </md-list-item>
                                             <md-divider class="divider"></md-divider>
-                                            
-                                            <div *ngIf="item.garnish_food.lenght > 0">
+                                            <div *ngIf="item.garnish_food.length > 0">
                                                 <md-list-item class="element" *ngFor="let gf of item.garnish_food">
                                                     <div md-line>
                                                         <h4 class="display-inline">{{gf.garnish_food_name}}</h4>
@@ -58,7 +55,7 @@
                                                 <md-divider class="divider"></md-divider>
                                             </div>
                                             
-                                            <div *ngIf="item.additions.lenght > 0">
+                                            <div *ngIf="item.additions.length > 0">
                                                 <md-list-item class="element" *ngFor="let ad of item.additions">
                                                     <div md-line>
                                                         <h4 class="display-inline">{{ad.addition_name}}</h4>

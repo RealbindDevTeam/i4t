@@ -80,19 +80,75 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         
         y = this.calculateY(y, 30);
         pdf.text( despcriptionTitle, 10, y );
-        pdf.text( quantTitle, 140, y );
-        pdf.text( valueTitle, 200, y, 'right' );
+        pdf.text( quantTitle, 120, y );
+        pdf.text( valueTitle, 200, y, alignRight );
         
         y = this.calculateY(y, 10);
         _pInvoice.items.forEach( (item) => {
             y = this.calculateY(y, 10);
-            pdf.text( item.item_name, 10, y.toString() );
-            pdf.text( item.quantity, 140, y.toString() );
-            //pdf.text( item.price, 200, y.toString(), 'right' );
+            pdf.text( 10, y, item.item_name );
+            pdf.text( 140, y, item.quantity.toString(), alignRight );
+            pdf.text( 200, y, item.price.toString() + ' ' + _pInvoice.currency, alignRight );
+
+            if (item.garnish_food.length > 0) {
+                item.garnish_food.forEach( (garnish_food : Object) => {
+                    y = this.calculateY(y, 10);
+                    pdf.text( 10, y, garnish_food['garnish_food_name'] );
+                    pdf.text( 140, y, item.quantity.toString(), alignRight );
+                    pdf.text( 200, y, garnish_food['price'].toString() + ' ' + _pInvoice.currency, alignRight );
+                });
+            }
+            
+            if (item.additions.length > 0) {
+                item.additions.forEach( (addition : Object) => {
+                    y = this.calculateY(y, 10);
+                    pdf.text( 10, y, addition['addition_name'] );
+                    pdf.text( 140, y, item.quantity.toString(), alignRight );
+                    pdf.text( 200, y, addition['price'].toString() + ' ' + _pInvoice.currency, alignRight );
+                });
+            }
+
+        });
+        
+        _pInvoice.additions.forEach( (addition) => {
+            y = this.calculateY(y, 10);
+            pdf.text( 10, y, addition.addition_name );
+            pdf.text( 140, y, addition.quantity.toString(), alignRight );
+            pdf.text( 200, y, addition.price.toString() + ' ' + _pInvoice.currency, alignRight );
         });
 
+        y = this.calculateY(y, 30);
+        pdf.text( 80, y, this.itemNameTraduction('PAYMENTS_HISTORY.SUB_TOTAL') );
+        pdf.text( 200, y, (_pInvoice.total_order).toFixed(2) + ' ' + _pInvoice.currency, alignRight );
+
+        y = this.calculateY(y, 10);
+        pdf.text( 80, y, this.itemNameTraduction('PAYMENTS_HISTORY.BASE_IMPO') );
+        pdf.text( 200, y, ((_pInvoice.total_order * 100) / 108).toFixed(2) + ' ' + _pInvoice.currency, alignRight );
+
+        y = this.calculateY(y, 10);
+        pdf.text( 80, y, this.itemNameTraduction('PAYMENTS_HISTORY.IMPO') );
+        pdf.text( 200, y, (_pInvoice.total_order - ((_pInvoice.total_order * 100) / 108)).toFixed(2) + ' ' + _pInvoice.currency, alignRight );
         
+        y = this.calculateY(y, 10);
+        pdf.text( 80, y, this.itemNameTraduction('PAYMENTS_HISTORY.TIP') );
+        pdf.text( 200, y, (_pInvoice.total_tip).toFixed(2) + ' ' + _pInvoice.currency, alignRight );
         
+        y = this.calculateY(y, 10);
+        pdf.text( 80, y, this.itemNameTraduction('PAYMENTS_HISTORY.TOTAL_TO_PAY') );
+        
+        y = this.calculateY(y, 10);
+        pdf.text( 80, y, this.itemNameTraduction(_pInvoice.pay_method) );
+        pdf.text( 200, y, (_pInvoice.total_pay).toFixed(2) + ' ' + _pInvoice.currency, alignRight );
+        
+        y = this.calculateY(y, 10);
+        pdf.text( 80, y, this.itemNameTraduction(_pInvoice.pay_method) );
+        
+        y = this.calculateY(y, 30);
+        pdf.text( x, y, this.itemNameTraduction('PAYMENTS_HISTORY.RES_DIAN') + ' ' + '3100000000095678 2016/07/01', alignCenter );
+        y = this.calculateY(y, 10);
+        pdf.text( x, y, this.itemNameTraduction('PAYMENTS_HISTORY.CONS_FROM') + ' ' + '18689', alignCenter );
+        y = this.calculateY(y, 10);
+        pdf.text( x, y, this.itemNameTraduction('PAYMENTS_HISTORY.CONS_TO') + ' ' + '100000', alignCenter );
 
         pdf.output('dataurlnewwindow');
     }

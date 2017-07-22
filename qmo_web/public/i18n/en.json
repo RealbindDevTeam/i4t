@@ -913,8 +913,16 @@
     },
     "PAYMENTS_HISTORY" : {
         "TITLE": "Payments history",
+        "SUB_TOTAL" : "SubTotal",
         "TOTAL" : "Total",
         "TIP" : "Tip",
-        "TOTAL_ORDER" : "Order total"
+        "TOTAL_ORDER" : "Order total",
+        "IMPO" : "IMPO (8%)",
+        "BASE_IMPO" : "IMPO base",
+        "TOTAL_TO_PAY" : "Total to pay",
+        "PAYMENT_METHOD" : "Payment method",
+        "RES_DIAN" : "Res. DIAN No.",
+        "CONS_FROM" : "Consecutivo del",
+        "CONS_TO" : "al"
     }
 }
