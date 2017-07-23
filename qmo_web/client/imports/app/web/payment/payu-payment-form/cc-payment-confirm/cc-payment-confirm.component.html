@@ -6,7 +6,7 @@
             <md-list-item>
                 <img md-list-avatar class="image" src="/images/restaurantes.png">
                 <h2 md-line class="card-title">{{'PAYU_PAYMENT_FORM.IUREST_SERVICE' | translate}}</h2>
-                <p md-line *ngFor="let restaurant of _restaurants | async"> - {{restaurant.name}}</p>
+                <p md-line *ngFor="let restaurant of data.restaurantArray"> - {{restaurant}}</p>
             </md-list-item>
         </md-list>
         <md-list>

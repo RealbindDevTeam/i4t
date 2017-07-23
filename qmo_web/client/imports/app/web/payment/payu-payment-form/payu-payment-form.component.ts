@@ -61,9 +61,10 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _parameters: Observable<Parameter[]>;
     private _historyPaymentSub: Subscription;
     private _historyPayments: Observable<HistoryPayment[]>;
+    private _restaurantSub: Subscription;
     private _restaurants: Observable<Restaurant[]>;
     private _restaurantsIdsArray: string[];
-    private _restaurantSub: Subscription;
+    private _restaurantsNamesArray: string[];
     private _currentDate: Date;
     private _currentYear: number;
     private _yearsArray: any[];
@@ -218,6 +219,11 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     openConfirmDialog() {
         let auxstreet: string = this._paymentForm.value.streetOne;
 
+        this._restaurantsNamesArray = [];
+        Restaurants.find({ creation_user: Meteor.userId(), isActive: true }).fetch().forEach((restaurant) => {
+            this._restaurantsNamesArray.push(restaurant.name);
+        });
+
         this._mdDialogRef = this._mdDialog.open(CcPaymentConfirmComponent, {
             disableClose: true,
             data: {
@@ -229,7 +235,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 ccmethod: this._paymentLogoName,
                 cardnumber: this._paymentForm.value.cardNumber,
                 price: this._valueToPay,
-                currency: this._currency
+                currency: this._currency,
+                restaurantArray: this._restaurantsNamesArray
             },
             height: '85%',
             width: '51,5%'
@@ -390,6 +397,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                     switch (response.transactionResponse.state) {
                         case "APPROVED": {
                             console.log(' *** aprobación');
+                            this.insertHistoryUpdateTransaction(response.transactionResponse.state); 
                             break;
                         }
                         case "DECLINED": {
@@ -441,6 +449,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
      * */
     insertHistoryUpdateTransaction(_status: string) {
 
+        this._restaurantsIdsArray = [];
         Restaurants.find({ creation_user: Meteor.userId(), isActive: true }).fetch().forEach((restaurant) => {
             this._restaurantsIdsArray.push(restaurant._id);
         });
@@ -453,6 +462,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             year: (this._currentDate.getFullYear()).toString(),
             status: _status
         });
+
+        this._router.navigate(['app/history-payment']);
     }
 
     /**
@@ -531,5 +542,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         this._citySub.unsubscribe();
         this._paymentTransactionSub.unsubscribe();
         this._parameterSub.unsubscribe();
+        this._restaurantSub.unsubscribe();
     }
 }

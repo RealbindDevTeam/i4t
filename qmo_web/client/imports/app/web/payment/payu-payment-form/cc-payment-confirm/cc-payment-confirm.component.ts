@@ -4,9 +4,6 @@ import { MeteorObservable } from "meteor-rxjs";
 import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from 'ng2-translate';
 
-import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
-import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
-
 import template from './cc-payment-confirm.component.html';
 import style from './cc-payment-confirm.component.scss';
 
@@ -18,8 +15,6 @@ import style from './cc-payment-confirm.component.scss';
 
 export class CcPaymentConfirmComponent implements OnInit, OnDestroy {
 
-    private _restaurants: Observable<Restaurant[]>;
-    private _restaurantSub: Subscription;
     private _cardNumber: string;
 
     /**
@@ -31,13 +26,11 @@ export class CcPaymentConfirmComponent implements OnInit, OnDestroy {
         translate.setDefaultLang('en');
         translate.use(userLang);
 
-        this._cardNumber =  data.cardnumber.substring(data.cardnumber.length - 4);
+        this._cardNumber = data.cardnumber.substring(data.cardnumber.length - 4);
     }
 
     ngOnInit() {
-        this._restaurantSub = MeteorObservable.subscribe('currentRestaurantsNoPayed', Meteor.userId()).subscribe(() => {
-            this._restaurants = Restaurants.find({ creation_user: Meteor.userId(), isActive: true }).zone();
-        });
+
     }
 
     /**

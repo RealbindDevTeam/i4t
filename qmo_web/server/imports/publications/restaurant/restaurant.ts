@@ -114,14 +114,19 @@ Meteor.publish('currentRestaurantsNoPayed', function (_userId: string) {
     let currentDate: Date = new Date();
     let currentMonth: string = (currentDate.getMonth() + 1).toString();
     let currentYear: string = currentDate.getFullYear().toString();
+    let historyPaymentRes: string[] = [];
 
     var restaurantsInitial: string[] = Restaurants.collection.find({ creation_user: _userId, isActive: true, freeDays: false }).map(function (restaurant) {
         return restaurant._id;
     });
 
-    var historyPayment = HistoryPayments.collection.find({ restaurantId: { $in: restaurantsInitial }, month: currentMonth, year: currentYear, status: 'APPROVED' }).map(function (historyPayment) {
-        return historyPayment.restaurantId;
+    console.log(restaurantsInitial);
+    HistoryPayments.collection.find({ restaurantIds: { $in: restaurantsInitial }, month: currentMonth, year: currentYear, status: 'APPROVED' }).fetch().forEach((historyPayment) => {
+        historyPayment.restaurantIds.forEach((restaurantId)=>{
+            historyPaymentRes.push(restaurantId);
+        });  
     });
 
-    return Restaurants.collection.find({ _id: { $nin: historyPayment }, creation_user: _userId, isActive: true, freeDays: false});
+    console.log(historyPaymentRes);
+    return Restaurants.collection.find({ _id: { $nin: historyPaymentRes }, creation_user: _userId, isActive: true, freeDays: false });
 });
