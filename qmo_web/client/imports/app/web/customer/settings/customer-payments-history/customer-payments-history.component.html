@@ -25,31 +25,41 @@
                         
                         <div *ngIf="_showPayments" id="pruebaCard" >
                             <md-card class="main" *ngFor="let invoice of _invoices | async">
-                                <button (click)="invoiceGenerate(invoice)">Generar</button>
                                 <md-card-content>
                                     <md-list class="order-info">
                                         <md-list-item>
                                             <img md-list-avatar class="image" src="/images/orders.png">
                                             <h2 md-line class="title">{{invoice.restaurant_name}}</h2>
                                             <p md-line class="title">{{invoice.creation_date | date: 'dd MMM yyyy HH:mm'}}</p>
+                                            <button md-raised-button (click)="invoiceGenerate(invoice)" style="box-shadow: none; color: #e53935;">
+                                                <md-icon>get_app</md-icon>
+                                            </button>
                                         </md-list-item>
                                     </md-list>
                                     <md-list class="order-details">
                                         <div *ngFor="let item of invoice.items">
                                             <md-list-item class="element">
                                                 <div md-line>
-                                                    <h4 class="display-inline">{{item.item_name}}</h4>
-                                                    <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{item.quantity}}</p>
-                                                    <p class="price">{{item.price}} {{invoice.currency}}</p>
+                                                    <div style="width: 49%; display: inline-block;">
+                                                        <h4 class="display-inline">{{item.item_name}}</h4>
+                                                    </div>
+                                                    <div style="width: 49%; display: inline-block;">
+                                                        <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{item.quantity}}</p>
+                                                        <p class="price">{{item.price}} {{invoice.currency}}</p>
+                                                    </div>
                                                 </div>
                                             </md-list-item>
                                             <md-divider class="divider"></md-divider>
                                             <div *ngIf="item.garnish_food.length > 0">
                                                 <md-list-item class="element" *ngFor="let gf of item.garnish_food">
                                                     <div md-line>
-                                                        <h4 class="display-inline">{{gf.garnish_food_name}}</h4>
-                                                        <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{item.quantity}}</p>
-                                                        <p class="price">{{gf.price}} {{invoice.currency}}</p>
+                                                        <div style="width: 49%; display: inline-block;">
+                                                            <h4 class="display-inline">{{gf.garnish_food_name}}</h4>
+                                                        </div>
+                                                        <div style="width: 49%; display: inline-block;">
+                                                            <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{item.quantity}}</p>
+                                                            <p class="price">{{gf.price}} {{invoice.currency}}</p>
+                                                        </div>
                                                     </div>
                                                 </md-list-item>
                                                 <md-divider class="divider"></md-divider>
@@ -58,9 +68,13 @@
                                             <div *ngIf="item.additions.length > 0">
                                                 <md-list-item class="element" *ngFor="let ad of item.additions">
                                                     <div md-line>
-                                                        <h4 class="display-inline">{{ad.addition_name}}</h4>
-                                                        <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{item.quantity}}</p>
-                                                        <p class="price">{{ad.price}} {{invoice.currency}}</p>
+                                                        <div style="width: 49%; display: inline-block;">
+                                                            <h4 class="display-inline">{{ad.addition_name}}</h4>
+                                                        </div>
+                                                        <div style="width: 49%; display: inline-block;">
+                                                            <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{item.quantity}}</p>
+                                                            <p class="price">{{ad.price}} {{invoice.currency}}</p>
+                                                        </div>
                                                     </div>
                                                 </md-list-item>
                                                 <md-divider class="divider"></md-divider>
@@ -70,9 +84,13 @@
                                         <div *ngFor="let addition of invoice.additions">
                                             <md-list-item class="element">
                                                 <div md-line>
-                                                    <h4 class="display-inline">{{addition.addition_name}}</h4>
-                                                    <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{addition.quantity}}</p>
-                                                    <p class="price">{{addition.price}} {{invoice.currency}}</p>
+                                                    <div style="width: 49%; display: inline-block;">
+                                                        <h4 class="display-inline">{{addition.addition_name}}</h4>
+                                                    </div>
+                                                    <div style="width: 49%; display: inline-block;">
+                                                        <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{addition.quantity}}</p>
+                                                        <p class="price">{{addition.price}} {{invoice.currency}}</p>
+                                                    </div>
                                                 </div>
                                             </md-list-item>
                                             <md-divider class="divider"></md-divider>

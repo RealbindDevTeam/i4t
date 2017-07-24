@@ -923,6 +923,9 @@
         "PAYMENT_METHOD" : "Payment method",
         "RES_DIAN" : "Res. DIAN No.",
         "CONS_FROM" : "Consecutivo del",
-        "CONS_TO" : "al"
+        "CONS_TO" : "al",
+        "SOFTWARE_BY_REALBIND" : "Realbind S.A.S Software",
+        "INVOICE_SALE" : "Factura de venta",
+        "DATE" : "Fecha-Hora"
     }
 }
