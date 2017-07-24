@@ -9,7 +9,7 @@ import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
 import { CustomValidators } from '../../../../../../both/shared-components/validators/custom-validator';
 import { CcPaymentConfirmComponent } from './cc-payment-confirm/cc-payment-confirm.component';
-import { TransactionResponseConfirmComponent } from './transaction-response-confirm/transaction-response-confirm';
+import { TrnResponseConfirmComponent } from './transaction-response-confirm/trn-response-confirm.component';
 import { getPayuMerchantInfo } from '../../../../../../both/methods/general/parameter.methods';
 
 import { CcPaymentMethods } from '../../../../../../both/collections/payment/cc-payment-methods.collection';
@@ -248,7 +248,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 this._loading = true;
                 setTimeout(() => {
                     this.fillAuthorizationCaptureObject();
-                    this._loading = false;
                 }, 5000);
             }
         });
@@ -258,6 +257,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
      * This function fills the request object and sends to PayU Rest service
      */
     fillAuthorizationCaptureObject() {
+        let paymentTransactionF: PaymentTransaction;
         let paymentTransaction: PaymentTransaction;
 
         let ccRequestColombia = new CcRequestColombia();
@@ -274,17 +274,16 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         let payer = new Payer();
         let payerBillingAddress = new ShippingBillingAddress();
         let extraParameters = new ExtraParameters();
-
         let apilogin: string;
         let apikey: string;
         let credentialArray: string[] = [];
 
-        paymentTransaction = PaymentTransactions.collection.findOne({}, { sort: { count: -1 } });
-        if (paymentTransaction) {
+        paymentTransactionF = PaymentTransactions.collection.findOne({}, { sort: { count: -1 } });
+        if (paymentTransactionF) {
             PaymentTransactions.collection.insert({
-                count: paymentTransaction.count + 1,
-                referenceName: 'MONP' + (paymentTransaction.count + 1),
-                status: 'PENDING',
+                count: paymentTransactionF.count + 1,
+                referenceCode: 'M0NP' + (paymentTransactionF.count + 1),
+                status: 'PREPARED',
                 creation_date: new Date(),
                 creation_user: Meteor.userId()
             });
@@ -292,14 +291,14 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             console.log('no tiene transaccion');
             PaymentTransactions.collection.insert({
                 count: 1,
-                referenceName: 'MONP' + 1,
-                status: 'PENDING',
+                referenceCode: 'M0NP' + 1,
+                status: 'PREPARED',
                 creation_date: new Date(),
                 creation_user: Meteor.userId()
             });
         }
 
-        paymentTransaction = PaymentTransactions.collection.findOne({ creation_user: Meteor.userId() }, { sort: { count: -1 } });
+        paymentTransaction = PaymentTransactions.collection.findOne({}, { sort: { count: -1 } });
 
         credentialArray = getPayuMerchantInfo();
         apilogin = credentialArray[0];
@@ -313,11 +312,11 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 
         order.accountId = 512321;
         //order.referenceCode = 'monthly_payment_000000005';
-        order.referenceCode = paymentTransaction.referenceName;
+        order.referenceCode = paymentTransaction.referenceCode;
         order.description = this.itemNameTraduction('PAYU_PAYMENT_FORM.ORDER_DESCRIPTION');
         order.language = Meteor.user().profile.language_code;
         order.notifyUrl = 'http://http://192.168.0.3:3000';
-        order.signature = this.generateOrderSignature(apikey, paymentTransaction.referenceName);
+        order.signature = this.generateOrderSignature(apikey, paymentTransaction.referenceCode);
 
         buyer.merchantBuyerId = Meteor.userId();
         //buyer.fullName = 'Don quijote de la mancha';
@@ -352,7 +351,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         creditCard.securityCode = this._paymentForm.value.securityCode;
         creditCard.expirationDate = this._selectedCardYear + '/' + this._selectedCardMonth;
         //creditCard.name = this._paymentForm.value.fullName;
-        creditCard.name = 'APPROVED';
+        creditCard.name = 'PENDING';
 
         payer.fullName = this._paymentForm.value.fullName;
         payer.emailAddress = this._paymentForm.value.email;
@@ -387,67 +386,99 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         console.log(ccRequestColombia);
         console.log(JSON.stringify(ccRequestColombia));
 
+        let transactionMessage: string;
+        let transactionIcon: string;
+        let showCancelBtn: boolean = false;
+
         this._payuPaymentService.authorizeAndCapture(ccRequestColombia).subscribe(
             response => {
                 console.log(JSON.stringify(response));
 
                 if (response.code == 'ERROR') {
                     console.log(' *** respuesta de error');
+                    transactionMessage = 'PAYU_PAYMENT_FORM.AUTH_ERROR_MSG';
+                    transactionIcon = 'trn_declined.png';
+                    showCancelBtn = true;
                 } else if (response.code == 'SUCCESS') {
+                    showCancelBtn = false;
                     switch (response.transactionResponse.state) {
                         case "APPROVED": {
                             console.log(' *** aprobación');
-                            this.insertHistoryUpdateTransaction(response.transactionResponse.state); 
+                            this.insertHistoryUpdateTransaction(response, paymentTransaction._id);
+                            transactionMessage = 'PAYU_PAYMENT_FORM.TRANSACTION_APPROVED';
+                            transactionIcon = 'trn_approved.png';
                             break;
                         }
                         case "DECLINED": {
                             console.log(' *** rechazada');
+                            this.insertHistoryUpdateTransaction(response, paymentTransaction._id);
+                            transactionMessage = 'PAYU_PAYMENT_FORM.TRANSACTION_DECLINED';
+                            transactionIcon = 'trn_declined.png';
                             break;
                         }
                         case "PENDING": {
                             console.log(' *** pendiente');
+                            this.insertHistoryUpdateTransaction(response, paymentTransaction._id);
+                            transactionMessage = 'PAYU_PAYMENT_FORM.TRANSACTION_PENDING';
+                            transactionIcon = 'trn_pending.png';
                             break;
                         }
                         case "EXPIRED": {
                             console.log(' *** expirada');
+                            this.insertHistoryUpdateTransaction(response, paymentTransaction._id);
+                            transactionMessage = 'PAYU_PAYMENT_FORM.TRANSACTION_EXPIRED';
+                            transactionIcon = 'trn_declined.png';
                             break;
                         }
                         default: {
                             console.log("*** error");
+                            this.insertHistoryUpdateTransaction(response, paymentTransaction._id);
+                            transactionMessage = 'PAYU_PAYMENT_FORM.TRANSACTION_ERROR';
+                            transactionIcon = 'trn_declined.png';
                             break;
                         }
                     }
                 }
-
-                /*
-                this._mdDialogRef2 = this._mdDialog.open(TransactionResponseConfirmComponent, {
+                this._loading = false;
+                this._mdDialogRef2 = this._mdDialog.open(TrnResponseConfirmComponent, {
                     disableClose: true,
                     data: {
-                        status: 'APROBADO SI SR',
+                        transactionResponse: transactionMessage,
+                        transactionImage: transactionIcon,
+                        showCancel: showCancelBtn
                     },
                 });
 
                 this._mdDialogRef2.afterClosed().subscribe(result => {
                     this._mdDialogRef2 = result;
                     if (result.success) {
-                        console.log('REENVÍO ');
+                        this._router.navigate(['app/history-payment']);
                     }
                 });
-
-                */
             },
             error => {
-                console.log(error);
+                alert(error);
             }
         );
-
     }
 
     /**
      * This function inserts the history Payment status and update the payment transaction 
      * @param {string} _status
      * */
-    insertHistoryUpdateTransaction(_status: string) {
+    insertHistoryUpdateTransaction(_response: any, _transactionId: string) {
+
+        PaymentTransactions.collection.update({ _id: _transactionId },
+            {
+                $set: {
+                    status: _response.transactionResponse.state,
+                    responseCode: _response.transactionResponse.responseCode,
+                    responseOrderId: _response.transactionResponse.orderId,
+                    responsetransactionId: _response.transactionResponse.transactionId,
+                }
+            });
+
+        let transactionId = PaymentTransactions.collection.findOne({ _id: _transactionId })._id;
 
         this._restaurantsIdsArray = [];
         Restaurants.find({ creation_user: Meteor.userId(), isActive: true }).fetch().forEach((restaurant) => {
@@ -460,10 +491,13 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             endDate: this._lastMonthDay,
             month: (this._currentDate.getMonth() + 1).toString(),
             year: (this._currentDate.getFullYear()).toString(),
-            status: _status
+            status: _response.transactionResponse.state,
+            transactionId: transactionId,
+            paymentValue: this._valueToPay,
+            currency: this._currency,
+            creation_user: Meteor.userId(),
+            creation_date: new Date()
         });
-
-        this._router.navigate(['app/history-payment']);
     }
 
     /**

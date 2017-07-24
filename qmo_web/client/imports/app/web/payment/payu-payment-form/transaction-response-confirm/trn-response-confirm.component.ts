@@ -4,8 +4,8 @@ import { MeteorObservable } from "meteor-rxjs";
 import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from 'ng2-translate';
 
-import template from './transaction-response-confirm.html';
-import style from './transaction-response-confirm.html';
+import template from './trn-response-confirm.component.html';
+import style from './trn-response-confirm.component.scss';
 
 
 @Component({
@@ -14,7 +14,9 @@ import style from './transaction-response-confirm.html';
     styles: [style]
 })
 
-export class TransactionResponseConfirmComponent implements OnInit, OnDestroy {
+export class TrnResponseConfirmComponent implements OnInit, OnDestroy {
+
+    private showCancelButton: boolean;
 
     /**
      * CallCloseConfirmComponent constructor
@@ -24,6 +26,22 @@ export class TransactionResponseConfirmComponent implements OnInit, OnDestroy {
         var userLang = navigator.language.split('-')[0];
         translate.setDefaultLang('en');
         translate.use(userLang);
+
+        this.showCancelButton = data.showCancel;
+    }
+
+    /**
+     * Function that returns true to Parent component
+     */
+    closeConfirm() {
+        this._dialogRef.close({ success: true });
+    }
+
+    /**
+     * This function allow closed the modal dialog
+     */
+    cancel() {
+        this._dialogRef.close({ success: false });
     }
 
     ngOnInit() {

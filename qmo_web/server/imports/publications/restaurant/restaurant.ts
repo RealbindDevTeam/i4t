@@ -120,13 +120,11 @@ Meteor.publish('currentRestaurantsNoPayed', function (_userId: string) {
         return restaurant._id;
     });
 
-    console.log(restaurantsInitial);
     HistoryPayments.collection.find({ restaurantIds: { $in: restaurantsInitial }, month: currentMonth, year: currentYear, status: 'APPROVED' }).fetch().forEach((historyPayment) => {
         historyPayment.restaurantIds.forEach((restaurantId)=>{
             historyPaymentRes.push(restaurantId);
         });  
     });
 
-    console.log(historyPaymentRes);
     return Restaurants.collection.find({ _id: { $nin: historyPaymentRes }, creation_user: _userId, isActive: true, freeDays: false });
 });

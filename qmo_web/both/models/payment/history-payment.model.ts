@@ -7,6 +7,7 @@ export interface HistoryPayment extends CollectionObject {
     month: string;
     year: string;
     status: string;
+    transactionId?: string;
     paymentValue?: number;
     currency?: string;
 }

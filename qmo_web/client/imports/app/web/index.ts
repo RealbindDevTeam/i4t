@@ -72,7 +72,7 @@ import { HistoryPaymentComponent } from './payment/history-payment/history-payme
 import { ReactivateRestaurantComponent } from './payment/reactivate-restaurant/reactivate-restaurant.component';
 import { ColombiaPayInfoComponent } from './customer/payments/country-payment/colombia-payment/colombia-pay-info/colombia-pay-info.component';
 import { CcPaymentConfirmComponent } from './payment/payu-payment-form/cc-payment-confirm/cc-payment-confirm.component';
-import { TransactionResponseConfirmComponent } from './payment/payu-payment-form/transaction-response-confirm/transaction-response-confirm';
+import { TrnResponseConfirmComponent } from './payment/payu-payment-form/transaction-response-confirm/trn-response-confirm.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -150,7 +150,7 @@ export const MODAL_DIALOG_DECLARATIONS = [
     DisableConfirmComponent,
     SendOrderConfirmComponent,
     CcPaymentConfirmComponent,
-    TransactionResponseConfirmComponent
+    TrnResponseConfirmComponent
 ];
 
 export const SERVICES_DECLARATIONS = [

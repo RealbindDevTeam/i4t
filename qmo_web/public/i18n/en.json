@@ -955,10 +955,15 @@
         "PRICE": "Price: ",
         "PAY_CONFIRM": "Confirm",
         "PAY_CANCEL": "Cancel",
+        "ORDER_DESCRIPTION": "Monthly payment for Iurest service",
         "TRANSACTION_STATUS": "Transaction status",
         "TRANSACTION_APPROVED": "Payment has been approved",
         "TRANSACTION_DECLINED": "Payment has been rejected",
-        "TRANSACTION_PENDING": "Payment is pending",
-        "ORDER_DESCRIPTION": "Monthly payment for Iurest service"
+        "TRANSACTION_PENDING": "Payment is pending for approval",
+        "TRANSACTION_EXPIRED": "The transaction has expired",
+        "TRANSACTION_ERROR": "Error processing transaction",
+        "TRANSACTION_MSG": "You can go to the menu Payments > Payments History, to check the status of your payments",
+        "PAY_ACCEPT": "Accept",
+        "AUTH_ERROR_MSG": "the entered card data does not match, please check it"
     }
 }
