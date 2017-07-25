@@ -926,6 +926,7 @@
         "CONS_TO" : "al",
         "SOFTWARE_BY_REALBIND" : "Realbind S.A.S Software",
         "INVOICE_SALE" : "Factura de venta",
-        "DATE" : "Fecha-Hora"
+        "DATE" : "Fecha-Hora",
+        "TOOLTIP_DOWNLOAD_INVOICE" : "Download invoice"
     }
 }

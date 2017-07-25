@@ -59,7 +59,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
 
     /**
      * Generate Invoice pdf
-     * @param _pInvoice 
+     * @param { Invoice } _pInvoice 
      */
     invoiceGenerate( _pInvoice : Invoice ) {
         let heightPage : number = this.calculateHeight(_pInvoice);
@@ -196,11 +196,20 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         pdf.output('dataurlnewwindow');
     }
 
-    calculateY( _pY : number, _pAdd : number) : number{
+    /**
+     * Allow add top to pdf page
+     * @param { number } _pY 
+     * @param { number } _pAdd 
+     */
+    calculateY( _pY : number, _pAdd : number ) : number{
         _pY = _pY + _pAdd;
         return _pY;
     }
 
+    /**
+     * Calculate Invoice pdf height
+     * @param { Invoice } _pInvoice 
+     */
     calculateHeight( _pInvoice : Invoice ) : number {
         let quantRows  : number = 0;
         let heightPage : number = 340;
@@ -217,6 +226,10 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         return heightPage;
     }
 
+    /**
+     * Allow return date format
+     * @param _pDate 
+     */
     dateFormater( _pDate : Date ) : string {
         let dateFormat = (_pDate.getFullYear()) + '/' + 
                          (_pDate.getMonth() + 1 <= 9 ? '0' + (_pDate.getMonth() + 1) : (_pDate.getMonth() + 1))  + '/' + 
