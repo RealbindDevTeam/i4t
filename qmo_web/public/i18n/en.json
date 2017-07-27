@@ -965,5 +965,24 @@
         "TRANSACTION_MSG": "You can go to the menu Payments > Payments History, to check the status of your payments",
         "PAY_ACCEPT": "Accept",
         "AUTH_ERROR_MSG": "the entered card data does not match, please check it"
+    },
+    "PAYMENT_HISTORY": {
+        "TITLE": "Payment history",
+        "SUBTITLE": "Check your payments and their status",
+        "DATE": "Date",
+        "AMOUNT": "Amount",
+        "ITEMS": "Items",
+        "STATUS": "Status",
+        "DATE_FILTER": "Filter by year and month:",
+        "YEAR_FILTER": "Year",
+        "MONTH_FILTER": "Month",
+        "VERIFIY_BTN": "Verify"
+    },
+    "TRANSACTION_STATUS": {
+        "APPROVED": "Approved",
+        "DECLINED": "Declined",
+        "PENDING": "Pending",
+        "EXPIRED": "Expired",
+        "ERROR": "Error"
     }
 }

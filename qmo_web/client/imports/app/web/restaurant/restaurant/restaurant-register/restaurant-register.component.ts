@@ -434,7 +434,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                         endDate: this._lastMonthDay,
                         month: (this._currentDate.getMonth()+1).toString(),
                         year: (this._currentDate.getFullYear()).toString(),
-                        status: 'APPROVED'
+                        status: 'TRANSACTION_STATUS.APPROVED'
                     });
                     //
                     this.cancel();

@@ -351,7 +351,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         creditCard.securityCode = this._paymentForm.value.securityCode;
         creditCard.expirationDate = this._selectedCardYear + '/' + this._selectedCardMonth;
         //creditCard.name = this._paymentForm.value.fullName;
-        creditCard.name = 'PENDING';
+        creditCard.name = 'APPROVED';
 
         payer.fullName = this._paymentForm.value.fullName;
         payer.emailAddress = this._paymentForm.value.email;
@@ -491,7 +491,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             endDate: this._lastMonthDay,
             month: (this._currentDate.getMonth() + 1).toString(),
             year: (this._currentDate.getFullYear()).toString(),
-            status: _response.transactionResponse.state,
+            status: 'TRANSACTION_STATUS.'+_response.transactionResponse.state,
             transactionId: transactionId,
             paymentValue: this._valueToPay,
             currency: this._currency,
@@ -520,7 +520,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         return this._valueToPay - amountPercent;
     }
 
-
     /**
     * This function generates the order signature to fill request object
     * @param {string} _apikey
@@ -531,30 +530,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         let merchantId: string = '508029';
         let signatureEncoded: string = md5(_apikey + '~' + merchantId + '~' + _referenceCode + '~' + this._valueToPay + '~' + this._currency);
         return signatureEncoded;
-    }
-
-    getCode() {
-        let pingObj: {} = {
-            test: false,
-            language: "en",
-            command: "PING",
-            merchant: {
-                apiLogin: "pRRXKOl8ikMmt9u",
-                apiKey: "4Vj8eK4rloUd272L48hsrarnUA"
-            }
-        };
-
-        console.log('obj es: ' + JSON.stringify(pingObj));
-        this._payuPaymentService.getTestPing(pingObj).subscribe(
-            pingResult => {
-                this.post = pingResult;
-                console.log('+++');
-                console.log(this.post);
-            },
-            error => {
-                console.log(error);
-            }
-        );
     }
 
     /**

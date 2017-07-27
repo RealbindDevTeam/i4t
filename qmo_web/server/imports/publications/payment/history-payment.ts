@@ -4,6 +4,6 @@ import { HistoryPayments } from '../../../../both/collections/payment/history-pa
 /**
  * Meteor publication EmailContents
  */
-Meteor.publish('getHistoryPaymentsByRestaurant', function (_restaurantId: string) {
-    return HistoryPayments.find({ restaurantId: _restaurantId });
-});
+Meteor.publish('getHistoryPaymentsByUser', function (_userId: string) {
+    return HistoryPayments.find({ creation_user: _userId }, { sort: { creation_date: -1 } });
+}); 

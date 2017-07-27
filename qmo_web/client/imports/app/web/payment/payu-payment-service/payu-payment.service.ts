@@ -6,7 +6,7 @@ import { CcRequestColombia } from '../../../../../../both/models/payment/cc-requ
 @Injectable()
 export class PayuPaymenteService {
 
-    private apiReportsApiURI = 'https://sandbox.api.payulatam.com/reports-api/4.0/service.cgi';
+    private payuReportsApiURI = 'https://sandbox.api.payulatam.com/reports-api/4.0/service.cgi';
     private payuPaymentsApiURI = 'https://sandbox.api.payulatam.com/payments-api/4.0/service.cgi';
     private ipPublicURI = 'https://api.ipify.org?format=json';
 
@@ -33,26 +33,58 @@ export class PayuPaymenteService {
             .catch(this.handleError);
     }
 
-    getPublicIp() {
-        return this.http.get(this.ipPublicURI).map(res => res.json()).catch(this.handleError);
+    /**
+     * This functions queries the given transaction report of PayU platform
+     * @param {Object} requestObject
+     */
+    getTransactionResponse(requestObject: any): Observable<any> {
+        return this.http
+            .post(this.payuReportsApiURI, JSON.stringify(requestObject), { headers: this.headers })
+            .map(res => res.json())
+            .catch(this.handleError);
     }
 
     /**
-     * This function sends the autorization and capture JSON to PayU platform
+     * This function verify conectivity with Payu platform reports API 
      * @param  {any} obj
      * @return {Observable}
      */
-    getTestPing(obj: any): Observable<any> {
+    getReportsPing(obj: any): Observable<any> {
         return this.http
-            .post(this.apiReportsApiURI,
+            .post(this.payuReportsApiURI,
             JSON.stringify(obj),
             { headers: this.headers })
             .map(res => res.json())
             .catch(this.handleError);
     }
 
+    /**
+     * This function verify conectivity with Payu platform payments API 
+     * @param  {any} obj
+     * @return {Observable}
+     */
+    getPaymentsPing(obj: any): Observable<any> {
+        return this.http
+            .post(this.payuReportsApiURI,
+            JSON.stringify(obj),
+            { headers: this.headers })
+            .map(res => res.json())
+            .catch(this.handleError);
+    }
+
+    /**
+     * This function gets client public ip
+     * @return {Observable<any>}
+     */
+    getPublicIp() {
+        return this.http.get(this.ipPublicURI).map(res => res.json()).catch(this.handleError);
+    }
+
+    /**
+     * This function emits the error generated in http request
+     * @return {Observable<any>}
+     */
     private handleError(error: any): Observable<any> {
-        console.error('An error occurred', error); // for demo purposes only
         return Observable.throw(error.message || error);
     }
 }

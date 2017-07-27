@@ -140,7 +140,7 @@ if (Meteor.isServer) {
                 let auxArray: string[] = [];
                 auxArray.push(restaurant._id);
                 //historyPayment = HistoryPayments.collection.findOne({ restaurantIds: restaurant._id, month: currentMonth, year: currentYear, status: 'APPROVED' });
-                historyPayment = HistoryPayments.collection.findOne({ restaurantIds: { $in: auxArray }, month: currentMonth, year: currentYear, status: 'APPROVED' });
+                historyPayment = HistoryPayments.collection.findOne({ restaurantIds: { $in: auxArray }, month: currentMonth, year: currentYear, status: 'TRANSACTION_STATUS.APPROVED' });
 
                 if (!historyPayment) {
                     Restaurants.collection.update({ _id: restaurant._id }, { $set: { isActive: false, firstPay: false } });

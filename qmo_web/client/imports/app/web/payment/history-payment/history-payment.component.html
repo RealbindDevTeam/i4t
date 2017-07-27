@@ -1,1 +1,46 @@
-<h1>COMING SOON...</h1>
+<md-card>
+    <md-card-title>{{'PAYMENT_HISTORY.TITLE' | translate }}</md-card-title>
+    <md-card-subtitle>{{'PAYMENT_HISTORY.SUBTITLE' | translate}}</md-card-subtitle>
+    <md-card-content style="background: #FFF">
+        <md-select [(ngModel)]="_selectedYear" placeholder="{{'PAYMENT_HISTORY.YEAR_FILTER' | translate}}" style="width: 25%;">
+            <md-option *ngFor="let year of _yearsArray" value="{{year.value}}" (click)="changeHistoryPaymentYear()">{{year.viewValue}}</md-option>
+        </md-select>
+        <md-select [(ngModel)]="_selectedMonth" placeholder="{{'PAYMENT_HISTORY.MONTH_FILTER' | translate}}" style="width: 25%; margin-left: 2%;"
+            [disabled]="_activateMonth">
+            <md-option value="0" (click)="changeHistoryPaymentMonth()">Todos</md-option>
+            <md-option *ngFor="let month of _monthsArray" value="{{month.value}}" (click)="changeHistoryPaymentMonth()">{{month.viewValue}}</md-option>
+        </md-select>
+        <table class="striped" width="100%" style="border:0.5px solid; border-color: lightgrey; margin-top: 15px">
+            <thead>
+                <tr>
+                    <th data-field="date" style="width: 10%">{{'PAYMENT_HISTORY.DATE' | translate}}</th>
+                    <th data-field="amount" style="width: 15%">{{'PAYMENT_HISTORY.AMOUNT' | translate}}</th>
+                    <th data-field="items" style="width: 55%">{{'PAYMENT_HISTORY.ITEMS' | translate}}</th>
+                    <th data-field="status" style="width: 15%">{{'PAYMENT_HISTORY.STATUS' | translate}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let historyPayment of _historyPayments | async">
+                    <td>{{historyPayment.creation_date | date: 'd/M/y'}}</td>
+                    <td>{{historyPayment.paymentValue}} {{historyPayment.currency}}</td>
+                    <td>
+                        <tr *ngFor="let restaurantId of historyPayment.restaurantIds">- {{getRestaurantName(restaurantId)}}</tr>
+                    </td>
+                    <td class="cust-center-align">
+                        <div>
+                            <div style="display: inline-block; vertical-align: middle"><img md-list-avatar style="height: 30px; width: 30px;" src="{{getImageName(historyPayment.status)}}"></div>
+                            <div style="display: inline-block; vertical-align: middle">{{historyPayment.status | translate}}</div>
+                            <div>
+                                <button md-raised-button *ngIf="historyPayment.status == 'TRANSACTION_STATUS.PENDING'" (click)="checkTransactionStatus(historyPayment.transactionId)">{{'PAYMENT_HISTORY.VERIFIY_BTN' | translate}}</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </md-card-content>
+</md-card>
+
+<div class="loading" *ngIf="_loading">
+    <md-spinner></md-spinner>
+</div>

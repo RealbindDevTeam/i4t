@@ -965,5 +965,24 @@
         "TRANSACTION_MSG": "Puedes ir al menú Pagos > Historial de pagos, para revisar el estado de tus pagos",
         "PAY_ACCEPT": "Aceptar",
         "AUTH_ERROR_MSG": "Los datos ingresados de tu tarjeta no coinciden, por favor verificalos"
+    },
+    "PAYMENT_HISTORY": {
+        "TITLE": "Historial de pagos",
+        "SUBTITLE": "Revisa tus pagos y verifica el estado",
+        "DATE": "Fecha",
+        "AMOUNT": "Valor",
+        "ITEMS": "Items",
+        "STATUS": "Estado",
+        "DATE_FILTER": "Filtro por año y mes:",
+        "YEAR_FILTER": "Año",
+        "MONTH_FILTER": "Mes",
+        "VERIFIY_BTN": "Verificar"
+    },
+    "TRANSACTION_STATUS": {
+        "APPROVED": "Aprobado",
+        "DECLINED": "Rechazado",
+        "PENDING": "Pendiente",
+        "EXPIRED": "Expirado",
+        "ERROR": "Error"
     }
 }
