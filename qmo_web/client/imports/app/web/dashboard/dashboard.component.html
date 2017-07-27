@@ -1,12 +1,34 @@
-<!--div class="flex-container layout-row layout-column-sm widgets">
-  <core-widget icon="comment" [count]="28" description="Comments" [palette]="{palette: 'pink', hue: '400'}"></core-widget>
-  <core-widget icon="thumb_up" [count]="831" description="Likes" [palette]="{palette: 'green', hue: '500'}" hexTextColor="#fff"></core-widget>
-  <core-widget icon="account_box" [count]="204" description="Sign Ups" [palette]="{palette: 'red', hue: '400'}"></core-widget>
-  <core-widget icon="credit_card" [count]="85" description="Sales" [palette]="{palette: 'blue-grey', hue: '600'}"></core-widget>
-</div-->
 <div class="flex-container layout-row layout-column-sm widgets">
-  <core-widget icon="comment" [count]="28" description="Comments" hexColor="#EC407A"></core-widget>
-  <core-widget icon="thumb_up" [count]="831" description="Likes" hexColor="#4CAF50" hexTextColor="#fff"></core-widget>
-  <core-widget icon="account_box" [count]="204" description="Sign Ups" hexColor="#EF5350"></core-widget>
-  <core-widget icon="credit_card" [count]="85" description="Sales" hexColor="#546E7A"></core-widget>
+    <core-widget icon="done_all" [count]="204" title="Items" description="Habilitados" hexColor="#546E7A"></core-widget>
+    <core-widget icon="warning" [count]="85" title="Items" description="Inhabilitados" hexColor="#F0BD4F"></core-widget>
+    <core-widget icon="local_dining" [count]="28" title="Mesas" description="Libres" hexColor="#4CAF50"></core-widget>
+    <core-widget icon="room_service" [count]="831" title="Mesas" description="Ocupadas" hexColor="#EF5350"></core-widget>
+</div>
+<div class="flex-container layout-row layout-column-sm no-wrap">
+  <md-card class="grow-3" style="margin-right: 2%">
+    <md-card-title>Ordenes Diarias en el Restaurante</md-card-title>
+    <md-card-content class="overflow-scroll">
+      <chart [options]="options"></chart>
+    </md-card-content>
+  </md-card>
+  <md-card class="grow-1" style="height: 450px;overflow: scroll;">
+    <md-card-title>Usuarios Conectados</md-card-title>
+    <md-card-content>
+      <md-list>
+        <h3 md-subheader>Folders</h3>
+        <md-list-item *ngFor="let folder of folders">
+          <md-icon md-list-icon>folder</md-icon>
+          <h4 md-line>{{folder.name}}</h4>
+          <p md-line> {{folder.updated | date}} </p>
+        </md-list-item>
+        <md-divider></md-divider>
+        <h3 md-subheader>Notes</h3>
+        <md-list-item *ngFor="let note of notes">
+          <md-icon md-list-icon>note</md-icon>
+          <h4 md-line>{{note.name}}</h4>
+          <p md-line> {{note.updated | date}} </p>
+        </md-list-item>
+      </md-list>
+    </md-card-content>
+  </md-card>
 </div>

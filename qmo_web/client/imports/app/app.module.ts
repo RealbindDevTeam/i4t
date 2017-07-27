@@ -11,6 +11,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { routes, ROUTES_PROVIDERS } from './app.routes';
 import { Ng2PageScrollModule } from 'ng2-page-scroll';
 import { AgmCoreModule } from '@agm/core';
+import { ChartModule } from 'angular2-highcharts';
 
 import { AppComponent } from './web/app.web.component';
 import { SHARED_DECLARATIONS } from './shared';
@@ -60,6 +61,7 @@ moduleDefinition = {
       SharedModule.forRoot(),
       Ng2PageScrollModule.forRoot(),
       NgxPaginationModule,
+      ChartModule
       /*AgmCoreModule.forRoot({
         apiKey: 'AIzaSyBXJSlwWRSHoRiZdqlOfHPqxxDRdqm8_Jk'
       })*/
