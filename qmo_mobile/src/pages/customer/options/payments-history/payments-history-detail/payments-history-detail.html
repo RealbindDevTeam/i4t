@@ -1,11 +1,6 @@
 <ion-header>
     <ion-navbar>
         <ion-title>{{'MOBILE.PAYMENTS_HISTORY.TITLE' | translate}}</ion-title>
-        <ion-buttons end>
-        <button ion-button icon-only color="royal">
-            <ion-icon name="download"></ion-icon>
-        </button>
-        </ion-buttons>
     </ion-navbar>
 </ion-header>
 
@@ -14,10 +9,10 @@
         <ion-card-content>
             <div class="display-inline">
                 <ion-avatar item-left>
-                    <img class="img-cards" src="/assets/img/restaurante.png">
+                    <img class="img-cards" src="assets/img/restaurante.png">
                 </ion-avatar>
                 <div style="display: block">
-                    <h2>{{_invoice.restaurant_name}}</h2>
+                    <h2 style="width: 80%;">{{_invoice.restaurant_name}}</h2>
                     <p>{{_invoice.creation_date | date: 'dd MMM yyyy HH:mm'}}</p>
                 </div>
             </div>

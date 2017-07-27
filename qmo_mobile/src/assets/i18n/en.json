@@ -311,7 +311,7 @@
             "TITLE": "Payments history",
             "TOTAL" : "Total",
             "TIP" : "Tip",
-            "TOTAL_ORDER" : "Order total"
+            "TOTAL_ORDERS" : "Order total"
         }
     },
     "CURRENCIES": {
