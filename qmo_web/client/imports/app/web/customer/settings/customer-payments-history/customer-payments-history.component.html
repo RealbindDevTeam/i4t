@@ -1,0 +1,133 @@
+<div class="order-form-1">
+    <div class="order-form-2">
+        <div class="menu-items">
+            <div class="menu-items-content">
+                <div class="content">
+                    <div>
+                        <!--md-card *ngIf="!_showPayments" md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
+                            <md-card-content>
+                                <div class="card_initial">
+                                    <div class="card_initial has-image">
+                                        <div class="card_initial-image-container">
+                                            <img class="card_initial-image" src="/images/payment-desabled.png" />
+                                        </div>
+                                        <div class="card_initial-copy">
+                                            <div class="card_initial-tagline">
+                                                {{'PAYMENTS.NO_ORDERS' | translate}}
+                                            </div>
+                                            <div class="card_initial-additional-links">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </md-card-content>
+                        </md-card-->
+                        
+                        <div *ngIf="_showPayments" id="pruebaCard" >
+                            <md-card class="main" *ngFor="let invoice of _invoices | async">
+                                <md-card-content>
+                                    <md-list class="order-info">
+                                        <md-list-item>
+                                            <img md-list-avatar class="image" src="/images/orders.png">
+                                            <h2 md-line class="title">{{invoice.restaurant_name}}</h2>
+                                            <p md-line class="title">{{invoice.creation_date | date: 'dd MMM yyyy HH:mm'}}</p>
+                                            <button md-raised-button (click)="invoiceGenerate(invoice)" style="box-shadow: none; color: #e53935;" mdTooltip="{{'PAYMENTS_HISTORY.TOOLTIP_DOWNLOAD_INVOICE' | translate}}">
+                                                <md-icon>get_app</md-icon>
+                                            </button>
+                                        </md-list-item>
+                                    </md-list>
+                                    <md-list class="order-details">
+                                        <div *ngFor="let item of invoice.items">
+                                            <md-list-item class="element">
+                                                <div md-line>
+                                                    <div style="width: 49%; display: inline-block;">
+                                                        <h4 class="display-inline">{{item.item_name}}</h4>
+                                                    </div>
+                                                    <div style="width: 49%; display: inline-block;">
+                                                        <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{item.quantity}}</p>
+                                                        <p class="price">{{item.price}} {{invoice.currency}}</p>
+                                                    </div>
+                                                </div>
+                                            </md-list-item>
+                                            <md-divider class="divider"></md-divider>
+                                            <div *ngIf="item.garnish_food.length > 0">
+                                                <md-list-item class="element" *ngFor="let gf of item.garnish_food">
+                                                    <div md-line>
+                                                        <div style="width: 49%; display: inline-block;">
+                                                            <h4 class="display-inline">{{gf.garnish_food_name}}</h4>
+                                                        </div>
+                                                        <div style="width: 49%; display: inline-block;">
+                                                            <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{item.quantity}}</p>
+                                                            <p class="price">{{gf.price}} {{invoice.currency}}</p>
+                                                        </div>
+                                                    </div>
+                                                </md-list-item>
+                                                <md-divider class="divider"></md-divider>
+                                            </div>
+                                            
+                                            <div *ngIf="item.additions.length > 0">
+                                                <md-list-item class="element" *ngFor="let ad of item.additions">
+                                                    <div md-line>
+                                                        <div style="width: 49%; display: inline-block;">
+                                                            <h4 class="display-inline">{{ad.addition_name}}</h4>
+                                                        </div>
+                                                        <div style="width: 49%; display: inline-block;">
+                                                            <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{item.quantity}}</p>
+                                                            <p class="price">{{ad.price}} {{invoice.currency}}</p>
+                                                        </div>
+                                                    </div>
+                                                </md-list-item>
+                                                <md-divider class="divider"></md-divider>
+                                            </div>
+                                        </div>
+
+                                        <div *ngFor="let addition of invoice.additions">
+                                            <md-list-item class="element">
+                                                <div md-line>
+                                                    <div style="width: 49%; display: inline-block;">
+                                                        <h4 class="display-inline">{{addition.addition_name}}</h4>
+                                                    </div>
+                                                    <div style="width: 49%; display: inline-block;">
+                                                        <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{addition.quantity}}</p>
+                                                        <p class="price">{{addition.price}} {{invoice.currency}}</p>
+                                                    </div>
+                                                </div>
+                                            </md-list-item>
+                                            <md-divider class="divider"></md-divider>
+                                        </div>
+                                    </md-list>
+                                    
+                                    <div style="padding: 0 16px;">
+                                        <div>
+                                            <div style="display: -webkit-inline-box; width: 100%;">
+                                                <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.CASH'" class="img-cards" src="images/pago.png">
+                                                <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.CREDIT_CARD'" class="img-cards" src="images/pago_tarjeta_credito.png">
+                                                <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.DEBIT_CARD'" class="img-cards" src="images/pago_tarjeta_debito.png">
+                                                <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.ONLINE'" class="img-cards" src="images/img/payment-online.png">
+                                                <p style="line-height: inherit">
+                                                    {{invoice.pay_method | translate}}
+                                                </p>
+                                            </div>
+                                            <div style="display: inline-block; width: 100%;">
+                                                <h4 style="display: inline-block;">{{ 'PAYMENTS_HISTORY.TOTAL_ORDERS' | translate }}</h4>
+                                                <p style="float: right;">{{invoice.total_order}} {{invoice.currency}}</p>
+                                            </div>
+                                            <div style="display: inline-block; width: 100%;">
+                                                <h4 style="display: inline-block;">{{ 'PAYMENTS_HISTORY.TIP' | translate }}</h4>
+                                                <p style="float: right;">{{invoice.total_tip}} {{invoice.currency}}</p>
+                                            </div>
+                                        </div>
+                                        <div style="display: inline-block; width: 100%;">
+                                            <h1 style="display: inline-block;">{{ 'PAYMENTS_HISTORY.TOTAL' | translate }}</h1>
+                                            <h1 style="float: right;">{{invoice.total_pay}} {{invoice.currency}}</h1>
+                                        </div>
+                                    </div>
+                                </md-card-content>
+                            </md-card>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

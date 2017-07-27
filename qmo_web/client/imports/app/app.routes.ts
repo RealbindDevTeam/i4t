@@ -43,6 +43,7 @@ import { MonthlyConfigComponent } from './web/restaurant/monthly-config/monthly-
 import { ColombiaOrderInfoComponent } from './web/customer/payments/country-payment/colombia-payment/colombia-order-info/colombia-order-info.component';
 import { OrderPaymentTranslateComponent } from './web/customer/payments/order-payment-translate/order-payment-translate.component';
 import { ColombiaPayInfoComponent } from './web/customer/payments/country-payment/colombia-payment/colombia-pay-info/colombia-pay-info.component';
+import { CustomerPaymentsHistoryComponent } from './web/customer/settings/customer-payments-history/customer-payments-history.component';
 
 export const routes: Route[] = [
     {
@@ -75,7 +76,8 @@ export const routes: Route[] = [
             { path: 'monthly-config', component: MonthlyConfigComponent, canActivate: [AdminGuard]},
             { path: 'colOrdersInfo', component: ColombiaOrderInfoComponent, canActivate: [CustomerGuard] },
             { path: 'OrdersTranslate', component: OrderPaymentTranslateComponent, canActivate: [CustomerGuard] },
-            { path: 'colPayInfo', component: ColombiaPayInfoComponent, canActivate: [CustomerGuard] }            
+            { path: 'colPayInfo', component: ColombiaPayInfoComponent, canActivate: [CustomerGuard] },          
+            { path: 'customer-payments-history', component: CustomerPaymentsHistoryComponent, canActivate: [CustomerGuard] }            
         ]
     },
     { path: '', component: LandingPageComponent },

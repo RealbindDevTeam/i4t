@@ -33,6 +33,7 @@ import './imports/publications/general/email-content';
 import './imports/publications/general/parameter';
 import './imports/publications/restaurant/payment';
 import './imports/publications/payment/history-payment';
+import './imports/publications/restaurant/invoice';
 
 import { loadRoles } from './imports/fixtures/auth/roles';
 import { loadMenus } from './imports/fixtures/auth/menus';

@@ -30,6 +30,8 @@
     "CLOSE": "Cerrar",
     "VIEW_DETAIL": "Ver Detalle",
     "OTHER" : "Otro...",
+    "VALUE" : "Valor",
+    "SIGN_OUT" : "Cerrar Sesión",
     "ORDER_STATUS": {
         "REGISTERED": "Registrado",
         "IN_PROCESS": "En Proceso",
@@ -908,5 +910,23 @@
         "ADDITIONS": "Adiciones",
         "ADDITION": "Adicion(es)",
         "ORDER_DELIVERED": "Orden Entregada"
+    },
+    "PAYMENTS_HISTORY" : {
+        "TITLE": "Historial de pagos",
+        "SUB_TOTAL" : "SubTotal",
+        "TOTAL" : "Total",
+        "TIP" : "Propina",
+        "TOTAL_ORDERS" : "Total orden",
+        "IMPO" : "IMPO (8%)",
+        "BASE_IMPO" : "Base IMPO",
+        "TOTAL_TO_PAY" : "Total a pagar",
+        "PAYMENT_METHOD" : "Medio de pago",
+        "RES_DIAN" : "Res. DIAN No.",
+        "CONS_FROM" : "Consecutivo del",
+        "CONS_TO" : "al",
+        "SOFTWARE_BY_REALBIND" : "Software Realbind S.A.S",
+        "INVOICE_SALE" : "Factura de venta",
+        "DATE" : "Fecha-Hora",
+        "TOOLTIP_DOWNLOAD_INVOICE" : "Descargar factura"
     }
 }

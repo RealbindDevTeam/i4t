@@ -5,6 +5,7 @@ import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs';
 
 import { SettingsPage } from './settings/settings';
+import { PaymentsHistoryPage } from './payments-history/payments-history';
 import { InitialComponent } from '../../auth/initial/initial';
 import { Users } from 'qmo_web/both/collections/auth/user.collection';
 import { User } from 'qmo_web/both/models/auth/user.model';
@@ -100,6 +101,14 @@ export class OptionsPage implements OnInit, OnDestroy {
   goToSettings(){
     this._navCtrl = this._app.getRootNav();
     this._navCtrl.push(SettingsPage);
+  }
+
+  /**
+   * This method is responsible for go to payments history option
+   */
+  goToPaymentsHistory(){
+    this._navCtrl = this._app.getRootNav();
+    this._navCtrl.push(PaymentsHistoryPage);
   }
 
   /**
