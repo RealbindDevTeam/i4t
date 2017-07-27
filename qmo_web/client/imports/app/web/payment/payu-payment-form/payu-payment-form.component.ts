@@ -315,7 +315,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         order.referenceCode = paymentTransaction.referenceCode;
         order.description = this.itemNameTraduction('PAYU_PAYMENT_FORM.ORDER_DESCRIPTION');
         order.language = Meteor.user().profile.language_code;
-        order.notifyUrl = 'http://http://192.168.0.3:3000';
+        //order.notifyUrl = 'http://http://192.168.0.3:3000';
         order.signature = this.generateOrderSignature(apikey, paymentTransaction.referenceCode);
 
         buyer.merchantBuyerId = Meteor.userId();
@@ -475,6 +475,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                     responseCode: _response.transactionResponse.responseCode,
                     responseOrderId: _response.transactionResponse.orderId,
                     responsetransactionId: _response.transactionResponse.transactionId,
+                    modification_user: Meteor.userId(),
+                    modification_date: new Date()
                 }
             });
 

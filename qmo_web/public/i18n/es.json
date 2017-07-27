@@ -976,7 +976,15 @@
         "DATE_FILTER": "Filtro por año y mes:",
         "YEAR_FILTER": "Año",
         "MONTH_FILTER": "Mes",
-        "VERIFIY_BTN": "Verificar"
+        "VERIFIY_BTN": "Verificar",
+        "TRANSACTION_STATUS": "Estado de la transacción",
+        "VERIFY_APPROVED": "El pago ha sido aprobado",
+        "VERIFY_DECLINED": "El pago ha sido rechazado",
+        "VERIFY_PENDING": "El pago esta pendiente por aprobar",
+        "VERIFY_EXPIRED": "La transacción ha expirado",
+        "VERIFY_ERROR": "Ha ocurrido un error verificando el estado",
+        "VERIFY_ACCEPT": "Aceptar",
+        "VERIFY_MSG": "Puedes consultar el estado de nuevo en 15 min"
     },
     "TRANSACTION_STATUS": {
         "APPROVED": "Aprobado",
