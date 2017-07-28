@@ -40,10 +40,10 @@
                                         <div *ngFor="let item of invoice.items">
                                             <md-list-item class="element">
                                                 <div md-line>
-                                                    <div style="width: 49%; display: inline-block;">
-                                                        <h4 class="display-inline">{{item.item_name}}</h4>
+                                                    <div class="item-name">
+                                                        <h4 class="display-inline">{{itemNameCrop(item.item_name)}}</h4>
                                                     </div>
-                                                    <div style="width: 49%; display: inline-block;">
+                                                    <div class="item-price-quantity">
                                                         <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{item.quantity}}</p>
                                                         <p class="price">{{item.price}} {{invoice.currency}}</p>
                                                     </div>
@@ -53,10 +53,10 @@
                                             <div *ngIf="item.garnish_food.length > 0">
                                                 <md-list-item class="element" *ngFor="let gf of item.garnish_food">
                                                     <div md-line>
-                                                        <div style="width: 49%; display: inline-block;">
-                                                            <h4 class="display-inline">{{gf.garnish_food_name}}</h4>
+                                                        <div class="item-name">
+                                                            <h4 class="display-inline">{{itemNameCrop(gf.garnish_food_name)}}</h4>
                                                         </div>
-                                                        <div style="width: 49%; display: inline-block;">
+                                                        <div class="item-price-quantity">
                                                             <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{item.quantity}}</p>
                                                             <p class="price">{{gf.price}} {{invoice.currency}}</p>
                                                         </div>
@@ -68,10 +68,10 @@
                                             <div *ngIf="item.additions.length > 0">
                                                 <md-list-item class="element" *ngFor="let ad of item.additions">
                                                     <div md-line>
-                                                        <div style="width: 49%; display: inline-block;">
-                                                            <h4 class="display-inline">{{ad.addition_name}}</h4>
+                                                        <div class="item-name">
+                                                            <h4 class="display-inline">{{itemNameCrop(ad.addition_name)}}</h4>
                                                         </div>
-                                                        <div style="width: 49%; display: inline-block;">
+                                                        <div class="item-price-quantity">
                                                             <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{item.quantity}}</p>
                                                             <p class="price">{{ad.price}} {{invoice.currency}}</p>
                                                         </div>
@@ -84,10 +84,10 @@
                                         <div *ngFor="let addition of invoice.additions">
                                             <md-list-item class="element">
                                                 <div md-line>
-                                                    <div style="width: 49%; display: inline-block;">
-                                                        <h4 class="display-inline">{{addition.addition_name}}</h4>
+                                                    <div class="item-name">
+                                                        <h4 class="display-inline">{{itemNameCrop(addition.addition_name)}}</h4>
                                                     </div>
-                                                    <div style="width: 49%; display: inline-block;">
+                                                    <div class="item-price-quantity">
                                                         <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{addition.quantity}}</p>
                                                         <p class="price">{{addition.price}} {{invoice.currency}}</p>
                                                     </div>

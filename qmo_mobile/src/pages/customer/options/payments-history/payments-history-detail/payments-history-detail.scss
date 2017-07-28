@@ -17,4 +17,14 @@ payments-history-detail-page {
         position: absolute; 
         right: 8px;
     }
+
+    .item-name {
+        display: inline-flex;
+        width: 60%;
+
+        span {
+            width: 100%;
+            white-space: normal;
+        }
+    }
 }

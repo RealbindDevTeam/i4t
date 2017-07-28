@@ -120,38 +120,69 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         pdf.text( valueTitle, 200, y, alignRight );
         pdf.setFontType("normal");
         
-        y = this.calculateY(y, 10);
+        y = this.calculateY(y, 20);
         _pInvoice.items.forEach( (item) => {
-            y = this.calculateY(y, 10);
-            pdf.text( 10, y, item.item_name );
+            let splitItemName = pdf.splitTextToSize(item.item_name, 100  );
+            pdf.text(  10, y, splitItemName );
             pdf.text( 140, y, item.quantity.toString(), alignRight );
             pdf.text( 200, y, (item.price * item.quantity).toString() + ' ' + _pInvoice.currency, alignRight );
+            
+            if(item.item_name.length <= 23){
+                y = this.calculateY(y, 10);
+            } else if(item.item_name.length > 23 && item.item_name.length <= 46){
+                y = this.calculateY(y, 20);
+            } else {
+                y = this.calculateY(y, 30);
+            }
 
             if (item.garnish_food.length > 0) {
                 item.garnish_food.forEach( (garnish_food : Object) => {
-                    y = this.calculateY(y, 10);
-                    pdf.text( 10, y, garnish_food['garnish_food_name'] );
+                    let splitItemGarnishFood = pdf.splitTextToSize( garnish_food['garnish_food_name'], 100 );
+                    pdf.text(  10, y, splitItemGarnishFood );
                     pdf.text( 140, y, item.quantity.toString(), alignRight );
                     pdf.text( 200, y, (garnish_food['price'] * item.quantity).toString() + ' ' + _pInvoice.currency, alignRight );
+                    
+                    if(garnish_food['garnish_food_name'].length <= 23){
+                        y = this.calculateY(y, 10);
+                    } else if(garnish_food['garnish_food_name'].length > 23 && garnish_food['garnish_food_name'].length <= 46){
+                        y = this.calculateY(y, 20);
+                    } else {
+                        y = this.calculateY(y, 30);
+                    }
                 });
             }
             
             if (item.additions.length > 0) {
                 item.additions.forEach( (addition : Object) => {
-                    y = this.calculateY(y, 10);
-                    pdf.text( 10, y, addition['addition_name'] );
+                    let splitItemAddition = pdf.splitTextToSize( addition['addition_name'], 100 );
+                    pdf.text(  10, y, splitItemAddition );
                     pdf.text( 140, y, item.quantity.toString(), alignRight );
                     pdf.text( 200, y, (addition['price'] * item.quantity).toString() + ' ' + _pInvoice.currency, alignRight );
+                    
+                    if(addition['addition_name'].length <= 23){
+                        y = this.calculateY(y, 10);
+                    } else if(addition['addition_name'].length > 23 && addition['addition_name'].length <= 46){
+                        y = this.calculateY(y, 20);
+                    } else {
+                        y = this.calculateY(y, 30);
+                    }
                 });
             }
-
         });
         
         _pInvoice.additions.forEach( (addition) => {
-            y = this.calculateY(y, 10);
-            pdf.text( 10, y, addition.addition_name );
+            let splitItemAddition = pdf.splitTextToSize( addition.addition_name, 100 );
+            pdf.text( 10, y, splitItemAddition );
             pdf.text( 140, y, addition.quantity.toString(), alignRight );
             pdf.text( 200, y, (addition.price * addition.quantity).toString() + ' ' + _pInvoice.currency, alignRight );
+            
+            if(addition.addition_name.length <= 23){
+                y = this.calculateY(y, 10);
+            } else if(addition.addition_name.length > 23 && addition.addition_name.length <= 46){
+                y = this.calculateY(y, 20);
+            } else {
+                y = this.calculateY(y, 30);
+            }
         });
 
         y = this.calculateY(y, 30);
@@ -237,6 +268,18 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
                          (_pDate.getHours() <= 9 ? '0' + _pDate.getHours() : _pDate.getHours()) + ':' + 
                          (_pDate.getMinutes() <= 9 ? '0' + _pDate.getMinutes() : _pDate.getMinutes());
         return dateFormat;
+    }
+
+    /**
+     * This function validates if string crop
+     * @param { string } _pItemName 
+     */
+    itemNameCrop( _pItemName : string ) : string{
+        if( _pItemName.length > 20 && _pItemName.indexOf(' ') <= 0 ) {
+            return _pItemName.substring(1, 20) + '...';
+        } else {
+            return _pItemName;
+        }
     }
 
     /**
