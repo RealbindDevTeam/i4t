@@ -1,3 +1,7 @@
+<div>
+  <chart [options]="_salesOptions" (load)="saveInstance($event.context)" (selection)="onChartSelection($event)"></chart>
+  <p>selection from <b>{{_fromSales}}</b> to <b>{{_toSales}}</b></p> 
+</div>
 <div class="flex-container layout-row layout-column-sm widgets">
     <core-widget icon="done_all" [count]="204" title="Items" description="Habilitados" hexColor="#546E7A"></core-widget>
     <core-widget icon="warning" [count]="85" title="Items" description="Inhabilitados" hexColor="#F0BD4F"></core-widget>
@@ -8,7 +12,7 @@
   <md-card class="grow-3" style="margin-right: 2%">
     <md-card-title>Ordenes Diarias en el Restaurante</md-card-title>
     <md-card-content class="overflow-scroll">
-      <chart [options]="options"></chart>
+      <chart [options]="_ordersOptions"></chart>
     </md-card-content>
   </md-card>
   <md-card class="grow-1" style="height: 450px;overflow: scroll;">

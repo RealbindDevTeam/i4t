@@ -4,16 +4,20 @@ import template from './dashboard.component.html';
 import style from './dashboard.component.scss';   
 
 @Component({
-  selector : 'c-dashboard',
+  selector : 'admin-dashboard',
   template,
   styles: [ style ]
 })
 export class DashboardComponent{
 
-  options: Object;
+  private _ordersOptions: Object;
+  private _salesOptions: Object;
+  private _salesChart : Object;
+  private _fromSales: any;
+  private _toSales: any;
 
   constructor() {
-        this.options = {
+        this._ordersOptions = {
             chart: {
                 type: 'pie'
             },
@@ -44,6 +48,39 @@ export class DashboardComponent{
               }
             ]
         };
+
+        this._salesOptions = {
+            title : { text : 'Ventas 28/07/2017' },
+            _salesChart: { 
+              type: 'spline',
+              zoomType: 'x' 
+            },
+            series: [{
+                name : 'Ventas en COP'
+            }],
+            xAxis : {
+              title: {
+                    text: 'Horas del Dia'
+                },
+                categories: ['12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30']
+            },
+            yAxis: {
+                title: {
+                    text: 'Recaudo en COP'
+                }
+            }
+        };
+        this._salesOptions.series[0].data = [2,3,5,8,13];
+        setInterval(() => this._salesChart.series[0].addPoint(Math.random() * 10), 600000);
+    }
+
+    saveInstance(chartInstance) {
+        this._salesChart = chartInstance;
+    }
+
+    onChartSelection (e) {
+      this._fromSales = e.originalEvent.xAxis[0].min.toFixed(2);
+      this._toSales = e.originalEvent.xAxis[0].max.toFixed(2);
     }
 
     folders = [
