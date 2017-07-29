@@ -983,7 +983,7 @@
         "VERIFY_PENDING": "Payment is pending for approval",
         "VERIFY_EXPIRED": "The transaction has expired",
         "VERIFY_ERROR": "Error processing the transaction",
-        "VERIFY_ACCEPT": "Accept" ,
+        "VERIFY_ACCEPT": "Accept",
         "VERIFY_MSG": "You can check the status again in 15 min"
     },
     "TRANSACTION_STATUS": {
@@ -992,5 +992,19 @@
         "PENDING": "Pending",
         "EXPIRED": "Expired",
         "ERROR": "Error"
+    },
+    "REACTIVATE_RESTAURANT": {
+        "TITLE": "Reactivate restaurant",
+        "SUBTITLE": "Here you can pay the restaurants to activate them again",
+        "SUBTITLE_2": "Activating restaurant will activate the asociated tables",
+        "PRICE_BY_TABLE": "Price by table: ",
+        "RESTAURANT_NAME": "Restaurant name",
+        "RESTAURANT_PRICE": "Restaurant price",
+        "TABLES_NUMBER": "Tables number",
+        "TABLES_PRICE": "Tables price",
+        "FINAL_PRICE": "Final price",
+        "CURRENCY": "Currency",
+        "ACTION": "Action",
+        "PAY_BTN": "Pay"
     }
 }

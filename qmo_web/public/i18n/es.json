@@ -992,5 +992,18 @@
         "PENDING": "Pendiente",
         "EXPIRED": "Expirado",
         "ERROR": "Error"
+    },
+    "REACTIVATE_RESTAURANT": {
+        "TITLE": "Reactivación de restaurante",
+        "SUBTITLE": "Aquí puedes realizar el pago de los restaurantes para activarlos de nuevo",
+        "SUBTITLE_2": "Activar un restaurante, activará todas las mesas asociadas",
+        "PRICE_BY_TABLE": "Costo por mesa:",
+        "RESTAURANT_NAME": "Nombre del restaurante",
+        "RESTAURANT_PRICE": "Precio del restaurante",
+        "TABLES_NUMBER": "Número de mesas",
+        "TABLES_PRICE": "Precio de mesas",
+        "FINAL_PRICE": "Precio final",
+        "ACTION": "Acción",
+        "PAY_BTN": "Pagar"
     }
 }

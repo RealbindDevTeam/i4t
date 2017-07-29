@@ -61,7 +61,8 @@ export class TableComponent implements OnInit, OnDestroy {
       restaurant: new FormControl('', [Validators.required]),
       tables_number: new FormControl('', [Validators.required])
     });
-    this.restaurants = Restaurants.find({ isActive: true, creation_user: Meteor.userId() }).zone();
+    //this.restaurants = Restaurants.find({ isActive: true, creation_user: Meteor.userId() }).zone();
+    this.restaurants = Restaurants.find({ creation_user: Meteor.userId() }).zone();
     this.restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
     this.tables = Tables.find({ is_active: true, creation_user: Meteor.userId() }).zone();
     this.tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe();

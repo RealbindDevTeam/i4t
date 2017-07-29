@@ -115,16 +115,24 @@ Meteor.publish('currentRestaurantsNoPayed', function (_userId: string) {
     let currentMonth: string = (currentDate.getMonth() + 1).toString();
     let currentYear: string = currentDate.getFullYear().toString();
     let historyPaymentRes: string[] = [];
+    let restaurantsInitial: string[] = [];
 
-    var restaurantsInitial: string[] = Restaurants.collection.find({ creation_user: _userId, isActive: true, freeDays: false }).map(function (restaurant) {
-        return restaurant._id;
+    Restaurants.collection.find({ creation_user: _userId, isActive: true, freeDays: false }).fetch().forEach((restaurant) => {
+        restaurantsInitial.push(restaurant._id);
     });
 
-    HistoryPayments.collection.find({ restaurantIds: { $in: restaurantsInitial }, month: currentMonth, year: currentYear, status: 'TRANSACTION_STATUS.APPROVED' }).fetch().forEach((historyPayment) => {
-        historyPayment.restaurantIds.forEach((restaurantId)=>{
+    console.log(restaurantsInitial);
+
+    HistoryPayments.collection.find({
+        restaurantIds: {
+            $in: restaurantsInitial
+        }, month: currentMonth, year: currentYear, $or: [{ status: 'TRANSACTION_STATUS.APPROVED' }, { status: 'TRANSACTION_STATUS.PENDING' }]
+    }).fetch().forEach((historyPayment) => {
+        historyPayment.restaurantIds.forEach((restaurantId) => {
             historyPaymentRes.push(restaurantId);
-        });  
+        });
     });
 
+    console.log(historyPaymentRes);
     return Restaurants.collection.find({ _id: { $nin: historyPaymentRes }, creation_user: _userId, isActive: true, freeDays: false });
 });

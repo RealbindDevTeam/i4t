@@ -277,6 +277,7 @@ export class HistoryPaymentComponent implements OnInit, OnDestroy {
      * */
     updateAllStatus(_historyPayment: HistoryPayment, _paymentTransaction: PaymentTransaction, _response: any) {
         console.log('entra a updateAllStatus');
+        console.log('paymentTransactionId > ' + _paymentTransaction._id);
         PaymentTransactions.collection.update({ _id: _paymentTransaction._id },
             {
                 $set: {
@@ -287,6 +288,7 @@ export class HistoryPaymentComponent implements OnInit, OnDestroy {
                 }
             });
 
+        console.log('historyPaymentId > ' + _historyPayment._id);
         HistoryPayments.collection.update({ _id: _historyPayment._id },
             {
                 $set: {
@@ -297,9 +299,11 @@ export class HistoryPaymentComponent implements OnInit, OnDestroy {
             });
 
         if (_response.result.payload.state == 'APPROVED') {
-
-        } else {
-
+            _historyPayment.restaurantIds.forEach((restaurantId) => {
+                console.log(restaurantId);
+                Restaurants.collection.update({ _id: restaurantId }, { $set: { isActive: true } });
+                Tables.collection.update({ restaurantId: restaurantId }, { $set: { is_active: true } });
+            });
         }
     }
 
@@ -320,5 +324,6 @@ export class HistoryPaymentComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this._historyPaymentSub.unsubscribe();
         this._restaurantSub.unsubscribe();
+        this._paymentTransactionSub.unsubscribe();
     }
 }

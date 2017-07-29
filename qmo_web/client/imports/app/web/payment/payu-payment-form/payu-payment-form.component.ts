@@ -290,7 +290,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         } else {
             console.log('no tiene transaccion');
             PaymentTransactions.collection.insert({
-                count: 1,
+                count: 51,
                 referenceCode: 'M0NP' + 1,
                 status: 'PREPARED',
                 creation_date: new Date(),
@@ -351,7 +351,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         creditCard.securityCode = this._paymentForm.value.securityCode;
         creditCard.expirationDate = this._selectedCardYear + '/' + this._selectedCardMonth;
         //creditCard.name = this._paymentForm.value.fullName;
-        creditCard.name = 'APPROVED';
+        creditCard.name = 'PENDING';
 
         payer.fullName = this._paymentForm.value.fullName;
         payer.emailAddress = this._paymentForm.value.email;
@@ -475,8 +475,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                     responseCode: _response.transactionResponse.responseCode,
                     responseOrderId: _response.transactionResponse.orderId,
                     responsetransactionId: _response.transactionResponse.transactionId,
-                    modification_user: Meteor.userId(),
-                    modification_date: new Date()
+                    modification_date: new Date(),
+                    modification_user: Meteor.userId()
                 }
             });
 
@@ -493,12 +493,12 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             endDate: this._lastMonthDay,
             month: (this._currentDate.getMonth() + 1).toString(),
             year: (this._currentDate.getFullYear()).toString(),
-            status: 'TRANSACTION_STATUS.'+_response.transactionResponse.state,
+            status: 'TRANSACTION_STATUS.' + _response.transactionResponse.state,
             transactionId: transactionId,
             paymentValue: this._valueToPay,
             currency: this._currency,
-            creation_user: Meteor.userId(),
-            creation_date: new Date()
+            creation_date: new Date(),
+            creation_user: Meteor.userId()
         });
     }
 

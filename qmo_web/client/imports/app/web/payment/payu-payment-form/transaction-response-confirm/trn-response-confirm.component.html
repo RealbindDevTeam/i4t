@@ -5,7 +5,7 @@
             <md-list-item>
                 <img md-list-avatar class="image" src="/images/{{data.transactionImage}}">
                 <h1 md-line class="card-title">{{data.transactionResponse | translate}}</h2>
-                <p md-line>{{'PAYU_PAYMENT_FORM.TRANSACTION_MSG' | translate}}</p>
+                <p *ngIf="data.transactionResponse != 'PAYU_PAYMENT_FORM.AUTH_ERROR_MSG'" md-line>{{'PAYU_PAYMENT_FORM.TRANSACTION_MSG' | translate}}</p>
             </md-list-item>
         </md-list>
     </md-card-content>
