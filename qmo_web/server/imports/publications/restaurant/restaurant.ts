@@ -4,7 +4,7 @@ import { UserDetails } from '../../../../both/collections/auth/user-detail.colle
 import { check } from 'meteor/check';
 import { Accounts } from '../../../../both/collections/restaurant/account.collection';
 import { UserDetail } from '../../../../both/models/auth/user-detail.model';
-import { HistoryPayments } from '../../../../both/collections/payment/history-payment.collection';
+import { PaymentsHistory } from '../../../../both/collections/payment/payment-history.collection';
 
 /**
  * Meteor publication restaurants with creation user condition
@@ -105,7 +105,7 @@ Meteor.publish('restaurantImageThumbsByUserId', function (_userId: string) {
 });
 
 /**
- * Meteor publication restaurants with creation user condition
+ * Meteor publication to find current restaurants with no pay
  * @param {string} _userId
  */
 Meteor.publish('currentRestaurantsNoPayed', function (_userId: string) {
@@ -123,7 +123,7 @@ Meteor.publish('currentRestaurantsNoPayed', function (_userId: string) {
 
     console.log(restaurantsInitial);
 
-    HistoryPayments.collection.find({
+    PaymentsHistory.collection.find({
         restaurantIds: {
             $in: restaurantsInitial
         }, month: currentMonth, year: currentYear, $or: [{ status: 'TRANSACTION_STATUS.APPROVED' }, { status: 'TRANSACTION_STATUS.PENDING' }]
@@ -135,4 +135,12 @@ Meteor.publish('currentRestaurantsNoPayed', function (_userId: string) {
 
     console.log(historyPaymentRes);
     return Restaurants.collection.find({ _id: { $nin: historyPaymentRes }, creation_user: _userId, isActive: true, freeDays: false });
+});
+
+/**
+ * Meteor publication to find inactive restaurants by user
+ */
+Meteor.publish('getInactiveRestaurants', function (_userId: string) {
+    check(_userId, String);
+    return Restaurants.collection.find({ creation_user: _userId, isActive: false });
 });

@@ -68,12 +68,12 @@ import { DisableConfirmComponent } from './restaurant/monthly-config/disable-con
 import { SendOrderConfirmComponent } from './waiter/calls/send-order-confirm/send-order-confirm.component';
 import { ColombiaOrderInfoComponent } from './customer/payments/country-payment/colombia-payment/colombia-order-info/colombia-order-info.component';
 import { PayuPaymentFormComponent } from './payment/payu-payment-form/payu-payment-form.component';
-import { HistoryPaymentComponent } from './payment/history-payment/history-payment.component';
+import { PaymentHistoryComponent } from './payment/payment-history/payment-history.component';
 import { ReactivateRestaurantComponent } from './payment/reactivate-restaurant/reactivate-restaurant.component';
 import { ColombiaPayInfoComponent } from './customer/payments/country-payment/colombia-payment/colombia-pay-info/colombia-pay-info.component';
 import { CcPaymentConfirmComponent } from './payment/payu-payment-form/cc-payment-confirm/cc-payment-confirm.component';
 import { TrnResponseConfirmComponent } from './payment/payu-payment-form/transaction-response-confirm/trn-response-confirm.component';
-import { VerifyResultComponent } from './payment/history-payment/verify-result/verify-result.component';
+import { VerifyResultComponent } from './payment/payment-history/verify-result/verify-result.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -122,7 +122,7 @@ export const WEB_DECLARATIONS = [
     EnableDisableComponent,
     ColombiaOrderInfoComponent,
     PayuPaymentFormComponent,
-    HistoryPaymentComponent,
+    PaymentHistoryComponent,
     ReactivateRestaurantComponent,
     ColombiaPayInfoComponent
 ];

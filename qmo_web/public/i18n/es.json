@@ -984,7 +984,9 @@
         "VERIFY_EXPIRED": "La transacción ha expirado",
         "VERIFY_ERROR": "Ha ocurrido un error verificando el estado",
         "VERIFY_ACCEPT": "Aceptar",
-        "VERIFY_MSG": "Puedes consultar el estado de nuevo en 15 min"
+        "VERIFY_MSG": "Puedes consultar el estado de nuevo en 15 min",
+        "MSG_INITIAL": "Aún no tienes pagos realizados",
+        "ALL_FILTER": "Todos"
     },
     "TRANSACTION_STATUS": {
         "APPROVED": "Aprobado",
@@ -1003,7 +1005,9 @@
         "TABLES_NUMBER": "Número de mesas",
         "TABLES_PRICE": "Precio de mesas",
         "FINAL_PRICE": "Precio final",
+        "CURRENCY": "Moneda",
         "ACTION": "Acción",
-        "PAY_BTN": "Pagar"
+        "PAY_BTN": "Pagar",
+        "MSG_INITIAL": "Aún no hay restaurantes inactivos registrados"
     }
 }

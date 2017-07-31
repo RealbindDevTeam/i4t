@@ -984,7 +984,9 @@
         "VERIFY_EXPIRED": "The transaction has expired",
         "VERIFY_ERROR": "Error processing the transaction",
         "VERIFY_ACCEPT": "Accept",
-        "VERIFY_MSG": "You can check the status again in 15 min"
+        "VERIFY_MSG": "You can check the status again in 15 min",
+        "MSG_INITIAL": "You have not payments made yet",
+        "ALL_FILTER": "All"
     },
     "TRANSACTION_STATUS": {
         "APPROVED": "Approved",
@@ -1005,6 +1007,7 @@
         "FINAL_PRICE": "Final price",
         "CURRENCY": "Currency",
         "ACTION": "Action",
-        "PAY_BTN": "Pay"
+        "PAY_BTN": "Pay",
+        "MSG_INITIAL": "There are not inactive restaurants registered yet"
     }
 }

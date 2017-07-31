@@ -8,8 +8,8 @@ import { Observable, Subscription } from 'rxjs';
 import { getPayuMerchantInfo } from '../../../../../../both/methods/general/parameter.methods';
 import { VerifyResultComponent } from './verify-result/verify-result.component';
 
-import { HistoryPayments } from '../../../../../../both/collections/payment/history-payment.collection';
-import { HistoryPayment } from '../../../../../../both/models/payment/history-payment.model';
+import { PaymentsHistory } from '../../../../../../both/collections/payment/payment-history.collection';
+import { PaymentHistory } from '../../../../../../both/models/payment/payment-history.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { ResponseQuery, Merchant, Details } from '../../../../../../both/models/payment/response-query.model';
@@ -20,19 +20,20 @@ import { Table } from '../../../../../../both/models/restaurant/table.model';
 
 import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
 
-import template from './history-payment.component.html';
-import style from './history-payment.component.scss';
+import template from './payment-history.component.html';
+import style from './payment-history.component.scss';
 
 @Component({
-    selector: 'history-payment',
+    selector: 'payment-history',
     template,
     styles: [style]
 })
 
-export class HistoryPaymentComponent implements OnInit, OnDestroy {
+export class PaymentHistoryComponent implements OnInit, OnDestroy {
 
     private _historyPaymentSub: Subscription;
-    private _historyPayments: Observable<HistoryPayment[]>;
+    private _historyPayments: Observable<PaymentHistory[]>;
+    private _historyPayments2: Observable<PaymentHistory[]>;
     private _restaurantSub: Subscription;
     private _restaurants: Observable<Restaurant[]>;
     private _paymentTransactionSub: Subscription;
@@ -62,7 +63,7 @@ export class HistoryPaymentComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this._historyPaymentSub = MeteorObservable.subscribe('getHistoryPaymentsByUser', Meteor.userId()).subscribe(() => {
-            this._historyPayments = HistoryPayments.find({
+            this._historyPayments = PaymentsHistory.find({
                 creation_user: Meteor.userId(),
                 creation_date: {
                     $gte: new Date(new Date().getFullYear(), 0, 1),
@@ -71,6 +72,8 @@ export class HistoryPaymentComponent implements OnInit, OnDestroy {
             },
                 { sort: { creation_date: -1 } }).zone();
         });
+
+        this._historyPayments2 = PaymentsHistory.find({ creation_user: Meteor.userId() });
 
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
         this._paymentTransactionSub = MeteorObservable.subscribe('getTransactionsByUser', Meteor.userId()).subscribe();
@@ -95,7 +98,7 @@ export class HistoryPaymentComponent implements OnInit, OnDestroy {
      */
     changeHistoryPaymentYear() {
         let _selectedYearNum: number = Number(this._selectedYear);
-        this._historyPayments = HistoryPayments.find({
+        this._historyPayments = PaymentsHistory.find({
             creation_user: Meteor.userId(),
             creation_date: {
                 $gte: new Date(_selectedYearNum, 0, 1),
@@ -116,7 +119,7 @@ export class HistoryPaymentComponent implements OnInit, OnDestroy {
         let _selectedYearNum: number = Number(this._selectedYear);
 
         if (_selectedMonthNum === -1) {
-            this._historyPayments = HistoryPayments.find({
+            this._historyPayments = PaymentsHistory.find({
                 creation_user: Meteor.userId(),
                 creation_date: {
                     $gte: new Date(_selectedYearNum, 0, 1),
@@ -126,7 +129,7 @@ export class HistoryPaymentComponent implements OnInit, OnDestroy {
                 { sort: { creation_date: -1 } }).zone();
         }
         else {
-            this._historyPayments = HistoryPayments.find({
+            this._historyPayments = PaymentsHistory.find({
                 creation_user: Meteor.userId(),
                 creation_date: {
                     $gte: new Date(_selectedYearNum, _selectedMonthNum, 1),
@@ -181,7 +184,7 @@ export class HistoryPaymentComponent implements OnInit, OnDestroy {
         let credentialArray: string[] = [];
         let apilogin: string;
         let apikey: string;
-        let historyPayment = HistoryPayments.collection.findOne({ transactionId: _transactionId });
+        let historyPayment = PaymentsHistory.collection.findOne({ transactionId: _transactionId });
         let paymentTransaction = PaymentTransactions.collection.findOne({ _id: historyPayment.transactionId });
 
         this._loading = true;
@@ -275,7 +278,7 @@ export class HistoryPaymentComponent implements OnInit, OnDestroy {
      * This function updates the history Payment status, payment transaction status, restaurant and tables
      * @param {string} _status
      * */
-    updateAllStatus(_historyPayment: HistoryPayment, _paymentTransaction: PaymentTransaction, _response: any) {
+    updateAllStatus(_historyPayment: PaymentHistory, _paymentTransaction: PaymentTransaction, _response: any) {
         console.log('entra a updateAllStatus');
         console.log('paymentTransactionId > ' + _paymentTransaction._id);
         PaymentTransactions.collection.update({ _id: _paymentTransaction._id },
@@ -289,7 +292,7 @@ export class HistoryPaymentComponent implements OnInit, OnDestroy {
             });
 
         console.log('historyPaymentId > ' + _historyPayment._id);
-        HistoryPayments.collection.update({ _id: _historyPayment._id },
+        PaymentsHistory.collection.update({ _id: _historyPayment._id },
             {
                 $set: {
                     status: 'TRANSACTION_STATUS.' + _response.result.payload.state,
@@ -302,11 +305,13 @@ export class HistoryPaymentComponent implements OnInit, OnDestroy {
             _historyPayment.restaurantIds.forEach((restaurantId) => {
                 console.log(restaurantId);
                 Restaurants.collection.update({ _id: restaurantId }, { $set: { isActive: true } });
-                Tables.collection.update({ restaurantId: restaurantId }, { $set: { is_active: true } });
+
+                Tables.collection.find({ restaurantId: restaurantId }).forEach((table: Table) => {
+                    Tables.collection.update({ _id: table._id }, { $set: { is_active: true } });
+                });
             });
         }
     }
-
 
     /**
      * This functions gets de restaurant name by id

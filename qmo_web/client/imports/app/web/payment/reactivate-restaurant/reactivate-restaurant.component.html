@@ -26,17 +26,34 @@
                     <tr *ngFor="let restaurant of _restaurants | async" style="background-color: whitesmoke !important">
                         <td *ngIf="restaurant.currencyId === currency._id">{{restaurant.name}}</td>
                         <td *ngIf="restaurant.currencyId === currency._id">{{getRestaurantPrice(restaurant)}} {{currency.code}}</td>
-                        <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">{{getActiveTables(restaurant)}}</td>
+                        <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">{{getTables(restaurant)}}</td>
                         <td *ngIf="restaurant.currencyId === currency._id">{{getTablePrice(restaurant)}} {{currency.code}}</td>
                         <td *ngIf="restaurant.currencyId === currency._id">{{getTotalRestaurant(restaurant)}} {{currency.code}}</td>
                         <td>
                             <div align="center">
-                                <button md-raised-button>{{'REACTIVATE_RESTAURANT.PAY_BTN' | translate}}</button>
+                                <button md-raised-button (click)="goToPayByRestaurant(restaurant, currency.code)">{{'REACTIVATE_RESTAURANT.PAY_BTN' | translate}}</button>
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </md-card-content>
+</md-card>
+
+<md-card *ngIf="(_restaurants | async)?.length <= 0" md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
+    <md-card-content>
+        <div class="card_initial">
+            <div class="card_initial has-image">
+                <div class="card_initial-image-container">
+                    <img class="card_initial-image" src="/images/reactivate-restaurant.png" />
+                </div>
+                <div class="card_initial-copy">
+                    <div class="card_initial-tagline">
+                        {{ 'REACTIVATE_RESTAURANT.MSG_INITIAL' | translate }}
+                    </div>
+                </div>
+            </div>
         </div>
     </md-card-content>
 </md-card>

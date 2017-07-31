@@ -1,4 +1,4 @@
-<md-card>
+<md-card *ngIf="(_historyPayments2 | async)?.length > 0">
     <md-card-title>{{'PAYMENT_HISTORY.TITLE' | translate }}</md-card-title>
     <md-card-subtitle>{{'PAYMENT_HISTORY.SUBTITLE' | translate}}</md-card-subtitle>
     <md-card-content style="background: #FFF">
@@ -7,7 +7,7 @@
         </md-select>
         <md-select [(ngModel)]="_selectedMonth" placeholder="{{'PAYMENT_HISTORY.MONTH_FILTER' | translate}}" style="width: 25%; margin-left: 2%;"
             [disabled]="_activateMonth">
-            <md-option value="0" (click)="changeHistoryPaymentMonth()">Todos</md-option>
+            <md-option value="0" (click)="changeHistoryPaymentMonth()">{{'PAYMENT_HISTORY.ALL_FILTER' | translate}}</md-option>
             <md-option *ngFor="let month of _monthsArray" value="{{month.value}}" (click)="changeHistoryPaymentMonth()">{{month.viewValue}}</md-option>
         </md-select>
         <table class="striped" width="100%" style="border:0.5px solid; border-color: lightgrey; margin-top: 15px">
@@ -44,3 +44,20 @@
 <div class="loading" *ngIf="_loading">
     <md-spinner></md-spinner>
 </div>
+
+<md-card *ngIf="(_historyPayments2 | async)?.length <= 0" md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
+    <md-card-content>
+        <div class="card_initial">
+            <div class="card_initial has-image">
+                <div class="card_initial-image-container">
+                    <img class="card_initial-image" src="/images/payment-history.png" />
+                </div>
+                <div class="card_initial-copy">
+                    <div class="card_initial-tagline">
+                        {{ 'PAYMENT_HISTORY.MSG_INITIAL' | translate }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </md-card-content>
+</md-card>

@@ -1,8 +1,8 @@
 import { MongoObservable } from 'meteor-rxjs';
 import { Meteor } from 'meteor/meteor';
-import { HistoryPayment } from '../../models/payment/history-payment.model';
+import { PaymentHistory } from '../../models/payment/payment-history.model';
 
-export const HistoryPayments = new MongoObservable.Collection<HistoryPayment>('history_payment');
+export const PaymentsHistory = new MongoObservable.Collection<PaymentHistory>('payments_history');
 
 /**
  * Function to validate if user exists
@@ -14,7 +14,7 @@ function loggedIn(){
 /**
  * Allow HistoryPaymentCollection collecion insert and update functions
  */
-HistoryPayments.allow({
+PaymentsHistory.allow({
     insert: loggedIn,
     update: loggedIn
 });

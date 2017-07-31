@@ -109,7 +109,7 @@ export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
      * @param {Restaurant} _restaurant
      * @return {number}
      */
-    getActiveTables(_restaurant: Restaurant): number {
+    getTables(_restaurant: Restaurant): number {
         let tables_length: number;
         tables_length = Tables.find({ restaurantId: _restaurant._id }).fetch().length;
         if (tables_length) {
@@ -146,28 +146,14 @@ export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
     getTotalRestaurant(_restaurant: Restaurant): number {
         let country: Country;
         let tables_length: number;
-        let discount: Parameter;
 
         country = Countries.findOne({ _id: _restaurant.countryId });
         tables_length = Tables.find({ restaurantId: _restaurant._id }).fetch().length;
-        discount = Parameters.findOne({ name: 'first_pay_discount' });
 
-        if (country && tables_length && discount) {
-            if (_restaurant.firstPay && !_restaurant.freeDays) {
-                return ((country.restaurantPrice + (country.tablePrice * tables_length))) * Number(discount.value) / 100;
-            } else if (_restaurant.firstPay && _restaurant.freeDays) {
-                return 0;
-            } else {
-                return country.restaurantPrice + (country.tablePrice * tables_length);
-            }
-        } else if (country && !tables_length && discount) {
-            if (_restaurant.firstPay && !_restaurant.freeDays) {
-                return country.restaurantPrice * Number(discount.value) / 100;
-            } else if (_restaurant.firstPay && _restaurant.freeDays) {
-                return 0;
-            } else {
-                return country.restaurantPrice;
-            }
+        if (country && tables_length) {
+            return country.restaurantPrice + (country.tablePrice * tables_length);
+        } else if (country && !tables_length) {
+            return country.restaurantPrice;
         }
     }
 
@@ -176,16 +162,21 @@ export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
      * @param {Restaurant} _restaurant
      * @param {string} _currency
      */
-    goToPayByRestaurant(_restaurant: Restaurant, _currencyId: string){
+    goToPayByRestaurant(_restaurant: Restaurant, _currencyCode: string) {
         let country: Country;
         let tables_length: number
+        let priceByRestaurant: number;
 
         country = Countries.findOne({ _id: _restaurant.countryId });
         tables_length = Tables.find({ restaurantId: _restaurant._id }).fetch().length;
 
-        if(country && tables_length){
-            return country.restaurantPrice + (country.tablePrice * tables_length);
+        if (country && tables_length) {
+            priceByRestaurant = country.restaurantPrice + (country.tablePrice * tables_length);
+        } else if (country && !tables_length) {
+            priceByRestaurant = country.restaurantPrice;
         }
+        console.log(priceByRestaurant);
+        this._router.navigate(['app/payment-form', priceByRestaurant, _currencyCode, _restaurant._id], { skipLocationChange: true });
     }
 
     /**

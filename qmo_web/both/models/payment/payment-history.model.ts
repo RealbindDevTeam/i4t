@@ -1,6 +1,6 @@
 import { CollectionObject } from '../collection-object.model';
 
-export interface HistoryPayment extends CollectionObject {
+export interface PaymentHistory extends CollectionObject {
     restaurantIds: string[];
     startDate: Date;  
     endDate: Date;

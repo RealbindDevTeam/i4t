@@ -8,8 +8,8 @@ import { Restaurants } from '../../collections/restaurant/restaurant.collection'
 import { Restaurant } from '../../models/restaurant/restaurant.model';
 import { Tables } from '../../collections/restaurant/table.collection';
 import { Table } from '../../models/restaurant/table.model';
-import { HistoryPayments } from '../../collections/payment/history-payment.collection';
-import { HistoryPayment } from '../../models/payment/history-payment.model';
+import { PaymentsHistory } from '../../collections/payment/payment-history.collection';
+import { PaymentHistory } from '../../models/payment/payment-history.model';
 import { Users } from '../../collections/auth/user.collection';
 import { User } from '../../models/auth/user.model';
 import { Parameters } from '../../collections/general/parameter.collection';
@@ -136,11 +136,11 @@ if (Meteor.isServer) {
             let currentYear: string = currentDate.getFullYear().toString();
 
             Restaurants.collection.find({ countryId: _countryId, isActive: true, freeDays: false }).forEach((restaurant: Restaurant) => {
-                let historyPayment: HistoryPayment;
+                let historyPayment: PaymentHistory;
                 let auxArray: string[] = [];
                 auxArray.push(restaurant._id);
                 //historyPayment = HistoryPayments.collection.findOne({ restaurantIds: restaurant._id, month: currentMonth, year: currentYear, status: 'APPROVED' });
-                historyPayment = HistoryPayments.collection.findOne({ restaurantIds: { $in: auxArray }, month: currentMonth, year: currentYear, status: 'TRANSACTION_STATUS.APPROVED' });
+                historyPayment = PaymentsHistory.collection.findOne({ restaurantIds: { $in: auxArray }, month: currentMonth, year: currentYear, status: 'TRANSACTION_STATUS.APPROVED' });
 
                 if (!historyPayment) {
                     Restaurants.collection.update({ _id: restaurant._id }, { $set: { isActive: false, firstPay: false } });

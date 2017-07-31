@@ -43,6 +43,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     private _firstNextMonthDay: Date;
     private _maxPaymentDay: Date;
     private _restaurantsTotalPrice: number;
+    private _mode: string;
 
     constructor(private router: Router,
         private _formBuilder: FormBuilder,
@@ -50,6 +51,8 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
         var userLang = navigator.language.split('-')[0];
         translate.setDefaultLang('en');
         translate.use(userLang);
+
+        this._mode = 'normal';
     }
 
     ngOnInit() {
@@ -267,7 +270,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     }
 
     goToPaymentForm(currencyCode: string) {
-        this.router.navigate(['app/payment-form', this._restaurantsTotalPrice, currencyCode], { skipLocationChange: true });
+        this.router.navigate(['app/payment-form', this._restaurantsTotalPrice, currencyCode, this._mode], { skipLocationChange: true });
     }
 
     ngOnDestroy() {

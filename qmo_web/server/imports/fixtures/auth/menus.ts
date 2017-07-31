@@ -91,7 +91,7 @@ export function loadMenus() {
                         _id: "2002",
                         is_active: true,
                         name: "MENUS.PAYMENTS.PAYMENT_HISTORY",
-                        url: "/app/history-payment",
+                        url: "/app/payment-history",
                         icon_name: "",
                         order: 2002
                     },

@@ -32,7 +32,7 @@ import './imports/publications/restaurant/waiter-call';
 import './imports/publications/general/email-content';
 import './imports/publications/general/parameter';
 import './imports/publications/restaurant/payment';
-import './imports/publications/payment/history-payment';
+import './imports/publications/payment/payment-history';
 import './imports/publications/payment/cc-payment-method';
 import './imports/publications/payment/payment-transaction';
 

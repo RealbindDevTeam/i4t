@@ -22,10 +22,12 @@ import { PaymentTransaction } from '../../../../../../both/models/payment/paymen
 import { PaymentTransactions } from '../../../../../../both/collections/payment/payment-transaction.collection';
 import { Parameter } from '../../../../../../both/models/general/parameter.model';
 import { Parameters } from '../../../../../../both/collections/general/parameter.collection';
-import { HistoryPayment } from '../../../../../../both/models/payment/history-payment.model';
-import { HistoryPayments } from '../../../../../../both/collections/payment/history-payment.collection';
+import { PaymentHistory } from '../../../../../../both/models/payment/payment-history.model';
+import { PaymentsHistory } from '../../../../../../both/collections/payment/payment-history.collection';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
+import { Table } from '../../../../../../both/models/restaurant/table.model';
+import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
 import { CcRequestColombia, Merchant, Transaction, Order, Payer, TX_VALUE, TX_TAX, TX_TAX_RETURN_BASE, CreditCard, ExtraParameters, AdditionalValues, Buyer, ShippingBillingAddress } from '../../../../../../both/models/payment/cc-request-colombia.model';
 
 import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
@@ -60,7 +62,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _parameterSub: Subscription;
     private _parameters: Observable<Parameter[]>;
     private _historyPaymentSub: Subscription;
-    private _historyPayments: Observable<HistoryPayment[]>;
+    private _historyPayments: Observable<PaymentHistory[]>;
     private _restaurantSub: Subscription;
     private _restaurants: Observable<Restaurant[]>;
     private _restaurantsIdsArray: string[];
@@ -86,6 +88,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 
     private _valueToPay: number;
     private _currency: string;
+    private _mode: string;
     private post: any;
     private scriptOneSanitized: any;
     private scriptTwoSanitized: any;
@@ -123,13 +126,15 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 
         this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
         this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
-    }
 
-    ngOnInit() {
         this._activateRoute.params.forEach((params: Params) => {
             this._valueToPay = params['param1'];
             this._currency = params['param2'];
+            this._mode = params['param3'];
         });
+    }
+
+    ngOnInit() {
 
         this._paymentForm = new FormGroup({
             paymentMethod: new FormControl('', [Validators.required]),
@@ -167,7 +172,11 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         this._paymentTransactionSub = MeteorObservable.subscribe('getTransactions').subscribe();
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
 
-        this._restaurantSub = MeteorObservable.subscribe('currentRestaurantsNoPayed', Meteor.userId()).subscribe();
+        if (this._mode === 'normal') {
+            this._restaurantSub = MeteorObservable.subscribe('currentRestaurantsNoPayed', Meteor.userId()).subscribe();
+        } else {
+            this._restaurantSub = MeteorObservable.subscribe('getInactiveRestaurants', Meteor.userId()).subscribe();
+        }
 
         this._monthsArray = [{ value: '01', viewValue: '01' }, { value: '02', viewValue: '02' }, { value: '03', viewValue: '03' },
         { value: '04', viewValue: '04' }, { value: '05', viewValue: '05' }, { value: '06', viewValue: '06' },
@@ -220,9 +229,17 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         let auxstreet: string = this._paymentForm.value.streetOne;
 
         this._restaurantsNamesArray = [];
-        Restaurants.find({ creation_user: Meteor.userId(), isActive: true }).fetch().forEach((restaurant) => {
-            this._restaurantsNamesArray.push(restaurant.name);
-        });
+
+        if (this._mode === 'normal') {
+            Restaurants.find({ creation_user: Meteor.userId(), isActive: true }).fetch().forEach((restaurant) => {
+                this._restaurantsNamesArray.push(restaurant.name);
+            });
+        } else {
+            Restaurants.find({ creation_user: Meteor.userId(), isActive: false, _id: this._mode }).fetch().forEach((restaurant) => {
+                this._restaurantsNamesArray.push(restaurant.name);
+            });
+        }
+
 
         this._mdDialogRef = this._mdDialog.open(CcPaymentConfirmComponent, {
             disableClose: true,
@@ -290,8 +307,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         } else {
             console.log('no tiene transaccion');
             PaymentTransactions.collection.insert({
-                count: 51,
-                referenceCode: 'M0NP' + 1,
+                count: 68,
+                referenceCode: 'M0NP' + 68,
                 status: 'PREPARED',
                 creation_date: new Date(),
                 creation_user: Meteor.userId()
@@ -351,7 +368,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         creditCard.securityCode = this._paymentForm.value.securityCode;
         creditCard.expirationDate = this._selectedCardYear + '/' + this._selectedCardMonth;
         //creditCard.name = this._paymentForm.value.fullName;
-        creditCard.name = 'PENDING';
+        creditCard.name = 'APPROVED';
 
         payer.fullName = this._paymentForm.value.fullName;
         payer.emailAddress = this._paymentForm.value.email;
@@ -452,7 +469,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 this._mdDialogRef2.afterClosed().subscribe(result => {
                     this._mdDialogRef2 = result;
                     if (result.success) {
-                        this._router.navigate(['app/history-payment']);
+                        this._router.navigate(['app/payment-history']);
                     }
                 });
             },
@@ -483,11 +500,18 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         let transactionId = PaymentTransactions.collection.findOne({ _id: _transactionId })._id;
 
         this._restaurantsIdsArray = [];
-        Restaurants.find({ creation_user: Meteor.userId(), isActive: true }).fetch().forEach((restaurant) => {
-            this._restaurantsIdsArray.push(restaurant._id);
-        });
 
-        HistoryPayments.collection.insert({
+        if (this._mode === 'normal') {
+            Restaurants.find({ creation_user: Meteor.userId(), isActive: true }).fetch().forEach((restaurant) => {
+                this._restaurantsIdsArray.push(restaurant._id);
+            });
+        } else {
+            Restaurants.find({ creation_user: Meteor.userId(), isActive: false, _id: this._mode }).fetch().forEach((restaurant) => {
+                this._restaurantsIdsArray.push(restaurant._id);
+            });
+        }
+
+        PaymentsHistory.collection.insert({
             restaurantIds: this._restaurantsIdsArray,
             startDate: this._firstMonthDay,
             endDate: this._lastMonthDay,
@@ -500,6 +524,14 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             creation_date: new Date(),
             creation_user: Meteor.userId()
         });
+
+        if (this._mode != 'normal') {
+            Restaurants.collection.update({ _id: this._mode }, { $set: { isActive: true } });
+            
+            Tables.collection.find({ restaurantId: this._mode }).forEach((table: Table) => {
+                Tables.collection.update({ _id: table._id }, { $set: { is_active: true } });
+            });
+        }
     }
 
     /**

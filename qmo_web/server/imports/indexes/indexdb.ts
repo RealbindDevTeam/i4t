@@ -7,7 +7,7 @@ import { Additions } from '../../../both/collections/administration/addition.col
 import { Items, ItemImages, ItemImagesThumbs } from '../../../both/collections/administration/item.collection';
 import { GarnishFoodCol } from '../../../both/collections/administration/garnish-food.collection';
 import { PaymentMethods } from '../../../both/collections/general/paymentMethod.collection';
-import { HistoryPayments } from '../../../both/collections/payment/history-payment.collection';
+import { PaymentsHistory } from '../../../both/collections/payment/payment-history.collection';
 import { Accounts } from '../../../both/collections/restaurant/account.collection';
 import { Orders } from '../../../both/collections/restaurant/order.collection';
 import { Tables } from '../../../both/collections/restaurant/table.collection';
@@ -71,7 +71,7 @@ export function createdbindexes(){
     PaymentMethods.collection._ensureIndex( { isActive: 1 } );   
     
     // HistoryPayments Collection Indexes
-    HistoryPayments.collection._ensureIndex( { restaurantId: 1 } );
+    PaymentsHistory.collection._ensureIndex( { restaurantId: 1 } );
 
     // Accounts Collection Indexes
     Accounts.collection._ensureIndex( { restaurantId: 1 } );

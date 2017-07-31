@@ -28,8 +28,8 @@ import { FinancialSlider } from '../../../../../../../both/shared-components/res
 import { CreateConfirmComponent } from './create-confirm/create-confirm.component';
 import { Table } from '../../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
-import { HistoryPayments } from '../../../../../../../both/collections/payment/history-payment.collection';
-import { HistoryPayment } from '../../../../../../../both/models/payment/history-payment.model';
+import { PaymentsHistory } from '../../../../../../../both/collections/payment/payment-history.collection';
+import { PaymentHistory } from '../../../../../../../both/models/payment/payment-history.model';
 
 import template from './restaurant-register.component.html';
 import style from './restaurant-register.component.scss';
@@ -428,11 +428,11 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                     let idsRestaurants: string[] = [];
                     idsRestaurants.push(_lNewRestaurant);
 
-                    HistoryPayments.collection.insert({
+                    PaymentsHistory.collection.insert({
                         restaurantIds: idsRestaurants,
                         startDate: this._firstMonthDay,
                         endDate: this._lastMonthDay,
-                        month: (this._currentDate.getMonth()+1).toString(),
+                        month: (this._currentDate.getMonth() + 1).toString(),
                         year: (this._currentDate.getFullYear()).toString(),
                         status: 'TRANSACTION_STATUS.APPROVED'
                     });
