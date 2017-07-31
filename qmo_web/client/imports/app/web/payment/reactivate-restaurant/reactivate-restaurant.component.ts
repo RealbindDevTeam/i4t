@@ -175,7 +175,6 @@ export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
         } else if (country && !tables_length) {
             priceByRestaurant = country.restaurantPrice;
         }
-        console.log(priceByRestaurant);
         this._router.navigate(['app/payment-form', priceByRestaurant, _currencyCode, _restaurant._id], { skipLocationChange: true });
     }
 

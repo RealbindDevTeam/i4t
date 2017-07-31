@@ -150,7 +150,7 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
                     if (this._collaboratorEditionForm.valid) {
 
                         if( this._collaboratorEditionForm.value.role === '200' ) {
-                            console.log(!this._disabledTablesAssignment);
+                            
                             if ( this._disabledTablesAssignment || (this._collaboratorEditionForm.value.table_init === 0 && this._collaboratorEditionForm.value.table_end === 0) ){
                                 this._collaboratorEditionForm.value.table_end = Tables.collection.find({}).count();
                                 if (this._collaboratorEditionForm.value.table_end > 0 ){
