@@ -35,11 +35,6 @@ if (Meteor.isServer) {
                 let secondAdviceString: string = Meteor.call('convertDate', secondAdviceDate);
                 let thirdAdviceDate: Date = Meteor.call('substractDays', forwardDate, thirdAdviceDays);
                 let thirdAdviceString: string = Meteor.call('convertDate', thirdAdviceDate);
-
-                console.log('*** currentString: ' + currentString);
-                console.log('*** firstAdviceString: ' + firstAdviceString);
-                console.log('*** secondAdviceString: ' + secondAdviceString);
-                console.log('*** thirdAdviceString: ' + thirdAdviceString);
                 
                 if (diff > trialDays) {
                     Restaurants.collection.update({ _id: restaurant._id }, { $set: { isActive: false, tstPeriod: false } })
