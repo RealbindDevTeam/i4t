@@ -19,8 +19,9 @@ import { Parameter } from '../../../../../../both/models/general/parameter.model
 import template from './monthly-payment.component.html';
 import style from './monthly-payment.component.scss';
 
+
 @Component({
-    selector: 'billing',
+    selector: 'monthly-payment',
     template,
     styles: [style]
 })
@@ -41,6 +42,8 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     private _lastMonthDay: Date;
     private _firstNextMonthDay: Date;
     private _maxPaymentDay: Date;
+    private _restaurantsTotalPrice: number;
+    private _mode: string;
 
     constructor(private router: Router,
         private _formBuilder: FormBuilder,
@@ -48,18 +51,20 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
         var userLang = navigator.language.split('-')[0];
         translate.setDefaultLang('en');
         translate.use(userLang);
+
+        this._mode = 'normal';
     }
 
     ngOnInit() {
-        this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
-        this._restaurants = Restaurants.find({ creation_user: Meteor.userId() }).zone();
+        this._restaurantSub = MeteorObservable.subscribe('currentRestaurantsNoPayed', Meteor.userId()).subscribe();
+        this._restaurants = Restaurants.find({ creation_user: Meteor.userId(), isActive: true }).zone();
         this._currencySub = MeteorObservable.subscribe('getCurrenciesByUserId').subscribe();
         this._currencies = Currencies.find({}).zone();
         this._countrySub = MeteorObservable.subscribe('countries').subscribe();
         this._tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe();
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
 
-        this._currentDate = new Date(2017, 5, 3);
+        this._currentDate = new Date(2017, 6, 3);
         this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
         this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
         this._firstNextMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 1);
@@ -68,7 +73,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     /**
      * This function gets the restaurant price according to the country
      * @param {Restaurant} _restaurant
-     * @return {number}
+     * @return {number} 
      */
     getRestaurantPrice(_restaurant: Restaurant): number {
         let country: Country;
@@ -189,7 +194,6 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
             return country.restaurantPrice + (country.tablePrice * tables_length);
         } else if (country && !tables_length) {
             return country.restaurantPrice;
-
         }
     }
 
@@ -200,9 +204,10 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
      */
     getTotalByCurrency(_currencyId: string): number {
         let price: number = 0;
-        Restaurants.collection.find({ currencyId: _currencyId, creation_user: Meteor.userId() }).forEach((restaurant) => {
+        Restaurants.collection.find({ currencyId: _currencyId, creation_user: Meteor.userId(), isActive: true }).forEach((restaurant: Restaurant) => {
             price = price + this.getTotalRestaurant(restaurant);
         });
+        this._restaurantsTotalPrice = price;
         return price;
     }
 
@@ -226,7 +231,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
         let startDay = Parameters.findOne({ name: 'start_payment_day' });
         let endDay = Parameters.findOne({ name: 'end_payment_day' });
         let currentDay = this._currentDate.getDate();
-        let restaurants = Restaurants.collection.find({ creation_user: Meteor.userId() }).fetch();
+        let restaurants = Restaurants.collection.find({ creation_user: Meteor.userId(), isActive: true }).fetch();
 
         if (startDay && endDay && restaurants) {
             if (currentDay >= Number(startDay.value) && currentDay <= Number(endDay.value) && (restaurants.length > 0)) {
@@ -248,6 +253,24 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
             this._maxPaymentDay.setDate(this._maxPaymentDay.getDate() + (Number(endDay.value) - 1));
             return this._maxPaymentDay;
         }
+    }
+
+    /**
+     * This function return true  if the user has only one restaurant with freeDays true
+     */
+    getOnlyOneRestaurant(_currencyId: string): boolean {
+        let restaurantCount: number = Restaurants.collection.find({ creation_user: Meteor.userId(), currencyId: _currencyId, isActive: true }).count();
+        let restaurantFreeDaysCount: number = Restaurants.collection.find({ creation_user: Meteor.userId(), currencyId: _currencyId, freeDays: true, isActive: true }).count();
+
+        if (restaurantCount === restaurantFreeDaysCount) {
+            return false;
+        } else if (restaurantCount !== restaurantFreeDaysCount) {
+            return true;
+        }
+    }
+
+    goToPaymentForm(currencyCode: string) {
+        this.router.navigate(['app/payment-form', this._restaurantsTotalPrice, currencyCode, this._mode], { skipLocationChange: true });
     }
 
     ngOnDestroy() {

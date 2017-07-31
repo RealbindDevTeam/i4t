@@ -15,3 +15,10 @@ Meteor.publish('getUserDetailsByUser', function (_userId: string) {
 Meteor.publish('getUserDetailsByCurrentTable', function(_restaurantId : string, _tableId : string) {
     return UserDetails.find({ current_restaurant : _restaurantId, current_table : _tableId });
 });
+
+/**
+ * Meteor publication return users by restaurants Id
+ */
+Meteor.publish( 'getUsersByRestaurantsId', function( _restaurantsId: String[] ){
+    return UserDetails.find( { current_restaurant: { $in: _restaurantsId } } );
+});

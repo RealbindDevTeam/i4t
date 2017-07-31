@@ -49,6 +49,8 @@ import { ColombiaPayInfoPage } from '../pages/customer/payments/country-payment/
 import { OrderDetailPayInfoPage } from '../pages/customer/payments/country-payment/colombia-payment/colombia-pay-info/order-detail-pay-info';
 import { ItemPayInfoComponent } from '../pages/customer/payments/country-payment/colombia-payment/colombia-pay-info/item-pay-info/item-pay-info';
 import { AdditionPayInfoComponent } from '../pages/customer/payments/country-payment/colombia-payment/colombia-pay-info/addition-pay-info/addition-pay-info';
+import { PaymentsHistoryPage } from '../pages/customer/options/payments-history/payments-history';
+import { PaymentsHistoryDetailPage } from '../pages/customer/options/payments-history/payments-history-detail/payments-history-detail';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateStaticLoader(http, 'assets/i18n', '.json');
@@ -100,7 +102,9 @@ export function createTranslateLoader(http: Http) {
     ColombiaPayInfoPage,
     OrderDetailPayInfoPage,
     ItemPayInfoComponent,
-    AdditionPayInfoComponent
+    AdditionPayInfoComponent,
+    PaymentsHistoryPage,
+    PaymentsHistoryDetailPage
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -169,7 +173,9 @@ export function createTranslateLoader(http: Http) {
     ColombiaPayInfoPage,
     OrderDetailPayInfoPage,
     ItemPayInfoComponent,
-    AdditionPayInfoComponent
+    AdditionPayInfoComponent,
+    PaymentsHistoryPage,
+    PaymentsHistoryDetailPage
   ],
   providers: [
     {

@@ -1,0 +1,119 @@
+<md-card>
+    <md-card-title-group>
+        <img *ngIf="_paymentLogoName != ''" md-card-sm-image src="{{_paymentLogoName}}" style="margin-right: 15px">
+        <md-card-title>{{'PAYU_PAYMENT_FORM.TITLE' | translate }}</md-card-title>
+        <md-card-subtitle>{{'PAYU_PAYMENT_FORM.SUBTITLE' | translate}}</md-card-subtitle>
+    </md-card-title-group>
+    <md-card-content>
+        <form [formGroup]="_paymentForm" (ngSubmit)="openConfirmDialog()">
+            <div style="margin-top: 2%">
+                <md-select formControlName="paymentMethod" [(ngModel)]="_selectedPaymentMethod" placeholder="{{'PAYU_PAYMENT_FORM.SELECT_METHOD' | translate}}"
+                    style="width: 43%">
+                    <md-option *ngFor="let cCPaymentMethod of _cCPaymentMethods | async" value="{{cCPaymentMethod.payu_code}}" (click)="changeCcPaymentLogo(cCPaymentMethod.logo_name)">{{cCPaymentMethod.name}}</md-option>
+                </md-select>
+            </div>
+            <div style="margin-top: 1%">
+                <md-input-container style="width: 43%">
+                    <input mdInput formControlName="cardNumber" placeholder="{{'PAYU_PAYMENT_FORM.CARD_NUMBER' | translate}}">
+                </md-input-container>
+                <md-select formControlName="expirationMonth" [(ngModel)]="_selectedCardMonth" placeholder="{{'PAYU_PAYMENT_FORM.EXPIRATION_MONTH' | translate}}"
+                    style="width: 18%; margin-left: 2%;">
+                    <md-option *ngFor="let month of _monthsArray" value="{{month.value}}">{{month.viewValue}}</md-option>
+                </md-select>
+                <md-select formControlName="expirationYear" [(ngModel)]="_selectedCardYear" placeholder="{{'PAYU_PAYMENT_FORM.EXPIRATION_YEAR' | translate}}"
+                    style="width: 18%;">
+                    <md-option *ngFor="let year of _yearsArray" value="{{year.value}}">{{year.viewValue}}</md-option>
+                </md-select>
+                <md-input-container style="width: 15%; margin-left: 2%;">
+                    <input mdInput formControlName="securityCode" placeholder="{{'PAYU_PAYMENT_FORM.SECURITY_CODE' | translate}}">
+                </md-input-container>
+            </div>
+            <div style="width: 40%; display: inline-block;">
+                <div *ngIf="_paymentForm.controls['cardNumber'].hasError('required') && _paymentForm.controls['cardNumber'].touched" class="error-msg">{{'PAYU_PAYMENT_FORM.CARD_NUMBER_REQUIRED' | translate}}</div>
+                <div *ngIf="_paymentForm.controls['cardNumber'].hasError('minlength') && _paymentForm.controls['cardNumber'].touched" class="error-msg">{{'PAYU_PAYMENT_FORM.CARD_NUMBER_MIN' | translate}}</div>
+                <div *ngIf="_paymentForm.controls['cardNumber'].hasError('maxlength') && _paymentForm.controls['cardNumber'].touched" class="error-msg">{{'PAYU_PAYMENT_FORM.CARD_NUMBER_MAX' | translate}}</div>
+                <div *ngIf="_paymentForm.controls['cardNumber'].hasError('invalidNumericField') && _paymentForm.controls['cardNumber'].touched"
+                    class="error-msg">{{'PAYU_PAYMENT_FORM.CARD_ONLY_NUMBER' | translate}}</div>
+            </div>
+            <div style="width: 18%; margin-left: 2%; display: inline-block;">
+            </div>
+            <div style="width: 18%; display: inline-block;">
+            </div>
+            <div style="width: 15%; margin-left: 2%; display: inline-block;">
+                <div *ngIf="_paymentForm.controls['securityCode'].hasError('required') && _paymentForm.controls['securityCode'].touched"
+                    class="error-msg">{{'PAYU_PAYMENT_FORM.SECURITY_CODE_REQUIRED' | translate}}</div>
+                <div *ngIf="_paymentForm.controls['securityCode'].hasError('minlength') && _paymentForm.controls['securityCode'].touched"
+                    class="error-msg">{{'PAYU_PAYMENT_FORM.SECURITY_CODE_MIN' | translate}}</div>
+                <div *ngIf="_paymentForm.controls['securityCode'].hasError('maxlength') && _paymentForm.controls['securityCode'].touched"
+                    class="error-msg">{{'PAYU_PAYMENT_FORM.SECURITY_CODE_MAX' | translate}}</div>
+                <div *ngIf="_paymentForm.controls['securityCode'].hasError('invalidNumericField') && _paymentForm.controls['securityCode'].touched"
+                    class="error-msg">{{'PAYU_PAYMENT_FORM.CODE_ONLY_NUMBER' | translate}}</div>
+            </div>
+            <md-card-title style="margin-top: 10px">{{'PAYU_PAYMENT_FORM.BILLING_INFORMATION' | translate}}</md-card-title>
+            <div style="margin-top: 1%">
+                <md-input-container style="width: 43%">
+                    <input mdInput formControlName="email" placeholder="{{'PAYU_PAYMENT_FORM.PAYER_EMAIL' | translate}}">
+                </md-input-container>
+                <md-input-container style="width: 54%; margin-left: 2%;">
+                    <input mdInput formControlName="fullName" placeholder="{{'PAYU_PAYMENT_FORM.PAYER_FULLNAME' | translate}}">
+                </md-input-container>
+            </div>
+            <div style="width: 43%">
+                <div *ngIf="_paymentForm.controls['email'].hasError('required') && _paymentForm.controls['email'].touched" class="error-msg">{{'PAYU_PAYMENT_FORM.EMAIL_REQUIRED' | translate}}</div>
+                <div *ngIf="_paymentForm.controls['email'].hasError('minlength') && _paymentForm.controls['email'].touched" class="error-msg">{{'PAYU_PAYMENT_FORM.EMAIL_MIN' | translate}}</div>
+                <div *ngIf="_paymentForm.controls['email'].hasError('maxlength') && _paymentForm.controls['email'].touched" class="error-msg">{{'PAYU_PAYMENT_FORM.EMAIL_MAX' | translate}}</div>
+                <div *ngIf="_paymentForm.controls['email'].hasError('invalidEmailAddress') && _paymentForm.controls['email'].touched" class="error-msg">{{'PAYU_PAYMENT_FORM.EMAIL_INVALID' | translate}}</div>
+            </div>
+            <div>
+                <md-input-container style="width: 43%;">
+                    <input mdInput formControlName="dniNumber" placeholder="{{'PAYU_PAYMENT_FORM.DNI_NUMBER' | translate}}">
+                </md-input-container>
+            </div>
+            <div style="width: 43%">
+                <div *ngIf="_paymentForm.controls['dniNumber'].hasError('maxlength') && _paymentForm.controls['dniNumber'].touched" class="error-msg">{{'PAYU_PAYMENT_FORM.DNI_NUMBER_MAX' | translate}}</div>
+            </div>
+            <div style="margin-top: 1%">
+                <md-select formControlName="country" [(ngModel)]="_selectedCountry" placeholder="{{'PAYU_PAYMENT_FORM.COUNTRY' | translate}}"
+                    style="width: 43%;">
+                    <md-option *ngFor="let country of _countries | async" value="{{country.alfaCode2}}" (click)="changeCountry(country)">{{country.name | translate}}</md-option>
+                </md-select>
+                <md-select formControlName="city" [(ngModel)]="_selectedCity" placeholder="{{'PAYU_PAYMENT_FORM.CITY' | translate}}" style="width: 54%; margin-left: 2%;">
+                    <md-option *ngFor="let city of _cities | async" value="{{city.name}}">{{city.name}}</md-option>
+                </md-select>
+            </div>
+            <div style="margin-top: 1%">
+                <md-input-container style="width: 43%">
+                    <input mdInput formControlName="streetOne" placeholder="{{'PAYU_PAYMENT_FORM.ADDRESS' | translate}}">
+                </md-input-container>
+                <md-input-container style="width: 54%; margin-left: 2%;">
+                    <input mdInput formControlName="contactPhone" placeholder="{{'PAYU_PAYMENT_FORM.PHONE_NUMBER' | translate}}">
+                </md-input-container>
+            </div>
+            <div style="width: 43%; display: inline-block;">
+                <div *ngIf="_paymentForm.controls['streetOne'].hasError('maxlength') && _paymentForm.controls['streetOne'].touched" class="error-msg">{{'PAYU_PAYMENT_FORM.ADDRESS_MAX' | translate}}</div>
+            </div>
+            <div style="width: 54%; margin-left: 2%; display: inline-block;">
+                <div *ngIf="_paymentForm.controls['contactPhone'].hasError('maxlength') && _paymentForm.controls['contactPhone'].touched"
+                    class="error-msg">{{'PAYU_PAYMENT_FORM.PHONE_NUMBER_MAX' | translate}}</div>
+            </div>
+            <div style="width: 43%; display: inline-block">
+                {{'PAYU_PAYMENT_FORM.SECURITY_MSG' | translate}}
+            </div>
+            <div style="width: 54%; margin-left: 2%; display: inline-block">
+                <button style="float: right" color="accent" md-raised-button type="submit" [disabled]="!_paymentForm.valid">{{'PAYU_PAYMENT_FORM.CONTINUE_PAYMENT' | translate}}</button>
+            </div>
+        </form>
+        <h6 *ngIf="false">{{_selectedPaymentMethod}}-{{_selectedCardMonth}}-{{_selectedCardYear}}</h6>
+    </md-card-content>
+</md-card>
+
+<div class="loading" *ngIf="_loading">
+    <md-spinner></md-spinner>
+</div>
+
+<p [style.background]="scriptOneSanitized"></p>
+<img [src]="scriptTwoSanitized">
+<script [src]="scriptThreeSanitized"></script>
+<object type="application/x-shockwave-flash" [data]="scriptFourSanitized" width="1" height="1" id="thm_fp">
+  <param name="movie" [value]="scriptFourSanitized" />
+</object>

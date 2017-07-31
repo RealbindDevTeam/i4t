@@ -1,4 +1,22 @@
-import {Component} from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { MeteorObservable } from 'meteor-rxjs';
+import { TranslateService } from 'ng2-translate';
+import { Meteor } from 'meteor/meteor';
+import { Restaurant, RestaurantImageThumb } from '../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants, RestaurantImageThumbs } from '../../../../../both/collections/restaurant/restaurant.collection';
+import { UserDetail } from '../../../../../both/models/auth/user-detail.model';
+import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
+import { Table } from '../../../../../both/models/restaurant/table.model';
+import { Tables } from '../../../../../both/collections/restaurant/table.collection';
+import { Item } from '../../../../../both/models/administration/item.model';
+import { Items } from '../../../../../both/collections/administration/item.collection';
+import { Addition } from '../../../../../both/models/administration/addition.model';
+import { Additions } from '../../../../../both/collections/administration/addition.collection';
+import { GarnishFood } from '../../../../../both/models/administration/garnish-food.model';
+import { GarnishFoodCol } from '../../../../../both/collections/administration/garnish-food.collection';
+import { Order } from '../../../../../both/models/restaurant/order.model';
+import { Orders } from '../../../../../both/collections/restaurant/order.collection';
 
 import template from './dashboard.component.html';
 import style from './dashboard.component.scss';   
@@ -8,123 +26,78 @@ import style from './dashboard.component.scss';
   template,
   styles: [ style ]
 })
-export class DashboardComponent{
+export class DashboardComponent implements OnInit, OnDestroy {
 
-  private _ordersOptions: Object;
-  private _salesOptions: Object;
-  private _salesChart : Object;
-  private _fromSales: any;
-  private _toSales: any;
+  private _user = Meteor.userId();
 
-  constructor() {
-        this._ordersOptions = {
-            chart: {
-                type: 'pie'
-            },
-            title : { text : 'Detalle de Ordenes' },
-            series: [
-              { name : 'Ordenes', 
-                data: [{
-                    x: 1,
-                    y: 5,
-                    name: "Ordenes Registradas",
-                    color: "#546E7A"
-                }, {
-                    x: 2,
-                    y: 9,
-                    name: "Ordenes En Proceso",
-                    color: "#F0BD4F"
-                }, {
-                    x: 3,
-                    y: 7,
-                    name: "Ordenes Entregadas",
-                    color: "#4CAF50"
-                }, {
-                    x: 4,
-                    y: 8,
-                    name: "Ordenes Canceladas",
-                    color: "#EF5350"
-                }], 
-              }
-            ]
-        };
+  private _restaurants            : Observable<Restaurant[]>;
+  private _tables                 : Observable<Table[]>;
+  private _items                  : Observable<Item[]>;
 
-        this._salesOptions = {
-            title : { text : 'Ventas 28/07/2017' },
-            _salesChart: { 
-              type: 'spline',
-              zoomType: 'x' 
-            },
-            series: [{
-                name : 'Ventas en COP'
-            }],
-            xAxis : {
-              title: {
-                    text: 'Horas del Dia'
-                },
-                categories: ['12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30']
-            },
-            yAxis: {
-                title: {
-                    text: 'Recaudo en COP'
-                }
-            }
-        };
-        this._salesOptions.series[0].data = [2,3,5,8,13];
-        setInterval(() => this._salesChart.series[0].addPoint(Math.random() * 10), 600000);
+  private _restaurantsSub         : Subscription;
+  private _restaurantImgThumbSub  : Subscription;
+  private _userDetailsSub         : Subscription;
+  private _tablesSub              : Subscription;
+  private _itemsSub               : Subscription;
+
+  /**
+   * DashboardComponent Constructor
+   * @param {TranslateService} _translate 
+   * @param {NgZone} _ngZone 
+   */
+  constructor( private _translate: TranslateService, 
+               private _ngZone: NgZone ){
+    var _userLang = navigator.language.split( '-' )[0];
+    _translate.setDefaultLang( 'en' );
+    _translate.use( _userLang );
+  }
+
+  /**
+   * ngOnInit Implementation
+   */
+  ngOnInit(){
+    let _lRestaurantsId:string[] = [];
+    this._restaurantsSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
+      this._ngZone.run( () => {
+        this._restaurants = Restaurants.find( { } ).zone();
+        Restaurants.collection.find( { } ).fetch().forEach( ( restaurant:Restaurant ) => {
+          _lRestaurantsId.push( restaurant._id );
+        });
+        this._restaurantImgThumbSub = MeteorObservable.subscribe( 'restaurantImageThumbs', this._user ).subscribe();
+        this._userDetailsSub = MeteorObservable.subscribe( 'getUsersByRestaurantsId', _lRestaurantsId ).subscribe();
+      });
+    });
+  }
+
+  /**
+   * Get restaurant Image
+   * @param {string} _pRestaurantId
+   */
+  getRestaurantId( _pRestaurantId:string ):string{
+    let _lRestaurantImage: RestaurantImageThumb = RestaurantImageThumbs.findOne( { restaurantId: _pRestaurantId } );
+    if( _lRestaurantImage ){
+      return _lRestaurantImage.url;
+    } else {
+      return '/images/default-restaurant.png';
     }
+  }
 
-    saveInstance(chartInstance) {
-        this._salesChart = chartInstance;
-    }
+  /**
+   * Get Users in restaurant
+   * @param {string} _pRestaurantId
+   */
+  getRestaurantUsers( _pRestaurantId:string ):number{
+    return UserDetails.collection.find( { current_restaurant: _pRestaurantId } ).count();
+  }
 
-    onChartSelection (e) {
-      this._fromSales = e.originalEvent.xAxis[0].min.toFixed(2);
-      this._toSales = e.originalEvent.xAxis[0].max.toFixed(2);
-    }
-
-    folders = [
-      {
-        name: 'Photos',
-        updated: new Date('1/1/16'),
-      },
-      {
-        name: 'Recipes',
-        updated: new Date('1/17/16'),
-      },
-      {
-        name: 'Work',
-        updated: new Date('1/28/16'),
-      }
-    ];
-    notes = [
-      {
-        name: 'Vacation Itinerary',
-        updated: new Date('2/20/16'),
-      },
-      {
-        name: 'Kitchen Remodel',
-        updated: new Date('1/18/16'),
-      },
-      {
-        name: 'Kitchen Remodel',
-        updated: new Date('1/18/16'),
-      },
-      {
-        name: 'Kitchen Remodel',
-        updated: new Date('1/18/16'),
-      },
-      {
-        name: 'Kitchen Remodel',
-        updated: new Date('1/18/16'),
-      },
-      {
-        name: 'Kitchen Remodel',
-        updated: new Date('1/18/16'),
-      },
-      {
-        name: 'Kitchen Remodel',
-        updated: new Date('1/18/16'),
-      }
-    ];
+  /**
+   * ngOnDestroy Implementation
+   */
+  ngOnDestroy(){
+    this._restaurantsSub.unsubscribe();
+    if( this._restaurantImgThumbSub ){ this._restaurantImgThumbSub.unsubscribe(); }
+    if( this._userDetailsSub ){ this._userDetailsSub.unsubscribe(); }
+    //this._tablesSub.unsubscribe();
+    //this._itemsSub.unsubscribe();
+  }
 }

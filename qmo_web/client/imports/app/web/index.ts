@@ -63,11 +63,18 @@ import { PaymentConfirmComponent } from './waiter/calls/payment-confirm/payment-
 import { SupervisorDashboardComponent } from './supervisor-dashboard/supervisor-dashboard.component';
 import { MonthlyConfigComponent } from './restaurant/monthly-config/monthly-config.component';
 import { RestaurantListComponent } from './restaurant/monthly-config/restaurant-list.component';
-import { EnableDisableComponent } from './restaurant/monthly-config/enable-disable.component'; 
+import { EnableDisableComponent } from './restaurant/monthly-config/enable-disable.component';
 import { DisableConfirmComponent } from './restaurant/monthly-config/disable-confirm/disable-confirm.component';
 import { SendOrderConfirmComponent } from './waiter/calls/send-order-confirm/send-order-confirm.component';
 import { ColombiaOrderInfoComponent } from './customer/payments/country-payment/colombia-payment/colombia-order-info/colombia-order-info.component';
+import { PayuPaymentFormComponent } from './payment/payu-payment-form/payu-payment-form.component';
+import { PaymentHistoryComponent } from './payment/payment-history/payment-history.component';
+import { ReactivateRestaurantComponent } from './payment/reactivate-restaurant/reactivate-restaurant.component';
 import { ColombiaPayInfoComponent } from './customer/payments/country-payment/colombia-payment/colombia-pay-info/colombia-pay-info.component';
+import { CcPaymentConfirmComponent } from './payment/payu-payment-form/cc-payment-confirm/cc-payment-confirm.component';
+import { TrnResponseConfirmComponent } from './payment/payu-payment-form/transaction-response-confirm/trn-response-confirm.component';
+import { VerifyResultComponent } from './payment/payment-history/verify-result/verify-result.component';
+import { CustomerPaymentsHistoryComponent } from './customer/settings/customer-payments-history/customer-payments-history.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -115,7 +122,10 @@ export const WEB_DECLARATIONS = [
     RestaurantListComponent,
     EnableDisableComponent,
     ColombiaOrderInfoComponent,
-    ColombiaPayInfoComponent
+    PayuPaymentFormComponent,
+    PaymentHistoryComponent,
+    ReactivateRestaurantComponent,
+    CustomerPaymentsHistoryComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [
@@ -140,7 +150,10 @@ export const MODAL_DIALOG_DECLARATIONS = [
     PaymentConfirmComponent,
     CollaboratorsEditionComponent,
     DisableConfirmComponent,
-    SendOrderConfirmComponent
+    SendOrderConfirmComponent,
+    CcPaymentConfirmComponent,
+    TrnResponseConfirmComponent,
+    VerifyResultComponent
 ];
 
 export const SERVICES_DECLARATIONS = [

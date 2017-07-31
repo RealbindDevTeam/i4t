@@ -22,7 +22,7 @@ export class ChefGuard implements CanActivate {
             Meteor.logout();
             return false;
         }, (error) => {
-            console.log(error);
+            alert(error);
         });
     }
 }

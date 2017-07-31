@@ -37,6 +37,9 @@ if(Meteor.isServer){
                 
                 let accountTable = Accounts.collection.findOne({tableId : _tableId, status : 'OPEN'});
                 Accounts.update({ _id : accountTable._id }, { $set : { total_payment : (accountTable.total_payment - pay.totalOrdersPrice) } });
+
+                //Invoice generate
+                Meteor.call('invoiceGenerating', pay);
             });
             
             _countOrders = Orders.collection.find({ restaurantId: _restaurantId, tableId: _tableId, status: 

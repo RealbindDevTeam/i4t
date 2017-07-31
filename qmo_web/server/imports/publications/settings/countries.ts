@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Countries } from '../../../../both/collections/settings/country.collection';
 import { Restaurants } from '../../../../both/collections/restaurant/restaurant.collection';
+import { Restaurant } from '../../../../both/models/restaurant/restaurant.model';
 
 /**
  * Meteor publication countries
@@ -28,8 +29,8 @@ Meteor.publish('getCountryByRestaurantId', function (_restaurantId: string) {
  */
 Meteor.publish('getCountriesByRestaurantsId', function (_restaurantsId: string[]) {
     let _ids: string[] = [];
-    Restaurants.collection.find({ _id: { $in: _restaurantsId } }).forEach((r) => {
-        _ids.push(r.countryId);
+    Restaurants.collection.find({ _id: { $in: _restaurantsId } }).forEach((restaurant: Restaurant) => {
+        _ids.push(restaurant.countryId);
     });
     return Countries.collection.find({ _id: { $in: _ids } });
 });
@@ -40,7 +41,7 @@ Meteor.publish('getCountriesByRestaurantsId', function (_restaurantsId: string[]
  */
 Meteor.publish('getCountriesByAdminUser', function(){
     let _countriesIds: string[] = [];
-    Restaurants.collection.find( { creation_user: this.userId } ).forEach( (restaurant) =>{
+    Restaurants.collection.find( { creation_user: this.userId } ).forEach( (restaurant: Restaurant) =>{
         _countriesIds.push(restaurant.countryId);
     });
 

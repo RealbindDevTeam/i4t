@@ -306,6 +306,12 @@
             "ADDITION": "Addition(s)",
             "ORDER_DELIVERED": "Order Delivered",
             "ORDER_DETAIL": "Order detail"
+        },
+        "PAYMENTS_HISTORY" : {
+            "TITLE": "Payments history",
+            "TOTAL" : "Total",
+            "TIP" : "Tip",
+            "TOTAL_ORDERS" : "Order total"
         }
     },
     "CURRENCIES": {

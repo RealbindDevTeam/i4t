@@ -4,6 +4,7 @@ import { UserDetails } from '../../../../both/collections/auth/user-detail.colle
 import { check } from 'meteor/check';
 import { Accounts } from '../../../../both/collections/restaurant/account.collection';
 import { UserDetail } from '../../../../both/models/auth/user-detail.model';
+import { PaymentsHistory } from '../../../../both/collections/payment/payment-history.collection';
 
 /**
  * Meteor publication restaurants with creation user condition
@@ -101,4 +102,42 @@ Meteor.publish('restaurantImageThumbsByUserId', function (_userId: string) {
     } else {
         return;
     }
+});
+
+/**
+ * Meteor publication to find current restaurants with no pay
+ * @param {string} _userId
+ */
+Meteor.publish('currentRestaurantsNoPayed', function (_userId: string) {
+    check(_userId, String);
+
+    let currentDate: Date = new Date();
+    let currentMonth: string = (currentDate.getMonth() + 1).toString();
+    let currentYear: string = currentDate.getFullYear().toString();
+    let historyPaymentRes: string[] = [];
+    let restaurantsInitial: string[] = [];
+
+    Restaurants.collection.find({ creation_user: _userId, isActive: true, freeDays: false }).fetch().forEach((restaurant) => {
+        restaurantsInitial.push(restaurant._id);
+    });
+
+    PaymentsHistory.collection.find({
+        restaurantIds: {
+            $in: restaurantsInitial
+        }, month: currentMonth, year: currentYear, $or: [{ status: 'TRANSACTION_STATUS.APPROVED' }, { status: 'TRANSACTION_STATUS.PENDING' }]
+    }).fetch().forEach((historyPayment) => {
+        historyPayment.restaurantIds.forEach((restaurantId) => {
+            historyPaymentRes.push(restaurantId);
+        });
+    });
+
+    return Restaurants.collection.find({ _id: { $nin: historyPaymentRes }, creation_user: _userId, isActive: true, freeDays: false });
+});
+
+/**
+ * Meteor publication to find inactive restaurants by user
+ */
+Meteor.publish('getInactiveRestaurants', function (_userId: string) {
+    check(_userId, String);
+    return Restaurants.collection.find({ creation_user: _userId, isActive: false });
 });

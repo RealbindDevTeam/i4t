@@ -1,38 +1,29 @@
-<div>
-  <chart [options]="_salesOptions" (load)="saveInstance($event.context)" (selection)="onChartSelection($event)"></chart>
-  <p>selection from <b>{{_fromSales}}</b> to <b>{{_toSales}}</b></p> 
-</div>
-<div class="flex-container layout-row layout-column-sm widgets">
-    <core-widget icon="done_all" [count]="204" title="Items" description="Habilitados" hexColor="#546E7A"></core-widget>
-    <core-widget icon="warning" [count]="85" title="Items" description="Inhabilitados" hexColor="#F0BD4F"></core-widget>
-    <core-widget icon="local_dining" [count]="28" title="Mesas" description="Libres" hexColor="#4CAF50"></core-widget>
-    <core-widget icon="room_service" [count]="831" title="Mesas" description="Ocupadas" hexColor="#EF5350"></core-widget>
-</div>
-<div class="flex-container layout-row layout-column-sm no-wrap">
-  <md-card class="grow-3" style="margin-right: 2%">
-    <md-card-title>Ordenes Diarias en el Restaurante</md-card-title>
-    <md-card-content class="overflow-scroll">
-      <chart [options]="_ordersOptions"></chart>
-    </md-card-content>
-  </md-card>
-  <md-card class="grow-1" style="height: 450px;overflow: scroll;">
-    <md-card-title>Usuarios Conectados</md-card-title>
-    <md-card-content>
-      <md-list>
-        <h3 md-subheader>Folders</h3>
-        <md-list-item *ngFor="let folder of folders">
-          <md-icon md-list-icon>folder</md-icon>
-          <h4 md-line>{{folder.name}}</h4>
-          <p md-line> {{folder.updated | date}} </p>
-        </md-list-item>
-        <md-divider></md-divider>
-        <h3 md-subheader>Notes</h3>
-        <md-list-item *ngFor="let note of notes">
-          <md-icon md-list-icon>note</md-icon>
-          <h4 md-line>{{note.name}}</h4>
-          <p md-line> {{note.updated | date}} </p>
-        </md-list-item>
-      </md-list>
-    </md-card-content>
-  </md-card>
+<div *ngFor="let restaurant of _restaurants | async">
+  <div class="flex-container layout-row layout-column-sm widgets">
+    <md-card class="flex-item widget">
+      <md-card-content class="layout-stretch-between layout-row">
+        <div class="layout-column">
+          <md-list>
+              <md-list-item>
+                  <img md-list-avatar style="border-radius: 50%;width: 120px;height: 120px;margin-top: 2rem;" src="{{ getRestaurantId( restaurant._id ) }}">
+                  <h2 md-line>{{restaurant.name}}</h2>
+              </md-list-item>
+          </md-list>
+        </div>
+      </md-card-content>
+    </md-card>
+    <core-widget icon="local_atm" [count]="99999999" title="Ventas Diarias" description="COP" hexColor="#546E7A"></core-widget>
+  </div>
+  <div class="flex-container layout-row layout-column-sm widgets">
+      <core-widget icon="person" [count]="getRestaurantUsers( restaurant._id )" title="Usuarios" description="Activos" hexColor="#546E7A"></core-widget>
+      <core-widget icon="thumb_up" [count]="200" title="Items" description="Vendidos" hexColor="#F0BD4F"></core-widget>
+      <core-widget icon="local_cafe" [count]="30" title="Adiciones" description="Vendidas" hexColor="#4CAF50"></core-widget>
+      <core-widget icon="assignment_turned_in" [count]="17" title="Guarniciones" description="Vendidas" hexColor="#EF5350"></core-widget>
+  </div>
+  <div class="flex-container layout-row layout-column-sm widgets">
+      <core-widget icon="done_all" [count]="204" title="Items" description="Habilitados" hexColor="#546E7A"></core-widget>
+      <core-widget icon="warning" [count]="85" title="Items" description="Inhabilitados" hexColor="#F0BD4F"></core-widget>
+      <core-widget icon="local_dining" [count]="28" title="Mesas" description="Libres" hexColor="#4CAF50"></core-widget>
+      <core-widget icon="room_service" [count]="831" title="Mesas" description="Ocupadas" hexColor="#EF5350"></core-widget>
+  </div>
 </div>
