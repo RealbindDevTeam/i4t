@@ -197,7 +197,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 this._ipAddress = ipPublic.ip;
             },
             error => {
-                console.log(error);
+                alert(error);
             }
         );
 

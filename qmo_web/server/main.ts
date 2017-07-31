@@ -35,6 +35,7 @@ import './imports/publications/restaurant/payment';
 import './imports/publications/payment/payment-history';
 import './imports/publications/payment/cc-payment-method';
 import './imports/publications/payment/payment-transaction';
+import './imports/publications/restaurant/invoice';
 
 import { loadRoles } from './imports/fixtures/auth/roles';
 import { loadMenus } from './imports/fixtures/auth/menus';

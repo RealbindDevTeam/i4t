@@ -121,8 +121,6 @@ Meteor.publish('currentRestaurantsNoPayed', function (_userId: string) {
         restaurantsInitial.push(restaurant._id);
     });
 
-    console.log(restaurantsInitial);
-
     PaymentsHistory.collection.find({
         restaurantIds: {
             $in: restaurantsInitial
@@ -133,7 +131,6 @@ Meteor.publish('currentRestaurantsNoPayed', function (_userId: string) {
         });
     });
 
-    console.log(historyPaymentRes);
     return Restaurants.collection.find({ _id: { $nin: historyPaymentRes }, creation_user: _userId, isActive: true, freeDays: false });
 });
 

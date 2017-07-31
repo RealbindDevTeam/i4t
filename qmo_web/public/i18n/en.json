@@ -30,6 +30,8 @@
     "CLOSE": "Close",
     "VIEW_DETAIL": "View Detail",
     "OTHER": "Other...",
+    "SIGN_OUT": "Sign Out",
+    "VALUE": "Value",
     "ORDER_STATUS": {
         "REGISTERED": "Registered",
         "IN_PROCESS": "In Process",
@@ -1009,5 +1011,23 @@
         "ACTION": "Action",
         "PAY_BTN": "Pay",
         "MSG_INITIAL": "There are not inactive restaurants registered yet"
+    },
+    "PAYMENTS_HISTORY": {
+        "TITLE": "Payments history",
+        "SUB_TOTAL": "SubTotal",
+        "TOTAL": "Total",
+        "TIP": "Tip",
+        "TOTAL_ORDER": "Order total",
+        "IMPO": "IMPO (8%)",
+        "BASE_IMPO": "IMPO base",
+        "TOTAL_TO_PAY": "Total to pay",
+        "PAYMENT_METHOD": "Payment method",
+        "RES_DIAN": "Res. DIAN No.",
+        "CONS_FROM": "Consecutivo del",
+        "CONS_TO": "al",
+        "SOFTWARE_BY_REALBIND": "Realbind S.A.S Software",
+        "INVOICE_SALE": "Factura de venta",
+        "DATE": "Fecha-Hora",
+        "TOOLTIP_DOWNLOAD_INVOICE": "Download invoice"
     }
 }
