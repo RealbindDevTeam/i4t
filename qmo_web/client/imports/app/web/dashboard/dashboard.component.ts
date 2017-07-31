@@ -5,9 +5,7 @@ import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
 import { Restaurant, RestaurantImageThumb } from '../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantImageThumbs } from '../../../../../both/collections/restaurant/restaurant.collection';
-import { UserDetail } from '../../../../../both/models/auth/user-detail.model';
 import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
-import { Table } from '../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../both/collections/restaurant/table.collection';
 import { Item } from '../../../../../both/models/administration/item.model';
 import { Items } from '../../../../../both/collections/administration/item.collection';
@@ -31,8 +29,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private _user = Meteor.userId();
 
   private _restaurants            : Observable<Restaurant[]>;
-  private _tables                 : Observable<Table[]>;
-  private _items                  : Observable<Item[]>;
 
   private _restaurantsSub         : Subscription;
   private _restaurantImgThumbSub  : Subscription;
@@ -57,7 +53,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    */
   ngOnInit(){
     let _lRestaurantsId:string[] = [];
-    this._restaurantsSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
+    this._restaurantsSub = MeteorObservable.subscribe( 'getActiveRestaurants', this._user ).subscribe( () => {
       this._ngZone.run( () => {
         this._restaurants = Restaurants.find( { } ).zone();
         Restaurants.collection.find( { } ).fetch().forEach( ( restaurant:Restaurant ) => {
@@ -67,6 +63,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this._userDetailsSub = MeteorObservable.subscribe( 'getUsersByRestaurantsId', _lRestaurantsId ).subscribe();
       });
     });
+    this._tablesSub = MeteorObservable.subscribe( 'tables', this._user ).subscribe();
   }
 
   /**
@@ -91,13 +88,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Get Tables with Free Status
+   * @param {string} _pRestaurantId 
+   */
+  getTablesWithFreeStatus( _pRestaurantId: string ):number{
+    return Tables.collection.find( { restaurantId: _pRestaurantId, status: 'FREE' } ).count();
+  }
+
+  /**
+   * Get Tables With Busy Status
+   * @param {string} _pRestaurantId 
+   */
+  getTablesWithBusyStatus( _pRestaurantId: string ):number{
+    return Tables.collection.find( { restaurantId: _pRestaurantId, status: 'BUSY' } ).count();
+  }
+
+  /**
    * ngOnDestroy Implementation
    */
   ngOnDestroy(){
     this._restaurantsSub.unsubscribe();
     if( this._restaurantImgThumbSub ){ this._restaurantImgThumbSub.unsubscribe(); }
     if( this._userDetailsSub ){ this._userDetailsSub.unsubscribe(); }
-    //this._tablesSub.unsubscribe();
+    this._tablesSub.unsubscribe();
     //this._itemsSub.unsubscribe();
   }
 }

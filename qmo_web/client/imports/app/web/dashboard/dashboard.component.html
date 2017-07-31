@@ -23,7 +23,7 @@
   <div class="flex-container layout-row layout-column-sm widgets">
       <core-widget icon="done_all" [count]="204" title="Items" description="Habilitados" hexColor="#546E7A"></core-widget>
       <core-widget icon="warning" [count]="85" title="Items" description="Inhabilitados" hexColor="#F0BD4F"></core-widget>
-      <core-widget icon="local_dining" [count]="28" title="Mesas" description="Libres" hexColor="#4CAF50"></core-widget>
-      <core-widget icon="room_service" [count]="831" title="Mesas" description="Ocupadas" hexColor="#EF5350"></core-widget>
+      <core-widget icon="local_dining" [count]="getTablesWithFreeStatus( restaurant._id )" title="Mesas" description="Libres" hexColor="#4CAF50"></core-widget>
+      <core-widget icon="room_service" [count]="getTablesWithBusyStatus( restaurant._id )" title="Mesas" description="Ocupadas" hexColor="#EF5350"></core-widget>
   </div>
 </div>
