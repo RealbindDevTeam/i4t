@@ -82,7 +82,6 @@ if (Meteor.isServer) {
      */
     initProcessJobs( element : QueueName){
         let queueCollection = JobCollection(element.name);
-        //console.log("JobServer started: " + queueCollection.startJobServer());
         queueCollection.startJobServer();
         var workers = queueCollection.processJobs(
             'waiterCall',

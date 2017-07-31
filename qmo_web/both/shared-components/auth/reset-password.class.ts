@@ -36,7 +36,6 @@ export class ResetPasswordClass {
 
         if (this.resetPasswordForm.valid) {
             if (this.resetPasswordForm.value.password == this.resetPasswordForm.value.confirmPassword) {
-                console.log('esta entrado a reset password');
                 Accounts.resetPassword(
                     this.tokenId,
                     this.resetPasswordForm.value.password,

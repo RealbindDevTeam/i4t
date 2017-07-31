@@ -19,7 +19,6 @@ export class DisableConfirmComponent {
      * @param {MdDialogRef<any>} _dialogRef
      */
     constructor(public _dialogRef: MdDialogRef<any>, private _zone: NgZone, @Inject(MD_DIALOG_DATA) public data: any) {
-        console.log(data);
     }
 
     /**

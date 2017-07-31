@@ -29,9 +29,9 @@
     "TIP_PERCENTAGE": "Porcentaje de propina",
     "CLOSE": "Cerrar",
     "VIEW_DETAIL": "Ver Detalle",
-    "OTHER" : "Otro...",
-    "VALUE" : "Valor",
-    "SIGN_OUT" : "Cerrar Sesión",
+    "OTHER": "Otro...",
+    "VALUE": "Valor",
+    "SIGN_OUT": "Cerrar Sesión",
     "ORDER_STATUS": {
         "REGISTERED": "Registrado",
         "IN_PROCESS": "En Proceso",
@@ -60,13 +60,13 @@
         "ALREADY_ACCOUNT": "Ya tienes una cuenta?",
         "GO_TO_SIGNIN": "Ingresar",
         "REQUIRED_USERNAME": "El nombre de usuario no puede estar vacio",
-        "MIN_LENGTH_USERNAME": "El nombre de usuario debe tener minimo 6 caracteres",
+        "MIN_LENGTH_USERNAME": "El nombre de usuario debe tener mínimo 6 caracteres",
         "MAX_LENGTH_USERNAME": "El nombre de usuario debe tener maximo 20 caracteres",
         "REQUIRED_EMAIL": "Formato de correo electrónico incorrecto",
-        "MIN_LENGTH_EMAIL": "El correo electronico debe tener minimo 6 caracteres",
+        "MIN_LENGTH_EMAIL": "El correo electronico debe tener mínimo 6 caracteres",
         "MAX_LENGTH_EMAIL": "EL correo electronico debe tener maximo 40 caracteres",
         "REQUIRED_PASSWORD": "La contraseña no puede estar vacia",
-        "MIN_LENGTH_PASSWORD": "La contraseña debe tener minimo 8 caracteres",
+        "MIN_LENGTH_PASSWORD": "La contraseña debe tener mínimo 8 caracteres",
         "MAX_LENGTH_PASSWORD": "La contraseña debe tener maximo 20 caracteres",
         "REQUIRED_CONFIRM": "Debe confirmar la contraseña",
         "PASSWORD_NOT_MATCH": "Las contraseñas no coinciden",
@@ -191,7 +191,8 @@
         "PAYMENTS": {
             "PAYMENTS": "Pagos",
             "MONTHLY_PAYMENT": "Pago mensual",
-            "PAYMENT_HISTORY": "Historial de Pagos"
+            "PAYMENT_HISTORY": "Historial de Pagos",
+            "REACTIVATE_RESTAURANT": "Reactivar restaurante"
         },
         "MENU_DEFINITION": {
             "MENU_DEFINITION": "Menú",
@@ -439,7 +440,7 @@
         "WEBPAGE": "Pagina de Internet",
         "EMAIL": "Correo Electronico",
         "MSG_INITIAL": "Administra la información de tus restaurantes",
-        "CITY_OTHER" : "Si la ciudad de tu restaurante no se encuentra en la opción de ciudades, la puedes especificar en el campo dirección"
+        "CITY_OTHER": "Si la ciudad de tu restaurante no se encuentra en la opción de ciudades, la puedes especificar en el campo dirección"
     },
     "TABLES": {
         "TABLES_CREATION": "Creación de mesas",
@@ -456,7 +457,8 @@
         "GENERATE_PDF": "Generar Pdf",
         "MSG_TOOLTIP": "Debe seleccionar un establecimiento",
         "SEARCH_TABLES": "Seleccione el restaurante para mostrar las mesas asociadas",
-        "MSG_INITIAL": "Crea las mesas con el código QR asociado"
+        "MSG_INITIAL": "Crea las mesas con el código QR asociado",
+        "TABLES_SEARCH": "Búscar mesas"
     },
     "GO_TO_STORE": {
         "TITTLE": "¿Qué te",
@@ -470,8 +472,8 @@
         "COLLABORATORS_TEXT": "Seleccione el restaurante que deseé para la consulta",
         "MSG_INITIAL": "Vincula a todos tus colaboradores de a cuerdo al rol que desempeña",
         "BTN": "Registrar colaborador",
-        "TABLE_INIT" : "Mesa inicial",
-        "TABLE_END" : "Mesa final"
+        "TABLE_INIT": "Mesa inicial",
+        "TABLE_END": "Mesa final"
     },
     "COLLABORATORS_REGISTER": {
         "COLLABORATORS_LABEL": "Colaborador",
@@ -489,7 +491,7 @@
         "MESSAGE_NOT_LOGIN": "Por favor ingresar al sistema para agregar un colaborador",
         "SELECT_RANGE_VALID_TABLES": "Seleccionar un rango valido de mesas",
         "TABLES_ASSIGNMENT": "Asignación de mesas",
-        "MESSAGE_COLLABORATOR_EDIT" : "Colaborador actualizado exitosamente"
+        "MESSAGE_COLLABORATOR_EDIT": "Colaborador actualizado exitosamente"
     },
     "ITEMS": {
         "ITEMS_MANAGEMENT": "Administracion de items",
@@ -531,7 +533,7 @@
         "ACTIVATE": "ACTIVAR",
         "INACTIVATE": "INACTIVAR",
         "COOKING_TIME": "Tiempo Aprox de Cocción",
-        "MESSAGE" : "Aún no hay items registrados",
+        "MESSAGE": "Aún no hay items registrados",
         "SELECT_ALL_GARNISH_FOOD": "Seleccionar todas las Guarniciones",
         "SELECT_ALL_ADDITIONS": "Seleccionar todas las Adiciones",
         "ITEM_EDITED": "Item Editado Correctamente"
@@ -692,9 +694,9 @@
         "ADDITION_EDITED": "Adicion Editada Correctamente"
     },
     "PAYMENTS": {
-        "THERE_IS_NOT_REST" : "No te encuentras en un restaurante",
-        "THERE_IS_NOT_REST_MSG" : "Ve a la opción de ordenes e ingresa el código",
-        "GO_TO_ORDERS":"Ir a ordenes",
+        "THERE_IS_NOT_REST": "No te encuentras en un restaurante",
+        "THERE_IS_NOT_REST_MSG": "Ve a la opción de ordenes e ingresa el código",
+        "GO_TO_ORDERS": "Ir a ordenes",
         "NO_ORDERS": "No tienes órdenes entregadas en este momento",
         "COLOMBIA": {
             "GARNISH_FOOD": "Guarnicion",
@@ -761,8 +763,8 @@
         "CALL_LABEL_SEND_ORDER": "Entrega de orden",
         "CALL_LABEL_CUSTOMER": "Llamado de cliente",
         "CALL_LABEL_CUSTOMER_PAYMENT": "Pago de cliente",
-        "BTN_CALL_WAITER" : "Solicitar mesero",
-        "BTN_CANCEL_WAITER" : "Cancelar"
+        "BTN_CALL_WAITER": "Solicitar mesero",
+        "BTN_CANCEL_WAITER": "Cancelar"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Ordenes Confirmadas",
@@ -777,7 +779,7 @@
         "NO_ADDITIONS": "Sin Adiciones",
         "ADDITIONS": "Adiciones",
         "ADDITION": "Adicion(es)",
-        "NO_ORDERS" : "Aún no hay ordenes por preparar"
+        "NO_ORDERS": "Aún no hay ordenes por preparar"
     },
     "FINANCIAL_INFO": {
         "COLOMBIA": {
@@ -798,9 +800,9 @@
         "ENTER": "Ingresar código",
         "CODE_NOT_FOUND": "Código no encontrado",
         "TRY_AGAIN": "Por favor intenta nuevamente",
-        "MSG_1" : "Puedes ordenar lo que deseas",
-        "NO_ORDERS" : "Aún no tienes ordenes, puedes crear una orden nueva",
-        "ORDER" : "Ordenar"
+        "MSG_1": "Puedes ordenar lo que deseas",
+        "NO_ORDERS": "Aún no tienes ordenes, puedes crear una orden nueva",
+        "ORDER": "Ordenar"
     },
     "MONTHLY_PAYMENT": {
         "TITLE": "Pago del servicio mensual de Iurest",
@@ -813,7 +815,7 @@
         "CURRENCY": "Moneda",
         "PRICE_BY_TABLE": "Costo por mesa: ",
         "TOTAL_PRICE": "Total: ",
-        "PAY": "   PAGAR   ",
+        "PAY": "Pagar",
         "DISCOUNT_TOOLTIP_1": "Tienes un descuento de ",
         "DISCOUNT_TOOLTIP_2": "para el primer pago",
         "INVOICE_PERIOD": "Periodo de facturación: ",
@@ -911,22 +913,121 @@
         "ADDITION": "Adicion(es)",
         "ORDER_DELIVERED": "Orden Entregada"
     },
-    "PAYMENTS_HISTORY" : {
+    "PAYU_PAYMENT_FORM": {
+        "TITLE": "Medio de pago",
+        "SUBTITLE": "Por favor diligencia todos los campos para realizar el pago",
+        "SELECT_METHOD": "Medio de pago *",
+        "CARD_NUMBER": "Número de tarjeta *",
+        "EXPIRATION_YEAR": "Año de caducidad *",
+        "EXPIRATION_MONTH": "Mes de caducidad *",
+        "SECURITY_CODE": "Código de seguridad *",
+        "CARD_NUMBER_MIN": "- El campo debe tener mínimo 13 números",
+        "CARD_NUMBER_MAX": "- El campo debe tener máximo 20 números",
+        "CARD_ONLY_NUMBER": "- El campo solo debe tener números",
+        "CARD_NUMBER_REQUIRED": "- El número no puede estar vacio",
+        "SECURITY_CODE_MIN": "- El código debe tener mínimo 1 número",
+        "SECURITY_CODE_MAX": "- El código debe tener máximo 4 números",
+        "CODE_ONLY_NUMBER": "- El campo solo debe tener números",
+        "SECURITY_CODE_REQUIRED": "- El código no puede estar vacio",
+        "BILLING_INFORMATION": "Información de facturación",
+        "PAYER_EMAIL": "Correo electrónico *",
+        "PAYER_FULLNAME": "Nombres y apellidos *",
+        "EMAIL_INVALID": "- Formato de correo inválido",
+        "EMAIL_MIN": "- El email debe tener mínimo 6 caracteres",
+        "EMAIL_MAX": "- EL email debe tener máximo 255 caracteres",
+        "EMAIL_REQUIRED": "- El email no puede estar vacio",
+        "DNI_NUMBER": "Número de identificación *",
+        "DNI_NUMBER_MAX": "El número de identificación debe tener máximo 20 caracteres",
+        "COUNTRY": "País *",
+        "CITY": "Ciudad *",
+        "ADDRESS": "Dirección *",
+        "ADDRESS_MAX": "La dirección debe tener máximo 100 caracteres",
+        "PHONE_NUMBER": "Número de teléfono *",
+        "PHONE_NUMBER_MAX": "El número de telefono debe tener máximo 20 caracteres",
+        "SECURITY_MSG": "* Por seguridad, Iurest no guarda la información de tu tarjeta de credito",
+        "CONTINUE_PAYMENT": "Continuar",
+        "DIALOG_TITLE": "Confirmación de pago",
+        "DIALOG_PLEASE": "Por favor revisa la información antes de confirmar",
+        "IUREST_SERVICE": "Servicio Iurest",
+        "MONTHLY_SERVICE": "Mensual",
+        "PERSONAL_INFO": "Información de facturación",
+        "PERSONAL_TEL": "Tel. ",
+        "PAY": "Pago",
+        "CARD_FINISHED_IN": "terminada en ",
+        "PRICE": "Precio: ",
+        "PAY_CONFIRM": "Confirmar",
+        "PAY_CANCEL": "Cancelar",
+        "ORDER_DESCRIPTION": "Pago mensual de servicio Iurest",
+        "TRANSACTION_STATUS": "Estado de la transacción",
+        "TRANSACTION_APPROVED": "El pago ha sido aprobado",
+        "TRANSACTION_DECLINED": "El pago ha sido rechazado",
+        "TRANSACTION_PENDING": "El pago esta pendiente por aprobar",
+        "TRANSACTION_EXPIRED": "La transacción ha expirado",
+        "TRANSACTION_ERROR": "Error procesando la transacción",
+        "TRANSACTION_MSG": "Puedes ir al menú Pagos > Historial de pagos, para revisar el estado de tus pagos",
+        "PAY_ACCEPT": "Aceptar",
+        "AUTH_ERROR_MSG": "Los datos ingresados de tu tarjeta no coinciden, por favor verificalos"
+    },
+    "RES_PAYMENT_HISTORY": {
         "TITLE": "Historial de pagos",
-        "SUB_TOTAL" : "SubTotal",
-        "TOTAL" : "Total",
-        "TIP" : "Propina",
-        "TOTAL_ORDERS" : "Total orden",
-        "IMPO" : "IMPO (8%)",
-        "BASE_IMPO" : "Base IMPO",
-        "TOTAL_TO_PAY" : "Total a pagar",
-        "PAYMENT_METHOD" : "Medio de pago",
-        "RES_DIAN" : "Res. DIAN No.",
-        "CONS_FROM" : "Consecutivo del",
-        "CONS_TO" : "al",
-        "SOFTWARE_BY_REALBIND" : "Software Realbind S.A.S",
-        "INVOICE_SALE" : "Factura de venta",
-        "DATE" : "Fecha-Hora",
-        "TOOLTIP_DOWNLOAD_INVOICE" : "Descargar factura"
+        "SUBTITLE": "Revisa tus pagos y verifica el estado",
+        "DATE": "Fecha",
+        "AMOUNT": "Valor",
+        "ITEMS": "Items",
+        "STATUS": "Estado",
+        "DATE_FILTER": "Filtro por año y mes:",
+        "YEAR_FILTER": "Año",
+        "MONTH_FILTER": "Mes",
+        "VERIFIY_BTN": "Verificar",
+        "TRANSACTION_STATUS": "Estado de la transacción",
+        "VERIFY_APPROVED": "El pago ha sido aprobado",
+        "VERIFY_DECLINED": "El pago ha sido rechazado",
+        "VERIFY_PENDING": "El pago esta pendiente por aprobar",
+        "VERIFY_EXPIRED": "La transacción ha expirado",
+        "VERIFY_ERROR": "Ha ocurrido un error verificando el estado",
+        "VERIFY_ACCEPT": "Aceptar",
+        "VERIFY_MSG": "Puedes consultar el estado de nuevo en 15 min",
+        "MSG_INITIAL": "Aún no tienes pagos realizados",
+        "ALL_FILTER": "Todos"
+    },
+    "TRANSACTION_STATUS": {
+        "APPROVED": "Aprobado",
+        "DECLINED": "Rechazado",
+        "PENDING": "Pendiente",
+        "EXPIRED": "Expirado",
+        "ERROR": "Error"
+    },
+    "REACTIVATE_RESTAURANT": {
+        "TITLE": "Reactivación de restaurante",
+        "SUBTITLE": "Aquí puedes realizar el pago de los restaurantes para activarlos de nuevo",
+        "SUBTITLE_2": "Activar un restaurante, activará todas las mesas asociadas",
+        "PRICE_BY_TABLE": "Costo por mesa:",
+        "RESTAURANT_NAME": "Nombre del restaurante",
+        "RESTAURANT_PRICE": "Precio del restaurante",
+        "TABLES_NUMBER": "Número de mesas",
+        "TABLES_PRICE": "Precio de mesas",
+        "FINAL_PRICE": "Precio final",
+        "CURRENCY": "Moneda",
+        "ACTION": "Acción",
+        "PAY_BTN": "Pagar",
+        "MSG_INITIAL": "Aún no hay restaurantes inactivos registrados"
+    },
+    "PAYMENTS_HISTORY": {
+        "TITLE": "Historial de pagos",
+        "SUB_TOTAL": "SubTotal",
+        "TOTAL": "Total",
+        "TIP": "Propina",
+        "TOTAL_ORDERS": "Total orden",
+        "IMPO": "IMPO (8%)",
+        "BASE_IMPO": "Base IMPO",
+        "TOTAL_TO_PAY": "Total a pagar",
+        "PAYMENT_METHOD": "Medio de pago",
+        "RES_DIAN": "Res. DIAN No.",
+        "CONS_FROM": "Consecutivo del",
+        "CONS_TO": "al",
+        "SOFTWARE_BY_REALBIND": "Software Realbind S.A.S",
+        "INVOICE_SALE": "Factura de venta",
+        "DATE": "Fecha-Hora",
+        "TOOLTIP_DOWNLOAD_INVOICE": "Descargar factura"
     }
 }

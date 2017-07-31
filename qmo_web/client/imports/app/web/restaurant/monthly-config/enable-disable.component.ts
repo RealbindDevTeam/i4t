@@ -205,8 +205,12 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
                         modification_date: new Date()
                     }
                 });
-                this.restaurantStatus.emit(true);
 
+                Tables.collection.find({ restaurantId: _restaurant._id}).forEach((table: Table)=> {
+                    Tables.collection.update({_id: table._id},{$set: {is_active: !_restaurant.isActive}});
+                });
+
+                this.restaurantStatus.emit(true);
                 this.snackBar.open(snackMsg, '', {
                     duration: 1500,
                 });

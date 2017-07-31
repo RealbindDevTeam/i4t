@@ -21,5 +21,5 @@ export interface Country {
     cronChangeFreeDays: string;
     cronEmailChargeSoon: string;
     cronEmailExpireSoon: string;
-    cronEmailResExpired: string;
+    cronEmailRestExpired: string;
 }
