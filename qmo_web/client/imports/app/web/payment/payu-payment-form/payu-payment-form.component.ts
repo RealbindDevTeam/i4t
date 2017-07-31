@@ -305,7 +305,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 creation_user: Meteor.userId()
             });
         } else {
-            console.log('no tiene transaccion');
             PaymentTransactions.collection.insert({
                 count: 68,
                 referenceCode: 'M0NP' + 68,
@@ -399,20 +398,14 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         ccRequestColombia.transaction = transaction;
         ccRequestColombia.test = true;
 
-        console.log('OBJETO ES: ');
-        console.log(ccRequestColombia);
-        console.log(JSON.stringify(ccRequestColombia));
-
         let transactionMessage: string;
         let transactionIcon: string;
         let showCancelBtn: boolean = false;
 
         this._payuPaymentService.authorizeAndCapture(ccRequestColombia).subscribe(
             response => {
-                console.log(JSON.stringify(response));
 
                 if (response.code == 'ERROR') {
-                    console.log(' *** respuesta de error');
                     transactionMessage = 'PAYU_PAYMENT_FORM.AUTH_ERROR_MSG';
                     transactionIcon = 'trn_declined.png';
                     showCancelBtn = true;
@@ -420,35 +413,30 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                     showCancelBtn = false;
                     switch (response.transactionResponse.state) {
                         case "APPROVED": {
-                            console.log(' *** aprobación');
                             this.insertHistoryUpdateTransaction(response, paymentTransaction._id);
                             transactionMessage = 'PAYU_PAYMENT_FORM.TRANSACTION_APPROVED';
                             transactionIcon = 'trn_approved.png';
                             break;
                         }
                         case "DECLINED": {
-                            console.log(' *** rechazada');
                             this.insertHistoryUpdateTransaction(response, paymentTransaction._id);
                             transactionMessage = 'PAYU_PAYMENT_FORM.TRANSACTION_DECLINED';
                             transactionIcon = 'trn_declined.png';
                             break;
                         }
                         case "PENDING": {
-                            console.log(' *** pendiente');
                             this.insertHistoryUpdateTransaction(response, paymentTransaction._id);
                             transactionMessage = 'PAYU_PAYMENT_FORM.TRANSACTION_PENDING';
                             transactionIcon = 'trn_pending.png';
                             break;
                         }
                         case "EXPIRED": {
-                            console.log(' *** expirada');
                             this.insertHistoryUpdateTransaction(response, paymentTransaction._id);
                             transactionMessage = 'PAYU_PAYMENT_FORM.TRANSACTION_EXPIRED';
                             transactionIcon = 'trn_declined.png';
                             break;
                         }
                         default: {
-                            console.log("*** error");
                             this.insertHistoryUpdateTransaction(response, paymentTransaction._id);
                             transactionMessage = 'PAYU_PAYMENT_FORM.TRANSACTION_ERROR';
                             transactionIcon = 'trn_declined.png';

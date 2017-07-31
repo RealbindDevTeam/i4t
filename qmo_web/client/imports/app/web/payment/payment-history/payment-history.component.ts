@@ -176,8 +176,6 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
      * @param {string} _transactionId
      */
     checkTransactionStatus(_transactionId: string) {
-        console.log(_transactionId);
-
         let responseQuery = new ResponseQuery();
         let merchant = new Merchant();
         let details = new Details();
@@ -208,42 +206,36 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
 
             this._payuPaymentService.getTransactionResponse(responseQuery).subscribe(
                 response => {
-                    console.log(JSON.stringify(response));
                     if (response.code === 'ERROR') {
                         responseMessage = 'PAYMENT_HISTORY.VERIFY_ERROR'
                         responseIcon = 'trn_declined.png';
                     } else if (response.code === 'SUCCESS') {
                         switch (response.result.payload.state) {
                             case "APPROVED": {
-                                console.log(' *** aprobación');
                                 this.updateAllStatus(historyPayment, paymentTransaction, response);
                                 responseMessage = 'PAYMENT_HISTORY.VERIFY_APPROVED';
                                 responseIcon = 'trn_approved.png';
                                 break;
                             }
                             case "DECLINED": {
-                                console.log(' *** rechazada');
                                 this.updateAllStatus(historyPayment, paymentTransaction, response);
                                 responseMessage = 'PAYMENT_HISTORY.VERIFY_DECLINED';
                                 responseIcon = 'trn_declined.png';
                                 break;
                             }
                             case "PENDING": {
-                                console.log(' *** pendiente');
                                 this.updateAllStatus(historyPayment, paymentTransaction, response);
                                 responseMessage = 'PAYMENT_HISTORY.VERIFY_PENDING';
                                 responseIcon = 'trn_pending.png';
                                 break;
                             }
                             case "EXPIRED": {
-                                console.log(' *** expirada');
                                 this.updateAllStatus(historyPayment, paymentTransaction, response);
                                 responseMessage = 'PAYMENT_HISTORY.VERIFY_EXPIRED';
                                 responseIcon = 'trn_declined.png';
                                 break;
                             }
                             default: {
-                                console.log("*** error");
                                 this.updateAllStatus(historyPayment, paymentTransaction, response);
                                 responseMessage = 'PAYMENT_HISTORY.VERIFY_ERROR';
                                 responseIcon = 'trn_declined.png';
@@ -279,8 +271,6 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
      * @param {string} _status
      * */
     updateAllStatus(_historyPayment: PaymentHistory, _paymentTransaction: PaymentTransaction, _response: any) {
-        console.log('entra a updateAllStatus');
-        console.log('paymentTransactionId > ' + _paymentTransaction._id);
         PaymentTransactions.collection.update({ _id: _paymentTransaction._id },
             {
                 $set: {
@@ -291,7 +281,6 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
                 }
             });
 
-        console.log('historyPaymentId > ' + _historyPayment._id);
         PaymentsHistory.collection.update({ _id: _historyPayment._id },
             {
                 $set: {
@@ -303,7 +292,6 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
 
         if (_response.result.payload.state == 'APPROVED') {
             _historyPayment.restaurantIds.forEach((restaurantId) => {
-                console.log(restaurantId);
                 Restaurants.collection.update({ _id: restaurantId }, { $set: { isActive: true } });
 
                 Tables.collection.find({ restaurantId: restaurantId }).forEach((table: Table) => {

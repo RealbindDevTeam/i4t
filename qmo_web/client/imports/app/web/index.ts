@@ -125,7 +125,8 @@ export const WEB_DECLARATIONS = [
     PayuPaymentFormComponent,
     PaymentHistoryComponent,
     ReactivateRestaurantComponent,
-    CustomerPaymentsHistoryComponent
+    CustomerPaymentsHistoryComponent,
+    ColombiaPayInfoComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [
