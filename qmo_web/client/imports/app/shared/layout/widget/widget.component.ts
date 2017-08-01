@@ -6,11 +6,12 @@ import {ColorService} from '../../services/color.service';
   selector : 'core-widget',
   template : `
    <md-card class="flex-item widget" [ngStyle]="{'background-color': style, 'color': textStyle}">
+   <md-card-title style="text-align: center;color: white;margin-bottom: 0;" *ngIf="title">{{title}}</md-card-title>
     <md-card-content class="layout-stretch-between layout-row">
       <md-icon style="min-width: 100px;" class="widget-icon" *ngIf="icon">{{icon}}</md-icon>
       <div class="layout-column">
-        <p [ngStyle]="{'background-color': style, 'color': textStyle}" class="counter">{{count}}</p>
-        <p [ngStyle]="{'background-color': style, 'color': textStyle}" class="description" *ngIf="description">{{description}}</p>
+        <p [ngStyle]="{'background-color': style, 'color': textStyle, 'font-weight': 400}" class="counter">{{count}}</p>
+        <p [ngStyle]="{'background-color': style, 'color': textStyle, 'font-weight': 600}" class="description" *ngIf="description">{{description}}</p>
       </div>
     </md-card-content>
   </md-card>
@@ -24,6 +25,7 @@ export class WidgetComponent implements OnChanges {
 
   @Input() icon: string = null;
   @Input() count: number = 0;
+  @Input() title: string = null;
   @Input() description: string = null;
   @Input() palette: {palette: string, hue?: string, shade?: string} = null;
   @Input() hexColor: string = null;

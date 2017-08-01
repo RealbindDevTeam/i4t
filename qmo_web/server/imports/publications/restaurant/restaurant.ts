@@ -141,3 +141,12 @@ Meteor.publish('getInactiveRestaurants', function (_userId: string) {
     check(_userId, String);
     return Restaurants.collection.find({ creation_user: _userId, isActive: false });
 });
+
+/**
+ * Meteor publication return active restaurants by user
+ * @param {string} _userId
+ */
+Meteor.publish('getActiveRestaurants', function (_userId: string) {
+    check(_userId, String);
+    return Restaurants.collection.find({ creation_user: _userId, isActive: true });
+});

@@ -1029,5 +1029,19 @@
         "INVOICE_SALE": "Factura de venta",
         "DATE": "Fecha-Hora",
         "TOOLTIP_DOWNLOAD_INVOICE": "Download invoice"
+    },
+    "ADMIN_DASHBOARD": {
+        "SALES": "Sales ",
+        "USERS": "Users",
+        "ACTIVES": "Actives",
+        "ITEMS": "Items",
+        "SOLD": "Sold",
+        "ADDITIONS": "Additions",
+        "GARNISHFOOD": "Garnish Food",
+        "AVAILABLE": "Available",
+        "UNAVAILABLE": "Unavailable",
+        "TABLES": "Tables",
+        "FREE": "Free",
+        "BUSY": "Busy"
     }
 }
