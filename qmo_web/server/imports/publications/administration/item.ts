@@ -176,3 +176,11 @@ Meteor.publish('getItemImageThumbsByRestaurantWork', function( _userId: string )
         return;
     }
 });
+
+/**
+ * Meteor publication return restaurants items
+ * @param {string[]} _pRestaurantIds
+ */
+Meteor.publish( 'getItemsByRestaurantIds', function( _pRestaurantIds: string[] ) {
+    return Items.collection.find( { 'restaurants.restaurantId': { $in : _pRestaurantIds } } );
+});

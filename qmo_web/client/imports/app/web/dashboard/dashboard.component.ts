@@ -7,14 +7,13 @@ import { Restaurant, RestaurantImageThumb } from '../../../../../both/models/res
 import { Restaurants, RestaurantImageThumbs } from '../../../../../both/collections/restaurant/restaurant.collection';
 import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
 import { Tables } from '../../../../../both/collections/restaurant/table.collection';
-import { Item } from '../../../../../both/models/administration/item.model';
 import { Items } from '../../../../../both/collections/administration/item.collection';
-import { Addition } from '../../../../../both/models/administration/addition.model';
-import { Additions } from '../../../../../both/collections/administration/addition.collection';
-import { GarnishFood } from '../../../../../both/models/administration/garnish-food.model';
-import { GarnishFoodCol } from '../../../../../both/collections/administration/garnish-food.collection';
-import { Order } from '../../../../../both/models/restaurant/order.model';
+import { Payment } from '../../../../../both/models/restaurant/payment.model';
+import { Payments } from '../../../../../both/collections/restaurant/payment.collection';
+import { Order, OrderItem, OrderAddition } from '../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../both/collections/restaurant/order.collection';
+import { Currency } from '../../../../../both/models/general/currency.model';
+import { Currencies } from '../../../../../both/collections/general/currency.collection';
 
 import template from './dashboard.component.html';
 import style from './dashboard.component.scss';   
@@ -35,6 +34,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private _userDetailsSub         : Subscription;
   private _tablesSub              : Subscription;
   private _itemsSub               : Subscription;
+  private _paymentsSub            : Subscription;
+  private _ordersSub              : Subscription;
+  private _currenciesSub          : Subscription;
+
+  private _currentDate            : Date = new Date();
+  private _currentDay             : number = this._currentDate.getDate();
+  private _currentMonth           : number = this._currentDate.getMonth();
+  private _currentYear            : number = this._currentDate.getFullYear();
 
   /**
    * DashboardComponent Constructor
@@ -61,6 +68,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
         this._restaurantImgThumbSub = MeteorObservable.subscribe( 'restaurantImageThumbs', this._user ).subscribe();
         this._userDetailsSub = MeteorObservable.subscribe( 'getUsersByRestaurantsId', _lRestaurantsId ).subscribe();
+        this._itemsSub = MeteorObservable.subscribe( 'getItemsByRestaurantIds', _lRestaurantsId ).subscribe();
+        this._paymentsSub = MeteorObservable.subscribe( 'getPaymentsByRestaurantIds', _lRestaurantsId ).subscribe();
+        this._ordersSub = MeteorObservable.subscribe( 'getOrdersByRestaurantIds', _lRestaurantsId, [ 'ORDER_STATUS.CLOSED' ] ).subscribe();
+        this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', _lRestaurantsId ).subscribe();
       });
     });
     this._tablesSub = MeteorObservable.subscribe( 'tables', this._user ).subscribe();
@@ -104,6 +115,105 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Get available items
+   * @param {string} _pRestaurantId 
+   */
+  getAvailableItems( _pRestaurantId: string ):number{
+    return Items.collection.find( { 'restaurants.restaurantId': _pRestaurantId, isAvailable: true } ).count();
+  }
+
+  /**
+   * Get not available items
+   * @param {string} _pRestaurantId
+   */
+  getNotAvailableItems( _pRestaurantId: string ):number{
+    return Items.collection.find( { 'restaurants.restaurantId': _pRestaurantId, isAvailable: false } ).count();
+  }
+
+  /**
+   * Get daily sales
+   * @param {string} _pRestaurantId
+   */
+  getDailySales( _pRestaurantId: string ):number{
+    let _lTotalSale: number = 0;
+    Payments.collection.find( { restaurantId: _pRestaurantId, creation_date: { $gte: new Date( this._currentYear, this._currentMonth, this._currentDay ) } } ).forEach( ( pay:Payment ) => {
+      _lTotalSale += pay.totalToPayment;
+    });
+    return _lTotalSale;
+  }
+
+  /**
+   * Get Items Sold
+   * @param {string} _pRestaurantId
+   */
+  getItemsSold( _pRestaurantId: string ):number{
+    let _lItemCount: number = 0;
+    Payments.collection.find( { restaurantId: _pRestaurantId, creation_date: { $gte: new Date( this._currentYear, this._currentMonth, this._currentDay ) } } ).forEach( ( pay:Payment ) => {
+      pay.orders.forEach( ( orderId ) => {
+        let _lOrder:Order = Orders.findOne( { _id: orderId } );
+        if( _lOrder ){
+          _lOrder.items.forEach( ( orderItem:OrderItem ) => {
+            _lItemCount += orderItem.quantity;
+          });
+        }
+      });
+    });
+    return _lItemCount;
+  }
+
+  /**
+   * Get GarnishFood Sold
+   * @param {string} _pRestaurantId
+   */
+  getGarnishFoodSold( _pRestaurantId: string ):number{
+    let _lGarnishFoodCount: number = 0;
+    Payments.collection.find( { restaurantId: _pRestaurantId, creation_date: { $gte: new Date( this._currentYear, this._currentMonth, this._currentDay ) } } ).forEach( ( pay:Payment ) => {
+      pay.orders.forEach( ( orderId ) => {
+        let _lOrder:Order = Orders.findOne( { _id: orderId } );
+        if( _lOrder ){
+          _lOrder.items.forEach( ( orderItem:OrderItem ) => {
+            _lGarnishFoodCount += ( orderItem.quantity * orderItem.garnishFood.length );
+          });
+        }
+      });
+    });
+    return _lGarnishFoodCount;
+  }
+
+  /**
+   * Get Additions Sold
+   * @param {string} _pRestaurantId
+   */
+  getAdditionsSold( _pRestaurantId: string ):number{
+    let _lAdditions: number = 0;
+    Payments.collection.find( { restaurantId: _pRestaurantId, creation_date: { $gte: new Date( this._currentYear, this._currentMonth, this._currentDay ) } } ).forEach( ( pay:Payment ) => {
+      pay.orders.forEach( ( orderId ) => {
+        let _lOrder:Order = Orders.findOne( { _id: orderId } );
+        if( _lOrder ){
+          _lOrder.items.forEach( ( orderItem:OrderItem ) => {
+            _lAdditions += ( orderItem.quantity * orderItem.additions.length );
+          });
+          _lOrder.additions.forEach( ( orderAddition: OrderAddition ) => {
+            _lAdditions += orderAddition.quantity;
+          });
+        }
+      });
+    });
+    return _lAdditions;
+  }
+
+  /**
+   * Get Restaurant Currency
+   * @param {string} _pCurrencyId 
+   */
+  getRestaurantCurrency( _pCurrencyId: string ):string{
+    let _lCurrency:Currency = Currencies.collection.findOne( { _id: _pCurrencyId } );
+    if( _lCurrency ){
+      return _lCurrency.code;
+    }
+  }
+
+  /**
    * ngOnDestroy Implementation
    */
   ngOnDestroy(){
@@ -111,6 +221,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if( this._restaurantImgThumbSub ){ this._restaurantImgThumbSub.unsubscribe(); }
     if( this._userDetailsSub ){ this._userDetailsSub.unsubscribe(); }
     this._tablesSub.unsubscribe();
-    //this._itemsSub.unsubscribe();
+    if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
+    if( this._paymentsSub ){ this._paymentsSub.unsubscribe(); }
+    if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
+    if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
   }
 }

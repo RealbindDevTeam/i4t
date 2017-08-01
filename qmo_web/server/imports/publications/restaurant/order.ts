@@ -122,3 +122,12 @@ Meteor.publish( 'getOrdersWithConfirmationPending', function( _restaurantId:stri
 Meteor.publish( 'getOrderById', function( _orderId : string ){
     return Orders.find({_id :  _orderId });
 });
+
+/**
+ * Meteor publications orders with restaurant Ids and status conditions
+ * @param {string[]} _pRestaurantIds
+ * @param {string[]} _status
+*/
+Meteor.publish('getOrdersByRestaurantIds', function ( _pRestaurantIds: string [], _status: string[]) {
+    return Orders.collection.find({ restaurantId: { $in: _pRestaurantIds }, status: { $in: _status } });
+});

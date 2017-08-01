@@ -59,3 +59,11 @@ Meteor.publish( 'getPaymentsToWaiter', function( _restaurantId: string, _tableId
     check( _tableId, String );
     return Payments.collection.find( { restaurantId: _restaurantId, tableId: _tableId, status: 'PAYMENT.NO_PAID' } );
 });
+
+/**
+ * Meteor publication payments with restaurant Ids
+ * @param {string[]} _pRestaurantIds
+ */
+Meteor.publish( 'getPaymentsByRestaurantIds', function( _pRestaurantIds: string[] ) {
+    return Payments.collection.find( { restaurantId: { $in: _pRestaurantIds }, status: 'PAYMENT.PAID', received: true } );
+});
