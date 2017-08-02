@@ -75,6 +75,7 @@ import { CcPaymentConfirmComponent } from './payment/payu-payment-form/cc-paymen
 import { TrnResponseConfirmComponent } from './payment/payu-payment-form/transaction-response-confirm/trn-response-confirm.component';
 import { VerifyResultComponent } from './payment/payment-history/verify-result/verify-result.component';
 import { CustomerPaymentsHistoryComponent } from './customer/settings/customer-payments-history/customer-payments-history.component';
+import { AdminSignupComponent } from './auth/admin-signup.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -126,7 +127,8 @@ export const WEB_DECLARATIONS = [
     PaymentHistoryComponent,
     ReactivateRestaurantComponent,
     CustomerPaymentsHistoryComponent,
-    ColombiaPayInfoComponent
+    ColombiaPayInfoComponent,
+    AdminSignupComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [
