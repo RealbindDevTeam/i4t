@@ -536,7 +536,8 @@
         "MESSAGE": "No items yet register",
         "SELECT_ALL_GARNISH_FOOD": "Select All Garnish Food",
         "SELECT_ALL_ADDITIONS": "Select All Additions",
-        "ITEM_EDITED": "Item Edited Correctly"
+        "ITEM_EDITED": "Item Edited Correctly",
+        "GARNISHFOOD_QUANTITY_MSG": "The number of garnish food must be different from 0"
     },
     "ROLE": {
         "ADMINISTRATOR": "Administrator",

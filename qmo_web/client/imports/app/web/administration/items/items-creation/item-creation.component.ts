@@ -209,10 +209,32 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * This fuction allow wizard to create restaurant
+     * This fuction allow wizard to create item
      */
     canFinish(): boolean {
-        return this._itemForm.valid;
+        let arrGarnishFood: any[] = Object.keys(this._itemForm.value.garnishFood);
+        let _lGarnish: string[] = [];
+        let _lGarnishQuantOk: boolean = false;
+
+        arrGarnishFood.forEach( (gar) => {
+            if ( this._itemForm.value.garnishFood[ gar ] ){
+                _lGarnish.push(gar);
+            }
+        });
+        if( _lGarnish.length > 0 ){
+            if( this._itemForm.value.garnishFoodQuantity === '0' || this._itemForm.value.garnishFoodQuantity === 0 ){
+                _lGarnishQuantOk = false;
+            } else {            
+                _lGarnishQuantOk = true;
+            } 
+        } else{                      
+            _lGarnishQuantOk = true;
+        }
+        if( this._itemForm.valid && _lGarnishQuantOk ){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

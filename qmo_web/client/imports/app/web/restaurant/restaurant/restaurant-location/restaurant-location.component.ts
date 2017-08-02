@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
-import { MouseEvent } from "@agm/core";
+//import { MouseEvent } from "@agm/core";
 import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
@@ -88,20 +88,20 @@ export class RestaurantLocationComponent implements OnInit, OnDestroy {
     /**
      * Set restaurant position
      * @param {MouseEvent} $event
-     */
+     
     mapClicked( $event: MouseEvent ) {
         this._lat = $event.coords.lat;
         this._lng = $event.coords.lng;
-    }
+    }*/
 
     /**
      * Set marker in the map
      * @param {MouseEvent} event 
-     */
+     
     markerDragEnd( $event: MouseEvent ) {
         this._lat = $event.coords.lat;
         this._lng = $event.coords.lng;
-    }
+    }*/
 
     /**
      * ngOnDestroy implementation

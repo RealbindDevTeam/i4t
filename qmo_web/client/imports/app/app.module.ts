@@ -10,7 +10,7 @@ import { TranslateModule, TranslateStaticLoader, TranslateLoader } from 'ng2-tra
 import { NgxPaginationModule } from 'ngx-pagination';
 import { routes, ROUTES_PROVIDERS } from './app.routes';
 import { Ng2PageScrollModule } from 'ng2-page-scroll';
-import { AgmCoreModule } from '@agm/core';
+//import { AgmCoreModule } from '@agm/core';
 import { ChartModule } from 'angular2-highcharts';
 
 import { AppComponent } from './web/app.web.component';
@@ -62,9 +62,9 @@ moduleDefinition = {
     Ng2PageScrollModule.forRoot(),
     NgxPaginationModule,
     ChartModule,
-    AgmCoreModule.forRoot({
+    /*AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBXJSlwWRSHoRiZdqlOfHPqxxDRdqm8_Jk'
-    })
+    })*/
   ],
   declarations: [
     ...WEB_DECLARATIONS,

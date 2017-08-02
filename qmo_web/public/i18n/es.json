@@ -536,7 +536,8 @@
         "MESSAGE": "Aún no hay items registrados",
         "SELECT_ALL_GARNISH_FOOD": "Seleccionar todas las Guarniciones",
         "SELECT_ALL_ADDITIONS": "Seleccionar todas las Adiciones",
-        "ITEM_EDITED": "Item Editado Correctamente"
+        "ITEM_EDITED": "Item Editado Correctamente",
+        "GARNISHFOOD_QUANTITY_MSG": "La cantidad de Guarniciones debe ser diferente a 0"
     },
     "ROLE": {
         "ADMINISTRATOR": "Administrador",
