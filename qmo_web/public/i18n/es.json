@@ -1072,12 +1072,25 @@
         "REQUIRED_OTHER": "La ciudad no puede estar vacia",
         "MIN_LENGTH_OTHER": "",
         "MAX_LENGTH_OTHER": "La ciudad debe tener máximo 50 caracteres",
-        "PASSWORD_NOT_MATCH" : "Las contraseñas no coinciden",
-
+        "PASSWORD_NOT_MATCH": "Las contraseñas no coinciden",
         "SIGNUP": "Registrarse",
         "ALREADY_ACCOUNT": "Ya tienes una cuenta?",
         "SIGNIN": "Iniciar Sesión",
         "LABEL_LEGAL": "Al dar clic en 'Registrarse', ",
         "LABEL_LEGAL_END": "aceptas los terminos y condiciones."
+    },
+    "ADMIN_DASHBOARD": {
+        "SALES": "Ventas ",
+        "USERS": "Usuarios",
+        "ACTIVES": "Activos",
+        "ITEMS": "Items",
+        "SOLD": "Vendidos",
+        "ADDITIONS": "Adiciones",
+        "GARNISHFOOD": "Guarniciones",
+        "AVAILABLE": "Habilitados",
+        "UNAVAILABLE": "Inhabilitados",
+        "TABLES": "Mesas",
+        "FREE": "Libres",
+        "BUSY": "Ocupadas"
     }
 }

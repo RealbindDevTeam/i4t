@@ -1073,11 +1073,24 @@
         "MIN_LENGTH_OTHER": "",
         "MAX_LENGTH_OTHER": "Your city cannot exceed 50 characters long",
         "PASSWORD_NOT_MATCH": "Passwords doesn't match",
-
         "SIGNUP": "Sign Up",
         "ALREADY_ACCOUNT": "Do you have an account?",
         "SIGNIN": "Sign In",
         "LABEL_LEGAL": "By clicking on 'Register', ",
         "LABEL_LEGAL_END": "you accept the terms and conditions."
+    },
+    "ADMIN_DASHBOARD": {
+        "SALES": "Sales ",
+        "USERS": "Users",
+        "ACTIVES": "Actives",
+        "ITEMS": "Items",
+        "SOLD": "Sold",
+        "ADDITIONS": "Additions",
+        "GARNISHFOOD": "Garnish Food",
+        "AVAILABLE": "Available",
+        "UNAVAILABLE": "Unavailable",
+        "TABLES": "Tables",
+        "FREE": "Free",
+        "BUSY": "Busy"
     }
 }
