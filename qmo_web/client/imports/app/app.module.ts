@@ -62,9 +62,9 @@ moduleDefinition = {
     Ng2PageScrollModule.forRoot(),
     NgxPaginationModule,
     ChartModule,
-    /*AgmCoreModule.forRoot({
+    AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBXJSlwWRSHoRiZdqlOfHPqxxDRdqm8_Jk'
-    })*/
+    })
   ],
   declarations: [
     ...WEB_DECLARATIONS,

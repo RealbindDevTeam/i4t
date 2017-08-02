@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
+import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
 import { Restaurant, RestaurantImageThumb } from '../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantImageThumbs } from '../../../../../both/collections/restaurant/restaurant.collection';
@@ -49,7 +50,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param {NgZone} _ngZone 
    */
   constructor( private _translate: TranslateService, 
-               private _ngZone: NgZone ){
+               private _ngZone: NgZone,
+               private _router: Router ){
     var _userLang = navigator.language.split( '-' )[0];
     _translate.setDefaultLang( 'en' );
     _translate.use( _userLang );
@@ -211,6 +213,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if( _lCurrency ){
       return _lCurrency.code;
     }
+  }
+
+  /**
+   * Go to add new Restaurant
+   */
+  goToAddRestaurant(){
+      this._router.navigate(['/app/restaurantRegister']);
   }
 
   /**

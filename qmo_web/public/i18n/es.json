@@ -588,7 +588,7 @@
         "INVOICE_CODE": "Código de factura",
         "TIP_PERCENTAGE": "Porcentaje de propina",
         "TAX_PERCENTAGE": "Porcentaje de impuestos",
-        "UPDATE_IMAGE": "Actualizar Imagen",
+        "UPDATE_IMAGE": "Actualizar Imagen del Restaurante",
         "ADD_PAYMENTMETHODS_RESTURANT": "Selecciona los medios de pago aceptados por el restaurante",
         "SCHEDULE_LABEL": "Horario",
         "SCHEDULE_INFO": "Horario de atencion",
@@ -1042,6 +1042,9 @@
         "UNAVAILABLE": "Inhabilitados",
         "TABLES": "Mesas",
         "FREE": "Libres",
-        "BUSY": "Ocupadas"
+        "BUSY": "Ocupadas",
+        "THERE_NOT_RESTAURANTS": "Aún no hay restaurantes registrados",
+        "RESTAURANT_REGISTER": "Registrar restaurante",
+        "MESSAGE": "Regístra uno para habilitar esta opción"
     }
 }

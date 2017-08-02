@@ -1,9 +1,9 @@
 <md-card>
     <md-card-title style="text-align: -webkit-center;">{{'RESTAURANT_LOCATION_INFO.TITTLE' | translate}}</md-card-title>
     <md-card-content>
-        <!--agm-map [latitude]="_lat" [longitude]="_lng">
+        <agm-map [latitude]="_lat" [longitude]="_lng">
             <agm-marker *ngIf="!_showMessage" [latitude]="_lat" [longitude]="_lng"></agm-marker>
-        </agm-map-->
+        </agm-map>
     </md-card-content>
     <md-card-actions>
         <button md-raised-button class="button-secundary" type="button" (click)="_dialogRef.close()">{{'RESTAURANT_LOCATION_INFO.CLOSE' | translate}}</button>

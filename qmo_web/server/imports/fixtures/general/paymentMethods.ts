@@ -7,7 +7,7 @@ export function loadPaymentMethods(){
             { _id: "10", isActive: true, name: 'PAYMENT_METHODS.CASH' },
             { _id: "20", isActive: true, name: 'PAYMENT_METHODS.CREDIT_CARD' },
             { _id: "30", isActive: true, name: 'PAYMENT_METHODS.DEBIT_CARD' },
-            { _id: "40", isActive: true, name: 'PAYMENT_METHODS.ONLINE' },
+            { _id: "40", isActive: false, name: 'PAYMENT_METHODS.ONLINE' },
         ];
         payments.forEach( ( pay:PaymentMethod ) => PaymentMethods.insert( pay ) );
     }

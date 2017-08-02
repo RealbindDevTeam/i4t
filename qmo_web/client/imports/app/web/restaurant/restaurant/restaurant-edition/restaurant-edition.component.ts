@@ -5,7 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { MdDialogRef } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { uploadRestaurantImage } from '../../../../../../../both/methods/restaurant/restaurant.methods';
 import { MouseEvent } from "angular2-google-maps/core";
 import { Restaurants, RestaurantImages, RestaurantImageThumbs } from '../../../../../../../both/collections/restaurant/restaurant.collection';
@@ -35,60 +35,60 @@ import style from './restaurant-edition.component.scss';
 @Component({
     selector: 'restaurant-edition',
     template,
-    styles: [style]
+    styles: [ style ]
 })
 export class RestaurantEditionComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    private _restaurantToEdit: Restaurant;
-    private _restaurantEditionForm: FormGroup;
-    private _paymentsFormGroup: FormGroup = new FormGroup({});
+    private _restaurantToEdit                       : Restaurant;
+    private _restaurantEditionForm                  : FormGroup;
+    private _paymentsFormGroup                      : FormGroup = new FormGroup({});
 
-    private _restaurantSub: Subscription;
-    private _hoursSub: Subscription;
-    private _currencySub: Subscription;
-    private _countriesSub: Subscription;
-    private _citiesSub: Subscription;
-    private _paymentMethodsSub: Subscription;
-    private _restaurantImagesSub: Subscription;
-    private _restaurantImageThumbsSub: Subscription;
-    private _restaurantPlanSub: Subscription;
-    private _parameterSub: Subscription;
+    private _restaurantSub                          : Subscription;
+    private _hoursSub                               : Subscription;
+    private _currencySub                            : Subscription;
+    private _countriesSub                           : Subscription;
+    private _citiesSub                              : Subscription;
+    private _paymentMethodsSub                      : Subscription;
+    private _restaurantImagesSub                    : Subscription;
+    private _restaurantImageThumbsSub               : Subscription;
+    private _restaurantPlanSub                      : Subscription;
+    private _parameterSub                           : Subscription;
 
-    private _hours: Observable<Hour[]>;
-    private _countries: Observable<Country[]>;
-    private _cities: Observable<City[]>;
-    private _currencies: Observable<Currency[]>;
-    private _parameterDaysTrial: Observable<Parameter[]>;
+    private _hours                                  : Observable<Hour[]>;
+    private _countries                              : Observable<Country[]>;
+    private _cities                                 : Observable<City[]>;
+    private _currencies                             : Observable<Currency[]>;
+    private _parameterDaysTrial                     : Observable<Parameter[]>;
 
-    private _paymentMethods: PaymentMethod[] = [];
-    private _paymentMethodsList: PaymentMethod[] = [];
-    private _restaurantPaymentMethods: string[] = [];
+    private _paymentMethods                         : PaymentMethod[] = [];
+    private _paymentMethodsList                     : PaymentMethod[] = [];
+    private _restaurantPaymentMethods               : string[] = [];
 
-    private _filesToUpload: Array<File>;
-    private _restaurantImageToEdit: File;
-    private _editImage: boolean = false;
-    private _nameImageFileEdit: string = "";
-    public _selectedIndex: number = 0;
-    private _restaurantEditImage: string;
+    private _filesToUpload                          : Array<File>;
+    private _restaurantImageToEdit                  : File;
+    private _editImage                              : boolean = false;
+    private _nameImageFileEdit                      : string = "";
+    public _selectedIndex                           : number = 0;
+    private _restaurantEditImage                    : string;
 
-    private _queue: string[] = [];
-    private _selectedCountryValue: string = "";
-    private _selectedCityValue: string = "";
+    private _queue                                  : string[] = [];
+    private _selectedCountryValue                   : string = "";
+    private _selectedCityValue                      : string = "";
 
-    private _restaurantCountryValue: string;
-    private _restaurantCityValue: string;
+    private _restaurantCountryValue                 : string;
+    private _restaurantCityValue                    : string;
 
-    private _restaurantCurrency: string = '';
-    private _countryIndicative: string;
+    private _restaurantCurrency                     : string = '';
+    private _countryIndicative                      : string;
 
-    private _edition_schedule: RestaurantSchedule;
+    private _edition_schedule                       : RestaurantSchedule;
 
-    private _scheduleToEdit: RestaurantSchedule;
-    private _financialElements: FinancialBase<any>[] = [];
-    private _showFinancialElements: boolean = false;
-    private _restaurantFinancialInformation: Object = {};
-    private _financialInformation: RestaurantFinancialElement[] = [];
+    private _scheduleToEdit                         : RestaurantSchedule;
+    private _financialElements                      : FinancialBase<any>[] = [];
+    private _showFinancialElements                  : boolean = false;
+    private _restaurantFinancialInformation         : Object = {};
+    private _financialInformation                   : RestaurantFinancialElement[] = [];
 
     /**
      * RestaurantEditionComponent Constructor
@@ -98,9 +98,13 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
      * @param {ActivatedRoute} _route 
      * @param {Router} _router 
      */
-    constructor(private _formBuilder: FormBuilder, private _translate: TranslateService, private _ngZone: NgZone, private _route: ActivatedRoute, private _router: Router) {
-        this._route.queryParams.subscribe(params => {
-            this._restaurantToEdit = JSON.parse(params["restaurant"]);
+    constructor( private _formBuilder: FormBuilder, 
+                 private _translate: TranslateService, 
+                 private _ngZone: NgZone, 
+                 private _route: ActivatedRoute, 
+                 private _router: Router ) {
+        this._route.params.forEach((params: Params) => {
+            this._restaurantToEdit = JSON.parse( params['param1'] );
         });
         var _userLang = navigator.language.split('-')[0];
         _translate.setDefaultLang('en');
@@ -113,19 +117,29 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this._restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe();
 
-        this._countries = Countries.find({}).zone();
         this._countriesSub = MeteorObservable.subscribe('countries').subscribe(() => {
-            let _lCountry: Country = Countries.findOne({ _id: this._restaurantToEdit.countryId });
-            this.createFinancialFormEditMode(_lCountry.financialInformation, this._restaurantToEdit.financialInformation);
+            this._ngZone.run( () => {
+                this._countries = Countries.find({}).zone();
+                let _lCountry: Country = Countries.findOne({ _id: this._restaurantToEdit.countryId });
+                this.createFinancialFormEditMode(_lCountry.financialInformation, this._restaurantToEdit.financialInformation);
+            });
         });
 
-        this._cities = Cities.find({}).zone();
-        this._citiesSub = MeteorObservable.subscribe('cities').subscribe();
+        this._citiesSub = MeteorObservable.subscribe('cities').subscribe( () => {
+            this._ngZone.run( () => {
+                this._cities = Cities.find({}).zone();
+            });
+        });
 
         this._restaurantImagesSub = MeteorObservable.subscribe('restaurantImages', this._user).subscribe();
-        this._restaurantImageThumbsSub = MeteorObservable.subscribe('restaurantImageThumbs', this._user).subscribe(() => {
-            this._ngZone.run(() => {
-                this._restaurantEditImage = RestaurantImageThumbs.findOne({ restaurantId: this._restaurantToEdit._id }).url;
+        this._restaurantImageThumbsSub = MeteorObservable.subscribe('restaurantImageThumbs', this._user).subscribe( () => {
+            this._ngZone.run( () => {
+                let _lRestaurantImage: RestaurantImageThumb = RestaurantImageThumbs.findOne({ restaurantId: this._restaurantToEdit._id });
+                if (_lRestaurantImage) {
+                    this._restaurantEditImage = _lRestaurantImage.url
+                } else {
+                    this._restaurantEditImage = '/images/default-restaurant.png';
+                }
             });
         });
 
@@ -231,11 +245,11 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             }
         });
 
-        if (this._editImage) {
+        if ( this._editImage ){
             let _lRestaurantImage: RestaurantImage = RestaurantImages.findOne({ restaurantId: this._restaurantEditionForm.value.editId });
             let _lRestaurantImageThumb: RestaurantImageThumb = RestaurantImageThumbs.findOne({ restaurantId: this._restaurantEditionForm.value.editId });
-            RestaurantImages.remove({ _id: _lRestaurantImage._id });
-            RestaurantImageThumbs.remove({ _id: _lRestaurantImage._id });
+            if( _lRestaurantImage ){ RestaurantImages.remove({ _id: _lRestaurantImage._id }); }
+            if( _lRestaurantImageThumb ){ RestaurantImageThumbs.remove({ _id: _lRestaurantImageThumb._id }); }
 
             uploadRestaurantImage(this._restaurantImageToEdit,
                 Meteor.userId(),

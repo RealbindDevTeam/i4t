@@ -588,7 +588,7 @@
         "INVOICE_CODE": "Invoice code",
         "TIP_PERCENTAGE": "Tip Percentage",
         "TAX_PERCENTAGE": "Tax Percentage",
-        "UPDATE_IMAGE": "Update Image",
+        "UPDATE_IMAGE": "Update Restaurant Image",
         "ADD_PAYMENTMETHODS_RESTURANT": "Select payment methods accepted by restaurant",
         "SCHEDULE_LABEL": "Schedule",
         "SCHEDULE_INFO": "Hours of operation",
@@ -1042,6 +1042,9 @@
         "UNAVAILABLE": "Unavailable",
         "TABLES": "Tables",
         "FREE": "Free",
-        "BUSY": "Busy"
+        "BUSY": "Busy",
+        "THERE_NOT_RESTAURANTS": "No restaurants yet register",
+        "RESTAURANT_REGISTER": "Restaurant register",
+        "MESSAGE": "Register one to enable this option"
     }
 }

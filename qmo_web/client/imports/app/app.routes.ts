@@ -66,7 +66,7 @@ export const routes: Route[] = [
             { path: 'itemsCreation', component: ItemCreationComponent, canActivate: [SupervisorGuard] },
             { path: 'restaurant', component: RestaurantComponent, canActivate: [SupervisorGuard] },
             { path: 'restaurantRegister', component: RestaurantRegisterComponent, canActivate: [AdminGuard] },
-            { path: 'restaurantEdition', component: RestaurantEditionComponent, canActivate: [AdminGuard] },
+            { path: 'restaurantEdition/:param1', component: RestaurantEditionComponent, canActivate: [AdminGuard] },
             { path: 'tables', component: TableComponent, canActivate: [SupervisorGuard] },
             { path: 'orders', component: OrdersComponent, canActivate: [CustomerGuard] },
             { path: 'itemsEnable', component: ItemEnableComponent, canActivate: [SuperChefGuard] },
