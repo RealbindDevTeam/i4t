@@ -1072,6 +1072,7 @@
         "REQUIRED_OTHER": "You must include a city",
         "MIN_LENGTH_OTHER": "",
         "MAX_LENGTH_OTHER": "Your city cannot exceed 50 characters long",
+        "PASSWORD_NOT_MATCH": "Passwords doesn't match",
 
         "SIGNUP": "Sign Up",
         "ALREADY_ACCOUNT": "Do you have an account?",

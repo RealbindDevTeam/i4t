@@ -1072,7 +1072,8 @@
         "REQUIRED_OTHER": "La ciudad no puede estar vacia",
         "MIN_LENGTH_OTHER": "",
         "MAX_LENGTH_OTHER": "La ciudad debe tener máximo 50 caracteres",
-        
+        "PASSWORD_NOT_MATCH" : "Las contraseñas no coinciden",
+
         "SIGNUP": "Registrarse",
         "ALREADY_ACCOUNT": "Ya tienes una cuenta?",
         "SIGNIN": "Iniciar Sesión",

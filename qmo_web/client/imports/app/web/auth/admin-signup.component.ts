@@ -11,11 +11,10 @@ import { Countries } from '../../../../../both/collections/settings/country.coll
 import { Country } from '../../../../../both/models/settings/country.model';
 import { City } from '../../../../../both/models/settings/city.model';
 import { Cities } from '../../../../../both/collections/settings/city.collection';
+import { UserProfile, UserProfileImage } from '../../../../../both/models/auth/user-profile.model';
 
 import template from './admin-signup.component.html';
 import style from './auth.component.scss';
-
-import { UserProfile, UserProfileImage } from '../../../../../both/models/auth/user-profile.model';
 
 @Component({
     selector: 'admin-signup',
@@ -33,13 +32,13 @@ export class AdminSignupComponent implements OnInit, OnDestroy {
     private _selectedCity: string = "";
     private _showOtherCity: boolean = false;
 
-    signupForm: FormGroup;
-    error: string;
-    showLoginPassword: boolean = true;
-    showConfirmError: boolean = false;
-    userLang: string;
-    userProfile = new UserProfile();
-    userProfileImage = new UserProfileImage();
+    private signupForm: FormGroup;
+    private error: string;
+    private showLoginPassword: boolean = true;
+    private showConfirmError: boolean = false;
+    private userLang: string;
+    private userProfile = new UserProfile();
+    private userProfileImage = new UserProfileImage();
 
     constructor(protected router: Router, public zone: NgZone, public formBuilder: FormBuilder, public translate: TranslateService, private _ngZone: NgZone, ) {
         this.userLang = navigator.language.split('-')[0];
@@ -103,8 +102,81 @@ export class AdminSignupComponent implements OnInit, OnDestroy {
         this.signupForm.controls['otherCity'].clearValidators();
     }
 
+    /**
+     * This function makes the administrator register for iurest restaurant
+     */
+    register() {
+
+        let cityIdAux: string;
+        let cityAux: string;
+
+        console.log('Se envía formulario');
+        if (this.signupForm.value.password == this.signupForm.value.confirmPassword) {
+            console.log('SON IGUALES ');
+
+            this.userProfile.first_name = this.signupForm.value.firstName;
+            this.userProfile.last_name = this.signupForm.value.lastName;
+            this.userProfile.language_code = this.userLang;
+
+            this.userProfileImage.complete = null;
+            this.userProfileImage.extension = null;
+            this.userProfileImage.name = null;
+            this.userProfileImage.progress = null;
+            this.userProfileImage.size = null;
+            this.userProfileImage.store = null;
+            this.userProfileImage.token = null;
+            this.userProfileImage.type = null;
+            this.userProfileImage.uploaded_at = null;
+            this.userProfileImage.uploading = null;
+            this.userProfileImage.url = null;
+
+            this.userProfile.image = this.userProfileImage;
+
+            if (this.signupForm.valid) {
+
+                if (this._selectedCity === '0000') {
+                    cityIdAux = '';
+                    cityAux = this.signupForm.value.otherCity;
+                } else {
+                    cityIdAux = this._selectedCity;
+                    cityAux = '';
+                }
+
+                Accounts.createUser({
+                    email: this.signupForm.value.email,
+                    password: this.signupForm.value.password,
+                    username: this.signupForm.value.username,
+                    profile: this.userProfile
+                }, (err) => {
+                    this.zone.run(() => {
+                        if (err) {
+                            this.error = err;
+                        } else {
+                            UserDetails.insert({
+                                user_id: Meteor.userId(),
+                                role_id: '100',
+                                is_active: true,
+                                contact_phone: this.signupForm.value.contactPhone,
+                                dni_number: this.signupForm.value.dniNumber,
+                                address: this.signupForm.value.shippingAddress,
+                                country_id: this._selectedCountry,
+                                city_id: cityIdAux,
+                                other_city: cityAux
+                            });
+                            Meteor.logout();
+                            this.router.navigate(['signin']);
+                        }
+                    });
+                });
+            }
+
+        } else {
+            this.showConfirmError = true;
+        }
+    }
 
     ngOnDestroy() {
-
+        this._countrySub.unsubscribe();
+        this._citySub.unsubscribe();
     }
 }

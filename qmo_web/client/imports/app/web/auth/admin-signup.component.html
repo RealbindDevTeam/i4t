@@ -11,6 +11,9 @@
         <div class="login-form login-form-right">
             <div>
                 <div>
+                    <div style="width: 100%; text-align: center">
+                        <span>Información personal</span>
+                    </div>
                     <form [formGroup]="signupForm" (ngSubmit)="register()" novalidate>
                         <md-input-container style="width: 100%">
                             <input mdInput formControlName="firstName" placeholder="{{'ADMIN_SIGNUP.FIRSTNAME' | translate}}" name="firstName" required></input>
@@ -48,11 +51,11 @@
 
                         <md-select formControlName="country" [(ngModel)]="_selectedCountry" placeholder="{{'ADMIN_SIGNUP.COUNTRY' | translate}}"
                             style="width: 100%; margin-top: 10px">
-                            <md-option *ngFor="let country of _countries | async" value="{{country.alfaCode2}}" (click)="changeCountry(country)">{{country.name | translate}}</md-option>
+                            <md-option *ngFor="let country of _countries | async" value="{{country._id}}" (click)="changeCountry(country)">{{country.name | translate}}</md-option>
                         </md-select>
 
                         <md-select formControlName="city" [(ngModel)]="_selectedCity" placeholder="{{'ADMIN_SIGNUP.CITY' | translate}}" style="width: 100%; margin-top: 25px">
-                            <md-option *ngFor="let city of _cities | async" value="{{city.name}}" (click)="changeCity()">{{city.name}}</md-option>
+                            <md-option *ngFor="let city of _cities | async" value="{{city._id}}" (click)="changeCity()">{{city.name}}</md-option>
                             <md-option *ngIf="(_cities | async)?.length > 0" (click)="changeOtherCity('0000');" value="0000">{{'OTHER' | translate}}</md-option>
                         </md-select>
 
@@ -64,7 +67,10 @@
                         <div *ngIf="signupForm.controls['otherCity'].hasError('maxlength') && signupForm.controls['otherCity'].touched && _showOtherCity"
                             class="error-message">{{'ADMIN_SIGNUP.MAX_LENGTH_OTHER' | translate}}</div>
 
-                        <md-input-container style="width: 100%; margin-top: 15px">
+                        <div style="width: 100%; text-align: center; margin-top: 30px">
+                            <span>Usuario y contraseña</span>
+                        </div>
+                        <md-input-container style="width: 100%;">
                             <input mdInput formControlName="username" placeholder="{{'ADMIN_SIGNUP.USERNAME' | translate}}" required></input>
                         </md-input-container>
                         <div *ngIf="signupForm.controls['username'].hasError('required') && signupForm.controls['username'].touched" class="error-message">{{'ADMIN_SIGNUP.REQUIRED_USERNAME' | translate}}</div>

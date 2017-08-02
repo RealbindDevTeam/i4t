@@ -5,6 +5,15 @@ export interface UserDetail extends CollectionObject{
     role_id: string;
     is_active: boolean;
 
+    //fields for admin register
+    contact_phone?: string;
+    dni_number?: string;
+    address?: string;
+    country_id?: string;
+    city_id?: string;
+    other_city?: string;
+    //
+
     restaurant_work?: string;
     jobs?: number;
     penalties?: UserDetailPenalty[];
