@@ -1068,6 +1068,10 @@
         "MAX_LENGTH_ADDRESS": "La dirección debe tener máximo 150 caracteres",
         "COUNTRY": "País",
         "CITY": "Ciudad",
+        "WHICH_ONE": "Cúal?",
+        "REQUIRED_OTHER": "La ciudad no puede estar vacia",
+        "MIN_LENGTH_OTHER": "",
+        "MAX_LENGTH_OTHER": "La ciudad debe tener máximo 50 caracteres",
         
         "SIGNUP": "Registrarse",
         "ALREADY_ACCOUNT": "Ya tienes una cuenta?",

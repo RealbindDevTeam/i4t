@@ -31,6 +31,7 @@ export class AdminSignupComponent implements OnInit, OnDestroy {
     private _cities: Observable<City[]>;
     private _selectedCountry: string;
     private _selectedCity: string = "";
+    private _showOtherCity: boolean = false;
 
     signupForm: FormGroup;
     error: string;
@@ -59,6 +60,7 @@ export class AdminSignupComponent implements OnInit, OnDestroy {
             shippingAddress: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(150)]),
             country: new FormControl('', [Validators.required]),
             city: new FormControl('', [Validators.required]),
+            otherCity: new FormControl()
         });
 
         this._countrySub = MeteorObservable.subscribe('countries').subscribe(() => {
@@ -83,6 +85,25 @@ export class AdminSignupComponent implements OnInit, OnDestroy {
     changeCountry(_country: Country) {
         this._cities = Cities.find({ country: _country._id }).zone();
     }
+
+    /**
+     * This function changes de city to select other city
+     * @param {string} cityId
+     */
+    changeOtherCity(cityId: string) {
+        this._showOtherCity = true;
+        this.signupForm.controls['otherCity'].setValidators(Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(50)]));
+    }
+
+    /**
+     * This function changes de city 
+     */
+    changeCity() {
+        this._showOtherCity = false;
+        this.signupForm.controls['otherCity'].clearValidators();
+    }
+
+
     ngOnDestroy() {
 
     }

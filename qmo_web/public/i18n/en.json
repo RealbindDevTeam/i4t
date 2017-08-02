@@ -1065,10 +1065,14 @@
         "ADDRESS": "Address",
         "REQUIRED_ADDRESS": "You must include an address",
         "MIN_LENGTH_ADDRESS": "",
-        "MAX_LENGTH_ADDRESS": "Your address cannot exceed 150 characteres long",
+        "MAX_LENGTH_ADDRESS": "Your address cannot exceed 150 characters long",
         "COUNTRY": "Country",
         "CITY": "City",
-        
+        "WHICH_ONE": "Which one?",
+        "REQUIRED_OTHER": "You must include a city",
+        "MIN_LENGTH_OTHER": "",
+        "MAX_LENGTH_OTHER": "Your city cannot exceed 50 characters long",
+
         "SIGNUP": "Sign Up",
         "ALREADY_ACCOUNT": "Do you have an account?",
         "SIGNIN": "Sign In",
