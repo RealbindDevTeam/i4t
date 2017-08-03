@@ -17,19 +17,19 @@ export function loadLanguages(){
             image: null
         },{
             _id: "3000",
-            is_active: true,
+            is_active: false,
             language_code: 'fr',
             name: 'Français',
             image: null
         },{
             _id: "4000",
-            is_active: true,
+            is_active: false,
             language_code: 'pt',
             name: 'Portuguese',
             image: null
         },{
             _id: "5000",
-            is_active: true,
+            is_active: false,
             language_code: 'it',
             name: 'Italiano',
             image: null

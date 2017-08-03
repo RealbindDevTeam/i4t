@@ -5,6 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Promotions, PromotionImagesThumbs } from '../../../../../../both/collections/administration/promotion.collection';
 import { Promotion, PromotionImageThumb } from '../../../../../../both/models/administration/promotion.model';
 import { uploadPromotionImage } from '../../../../../../both/methods/administration/promotion.methods';
@@ -22,36 +23,40 @@ import style from './promotion.component.scss';
 })
 export class PromotionComponent implements OnInit, OnDestroy {
     
-    private _promotionForm: FormGroup;
-    private _restaurantsFormGroup: FormGroup = new FormGroup({});
+    private _promotionForm                  : FormGroup;
+    private _restaurantsFormGroup           : FormGroup = new FormGroup({});
 
-    private _promotions: Observable<Promotion[]>;
-    private _restaurants: Observable<Restaurant[]>;
-    private _promotionThumbs: Observable<PromotionImageThumb[]>;
+    private _promotions                     : Observable<Promotion[]>;
+    private _restaurants                    : Observable<Restaurant[]>;
+    private _promotionThumbs                : Observable<PromotionImageThumb[]>;
 
-    private _promotionsSub: Subscription;
-    private _restaurantSub: Subscription;
-    private _promotionThumbsSubsription: Subscription;
+    private _promotionsSub                  : Subscription;
+    private _restaurantSub                  : Subscription;
+    private _promotionThumbsSubsription     : Subscription;
     
-    private _createImage: boolean;
-    private _restaurantList:Restaurant[];
-    _dialogRef: MdDialogRef<any>;
-    private _nameImageFile: string;
-    private _showRestaurants: boolean = true;
+    private _createImage                    : boolean;
+    private _restaurantList                 : Restaurant[];
+    _dialogRef                              : MdDialogRef<any>;
+    private _nameImageFile                  : string;
+    private _showRestaurants                : boolean = true;
 
-    private _filesToUpload: Array<File>;
-    private _promotionImageToInsert: File;
+    private _filesToUpload                  : Array<File>;
+    private _promotionImageToInsert         : File;
 
     /**
      * PromotionComponent constructor
      * @param {FormBuilder} _formBuilder
      * @param {TranslateService} _translate
      * @param {MdDialog} _dialog
+     * @param {UserLanguageService} _userLanguageService
      */
-    constructor( private _formBuilder: FormBuilder, private _translate: TranslateService, public _dialog: MdDialog, private _ngZone: NgZone ) {
-        var _userLang = navigator.language.split('-')[0];
+    constructor( private _formBuilder: FormBuilder, 
+                 private _translate: TranslateService, 
+                 public _dialog: MdDialog, 
+                 private _ngZone: NgZone,
+                 private _userLanguageService: UserLanguageService ) {
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
-        _translate.use( _userLang );
         this._filesToUpload = [];
         this._createImage = false;
         this._restaurantList = [];

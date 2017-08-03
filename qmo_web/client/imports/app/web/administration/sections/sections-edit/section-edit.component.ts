@@ -6,6 +6,7 @@ import { TranslateService } from 'ng2-translate';
 import { MdDialogRef } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { MdSnackBar } from '@angular/material';
+import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Sections } from '../../../../../../../both/collections/administration/section.collection';
 import { Section } from '../../../../../../../both/models/administration/section.model';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
@@ -41,15 +42,16 @@ export class SectionEditComponent implements OnInit, OnDestroy {
      * @param {MdDialogRef<any>} _dialogRef 
      * @param {NgZone} _ngZone
      * @param {MdSnackBar} snackBar
+     * @param {UserLanguageService} _userLanguageService
      */    
     constructor( private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
                  public _dialogRef: MdDialogRef<any>, 
                  private _ngZone: NgZone, 
-                 public snackBar: MdSnackBar ){
-        var userLang = navigator.language.split('-')[0];
-        _translate.setDefaultLang('en');
-        _translate.use(userLang);
+                 public snackBar: MdSnackBar,
+                 private _userLanguageService: UserLanguageService ){
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' );
         this._sectionRestaurants = [];
     }
 

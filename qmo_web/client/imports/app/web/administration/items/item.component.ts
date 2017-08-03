@@ -6,6 +6,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Item, ItemImage, ItemPrice } from '../../../../../../both/models/administration/item.model';
 import { Items, ItemImages } from '../../../../../../both/collections/administration/item.collection';
 import { ItemEditionComponent } from './items-edition/item-edition.component';
@@ -41,15 +42,16 @@ export class ItemComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate
      * @param {NgZone} _ngZone
      * @param {MdDialog} _dialog
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _router: Router, 
                  private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
                  private _ngZone: NgZone,
-                 public _dialog: MdDialog ){
-        var _userLang = navigator.language.split('-')[0];
+                 public _dialog: MdDialog,
+                 private _userLanguageService: UserLanguageService ){
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
-        _translate.use( _userLang );
     }
 
     /**

@@ -7,6 +7,7 @@ import { TranslateService } from 'ng2-translate';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { MdSnackBar } from '@angular/material';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { GarnishFoodCol } from '../../../../../../both/collections/administration/garnish-food.collection';
 import { GarnishFood, GarnishFoodPrice, GarnishFoodRestaurant } from '../../../../../../both/models/administration/garnish-food.model';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
@@ -55,16 +56,17 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
      * @param {FormBuilder} _formBuilder
      * @param {NgZone} _ngZone
      * @param {Router} _router
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( public _dialog: MdDialog,
                  public snackBar: MdSnackBar,
                  private _translate: TranslateService, 
                  private _formBuilder: FormBuilder, 
                  private _ngZone: NgZone, 
-                 private _router: Router ){
-        var userLang = navigator.language.split('-')[0];
-        _translate.setDefaultLang('en');
-        _translate.use(userLang);
+                 private _router: Router,
+                 private _userLanguageService: UserLanguageService ){
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' );
     }
 
     /**

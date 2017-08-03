@@ -5,6 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
 import { MdDialogRef } from '@angular/material';
+import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Promotions, PromotionImages, PromotionImagesThumbs } from '../../../../../../../both/collections/administration/promotion.collection';
 import { Promotion, PromotionImage, PromotionImageThumb } from '../../../../../../../both/models/administration/promotion.model';
 import { uploadPromotionImage } from '../../../../../../../both/methods/administration/promotion.methods';
@@ -21,42 +22,47 @@ import style from './promotion-edit.component.scss';
 })
 export class PromotionEditComponent implements OnInit, OnDestroy {
 
-    public _promotionToEdit: Promotion;
-    private _editForm: FormGroup;
-    private _restaurantsFormGroup: FormGroup = new FormGroup({});
+    public _promotionToEdit                 : Promotion;
+    private _editForm                       : FormGroup;
+    private _restaurantsFormGroup           : FormGroup = new FormGroup({});
 
-    private _promotions: Observable<Promotion[]>;
-    private _restaurants: Observable<Restaurant[]>;
-    private _promotionThumb: Observable<PromotionImageThumb[]>;
+    private _promotions                     : Observable<Promotion[]>;
+    private _restaurants                    : Observable<Restaurant[]>;
+    private _promotionThumb                 : Observable<PromotionImageThumb[]>;
 
-    private _promotionsSub: Subscription;
-    private _restaurantSub: Subscription;
-    private _promotionImagesSub: Subscription;
-    private _promotionThumbsSub: Subscription;
+    private _promotionsSub                  : Subscription;
+    private _restaurantSub                  : Subscription;
+    private _promotionImagesSub             : Subscription;
+    private _promotionThumbsSub             : Subscription;
 
-    private _promotionEditImage: string;
-    private _showImage: boolean = true;
-    private _editImage: boolean;
-    private _editFilesToUpload:Array<File>;
-    private _editPromotionImageToInsert: File;
+    private _promotionEditImage             : string;
+    private _showImage                      : boolean = true;
+    private _editImage                      : boolean;
+    private _editFilesToUpload              :Array<File>;
+    private _editPromotionImageToInsert     : File;
             
-    private _restaurantsList: Restaurant[];
-    private _promotionRestaurants:string[];
-    private _restaurantCreation: Restaurant[];
+    private _restaurantsList                : Restaurant[];
+    private _promotionRestaurants           :string[];
+    private _restaurantCreation             : Restaurant[];
 
-    private _edition_restaurants: string[];
-    private _nameImageFileEdit: string;
+    private _edition_restaurants            : string[];
+    private _nameImageFileEdit              : string;
     
     /**
      * PromotionEditComponent constructor
      * @param {FormBuilder} _formBuilder
      * @param {TranslateService} _translate
      * @param {MdDialogRef<any>} _dialogRef
+     * @param {NgZone} _ngZone
+     * @param {UserLanguageService} _userLanguageService
      */
-    constructor( private _formBuilder: FormBuilder, private _translate: TranslateService, public _dialogRef: MdDialogRef<any>, private _ngZone: NgZone ){
-        var _userLang = navigator.language.split('-')[0];
+    constructor( private _formBuilder: FormBuilder, 
+                 private _translate: TranslateService, 
+                 public _dialogRef: MdDialogRef<any>, 
+                 private _ngZone: NgZone,
+                 private _userLanguageService: UserLanguageService ){
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
-        _translate.use( _userLang );
         this._editFilesToUpload = [];
         this._editImage = false;
         this._edition_restaurants = [];
