@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from 'ng2-translate';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 
 import template from './go-to-store.component.html';
 import style from './go-to-store.component.scss';
@@ -12,9 +13,15 @@ import style from './go-to-store.component.scss';
 })
 
 export class GoToStoreComponent {
-    public constructor(private translate: TranslateService) 
-    {
-        var userLang = navigator.language.split('-')[0];
-        translate.use(userLang);
+
+    /**
+     * GoToStoreComponent Constructor
+     * @param {TranslateService} translate 
+     * @param {UserLanguageService} _userLanguageService
+     */
+    public constructor( private translate: TranslateService,
+                        public _userLanguageService: UserLanguageService ) {
+        translate.use( this._userLanguageService.getNavigationLanguage() );
+        translate.setDefaultLang( 'en' );
     }
 }

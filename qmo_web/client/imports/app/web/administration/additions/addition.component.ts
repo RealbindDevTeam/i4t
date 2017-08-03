@@ -7,6 +7,7 @@ import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { MdSnackBar } from '@angular/material';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Additions } from '../../../../../../both/collections/administration/addition.collection';
 import { Addition, AdditionRestaurant, AdditionPrice } from '../../../../../../both/models/administration/addition.model';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
@@ -55,16 +56,17 @@ export class AdditionComponent implements OnInit, OnDestroy{
      * @param {TranslateService} _translate
      * @param {NgZone} _ngZone
      * @param {Router} _router
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( public _dialog: MdDialog, 
                  public snackBar: MdSnackBar, 
                  private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
                  private _ngZone: NgZone,
-                 private _router: Router ) {
-        var _userLang = navigator.language.split( '-' )[0];
+                 private _router: Router,
+                 private _userLanguageService: UserLanguageService ) {
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
-        _translate.use( _userLang );
     }
 
     /**

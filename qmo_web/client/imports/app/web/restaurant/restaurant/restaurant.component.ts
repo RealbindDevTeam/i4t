@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { Router, NavigationExtras } from "@angular/router";
+import { Router } from "@angular/router";
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
@@ -29,28 +29,31 @@ import style from './restaurant.component.scss';
 export class RestaurantComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    private restaurants: Observable<Restaurant[]>;
-    private _hours: Observable<Hour[]>;
-    private _restaurantImages: Observable<RestaurantImage[]>;
+    private restaurants             : Observable<Restaurant[]>;
+    private _hours                  : Observable<Hour[]>;
+    private _restaurantImages       : Observable<RestaurantImage[]>;
 
-    private restaurantSub: Subscription;
-    private countriesSub: Subscription;
-    private citiesSub: Subscription;
-    private _hoursSub: Subscription;
-    private _restaurantImagesSub: Subscription;
+    private restaurantSub           : Subscription;
+    private countriesSub            : Subscription;
+    private citiesSub               : Subscription;
+    private _hoursSub               : Subscription;
+    private _restaurantImagesSub    : Subscription;
 
-    private _empty: boolean;
-
-    public _dialogRef: MdDialogRef<any>;
+    public _dialogRef               : MdDialogRef<any>;
 
     /**
      * RestaurantComponent Constructor
      * @param {Router} router 
      * @param {FormBuilder} _formBuilder 
      * @param {TranslateService} translate 
-     * @param {MdDialog} _dialog 
+     * @param {MdDialog} _dialog
+     * @param {NgZone} _ngZone
      */
-    constructor(private router: Router, private _formBuilder: FormBuilder, private translate: TranslateService, public _dialog: MdDialog) {
+    constructor( private router: Router, 
+                 private _formBuilder: FormBuilder, 
+                 private translate: TranslateService, 
+                 public _dialog: MdDialog,
+                 private _ngZone: NgZone ) {
         var userLang = navigator.language.split('-')[0];
         translate.setDefaultLang('en');
         translate.use(userLang);
@@ -60,16 +63,23 @@ export class RestaurantComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit() {
-        this._empty = false;
-        this.restaurants = Restaurants.find({ creation_user: this._user}).zone();
-        this.restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe();
+        this.restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe( () => {
+            this._ngZone.run( () => {
+                this.restaurants = Restaurants.find({ creation_user: this._user}).zone();
+            });
+        });
         this.countriesSub = MeteorObservable.subscribe('countries').subscribe();
         this.citiesSub = MeteorObservable.subscribe('cities').subscribe();
         this._hoursSub = MeteorObservable.subscribe('hours').subscribe(() => {
-            this._hours = Hours.find({});
+            this._ngZone.run( () => {
+                this._hours = Hours.find({});
+            });
         });
-        this._restaurantImagesSub = MeteorObservable.subscribe('restaurantImages', this._user).subscribe();
-        this._restaurantImages = RestaurantImages.find({}).zone();
+        this._restaurantImagesSub = MeteorObservable.subscribe('restaurantImages', this._user).subscribe( () => {
+            this._ngZone.run( () => {
+                this._restaurantImages = RestaurantImages.find({}).zone();
+            });
+        });
     }
 
     /**
@@ -114,12 +124,7 @@ export class RestaurantComponent implements OnInit, OnDestroy {
      * @param {Restaurant} _restaurant 
      */
     openRestaurantEdition(_restaurant: Restaurant) {
-        let navigationExtras: NavigationExtras = {
-            queryParams: {
-                "restaurant": JSON.stringify(_restaurant)
-            }
-        };
-        this.router.navigate(['app/restaurantEdition'], navigationExtras);
+        this.router.navigate( [ 'app/restaurantEdition', JSON.stringify(_restaurant) ], { skipLocationChange: true } );
     }
 
     /**
@@ -130,6 +135,8 @@ export class RestaurantComponent implements OnInit, OnDestroy {
         let _lRestaurantImage: RestaurantImage = RestaurantImages.findOne({ restaurantId: _pRestaurantId });
         if (_lRestaurantImage) {
             return _lRestaurantImage.url
+        } else {
+            return '/images/default-restaurant.png';
         }
     }
 

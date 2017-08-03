@@ -538,7 +538,8 @@
         "MESSAGE": "No items yet register",
         "SELECT_ALL_GARNISH_FOOD": "Select All Garnish Food",
         "SELECT_ALL_ADDITIONS": "Select All Additions",
-        "ITEM_EDITED": "Item Edited Correctly"
+        "ITEM_EDITED": "Item Edited Correctly",
+        "GARNISHFOOD_QUANTITY_MSG": "The number of garnish food must be different from 0"
     },
     "ROLE": {
         "ADMINISTRATOR": "Administrator",
@@ -590,7 +591,7 @@
         "INVOICE_CODE": "Invoice code",
         "TIP_PERCENTAGE": "Tip Percentage",
         "TAX_PERCENTAGE": "Tax Percentage",
-        "UPDATE_IMAGE": "Update Image",
+        "UPDATE_IMAGE": "Update Restaurant Image",
         "ADD_PAYMENTMETHODS_RESTURANT": "Select payment methods accepted by restaurant",
         "SCHEDULE_LABEL": "Schedule",
         "SCHEDULE_INFO": "Hours of operation",
@@ -1092,6 +1093,9 @@
         "UNAVAILABLE": "Unavailable",
         "TABLES": "Tables",
         "FREE": "Free",
-        "BUSY": "Busy"
+        "BUSY": "Busy",
+        "THERE_NOT_RESTAURANTS": "No restaurants yet register",
+        "RESTAURANT_REGISTER": "Restaurant register",
+        "MESSAGE": "Register one to enable this option"
     }
 }

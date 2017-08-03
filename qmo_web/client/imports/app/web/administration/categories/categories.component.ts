@@ -7,6 +7,7 @@ import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
 import { MdSnackBar } from '@angular/material';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Categories } from '../../../../../../both/collections/administration/category.collection';
 import { Category } from '../../../../../../both/models/administration/category.model';
 import { Sections } from '../../../../../../both/collections/administration/section.collection';
@@ -46,16 +47,17 @@ export class CategoryComponent implements OnInit, OnDestroy{
      * @param {MdDialog} _dialog
      * @param {Router} _router
      * @param {NgZone} _ngZone
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( public snackBar: MdSnackBar,
                  public _dialog: MdDialog, 
                  private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
                  private _router: Router,
-                 private _ngZone: NgZone ){
-        var _userLang = navigator.language.split( '-' )[0];
-        _translate.setDefaultLang( 'en' );
-        _translate.use( _userLang );           
+                 private _ngZone: NgZone,
+                 private _userLanguageService: UserLanguageService ){
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' );         
         this._selectedValue = "";
     }
 

@@ -6,6 +6,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
 import { MdSnackBar } from '@angular/material';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Subcategories } from '../../../../../../both/collections/administration/subcategory.collection';
 import { Subcategory } from '../../../../../../both/models/administration/subcategory.model';
 import { Categories } from '../../../../../../both/collections/administration/category.collection';
@@ -46,16 +47,17 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
      * @param {TranslateService} _translate
      * @param {Router} _router
      * @param {NgZone} _ngZone
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( public _dialog: MdDialog, 
                  public snackBar: MdSnackBar,
                  private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
                  private _router: Router,
-                 private _ngZone: NgZone ){
-        var _userLang = navigator.language.split('-')[0];
+                 private _ngZone: NgZone,
+                 private _userLanguageService: UserLanguageService ){
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
-        _translate.use( _userLang );
         this._selectedValue = "";
     }
 

@@ -2,6 +2,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { TranslateService } from 'ng2-translate';
+import { UserLanguageService } from '../../shared/services/user-language.service';
 import { CustomValidators } from '../../../../../both/shared-components/validators/custom-validator';
 import { ResetPasswordClass } from '../../../../../both/shared-components/auth/reset-password.class';
 
@@ -17,8 +18,20 @@ import style from './auth.component.scss';
 
 export class ResetPasswordWebComponent extends ResetPasswordClass{
 
-    constructor(protected router: Router, protected zone: NgZone, protected translate: TranslateService, protected activatedRoute: ActivatedRoute){
-        super(zone, translate, activatedRoute);
+    /**
+     * ResetPasswordWebComponent Component
+     * @param {Router} router 
+     * @param {NgZone} zone 
+     * @param {TranslateService} translate 
+     * @param {ActivatedRoute} activatedRoute
+     * @param {UserLanguageService} _userLanguageService
+     */
+    constructor( protected router: Router, 
+                 protected zone: NgZone, 
+                 protected translate: TranslateService, 
+                 protected activatedRoute: ActivatedRoute,
+                 protected _userLanguageService: UserLanguageService ){
+        super(zone, translate, activatedRoute, _userLanguageService);
     }
     
      showAlert(message : string){

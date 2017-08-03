@@ -3,6 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
+import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Item, ItemImage, ItemPrice } from '../../../../../../../both/models/administration/item.model';
 import { Items, ItemImages } from '../../../../../../../both/collections/administration/item.collection';
 
@@ -25,12 +26,13 @@ export class ItemEnableComponent implements OnInit, OnDestroy {
      * ItemEnableComponent Constructor
      * @param {TranslateService} _translate
      * @param {NgZone} _ngZone
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _translate: TranslateService, 
-                 private _ngZone: NgZone ){
-        var _userLang = navigator.language.split('-')[0];
+                 private _ngZone: NgZone,
+                 private _userLanguageService: UserLanguageService ){
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
-        _translate.use( _userLang );
     }
 
     /**

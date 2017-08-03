@@ -4,4 +4,4 @@ import { Languages } from '../../../../both/collections/settings/language.collec
 /**
  * Meteor publication languages
  */
-Meteor.publish( 'languages', () => Languages.find() );
+Meteor.publish( 'languages', () => Languages.find( { is_active: true } ) );

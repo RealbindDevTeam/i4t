@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { MdSidenav } from '@angular/material';
 import { NavigationService } from '../navigation.service';
-
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Meteor } from 'meteor/meteor';
@@ -32,13 +32,15 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   /**
    * LayoutComponent constructor
-   * @param _navigation 
-   * @param translate 
+   * @param {NavigationService} _navigation 
+   * @param {TranslateService} _translate 
+   * @param {UserLanguageService} _userLanguageService
    */
-  constructor(private _navigation: NavigationService, private translate: TranslateService) {
-        this.userLang = navigator.language.split('-')[0];
-        translate.setDefaultLang('en');
-        translate.use(this.userLang);
+  constructor( private _navigation: NavigationService, 
+               private _translate: TranslateService,
+               private _userLanguageService: UserLanguageService ) {
+                 _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+                 _translate.setDefaultLang( 'en' );
   }
 
   /**
@@ -132,9 +134,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     }, (error) => {
       alert(`Failed to to load menu ${error}`);
     });
-
     this._navigation.setMenuItems(this.menuItemSetup);
-
   }
 
   public get sidenavMode(): string {
@@ -167,7 +167,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   itemNameTraduction(itemName: string): string{
     var wordTraduced: string;
-    this.translate.get(itemName).subscribe((res: string) => {
+    this._translate.get(itemName).subscribe((res: string) => {
       wordTraduced = res; 
     });
     return wordTraduced;

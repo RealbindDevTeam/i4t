@@ -77,6 +77,7 @@ import { VerifyResultComponent } from './payment/payment-history/verify-result/v
 import { CustomerPaymentsHistoryComponent } from './customer/settings/customer-payments-history/customer-payments-history.component';
 import { AdminSignupComponent } from './auth/admin-signup.component';
 import { AlertConfirmComponent } from './general/alert-confirm/alert-confirm.component';
+import { UserLanguageService } from '../shared/services/user-language.service';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -163,5 +164,6 @@ export const MODAL_DIALOG_DECLARATIONS = [
 
 export const SERVICES_DECLARATIONS = [
     OrderNavigationService,
-    FinancialControlService
+    FinancialControlService,
+    UserLanguageService
 ]; 

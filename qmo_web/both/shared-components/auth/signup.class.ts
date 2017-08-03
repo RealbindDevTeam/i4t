@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Accounts } from 'meteor/accounts-base';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
+import { UserLanguageService } from '../../../client/imports/app/shared/services/user-language.service';
 import { CustomValidators } from '../validators/custom-validator';
 import { UserDetails } from '../../collections/auth/user-detail.collection';
 import { UserProfile, UserProfileImage } from '../../models/auth/user-profile.model';
@@ -18,11 +19,19 @@ export class SignupClass implements OnInit {
     userProfile = new UserProfile();
     userProfileImage = new UserProfileImage();
 
-    //constructor(private router: Router, private zone: NgZone, private formBuilder: FormBuilder, private translate: TranslateService) {
-    constructor(protected zone: NgZone, protected formBuilder: FormBuilder, protected translate: TranslateService) {
-        this.userLang = navigator.language.split('-')[0];
-        translate.setDefaultLang('en');
-        translate.use(this.userLang);
+    /**
+     * SignupClass Constructor
+     * @param {NgZone} zone 
+     * @param {FormBuilder} formBuilder 
+     * @param {TranslateService} translate 
+     * @param {UserLanguageService} _userLanguageService 
+     */
+    constructor( protected zone: NgZone, 
+                 protected formBuilder: FormBuilder, 
+                 protected translate: TranslateService,
+                 protected _userLanguageService: UserLanguageService ) {
+                     translate.use( this._userLanguageService.getNavigationLanguage() );
+                     translate.setDefaultLang( 'en' );
     }
 
     ngOnInit() {

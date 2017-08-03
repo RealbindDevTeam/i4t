@@ -7,6 +7,7 @@ import { MdDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
 import { MdSnackBar } from '@angular/material';
+import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Item, ItemImage, ItemImageThumb, ItemRestaurant, ItemPrice } from '../../../../../../../both/models/administration/item.model';
 import { Items, ItemImages, ItemImagesThumbs } from '../../../../../../../both/collections/administration/item.collection';
 import { uploadItemImage } from '../../../../../../../both/methods/administration/item.methods';
@@ -105,15 +106,16 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
      * @param {NgZone} _ngZone
      * @param {MdDialogRef<any>} _dialogRef
      * @param {MdSnackBar} snackBar
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
                  private _ngZone: NgZone, 
                  public _dialogRef: MdDialogRef<any>,
-                 public snackBar: MdSnackBar ){
-        var _userLang = navigator.language.split('-')[0];
+                 public snackBar: MdSnackBar,
+                 private _userLanguageService: UserLanguageService ){
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
-        _translate.use( _userLang );
         this._itemGarnishFood = [];
         this._garnishFoodList = [];
         this._editFilesToUpload = [];

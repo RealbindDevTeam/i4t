@@ -2,7 +2,9 @@ import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
+import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
+import { UserLanguageService } from '../../shared/services/user-language.service';
 import { Restaurant, RestaurantImageThumb } from '../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantImageThumbs } from '../../../../../both/collections/restaurant/restaurant.collection';
 import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
@@ -47,12 +49,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * DashboardComponent Constructor
    * @param {TranslateService} _translate 
    * @param {NgZone} _ngZone 
+   * @param {Router} _router
+   * @param {UserLanguageService} _userLanguageService
    */
   constructor( private _translate: TranslateService, 
-               private _ngZone: NgZone ){
-    var _userLang = navigator.language.split( '-' )[0];
-    _translate.setDefaultLang( 'en' );
-    _translate.use( _userLang );
+               private _ngZone: NgZone,
+               private _router: Router,
+               private _userLanguageService: UserLanguageService ){
+                 _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+                 _translate.setDefaultLang( 'en' );
   }
 
   /**
@@ -211,6 +216,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if( _lCurrency ){
       return _lCurrency.code;
     }
+  }
+
+  /**
+   * Go to add new Restaurant
+   */
+  goToAddRestaurant(){
+      this._router.navigate(['/app/restaurantRegister']);
   }
 
   /**

@@ -11,57 +11,58 @@
                         </md-card-title-group>
                         <md-card-content>
                             <div style="margin-top: 3%;">
-                                <md-select formControlName="country" placeholder="{{'RESTAURANT_EDITION.SELECT_COUNTRY' | translate}}" style="width: 45%;"
+                                <md-select formControlName="country" placeholder="{{'RESTAURANT_EDITION.SELECT_COUNTRY' | translate}}" style="width: 48%;"
                                     [(ngModel)]="_selectedCountryValue">
                                     <md-option *ngFor="let country of _countries | async" (click)="changeCountry(country._id);" value="{{country._id}}" ng-selected="_restaurantCountryValue === country._id">{{country.name | translate}}</md-option>
                                 </md-select>
-                                <md-select formControlName="city" placeholder="{{'RESTAURANT_EDITION.SELECT_CITY' | translate}}" style="width: 45%;margin-left: 2%;"
+                                <md-select formControlName="city" placeholder="{{'RESTAURANT_EDITION.SELECT_CITY' | translate}}" style="width: 48%;margin-left: 2%;"
                                     [(ngModel)]="_selectedCityValue">
                                     <md-option *ngFor="let city of _cities | async" (click)="changeCity(city._id);" value="{{city._id}}" ng-selected="_restaurantCityValue === city._id">{{city.name}}</md-option>
                                 </md-select>
                             </div>
                             <div style="margin-top: 1%;">
-                                <md-input-container style="width: 45%">
+                                <md-input-container style="width: 48%">
                                     <textarea mdInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="70" #inputName></textarea>
                                     <md-hint align="end">{{inputName.value.length}} / 70</md-hint>
                                 </md-input-container>
-                                <md-input-container style="width: 45%;margin-left: 2%;">
+                                <md-input-container style="width: 48%;margin-left: 2%;">
                                     <textarea mdInput required formControlName="address" placeholder="{{'RESTAURANT_EDITION.ADDRESS' | translate}}" minlength="1"
                                         maxlength="90" #inputAddress></textarea>
                                     <md-hint align="end">{{inputAddress.value.length}} / 90</md-hint>
                                 </md-input-container>
                             </div>
                             <div style="margin-top: 1%;">
-                                <div style="width: 30%; display: inline-block;text-align: center;">
+                                <div style="width: 48%; display: inline-block;text-align: left;">
                                     <p style="font-weight: bold;">{{'RESTAURANT_REGISTER.CURRENCY_ACCEPTED' | translate}}: {{_restaurantCurrency}}</p>
                                 </div>
-                                <md-input-container style="width: 30%">
+                                <md-input-container style="width: 48%;margin-left: 2%;">
                                     <input mdInput required formControlName="phone" type="tel" placeholder="{{'RESTAURANT_EDITION.PHONE' | translate}}" minlength="1"
                                         maxlength="30" #inputPhone>
                                     <div mdPrefix>{{_countryIndicative}}&nbsp;</div>
                                     <md-hint align="end">{{inputPhone.value.length}} / 30</md-hint>
                                 </md-input-container>
-                                <md-input-container style="width: 30%;margin-left: 2%;">
+                            </div>
+                            <div>
+                                <md-input-container style="width: 48%">
                                     <input mdInput formControlName="webPage" placeholder="{{'RESTAURANT_EDITION.WEBPAGE' | translate}}" minlength="1" maxlength="40"
                                         #inputWebpage>
                                     <md-hint align="end">{{inputWebpage.value.length}} / 40</md-hint>
                                 </md-input-container>
-                            </div>
-                            <div style="margin-top: 1%;">
-                                <md-input-container style="width: 35%">
+                                <md-input-container style="width: 48%;margin-left: 2%;">
                                     <input mdInput formControlName="email" type="email" placeholder="{{'RESTAURANT_EDITION.EMAIL' | translate}}" minlength="1"
                                         maxlength="40" #inputEmail>
                                     <md-hint align="end">{{inputEmail.value.length}} / 40</md-hint>
                                 </md-input-container>
-                                <div style="display: inline-block;width: 50%;margin-left: 2%;text-align: center;">
+                            </div>
+                            <div style="margin-top: 1%;">
+                                <div style="display: inline-block;width: 50%;text-align: left;">
                                     <p style="display: inline-block;">{{'RESTAURANT_EDITION.UPDATE_IMAGE' | translate}}</p>
                                     <input formControlName="editImage" accept=".png, .jpg, .jpeg" (change)="onChangeImage($event)" style="display: none" type="file"
-                                        name="file-1[]" id="file-1" class="inputfile inputfile-1" data-multiple-caption="{count} files selected"
-                                    />
-                                    <label for="file-1"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg>
-                                    <span *ngIf="!_createImage">{{'CHOOSE_FILE' | translate}}&hellip;</span>
-                                    <span *ngIf="_createImage">{{_nameImageFileEdit}}&hellip;</span>
-                                </label>
+                                        name="file-1[]" id="file-1" class="inputfile inputfile-1" data-multiple-caption="{count} files selected"/>
+                                    <label for="file-1" style="width: 40%;text-align: center;"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg>
+                                        <span *ngIf="!_editImage">{{'CHOOSE_FILE' | translate}}&hellip;</span>
+                                        <span *ngIf="_editImage">{{_nameImageFileEdit}}&hellip;</span>
+                                    </label>
                                 </div>
                             </div>
                         </md-card-content>

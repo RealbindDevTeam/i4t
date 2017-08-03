@@ -4,6 +4,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { PageScrollService, PageScrollInstance, PageScrollConfig } from 'ng2-page-scroll';
 import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
+import { UserLanguageService } from '../../shared/services/user-language.service';
 
 import { Language } from '../../../../../both/models/settings/language.model';
 import { Languages } from '../../../../../both/collections/settings/language.collection';
@@ -21,15 +22,22 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     private _languages : Observable<Language[]>;
     private _subscription : Subscription;
 
-    public constructor(@Inject(DOCUMENT) private document: Document,
-                       private pageScrollService: PageScrollService,
-                       private translate: TranslateService) 
-    {
-        PageScrollConfig.defaultScrollOffset = 64;
-        PageScrollConfig.defaultDuration = 900;
+    /**
+     * LandingPageComponent Constructor
+     * @param {Document} document 
+     * @param {PageScrollService} pageScrollService 
+     * @param {TranslateService} translate 
+     * @param {UserLanguageService} _userLanguageService 
+     */
+    constructor( @Inject(DOCUMENT) private document: Document,
+                 private pageScrollService: PageScrollService,
+                 private translate: TranslateService, 
+                 private _userLanguageService: UserLanguageService ) {
+                    PageScrollConfig.defaultScrollOffset = 64;
+                    PageScrollConfig.defaultDuration = 900; 
         
-        var userLang = navigator.language.split('-')[0];
-        translate.use(userLang);
+                    translate.use( this._userLanguageService.getNavigationLanguage() );
+                    translate.setDefaultLang( 'en' );
     }
 
     ngOnDestroy(){
