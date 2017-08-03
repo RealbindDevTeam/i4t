@@ -16,6 +16,7 @@ import { UserProfile, UserProfileImage } from '../../../../../both/models/auth/u
 import template from './admin-signup.component.html';
 import style from './auth.component.scss';
 
+
 @Component({
     selector: 'admin-signup',
     template,
@@ -24,19 +25,19 @@ import style from './auth.component.scss';
 
 export class AdminSignupComponent implements OnInit, OnDestroy {
 
-    private _countrySub             : Subscription;
-    private _countries              : Observable<Country[]>;
-    private _citySub                : Subscription;
-    private _cities                 : Observable<City[]>;
-    private _selectedCountry        : string;
-    private _selectedCity           : string = "";
-    private _showOtherCity          : boolean = false;
+    private _countrySub: Subscription;
+    private _countries: Observable<Country[]>;
+    private _citySub: Subscription;
+    private _cities: Observable<City[]>;
+    private _selectedCountry: string;
+    private _selectedCity: string = "";
+    private _showOtherCity: boolean = false;
 
-    private signupForm              : FormGroup;
-    private error                   : string;
-    private showLoginPassword       : boolean = true;
-    private showConfirmError        : boolean = false;
-    private userLang                : string;
+    private signupForm: FormGroup;
+    private error: string;
+    private showLoginPassword: boolean = true;
+    private showConfirmError: boolean = false;
+    private userLang: string;
     private userProfile = new UserProfile();
     private userProfileImage = new UserProfileImage();
 
@@ -49,14 +50,14 @@ export class AdminSignupComponent implements OnInit, OnDestroy {
      * @param {NgZone} _ngZone 
      * @param {UserLanguageService} _userLanguageService 
      */
-    constructor( protected router: Router, 
-                 public zone: NgZone, 
-                 public formBuilder: FormBuilder, 
-                 public translate: TranslateService, 
-                 private _ngZone: NgZone, 
-                 public _userLanguageService: UserLanguageService ) {
-        translate.use( this._userLanguageService.getNavigationLanguage() );
-        translate.setDefaultLang( 'en' );
+    constructor(protected router: Router,
+        public zone: NgZone,
+        public formBuilder: FormBuilder,
+        public translate: TranslateService,
+        private _ngZone: NgZone,
+        public _userLanguageService: UserLanguageService) {
+        translate.use(this._userLanguageService.getNavigationLanguage());
+        translate.setDefaultLang('en');
     }
 
     ngOnInit() {
