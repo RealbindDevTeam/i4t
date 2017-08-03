@@ -47,9 +47,6 @@ export class SigninWebComponent extends SigninClass {
     }
 
     openDialogForgotPassword(){
-        /*let config = new MdDialogConfig();
-        config.viewContainerRef = this.viewContainerRef;*/
-        
         this.mdDialogRef = this.mdDialog.open(RecoverWebComponent, {
             disableClose : true,
         });

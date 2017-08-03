@@ -18,7 +18,8 @@ import style from './subcategories-edit.component.scss';
 @Component({
     selector: 'subcategory-edit',
     template,
-    styles: [ style ]
+    styles: [ style ],
+    providers:[ UserLanguageService ]
 })
 export class SubcategoryEditComponent implements OnInit, OnDestroy {
 

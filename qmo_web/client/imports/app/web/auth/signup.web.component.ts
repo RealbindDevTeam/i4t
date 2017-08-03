@@ -17,7 +17,6 @@ import { UserProfile, UserProfileImage } from '../../../../../both/models/auth/u
     template,
     styles: [style]
 })
-
 export class SignupWebComponent extends SignupClass {
 
     /**

@@ -18,7 +18,8 @@ import style from './categories-edit.component.scss';
 @Component({
     selector: 'categories-edit',
     template,
-    styles: [ style ]
+    styles: [ style ],
+    providers:[ UserLanguageService ]
 })
 export class CategoriesEditComponent implements OnInit, OnDestroy {
 

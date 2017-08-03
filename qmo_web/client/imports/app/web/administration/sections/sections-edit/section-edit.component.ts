@@ -18,7 +18,8 @@ import style from './section-edit.component.scss';
 @Component({
     selector: 'section-edit',
     template,
-    styles: [ style ]
+    styles: [ style ],
+    providers:[ UserLanguageService ]
 })
 export class SectionEditComponent implements OnInit, OnDestroy {
 

@@ -6,7 +6,7 @@ import { MdDialogRef } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
 import { MdSnackBar } from '@angular/material';
-import { UserLanguageService } from '../../../shared/services/user-language.service';
+import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { GarnishFoodCol } from '../../../../../../../both/collections/administration/garnish-food.collection';
 import { GarnishFood, GarnishFoodRestaurant, GarnishFoodPrice } from '../../../../../../../both/models/administration/garnish-food.model';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
@@ -22,7 +22,8 @@ import style from './garnish-food-edit.component.scss';
 @Component({
     selector: 'garnishFood-edit',
     template,
-    styles: [ style ]
+    styles: [ style ],
+    providers:[ UserLanguageService ]
 })
 export class GarnishFoodEditComponent implements OnInit, OnDestroy {
 

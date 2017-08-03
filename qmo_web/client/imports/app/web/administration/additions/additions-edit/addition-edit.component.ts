@@ -22,7 +22,8 @@ import style from './addition-edit.component.scss';
 @Component({
     selector: 'addition-edit',
     template,
-    styles: [ style ]
+    styles: [ style ],
+    providers:[ UserLanguageService ]
 })
 export class AdditionEditComponent implements OnInit, OnDestroy {
     

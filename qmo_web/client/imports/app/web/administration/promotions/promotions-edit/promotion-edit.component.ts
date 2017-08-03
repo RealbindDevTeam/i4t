@@ -18,7 +18,8 @@ import style from './promotion-edit.component.scss';
 @Component({
     selector: 'promotion-edit',
     template,
-    styles: [ style ]
+    styles: [ style ],
+    providers:[ UserLanguageService ]
 })
 export class PromotionEditComponent implements OnInit, OnDestroy {
 

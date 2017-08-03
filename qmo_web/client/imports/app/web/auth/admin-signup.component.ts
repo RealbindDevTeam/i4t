@@ -5,7 +5,7 @@ import { TranslateService } from 'ng2-translate';
 import { CustomValidators } from '../../../../../both/shared-components/validators/custom-validator';
 import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
-
+import { UserLanguageService } from '../../shared/services/user-language.service';
 import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
 import { Countries } from '../../../../../both/collections/settings/country.collection';
 import { Country } from '../../../../../both/models/settings/country.model';
@@ -24,26 +24,39 @@ import style from './auth.component.scss';
 
 export class AdminSignupComponent implements OnInit, OnDestroy {
 
-    private _countrySub: Subscription;
-    private _countries: Observable<Country[]>;
-    private _citySub: Subscription;
-    private _cities: Observable<City[]>;
-    private _selectedCountry: string;
-    private _selectedCity: string = "";
-    private _showOtherCity: boolean = false;
+    private _countrySub             : Subscription;
+    private _countries              : Observable<Country[]>;
+    private _citySub                : Subscription;
+    private _cities                 : Observable<City[]>;
+    private _selectedCountry        : string;
+    private _selectedCity           : string = "";
+    private _showOtherCity          : boolean = false;
 
-    private signupForm: FormGroup;
-    private error: string;
-    private showLoginPassword: boolean = true;
-    private showConfirmError: boolean = false;
-    private userLang: string;
+    private signupForm              : FormGroup;
+    private error                   : string;
+    private showLoginPassword       : boolean = true;
+    private showConfirmError        : boolean = false;
+    private userLang                : string;
     private userProfile = new UserProfile();
     private userProfileImage = new UserProfileImage();
 
-    constructor(protected router: Router, public zone: NgZone, public formBuilder: FormBuilder, public translate: TranslateService, private _ngZone: NgZone, ) {
-        this.userLang = navigator.language.split('-')[0];
-        translate.setDefaultLang('en');
-        translate.use(this.userLang);
+    /**
+     * AdminSignupComponent Constructor
+     * @param {Router} router 
+     * @param {NgZone} zone 
+     * @param {FormBuilder} formBuilder 
+     * @param {TranslateService} translate 
+     * @param {NgZone} _ngZone 
+     * @param {UserLanguageService} _userLanguageService 
+     */
+    constructor( protected router: Router, 
+                 public zone: NgZone, 
+                 public formBuilder: FormBuilder, 
+                 public translate: TranslateService, 
+                 private _ngZone: NgZone, 
+                 public _userLanguageService: UserLanguageService ) {
+        translate.use( this._userLanguageService.getNavigationLanguage() );
+        translate.setDefaultLang( 'en' );
     }
 
     ngOnInit() {
