@@ -18,7 +18,6 @@ export class PayuPaymenteService {
         //'Content-Length': 'length',
     });
 
-
     constructor(private http: Http) { }
 
     /**

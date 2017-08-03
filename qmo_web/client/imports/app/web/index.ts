@@ -76,6 +76,7 @@ import { TrnResponseConfirmComponent } from './payment/payu-payment-form/transac
 import { VerifyResultComponent } from './payment/payment-history/verify-result/verify-result.component';
 import { CustomerPaymentsHistoryComponent } from './customer/settings/customer-payments-history/customer-payments-history.component';
 import { AdminSignupComponent } from './auth/admin-signup.component';
+import { AlertConfirmComponent } from './general/alert-confirm/alert-confirm.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -156,7 +157,8 @@ export const MODAL_DIALOG_DECLARATIONS = [
     SendOrderConfirmComponent,
     CcPaymentConfirmComponent,
     TrnResponseConfirmComponent,
-    VerifyResultComponent
+    VerifyResultComponent,
+    AlertConfirmComponent
 ];
 
 export const SERVICES_DECLARATIONS = [

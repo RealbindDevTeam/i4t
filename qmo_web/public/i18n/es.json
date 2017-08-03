@@ -93,7 +93,8 @@
         "TITLE": "Cambiar contraseña",
         "BTN_RESET": "Cambiar",
         "EMAIL_SEND": "Se ha enviado un mensaje a tu correo electronico para cambiar la contraseña",
-        "SUCCESS": "Tu contraseña ha sido cambiada, ahora puedes ingresar desde la aplicación móvil o la página web"
+        "SUCCESS": "Tu contraseña ha sido cambiada, ahora puedes ingresar desde la aplicación móvil o la página web",
+        "SLOGAN": "Cambio de contraseña"
     },
     "SECTIONS": {
         "SECTION_CREATION": "Creación de Secciones",
