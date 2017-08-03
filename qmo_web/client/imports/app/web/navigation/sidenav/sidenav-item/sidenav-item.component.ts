@@ -6,6 +6,7 @@ import { NavigationService } from '../../navigation.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { TranslateService } from 'ng2-translate';
+import { UserLanguageService } from '../../../../shared/services/user-language.service';
 
 @Component({
   selector : 'c-sidenav-item',
@@ -56,13 +57,21 @@ export class SidenavItemComponent implements AfterViewInit, OnDestroy {
 
   userLang: string;
 
+  /**
+   * SidenavItemComponent Constructor
+   * @param {NavigationService} _navigation
+   * @param {Router} _router 
+   * @param {ActivatedRoute} _activatedRoute 
+   * @param {TranslateService} _translate 
+   * @param {UserLanguageService} _userLanguageService 
+   */
   constructor( private _navigation: NavigationService, 
                private _router: Router, 
                private _activatedRoute: ActivatedRoute,  
-               private translate: TranslateService ) {
-        this.userLang = navigator.language.split('-')[0];
-        translate.setDefaultLang('en');
-        translate.use(this.userLang);
+               private _translate: TranslateService,
+               private _userLanguageService: UserLanguageService ) {
+                 _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+                 _translate.setDefaultLang( 'en' );
   }
 
   ngAfterViewInit() {

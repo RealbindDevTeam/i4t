@@ -7,6 +7,7 @@ import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
 import { MdSnackBar } from '@angular/material';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Sections } from '../../../../../../both/collections/administration/section.collection';
 import { Section } from '../../../../../../both/models/administration/section.model';
 import { SectionEditComponent } from './sections-edit/section-edit.component';
@@ -38,20 +39,23 @@ export class SectionComponent implements OnInit, OnDestroy {
 
     /**
      * SectionComponent constructor
+     * @param {MdSnackBar} snackBar
+     * @param {MdDialog} _dialog
      * @param {FormBuilder} _formBuilder
      * @param {TranslateService} _translate
-     * @param {MdDialog} _dialog
-     * @param {ViewContainerRef} _viewContainerRef
+     * @param {NgZone} _ngZone
+     * @param {Router} _router
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( public snackBar: MdSnackBar,
                  public _dialog: MdDialog, 
                  private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
                  private _ngZone: NgZone, 
-                 private _router: Router ){
-        var userLang = navigator.language.split('-')[0];
-        _translate.setDefaultLang('en');
-        _translate.use(userLang);
+                 private _router: Router,
+                 private _userLanguageService: UserLanguageService ){
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' );
     }
 
     /**

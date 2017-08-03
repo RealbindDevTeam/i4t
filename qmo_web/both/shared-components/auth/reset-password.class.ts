@@ -4,6 +4,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { TranslateService } from 'ng2-translate';
 import { ActivatedRoute, Params } from "@angular/router";
 import { Meteor } from 'meteor/meteor';
+import { UserLanguageService } from '../../../client/imports/app/shared/services/user-language.service';
 
 import { CustomValidators } from '../validators/custom-validator';
 
@@ -14,10 +15,19 @@ export class ResetPasswordClass {
     tokenId: string;
     showConfirmError: boolean = false;
 
-    constructor(protected zone: NgZone, protected translate: TranslateService, protected route: ActivatedRoute) {
-        this.userLang = navigator.language.split('-')[0];
-        translate.setDefaultLang('en');
-        translate.use(this.userLang);
+    /**
+     * ResetPasswordClass Constructor
+     * @param {NgZone} zone 
+     * @param {TranslateService} translate 
+     * @param {ActivatedRoute} route
+     * @param {UserLanguageService} _userLanguageService 
+     */
+    constructor( protected zone: NgZone, 
+                 protected translate: TranslateService, 
+                 protected route: ActivatedRoute, 
+                 protected _userLanguageService: UserLanguageService) {
+        translate.use( this._userLanguageService.getNavigationLanguage() );
+        translate.setDefaultLang( 'en' );
     }
 
     ngOnInit() {

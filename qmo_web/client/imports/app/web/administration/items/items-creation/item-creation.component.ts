@@ -5,6 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
+import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Item, ItemRestaurant, ItemPrice } from '../../../../../../../both/models/administration/item.model';
 import { Items } from '../../../../../../../both/collections/administration/item.collection';
 import { uploadItemImage } from '../../../../../../../both/methods/administration/item.methods';
@@ -88,14 +89,15 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate
      * @param {NgZone} _ngZone
      * @param {Router} _router
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
                  private _ngZone: NgZone, 
-                 private _router: Router ){
-        var _userLang = navigator.language.split('-')[0];
-        _translate.setDefaultLang( 'en' );
-        _translate.use( _userLang ); 
+                 private _router: Router,
+                private _userLanguageService: UserLanguageService ){
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' ); 
         this._selectedSectionValue = "";
         this._selectedCategoryValue = "";
         this._selectedSubcategoryValue = "";
@@ -209,10 +211,32 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * This fuction allow wizard to create restaurant
+     * This fuction allow wizard to create item
      */
     canFinish(): boolean {
-        return this._itemForm.valid;
+        let arrGarnishFood: any[] = Object.keys(this._itemForm.value.garnishFood);
+        let _lGarnish: string[] = [];
+        let _lGarnishQuantOk: boolean = false;
+
+        arrGarnishFood.forEach( (gar) => {
+            if ( this._itemForm.value.garnishFood[ gar ] ){
+                _lGarnish.push(gar);
+            }
+        });
+        if( _lGarnish.length > 0 ){
+            if( this._itemForm.value.garnishFoodQuantity === '0' || this._itemForm.value.garnishFoodQuantity === 0 ){
+                _lGarnishQuantOk = false;
+            } else {            
+                _lGarnishQuantOk = true;
+            } 
+        } else{                      
+            _lGarnishQuantOk = true;
+        }
+        if( this._itemForm.valid && _lGarnishQuantOk ){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

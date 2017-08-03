@@ -7,6 +7,7 @@ import { TranslateService } from 'ng2-translate';
 import { NavigationService } from '../navigation.service';
 import { SearchService } from '../../../shared/services/search.service';
 import { StringUtils } from '../../../shared/utils/string-utils';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Users } from '../../../../../../both/collections/auth/user.collection';
 import { User } from '../../../../../../both/models/auth/user.model';
 
@@ -42,11 +43,23 @@ export class TopnavComponent implements OnInit, OnDestroy {
   private _userName: string;
   private _imageProfile: string;
 
-
-  constructor(private _navigation: NavigationService, private _search: SearchService, private _title: Title, private _router: Router, private _translate: TranslateService) {
-      var _userLang = navigator.language.split('-')[0];
-      _translate.setDefaultLang('en');
-      _translate.use(_userLang);
+  /**
+   * TopnavComponent Constructor
+   * @param {NavigationService} _navigation 
+   * @param {SearchService} _search 
+   * @param {Title} _title 
+   * @param {Router} _router 
+   * @param {TranslateService} _translate 
+   * @param {UserLanguageService} _userLanguageService 
+   */
+  constructor( private _navigation: NavigationService, 
+               private _search: SearchService, 
+               private _title: Title, 
+               private _router: Router, 
+               private _translate: TranslateService,
+               private _userLanguageService: UserLanguageService ) {
+                 _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+                 _translate.setDefaultLang( 'en' );
   }
 
   ngOnInit() {
