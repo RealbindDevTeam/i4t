@@ -462,6 +462,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 });
             },
             error => {
+                //Response with status: 0  for URL: null
                 alert(error);
             }
         );

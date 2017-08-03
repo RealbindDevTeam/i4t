@@ -47,6 +47,7 @@ import { PaymentHistoryComponent } from './web/payment/payment-history/payment-h
 import { ReactivateRestaurantComponent } from './web/payment/reactivate-restaurant/reactivate-restaurant.component';
 import { ColombiaPayInfoComponent } from './web/customer/payments/country-payment/colombia-payment/colombia-pay-info/colombia-pay-info.component';
 import { CustomerPaymentsHistoryComponent } from './web/customer/settings/customer-payments-history/customer-payments-history.component';
+import { AdminSignupComponent } from './web/auth/admin-signup.component';
 
 export const routes: Route[] = [
     {
@@ -89,6 +90,7 @@ export const routes: Route[] = [
     { path: '', component: LandingPageComponent },
     { path: 'signin', component: SigninWebComponent },
     { path: 'signup', component: SignupWebComponent },
+    { path: 'admin-signup', component: AdminSignupComponent },
     { path: 'reset-password/:tk', component: ResetPasswordWebComponent },
     { path: 'go-to-store', component: GoToStoreComponent },
     { path: '404', component: NotFoundWebComponent },
