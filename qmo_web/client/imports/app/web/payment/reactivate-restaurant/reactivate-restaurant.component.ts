@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
-
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Currencies } from '../../../../../../both/collections/general/currency.collection';
@@ -24,28 +24,34 @@ import style from './reactivate-restaurant.component.scss';
     template,
     styles: [style]
 })
-
 export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
 
-    private _currencies: Observable<Currency[]>;
-    private _currencySub: Subscription;
-    private _countrySub: Subscription;
-    private _restaurants: Observable<Restaurant[]>;
-    private _restaurantSub: Subscription;
-    private _parameterSub: Subscription;
-    private _tables: Observable<Table[]>;
-    private _tableSub: Subscription;
-    private _currentDate: Date;
-    private _firstMonthDay: Date;
-    private _lastMonthDay: Date;
-    private _firstNextMonthDay: Date;
+    private _currencies             : Observable<Currency[]>;
+    private _currencySub            : Subscription;
+    private _countrySub             : Subscription;
+    private _restaurants            : Observable<Restaurant[]>;
+    private _restaurantSub          : Subscription;
+    private _parameterSub           : Subscription;
+    private _tables                 : Observable<Table[]>;
+    private _tableSub               : Subscription;
+    private _currentDate            : Date;
+    private _firstMonthDay          : Date;
+    private _lastMonthDay           : Date;
+    private _firstNextMonthDay      : Date;
 
-    constructor(private _router: Router,
-        private _formBuilder: FormBuilder,
-        private _translate: TranslateService) {
-        var userLang = navigator.language.split('-')[0];
-        _translate.setDefaultLang('en');
-        _translate.use(userLang);
+    /**
+     * ReactivateRestaurantComponent Constructor
+     * @param {Router} _router 
+     * @param {FormBuilder} _formBuilder 
+     * @param {TranslateService} _translate 
+     * @param {UserLanguageService} _userLanguageService 
+     */
+    constructor( private _router: Router,
+                 private _formBuilder: FormBuilder,
+                 private _translate: TranslateService,
+                 private _userLanguageService: UserLanguageService ) {
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' );
     }
 
     ngOnInit() {

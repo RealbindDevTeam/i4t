@@ -7,7 +7,7 @@ import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
 import { getPayuMerchantInfo } from '../../../../../../both/methods/general/parameter.methods';
 import { VerifyResultComponent } from './verify-result/verify-result.component';
-
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { PaymentsHistory } from '../../../../../../both/collections/payment/payment-history.collection';
 import { PaymentHistory } from '../../../../../../both/models/payment/payment-history.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
@@ -28,34 +28,42 @@ import style from './payment-history.component.scss';
     template,
     styles: [style]
 })
-
 export class PaymentHistoryComponent implements OnInit, OnDestroy {
 
-    private _historyPaymentSub: Subscription;
-    private _historyPayments: Observable<PaymentHistory[]>;
-    private _historyPayments2: Observable<PaymentHistory[]>;
-    private _restaurantSub: Subscription;
-    private _restaurants: Observable<Restaurant[]>;
-    private _paymentTransactionSub: Subscription;
-    private _paymentTransactions: Observable<PaymentTransaction[]>;
-    private _selectedMonth: string;
-    private _selectedYear: string;
-    private _yearsArray: any[];
-    private _monthsArray: any[];
-    private _currentDate: Date;
-    private _currentYear: number;
-    private _activateMonth: boolean;
-    private _loading: boolean;
-    private _mdDialogRef: MdDialogRef<any>;
+    private _historyPaymentSub          : Subscription;
+    private _historyPayments            : Observable<PaymentHistory[]>;
+    private _historyPayments2           : Observable<PaymentHistory[]>;
+    private _restaurantSub              : Subscription;
+    private _restaurants                : Observable<Restaurant[]>;
+    private _paymentTransactionSub      : Subscription;
+    private _paymentTransactions        : Observable<PaymentTransaction[]>;
+    private _selectedMonth              : string;
+    private _selectedYear               : string;
+    private _yearsArray                 : any[];
+    private _monthsArray                : any[];
+    private _currentDate                : Date;
+    private _currentYear                : number;
+    private _activateMonth              : boolean;
+    private _loading                    : boolean;
+    private _mdDialogRef                : MdDialogRef<any>;
 
-    constructor(private _router: Router,
-        private _formBuilder: FormBuilder,
-        private _translate: TranslateService,
-        public _mdDialog: MdDialog,
-        private _payuPaymentService: PayuPaymenteService) {
-        var userLang = navigator.language.split('-')[0];
-        _translate.setDefaultLang('en');
-        _translate.use(userLang);
+    /**
+     * PaymentHistoryComponent Constructor
+     * @param {Router} _router 
+     * @param {FormBuilder} _formBuilder 
+     * @param {TranslateService} _translate 
+     * @param {MdDialog} _mdDialog 
+     * @param {PayuPaymenteService} _payuPaymentService 
+     * @param {UserLanguageService} _userLanguageService 
+     */
+    constructor( private _router: Router,
+                 private _formBuilder: FormBuilder,
+                 private _translate: TranslateService,
+                 public _mdDialog: MdDialog,
+                 private _payuPaymentService: PayuPaymenteService,
+                 private _userLanguageService: UserLanguageService ) {
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' );
 
         this._currentDate = new Date();
         this._activateMonth = true;

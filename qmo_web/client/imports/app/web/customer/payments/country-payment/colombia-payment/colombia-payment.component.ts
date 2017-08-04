@@ -4,6 +4,7 @@ import { TranslateService } from 'ng2-translate';
 import { Subscription, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { MdSnackBar } from '@angular/material';
+import { UserLanguageService } from '../../../../../shared/services/user-language.service';
 import { Orders } from "../../../../../../../../both/collections/restaurant/order.collection";
 import { Order, OrderTranslateInfo } from '../../../../../../../../both/models/restaurant/order.model';
 import { Currency } from '../../../../../../../../both/models/general/currency.model';
@@ -76,14 +77,15 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
      * @param {NgZone} _ngZone 
      * @param {Router} _router
      * @param {MdSnackBar} _snackBar
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _translate: TranslateService, 
                  private _ngZone: NgZone,
                  private _router: Router,
-                 public _snackBar: MdSnackBar ) {
-        var _userLang = navigator.language.split( '-' )[0];
+                 public _snackBar: MdSnackBar,
+                 private _userLanguageService: UserLanguageService ) {
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
-        _translate.use( _userLang );
     }
 
     /**

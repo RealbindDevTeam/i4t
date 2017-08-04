@@ -4,6 +4,7 @@ import { TranslateService } from 'ng2-translate';
 import { MdDialogRef } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
+import { UserLanguageService } from '../../../../../shared/services/user-language.service';
 import { Order, OrderTranslateInfo } from '../../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../../both/collections/restaurant/order.collection';
 import { Item, ItemImage, ItemImageThumb } from '../../../../../../../../both/models/administration/item.model';
@@ -19,7 +20,8 @@ import style from './order-to-translate.component.scss';
 @Component({
     selector: 'order-to-translate',
     template,
-    styles: [ style ]
+    styles: [ style ],
+    providers: [ UserLanguageService ]
 })
 export class OrderToTranslateComponent implements OnInit, OnDestroy {
 
@@ -46,13 +48,14 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
      * @param {TranslateService} translate
      * @param {MdDialogRef<any>} _dialogRef
      * @param {NgZone} _ngZone
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _translate: TranslateService, 
                  public _dialogRef: MdDialogRef<any>, 
-                 private _ngZone: NgZone ){
-        var userLang = navigator.language.split('-')[0];
-        _translate.setDefaultLang('en');
-        _translate.use(userLang);  
+                 private _ngZone: NgZone,
+                 private _userLanguageService: UserLanguageService ){
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' ); 
     }
 
     /**

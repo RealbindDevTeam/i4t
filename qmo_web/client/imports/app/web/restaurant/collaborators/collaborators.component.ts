@@ -5,7 +5,7 @@ import { MdDialogRef, MdDialog } from '@angular/material';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
-
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { Role } from '../../../../../../both/models/auth/role.model';
@@ -26,33 +26,34 @@ import style from './collaborators.component.scss';
 })
 export class CollaboratorsComponent implements OnInit, OnDestroy{
 
-    private _restaurants : Observable<Restaurant[]>;
-    private _userDetails : Observable<UserDetail[]>;
-    private _users: Observable<User[]>;
-    private _roles : Observable<Role[]>;
-    private _restaurantSub : Subscription;
-    private _userDetailsSub : Subscription;
-    private _roleSub : Subscription;
-    private _usersSub : Subscription;
-    private _form : FormGroup;
+    private _restaurants            : Observable<Restaurant[]>;
+    private _userDetails            : Observable<UserDetail[]>;
+    private _users                  : Observable<User[]>;
+    private _roles                  : Observable<Role[]>;
+    private _restaurantSub          : Subscription;
+    private _userDetailsSub         : Subscription;
+    private _roleSub                : Subscription;
+    private _usersSub               : Subscription;
+    private _form                   : FormGroup;
 
-    public _dialogRef: MdDialogRef<any>;
+    public _dialogRef               : MdDialogRef<any>;
 
     /**
-     * CollaboratorsComponent contructor
-     * @param router 
-     * @param _formBuilder 
-     * @param translate 
-     * @param _dialog 
+     * CollaboratorsComponent Constructor
+     * @param {Router} _router 
+     * @param {FormBuilder} _formBuilder 
+     * @param {TranslateService} _translate 
+     * @param {MdDialog} _dialog 
+     * @param {UserLanguageService} _userLanguageService 
      */
     constructor( private _router: Router, 
                  private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
-                 public _dialog: MdDialog )
+                 public _dialog: MdDialog,
+                 private _userLanguageService: UserLanguageService )
     {
-        var userLang = navigator.language.split('-')[0];
-        _translate.setDefaultLang('en');
-        _translate.use(userLang);
+         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' );
     } 
 
     /**

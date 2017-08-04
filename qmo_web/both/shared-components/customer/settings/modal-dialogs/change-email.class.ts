@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Accounts } from 'meteor/accounts-base';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
+import { UserLanguageService } from '../../../../../client/imports/app/shared/services/user-language.service';
 
 import { CustomValidators } from '../../../validators/custom-validator';
 
@@ -11,7 +12,18 @@ export class ChangeEmailClass {
     private _emailEditForm: FormGroup;
     private _error : string;
 
-    constructor(private zone: NgZone, protected _translate: TranslateService) { }
+    /**
+     * ChangeEmailClass Constructor
+     * @param {NgZone} zone 
+     * @param {TranslateService} _translate 
+     * @param {UserLanguageService} _userLanguageService 
+     */
+    constructor( private zone: NgZone, 
+                 protected _translate: TranslateService, 
+                 protected _userLanguageService: UserLanguageService ) {
+                    _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+                    _translate.setDefaultLang( 'en' );
+                 }
 
     ngOnInit() {
         this._emailEditForm = new FormGroup({

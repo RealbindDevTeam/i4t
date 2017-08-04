@@ -5,6 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
 import { MdSnackBar } from '@angular/material';
+import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Order, OrderItem, OrderAddition } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
 import { Item, ItemImage, ItemImageThumb } from '../../../../../../../both/models/administration/item.model';
@@ -83,13 +84,14 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate 
      * @param {NgZone} _ngZone
      * @param {MdSnackBar} snackBar
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _translate: TranslateService, 
                  private _ngZone: NgZone, 
-                 public snackBar: MdSnackBar ) {
-        var _userLang = navigator.language.split( '-' )[0];
+                 public snackBar: MdSnackBar,
+                 private _userLanguageService: UserLanguageService ) {
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
-        _translate.use( _userLang );
     }
 
     /**

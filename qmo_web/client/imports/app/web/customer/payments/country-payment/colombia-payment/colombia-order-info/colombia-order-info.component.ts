@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-//import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { MeteorObservable } from "meteor-rxjs";
 import { TranslateService } from 'ng2-translate';
 import { Subscription, Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { UserLanguageService } from '../../../../../../shared/services/user-language.service';
 import { Orders } from '../../../../../../../../../both/collections/restaurant/order.collection';
 import { Order, OrderTranslateInfo } from '../../../../../../../../../both/models/restaurant/order.model';
 import { UserDetails } from '../../../../../../../../../both/collections/auth/user-detail.collection';
@@ -22,7 +22,6 @@ import { GarnishFood } from '../../../../../../../../../both/models/administrati
 import { GarnishFoodCol } from '../../../../../../../../../both/collections/administration/garnish-food.collection';
 import { Addition } from '../../../../../../../../../both/models/administration/addition.model';
 import { Additions } from '../../../../../../../../../both/collections/administration/addition.collection';
-//import { ColombiaPaymentDetailComponent } from './colombia-payment-detail/colombia-payment-detail.component';
 
 import template from './colombia-order-info.component.html';
 import style from './colombia-order-info.component.scss';
@@ -51,12 +50,11 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
     private _garnishFood        : Observable<GarnishFood[]>;
     private _additions          : Observable<Addition[]>;
     
-    //public _dialogRef           : MdDialogRef<any>;
     private _restaurantId       : string;
     private _tableId            : string;
     private _currencyId         : string;
     private _currencyCode       : string;
-    private _showOrdersInfo    : boolean = false;
+    private _showOrdersInfo     : boolean = false;
     private _showOrderDetails   : boolean = false;
 
     private _totalValue         : number = 0;
@@ -71,14 +69,14 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
      * @param {TranslateService} _translate 
      * @param {NgZone} _ngZone 
      * @param {Router} _router
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _translate: TranslateService, 
                  private _ngZone:NgZone, 
-                 //public _dialog: MdDialog,
-                 private _router: Router ) {
-        var _userLang = navigator.language.split( '-' )[0];
+                 private _router: Router,
+                 private _userLanguageService: UserLanguageService ) {
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
-        _translate.use( _userLang );
     }
 
     /**
