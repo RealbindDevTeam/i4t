@@ -74,7 +74,12 @@
         "LABEL_LEGAL": "By clicking on 'Register', ",
         "LABEL_LEGAL_END": "you accept the terms and conditions.",
         "SLOGAN": "Slogan",
-        "OR": "or"
+        "OR": "or",
+        "SYSTEM_MSG": "System message",
+        "USER_EMAIL_EXISTS": "Username or email already exists, please check the entered info and try again",
+        "ERROR": "An error has occurred registering user",
+        "ACCEPT": "Accept",
+        "SUCCESS": "The user has been created succesfully"
     },
     "SIGNIN": {
         "EMAIL_USERNAME": "Email/Username",

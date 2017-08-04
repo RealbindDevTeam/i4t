@@ -3,6 +3,7 @@ import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { MeteorObservable } from "meteor-rxjs";
 import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from 'ng2-translate';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 
 import template from './alert-confirm.component.html';
 import style from './alert-confirm.component.scss';
@@ -10,15 +11,22 @@ import style from './alert-confirm.component.scss';
 @Component({
     selector: 'alert-confirm',
     template,
-    styles: [style]
+    styles: [style],
+    providers: [UserLanguageService]
 })
 
 export class AlertConfirmComponent implements OnInit, OnDestroy {
 
-    constructor(public _dialogRef: MdDialogRef<any>, private _zone: NgZone, @Inject(MD_DIALOG_DATA) public data: any, private translate: TranslateService) {
-        var userLang = navigator.language.split('-')[0];
+    private showCancelButton: boolean;
+
+    constructor(public _dialogRef: MdDialogRef<any>, private _zone: NgZone, @Inject(MD_DIALOG_DATA) public data: any, private translate: TranslateService, private _userLanguageService: UserLanguageService, ) {
+        this.showCancelButton = data.showCancel;
+        if (Meteor.user()) {
+            translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        } else {
+            translate.use(this._userLanguageService.getNavigationLanguage());
+        }
         translate.setDefaultLang('en');
-        translate.use(userLang);
     }
 
     ngOnInit() {

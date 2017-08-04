@@ -4,7 +4,6 @@ import { Accounts } from 'meteor/accounts-base';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Observable } from 'rxjs';
-import { UserLanguageService } from '../../../client/imports/app/shared/services/user-language.service';
 import { User } from '../../models/auth/user.model';
 import { Users } from '../../collections/auth/user.collection';
 import { UserDetail } from '../../models/auth/user-detail.model';
@@ -25,11 +24,9 @@ export class SigninClass implements OnInit {
      * @param {TranslateService} translate 
      * @param {UserLanguageService} _userLanguageService 
      */
-    constructor( protected zone: NgZone, 
-                 protected translate: TranslateService,
-                 protected _userLanguageService: UserLanguageService ) {
-                     translate.use( this._userLanguageService.getNavigationLanguage() );
-                     translate.setDefaultLang( 'en' );
+    constructor(protected zone: NgZone,
+        protected translate: TranslateService, ) {
+        translate.setDefaultLang('en');
     }
 
     ngOnInit() {
