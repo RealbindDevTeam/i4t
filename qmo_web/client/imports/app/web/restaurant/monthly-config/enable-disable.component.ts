@@ -6,9 +6,9 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { generateQRCode, createTableCode } from '../../../../../../both/methods/restaurant/restaurant.methods';
 import { DisableConfirmComponent } from './disable-confirm/disable-confirm.component';
-
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { Table } from '../../../../../../both/models/restaurant/table.model';
@@ -24,7 +24,6 @@ import * as QRious from 'qrious';
     template,
     styles: [style]
 })
-
 export class EnableDisableComponent implements OnInit, OnDestroy {
 
     @Input()
@@ -33,21 +32,30 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
     @Output('gotorestaurantlist')
     restaurantStatus: EventEmitter<any> = new EventEmitter<any>();
 
-    private _tableForm: FormGroup;
-    private _restaurants: Observable<Restaurant[]>;
-    private _restaurantSub: Subscription;
-    private _tables: Observable<Table[]>;
-    private _tableSub: Subscription;
-    private selectedRestaurantValue: string;
-    private restaurantCode: string = '';
-    private tables_count: number = 0;
+    private _tableForm              : FormGroup;
+    private _restaurants            : Observable<Restaurant[]>;
+    private _restaurantSub          : Subscription;
+    private _tables                 : Observable<Table[]>;
+    private _tableSub               : Subscription;
+    private selectedRestaurantValue : string;
+    private restaurantCode          : string = '';
+    private tables_count            : number = 0;
 
-    private _mdDialogRef: MdDialogRef<any>;
+    private _mdDialogRef            : MdDialogRef<any>;
 
-    constructor(private translate: TranslateService, public snackBar: MdSnackBar, public _mdDialog: MdDialog) {
-        var userLang = navigator.language.split('-')[0];
-        translate.setDefaultLang('en');
-        translate.use(userLang);
+    /**
+     * EnableDisableComponent Constructor
+     * @param {TranslateService} translate 
+     * @param {MdSnackBar} snackBar 
+     * @param {MdDialog} _mdDialog 
+     * @param {UserLanguageService} _userLanguageService 
+     */
+    constructor( private translate: TranslateService, 
+                 public snackBar: MdSnackBar,
+                 public _mdDialog: MdDialog, 
+                 private _userLanguageService: UserLanguageService ) {
+        translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        translate.setDefaultLang( 'en' );
         this.selectedRestaurantValue = "";
     }
 

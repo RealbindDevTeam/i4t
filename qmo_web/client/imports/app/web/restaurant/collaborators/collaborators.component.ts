@@ -52,7 +52,7 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
                  public _dialog: MdDialog,
                  private _userLanguageService: UserLanguageService )
     {
-         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
     } 
 

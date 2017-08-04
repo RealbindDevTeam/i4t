@@ -4,6 +4,7 @@ import { TranslateService } from 'ng2-translate';
 import { MdDialogRef } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
+import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Payment } from '../../../../../../../both/models/restaurant/payment.model';
 import { Payments } from '../../../../../../../both/collections/restaurant/payment.collection';
 import { Order } from '../../../../../../../both/models/restaurant/order.model';
@@ -30,7 +31,8 @@ import style from './payment-confirm.component.scss';
 @Component({
     selector: 'payment-confirm',
     template,
-    styles: [ style ]
+    styles: [ style ],
+    providers: [ UserLanguageService ]
 })
 export class PaymentConfirmComponent implements OnInit, OnDestroy{
 
@@ -67,13 +69,14 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy{
      * @param {TranslateService} translate
      * @param {MdDialogRef<any>} _dialogRef
      * @param {NgZone} _ngZone
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _translate: TranslateService, 
                  public _dialogRef: MdDialogRef<any>, 
-                 private _ngZone: NgZone ){
-        var userLang = navigator.language.split('-')[0];
-        _translate.setDefaultLang('en');
-        _translate.use(userLang);  
+                 private _ngZone: NgZone,
+                 private _userLanguageService: UserLanguageService ){
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' );
     }
 
     /**

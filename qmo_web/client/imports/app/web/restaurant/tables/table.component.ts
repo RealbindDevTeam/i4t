@@ -6,6 +6,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { generateQRCode, createTableCode } from '../../../../../../both/methods/restaurant/restaurant.methods';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
@@ -23,32 +24,39 @@ let jsPDF = require('jspdf');
   selector: 'iu-table',
   template,
   styles: [style]
-
 })
 export class TableComponent implements OnInit, OnDestroy {
 
+  private tableForm           : FormGroup;
+  private restaurants         : Observable<Restaurant[]>;
+  private restaurantSub       : Subscription;
+  private tables              : Observable<Table[]>;
+  private tableSub            : Subscription;
+  selectedRestaurantValue     : string;
+  private restaurantCode      : string = '';
+  private tables_count        : number = 0;
+  private all_checked         : boolean;
+  private enable_print        : boolean;
 
-  private tableForm: FormGroup;
-  private restaurants: Observable<Restaurant[]>;
-  private restaurantSub: Subscription;
-  private tables: Observable<Table[]>;
-  private tableSub: Subscription;
-  selectedRestaurantValue: string;
-  private restaurantCode: string = '';
-  private tables_count: number = 0;
-  private all_checked: boolean;
-  private enable_print: boolean;
-
-  private tables_selected: Table[];
-  private isChecked: false;
-  private tooltip_msg: string = '';
-  private show_cards: boolean;
+  private tables_selected     : Table[];
+  private isChecked           : false;
+  private tooltip_msg         : string = '';
+  private show_cards          : boolean;
   finalImg: any;
 
-  constructor(private _formBuilder: FormBuilder, private translate: TranslateService, private _router: Router) {
-    var userLang = navigator.language.split('-')[0];
-    translate.setDefaultLang('en');
-    translate.use(userLang);
+  /**
+   * TableComponent Constructor
+   * @param {FormBuilder} _formBuilder 
+   * @param {TranslateService} translate 
+   * @param {Router} _router 
+   * @param {UserLanguageService} _userLanguageService 
+   */
+  constructor( private _formBuilder: FormBuilder, 
+               private translate: TranslateService, 
+               private _router: Router,
+               private _userLanguageService: UserLanguageService ) {
+    translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+    translate.setDefaultLang( 'en' );
     this.selectedRestaurantValue = "";
     this.tables_selected = [];
     this.all_checked = false;
@@ -61,75 +69,12 @@ export class TableComponent implements OnInit, OnDestroy {
       restaurant: new FormControl('', [Validators.required]),
       tables_number: new FormControl('', [Validators.required])
     });
-    //this.restaurants = Restaurants.find({ isActive: true, creation_user: Meteor.userId() }).zone();
     this.restaurants = Restaurants.find({ creation_user: Meteor.userId() }).zone();
     this.restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
     this.tables = Tables.find({ is_active: true, creation_user: Meteor.userId() }).zone();
     this.tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe();
     this.tooltip_msg = this.itemNameTraduction('TABLES.MSG_TOOLTIP');
   }
-
-  /*
-    addTables() {
-      if (!Meteor.userId()) {
-        alert('Please log in to add a restaurant');
-        return;
-      }
-  
-      if (this.tableForm.valid) {
-        let _lRestau: Restaurant = Restaurants.findOne({ _id: this.tableForm.value.restaurant });
-        let _lTableNumber: number = this.tableForm.value.tables_number;
-        this.restaurantCode = _lRestau.restaurant_code;
-  
-        //this.tables_count = Tables.collection.find({}).fetch().length;
-  
-        this.tables_count = Tables.collection.find({ restaurantId: this.tableForm.value.restaurant }).count();
-  
-        for (let _i = 0; _i < _lTableNumber; _i++) {
-          let _lRestaurantTableCode: string = '';
-          let _lTableCode: string = '';
-  
-          _lTableCode = this.generateTableCode();
-  
-          _lRestaurantTableCode = this.restaurantCode + _lTableCode;
-          let _lCodeGenerator = generateQRCode(_lRestaurantTableCode);
-  
-          let _lQrCode = new QRious({
-            background: 'white',
-            backgroundAlpha: 1.0,
-            foreground: 'black',
-            foregroundAlpha: 1.0,
-            level: 'H',
-            mime: 'image/svg',
-            padding: null,
-            size: 150,
-            value: _lCodeGenerator.getQRCode()
-          });
-  
-          let _lNewTable: Table = {
-            creation_user: Meteor.userId(),
-            creation_date: new Date(),
-            restaurantId: this.tableForm.value.restaurant,
-            table_code: _lTableCode,
-            is_active: true,
-            QR_code: _lCodeGenerator.getQRCode(),
-            QR_information: {
-              significativeBits: _lCodeGenerator.getSignificativeBits(),
-              bytes: _lCodeGenerator.getFinalBytes()
-            },
-            amount_people: 0,
-            status: 'FREE',
-            QR_URI: _lQrCode.toDataURL(),
-            _number: this.tables_count + (_i + 1)
-          };
-          Tables.insert(_lNewTable);
-          Restaurants.update({ _id: this.tableForm.value.restaurant }, { $set: { tables_quantity: _lRestau.tables_quantity + (_i + 1) } })
-        }
-        this.tableForm.reset();
-      }
-    }
-  
-    */
 
   changeRestaurant(_pRestaurant) {
     this.selectedRestaurantValue = _pRestaurant;
