@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
+import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
 
@@ -14,7 +15,8 @@ import style from './restaurant-location.component.scss';
 @Component({
   selector: 'restaurant-location',
   template,
-  styles: [ style ]
+  styles: [ style ],
+  providers: [ UserLanguageService ]
 })
 export class RestaurantLocationComponent implements OnInit, OnDestroy {
     
@@ -28,11 +30,13 @@ export class RestaurantLocationComponent implements OnInit, OnDestroy {
      * RestaurantLocationComponent constructor
      * @param {TranslateService} _translate
      * @param {MdDialogRef<any>} _dialogRef
+     * @param {UserLanguageService} _userLanguageService
      */
-    constructor( private _translate: TranslateService, public _dialogRef: MdDialogRef<any> ){
-        var _userLang = navigator.language.split( '-' )[0];
+    constructor( private _translate: TranslateService, 
+                 public _dialogRef: MdDialogRef<any>,
+                 private _userLanguageService: UserLanguageService ){
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
-        _translate.use( _userLang );
     }
 
     /**

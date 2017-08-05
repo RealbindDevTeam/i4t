@@ -3,6 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Order, OrderItem } from '../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../both/collections/restaurant/order.collection';
 import { Item } from '../../../../../../both/models/administration/item.model';
@@ -45,11 +46,14 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     /**
      * OrderAttentionComponent Constructor
      * @param {TranslateService} _translate 
+     * @param {NgZone} _ngZone
+     * @param {UserLanguageService} _userLanguageService
      */
-    constructor( private _translate: TranslateService, private _ngZone: NgZone ) {
-        var _userLang = navigator.language.split( '-' )[0];
-        _translate.setDefaultLang( 'en' );
-        _translate.use( _userLang );
+    constructor( private _translate: TranslateService, 
+                 private _ngZone: NgZone,
+                 private _userLanguageService: UserLanguageService ) {
+                    _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+                    _translate.setDefaultLang( 'en' );
     }
 
     /**

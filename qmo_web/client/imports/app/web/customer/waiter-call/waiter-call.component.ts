@@ -4,6 +4,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Subscription, Subject, Observable } from 'rxjs';
 import { Job, JobCollection } from 'meteor/vsivsi:job-collection';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Restaurants } from "../../../../../../both/collections/restaurant/restaurant.collection";
 import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
@@ -36,13 +37,15 @@ export class WaiterCallComponent implements OnInit, OnDestroy {
    * WaiterCallPage Constructor
    * @param { TranslateService } _translate 
    * @param { ViewContainerRef } _viewContainerRef 
+   * @param {NgZone} _ngZone
+   * @param {UserLanguageService} _userLanguageService
    */
-  constructor (protected _translate: TranslateService, 
-               public _viewContainerRef: ViewContainerRef,
-               private _ngZone: NgZone) {
-    var _userLang = navigator.language.split('-')[0];
-    _translate.setDefaultLang('en');
-    _translate.use(_userLang);
+  constructor ( protected _translate: TranslateService, 
+                public _viewContainerRef: ViewContainerRef,
+                private _ngZone: NgZone, 
+                private _userLanguageService: UserLanguageService) {
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' );
   }
 
   /**

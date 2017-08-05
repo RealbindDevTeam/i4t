@@ -3,7 +3,7 @@ import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
 import { MeteorObservable } from "meteor-rxjs";
 import { Subscription } from "rxjs";
-
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Restaurants, RestaurantImages } from "../../../../../../both/collections/restaurant/restaurant.collection";
 import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
 import { WaiterCallDetail } from '../../../../../../both/models/restaurant/waiter-call-detail.model';
@@ -30,7 +30,7 @@ export class CallsComponent {
     private _tableSubscription          : Subscription;
     private _imgRestaurantSubscription  : Subscription;
 
-    private _mdDialogRef : MdDialogRef<any>;
+    private _mdDialogRef                : MdDialogRef<any>;
 
     private _restaurants                : any;
     private _waiterCallDetail           : any;
@@ -38,17 +38,19 @@ export class CallsComponent {
     private _waiterCallDetailCollection : any;
     private _imgRestaurant              : any;
 
-    private _userLang : string;
     private _loading  : boolean;
 
     /**
-     * Constructor Implementation
+     * CallsComponent Constructor
+     * @param {TranslateService} _translate 
+     * @param {MdDialog} _mdDialog 
+     * @param {UserLanguageService} _userLanguageService 
      */
-    constructor(public _translate: TranslateService,
-                public _mdDialog: MdDialog){
-        this._userLang = navigator.language.split('-')[0];
-        _translate.setDefaultLang('en');
-        _translate.use(this._userLang);
+    constructor( public _translate: TranslateService,
+                 public _mdDialog: MdDialog,
+                 private _userLanguageService: UserLanguageService ){
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' );
     }
 
     /**

@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, NgZone, EventEmitter, Input, Output } fro
 import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from 'ng2-translate';
 import { MeteorObservable } from 'meteor-rxjs';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Hours } from '../../../../../../both/collections/general/hours.collection';
 import { Hour } from '../../../../../../both/models/general/hour.model';
 import { RestaurantSchedule } from '../../../../../../both/models/restaurant/restaurant.model';
@@ -41,11 +42,13 @@ export class IurestScheduleComponent implements OnInit, OnDestroy {
      * IurestScheduleComponent constructor
      * @param {TranslateService} _translate 
      * @param {NgZone} _ngZone 
+     * @param {UserLanguageService} _userLanguageService
      */
-    constructor( private _translate: TranslateService, private _ngZone: NgZone ){
-        var _userLang = navigator.language.split( '-' )[0];
+    constructor( private _translate: TranslateService, 
+                 private _ngZone: NgZone,
+                 private _userLanguageService: UserLanguageService ){
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
-        _translate.use( _userLang );
         this._selectedOpenTime = "";
         this._selectedCloseTime = "";
         this._allowWeekButtons = false;

@@ -13,7 +13,6 @@ import { OrdersComponent } from './customer/orders/order.component';
 import { TableComponent } from './restaurant/tables/table.component';
 import { RestaurantRegisterComponent } from './restaurant/restaurant/restaurant-register/restaurant-register.component';
 import { SettingsWebComponent } from './customer/settings/settings.web.component';
-import { ModalDialogComponent } from './custom/modal-dialog/modal-dialog.component';
 import { ChangeEmailWebComponent } from './customer/settings/modal-dialog/change-email.web.component';
 import { ChangePasswordWebComponent } from './customer/settings/modal-dialog/change-password.web.component';
 import { RestaurantComponent } from './restaurant/restaurant/restaurant.component';
@@ -133,7 +132,6 @@ export const WEB_DECLARATIONS = [
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [
-    ModalDialogComponent,
     SectionEditComponent,
     ChangeEmailWebComponent,
     ChangePasswordWebComponent,

@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, NgZone, Input } from '@angular/core';
 import { MeteorObservable } from "meteor-rxjs";
 import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs';
+import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Invoice } from '../../../../../../../both/models/restaurant/invoice.model';
 import { Invoices } from '../../../../../../../both/collections/restaurant/invoice.collection';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
@@ -30,11 +31,15 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
 
     /**
      * PaymentsHistoryComponent component
-     * @param _ngZone 
-     * @param _translate 
+     * @param {NgZone} _ngZone 
+     * @param {TranslateService} _translate 
+     * @param {UserLanguageService} _userLanguageService
      */
-    constructor(private _ngZone: NgZone,
-                public _translate: TranslateService){
+    constructor( private _ngZone: NgZone,
+                 public _translate: TranslateService, 
+                 private _userLanguageService: UserLanguageService ){
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' );
     }
 
     /**

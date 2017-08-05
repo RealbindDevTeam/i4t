@@ -6,6 +6,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
+import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
 import { Restaurant, RestaurantSchedule, RestaurantFinancialElement } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Hours } from '../../../../../../../both/collections/general/hours.collection';
@@ -95,15 +96,16 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * @param {NgZone} _ngZone
      * @param {Router} _router
      * @param {MdDialog} _mdDialog
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
                  private _ngZone: NgZone, 
                  private _router: Router,
-                 public _mdDialog: MdDialog ) {
-        var _userLang = navigator.language.split('-')[0];
-        _translate.setDefaultLang('en');
-        _translate.use(_userLang);
+                 public _mdDialog: MdDialog,
+                 private _userLanguageService: UserLanguageService ) {
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' );
         this._selectedCountryValue = "";
         this._selectedCityValue = "";
         this._nameImageFile = "";
@@ -227,7 +229,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             case 1:
                 if (this._restaurantForm.controls['country'].valid && this._restaurantForm.controls['city'].valid
                     && this._restaurantForm.controls['name'].valid && this._restaurantForm.controls['address'].valid
-                    && this._restaurantForm.controls['phone'].valid) {
+                    && this._restaurantForm.controls['phone'].valid && this._restaurantForm.controls['tables_number'].valid) {
                     return true;
                 } else {
                     return false;

@@ -7,11 +7,11 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { CustomValidators } from '../../../../../../both/shared-components/validators/custom-validator';
 import { CcPaymentConfirmComponent } from './cc-payment-confirm/cc-payment-confirm.component';
 import { TrnResponseConfirmComponent } from './transaction-response-confirm/trn-response-confirm.component';
 import { getPayuMerchantInfo } from '../../../../../../both/methods/general/parameter.methods';
-
 import { CcPaymentMethods } from '../../../../../../both/collections/payment/cc-payment-methods.collection';
 import { CcPaymentMethod } from '../../../../../../both/models/payment/cc-payment-method.model';
 import { Countries } from '../../../../../../both/collections/settings/country.collection';
@@ -42,70 +42,82 @@ let md5 = require('md5');
     template,
     styles: [style]
 })
-
 export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 
-    private _paymentForm: FormGroup = new FormGroup({});
-    private _selectedPaymentMethod: string;
-    private _selectedCardMonth: string;
-    private _selectedCardYear: string;
-    private _selectedCountry: string;
-    private _selectedCity: string = "";
-    private _cCPaymentMethodSub: Subscription;
-    private _cCPaymentMethods: Observable<CcPaymentMethod[]>;
-    private _countrySub: Subscription;
-    private _countries: Observable<Country[]>;
-    private _citySub: Subscription;
-    private _cities: Observable<City[]>;
-    private _paymentTransactionSub: Subscription;
-    private _paymentTransactions: Observable<PaymentTransaction[]>;
-    private _parameterSub: Subscription;
-    private _parameters: Observable<Parameter[]>;
-    private _historyPaymentSub: Subscription;
-    private _historyPayments: Observable<PaymentHistory[]>;
-    private _restaurantSub: Subscription;
-    private _restaurants: Observable<Restaurant[]>;
-    private _restaurantsIdsArray: string[];
-    private _restaurantsNamesArray: string[];
-    private _currentDate: Date;
-    private _currentYear: number;
-    private _yearsArray: any[];
-    private _monthsArray: any[];
-    private _paymentLogoName: string = "";
-    private _deviceSessionId: string;
-    private _mdDialogRef: MdDialogRef<any>;
-    private _mdDialogRef2: MdDialogRef<any>;
-    private _countryName: string;
-    private _ccMethodPayment: string;
-    private _session_id: string;
-    private _timestamp: string;
-    private _ipAddress: string;
-    private _userAgent: string;
-    private _sessionUserId: string;
-    private _loading: boolean;
-    private _firstMonthDay: Date;
-    private _lastMonthDay: Date;
+    private _paymentForm                : FormGroup = new FormGroup({});
+    private _selectedPaymentMethod      : string;
+    private _selectedCardMonth          : string;
+    private _selectedCardYear           : string;
+    private _selectedCountry            : string;
+    private _selectedCity               : string = "";
+    private _cCPaymentMethodSub         : Subscription;
+    private _cCPaymentMethods           : Observable<CcPaymentMethod[]>;
+    private _countrySub                 : Subscription;
+    private _countries                  : Observable<Country[]>;
+    private _citySub                    : Subscription;
+    private _cities                     : Observable<City[]>;
+    private _paymentTransactionSub      : Subscription;
+    private _paymentTransactions        : Observable<PaymentTransaction[]>;
+    private _parameterSub               : Subscription;
+    private _parameters                 : Observable<Parameter[]>;
+    private _historyPaymentSub          : Subscription;
+    private _historyPayments            : Observable<PaymentHistory[]>;
+    private _restaurantSub              : Subscription;
+    private _restaurants                : Observable<Restaurant[]>;
+    private _restaurantsIdsArray        : string[];
+    private _restaurantsNamesArray      : string[];
+    private _currentDate                : Date;
+    private _currentYear                : number;
+    private _yearsArray                 : any[];
+    private _monthsArray                : any[];
+    private _paymentLogoName            : string = "";
+    private _deviceSessionId            : string;
+    private _mdDialogRef                : MdDialogRef<any>;
+    private _mdDialogRef2               : MdDialogRef<any>;
+    private _countryName                : string;
+    private _ccMethodPayment            : string;
+    private _session_id                 : string;
+    private _timestamp                  : string;
+    private _ipAddress                  : string;
+    private _userAgent                  : string;
+    private _sessionUserId              : string;
+    private _loading                    : boolean;
+    private _firstMonthDay              : Date;
+    private _lastMonthDay               : Date;
 
-    private _valueToPay: number;
-    private _currency: string;
-    private _mode: string;
-    private post: any;
-    private scriptOneSanitized: any;
-    private scriptTwoSanitized: any;
-    private scriptThreeSanitized: any;
-    private scriptFourSanitized: any;
+    private _valueToPay                 : number;
+    private _currency                   : string;
+    private _mode                       : string;
+    private post                        : any;
+    private scriptOneSanitized          : any;
+    private scriptTwoSanitized          : any;
+    private scriptThreeSanitized        : any;
+    private scriptFourSanitized         : any;
 
-    constructor(private _router: Router, private _activateRoute: ActivatedRoute,
-        private _formBuilder: FormBuilder,
-        private _translate: TranslateService,
-        private _payuPaymentService: PayuPaymenteService,
-        private _ngZone: NgZone,
-        public _mdDialog: MdDialog,
-        private _domSanitizer: DomSanitizer) {
+    /**
+     * PayuPaymentFormComponent Constructor
+     * @param {Router} _router 
+     * @param {ActivatedRoute} _activateRoute 
+     * @param {FormBuilder} _formBuilder 
+     * @param {TranslateService} _translate 
+     * @param {PayuPaymenteService} _payuPaymentService 
+     * @param {NgZone} _ngZone 
+     * @param {MdDialog} _mdDialog 
+     * @param {DomSanitizer} _domSanitizer 
+     * @param {UserLanguageService} _userLanguageService 
+     */
+    constructor( private _router: Router, 
+                 private _activateRoute: ActivatedRoute,
+                 private _formBuilder: FormBuilder,
+                 private _translate: TranslateService,
+                 private _payuPaymentService: PayuPaymenteService,
+                 private _ngZone: NgZone,
+                 public _mdDialog: MdDialog,
+                 private _domSanitizer: DomSanitizer,
+                 private _userLanguageService: UserLanguageService ) {
 
-        var userLang = navigator.language.split('-')[0];
-        _translate.setDefaultLang('en');
-        _translate.use(userLang);
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' );
 
         this._currentDate = new Date();
 

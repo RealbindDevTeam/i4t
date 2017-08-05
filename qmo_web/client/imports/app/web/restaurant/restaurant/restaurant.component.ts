@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Restaurant, RestaurantImage } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantImages } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { Country } from '../../../../../../both/models/settings/country.model';
@@ -48,15 +49,16 @@ export class RestaurantComponent implements OnInit, OnDestroy {
      * @param {TranslateService} translate 
      * @param {MdDialog} _dialog
      * @param {NgZone} _ngZone
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( private router: Router, 
                  private _formBuilder: FormBuilder, 
                  private translate: TranslateService, 
                  public _dialog: MdDialog,
-                 private _ngZone: NgZone ) {
-        var userLang = navigator.language.split('-')[0];
-        translate.setDefaultLang('en');
-        translate.use(userLang);
+                 private _ngZone: NgZone,
+                 private _userLanguageService: UserLanguageService ) {
+        translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        translate.setDefaultLang( 'en' );
     }
 
     /**

@@ -5,6 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { Meteor } from 'meteor/meteor';
 import { Router } from '@angular/router';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { OrderToTranslateComponent } from './order-to-translate/order-to-translate.component';
 import { Order, OrderTranslateInfo } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
@@ -53,14 +54,15 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
      * @param { NgZone } _ngZone 
      * @param { MdDialog } _dialog
      * @param { Router } _router
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _translate: TranslateService, 
                  private _ngZone: NgZone, 
                  public _dialog: MdDialog,
-                 private _router: Router ) {
-        var _userLang = navigator.language.split( '-' )[0];
+                 private _router: Router,
+                 private _userLanguageService: UserLanguageService ) {
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
-        _translate.use( _userLang );
     }
 
     /**

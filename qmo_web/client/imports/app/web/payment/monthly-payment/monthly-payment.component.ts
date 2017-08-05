@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
-
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Currencies } from '../../../../../../both/collections/general/currency.collection';
@@ -25,7 +25,6 @@ import style from './monthly-payment.component.scss';
     template,
     styles: [style]
 })
-
 export class MonthlyPaymentComponent implements OnInit, OnDestroy {
 
     private _restaurants: Observable<Restaurant[]>;
@@ -45,12 +44,19 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     private _restaurantsTotalPrice: number;
     private _mode: string;
 
-    constructor(private router: Router,
-        private _formBuilder: FormBuilder,
-        private translate: TranslateService) {
-        var userLang = navigator.language.split('-')[0];
-        translate.setDefaultLang('en');
-        translate.use(userLang);
+    /**
+     * MonthlyPaymentComponent Constructor
+     * @param {Router} router 
+     * @param {FormBuilder} _formBuilder 
+     * @param {TranslateService} translate 
+     * @param {UserLanguageService} _userLanguageService 
+     */
+    constructor( private router: Router,
+                 private _formBuilder: FormBuilder,
+                 private translate: TranslateService, 
+                 private _userLanguageService: UserLanguageService ) {
+        translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        translate.setDefaultLang( 'en' );
 
         this._mode = 'normal';
     }

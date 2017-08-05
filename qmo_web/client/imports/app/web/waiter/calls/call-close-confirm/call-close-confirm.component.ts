@@ -1,6 +1,8 @@
 import { Component, NgZone } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 import { MeteorObservable } from "meteor-rxjs";
+import { TranslateService } from 'ng2-translate';
+import { UserLanguageService } from '../../../../shared/services/user-language.service';
 
 import template from './call-close-confirm.component.html';
 import style from './call-close-confirm.component.scss';
@@ -8,16 +10,24 @@ import style from './call-close-confirm.component.scss';
 @Component({
     selector: 'call-close-confirm',
     template,
-    styles: [ style ]
+    styles: [ style ],
+    providers: [ UserLanguageService ]
 })
 export class CallCloseConfirmComponent{
 
     /**
      * CallCloseConfirmComponent constructor
-     * @param {MdDialogRef<any>} _dialogRef
+     * @param {MdDialogRef<any>} _dialogRef 
+     * @param {NgZone} _zone 
+     * @param {TranslateService} _translate 
+     * @param {UserLanguageService} _userLanguageService 
      */
-    constructor( public _dialogRef: MdDialogRef<any>,  private _zone: NgZone ){
-
+    constructor( public _dialogRef: MdDialogRef<any>,  
+                 private _zone: NgZone,
+                 public _translate: TranslateService,
+                 private _userLanguageService: UserLanguageService ){
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' );
     }
 
     /**
