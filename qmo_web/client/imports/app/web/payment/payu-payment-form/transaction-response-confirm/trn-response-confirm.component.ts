@@ -3,6 +3,7 @@ import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { MeteorObservable } from "meteor-rxjs";
 import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from 'ng2-translate';
+import { UserLanguageService } from '../../../../shared/services/user-language.service';
 
 import template from './trn-response-confirm.component.html';
 import style from './trn-response-confirm.component.scss';
@@ -11,7 +12,8 @@ import style from './trn-response-confirm.component.scss';
 @Component({
     selector: 'transaction-response-confirm',
     template,
-    styles: [style]
+    styles: [style],
+    providers: [ UserLanguageService ]
 })
 
 export class TrnResponseConfirmComponent implements OnInit, OnDestroy {
@@ -19,13 +21,20 @@ export class TrnResponseConfirmComponent implements OnInit, OnDestroy {
     private showCancelButton: boolean;
 
     /**
-     * CallCloseConfirmComponent constructor
-     * @param {MdDialogRef<any>} _dialogRef
+     * 
+     * @param {MdDialogRef<any>} _dialogRef 
+     * @param {NgZone} _zone 
+     * @param {any} data 
+     * @param {TranslateService} translate 
+     * @param {UserLanguageService} _userLanguageService
      */
-    constructor(public _dialogRef: MdDialogRef<any>, private _zone: NgZone, @Inject(MD_DIALOG_DATA) public data: any, private translate: TranslateService) {
-        var userLang = navigator.language.split('-')[0];
-        translate.setDefaultLang('en');
-        translate.use(userLang);
+    constructor( public _dialogRef: MdDialogRef<any>, 
+                 private _zone: NgZone, 
+                 @Inject(MD_DIALOG_DATA) public data: any, 
+                 private translate: TranslateService,
+                 private _userLanguageService: UserLanguageService ) {
+        translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        translate.setDefaultLang( 'en' );
 
         this.showCancelButton = data.showCancel;
     }

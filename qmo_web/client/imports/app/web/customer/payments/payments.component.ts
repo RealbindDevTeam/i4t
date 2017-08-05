@@ -4,6 +4,7 @@ import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Meteor } from 'meteor/meteor';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
@@ -32,13 +33,14 @@ export class PaymentsComponent implements OnInit, OnDestroy {
      * PaymentsComponent Constructor
      * @param { TranslateService } _translate 
      * @param { NgZone } _ngZone 
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _translate: TranslateService, 
                  private _ngZone: NgZone,
-                 private _router: Router ) {
-        var _userLang = navigator.language.split( '-' )[0];
+                 private _router: Router,
+                 private _userLanguageService: UserLanguageService ) {
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
-        _translate.use( _userLang );
     }
 
     /**

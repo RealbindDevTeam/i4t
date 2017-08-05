@@ -4,7 +4,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
-
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { Parameter } from '../../../../../../both/models/general/parameter.model';
@@ -20,17 +20,24 @@ import style from './monthly-config.component.scss';
 
 export class MonthlyConfigComponent implements OnInit, OnDestroy {
 
-    private _restaurants: Observable<Restaurant[]>;
-    private _restaurantSub: Subscription;
-    private _showRestaurantList: boolean = false;
-    private _showEnableDisable: boolean = false;
-    private _parameterSub: Subscription;
-    private _restaurantId: string = "";
+    private _restaurants            : Observable<Restaurant[]>;
+    private _restaurantSub          : Subscription;
+    private _showRestaurantList     : boolean = false;
+    private _showEnableDisable      : boolean = false;
+    private _parameterSub           : Subscription;
+    private _restaurantId           : string = "";
 
-    constructor(private translate: TranslateService, private _router: Router,) {
-        var userLang = navigator.language.split('-')[0];
-        translate.setDefaultLang('en');
-        translate.use(userLang);
+    /**
+     * MonthlyConfigComponent Constructor
+     * @param {TranslateService} translate 
+     * @param {Router} _router 
+     * @param {UserLanguageService} _userLanguageService 
+     */
+    constructor( private translate: TranslateService, 
+                 private _router: Router, 
+                 private _userLanguageService: UserLanguageService ) {
+        translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        translate.setDefaultLang( 'en' );
     }
 
     ngOnInit() {

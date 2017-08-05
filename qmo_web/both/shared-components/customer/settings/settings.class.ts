@@ -4,7 +4,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription, Subject, Observable } from 'rxjs';
 import { TranslateService } from 'ng2-translate';
-
+import { UserLanguageService } from '../../../../client/imports/app/shared/services/user-language.service';
 import { Language } from '../../../../both/models/settings/language.model';
 import { Languages } from '../../../../both/collections/settings/language.collection';
 
@@ -36,13 +36,14 @@ export class SettingsClass implements OnInit, OnDestroy {
 
     /**
      * SettingsClass constructor
-     * @param _translate 
+     * @param {TranslateService} _translate 
+     * @param {UserLanguageService} _userLanguageService
      */
-    public constructor(protected _translate: TranslateService ) 
+    constructor( protected _translate: TranslateService,
+                 protected _userLanguageService: UserLanguageService ) 
     {
-        var _userLang = navigator.language.split('-')[0];
-        _translate.setDefaultLang('en');
-        _translate.use(_userLang);
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' );
     }
 
     /**

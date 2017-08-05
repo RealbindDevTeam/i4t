@@ -22,9 +22,9 @@
   
   <span class="app-flex-filler"></span>
   
-  <c-customer-menu *ngIf="!_showToggleSidenav && _itemsTopMenu == 'customer'"></c-customer-menu>
-  <c-chef-menu     *ngIf="!_showToggleSidenav && _itemsTopMenu == 'chef'"></c-chef-menu>
-  <c-waiter-menu   *ngIf="!_showToggleSidenav && _itemsTopMenu == 'waiter'"></c-waiter-menu>
+  <c-customer-menu *ngIf="!_showToggleSidenav && _itemsTopMenu === 'customer'"></c-customer-menu>
+  <c-chef-menu     *ngIf="!_showToggleSidenav && _itemsTopMenu === 'chef'"></c-chef-menu>
+  <c-waiter-menu   *ngIf="!_showToggleSidenav && _itemsTopMenu === 'waiter'"></c-waiter-menu>
 
   <div class="buttom-profile">
     <button md-icon-button [md-menu-trigger-for]="menu" id="user-dropdown-toggler" style="padding: 0;">
@@ -35,17 +35,17 @@
   </div>
 
   <md-menu #menu="mdMenu" x-position="before">
-    <button md-menu-item *ngIf="_itemsTopMenu == 'customer'" [routerLink]="['/app/customer-payments-history']">
+    <button md-menu-item *ngIf="_itemsTopMenu === 'customer' " [routerLink]="['/app/customer-payments-history']">
       <md-icon>payment</md-icon>
-      <span>{{itemNameTraduction('PAYMENTS_HISTORY.TITLE')}}</span>
+      <span>{{ 'PAYMENTS_HISTORY.TITLE' | translate }}</span>
     </button>
     <button md-menu-item [routerLink]="['/app/settings']">
       <md-icon>settings</md-icon>
-      <span>{{itemNameTraduction('SETTINGS.TITTLE')}}</span>
+      <span>{{ 'SETTINGS.TITTLE' | translate }}</span>
     </button>
     <button md-menu-item (click)="signOut()">
-      <md-icon>launch</md-icon> 
-      <span>{{itemNameTraduction('SIGN_OUT')}}</span>
+      <md-icon>launch</md-icon>
+      <span>{{ 'SIGN_OUT' | translate }}</span>
     </button>
   </md-menu>
   <md-toolbar-row *ngIf="_navigation.mediumScreenAndDown && _breadcrumbs.length > 0 && !_autoBreadcrumbs">

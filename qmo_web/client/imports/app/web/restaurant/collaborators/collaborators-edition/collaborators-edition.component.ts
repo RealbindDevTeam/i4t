@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
-
+import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { CustomValidators } from '../../../../../../../both/shared-components/validators/custom-validator';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
@@ -22,7 +22,8 @@ import template from './collaborators-edition.component.html';
 
 @Component({
     selector: 'collaborators-edition',
-    template
+    template,
+    providers: [ UserLanguageService ]
 })
 export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
 
@@ -51,21 +52,22 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
 
     /**
      * CollaboratorsEditionComponent constructor
-     * @param _router 
-     * @param _formBuilder 
-     * @param _translate 
-     * @param _zone 
-     * @param _dialogRef 
+     * @param {Router} _router 
+     * @param {FormBuilder} _formBuilder 
+     * @param {TranslateService} _translate 
+     * @param {NgZone} _zone 
+     * @param {MdDialogRef<any>} _dialogRef 
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _router: Router, 
                  private _formBuilder: FormBuilder, 
                  private _translate: TranslateService,
                  private _zone: NgZone,
-                 public _dialogRef: MdDialogRef<any> )
+                 public _dialogRef: MdDialogRef<any>,
+                 private _userLanguageService: UserLanguageService )
     {
-        this._userLang = navigator.language.split('-')[0];
-        _translate.setDefaultLang('en');
-        _translate.use(this._userLang);
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' );
     }
 
     /**

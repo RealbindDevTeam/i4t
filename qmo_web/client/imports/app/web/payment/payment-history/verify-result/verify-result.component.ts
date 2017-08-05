@@ -3,6 +3,7 @@ import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { MeteorObservable } from "meteor-rxjs";
 import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from 'ng2-translate';
+import { UserLanguageService } from '../../../../shared/services/user-language.service';
 
 import template from './verify-result.component.html';
 import style from './verify-result.component.scss';
@@ -10,15 +11,26 @@ import style from './verify-result.component.scss';
 @Component({
     selector: 'verify-result-confirm',
     template,
-    styles: [style]
+    styles: [style],
+    providers: [ UserLanguageService ]
 })
-
 export class VerifyResultComponent implements OnInit, OnDestroy {
 
-    constructor(public _dialogRef: MdDialogRef<any>, private _zone: NgZone, @Inject(MD_DIALOG_DATA) public data: any, private translate: TranslateService) {
-        var userLang = navigator.language.split('-')[0];
-        translate.setDefaultLang('en');
-        translate.use(userLang);
+    /**
+     * VerifyResultComponent Constructor
+     * @param {MdDialogRef<any>} _dialogRef 
+     * @param {NgZone} _zone 
+     * @param {any} data 
+     * @param {TranslateService} translate 
+     * @param {UserLanguageService} _userLanguageService 
+     */
+    constructor( public _dialogRef: MdDialogRef<any>, 
+                 private _zone: NgZone, 
+                 @Inject(MD_DIALOG_DATA) public data: any, 
+                 private translate: TranslateService,
+                 private _userLanguageService: UserLanguageService ) {
+        translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        translate.setDefaultLang( 'en' );
     }
 
     /**

@@ -5,7 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Observable, Subscription } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
-
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { Table } from '../../../../../../both/models/restaurant/table.model';
@@ -25,28 +25,34 @@ import style from './restaurant-list.component.scss';
     template,
     styles: [style]
 })
-
 export class RestaurantListComponent implements OnInit, OnDestroy {
 
     @Output('gotoenabledisabled')
     restaurantId: EventEmitter<any> = new EventEmitter<any>();
 
-    private _tableForm: FormGroup;
-    private _restaurants: Observable<Restaurant[]>;
-    private _restaurantSub: Subscription;
-    private _currencies: Observable<Currency[]>;
-    private _currencySub: Subscription;
-    private _tables: Observable<Table[]>;
-    private _tableSub: Subscription;
-    private _countrySub: Subscription;
-    private _currentDate: Date;
-    private _parameters: Observable<Parameter[]>;
-    private _parameterSub: Subscription;
+    private _tableForm              : FormGroup;
+    private _restaurants            : Observable<Restaurant[]>;
+    private _restaurantSub          : Subscription;
+    private _currencies             : Observable<Currency[]>;
+    private _currencySub            : Subscription;
+    private _tables                 : Observable<Table[]>;
+    private _tableSub               : Subscription;
+    private _countrySub             : Subscription;
+    private _currentDate            : Date;
+    private _parameters             : Observable<Parameter[]>;
+    private _parameterSub           : Subscription;
 
-    constructor(private translate: TranslateService, private _router: Router) {
-        var userLang = navigator.language.split('-')[0];
-        translate.setDefaultLang('en');
-        translate.use(userLang);
+    /**
+     * RestaurantListComponent Constructor
+     * @param {TranslateService} translate 
+     * @param {Router} _router 
+     * @param {UserLanguageService} _userLanguageService 
+     */
+    constructor( private translate: TranslateService, 
+                 private _router: Router, 
+                 private _userLanguageService: UserLanguageService ) {
+        translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        translate.setDefaultLang( 'en' );
     }
 
     ngOnInit() {

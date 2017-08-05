@@ -4,6 +4,7 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { Meteor } from 'meteor/meteor';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Table } from '../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
@@ -42,11 +43,13 @@ export class OrdersComponent implements OnInit, OnDestroy {
      * OrdersComponent Constructor
      * @param {TranslateService} _translate 
      * @param {NgZone} _ngZone 
+     * @param {UserLanguageService} _userLanguageService
      */
-    constructor( private _translate: TranslateService, private _ngZone: NgZone ) {
-        var _userLang = navigator.language.split( '-' )[0];
+    constructor( private _translate: TranslateService, 
+                 private _ngZone: NgZone,
+                 private _userLanguageService: UserLanguageService ) {
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
-        _translate.use( _userLang );
     }
 
     /**

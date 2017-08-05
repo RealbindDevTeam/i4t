@@ -6,8 +6,8 @@ import { TranslateService } from 'ng2-translate';
 import { MdDialogRef } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { uploadRestaurantImage } from '../../../../../../../both/methods/restaurant/restaurant.methods';
-import { MouseEvent } from "angular2-google-maps/core";
 import { Restaurants, RestaurantImages, RestaurantImageThumbs } from '../../../../../../../both/collections/restaurant/restaurant.collection';
 import { Restaurant, RestaurantSchedule, RestaurantImage, RestaurantFinancialElement, RestaurantImageThumb } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Hours } from '../../../../../../../both/collections/general/hours.collection';
@@ -97,18 +97,19 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
      * @param {NgZone} _ngZone 
      * @param {ActivatedRoute} _route 
      * @param {Router} _router 
+     * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
                  private _ngZone: NgZone, 
                  private _route: ActivatedRoute, 
-                 private _router: Router ) {
+                 private _router: Router,
+                 private _userLanguageService: UserLanguageService ) {
         this._route.params.forEach((params: Params) => {
             this._restaurantToEdit = JSON.parse( params['param1'] );
         });
-        var _userLang = navigator.language.split('-')[0];
-        _translate.setDefaultLang('en');
-        _translate.use(_userLang);
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' );
     }
 
     /**
