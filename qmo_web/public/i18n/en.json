@@ -76,7 +76,7 @@
         "SLOGAN": "Slogan",
         "OR": "or",
         "SYSTEM_MSG": "System message",
-        "USER_EMAIL_EXISTS": "Username or email already exists, please check the entered info and try again",
+        "USER_EMAIL_EXISTS": "Username and/or email already exists, please check the entered info and try again",
         "ERROR": "An error has occurred registering user",
         "ACCEPT": "Accept",
         "SUCCESS": "The user has been created succesfully"
@@ -92,7 +92,11 @@
             "SUBTITLE": "Enter your email",
             "SEND": "Send",
             "CANCEL": "Cancel"
-        }
+        },
+        "SYSTEM_MSG": "System message",
+        "USER_PASS_INCORRECT": "Username and/or password are incorrect, please check the entered info and try again",
+        "ERROR": "An error has occurred starting session",
+        "ACCEPT": "Accept"
     },
     "RESET_PASWORD": {
         "TITLE": "Reset password",
