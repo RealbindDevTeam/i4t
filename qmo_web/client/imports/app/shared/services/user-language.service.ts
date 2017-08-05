@@ -9,33 +9,31 @@ export class UserLanguageService{
      */
     getLanguage( _pUser: Meteor.User ):string {
         if( _pUser ){
-            if( _pUser.services ){
+            if( _pUser.profile.language_code !== '' && _pUser.profile.language_code !== null && _pUser.profile.language_code !== undefined ){
+                return this.getAvailableLanguage( _pUser.profile.language_code );
+            } else if( _pUser.services ){
                 if( _pUser.services.facebook ){
                     if( _pUser.services.facebook.locale !== '' && _pUser.services.facebook.locale !== null && _pUser.services.facebook.locale !== undefined ){
                             return this.getAvailableLanguage( _pUser.services.facebook.locale.split( '_' )[0] );
                     } else {
-                        return 'en';
+                        return this.getDefaultLanguage();
                     }
                 } else if( _pUser.services.twitter ){
-                    return 'en';
+                    return this.getDefaultLanguage();
                 } else if( _pUser.services.google ){
-                    return 'en';
-                }
-            } else if( _pUser.profile ){
-                if( _pUser.profile.language_code !== '' && _pUser.profile.language_code !== null && _pUser.profile.language_code !== undefined ){
-                    return this.getAvailableLanguage(_pUser.profile.language_code );
+                    return this.getDefaultLanguage();
                 } else {
-                    return 'en';
+                    return this.getDefaultLanguage();
                 }
             } else {
                 if( navigator.language.split( '-' )[0] === 'en' || navigator.language.split( '-' )[0] === 'es' ){
                     return navigator.language.split( '-' )[0];
                 } else{
-                    return 'en';
+                    return this.getDefaultLanguage();
                 }
             }
         } else {
-            return 'en';
+            return this.getDefaultLanguage();
         }
     }
 
@@ -60,5 +58,12 @@ export class UserLanguageService{
         } else {
             return 'en';
         }
+    }
+
+    /**
+     * Return Default Language
+     */
+    getDefaultLanguage():string{
+        return 'en';
     }
 }
