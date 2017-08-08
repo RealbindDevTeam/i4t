@@ -61,7 +61,7 @@ export class SignupWebComponent extends AuthClass implements OnInit {
 
             this.userProfile.first_name = "";
             this.userProfile.last_name = "";
-            this.userProfile.language_code = super.getUserLang(); 
+            this.userProfile.language_code = this.getUserLang();
 
             this.userProfileImage.complete = null;
             this.userProfileImage.extension = null;
@@ -80,14 +80,13 @@ export class SignupWebComponent extends AuthClass implements OnInit {
             if (this.signupForm.valid) {
                 let confirmMsg: string;
                 Accounts.createUser({
-                    email: this.signupForm.value.email,
+                    username: this.transformToLower(this.signupForm.value.username),
+                    email: this.transformToLower(this.signupForm.value.email),
                     password: this.signupForm.value.password,
-                    username: this.signupForm.value.username,
                     profile: this.userProfile
                 }, (err) => {
                     this.zone.run(() => {
                         if (err) {
-                            let confirmMsg: string;
                             if (err.reason === 'Username already exists.' || err.reason === 'Email already exists.') {
                                 confirmMsg = 'SIGNUP.USER_EMAIL_EXISTS';
                             } else {
@@ -106,6 +105,7 @@ export class SignupWebComponent extends AuthClass implements OnInit {
                                 current_table: ''
                             });
                             this.openDialog(this.titleMsg, '', confirmMsg, '', this.btnAcceptLbl, false);
+                            Meteor.logout();
                             this.router.navigate(['signin']);
                         }
                     });

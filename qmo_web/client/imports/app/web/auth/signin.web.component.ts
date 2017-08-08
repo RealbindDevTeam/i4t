@@ -59,7 +59,7 @@ export class SigninWebComponent extends AuthClass implements OnInit {
         let respLogin = this.devicesValidate();
         if (respLogin) {
             if (this.signinForm.valid) {
-                Meteor.loginWithPassword(this.signinForm.value.email, this.signinForm.value.password, (err) => {
+                Meteor.loginWithPassword(this.transformToLower(this.signinForm.value.email), this.transformToLower(this.signinForm.value.password), (err) => {
                     let confirmMsg: string;
                     this.zone.run(() => {
                         if (err) {

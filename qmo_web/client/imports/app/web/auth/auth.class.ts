@@ -180,4 +180,11 @@ export class AuthClass {
     getUserLang(): string {
         return this.userLang;
     }
+
+    /**
+     * This function transform to lowercase a string
+    */
+    transformToLower(_word: string): string {
+        return _word.toLowerCase();
+    }
 }

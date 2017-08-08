@@ -1,6 +1,7 @@
 import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
 import { CustomValidators } from '../../../../../both/shared-components/validators/custom-validator';
 import { Observable, Subscription } from 'rxjs';
@@ -12,10 +13,10 @@ import { Country } from '../../../../../both/models/settings/country.model';
 import { City } from '../../../../../both/models/settings/city.model';
 import { Cities } from '../../../../../both/collections/settings/city.collection';
 import { UserProfile, UserProfileImage } from '../../../../../both/models/auth/user-profile.model';
+import { AuthClass } from './auth.class';
 
 import template from './admin-signup.component.html';
 import style from './auth.component.scss';
-
 
 @Component({
     selector: 'admin-signup',
@@ -23,7 +24,7 @@ import style from './auth.component.scss';
     styles: [style]
 })
 
-export class AdminSignupComponent implements OnInit, OnDestroy {
+export class AdminSignupComponent extends AuthClass implements OnInit, OnDestroy {
 
     private _countrySub: Subscription;
     private _countries: Observable<Country[]>;
@@ -34,10 +35,8 @@ export class AdminSignupComponent implements OnInit, OnDestroy {
     private _showOtherCity: boolean = false;
 
     private signupForm: FormGroup;
-    private error: string;
     private showLoginPassword: boolean = true;
     private showConfirmError: boolean = false;
-    private userLang: string;
     private userProfile = new UserProfile();
     private userProfileImage = new UserProfileImage();
 
@@ -51,13 +50,11 @@ export class AdminSignupComponent implements OnInit, OnDestroy {
      * @param {UserLanguageService} _userLanguageService 
      */
     constructor(protected router: Router,
-        public zone: NgZone,
-        public formBuilder: FormBuilder,
-        public translate: TranslateService,
-        private _ngZone: NgZone,
-        public _userLanguageService: UserLanguageService) {
-        translate.use(this._userLanguageService.getNavigationLanguage());
-        translate.setDefaultLang('en');
+        protected zone: NgZone,
+        protected translate: TranslateService,
+        protected _userLanguageService: UserLanguageService,
+        protected _mdDialog: MdDialog) {
+        super(router, zone, translate, _userLanguageService, _mdDialog);
     }
 
     ngOnInit() {
@@ -77,18 +74,16 @@ export class AdminSignupComponent implements OnInit, OnDestroy {
         });
 
         this._countrySub = MeteorObservable.subscribe('countries').subscribe(() => {
-            this._ngZone.run(() => {
+            this.zone.run(() => {
                 this._countries = Countries.find({}).zone();
             });
         });
 
         this._citySub = MeteorObservable.subscribe('cities').subscribe(() => {
-            this._ngZone.run(() => {
+            this.zone.run(() => {
                 this._cities = Cities.find({ country: '' }).zone();
             });
         });
-
-        this.error = '';
     }
 
     /**
@@ -123,14 +118,11 @@ export class AdminSignupComponent implements OnInit, OnDestroy {
 
         let cityIdAux: string;
         let cityAux: string;
-
-        console.log('Se envía formulario');
         if (this.signupForm.value.password == this.signupForm.value.confirmPassword) {
-            console.log('SON IGUALES ');
 
             this.userProfile.first_name = this.signupForm.value.firstName;
             this.userProfile.last_name = this.signupForm.value.lastName;
-            this.userProfile.language_code = this.userLang;
+            this.userProfile.language_code = this.getUserLang();
 
             this.userProfileImage.complete = null;
             this.userProfileImage.extension = null;
@@ -147,7 +139,7 @@ export class AdminSignupComponent implements OnInit, OnDestroy {
             this.userProfile.image = this.userProfileImage;
 
             if (this.signupForm.valid) {
-
+                let confirmMsg: string;
                 if (this._selectedCity === '0000') {
                     cityIdAux = '';
                     cityAux = this.signupForm.value.otherCity;
@@ -155,17 +147,23 @@ export class AdminSignupComponent implements OnInit, OnDestroy {
                     cityIdAux = this._selectedCity;
                     cityAux = '';
                 }
-
                 Accounts.createUser({
-                    email: this.signupForm.value.email,
+                    username: this.transformToLower(this.signupForm.value.username),
+                    email: this.transformToLower(this.signupForm.value.email),
                     password: this.signupForm.value.password,
-                    username: this.signupForm.value.username,
                     profile: this.userProfile
                 }, (err) => {
                     this.zone.run(() => {
                         if (err) {
-                            this.error = err;
+                            let confirmMsg: string;
+                            if (err.reason === 'Username already exists.' || err.reason === 'Email already exists.') {
+                                confirmMsg = 'SIGNUP.USER_EMAIL_EXISTS';
+                            } else {
+                                confirmMsg = 'SIGNUP.ERROR'
+                            }
+                            this.openDialog(this.titleMsg, '', confirmMsg, '', this.btnAcceptLbl, false);
                         } else {
+                            confirmMsg = 'SIGNUP.SUCCESS'
                             UserDetails.insert({
                                 user_id: Meteor.userId(),
                                 role_id: '100',
@@ -177,6 +175,7 @@ export class AdminSignupComponent implements OnInit, OnDestroy {
                                 city_id: cityIdAux,
                                 other_city: cityAux
                             });
+                            this.openDialog(this.titleMsg, '', confirmMsg, '', this.btnAcceptLbl, false);
                             Meteor.logout();
                             this.router.navigate(['signin']);
                         }
