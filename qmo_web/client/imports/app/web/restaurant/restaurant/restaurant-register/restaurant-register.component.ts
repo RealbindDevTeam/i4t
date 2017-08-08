@@ -127,7 +127,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             email: new FormControl('', [Validators.minLength(1), Validators.maxLength(40)]),
             tables_number: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(3)]),
             image: new FormControl(''),
-            paymentMethods: this._paymentsFormGroup
+            paymentMethods: this._paymentsFormGroup,
+            otherCity: new FormControl()
         });
 
         this._hoursSub = MeteorObservable.subscribe('hours').subscribe(() => {

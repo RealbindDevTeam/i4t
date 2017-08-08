@@ -5,7 +5,8 @@ import { CollectionObject } from '../collection-object.model';
  */
 export interface Restaurant extends CollectionObject {
     countryId: string;
-    cityId: string;
+    cityId?: string;
+    other_city?: string;
     name: string;
     currencyId: string;
     address: string;
@@ -30,7 +31,7 @@ export interface Restaurant extends CollectionObject {
 /**
  * RestaurantImage model
  */
-export interface RestaurantImage { 
+export interface RestaurantImage {
     _id?: string;
     complete: boolean;
     extension: string;
@@ -108,9 +109,9 @@ export interface RestaurantSchedule {
  * RestaurantTurn model
  */
 export interface RestaurantTurn extends CollectionObject {
-    restaurant_id : string,
-    turn : number,
-    last_waiter_id : string,
+    restaurant_id: string,
+    turn: number,
+    last_waiter_id: string,
 }
 
 /**

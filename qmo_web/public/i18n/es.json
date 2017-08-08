@@ -451,7 +451,8 @@
         "WEBPAGE": "Pagina de Internet",
         "EMAIL": "Correo Electronico",
         "MSG_INITIAL": "Administra la información de tus restaurantes",
-        "CITY_OTHER": "Si la ciudad de tu restaurante no se encuentra en la opción de ciudades, la puedes especificar en el campo dirección"
+        "CITY_OTHER": "Si la ciudad de tu restaurante no se encuentra en la opción de ciudades, escribela en el siguiente campo",
+        "WHICH_ONE": "Cual?"
     },
     "TABLES": {
         "TABLES_CREATION": "Creación de mesas",

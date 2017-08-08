@@ -55,7 +55,7 @@ export class ItemEnableComponent implements OnInit, OnDestroy {
     updateAvailableFlag( _item:Item ):void{
         Items.update( _item._id, {
             $set: {
-                isAvailable: !_item.isAvailable,
+                //isAvailable: !_item.isAvailable,
                 modification_date: new Date(),
                 modification_user: Meteor.userId()
             }

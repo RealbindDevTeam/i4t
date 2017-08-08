@@ -451,7 +451,8 @@
         "WEBPAGE": "Webpage",
         "EMAIL": "Email",
         "MSG_INITIAL": "Manage your restaurant information",
-        "CITY_OTHER": "If the city of your restaurant is not in the cities option, you can specify it in the address field"
+        "CITY_OTHER": "If the city of your restaurant is not in the cities option, you can specify it in the next field",
+        "WHICH_ONE": "Which one?"
     },
     "TABLES": {
         "TABLES_CREATION": "Creating tables",

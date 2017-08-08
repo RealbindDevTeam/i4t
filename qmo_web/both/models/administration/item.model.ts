@@ -14,10 +14,10 @@ export interface Item extends CollectionObject {
     restaurants: ItemRestaurant[];
     prices: ItemPrice[];
     observations: boolean;
-    garnishFoodQuantity: number;   
+    garnishFoodQuantity: number;
     garnishFood: string[];
     additions: string[];
-    isAvailable: boolean;
+    //isAvailable: boolean;
 }
 
 /**
@@ -55,6 +55,7 @@ export interface ItemRestaurant {
     restaurantId: string;
     price: number;
     itemTax?: number;
+    isAvailable: boolean;
 }
 
 /**
