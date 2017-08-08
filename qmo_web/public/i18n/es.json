@@ -74,7 +74,12 @@
         "LABEL_LEGAL": "Al dar clic en 'Registrarse', ",
         "LABEL_LEGAL_END": "aceptas los terminos y condiciones.",
         "SLOGAN": "Slogan",
-        "OR": "ó"
+        "OR": "ó",
+        "SYSTEM_MSG": "Mensaje del sistema",
+        "USER_EMAIL_EXISTS": "El usuario y/o correo ya existe, por favor revisa los datos ingresados e intenta de nuevo",
+        "ERROR": "Se ha presentado un error registrando el usuario",
+        "ACCEPT": "Aceptar",
+        "SUCCESS": "El usuario ha sido creado con exito"
     },
     "SIGNIN": {
         "EMAIL_USERNAME": "Correo electronico/Nombre usuario",
@@ -87,13 +92,18 @@
             "SUBTITLE": "Ingresa tu correo electrónico",
             "SEND": "Enviar",
             "CANCEL": "Cancelar"
-        }
+        },
+        "SYSTEM_MSG": "Mensaje del sistema",
+        "USER_PASS_INCORRECT": "El usuario y/o contraseña son incorrectos, por favor revisa los datos ingresados e intenta de nuevo",
+        "ERROR": "Se ha presentado un error iniciando sesión",
+        "ACCEPT": "Aceptar"
     },
     "RESET_PASWORD": {
         "TITLE": "Cambiar contraseña",
         "BTN_RESET": "Cambiar",
         "EMAIL_SEND": "Se ha enviado un mensaje a tu correo electronico para cambiar la contraseña",
-        "SUCCESS": "Tu contraseña ha sido cambiada, ahora puedes ingresar desde la aplicación móvil o la página web"
+        "SUCCESS": "Tu contraseña ha sido cambiada, ahora puedes ingresar desde la aplicación móvil o la página web",
+        "SLOGAN": "Cambio de contraseña"
     },
     "SECTIONS": {
         "SECTION_CREATION": "Creación de Secciones",

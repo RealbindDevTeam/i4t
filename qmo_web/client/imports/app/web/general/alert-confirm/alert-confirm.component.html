@@ -1,0 +1,12 @@
+<md-card style="box-shadow: none">
+    <md-card-title>{{data.title | translate}}</md-card-title>
+    <md-card-subtitle>{{data.subtitle | translate}}</md-card-subtitle>
+
+    <md-card-content>
+        <p>{{data.content | translate}}</p>
+    </md-card-content>
+    <md-card-actions align="end">
+        <button *ngIf="showCancelButton" md-raised-button class="button-secundary" (click)="cancel()">{{data.buttonCancel | translate}}</button>
+        <button md-raised-button class="button-primary" (click)="closeConfirm()">{{data.buttonAccept | translate}}</button>
+    </md-card-actions>
+</md-card>

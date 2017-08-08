@@ -1,11 +1,13 @@
-import { Component, NgZone, ViewContainerRef } from '@angular/core';
+import { Component, NgZone, ViewContainerRef, OnInit } from '@angular/core';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from 'ng2-translate';
 import { UserLanguageService } from '../../shared/services/user-language.service';
 import { RecoverWebComponent } from './recover-password/recover.web.component';
-
-import { SigninClass } from '../../../../../both/shared-components/auth/signin.class';
+import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
+import { AuthClass } from './auth.class';
 
 import template from './signin.web.component.html';
 import style from './auth.component.scss';
@@ -16,42 +18,104 @@ import style from './auth.component.scss';
     styles: [style]
 })
 
-export class SigninWebComponent extends SigninClass {
+export class SigninWebComponent extends AuthClass implements OnInit {
 
-    private mdDialogRef: MdDialogRef<any>;
+    private signinForm: FormGroup;
+    private mdDialogRef2: MdDialogRef<any>;
+    private error: string;
 
     /**
      * SigninWebComponent Constructor
      * @param {Router} router 
      * @param {NgZone} zone 
      * @param {TranslateService} translate 
-     * @param {ViewContainerRef} viewContainerRef 
      * @param {MdDialog} mdDialog 
      * @param {UserLanguageService} _userLanguageService 
      */
-    constructor( private router: Router, 
-                 protected zone: NgZone, 
-                 protected translate: TranslateService, 
-                 public viewContainerRef: ViewContainerRef, 
-                 public mdDialog: MdDialog,
-                 public _userLanguageService: UserLanguageService ) {
-        super( zone, translate, _userLanguageService);
+    constructor(protected router: Router,
+        protected zone: NgZone,
+        protected translate: TranslateService,
+        protected _userLanguageService: UserLanguageService,
+        protected _mdDialog: MdDialog) {
 
-        if(!Meteor.user()){
+        super(router, zone, translate, _userLanguageService, _mdDialog);
+        if (!Meteor.user()) {
             Meteor.logout();
         }
     }
 
-    roamWeb(route: string) {
-            this.router.navigate([route]);
+    ngOnInit() {
+        this.signinForm = new FormGroup({
+            email: new FormControl('', [Validators.required]),
+            password: new FormControl('', Validators.required)
+        });
+        this.error = '';
     }
 
-    openDialogForgotPassword(){
-        this.mdDialogRef = this.mdDialog.open(RecoverWebComponent, {
-            disableClose : true,
+    /**
+     * This function login the user at the iurest system
+     */
+    login() {
+        let respLogin = this.devicesValidate();
+        if (respLogin) {
+            if (this.signinForm.valid) {
+                Meteor.loginWithPassword(this.transformToLower(this.signinForm.value.email), this.transformToLower(this.signinForm.value.password), (err) => {
+                    let confirmMsg: string;
+                    this.zone.run(() => {
+                        if (err) {
+                            if (err.reason === 'User not found' || err.reason === 'Incorrect password') {
+                                confirmMsg = 'SIGNIN.USER_PASS_INCORRECT';
+                            } else {
+                                confirmMsg = 'SIGNIN.ERROR';
+                            }
+                            this.openDialog(this.titleMsg, '', confirmMsg, '', this.btnAcceptLbl, false);
+                        } else {
+                            MeteorObservable.call('getRole').subscribe((role) => {
+                                switch (role) {
+                                    case '100': {
+                                        this.router.navigate(['app/dashboard']);
+                                        break;
+                                    }
+                                    case '200': {
+                                        this.router.navigate(['app/calls']);
+                                        break;
+                                    }
+                                    case '400': {
+                                        this.router.navigate(['app/orders']);
+                                        break;
+                                    }
+                                    case '500': {
+                                        this.router.navigate(['app/chefOrders']);
+                                        break;
+                                    }
+                                    case '600': {
+                                        this.router.navigate(['app/dashboards']);
+                                        break;
+                                    }
+                                }
+                            }, (error) => {
+                                confirmMsg = 'SIGNIN.ERROR';
+                                this.openDialog(this.titleMsg, '', confirmMsg, '', this.btnAcceptLbl, false);
+                            });
+                        }
+                    });
+                });
+            }
+        }
+        else {
+            this.router.navigate(['go-to-store']);
+        }
+    }
+
+    /**
+     * This function opens the forgot password dialog
+     */
+    openDialogForgotPassword() {
+        this.mdDialogRef2 = this._mdDialog.open(RecoverWebComponent, {
+            disableClose: true,
         });
-        this.mdDialogRef.afterClosed().subscribe( result => {
-            this.mdDialogRef = null; 
+        this.mdDialogRef2.afterClosed().subscribe(result => {
+            this.mdDialogRef2 = null;
         });
     }
 }
