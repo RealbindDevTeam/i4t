@@ -56,8 +56,11 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     constructor ( private _translate: TranslateService, 
                   public _mdDialog: MdDialog,
                   private _userLanguageService: UserLanguageService ){
-        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );  
-        _translate.setDefaultLang( 'en' );            
+        let _lUserLanguage = this._userLanguageService.getLanguage( Meteor.user() );
+        _translate.use( _lUserLanguage );  
+        _translate.setDefaultLang( 'en' ); 
+        this._languageCode = _lUserLanguage;
+        this._lang_code = _lUserLanguage;
     }
 
     /**
@@ -82,7 +85,6 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
                 this._userName = this._user.services.facebook.name;
                 this._firstName = this._user.services.facebook.first_name;
                 this._lastName = this._user.services.facebook.last_name;
-                this._languageCode = this._user.services.facebook.locale;
                 this._imageProfile = "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
             } else if (lUser.role_id === '100'  || lUser.role_id === '400'){
                 this._disabled = true;

@@ -89,7 +89,7 @@
                     <md-hint align="end">{{inputLastName.value.length}} / 30</md-hint>
                 </md-input-container>
 
-                <md-select required #inputLanguageCode placeholder="{{'SETTINGS.LANGUAGE' | translate}}" style="width: 100%;" [(ngModel)]="_lang_code">
+                <md-select required #inputLanguageCode placeholder="{{'SETTINGS.LANGUAGE' | translate}}" style="width: 100%;margin-top: 1%;" [(ngModel)]="_lang_code">
                     <md-option *ngFor="let lang of _languages | async" value="{{lang.language_code}}">{{lang.name}}</md-option>
                 </md-select>
 
