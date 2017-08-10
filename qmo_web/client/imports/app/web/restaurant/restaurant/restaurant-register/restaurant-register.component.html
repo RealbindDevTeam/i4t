@@ -24,7 +24,9 @@
                                     <p style="font-weight: bold;">{{'RESTAURANT.CITY_OTHER' | translate}}</p>
                                 </div>
                                 <md-input-container *ngIf="_showMessage" style="width: 48%; margin-left: 2%;">
-                                    <input mdInput formControlName="otherCity" placeholder="{{'RESTAURANT.WHICH_ONE' | translate}}" required></input>
+                                    <input mdInput formControlName="otherCity" placeholder="{{'RESTAURANT.WHICH_ONE' | translate}}" required minlength="1" maxlength="50"
+                                        #inputOtherCity></input>
+                                    <md-hint align="end">{{inputOtherCity.value.length}} / 50</md-hint>
                                 </md-input-container>
                             </div>
 

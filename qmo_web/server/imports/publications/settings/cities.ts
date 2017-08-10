@@ -5,17 +5,26 @@ import { Restaurants } from '../../../../both/collections/restaurant/restaurant.
 /**
  * Meteor publication cities
  */
-Meteor.publish( 'cities', () => Cities.find( { is_active: true } ) );
+Meteor.publish('cities', () => Cities.find({ is_active: true }));
 
 /**
  * City by restaurant
  */
-Meteor.publish('getCityByRestaurantId', function( _restaurantId: string){
+Meteor.publish('getCityByRestaurantId', function (_restaurantId: string) {
     check(_restaurantId, String);
-    let restaurant = Restaurants.collection.findOne({_id: _restaurantId});
-    if( restaurant ){
-        return Cities.collection.find({_id: restaurant.cityId});
+    let restaurant = Restaurants.collection.findOne({ _id: _restaurantId });
+    if (restaurant) {
+        return Cities.collection.find({ _id: restaurant.cityId });
     } else {
         return;
     }
+});
+
+
+/**
+ * Meteor publications cities by country
+ */
+Meteor.publish('citiesByCountry', function (_countryId: string) {
+    check(_countryId, String);
+    return Cities.collection.find({ country: _countryId, is_active: true });
 });
