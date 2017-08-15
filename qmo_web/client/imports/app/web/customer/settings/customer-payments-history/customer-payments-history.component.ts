@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, NgZone, Input } from '@angular/core';
 import { MeteorObservable } from "meteor-rxjs";
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Invoice } from '../../../../../../../both/models/restaurant/invoice.model';

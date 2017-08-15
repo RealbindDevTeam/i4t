@@ -8,7 +8,7 @@ import { Meteor } from 'meteor/meteor';
 import { Menus } from '../../../../../../both/collections/auth/menu.collection';
 import { Menu } from '../../../../../../both/models/auth/menu.model';
 import { MenuItem } from '../menu-item';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 import template from './layout.component.html';
 import style from './layout.component.scss';

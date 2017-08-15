@@ -5,7 +5,7 @@ import { StringUtils } from '../../../../shared/utils/string-utils';
 import { NavigationService } from '../../navigation.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 
 @Component({

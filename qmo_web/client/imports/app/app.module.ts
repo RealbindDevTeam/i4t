@@ -6,7 +6,9 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from '@angular/material';
 import { HttpModule, Http } from '@angular/http';
 import { MdSnackBar } from '@angular/material';
-import { TranslateModule, TranslateStaticLoader, TranslateLoader } from 'ng2-translate';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { routes, ROUTES_PROVIDERS } from './app.routes';
 import { Ng2PageScrollModule } from 'ng2-page-scroll';
@@ -40,8 +42,8 @@ const defaultOptions: AppConfigOptions = {
 
 let moduleDefinition;
 
-export function createTranslateLoader(http: Http) {
-  return new TranslateStaticLoader(http, '/i18n', '.json');
+export function createTranslateLoader(http: HttpClient) {
+    return new TranslateHttpLoader(http, '/i18n/', '.json');
 }
 
 moduleDefinition = {
@@ -54,9 +56,11 @@ moduleDefinition = {
     FlexLayoutModule,
     NavigationModule.forRoot(),
     TranslateModule.forRoot({
-      provide: TranslateLoader,
-      useFactory: (createTranslateLoader),
-      deps: [Http]
+      loader: {
+          provide: TranslateLoader,
+          useFactory: (createTranslateLoader),
+          deps: [HttpClient]
+      }
     }),
     SharedModule.forRoot(),
     Ng2PageScrollModule.forRoot(),

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { MdDialogRef } from '@angular/material';
 import { RecoverClass } from '../../../../../../both/shared-components/auth/recover-password/recover.class';

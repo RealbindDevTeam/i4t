@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MdDialogRef } from '@angular/material';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Accounts } from 'meteor/accounts-base';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { MeteorObservable } from 'meteor-rxjs';

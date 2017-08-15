@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Accounts } from 'meteor/accounts-base';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription, Subject, Observable } from 'rxjs';
 import { UserLanguageService } from '../../../shared/services/user-language.service';

@@ -1,5 +1,5 @@
 import { Component, NgZone, ViewContainerRef } from '@angular/core';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { UserLanguageService } from '../../shared/services/user-language.service';
 
 import template from './notfound.web.component.html';

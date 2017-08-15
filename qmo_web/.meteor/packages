@@ -27,7 +27,7 @@ accounts-google@1.2.0
 mys:fonts
 check@1.2.5
 email@1.2.1
-angular2-compilers
+angular-compiler
 astrocoders:one-signal
 vsivsi:job-collection
 btafel:accounts-facebook-cordova

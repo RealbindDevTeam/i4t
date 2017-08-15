@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Router } from '@angular/router';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { UserLanguageService } from '../../shared/services/user-language.service';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { MeteorObservable } from 'meteor-rxjs';

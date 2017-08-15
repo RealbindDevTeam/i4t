@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { MdSnackBar } from '@angular/material';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Subcategories } from '../../../../../../both/collections/administration/subcategory.collection';
