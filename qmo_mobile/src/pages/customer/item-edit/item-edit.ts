@@ -536,6 +536,17 @@ export class ItemEditPage implements OnInit, OnDestroy {
     return _pGarnishFood.restaurants.filter( r => r.restaurantId === this._res_code )[0].price;
   }
 
+  /**
+   * Return item name by id
+   * @param _pItemId 
+   */
+  getItemName ( _pItemId : string ) : string {
+    if(_pItemId){
+      return Items.findOne({ _id : _pItemId }).name;
+    }
+    return '';
+  }
+
   ngOnDestroy() {
     this._itemsSub.unsubscribe();
     this._additionSub.unsubscribe();

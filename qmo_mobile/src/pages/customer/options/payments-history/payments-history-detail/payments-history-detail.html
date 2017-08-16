@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-card style="margin: 0; width: 100%; box-shadow: none;">
+    <ion-card style="margin: 0; width: 100%;">
         <ion-card-content>
             <div class="display-inline">
                 <ion-avatar item-left>
@@ -16,48 +16,48 @@
                     <p>{{_invoice.creation_date | date: 'dd MMM yyyy HH:mm'}}</p>
                 </div>
             </div>
+    
+            <ion-item-group *ngFor="let item of _invoice.items">
+                <ion-item>
+                    <span>{{item.quantity}}</span>
+                    <div class="item-name">
+                        <span>{{itemNameCrop(item.item_name)}}</span>
+                    </div>
+                    <span class="span">{{(item.price * item.quantity)}} {{_invoice.currency}}</span>
+                </ion-item>
+                <ion-item *ngFor="let gf of item.garnish_food">
+                    <span>{{item.quantity}}</span>
+                    <div class="item-name">
+                        <span>{{itemNameCrop(gf.garnish_food_name)}}</span>
+                    </div>
+                    <span class="span">{{(gf.price * item.quantity)}} {{_invoice.currency}}</span>
+                </ion-item>
+                <ion-item *ngFor="let ad of item.additions">
+                    <span>{{item.quantity}}</span>
+                    <div class="item-name">
+                        <span>{{itemNameCrop(ad.addition_name)}}</span>
+                    </div>
+                    <span class="span">{{(ad.price * item.quantity)}} {{_invoice.currency}}</span>
+                </ion-item>
+            </ion-item-group>
+            
+            <ion-item-group *ngFor="let addition of _invoice.additions">
+                <ion-item>
+                    <span>{{addition.quantity}}</span>
+                    <div class="item-name">
+                        <span>{{itemNameCrop(addition.addition_name)}}</span> 
+                    </div>
+                    <span class="span">{{((addition.price * addition.quantity))}} {{_invoice.currency}}</span>
+                </ion-item>
+            </ion-item-group>
         </ion-card-content>
     </ion-card>
 
-    <ion-item-group *ngFor="let item of _invoice.items">
-        <ion-item-divider color="light">
-            <span>{{item.quantity}}</span>
-            <div class="item-name">
-                <span>{{itemNameCrop(item.item_name)}}</span>
-            </div>
-            <span class="span">{{(item.price * item.quantity)}} {{_invoice.currency}}</span>
-        </ion-item-divider>
-        <ion-item *ngFor="let gf of item.garnish_food">
-            <span>{{item.quantity}}</span>
-            <div class="item-name">
-                <span>{{itemNameCrop(gf.garnish_food_name)}}</span>
-            </div>
-            <span class="span">{{(gf.price * item.quantity)}} {{_invoice.currency}}</span>
-        </ion-item>
-        <ion-item *ngFor="let ad of item.additions">
-            <span>{{item.quantity}}</span>
-            <div class="item-name">
-                <span>{{itemNameCrop(ad.addition_name)}}</span>
-            </div>
-            <span class="span">{{(ad.price * item.quantity)}} {{_invoice.currency}}</span>
-        </ion-item>
-    </ion-item-group>
-    
-    <ion-item-group *ngFor="let addition of _invoice.additions">
-        <ion-item-divider color="light">
-            <span>{{addition.quantity}}</span>
-            <div class="item-name">
-                <span>{{itemNameCrop(addition.addition_name)}}</span> 
-            </div>
-            <span class="span">{{((addition.price * addition.quantity))}} {{_invoice.currency}}</span>
-        </ion-item-divider>
-    </ion-item-group>
 
 </ion-content>
 
 <ion-footer class="ion-footer-custom" padding>
     <ion-item>
-        <!--h4>{{'MOBILE.PAYMENTS.PAYMENT_METHOD' | translate}}:</h4-->
         <div style="display: -webkit-inline-box; width: 100%; line-height: 30px;">
             <img *ngIf="_invoice.pay_method == 'PAYMENT_METHODS.CASH'" class="img-footer img-cards" src="assets/img/pago.png">
             <img *ngIf="_invoice.pay_method == 'PAYMENT_METHODS.CREDIT_CARD'" class="img-footer img-cards" src="assets/img/pago_tarjeta_credito.png">

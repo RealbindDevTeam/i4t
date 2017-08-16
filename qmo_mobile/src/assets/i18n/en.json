@@ -57,7 +57,8 @@
             "PASSWORD_NOT_MATCH": "Passwords doesn't match",
             "CONFIRM_TITLE": "User created",
             "CONFIRM_SUBTITLE": "Now you can enjoy iurest",
-            "CONFIRM_BTN": "Ok"
+            "CONFIRM_BTN": "Ok",
+            "OR" : "or"
         },
         "SIGNIN": {
             "EMAIL_USERNAME": "Email/Username",

@@ -9,4 +9,7 @@ import { Order } from 'qmo_web/both/models/restaurant/order.model';
 export class OrderDetailComponent {
     @Input()
 	order: Order;
+
+	@Input()
+	isUser : boolean;
 }

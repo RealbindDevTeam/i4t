@@ -1,11 +1,14 @@
 <ion-row center>
-    <ion-col col-2>
+    <ion-col col-3>
         <div>
-            <i class="fa fa-list-alt fa-2x" style="color: white"></i>
+            <ion-thumbnail item-left>
+                <img *ngIf="isUser" src="/assets/img/my-orders.png">
+                <img *ngIf="!isUser" src="/assets/img/others-orders.png">
+            </ion-thumbnail>
         </div>
     </ion-col>
     <ion-col>
-        <div style="color: white">
+        <div>
             {{'MOBILE.ORDERS.ORDER' | translate}}{{order.code}} <br/> {{'MOBILE.ORDERS.TOTAL' | translate}}{{order.totalPayment}}
             COP<br/> {{'MOBILE.ORDERS.STATUS' | translate}}{{order.status | translate}} <br/>
         </div>

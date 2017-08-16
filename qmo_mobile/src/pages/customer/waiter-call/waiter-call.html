@@ -86,7 +86,7 @@
     <div *ngIf="_userRestaurant && _validatedWaterCall && (_waiters | async)?.length > 0" class="description" padding>
         <h1>{{'MOBILE.WAITER_CALL.RECEIVE_CALL' | translate}}</h1>
         <p>{{'MOBILE.WAITER_CALL.ONE_MOMENT' | translate}}</p>
-        <button ion-button block class="button-primary" type="submit" (click)="cancelWaiterCall()">
+        <button ion-button block outline type="submit" (click)="cancelWaiterCall()">
             {{'MOBILE.CANCEL' | translate}}
         </button>
     </div>

@@ -15,7 +15,8 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       if (platform.is('cordova')) {
         StatusBar.styleLightContent();
-        StatusBar.backgroundColorByHexString('#D50000');
+        //StatusBar.backgroundColorByHexString('#00ffffff');
+        StatusBar.styleBlackTranslucent();
         Splashscreen.hide();
         //this.initializeApp();
       }

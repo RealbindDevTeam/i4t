@@ -29,7 +29,7 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
   private _table                : any;
   private _restauranId          : string;
   private _tableId              : string;
-  private _currencyCode         : string;
+  private _currencyCode         : string = '';
   private _totalPayment         : number = 0;
   private _ordersTotalPay       : number = 0;
 
@@ -91,12 +91,15 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
 
   /**
    * This function allow get currency code
-   * @param _currencyId 
+   * @param { string } _currencyId 
    */
-  getCurrency ( _currencyId : string ){
-    let _currency = Currencies.collection.find({_id : _currencyId}).fetch()[0];
-    this._currencyCode = _currency.code;
-    return this._currencyCode;
+  getCurrency ( _currencyId : string ) : string {
+    if(_currencyId){
+      let _currency = Currencies.findOne({_id : _currencyId});
+      return _currency.code;
+    } else {
+      return "Hola";
+    }
   }
 
   /**

@@ -1,13 +1,13 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { ViewController, NavController, AlertController, Platform } from 'ionic-angular';
+import { App, ViewController, NavController, AlertController, Platform } from 'ionic-angular';
 //import { OneSignal } from 'ionic-native';
 import { TranslateService } from 'ng2-translate';
 import { MeteorObservable } from 'meteor-rxjs';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
 import { Meteor } from 'meteor/meteor';
 import { TabsPage } from '../../customer/tabs/tabs';
-import { CallsPage } from '../../waiter/calls/calls';
+import { Menu } from '../../waiter/menu/menu';
 
 /*
   Generated class for the Signin page.
@@ -26,7 +26,8 @@ export class SigninComponent implements OnInit {
     role_id: string;
     userLang: string;
 
-    constructor(public zone: NgZone, 
+    constructor(public _app : App,
+                public zone: NgZone, 
                 public formBuilder: FormBuilder, 
                 public translate: TranslateService,
                 public navCtrl: NavController, 
@@ -64,7 +65,7 @@ export class SigninComponent implements OnInit {
                                 //this.addUserDevice();
                                 this.navCtrl.push(TabsPage);
                             } else if ( role == "200") {
-                                this.navCtrl.push(CallsPage);
+                                this._app.getRootNav().setRoot(Menu);
                             } else {
                             }
                         }, (error) => {

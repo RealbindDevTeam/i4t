@@ -1,5 +1,8 @@
 <ion-header>
     <ion-navbar>
+        <button ion-button menuToggle icon-only>
+            <ion-icon name='menu'></ion-icon>
+        </button>
         <ion-title>
             <img id="signup-logo" src="assets/img/logo_iurest_mobile_white.png">
         </ion-title>
@@ -36,18 +39,21 @@
                                 <p *ngIf="_call.type == 'CALL_OF_CUSTOMER'">{{ 'MOBILE.WAITER_CALL.CALL_LABEL_CUSTOMER' | translate }}</p>
                                 <p *ngIf="_call.type == 'PAYMENT'">{{ 'MOBILE.WAITER_CALL.CALL_LABEL_CUSTOMER_PAYMENT' | translate }}</p>
                             </div>
-                            <button ion-button item-right (click)="showComfirmClose(_call)" 
-                                    style="height: 36px; font-size: 1.2rem; background-color: #679436;"
+                            <button ion-button small clear text-left 
+                                    style="color: #5090ff; height: 36px; font-size: 1.2rem;"
+                                    (click)="showComfirmClose(_call)" 
                                     *ngIf="_call.type == 'CALL_OF_CUSTOMER'">
                                 {{'MOBILE.CLOSE' | translate}}
                             </button>
-                            <button ion-button item-right (click)="goToPaymentConfirm(_call)" 
-                                    style="height: 36px; font-size: 1.2rem; background-color: #679436;"
+                            <button ion-button small clear  text-left 
+                                    style="color: #5090ff; height: 36px; font-size: 1.2rem;" 
+                                    (click)="goToPaymentConfirm(_call)" 
                                     *ngIf="_call.type == 'PAYMENT'">
                                 {{'MOBILE.VIEW' | translate}}
                             </button>
-                            <button ion-button item-right (click)="goToViewOrderDetailSend(_call)" 
-                                    style="height: 36px; font-size: 1.2rem; background-color: #679436;"
+                            <button ion-button small clear  text-left 
+                                    style="color: #5090ff; height: 36px; font-size: 1.2rem;"
+                                    (click)="goToViewOrderDetailSend(_call)" 
                                     *ngIf="_call.type == 'SEND_ORDER'">
                                 {{'MOBILE.VIEW' | translate}}
                             </button>

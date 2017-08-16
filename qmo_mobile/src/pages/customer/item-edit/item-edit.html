@@ -1,5 +1,6 @@
 <ion-header>
   <ion-navbar>
+    <ion-title>{{getItemName(_item_code)}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -31,10 +32,10 @@
                 </ion-item>
                 <ion-item *ngIf="item.isAvailable" style="padding-left: 0px">
                   {{'MOBILE.SECTIONS.QUANTITY' | translate}} <span style="color: #666; font-size: initial"> {{_quantityCount}}</span>
-                  <button *ngIf="_showActionsBtn" ion-button item-right icon-left (click)="removeCount()" [disabled]="_disabledMinusBtn">
+                  <button *ngIf="_showActionsBtn" ion-button item-right icon-left outline (click)="removeCount()" [disabled]="_disabledMinusBtn">
                     <ion-icon style="padding-right: 0px" name="remove"></ion-icon>
                   </button>
-                  <button *ngIf="_showActionsBtn" ion-button item-right icon-left style="margin-right: 0px;" (click)="addCount()">
+                  <button *ngIf="_showActionsBtn" ion-button item-right icon-left outline style="margin-right: 0px;" (click)="addCount()">
                     <ion-icon style="padding-right: 0px" name="add"></ion-icon> 
                   </button>
                 </ion-item>
@@ -50,9 +51,10 @@
 
               <button [disabled]="!_showActionsBtn" ion-button clear block icon-left class="button-secundary btn-size-custom" *ngIf="item.observations && item.isAvailable && (itemId.observations != '')"
                 (click)="presentModal(itemId.observations)" style="text-transform: inherit; margin-bottom: 15px">
-                <ion-icon name="chatboxes" *ngIf="_observations != null || (itemId.observations != '' && _auxCounter == 0)"></ion-icon>
-                {{_observations != null ? _observations.substring(0, 20)+ '...': (_auxCounter == 0 ? itemId.observations.substring(0, 20)+
-                '...' : 'MOBILE.SECTIONS.OBSERVATIONS' | translate)}}
+                <ion-icon name="chatboxes" *ngIf="_observations != null || (itemId.observations && _auxCounter == 0)"></ion-icon>
+                {{_observations != null ? _observations.substring(0, 20)+ '...': 
+                (_auxCounter == 0 ? ( itemId.observations ? itemId.observations.substring(0, 20) + '...' : 'MOBILE.SECTIONS.OBSERVATIONS' | translate )
+                : 'MOBILE.SECTIONS.OBSERVATIONS' | translate)}}
               </button>
 
               <form [formGroup]="_newOrderForm">
@@ -97,9 +99,9 @@
   </div>
 </ion-content>
 <ion-footer *ngIf="_showFooter" class="ion-footer-custom" padding> 
-  <ion-label style="float: left; font-size: large; margin-top: 0px">{{'MOBILE.SECTIONS.TOTAL' | translate}}{{_finalPrice}} {{_currencyCode}} </ion-label>
+  <ion-label style="float: right; font-size: large; margin-top: 0px; font-weight: bold;">{{'MOBILE.SECTIONS.TOTAL' | translate}}{{_finalPrice}} {{_currencyCode}} </ion-label>
   <div>
-    <button *ngIf="_showActionsBtn " style="float:left; width: 45%" ion-button (click)="deleteOrderItem()">{{'MOBILE.ITEM_EDIT.REMOVE' | translate}}</button>
-    <button *ngIf="_showActionsBtn && _showCancelBtn" [disabled]="_disabledAddBtn" style="float: right; width: 45%" ion-button (click)="editOrderItem()">{{'MOBILE.ITEM_EDIT.MODIFY' | translate}}</button>
+    <button *ngIf="_showActionsBtn " style="float:left; width: 45%" ion-button outline (click)="deleteOrderItem()">{{'MOBILE.ITEM_EDIT.REMOVE' | translate}}</button>
+    <button *ngIf="_showActionsBtn && _showCancelBtn" [disabled]="_disabledAddBtn" style="float: right; width: 45%" ion-button outline (click)="editOrderItem()">{{'MOBILE.ITEM_EDIT.MODIFY' | translate}}</button>
   </div>
 </ion-footer>
