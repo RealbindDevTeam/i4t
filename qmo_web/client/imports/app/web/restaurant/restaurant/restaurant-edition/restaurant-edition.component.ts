@@ -114,7 +114,10 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
 
-        if (this._restaurantToEdit.cityId === '') {
+        console.log('---');
+        console.log(this._restaurantToEdit.other_city);
+
+        if (this._restaurantToEdit.other_city !== '') {
             this._showOtherCity = true;
         } else {
             this._showOtherCity = false;
@@ -195,19 +198,20 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             this._parameterDaysTrial = Parameters.find({ _id: '100' });
         });
 
-        this._restaurantEditionForm = this._formBuilder.group({
-            editId: [this._restaurantToEdit._id],
-            country: [this._restaurantToEdit.countryId],
-            city: [this._restaurantToEdit.cityId],
-            name: [this._restaurantToEdit.name],
-            address: [this._restaurantToEdit.address],
-            phone: [this._restaurantToEdit.phone],
-            webPage: [this._restaurantToEdit.webPage],
-            email: [this._restaurantToEdit.email],
-            editImage: [''],
+        this._restaurantEditionForm = new FormGroup({
+            editId: new FormControl(this._restaurantToEdit._id),
+            country: new FormControl(this._restaurantToEdit.countryId),
+            city: new FormControl(this._restaurantToEdit.cityId),
+            name: new FormControl(this._restaurantToEdit.name),
+            address: new FormControl(this._restaurantToEdit.address),
+            phone: new FormControl(this._restaurantToEdit.phone),
+            webPage: new FormControl(this._restaurantToEdit.webPage),
+            email: new FormControl(this._restaurantToEdit.email),
+            editImage: new FormControl(''),
             paymentMethods: this._paymentsFormGroup,
-            otherCity: [this._restaurantToEdit.other_city]
+            otherCity: new FormControl({ value: this._restaurantToEdit.other_city, disabled: true })
         });
+
 
         this._selectedCountryValue = this._restaurantToEdit.countryId;
         this._restaurantCountryValue = this._restaurantToEdit.countryId;
@@ -228,6 +232,9 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             return;
         }
 
+        let cityIdAux: string;
+        let cityAux: string;
+
         let arrPay: any[] = Object.keys(this._restaurantEditionForm.value.paymentMethods);
         let _lPaymentMethodsToInsert: string[] = [];
 
@@ -238,12 +245,23 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             }
         });
 
+        if (this._selectedCityValue === '0000' || this._selectedCityValue == "") {
+            cityIdAux = '';
+            cityAux = this._restaurantEditionForm.value.otherCity;
+        } else {
+            cityIdAux = this._selectedCityValue;
+            cityAux = '';
+        }
+
+
         Restaurants.update(this._restaurantEditionForm.value.editId, {
             $set: {
                 modification_user: Meteor.userId(),
                 modification_date: new Date(),
                 countryId: this._restaurantEditionForm.value.country,
-                cityId: this._restaurantEditionForm.value.city,
+                //cityId: this._restaurantEditionForm.value.city,
+                cityId: cityIdAux,
+                other_city: cityAux,
                 name: this._restaurantEditionForm.value.name,
                 address: this._restaurantEditionForm.value.address,
                 phone: this._restaurantEditionForm.value.phone,
@@ -394,16 +412,18 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
      */
     changeCity(_city) {
 
+        let control = this._restaurantEditionForm.get('otherCity');
         if (_city === '0000') {
-            this._showOtherCity = true;
-            this._restaurantEditionForm.controls['otherCity'].setValidators(Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(50)]));
+            control.enable();
+            control.setValidators(Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(50)]));
         } else {
-            this._showOtherCity = false;
-            this._restaurantEditionForm.controls['otherCity'].clearValidators();
+            control.disable();
+            control.clearValidators();
+            control.reset();
         }
 
-        this._selectedCityValue = _city;
-        this._restaurantEditionForm.controls['city'].setValue(_city);
+        //this._selectedCityValue = _city;
+        //this._restaurantEditionForm.controls['city'].setValue(_city);
     }
 
     /**

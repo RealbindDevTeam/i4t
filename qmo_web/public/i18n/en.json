@@ -621,7 +621,9 @@
         "NUMBER_TABLE_LABEL_PLAN_INFO": "According to the tables number, the corresponding charge will be made to the account that you register",
         "PLAN_ONE": "Plan One",
         "PLAN_TWO": "Plan Two",
-        "PLAN_THREE": "Plan Three"
+        "PLAN_THREE": "Plan Three",
+        "OTHER": "Other...",
+        "CITY_OTHER": "If you select other city, write to the next field"
     },
     "RESTAURANT_LOCATION": {
         "TITTLE": "Location of the establishment",

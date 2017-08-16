@@ -621,7 +621,9 @@
         "NUMBER_TABLE_LABEL_PLAN_INFO": "De acuerdo al número de mesas se realizará el cobro correspondiente a la cuenta que registres",
         "PLAN_ONE": "Plan Uno",
         "PLAN_TWO": "Plan Dos",
-        "PLAN_THREE": "Plan Tres"
+        "PLAN_THREE": "Plan Tres",
+        "OTHER": "Otra...",
+        "CITY_OTHER": "Si seleccionaste otra ciudad, escribela en el siguiente campo"
     },
     "RESTAURANT_LOCATION": {
         "TITTLE": "Ubicacion del Establecimiento",

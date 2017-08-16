@@ -17,19 +17,18 @@
                                 </md-select>
                                 <md-select formControlName="city" placeholder="{{'RESTAURANT_EDITION.SELECT_CITY' | translate}}" style="width: 48%;margin-left: 2%;"
                                     [(ngModel)]="_selectedCityValue">
-                                    <md-option *ngFor="let city of _cities | async" (click)="changeCity(city._id);" value="{{city._id}}" ng-selected="_restaurantCityValue === city._id">{{city.name}}</md-option>
-                                    <md-option *ngIf="(_cities | async)?.length > 0" (click)="changeCity('0000');" value="0000">{{'OTHER' | translate}}</md-option>
+                                    <md-option *ngFor="let city of _cities | async" (click)="changeCity(city._id);" value="{{city._id}}">{{city.name}}</md-option>
+                                    <md-option (click)="changeCity('0000');" value="0000">{{'RESTAURANT_EDITION.OTHER' | translate}}</md-option>
                                 </md-select>
                             </div>
 
-
                             <div>
-                                <div *ngIf="_showOtherCity" style="display: inline-block; width: 48%; margin-top: 1%">
-                                    <p style="font-weight: bold;">{{'RESTAURANT.CITY_OTHER' | translate}}</p>
+                                <div style="display: inline-block; width: 48%; margin-top: 1%">
+                                    <p style="font-weight: bold;">{{'RESTAURANT_EDITION.CITY_OTHER' | translate}}</p>
                                 </div>
-                                <md-input-container *ngIf="_showOtherCity" style="width: 48%; margin-left: 2%;">
-                                    <input mdInput formControlName="otherCity" placeholder="{{'RESTAURANT.WHICH_ONE' | translate}}" required minlength="1" maxlength="50"
-                                        #inputOtherCity></input>
+                                <md-input-container style="width: 48%; margin-left: 2%;">
+                                    <input mdInput formControlName="otherCity" placeholder="{{'RESTAURANT.WHICH_ONE' | translate}}" required
+                                        minlength="1" maxlength="50" #inputOtherCity></input>
                                     <md-hint align="end">{{inputOtherCity.value.length}} / 50</md-hint>
                                 </md-input-container>
                             </div>
