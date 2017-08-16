@@ -57,7 +57,8 @@
             "PASSWORD_NOT_MATCH": "Las contraseñas no coinciden",
             "CONFIRM_TITLE": "Usuario creado",
             "CONFIRM_SUBTITLE": "Ahora puedes disfrutar de iurest",
-            "CONFIRM_BTN": "Aceptar"
+            "CONFIRM_BTN": "Aceptar",
+            "OR" : "ó"
         },
         "SIGNIN": {
             "EMAIL_USERNAME": "Correo electronico/Nombre usuario",
@@ -255,7 +256,7 @@
             "PAY_CONFIRM" : "Confirmación de pago",
             "PAY_CLOSE" : "Cerrar pagos recibidos",
             "NO_WAITERS" : "No hay meseros asignados en el restaurante",
-            "ALPHANUMERIC_CODE" : "Código de la mesa"
+            "ALPHANUMERIC_CODE" : "Código"
         },
         "SECTIONS": {
             "MENU": "Menú",

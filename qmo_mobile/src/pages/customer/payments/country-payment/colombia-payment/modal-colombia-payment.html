@@ -17,54 +17,58 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <hr showWhen="android"/>
-  <h3>
-    {{'MOBILE.PAYMENTS.TITLE_SERVICES_INCLUDE' | translate}}
-  </h3>
-  <p>{{'MOBILE.PAYMENTS.CONTENT_SERVICES_INCLUDE_INIT' | translate}} ({{_tip}}%) {{'MOBILE.PAYMENTS.CONTENT_SERVICES_INCLUDE_END' | translate}}</p>
-  <ion-list style="margin-bottom: 0px">
-    <ion-item style="padding-left: 0px">
-        <ion-checkbox (ionChange)="allowTip($event)" [checked]="_disabledSubggestedTip"></ion-checkbox>
-        <ion-label>{{ 'MOBILE.PAYMENTS.TIP' | translate }} ({{_tipValue}}%)</ion-label>
-        <div item-right style="text-align: end;">
-            <h4>{{_tipTotal}} {{_currencyCode}}</h4>
-        </div>
-    </ion-item>
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <hr showWhen="android"/>
+      <h2 style="font-weight: bold;">
+        {{'MOBILE.PAYMENTS.TITLE_SERVICES_INCLUDE' | translate}}
+      </h2>
+      <p>{{'MOBILE.PAYMENTS.CONTENT_SERVICES_INCLUDE_INIT' | translate}} ({{_tip}}%) {{'MOBILE.PAYMENTS.CONTENT_SERVICES_INCLUDE_END' | translate}}</p>
+      <ion-list style="margin-bottom: 0px" no-lines>
+        <ion-item style="padding-left: 0px">
+            <ion-checkbox (ionChange)="allowTip($event)" [checked]="_disabledSubggestedTip"></ion-checkbox>
+            <ion-label>{{ 'MOBILE.PAYMENTS.TIP' | translate }} ({{_tipValue}}%)</ion-label>
+            <div item-right style="text-align: end;">
+                <h4>{{_tipTotal}} {{_currencyCode}}</h4>
+            </div>
+        </ion-item>
 
-    <div showWhen="android" style="padding-left: 0px" class="item item-block item-md item-checkbox">
-        <ion-checkbox (ionChange)="otherTip($event)" [checked]="_disabledBtnOtherTip"></ion-checkbox>
-        <ion-label>{{ 'MOBILE.PAYMENTS.TIP_OTHER_VALUE' | translate }}</ion-label>
-        <div item-right style="width: 150px; display: inline-flex">
-            <ion-input type="number" min="0" [disabled]="!_disabledBtnOtherTip" [(ngModel)]="_otherTip"></ion-input>
-            <h4 style="margin: 13px 8px 13px 0;">{{_currencyCode}}</h4>
+        <div showWhen="android" style="padding-left: 0px" class="item item-block item-md item-checkbox">
+            <ion-checkbox (ionChange)="otherTip($event)" [checked]="_disabledBtnOtherTip"></ion-checkbox>
+            <ion-label>{{ 'MOBILE.PAYMENTS.TIP_OTHER_VALUE' | translate }}</ion-label>
+            <div item-right style="width: 150px; display: inline-flex">
+                <ion-input type="number" min="0" [disabled]="!_disabledBtnOtherTip" [(ngModel)]="_otherTip"></ion-input>
+                <h4 style="margin: 13px 8px 13px 0;">{{_currencyCode}}</h4>
+            </div>
         </div>
-    </div>
 
-    <div showWhen="ios" style="padding-left: 0px" class="item item-block item-ios item-checkbox">
-        <ion-checkbox (ionChange)="otherTip($event)" [checked]="_disabledBtnOtherTip"></ion-checkbox>
-        <ion-label>{{ 'MOBILE.PAYMENTS.TIP_OTHER_VALUE' | translate }}</ion-label>
-        <div item-right style="width: 150px; display: inline-flex">
-            <ion-input type="number" min="0" [disabled]="!_disabledBtnOtherTip" [(ngModel)]="_otherTip"></ion-input>
-            <h4 style="margin: 13px 8px 13px 0;">{{_currencyCode}}</h4>
+        <div showWhen="ios" style="padding-left: 0px" class="item item-block item-ios item-checkbox">
+            <ion-checkbox (ionChange)="otherTip($event)" [checked]="_disabledBtnOtherTip"></ion-checkbox>
+            <ion-label>{{ 'MOBILE.PAYMENTS.TIP_OTHER_VALUE' | translate }}</ion-label>
+            <div item-right style="width: 150px; display: inline-flex">
+                <ion-input type="number" min="0" [disabled]="!_disabledBtnOtherTip" [(ngModel)]="_otherTip"></ion-input>
+                <h4 style="margin: 13px 8px 13px 0;">{{_currencyCode}}</h4>
+            </div>
         </div>
-    </div>
-  </ion-list>
-      
+      </ion-list>
+          
 
-  <ion-list>
-    <h3>
-      {{ 'MOBILE.PAYMENTS.SELECT_PAYMENT_METHOD' | translate }}
-    </h3>
-    
-    <ion-item style="padding-left: 0px">
-        <ion-label>{{'MOBILE.PAYMENTS.PAYMENT_METHOD' | translate}}</ion-label>
-        <ion-select [(ngModel)]="_paymentMethod">
-            <ion-option value="PAYMENT_METHODS.CASH">{{'PAYMENT_METHODS.CASH' | translate}}</ion-option>
-            <ion-option value="PAYMENT_METHODS.CREDIT_CARD">{{'PAYMENT_METHODS.CREDIT_CARD' | translate}}</ion-option>
-            <ion-option value="PAYMENT_METHODS.DEBIT_CARD">{{'PAYMENT_METHODS.DEBIT_CARD' | translate}}</ion-option>
-            <ion-option value="PAYMENT_METHODS.ONLINE">{{'PAYMENT_METHODS.ONLINE' | translate}}</ion-option>
-        </ion-select>
-    </ion-item>
-  </ion-list>
+      <ion-list no-lines>
+        <h2 style="font-weight: bold;">
+          {{ 'MOBILE.PAYMENTS.SELECT_PAYMENT_METHOD' | translate }}
+        </h2>
+        
+        <ion-item style="padding-left: 0px">
+            <ion-label>{{'MOBILE.PAYMENTS.PAYMENT_METHOD' | translate}}</ion-label>
+            <ion-select [(ngModel)]="_paymentMethod">
+                <ion-option value="PAYMENT_METHODS.CASH">{{'PAYMENT_METHODS.CASH' | translate}}</ion-option>
+                <ion-option value="PAYMENT_METHODS.CREDIT_CARD">{{'PAYMENT_METHODS.CREDIT_CARD' | translate}}</ion-option>
+                <ion-option value="PAYMENT_METHODS.DEBIT_CARD">{{'PAYMENT_METHODS.DEBIT_CARD' | translate}}</ion-option>
+                <ion-option value="PAYMENT_METHODS.ONLINE">{{'PAYMENT_METHODS.ONLINE' | translate}}</ion-option>
+            </ion-select>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

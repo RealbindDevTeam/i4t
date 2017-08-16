@@ -6,7 +6,7 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
     <hr showWhen="android"/>
 
     <ion-card>
@@ -15,56 +15,50 @@
                 <ion-avatar item-left>
                     <img src="/assets/img/mesas.png">
                 </ion-avatar>
-                <h2 style="color: #114b5f;">
+                <h2 style="font-weight: bold;">
                     {{'MOBILE.ORDER_PAYMENT_TRANS.CONSULT_TABLE_ORDERS_TITLE' | translate}}
                 </h2>
             </ion-item>
             <p>
                 {{'MOBILE.ORDER_PAYMENT_TRANS.CONSULT_TABLE_ORDERS_SUBTITLE' | translate}}
             </p>
-            <button class="button-secundary" style="float:left; width: 45%; background-color: #114b5f !important; color: #fff !important;" ion-button (click)="goToAddOrders()">{{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}</button>
+            <button ion-button small clear text-left style="color: #5090ff" (click)="goToAddOrders()">{{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}</button>
         </ion-card-content>
     </ion-card>
 
     <ion-card>
         <ion-card-content>
-            <ion-card-title style="color: #114b5f;">
+            <ion-card-title style="font-weight: bold;">
                 {{'MOBILE.ORDER_PAYMENT_TRANS.ORDERS_TO_CONFIRM_TITLE' | translate}}
             </ion-card-title>
-            <p>
+            <p style="margin-bottom: 8px;">
                 {{'MOBILE.ORDER_PAYMENT_TRANS.ORDER_TO_CONFIRM' | translate}}
             </p>
             <h4 *ngIf="(_ordersToConfirm | async)?.length <= 0">{{'MOBILE.ORDER_PAYMENT_TRANS.NO_ORDERS' | translate}}</h4>
+    
+            <div *ngFor="let orderCon of _ordersToConfirm | async">
+                <order-payment-detail [orderCon]="orderCon" [ordersConfirm]="true"></order-payment-detail>
+            </div>
         </ion-card-content>
     </ion-card>
-    
-    <div *ngFor="let orderCon of _ordersToConfirm | async">
-        <ion-card class="custom-padding-card">
-            <ion-list>
-                <order-payment-detail [orderCon]="orderCon" [ordersConfirm]="true"></order-payment-detail>
-            </ion-list>
-        </ion-card>
-    </div>
 
     <ion-card>
         <ion-card-content>
-            <ion-card-title style="color: #114b5f;">
+            <ion-card-title style="font-weight: bold;">
                 {{'MOBILE.ORDER_PAYMENT_TRANS.ORDERS_TO_PAY_TITLE' | translate}}
             </ion-card-title>
-            <p>
+            <p style="margin-bottom: 8px;">
                 {{'MOBILE.ORDER_PAYMENT_TRANS.PENDING_ORDERS' | translate}}
             </p>
-            <h4 *ngIf="(_ordersWithPendingConfirmation | async)?.length <= 0">{{'MOBILE.ORDER_PAYMENT_TRANS.NO_ORDERS' | translate}}</h4>
+            <h4 *ngIf="(_ordersWithPendingConfirmation | async)?.length <= 0">
+                {{'MOBILE.ORDER_PAYMENT_TRANS.NO_ORDERS' | translate}}
+            </h4>
+
+            <div *ngFor="let orderPendingConfirmation of _ordersWithPendingConfirmation | async">
+                <div *ngIf="orderPendingConfirmation.creation_user != _currentUserId">
+                    <order-payment-detail [orderCon]="orderPendingConfirmation" [ordersConfirm]="false"></order-payment-detail>
+                </div>
+            </div>
         </ion-card-content>
     </ion-card>
-
-    <div *ngFor="let orderPendingConfirmation of _ordersWithPendingConfirmation | async">
-        <div *ngIf="orderPendingConfirmation.creation_user != _currentUserId">
-            <ion-card class="custom-padding-card">
-                <ion-list>
-                    <order-payment-detail [orderCon]="orderPendingConfirmation" [ordersConfirm]="false"></order-payment-detail>
-                </ion-list>
-            </ion-card>
-        </div>
-    </div>
 </ion-content>

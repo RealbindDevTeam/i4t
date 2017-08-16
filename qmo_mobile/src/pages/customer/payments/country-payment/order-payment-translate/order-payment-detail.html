@@ -1,12 +1,15 @@
-<ion-item style="background-color: #114B5F; color: white">
-    <i class="fa fa-list-alt fa-2x" item-left></i>
+<div style="border-bottom: 0.55px solid #c8c7cc; width: 90%; margin: auto;"></div>
+<ion-item>
+    <ion-thumbnail item-left>
+        <img src="/assets/img/my-orders.png">
+    </ion-thumbnail>
     <div *ngIf="ordersConfirm">
         <h2>{{'MOBILE.ORDERS.ORDER' | translate}}{{orderCon.code}}</h2> 
-        <p style="color: white;">{{'MOBILE.ORDERS.TOTAL' | translate}}{{orderCon.totalPayment}} {{_currency}}</p>
+        <p>{{'MOBILE.ORDERS.TOTAL' | translate}}{{orderCon.totalPayment}} {{_currency}}</p>
     </div>
     <div *ngIf="!ordersConfirm">
         <h2>{{'MOBILE.ORDERS.ORDER' | translate}}{{orderCon.code}}</h2> 
-        <p style="color: white;">{{orderCon.status | translate}}</p>
+        <p>{{orderCon.status | translate}}</p>
     </div>
     <button *ngIf="ordersConfirm" ion-button color="light" small item-right (click)="showConfirm(orderCon)">{{'MOBILE.ORDERS.CONFIRM' | translate}}</button>
 </ion-item>

@@ -3,7 +3,8 @@ import { ViewController, NavParams } from 'ionic-angular';
 import { TranslateService } from 'ng2-translate';
 
 @Component({
-  templateUrl: 'modal-observations.html'
+  templateUrl: 'modal-observations.html',
+  selector: 'modal-observations'
 })
 
 export class ModalObservations {

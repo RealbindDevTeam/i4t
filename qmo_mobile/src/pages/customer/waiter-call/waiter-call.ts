@@ -48,12 +48,14 @@ export class WaiterCallPage implements OnInit, OnDestroy {
       MeteorObservable.autorun().subscribe(() => {
         this._userDetails = UserDetails.find({ user_id: Meteor.userId() });
         this._userDetail  = UserDetails.collection.find({ user_id: Meteor.userId()}).fetch()[0];
-          if (this._userDetail.current_table == "" && this._userDetail.current_restaurant == "") {
+        if(this._userDetail){
+          if ( this._userDetail.current_table == "" && this._userDetail.current_restaurant == "") {
             this._userRestaurant = false;
           } else {
             this._userRestaurant = true;
           }
-        });
+        }
+      });
     });
 
     this._waitersSubscription = MeteorObservable.subscribe('getWaitersByCurrentRestaurant', Meteor.userId()).subscribe(()=> {
@@ -62,7 +64,7 @@ export class WaiterCallPage implements OnInit, OnDestroy {
     
     this._waiterCallDetailSubscription = MeteorObservable.subscribe('countWaiterCallDetailByUsrId', Meteor.userId()).subscribe( () => {
       MeteorObservable.autorun().subscribe(() => {
-        if (this._userRestaurant) {
+        if (this._userRestaurant && this._userDetail) {
           this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).count();
           if ( this._countDetails > 0 ){
             this._validatedWaterCall = true;
@@ -82,12 +84,14 @@ export class WaiterCallPage implements OnInit, OnDestroy {
       MeteorObservable.autorun().subscribe(() => {
         this._userDetails = UserDetails.find({ user_id: Meteor.userId() });
         this._userDetail  = UserDetails.collection.find({ user_id: Meteor.userId()}).fetch()[0];
-          if (this._userDetail.current_table == "" && this._userDetail.current_restaurant == "") {
+        if(this._userDetail && this._userDetail){
+          if ( this._userDetail.current_table == "" && this._userDetail.current_restaurant == "" ) {
             this._userRestaurant = false;
           } else {
             this._userRestaurant = true;
           }
-        });
+        }
+      });
     });
 
     this._waitersSubscription = MeteorObservable.subscribe('getWaitersByCurrentRestaurant', Meteor.userId()).subscribe(()=> {
@@ -96,7 +100,7 @@ export class WaiterCallPage implements OnInit, OnDestroy {
     
     this._waiterCallDetailSubscription = MeteorObservable.subscribe('countWaiterCallDetailByUsrId', Meteor.userId()).subscribe( () => {
       MeteorObservable.autorun().subscribe(() => {
-        if (this._userRestaurant) {
+        if (this._userRestaurant && this._userDetail ) {
           this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).count();
           if ( this._countDetails > 0 ){
             this._validatedWaterCall = true;

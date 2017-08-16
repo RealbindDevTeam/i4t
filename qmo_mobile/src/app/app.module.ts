@@ -3,6 +3,8 @@ import { MomentModule } from 'angular2-moment';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from 'ng2-translate/ng2-translate';
 import { Http } from '@angular/http';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 import { MyApp } from './app.component';
 import { InitialComponent } from '../pages/auth/initial/initial';
 import { SignupComponent } from '../pages/auth/signup/signup';
@@ -51,6 +53,7 @@ import { ItemPayInfoComponent } from '../pages/customer/payments/country-payment
 import { AdditionPayInfoComponent } from '../pages/customer/payments/country-payment/colombia-payment/colombia-pay-info/addition-pay-info/addition-pay-info';
 import { PaymentsHistoryPage } from '../pages/customer/options/payments-history/payments-history';
 import { PaymentsHistoryDetailPage } from '../pages/customer/options/payments-history/payments-history-detail/payments-history-detail';
+import { Menu } from '../pages/waiter/menu/menu';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateStaticLoader(http, 'assets/i18n', '.json');
@@ -104,7 +107,8 @@ export function createTranslateLoader(http: Http) {
     ItemPayInfoComponent,
     AdditionPayInfoComponent,
     PaymentsHistoryPage,
-    PaymentsHistoryDetailPage
+    PaymentsHistoryDetailPage,
+    Menu
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -115,7 +119,8 @@ export function createTranslateLoader(http: Http) {
         },
         ios: {
           tabsPlacement: 'buttom',
-          tabsHideOnSubPages: true
+          tabsHideOnSubPages: true,
+          backButtonText: ''
         }
       }
     }),
@@ -175,12 +180,15 @@ export function createTranslateLoader(http: Http) {
     ItemPayInfoComponent,
     AdditionPayInfoComponent,
     PaymentsHistoryPage,
-    PaymentsHistoryDetailPage
+    PaymentsHistoryDetailPage,
+    Menu
   ],
   providers: [
+    StatusBar,
+    SplashScreen,
     {
       provide: ErrorHandler,
-      useClass: IonicErrorHandler
+      useClass: IonicErrorHandler,
     }
   ]
 })

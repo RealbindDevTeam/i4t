@@ -6,22 +6,28 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-    <ion-item-group *ngFor="let order of _orders | async">
-        <ion-item-divider color="light">
-            <h2>{{ 'MOBILE.PAYMENTS.PAY_ORDER' | translate }} # {{order.code}}</h2>
-            <h2> {{order.totalPayment}} {{_currency}}</h2>
-            <button *ngIf="isAvailableToReturn(order)" ion-button icon-only item-right style="color: #E53935; background-color: transparent;" (click)="showComfirmClose(order)">
-                <ion-icon name="repeat"></ion-icon>
-            </button>
-        </ion-item-divider>
-        <div *ngFor="let itemId of order.items">
-            <colombia-payment-item-detail [order]="order" [orderItem]="itemId" [resCode]="order.restaurantId" [currencyCode]="_currency"></colombia-payment-item-detail>
-        </div>
-    </ion-item-group>
+<ion-content>
+    <ion-card>
+        <ion-card-content>
+            <ion-item-group *ngFor="let order of _orders | async">
+                <ion-item-divider style="background-color: white;">
+                    <h2 style="display: inline-flex; font-weight: bold;">{{ 'MOBILE.PAYMENTS.PAY_ORDER' | translate }} # {{order.code}}</h2>
+                    <div style="display: inline-flex; position: absolute; right: 0;">
+                        <h2 style="font-weight: bold;"> {{order.totalPayment}} {{_currency}}</h2>
+                        <button *ngIf="isAvailableToReturn(order)" ion-button icon-only item-right style="color: #E53935; background-color: transparent; margin: 0 8px;" (click)="showComfirmClose(order)">
+                            <ion-icon name="repeat"></ion-icon>
+                        </button>
+                    </div>
+                </ion-item-divider>
+                <div *ngFor="let itemId of order.items">
+                    <colombia-payment-item-detail [order]="order" [orderItem]="itemId" [resCode]="order.restaurantId" [currencyCode]="_currency"></colombia-payment-item-detail>
+                </div>
+            </ion-item-group>
+        </ion-card-content>
+    </ion-card>
 </ion-content>
 
-<ion-footer class="ion-footer-custom" padding>
+<ion-footer class="ion-footer-custom" padding style="background: white;">
     <ion-item>
         <h2>{{ 'MOBILE.PAYMENTS.SUBTOTAL' | translate }}</h2>
         <h2>{{ 'MOBILE.PAYMENTS.INC' | translate }} (8%):</h2>

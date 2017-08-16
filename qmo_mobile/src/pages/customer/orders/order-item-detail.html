@@ -1,4 +1,5 @@
 <div *ngFor="let item of _items | async">
+    <div class="item-divider-custom"></div>
     <ion-item *ngIf="orderItem.itemId == item._id">
         <ion-thumbnail item-left>
             <img src="{{getItemThumb(orderItem.itemId)}}">

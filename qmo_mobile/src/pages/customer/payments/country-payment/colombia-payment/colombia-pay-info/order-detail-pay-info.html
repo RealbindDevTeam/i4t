@@ -1,11 +1,13 @@
-<div *ngFor="let order of _orders | async" padding>
+<div *ngFor="let order of _orders | async">
     <div *ngFor="let item of order.items">
+        <div class="item-divider-custom"></div>
         <item-pay-info [itemId]="item.itemId" [currency]="currency" [price]="item.paymentItem" [quantity]="item.quantity"></item-pay-info>
         
         <div *ngIf="(item.garnishFood.length > 0)">
             <span *ngFor="let gar of item.garnishFood">
                 <span *ngFor="let garnish of _garnishFood | async">
                     <template [ngIf]="gar === garnish._id">
+                        <div class="item-divider-custom"></div>
                         <ion-item>
                             <ion-thumbnail item-left>
                                 <img md-list-avatar src="/assets/img/default-plate.png">
@@ -23,6 +25,7 @@
         <div *ngIf="(item.additions.length > 0)">
             <div *ngFor="let ad of item.additions">
                 <div *ngFor="let addition of _additions | async">
+                    <div class="item-divider-custom"></div>
                     <ion-item *ngIf="ad == addition._id">
                         <ion-thumbnail item-left>
                             <img src="/assets/img/default-plate.png">
@@ -38,6 +41,7 @@
     </div>
 
     <div *ngFor="let addition of order.additions">
+        <div class="item-divider-custom"></div>
         <addition-pay-info [additionId]="addition.additionId" [currency]="currency" [price]="addition.paymentAddition" [quantity]="addition.quantity"></addition-pay-info>
     </div>
 </div>
