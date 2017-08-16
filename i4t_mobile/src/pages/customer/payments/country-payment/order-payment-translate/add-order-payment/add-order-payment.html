@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+            {{'MOBILE.PAYMENTS.ADD_ORDER_PAYMENT' | translate}}
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <hr showWhen="android"/>
+    <div *ngIf="(_ordersTable | async)?.length <= 0" padding>
+        <div class="img">
+            <img src="assets/img/mesas.png">
+        </div>
+        <div style="text-align: center">
+            <p>{{'MOBILE.ORDER_TRANS.NO_ORDERS' | translate}}</p>
+        </div>
+    </div>
+
+    <div *ngFor="let order of _ordersTable | async; let i = index">
+        <div *ngIf="order.creation_user != _currentUserId">
+            <ion-card class="custom-padding-card">
+                <ion-list no-lines>
+                    <button ion-item (click)="showDetail(i)">
+                        <order-detail [order]="order" [isUser]="true"></order-detail>
+                    </button>
+                    <div *ngIf="_orderIndex == i" >
+                        <ion-row *ngIf="order?.status === 'ORDER_STATUS.DELIVERED' && order?.items?.length > 0" no-padding>
+                            <ion-col>
+                                <button ion-button small clear block text-left style="color: #5090ff" (click)="showDetail(i)">{{'MOBILE.CLOSE' | translate}}</button>
+                            </ion-col>
+                            <ion-col>
+                                <button ion-button small clear block text-left style="color: #5090ff" (click)="showConfirm(order)">{{'MOBILE.PAYMENTS.BTN_PAY' | translate}}</button>
+                            </ion-col>
+                        </ion-row>
+                        <div *ngIf="order">
+                            <div *ngFor="let itemId of order?.items">
+                                <order-item-detail [order]="order" [orderItem]="itemId" [resCode]="_res_code" (gotoedititem)="goToItemEdit($event, order)" [currency]="_currency"></order-item-detail>
+                            </div>
+
+                            <div *ngFor="let ad of order?.additions">
+                                <addition-order-detail [additionId]="ad.additionId" [price]="ad.paymentAddition" [quantity]="ad.quantity" [currency]="_currency"></addition-order-detail>
+                            </div>
+                        </div>
+                    </div>
+                </ion-list>
+            </ion-card>
+        </div>
+    </div>
+</ion-content>
