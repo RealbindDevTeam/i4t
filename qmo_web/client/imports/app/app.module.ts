@@ -6,12 +6,15 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from '@angular/material';
 import { HttpModule, Http } from '@angular/http';
 import { MdSnackBar } from '@angular/material';
-import { TranslateModule, TranslateStaticLoader, TranslateLoader } from 'ng2-translate';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { routes, ROUTES_PROVIDERS } from './app.routes';
 import { Ng2PageScrollModule } from 'ng2-page-scroll';
 //import { AgmCoreModule } from '@agm/core';
 import { ChartModule } from 'angular2-highcharts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './web/app.web.component';
 import { SHARED_DECLARATIONS } from './shared';
@@ -40,8 +43,8 @@ const defaultOptions: AppConfigOptions = {
 
 let moduleDefinition;
 
-export function createTranslateLoader(http: Http) {
-  return new TranslateStaticLoader(http, '/i18n', '.json');
+export function createTranslateLoader(http: HttpClient) {
+    return new TranslateHttpLoader(http, '/i18n/', '.json');
 }
 
 moduleDefinition = {
@@ -53,15 +56,19 @@ moduleDefinition = {
     MaterialModule,
     FlexLayoutModule,
     NavigationModule.forRoot(),
+    HttpClientModule,
     TranslateModule.forRoot({
-      provide: TranslateLoader,
-      useFactory: (createTranslateLoader),
-      deps: [Http]
+      loader: {
+          provide: TranslateLoader,
+          useFactory: (createTranslateLoader),
+          deps: [HttpClient]
+      }
     }),
     SharedModule.forRoot(),
     Ng2PageScrollModule.forRoot(),
     NgxPaginationModule,
     ChartModule,
+    BrowserAnimationsModule,
     /*AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBXJSlwWRSHoRiZdqlOfHPqxxDRdqm8_Jk'
     })*/

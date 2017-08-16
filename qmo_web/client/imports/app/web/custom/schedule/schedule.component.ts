@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, NgZone, EventEmitter, Input, Output } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Hours } from '../../../../../../both/collections/general/hours.collection';

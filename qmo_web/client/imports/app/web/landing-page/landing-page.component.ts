@@ -2,7 +2,7 @@ import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { MeteorObservable } from 'meteor-rxjs';
 import { PageScrollService, PageScrollInstance, PageScrollConfig } from 'ng2-page-scroll';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { UserLanguageService } from '../../shared/services/user-language.service';
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Accounts } from 'meteor/accounts-base';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Params } from "@angular/router";
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../client/imports/app/shared/services/user-language.service';

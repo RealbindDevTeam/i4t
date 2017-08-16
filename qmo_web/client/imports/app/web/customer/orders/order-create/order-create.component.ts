@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, NgZone, Input, Output, EventEmitter } fro
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { MdSnackBar } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';

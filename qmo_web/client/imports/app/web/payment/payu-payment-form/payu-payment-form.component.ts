@@ -5,7 +5,7 @@ import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MeteorObservable } from 'meteor-rxjs';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { CustomValidators } from '../../../../../../both/shared-components/validators/custom-validator';

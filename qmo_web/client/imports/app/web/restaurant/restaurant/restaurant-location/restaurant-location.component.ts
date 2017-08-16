@@ -3,7 +3,7 @@ import { MdDialogRef } from '@angular/material';
 //import { MouseEvent } from "@agm/core";
 import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';

@@ -11,12 +11,14 @@ import {NavigationService} from './navigation.service';
 import {SidenavItemComponent} from './sidenav/sidenav-item/sidenav-item.component';
 import {FooterComponent} from './footer/footer.component';
 import {LayoutComponent} from './layout/layout.component';
-import { TranslateModule, TranslateStaticLoader, TranslateLoader } from 'ng2-translate';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import {CustomerMenuComponent, WaiterMenuComponent, ChefMenuComponent} from './menu-partials';
 import { UserLanguageService } from '../../shared/services/user-language.service';
 
-export function createTranslateLoader(http: Http) {
-  return new TranslateStaticLoader(http, '/i18n', '.json');
+export function createTranslateLoader(http: HttpClient) {
+    return new TranslateHttpLoader(http, '/i18n/', '.json');
 }
 
 @NgModule({
@@ -28,10 +30,13 @@ export function createTranslateLoader(http: Http) {
     FlexLayoutModule,
     ReactiveFormsModule,
     TranslateModule.forRoot({
-        provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [Http]
-      })],
+      loader: {
+          provide: TranslateLoader,
+          useFactory: (createTranslateLoader),
+          deps: [HttpClient]
+      }
+    }),
+    ],
   declarations : [SidenavComponent, 
                   TopnavComponent, 
                   SidenavItemComponent, 
