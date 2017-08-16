@@ -14,6 +14,7 @@ import { routes, ROUTES_PROVIDERS } from './app.routes';
 import { Ng2PageScrollModule } from 'ng2-page-scroll';
 //import { AgmCoreModule } from '@agm/core';
 import { ChartModule } from 'angular2-highcharts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './web/app.web.component';
 import { SHARED_DECLARATIONS } from './shared';
@@ -55,6 +56,7 @@ moduleDefinition = {
     MaterialModule,
     FlexLayoutModule,
     NavigationModule.forRoot(),
+    HttpClientModule,
     TranslateModule.forRoot({
       loader: {
           provide: TranslateLoader,
@@ -66,6 +68,7 @@ moduleDefinition = {
     Ng2PageScrollModule.forRoot(),
     NgxPaginationModule,
     ChartModule,
+    BrowserAnimationsModule,
     /*AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBXJSlwWRSHoRiZdqlOfHPqxxDRdqm8_Jk'
     })*/
