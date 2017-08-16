@@ -44,7 +44,7 @@ export class UserLanguageService{
         if( navigator.language.split( '-' )[0] === 'en' || navigator.language.split( '-' )[0] === 'es' ){
             return navigator.language.split( '-' )[0];
         } else {
-            return 'en'
+            return this.getDefaultLanguage();
         }
     }
 
@@ -56,7 +56,7 @@ export class UserLanguageService{
         if( _pLanguage === 'en' || _pLanguage === 'es' ){
             return _pLanguage;
         } else {
-            return 'en';
+            return this.getDefaultLanguage();
         }
     }
 

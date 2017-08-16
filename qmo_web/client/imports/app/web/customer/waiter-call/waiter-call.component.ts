@@ -1,7 +1,7 @@
 import { Component, ViewContainerRef, OnInit, OnDestroy, AfterContentInit, NgZone } from '@angular/core';
 import { Meteor } from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription, Subject, Observable } from 'rxjs';
 import { Job, JobCollection } from 'meteor/vsivsi:job-collection';
 import { UserLanguageService } from '../../../shared/services/user-language.service';

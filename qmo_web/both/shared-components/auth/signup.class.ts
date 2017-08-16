@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { Router } from '@angular/router';
 import { Accounts } from 'meteor/accounts-base';
 import { MeteorObservable } from 'meteor-rxjs';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { UserLanguageService } from '../../../client/imports/app/shared/services/user-language.service';
 import { CustomValidators } from '../validators/custom-validator';
 import { UserDetails } from '../../collections/auth/user-detail.collection';

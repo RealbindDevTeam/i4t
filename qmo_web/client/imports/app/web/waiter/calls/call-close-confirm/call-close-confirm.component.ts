@@ -1,7 +1,7 @@
 import { Component, NgZone } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 import { MeteorObservable } from "meteor-rxjs";
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 
 import template from './call-close-confirm.component.html';

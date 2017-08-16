@@ -1,6 +1,6 @@
 import {Directive, ElementRef} from '@angular/core';
 
-import 'prismjs/';
+import * as Prism from 'prismjs/';
 
 @Directive({
   selector : '[cCode]'

@@ -3,7 +3,7 @@ import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { UserLanguageService } from '../../shared/services/user-language.service';
 import { RecoverWebComponent } from './recover-password/recover.web.component';
 import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';

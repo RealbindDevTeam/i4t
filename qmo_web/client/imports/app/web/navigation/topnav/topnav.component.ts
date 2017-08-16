@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { NavigationService } from '../navigation.service';
 import { SearchService } from '../../../shared/services/search.service';
 import { StringUtils } from '../../../shared/utils/string-utils';

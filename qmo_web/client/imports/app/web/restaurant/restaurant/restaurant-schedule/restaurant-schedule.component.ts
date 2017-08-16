@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
 
 import template from './restaurant-schedule.component.html';
