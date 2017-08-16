@@ -37,7 +37,6 @@ export class LandingPageComponent implements OnInit, OnDestroy {
                     PageScrollConfig.defaultDuration = 900; 
         
                     translate.use( this._userLanguageService.getNavigationLanguage() );
-                    translate.setDefaultLang( 'en' );
     }
 
     ngOnDestroy(){

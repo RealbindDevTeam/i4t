@@ -127,7 +127,8 @@
             var refElement = $(currLink.attr('data-target'));
             
             if (refElement.position()){
-              if (refElement.position().top <= scrollPos && refElement.position().top + refElement.height() > scrollPos) {
+              var top = refElement.position().top - 64;
+              if (top <= scrollPos && top + refElement.height() > scrollPos) {
                   $('md-toolbar ul a').removeClass("active");
                   currLink.addClass("active");
               }

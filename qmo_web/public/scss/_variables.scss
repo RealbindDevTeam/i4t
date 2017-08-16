@@ -101,7 +101,7 @@ $core-sidenav-theme: mat-light-theme($core-sidenav-primary-palette, $core-sidena
 @include mat-toolbar-theme($core-sidenav-theme);
 
 // set scss variables from color palettes
-$primary-color: map_get($core-primary-palette, default);
+//$primary-color: map_get($core-primary-palette, default);
 $secondary-color: map_get($core-accent-palette, default);
 //$sidenav-primary-color: map_get(map_get($core-sidenav-theme, primary), default);
 $sidenav-primary-color: #F5F5F5;

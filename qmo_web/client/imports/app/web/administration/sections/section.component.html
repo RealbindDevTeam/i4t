@@ -60,7 +60,7 @@
     </div>
   </md-card-content>
   <md-card-actions>
-    <button md-raised-button (click)="open(section)">{{'SECTIONS.MODIFY' | translate}}</button>
+    <button md-raised-button (click)="open(section)" class="button-secundary">{{'SECTIONS.MODIFY' | translate}}</button>
     <button md-raised-button *ngIf="section.is_active" class="inactive-button" (click)="updateStatus(section)">{{'SECTIONS.INACTIVATE' | translate}}</button>
     <button md-raised-button *ngIf="!section.is_active" class="active-button" (click)="updateStatus(section)">{{'SECTIONS.ACTIVATE' | translate}}</button>
   </md-card-actions>
