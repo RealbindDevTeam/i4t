@@ -7,6 +7,8 @@ import { MomentModule } from 'angular2-moment';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+//import { HttpClientModule, HttpClient } from '@angular/common/http';
+
 import { MyApp } from './app.component';
 import { InitialComponent } from '../pages/auth/initial/initial';
 import { SignupComponent } from '../pages/auth/signup/signup';
