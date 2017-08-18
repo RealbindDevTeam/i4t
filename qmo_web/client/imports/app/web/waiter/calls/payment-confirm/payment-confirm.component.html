@@ -97,7 +97,8 @@
     <br/>
 </div>
 <button md-raised-button class="button-secundary" (click)="close()">{{ 'CANCEL' | translate }}</button>
-<button md-raised-button [disabled]="!_payAllowed" (click)="closePayments()">{{ 'PAYMENT_CONFIRM.CLOSE_PAYMENTS' | translate }}</button>
+<button md-raised-button *ngIf="!_payAllowed" disabled>{{ 'PAYMENT_CONFIRM.CLOSE_PAYMENTS' | translate }}</button>
+<button md-raised-button *ngIf="_payAllowed" class="button-primary" (click)="closePayments()">{{ 'PAYMENT_CONFIRM.CLOSE_PAYMENTS' | translate }}</button>
 <div class="loading" *ngIf="_loading">
     <md-spinner></md-spinner>
 </div>

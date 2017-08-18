@@ -113,7 +113,9 @@
     }
 
     .show-alert{
-        text-align: right;
+        position: absolute;
+        right: 10px;
+        top: 55px;
 
         .confirm{
             color: red;
