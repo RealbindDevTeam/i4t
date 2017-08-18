@@ -34,7 +34,7 @@
         <div *ngIf="_showDetailsInProcess">
             <div *ngFor="let order of _ordersInProcessDetail | async;">
                 <md-card-title class="title">{{'ORDER_ATTENTION.TITLE' | translate}} # {{order.code}}</md-card-title>
-                <button md-raised-button color="primary" class="prepared-button" (click)="setPreparedState(order)">{{'ORDER_ATTENTION.ORDER_PREPARED' | translate}}</button>
+                <button md-raised-button class="button-primary prepared-button" (click)="setPreparedState(order)">{{'ORDER_ATTENTION.ORDER_PREPARED' | translate}}</button>
                 <md-card-content>
                     <md-divider></md-divider>
                     <span *ngFor="let item of _items | async">

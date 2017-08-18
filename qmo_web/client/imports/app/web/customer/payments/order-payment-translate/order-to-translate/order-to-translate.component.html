@@ -5,7 +5,7 @@
         <span>{{'ORDER_TRANS.TOTAL' | translate}}: {{or.totalPayment}} {{_currencyCode}}</span>
         <span class="app-flex-filler"></span>
         <span class="order-status">{{'ORDER_TRANS.STATUS' | translate}}: {{or.status | translate}}</span>
-        <button md-raised-button class="pay-button" (click)="markOrderToPay(or)">{{'ORDER_TRANS.PAY' | translate}}</button>
+        <button md-raised-button class="button-secundary pay-button" (click)="markOrderToPay(or)">{{'ORDER_TRANS.PAY' | translate}}</button>
     </md-toolbar>
     <md-card *ngIf="_orderOthersIndex == in">
         <md-card-content>
@@ -46,5 +46,5 @@
 </div>
 <md-card>
     <md-card-title *ngIf="(_ordersTable | async)?.length <= 0">{{'ORDER_TRANS.NO_ORDERS' | translate}}</md-card-title>
-    <button md-raised-button color="primary" (click)="close()">{{'CLOSE' | translate}}</button>
+    <button md-raised-button class="button-secundary" (click)="close()">{{'CLOSE' | translate}}</button>
 </md-card>

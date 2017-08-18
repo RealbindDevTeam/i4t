@@ -1,4 +1,4 @@
-<md-card md-cell="12" class="demo-card demo-basic card_image" style="width: 90%; margin: 0 auto" >
+<md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" >
     <md-card-content>
         <div class="card_initial">
 
@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="card_initial-button">
-                    <button md-raised-button (click)="addWaiterCall()">{{'WAITER_CALL.BTN_CALL_WAITER' | translate}}</button>
+                    <button md-raised-button class="button-primary" (click)="addWaiterCall()">{{'WAITER_CALL.BTN_CALL_WAITER' | translate}}</button>
                 </div>
             </div>
             
@@ -86,7 +86,7 @@
                         {{'WAITER_CALL.ONE_MOMENT' | translate}}
                     </div>
                     <div style="margin-top: 10px;">
-                        <button md-raised-button (click)="cancelWaiterCall()">{{'WAITER_CALL.BTN_CANCEL_WAITER' | translate}}</button>
+                        <button md-raised-button class="button-primary" (click)="cancelWaiterCall()">{{'WAITER_CALL.BTN_CANCEL_WAITER' | translate}}</button>
                     </div>
                 </div>
             </div>

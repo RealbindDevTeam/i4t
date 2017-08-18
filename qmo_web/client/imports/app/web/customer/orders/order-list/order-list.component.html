@@ -88,8 +88,8 @@
                                         </md-list>
                                     </md-card-content>
                                     <md-card-actions *ngIf="_customerCanEdit">
-                                        <button md-raised-button (click)="cancelCustomerOrder(or)">{{'ORDER_LIST.CANCEL_ORDER' | translate}}</button>
-                                        <button md-raised-button (click)="confirmCustomerOrder(or)">{{'ORDER_LIST.CONFIRM_ORDER' | translate}}</button>
+                                        <button class="button-secundary" md-raised-button (click)="cancelCustomerOrder(or)">{{'ORDER_LIST.CANCEL_ORDER' | translate}}</button>
+                                        <button class="button-primary" md-raised-button (click)="confirmCustomerOrder(or)">{{'ORDER_LIST.CONFIRM_ORDER' | translate}}</button>
                                     </md-card-actions>
                                 </md-card>
                             </div>
@@ -183,10 +183,10 @@
                                                     </div>  
                                                     <div *ngIf="_customerCanEdit" class="inline-block">
                                                         <button md-button class="quantity-button" (click)="removeCount()">
-                                                            <md-icon class="color-button-icon">remove</md-icon>
+                                                            <md-icon>remove</md-icon>
                                                         </button>
                                                         <button md-button class="quantity-button" (click)="addCount()">
-                                                            <md-icon class="color-button-icon">add</md-icon>
+                                                            <md-icon>add</md-icon>
                                                         </button>
                                                     </div>
                                                 </div>
