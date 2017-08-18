@@ -19,7 +19,7 @@
 .fixed-action-btn {
   position: absolute;
   right: 20px;
-  bottom: 10px;
+  bottom: 0;
 }
 
 .list{
@@ -33,4 +33,23 @@
     margin-right: 20px; 
     width: 330px; 
     vertical-align: top;
+}
+
+.global-div {
+    position: absolute;
+    width: calc( 100% - 20px);
+    top: 20px;
+    bottom: 20px;
+}
+
+.div-whitout-overflow {
+    position: relative;
+    overflow: hidden;
+}
+
+.cards-div {
+    position: relative; 
+    overflow: scroll;
+    height: calc( 100vh - 90px);
+    width: 100%;
 }

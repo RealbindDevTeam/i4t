@@ -72,9 +72,8 @@
 
         <div *ngIf="_disabled">
             <div *ngFor="let user of _userObservable | async" >
-                
                 <md-input-container style="width: 100%">
-                    <input mdInput class="demo-full-width" #inputUserName placeholder="{{'SETTINGS.USERNAME' | translate}}" class="demo-full-width" style="width: 100%" minlength="1" maxlength="20"  value="{{user.username}}"/>
+                    <input mdInput class="demo-full-width" #inputUserName placeholder="{{'SETTINGS.USERNAME' | translate}}" class="demo-full-width" style="width: 100%" minlength="1" maxlength="20" disabled value="{{user.username}}"/>
                     <md-hint align="end">{{inputUserName.value.length}} / 20</md-hint>
                 </md-input-container>
                 <div *ngIf="_validate" class="error-message">{{_message}}</div>

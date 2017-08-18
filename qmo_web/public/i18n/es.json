@@ -1043,7 +1043,8 @@
         "SOFTWARE_BY_REALBIND": "Software Realbind S.A.S",
         "INVOICE_SALE": "Factura de venta",
         "DATE": "Fecha-Hora",
-        "TOOLTIP_DOWNLOAD_INVOICE": "Descargar factura"
+        "TOOLTIP_DOWNLOAD_INVOICE": "Descargar factura",
+        "NO_PAYS" : "Aún no tiene pagos realizados"
     },
     "ADMIN_SIGNUP": {
         "SLOGAN": "Registro de administrador",

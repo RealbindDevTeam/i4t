@@ -74,7 +74,7 @@
                     <ion-list no-lines>
                         <ion-item>
                             <ion-label floating>{{'MOBILE.USERNAME' | translate}}</ion-label>
-                            <ion-input #inputUserName value="{{user.username}}" type="text" [disabled]="!_disabled"></ion-input>
+                            <ion-input #inputUserName value="{{user.username}}" type="text" disabled></ion-input>
                         </ion-item>
                         <div *ngIf="_validate" class="error-message">{{_message}}</div>
                         <ion-item>

@@ -4,16 +4,16 @@
             <div class="menu-items-content">
                 <div class="content">
                     <div>
-                        <!--md-card *ngIf="!_showPayments" md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
+                        <md-card *ngIf="!_showPayments" md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
                             <md-card-content>
                                 <div class="card_initial">
                                     <div class="card_initial has-image">
                                         <div class="card_initial-image-container">
-                                            <img class="card_initial-image" src="/images/payment-desabled.png" />
+                                            <img class="card_initial-image" src="/images/payments-history.png" />
                                         </div>
                                         <div class="card_initial-copy">
                                             <div class="card_initial-tagline">
-                                                {{'PAYMENTS.NO_ORDERS' | translate}}
+                                                {{'PAYMENTS_HISTORY.NO_PAYS' | translate}}
                                             </div>
                                             <div class="card_initial-additional-links">
                                             </div>
@@ -21,7 +21,7 @@
                                     </div>
                                 </div>
                             </md-card-content>
-                        </md-card-->
+                        </md-card>
                         
                         <div *ngIf="_showPayments" id="pruebaCard" >
                             <md-card class="main" *ngFor="let invoice of _invoices | async">
