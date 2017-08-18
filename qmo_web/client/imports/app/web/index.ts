@@ -77,6 +77,7 @@ import { CustomerPaymentsHistoryComponent } from './customer/settings/customer-p
 import { AdminSignupComponent } from './auth/admin-signup.component';
 import { AlertConfirmComponent } from './general/alert-confirm/alert-confirm.component';
 import { UserLanguageService } from '../shared/services/user-language.service';
+import { ItemEnableSupComponent } from './administration/items/items-enable-sup/items-enable-sup.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -129,7 +130,8 @@ export const WEB_DECLARATIONS = [
     ReactivateRestaurantComponent,
     CustomerPaymentsHistoryComponent,
     ColombiaPayInfoComponent,
-    AdminSignupComponent
+    AdminSignupComponent,
+    ItemEnableSupComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [
