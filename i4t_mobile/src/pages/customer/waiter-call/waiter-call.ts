@@ -182,17 +182,17 @@ export class WaiterCallPage implements OnInit, OnDestroy {
    * ionViewWillLeave implementation
    */
   ionViewWillLeave() {
-    this._waiterCallDetailSubscription.unsubscribe();
-    this._userDetailSubscription.unsubscribe();
-    this._waitersSubscription.unsubscribe();
+    if( this._waiterCallDetailSubscription ){ this._waiterCallDetailSubscription.unsubscribe(); }
+    if( this._userDetailSubscription ){ this._userDetailSubscription.unsubscribe(); }
+    if( this._waitersSubscription ){ this._waitersSubscription.unsubscribe(); }
   }
 
   /**
    * ngOnDestroy implementation
    */
   ngOnDestroy(){
-    this._waiterCallDetailSubscription.unsubscribe();
-    this._userDetailSubscription.unsubscribe();
-    this._waitersSubscription.unsubscribe();
+    if( this._waiterCallDetailSubscription ){ this._waiterCallDetailSubscription.unsubscribe(); }
+    if( this._userDetailSubscription ){ this._userDetailSubscription.unsubscribe(); }
+    if( this._waitersSubscription ){ this._waitersSubscription.unsubscribe(); }
   }
 }

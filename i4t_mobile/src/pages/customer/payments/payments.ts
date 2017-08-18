@@ -91,16 +91,16 @@ export class PaymentsPage implements OnInit, OnDestroy {
    * ionViewWillLeave Implementation. Subscription unsubscribe
    */
   ionViewWillLeave() {
-      this._userDetailsSub.unsubscribe();
-      this._restaurantSub.unsubscribe();
+      if( this._userDetailsSub ){ this._userDetailsSub.unsubscribe(); }
+      if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
   }
 
   /**
    * ngOnDestroy Implementation. Subscription unsubscribe
    */
   ngOnDestroy(){
-      this._userDetailsSub.unsubscribe();
-      this._restaurantSub.unsubscribe();
+    if( this._userDetailsSub ){ this._userDetailsSub.unsubscribe(); }
+    if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
   }
 
 }

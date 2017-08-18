@@ -175,6 +175,7 @@ export class CallsPage implements OnInit, OnDestroy {
     this._userSubscription.unsubscribe();
     this._callsDetailsSubscription.unsubscribe();
     this._tableSubscription.unsubscribe();
+    this._imgRestaurantSubscription.unsubscribe();
   }
 
 }
