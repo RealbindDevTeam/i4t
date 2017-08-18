@@ -170,7 +170,7 @@ export function loadMenus() {
                 _id: "3100",
                 is_active: true,
                 name: "MENUS.MENU_DEFINITION.ITEMS_ENABLE",
-                url: "/app/itemsEnable",
+                url: "/app/itemsEnableS",
                 icon_name: "done all",
                 order: 3100
             },

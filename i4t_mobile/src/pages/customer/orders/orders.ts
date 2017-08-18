@@ -209,9 +209,11 @@ export class OrdersPage implements OnInit, OnDestroy {
                             let _Items = _order.items;
                             _Items.forEach((item) => {
                                 let _lItem = Items.findOne({ _id: item.itemId });
+                                /*
                                 if (_lItem.isAvailable === false) {
                                     _lItemsIsAvailable = false;
                                 }
+                                */
                             });
                             if (_lItemsIsAvailable) {
                                 Orders.update({ _id: _order._id }, {

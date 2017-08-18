@@ -48,6 +48,7 @@ import { ReactivateRestaurantComponent } from './web/payment/reactivate-restaura
 import { ColombiaPayInfoComponent } from './web/customer/payments/country-payment/colombia-payment/colombia-pay-info/colombia-pay-info.component';
 import { CustomerPaymentsHistoryComponent } from './web/customer/settings/customer-payments-history/customer-payments-history.component';
 import { AdminSignupComponent } from './web/auth/admin-signup.component';
+import { ItemEnableSupComponent } from './web/administration/items/items-enable-sup/items-enable-sup.component';
 
 export const routes: Route[] = [
     {
@@ -84,7 +85,8 @@ export const routes: Route[] = [
             { path: 'payment-history', component: PaymentHistoryComponent, canActivate: [AdminGuard] },
             { path: 'reactivate-restaurant', component: ReactivateRestaurantComponent, canActivate: [AdminGuard] },
             { path: 'colPayInfo', component: ColombiaPayInfoComponent, canActivate: [CustomerGuard] },
-            { path: 'customer-payments-history', component: CustomerPaymentsHistoryComponent, canActivate: [CustomerGuard] }
+            { path: 'customer-payments-history', component: CustomerPaymentsHistoryComponent, canActivate: [CustomerGuard] },
+            { path: 'itemsEnableS', component: ItemEnableSupComponent }
         ]
     },
     { path: '', component: LandingPageComponent },

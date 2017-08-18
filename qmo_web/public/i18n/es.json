@@ -451,7 +451,8 @@
         "WEBPAGE": "Pagina de Internet",
         "EMAIL": "Correo Electronico",
         "MSG_INITIAL": "Administra la información de tus restaurantes",
-        "CITY_OTHER": "Si la ciudad de tu restaurante no se encuentra en la opción de ciudades, la puedes especificar en el campo dirección"
+        "CITY_OTHER": "Si la ciudad de tu restaurante no se encuentra en la opción de ciudades, escribela en el siguiente campo",
+        "WHICH_ONE": "Cual?"
     },
     "TABLES": {
         "TABLES_CREATION": "Creación de mesas",
@@ -620,7 +621,9 @@
         "NUMBER_TABLE_LABEL_PLAN_INFO": "De acuerdo al número de mesas se realizará el cobro correspondiente a la cuenta que registres",
         "PLAN_ONE": "Plan Uno",
         "PLAN_TWO": "Plan Dos",
-        "PLAN_THREE": "Plan Tres"
+        "PLAN_THREE": "Plan Tres",
+        "OTHER": "Otra...",
+        "CITY_OTHER": "Si seleccionaste otra ciudad, escribela en el siguiente campo"
     },
     "RESTAURANT_LOCATION": {
         "TITTLE": "Ubicacion del Establecimiento",
