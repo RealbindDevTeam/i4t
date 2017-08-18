@@ -58,13 +58,9 @@ export class ItemEnableSupComponent implements OnInit, OnDestroy {
      * @param {Item} _item 
      */
     updateAvailableFlag(_item: Item): void {
-        Items.update(_item._id, {
-            $set: {
-                //isAvailable: !_item.isAvailable,
-                modification_date: new Date(),
-                modification_user: Meteor.userId()
-            }
-        });
+        if (this._userDetail) {
+            MeteorObservable.call('updateItemAvailable', this._userDetail, _item).subscribe();
+        }
     }
 
     /**
