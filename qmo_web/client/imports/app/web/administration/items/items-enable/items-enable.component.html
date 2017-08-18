@@ -3,8 +3,7 @@
         <div class="card_initial">
             <div class="card_initial has-image">
                 <div class="card_initial-image-container">
-                    <img class="card_initial-image" 
-                        src="/images/items-enabled.png"/>
+                    <img class="card_initial-image" src="/images/items-enabled.png" />
                 </div>
                 <div class="card_initial-copy">
                     <div class="card_initial-tagline">
@@ -20,19 +19,21 @@
 
 <div class="main" *ngIf="(_items | async)?.length > 0">
     <div class="main-overflow">
-            <md-card class="cards" *ngFor="let item of _items | async">
-                <md-card-header>
-                    <md-card-title>{{item.name}}</md-card-title>
-                </md-card-header>
-                <div class="crop">
-                    <img src="{{ getItemImage(item._id) }}">
-                </div>
-                <br/>
-                <md-card-content>
-                    <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
-                    <p *ngIf="item.description.length <= 50">{{item.description}}</p>
-                    <md-slide-toggle [(checked)]="item.isAvailable" (change)="updateAvailableFlag(item)">Habilitar/Inhabilitar Item</md-slide-toggle>
-                </md-card-content>
-            </md-card>
+        <md-card class="cards" *ngFor="let item of _items | async">
+            <md-card-header>
+                <md-card-title>{{item.name}}</md-card-title>
+            </md-card-header>
+            <div class="crop">
+                <img src="{{ getItemImage(item._id) }}">
+            </div>
+            <br/>
+            <md-card-content style="margin-bottom: 0px">
+                <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
+                <p *ngIf="item.description.length <= 50">{{item.description}}</p>
+            </md-card-content>
+            <md-card-actions>
+                <button md-button class="button-secundary">Habilitar/Inhabilitar</button>
+            </md-card-actions>
+        </md-card>
     </div>
 </div>
