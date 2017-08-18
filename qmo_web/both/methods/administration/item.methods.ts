@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { UploadFS } from 'meteor/jalik:ufs';
 import { ItemImageThumb } from '../../models/administration/item.model';
-import { Items, ItemImages, ItemImagesThumbs, ItemImagesStore } from '../../collections/administration/item.collection';
+import { Items, ItemImages, ItemImagesThumbs } from '../../collections/administration/item.collection';
+import { ItemImagesStore } from '../../stores/administration/item.store';
 import { Item } from '../../models/administration/item.model';
 import { UserDetail } from '../../models/auth/user-detail.model';
 

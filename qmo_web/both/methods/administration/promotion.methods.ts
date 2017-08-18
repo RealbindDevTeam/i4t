@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { UploadFS } from 'meteor/jalik:ufs';
-import { Promotions, PromotionImages, PromotionImagesStore, PromotionImagesThumbs } from '../../collections/administration/promotion.collection';
+import { Promotions, PromotionImages, PromotionImagesThumbs } from '../../collections/administration/promotion.collection';
+import { PromotionImagesStore } from '../../stores/administration/promotion.store';
 
 /**
  * Function allow upload promotion images

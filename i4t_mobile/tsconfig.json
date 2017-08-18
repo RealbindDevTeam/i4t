@@ -9,7 +9,7 @@
       "dom",
       "es2015"
     ],
-    "module": "es2015",
+    "module": "commonjs",
     "moduleResolution": "node",
     "paths": {
       "qmo_web/*": [ "../qmo_web/*" ]
@@ -20,7 +20,6 @@
     "stripInternal": true,
     "noImplicitAny": false,
     "types": [
-      "meteor-typings",
       "@types/underscore"
     ]
   },

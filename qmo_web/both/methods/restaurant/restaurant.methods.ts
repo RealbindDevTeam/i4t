@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { UploadFS } from 'meteor/jalik:ufs';
-import { RestaurantImagesStore } from '../../collections/restaurant/restaurant.collection';
+import { RestaurantImagesStore } from '../../stores/restaurant/restaurant.store';
 import { CodeGenerator } from './QR/codeGenerator';
 import { Table } from '../../models/restaurant/table.model';
 import { Tables } from '../../collections/restaurant/table.collection';
