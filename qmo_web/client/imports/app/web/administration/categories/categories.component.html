@@ -53,8 +53,8 @@
     </span>
   </md-card-content>
   <md-card-actions>
-    <button md-raised-button (click)="open(category)">{{'CATEGORIES.MODIFY' | translate}}</button>
-    <button md-raised-button *ngIf="category.is_active" class="inactive" (click)="updateStatus(category)">{{'CATEGORIES.INACTIVATE' | translate}}</button>
-    <button md-raised-button *ngIf="!category.is_active" class="active" (click)="updateStatus(category)">{{'CATEGORIES.ACTIVATE' | translate}}</button>
+    <button md-raised-button (click)="open(category)" class="button-secundary">{{'CATEGORIES.MODIFY' | translate}}</button>
+    <button md-raised-button *ngIf="category.is_active" class="inactive-button" (click)="updateStatus(category)">{{'CATEGORIES.INACTIVATE' | translate}}</button>
+    <button md-raised-button *ngIf="!category.is_active" class="active-button" (click)="updateStatus(category)">{{'CATEGORIES.ACTIVATE' | translate}}</button>
   </md-card-actions>
 </md-card>

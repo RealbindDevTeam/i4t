@@ -1,4 +1,5 @@
 $primary-color: #E53935;
+$second-color : #3c4146;
 $hover-color:   #C62828;
 $background-color: #fff;
 $side-nav-color : #3c4146;
@@ -120,6 +121,10 @@ md-toolbar {
   position: fixed;
   z-index: 1;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+}
+
+.mat-card:not([class*=mat-elevation-z]) {
+  box-shadow: none;
 }
 
 @media (max-width: 600px) and (orientation: landscape) {
@@ -266,17 +271,17 @@ md-toolbar ul a.btn, md-toolbar ul a.btn-large, md-toolbar ul a.btn-large, md-to
 }
 
 md-toolbar ul a:hover {
-  background-color: $primary-color;
+  background-color: $second-color;
   color: $background-color;
 }
 
 md-toolbar ul a:active {
-  background-color: $primary-color;
+  background-color: $second-color;
   color: $background-color;
 }
 
 md-toolbar ul a.active  {
-  background-color: $primary-color;
+  background-color: $second-color;
   color: $background-color;
 }
 
@@ -1325,7 +1330,7 @@ p {
 
 footer.page-footer {
   padding-top: 20px;
-  background-color: $primary-color;
+  //background-color: $primary-color;
 }
 
 footer.page-footer .footer-copyright {
@@ -1333,7 +1338,7 @@ footer.page-footer .footer-copyright {
   height: 40px;
   line-height: 40px;
   color: rgba(255, 255, 255, 0.8);
-  background-color: $hover-color;
+  background-color: $second-color;
 }
 
 .social-icons a {
@@ -1352,22 +1357,22 @@ footer.page-footer .footer-copyright {
   background-position: 0 0;
 }
 
-.social-icons .facebook:hover {
-  background-position: 0 -40px;
-}
+//.social-icons .facebook:hover {
+//  background-position: 0 -40px;
+//}
 
 .social-icons .twitter {
   background-position: -40px 0;
 }
 
-.social-icons .twitter:hover {
-  background-position: -40px -40px;
-}
+//.social-icons .twitter:hover {
+//  background-position: -40px -40px;
+//}
 
 .social-icons .google {
   background-position: -80px 0;
 }
 
-.social-icons .google:hover {
-  background-position: -80px -40px;
-}
+//.social-icons .google:hover {
+//  background-position: -80px -40px;
+//}

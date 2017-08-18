@@ -72,8 +72,8 @@
     <div class="card-garnishfood-tax">{{showGarnishFoodTaxes(garnishFood.prices)}}</div>    
   </md-card-content>
   <md-card-actions class="card-actions">
-    <button md-raised-button (click)="open(garnishFood)">{{'GARNISHFOOD.MODIFY' | translate}}</button>
-    <button md-raised-button *ngIf="garnishFood.is_active" class="inactivate" (click)="updateStatus(garnishFood)">{{'GARNISHFOOD.INACTIVATE' | translate}}</button>
-    <button md-raised-button *ngIf="!garnishFood.is_active" class="activate" (click)="updateStatus(garnishFood)">{{'GARNISHFOOD.ACTIVATE' | translate}}</button>
+    <button md-raised-button (click)="open(garnishFood)" class="button-secundary">{{'GARNISHFOOD.MODIFY' | translate}}</button>
+    <button md-raised-button *ngIf="garnishFood.is_active" class="inactive-button" (click)="updateStatus(garnishFood)">{{'GARNISHFOOD.INACTIVATE' | translate}}</button>
+    <button md-raised-button *ngIf="!garnishFood.is_active" class="active-button" (click)="updateStatus(garnishFood)">{{'GARNISHFOOD.ACTIVATE' | translate}}</button>
   </md-card-actions>
 </md-card>

@@ -9,7 +9,7 @@
     <img class="logo" src="/images/logo_iurest_white.png">
   </a>
 
-  <span class="breadcrumb-holder" *ngIf="_navigation.largeScreen">
+  <span class="breadcrumb-holder" *ngIf="_navigation.largeScreen" style="position: absolute; margin-left: 225px;">
     <span *ngFor="let breadcrumb of _breadcrumbs" class="breadcrumb">
       <a *ngIf="breadcrumb.link !== null" [routerLink]="breadcrumb.link" class="breadcrumb-link">{{breadcrumb.title}}</a>
       <a *ngIf="breadcrumb.link === null" class="breadcrumb-link">{{breadcrumb.title}}</a>

@@ -59,7 +59,7 @@ th {
   Card
 */
 md-card-title {
-    color: $primary-color;
+    color: $button-color-secundary;
 }
 
 /*
@@ -115,62 +115,62 @@ md-ink-bar {
 
 .md-tab-label:focus {
     background-color: $primary-color-hover;
-$color-black: "0,0,0";
-$select-background-color: transparent;
-$select-border-color: unquote("rgba(#{$color-black}, 0.12)") !default;
-$select-color: unquote("rgba(#{$color-black}, 0.26)") !default;
-$select-padding: 4px;
+    $color-black: "0,0,0";
+    $select-background-color: transparent;
+    $select-border-color: unquote("rgba(#{$color-black}, 0.12)") !default;
+    $select-color: unquote("rgba(#{$color-black}, 0.26)") !default;
+    $select-padding: 4px;
 
-div.selector-container {
-    width:50px;
-    margin:0px;
-    float:left;
-}
-div.notifications {
-    position: fixed;
-    bottom:0;
-    padding:40px;
-}
-div.error {
-    color: $primary-color;
-}
-div.divider {
-    clear:both;
-    margin:10px;
-}
+    div.selector-container {
+        width:50px;
+        margin:0px;
+        float:left;
+    }
+    div.notifications {
+        position: fixed;
+        bottom:0;
+        padding:40px;
+    }
+    div.error {
+        color: $primary-color;
+    }
+    div.divider {
+        clear:both;
+        margin:10px;
+    }
 
-select {
-  font-family: inherit;
-  background-color: transparent;
-  width: 100%;
-  padding: $select-padding 0;
-  color: $select-color;
-  border: none;
-  border-bottom: 1px solid $select-border-color;
-}
+    select {
+    font-family: inherit;
+    background-color: transparent;
+    width: 100%;
+    padding: $select-padding 0;
+    color: $select-color;
+    border: none;
+    border-bottom: 1px solid $select-border-color;
+    }
 
-select:focus {
-  outline: none}
+    select:focus {
+    outline: none}
 
-  .mdl-selectfield label {display: none;}
-  .mdl-selectfield select {appearance: none}
-  .mdl-selectfield {
-    font-family: 'Roboto','Helvetica','Arial',sans-serif;
-    position: relative;
-      &:after {
-          position: absolute;
-          top: 0.75em;
-          right: 0.5em;
-          width: 0;
-          height: 0;
-          padding: 0;
-          content: '';
-          border-left: .25em solid transparent;
-          border-right: .25em solid transparent;
-          border-top: .375em solid $select-border-color;
-          pointer-events: none;
-      }
-}
+    .mdl-selectfield label {display: none;}
+    .mdl-selectfield select {appearance: none}
+    .mdl-selectfield {
+        font-family: 'Roboto','Helvetica','Arial',sans-serif;
+        position: relative;
+        &:after {
+            position: absolute;
+            top: 0.75em;
+            right: 0.5em;
+            width: 0;
+            height: 0;
+            padding: 0;
+            content: '';
+            border-left: .25em solid transparent;
+            border-right: .25em solid transparent;
+            border-top: .375em solid $select-border-color;
+            pointer-events: none;
+        }
+    }
 }
 
 .error-message{
@@ -179,21 +179,51 @@ select:focus {
 }
 
 .button-primary {
-    background-color: $primary-color !important;
-    color: $white_color-text !important;
+    background-color: $white_color-text !important;
+    border: 1px solid $primary-color !important;
+    box-shadow: none !important;
+    color: $primary-color !important;
     font-weight: 600 !important;
 }
 .button-primary:hover {
-    background-color: $button-primary-hover !important;
+    color: $white_color-text !important;
+    background-color: $primary-color !important;
 }
 
 .button-secundary {
     background-color: $button-secundary !important;
+    box-shadow: none !important;
     color: $button-color-secundary !important;
 }
 
 .button-secundary:hover {
     background-color: $button-secundary-hover !important;
+}
+
+.inactive-button{
+    background-color: $white_color-text !important;
+    border: 1px solid $primary-color !important;
+    box-shadow: none !important;
+    color: $primary-color !important;
+    font-weight: 600 !important;
+}
+
+.inactive-button:hover {
+    color: $white_color-text !important;
+    background-color: $primary-color !important;
+}
+
+.active-button{
+    background-color: $white_color-text !important;
+    border: 1px solid green !important;
+    box-shadow: none !important;
+    color: green !important;
+    font-weight: 600 !important;
+}
+
+.active-button:hover {
+    color: $white_color-text !important;
+    background-color: green !important;
 }
 
 /*
@@ -241,8 +271,9 @@ select:focus {
 
 
 .inputfile-1 + label {
-    color: $white_color-text;
-    background-color: $primary-color;
+    border: 1px solid $primary-color !important;
+    color: $primary-color;
+    background-color: $white_color-text;
     vertical-align: middle;
     font-size: smaller;
 }
@@ -250,7 +281,21 @@ select:focus {
 .inputfile-1:focus + label,
 .inputfile-1.has-focus + label,
 .inputfile-1 + label:hover {
-    background-color: $button-primary-hover;
+    background-color: $primary-color;
+    color: $white_color-text;
+}
+
+/*
+    Add and revome buttons
+*/
+.quantity-button {
+    background-color: White !important;
+    border: 1px solid #E53935 !important;
+    color: #E53935 !important;
+    min-height: 30px !important;
+    min-width: 65px !important;
+    font-size: 20px !important;
+    line-height: 0px;
 }
 
 /*
