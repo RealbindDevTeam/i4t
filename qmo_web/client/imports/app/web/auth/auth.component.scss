@@ -154,8 +154,11 @@ body {
 .main {
   padding: 4.5em 0 4.5em;
 	text-align: center;
-  height: calc(100% - 9em);
   background-color: whitesmoke;
+}
+
+.main-height{
+  height: calc(100% - 9em);
 }
 
 .main-w3lsrow {

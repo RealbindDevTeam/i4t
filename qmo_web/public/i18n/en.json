@@ -1110,5 +1110,9 @@
         "THERE_NOT_RESTAURANTS": "No restaurants yet register",
         "RESTAURANT_REGISTER": "Restaurant register",
         "MESSAGE": "Register one to enable this option"
+    },
+    "NOT_FOUND" : {
+        "PAGE_NOT_FOUND" : "PAGE NOT FOUND",
+        "BACK" : "Back to"
     }
 }

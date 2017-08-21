@@ -1110,5 +1110,9 @@
         "THERE_NOT_RESTAURANTS": "Aún no hay restaurantes registrados",
         "RESTAURANT_REGISTER": "Registrar restaurante",
         "MESSAGE": "Regístra uno para habilitar esta opción"
+    },
+    "NOT_FOUND" : {
+        "PAGE_NOT_FOUND" : "Esta página no esta disponible",
+        "BACK" : "Resgresar a"
     }
 }
