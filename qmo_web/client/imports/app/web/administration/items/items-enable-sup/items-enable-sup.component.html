@@ -30,7 +30,7 @@
             <md-card-content>
                 <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
                 <p *ngIf="item.description.length <= 50">{{item.description}}</p>
-                <md-slide-toggle [checked]="getItemAvailable(item)" (change)="updateAvailableFlag(item)">Habilitar/Inhabilitar Item</md-slide-toggle>
+                <md-slide-toggle [checked]="getItemAvailable(item)" (change)="updateAvailableFlag(item._id)">{{'ENABLE_DISABLED.BTN_TOGGLE_MSG' | translate}}</md-slide-toggle>
             </md-card-content>
         </md-card>
     </div>

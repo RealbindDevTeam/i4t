@@ -1109,5 +1109,11 @@
         "THERE_NOT_RESTAURANTS": "Aún no hay restaurantes registrados",
         "RESTAURANT_REGISTER": "Registrar restaurante",
         "MESSAGE": "Regístra uno para habilitar esta opción"
+    },
+    "ENABLE_DISABLED": {
+        "BTN_TOGGLE_MSG": "Habilitar/Inhabilitar Item",
+        "DIALOG_SUBTITLE": "Cambia el restaurante donde deseas habilitar o inhabilitar el item",
+        "CLOSE_DIALOG": "Cerrar",
+        "AVAILABILITY_CHANGED": "Disponiblidad de item modificada"
     }
 }

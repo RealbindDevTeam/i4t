@@ -1109,5 +1109,11 @@
         "THERE_NOT_RESTAURANTS": "No restaurants yet register",
         "RESTAURANT_REGISTER": "Restaurant register",
         "MESSAGE": "Register one to enable this option"
+    },
+    "ENABLE_DISABLED": {
+        "BTN_TOGGLE_MSG": "Enable/Disable Item",
+        "DIALOG_SUBTITLE": "Change the restaurant where you want enable/disable the item",
+        "CLOSE_DIALOG": "Close",
+        "AVAILABILITY_CHANGED": "Item availability changed"
     }
 }
