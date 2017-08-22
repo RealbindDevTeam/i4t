@@ -24,25 +24,24 @@ import template from './collaborators-register.component.html';
 })
 export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
 
-    public  _selectedIndex       : number = 0;
-    
-    private _restaurantSub : Subscription;
-    private _roleSub       : Subscription;
-    private _tableSub      : Subscription;
-    private _collaboratorRegisterForm : FormGroup;
-    private _restaurants               : Observable<Restaurant[]>;
-    private _roles                     : Observable<Role[]>;
-    private _tables                    : Observable<Table[]>;
-    private _userProfile      = new UserProfile();
+    public _selectedIndex: number = 0;
+    private _restaurantSub: Subscription;
+    private _roleSub: Subscription;
+    private _tableSub: Subscription;
+    private _collaboratorRegisterForm: FormGroup;
+    private _restaurants: Observable<Restaurant[]>;
+    private _roles: Observable<Role[]>;
+    private _tables: Observable<Table[]>;
+    private _userProfile = new UserProfile();
     private _userProfileImage = new UserProfileImage();
-    private _tablesNumber       : number[] = [];
-    private _userLang           : string;
-    private _error              : string;
-    private _selectedRestaurant : string;
-    private _message            : string;
-    private _showConfirmError         : boolean = false;
-    private _showTablesSelect         : boolean = false;
-    private _disabledTablesAssignment : boolean = true;
+    private _tablesNumber: number[] = [];
+    private _userLang: string;
+    private _error: string;
+    private _selectedRestaurant: string;
+    private _message: string;
+    private _showConfirmError: boolean = false;
+    private _showTablesSelect: boolean = false;
+    private _disabledTablesAssignment: boolean = true;
 
     /**
      * CollaboratorsRegisterComponent constructor
@@ -52,14 +51,14 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
      * @param {NgZone} _zone 
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor( private _router : Router, 
-                 private _formBuilder : FormBuilder, 
-                 private _translate : TranslateService,
-                 private _zone : NgZone,
-                 private _userLanguageService: UserLanguageService )
-    {
-        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        _translate.setDefaultLang( 'en' );
+    constructor(private _router: Router,
+        private _formBuilder: FormBuilder,
+        private _translate: TranslateService,
+        private _zone: NgZone,
+        private _userLanguageService: UserLanguageService) {
+        _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        _translate.setDefaultLang('en');
+        this._userLang = this._userLanguageService.getNavigationLanguage();
     }
 
     /**
@@ -67,26 +66,26 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
      */
     ngOnInit() {
         this._collaboratorRegisterForm = new FormGroup({
-            name: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 70 ) ] ),
-            last_name: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 70 ) ] ),
-            birthdate_dd: new FormControl('', [ Validators.required, CustomValidators.dayOfDateValidator ]),
-            birthdate_mm: new FormControl('', [ Validators.required, CustomValidators.monthOfDateValidator ]),
-            birthdate_yyyy: new FormControl('', [ Validators.required, CustomValidators.yearOfDateValidator ]),
-            restaurant_work: new FormControl( '', [ Validators.required ] ),
-            role: new FormControl( '', [ Validators.required ] ),
-            phone: new FormControl( '', [ Validators.minLength( 1 ), Validators.maxLength( 40 ) ] ),
+            name: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(70)]),
+            last_name: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(70)]),
+            birthdate_dd: new FormControl('', [Validators.required, CustomValidators.dayOfDateValidator]),
+            birthdate_mm: new FormControl('', [Validators.required, CustomValidators.monthOfDateValidator]),
+            birthdate_yyyy: new FormControl('', [Validators.required, CustomValidators.yearOfDateValidator]),
+            restaurant_work: new FormControl('', [Validators.required]),
+            role: new FormControl('', [Validators.required]),
+            phone: new FormControl('', [Validators.minLength(1), Validators.maxLength(40)]),
             username: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
-            email : new FormControl(''),
+            email: new FormControl(''),
             password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]),
             confirmPassword: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]),
-            table_init : new FormControl(0),
-            table_end : new FormControl(0),
+            table_init: new FormControl(0),
+            table_end: new FormControl(0),
         });
         this._restaurants = Restaurants.find({}).zone();
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
         this._roles = Roles.find({}).zone();
         this._roleSub = MeteorObservable.subscribe('getRoleCollaborators').subscribe();
-        this._tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe(()=>{
+        this._tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe(() => {
             this._tables = Tables.find({});
         });
     }
@@ -94,13 +93,13 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
      * Validate waiter role is select to enabled tables assignment
      * @param _roleId 
      */
-    validateWaiterRole( _roleId : string ) {
-        if(_roleId === '200') {
+    validateWaiterRole(_roleId: string) {
+        if (_roleId === '200') {
             this._showTablesSelect = true;
         } else {
-             this._showConfirmError = false ;
-             this._showTablesSelect = false ;
-             this._disabledTablesAssignment = true ;
+            this._showConfirmError = false;
+            this._showTablesSelect = false;
+            this._disabledTablesAssignment = true;
         }
     }
 
@@ -108,11 +107,11 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
      * Enabled tables assignment
      * @param _pEvent 
      */
-    pushSelectArray( _pEvent : any ){
+    pushSelectArray(_pEvent: any) {
         this._tablesNumber = [];
-        if(_pEvent.checked){
+        if (_pEvent.checked) {
             this._disabledTablesAssignment = false;
-            let tablesCount : number = 0;
+            let tablesCount: number = 0;
             tablesCount = Tables.collection.find({}).count();
             for (var index = 1; index <= tablesCount; index++) {
                 this._tablesNumber.push(index);
@@ -126,32 +125,31 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
      * This function validate Register form
      * @param _index 
      */
-    canMove( _index: number ): boolean {
-        switch ( _index ) {
-        case 0:
-            return true;
-        case 1:
-            if( this._collaboratorRegisterForm.controls['name'].valid 
-                && this._collaboratorRegisterForm.controls['last_name'].valid 
-                && this._collaboratorRegisterForm.controls['restaurant_work'].valid 
-                && this._collaboratorRegisterForm.controls['role'].valid 
-                && this._collaboratorRegisterForm.controls['birthdate_dd'].valid 
-                && this._collaboratorRegisterForm.controls['birthdate_mm'].valid 
-                && this._collaboratorRegisterForm.controls['birthdate_yyyy'].valid )
-            {
+    canMove(_index: number): boolean {
+        switch (_index) {
+            case 0:
                 return true;
-            } else {
-                return false;
-            }
-        default:
-            return true;
+            case 1:
+                if (this._collaboratorRegisterForm.controls['name'].valid
+                    && this._collaboratorRegisterForm.controls['last_name'].valid
+                    && this._collaboratorRegisterForm.controls['restaurant_work'].valid
+                    && this._collaboratorRegisterForm.controls['role'].valid
+                    && this._collaboratorRegisterForm.controls['birthdate_dd'].valid
+                    && this._collaboratorRegisterForm.controls['birthdate_mm'].valid
+                    && this._collaboratorRegisterForm.controls['birthdate_yyyy'].valid) {
+                    return true;
+                } else {
+                    return false;
+                }
+            default:
+                return true;
         }
     }
 
     /**
      * Validate Form date
      */
-    validateFormatDate(){
+    validateFormatDate() {
         let re = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
     }
 
@@ -159,8 +157,8 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
      * Show next page of the wizard
      */
     next(): void {
-        if( this.canMove( this._selectedIndex + 1 ) ) {
-            this._selectedIndex ++;
+        if (this.canMove(this._selectedIndex + 1)) {
+            this._selectedIndex++;
         }
     }
 
@@ -168,20 +166,20 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
      * Previous page of the wizard
      */
     previous(): void {
-        if( this._selectedIndex === 0 ) {
+        if (this._selectedIndex === 0) {
             return;
         }
-        if( this.canMove( this._selectedIndex - 1 ) ) {
-            this._selectedIndex --;
+        if (this.canMove(this._selectedIndex - 1)) {
+            this._selectedIndex--;
         }
     }
 
     /**
      * Form register collaborator
      */
-    register(){
-        if(Meteor.userId()){
-            if(this._collaboratorRegisterForm.valid){
+    register() {
+        if (Meteor.userId()) {
+            if (this._collaboratorRegisterForm.valid) {
                 if (this._collaboratorRegisterForm.value.password == this._collaboratorRegisterForm.value.confirmPassword) {
                     this._userProfile.first_name = this._collaboratorRegisterForm.value.name;
                     this._userProfile.last_name = this._collaboratorRegisterForm.value.last_name;
@@ -202,22 +200,22 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                     this._userProfile.image = this._userProfileImage;
 
                     if (this._collaboratorRegisterForm.valid) {
-                        
-                        if( this._collaboratorRegisterForm.value.role === '200' ){
-                            if ( this._disabledTablesAssignment || (this._collaboratorRegisterForm.value.table_init === 0 && this._collaboratorRegisterForm.value.table_end === 0) ){
+
+                        if (this._collaboratorRegisterForm.value.role === '200') {
+                            if (this._disabledTablesAssignment || (this._collaboratorRegisterForm.value.table_init === 0 && this._collaboratorRegisterForm.value.table_end === 0)) {
                                 this._collaboratorRegisterForm.value.table_end = Tables.collection.find({}).count();
-                                if (this._collaboratorRegisterForm.value.table_end > 0 ){
+                                if (this._collaboratorRegisterForm.value.table_end > 0) {
                                     this._collaboratorRegisterForm.value.table_init = 1;
                                 }
                             }
-                            if(!this._disabledTablesAssignment && this._collaboratorRegisterForm.value.table_end < this._collaboratorRegisterForm.value.table_init){
+                            if (!this._disabledTablesAssignment && this._collaboratorRegisterForm.value.table_end < this._collaboratorRegisterForm.value.table_init) {
                                 this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.SELECT_RANGE_VALID_TABLES');
                                 alert(this._message);
                                 return;
                             }
                         }
 
-                        let info : any = ({
+                        let info: any = ({
                             "email": this._collaboratorRegisterForm.value.email,
                             "password": this._collaboratorRegisterForm.value.password,
                             "username": this._collaboratorRegisterForm.value.username,
@@ -225,8 +223,8 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                         });
 
                         MeteorObservable.call('createCollaboratorUser', info).subscribe((result) => {
-                            var id_detail : string;
-                            if( this._collaboratorRegisterForm.value.role === '200' ){
+                            var id_detail: string;
+                            if (this._collaboratorRegisterForm.value.role === '200') {
                                 id_detail = UserDetails.collection.insert({
                                     user_id: result.toString(),
                                     role_id: this._collaboratorRegisterForm.value.role,
@@ -236,13 +234,13 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                                     penalties: [],
                                     current_restaurant: "",
                                     current_table: '',
-                                    birthdate : new Date("<" + this._collaboratorRegisterForm.value.birthdate_yyyy + "-" + 
-                                                        this._collaboratorRegisterForm.value.birthdate_mm + "-" + 
-                                                        this._collaboratorRegisterForm.value.birthdate_dd + ">"),
-                                    phone : this._collaboratorRegisterForm.value.phone,
-                                    enabled : true,
-                                    table_assignment_init : Number.parseInt(this._collaboratorRegisterForm.value.table_init),
-                                    table_assignment_end  : Number.parseInt(this._collaboratorRegisterForm.value.table_end),
+                                    birthdate: new Date("<" + this._collaboratorRegisterForm.value.birthdate_yyyy + "-" +
+                                        this._collaboratorRegisterForm.value.birthdate_mm + "-" +
+                                        this._collaboratorRegisterForm.value.birthdate_dd + ">"),
+                                    phone: this._collaboratorRegisterForm.value.phone,
+                                    enabled: true,
+                                    table_assignment_init: Number.parseInt(this._collaboratorRegisterForm.value.table_init),
+                                    table_assignment_end: Number.parseInt(this._collaboratorRegisterForm.value.table_end),
                                 });
                             } else {
                                 id_detail = UserDetails.collection.insert({
@@ -254,15 +252,15 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                                     penalties: [],
                                     current_restaurant: "",
                                     current_table: '',
-                                    birthdate : new Date("<" + this._collaboratorRegisterForm.value.birthdate_yyyy + "-" + 
-                                                        this._collaboratorRegisterForm.value.birthdate_mm + "-" + 
-                                                        this._collaboratorRegisterForm.value.birthdate_dd + ">"),
-                                    phone : this._collaboratorRegisterForm.value.phone,
-                                    enabled : true,
+                                    birthdate: new Date("<" + this._collaboratorRegisterForm.value.birthdate_yyyy + "-" +
+                                        this._collaboratorRegisterForm.value.birthdate_mm + "-" +
+                                        this._collaboratorRegisterForm.value.birthdate_dd + ">"),
+                                    phone: this._collaboratorRegisterForm.value.phone,
+                                    enabled: true,
                                 });
                             }
 
-                            if(id_detail) {
+                            if (id_detail) {
                                 this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.MESSAGE_COLLABORATOR');
                                 alert(this._message);
                                 this.cancel();
@@ -274,7 +272,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                         }, (error) => {
                             alert(error);
                         });
-                        
+
                     }
                 } else {
                     this._message = this.itemNameTraduction('SIGNUP.PASSWORD_NOT_MATCH');
@@ -294,7 +292,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
     /**
      * Reset register form
      */
-    cancel(){
+    cancel() {
         this._collaboratorRegisterForm.controls['name'].reset();
         this._collaboratorRegisterForm.controls['last_name'].reset();
         this._collaboratorRegisterForm.controls['birthdate_dd'].reset();
@@ -307,17 +305,17 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
         this._collaboratorRegisterForm.controls['password'].reset();
         this._collaboratorRegisterForm.controls['confirmPassword'].reset();
 
-        this._router.navigate( [ 'app/collaborators' ] );
+        this._router.navigate(['app/collaborators']);
     }
 
     /**
      * This function allow translate
      * @param itemName 
      */
-    itemNameTraduction(itemName: string): string{
+    itemNameTraduction(itemName: string): string {
         var wordTraduced: string;
         this._translate.get(itemName).subscribe((res: string) => {
-            wordTraduced = res; 
+            wordTraduced = res;
         });
         return wordTraduced;
     }
@@ -325,10 +323,10 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
     /**
      * ngOnDestroy Implementation
      */
-    ngOnDestroy(){
-      this._restaurantSub.unsubscribe();
-      this._roleSub.unsubscribe();
-      this._tableSub.unsubscribe();
+    ngOnDestroy() {
+        this._restaurantSub.unsubscribe();
+        this._roleSub.unsubscribe();
+        this._tableSub.unsubscribe();
     }
 
 }
