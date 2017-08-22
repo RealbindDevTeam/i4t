@@ -78,6 +78,7 @@ import { AdminSignupComponent } from './auth/admin-signup.component';
 import { AlertConfirmComponent } from './general/alert-confirm/alert-confirm.component';
 import { UserLanguageService } from '../shared/services/user-language.service';
 import { ItemEnableSupComponent } from './administration/items/items-enable-sup/items-enable-sup.component';
+import { EnableConfirmComponent } from './administration/items/items-enable/enable-confirm/enable-confirm.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -159,7 +160,8 @@ export const MODAL_DIALOG_DECLARATIONS = [
     CcPaymentConfirmComponent,
     TrnResponseConfirmComponent,
     VerifyResultComponent,
-    AlertConfirmComponent
+    AlertConfirmComponent,
+    EnableConfirmComponent
 ];
 
 export const SERVICES_DECLARATIONS = [

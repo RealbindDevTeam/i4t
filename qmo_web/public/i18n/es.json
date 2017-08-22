@@ -1044,7 +1044,7 @@
         "INVOICE_SALE": "Factura de venta",
         "DATE": "Fecha-Hora",
         "TOOLTIP_DOWNLOAD_INVOICE": "Descargar factura",
-        "NO_PAYS" : "Aún no tiene pagos realizados"
+        "NO_PAYS": "Aún no tiene pagos realizados"
     },
     "ADMIN_SIGNUP": {
         "SLOGAN": "Registro de administrador",
@@ -1111,8 +1111,14 @@
         "RESTAURANT_REGISTER": "Registrar restaurante",
         "MESSAGE": "Regístra uno para habilitar esta opción"
     },
-    "NOT_FOUND" : {
-        "PAGE_NOT_FOUND" : "Esta página no esta disponible",
-        "BACK" : "Resgresar a"
+    "ENABLE_DISABLED": {
+        "BTN_TOGGLE_MSG": "Habilitar/Inhabilitar Item",
+        "DIALOG_SUBTITLE": "Cambia el restaurante donde deseas habilitar o inhabilitar el item",
+        "CLOSE_DIALOG": "Cerrar",
+        "AVAILABILITY_CHANGED": "Disponiblidad de item modificada"
+    },
+    "NOT_FOUND": {
+        "PAGE_NOT_FOUND": "Esta página no esta disponible",
+        "BACK": "Resgresar a"
     }
 }

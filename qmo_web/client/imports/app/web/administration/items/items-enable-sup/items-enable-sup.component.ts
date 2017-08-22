@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { MdSnackBar } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -29,7 +30,8 @@ export class ItemEnableSupComponent implements OnInit, OnDestroy {
 
     constructor(private _translate: TranslateService,
         private _ngZone: NgZone,
-        private _userLanguageService: UserLanguageService) {
+        private _userLanguageService: UserLanguageService,
+        public snackBar: MdSnackBar) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
     }
@@ -57,9 +59,13 @@ export class ItemEnableSupComponent implements OnInit, OnDestroy {
      * Update item available flag
      * @param {Item} _item 
      */
-    updateAvailableFlag(_item: Item): void {
+    updateAvailableFlag(_itemId: string): void {
+        let snackMsg: string = this.itemNameTraduction('ENABLE_DISABLED.AVAILABILITY_CHANGED');
         if (this._userDetail) {
-            MeteorObservable.call('updateItemAvailable', this._userDetail, _item).subscribe();
+            MeteorObservable.call('updateItemAvailable', this._userDetail.restaurant_work, _itemId).subscribe();
+            this.snackBar.open(snackMsg, '', {
+                duration: 1000,
+            });
         }
     }
 
@@ -92,6 +98,19 @@ export class ItemEnableSupComponent implements OnInit, OnDestroy {
         } else {
             return '/images/default-plate.png';
         }
+    }
+
+    /**
+     * This function cleans the tables_number fields form
+     * @param {string} itemName
+     * @return {string}
+     */
+    itemNameTraduction(itemName: string): string {
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res;
+        });
+        return wordTraduced;
     }
 
     ngOnDestroy() {

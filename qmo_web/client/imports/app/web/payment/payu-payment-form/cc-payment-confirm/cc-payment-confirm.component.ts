@@ -14,6 +14,7 @@ import style from './cc-payment-confirm.component.scss';
     styles: [style],
     providers: [ UserLanguageService ]
 })
+
 export class CcPaymentConfirmComponent implements OnInit, OnDestroy {
 
     private _cardNumber: string;

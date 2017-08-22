@@ -233,6 +233,7 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
      */
     itemNameTraduction(itemName: string): string {
         var wordTraduced: string;
+        this.translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         this.translate.get(itemName).subscribe((res: string) => {
             wordTraduced = res;
         });
