@@ -6,7 +6,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { CustomValidators } from '../../../../../both/shared-components/validators/custom-validator';
 import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
-import { UserLanguageService } from '../../shared/services/user-language.service';
 import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
 import { Countries } from '../../../../../both/collections/settings/country.collection';
 import { Country } from '../../../../../both/models/settings/country.model';
@@ -47,14 +46,12 @@ export class AdminSignupComponent extends AuthClass implements OnInit, OnDestroy
      * @param {FormBuilder} formBuilder 
      * @param {TranslateService} translate 
      * @param {NgZone} _ngZone 
-     * @param {UserLanguageService} _userLanguageService 
      */
     constructor(protected router: Router,
         protected zone: NgZone,
         protected translate: TranslateService,
-        protected _userLanguageService: UserLanguageService,
         protected _mdDialog: MdDialog) {
-        super(router, zone, translate, _userLanguageService, _mdDialog);
+        super(router, zone, translate, _mdDialog);
     }
 
     ngOnInit() {

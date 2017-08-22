@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Accounts } from 'meteor/accounts-base';
 import { TranslateService } from '@ngx-translate/core';
-import { UserLanguageService } from '../../shared/services/user-language.service';
 import { CustomValidators } from '../../../../../both/shared-components/validators/custom-validator';
 import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
 import { UserProfile, UserProfileImage } from '../../../../../both/models/auth/user-profile.model';
@@ -33,15 +32,13 @@ export class SignupWebComponent extends AuthClass implements OnInit {
      * @param {NgZone} zone 
      * @param {FormBuilder} formBuilder 
      * @param {TranslateService} translate 
-     * @param {UserLanguageService} _userLanguageService 
      */
     constructor(protected router: Router,
         protected zone: NgZone,
         protected translate: TranslateService,
-        protected _userLanguageService: UserLanguageService,
         protected _mdDialog: MdDialog) {
 
-        super(router, zone, translate, _userLanguageService, _mdDialog);
+        super(router, zone, translate, _mdDialog);
     }
 
     ngOnInit() {

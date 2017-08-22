@@ -2,7 +2,6 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Accounts } from 'meteor/accounts-base'
 import { TranslateService } from '@ngx-translate/core';
-import { UserLanguageService } from '../../../../client/imports/app/shared/services/user-language.service';
 import { CustomValidators } from '../../validators/custom-validator';
 
 export class RecoverClass {
@@ -17,10 +16,10 @@ export class RecoverClass {
      * @param {UserLanguageService} _userLanguageService 
      */
     constructor( protected zone: NgZone, 
-                 protected translate: TranslateService,
-                 protected _userLanguageService: UserLanguageService) {
-                    translate.use( this._userLanguageService.getNavigationLanguage() );
-                    translate.setDefaultLang( 'en' );
+                 protected translate: TranslateService) {
+                    let userLang = navigator.language.split('-')[0];
+                    translate.setDefaultLang('en');
+                    translate.use( userLang );
     }
 
     ngOnInit() {
