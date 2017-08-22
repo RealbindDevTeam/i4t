@@ -88,8 +88,8 @@
                                         </md-list>
                                     </md-card-content>
                                     <md-card-actions *ngIf="_customerCanEdit">
-                                        <button class="button-secundary" md-raised-button (click)="cancelCustomerOrder(or)">{{'ORDER_LIST.CANCEL_ORDER' | translate}}</button>
-                                        <button class="button-primary" md-raised-button (click)="confirmCustomerOrder(or)">{{'ORDER_LIST.CONFIRM_ORDER' | translate}}</button>
+                                        <button class="secondary-button" md-raised-button (click)="cancelCustomerOrder(or)">{{'ORDER_LIST.CANCEL_ORDER' | translate}}</button>
+                                        <button class="primary-button" md-raised-button (click)="confirmCustomerOrder(or)">{{'ORDER_LIST.CONFIRM_ORDER' | translate}}</button>
                                     </md-card-actions>
                                 </md-card>
                             </div>
@@ -226,8 +226,8 @@
                                             </div>
                                             <h3>{{'ORDER_LIST.TOTAL_PRICE' | translate}}: {{ _finalPrice }} {{_currencyCode}}</h3>
                                             <div>
-                                                <button md-button class="button-primary" *ngIf="_customerCanEdit" [disabled]="!_editOrderItemForm.valid || _showGarnishFoodError" (click)="deleteOrderItem(item._id)">{{'ORDER_LIST.DELETE_ITEM' | translate}}</button>
-                                                <button md-button class="button-primary" *ngIf="_customerCanEdit && item.isAvailable" [disabled]="!_editOrderItemForm.valid || _showGarnishFoodError" (click)="editOrderItem(item._id)">{{'ORDER_LIST.MODIFY_ITEM' | translate}}</button>
+                                                <button md-button class="primary-button" *ngIf="_customerCanEdit" [disabled]="!_editOrderItemForm.valid || _showGarnishFoodError" (click)="deleteOrderItem(item._id)">{{'ORDER_LIST.DELETE_ITEM' | translate}}</button>
+                                                <button md-button class="primary-button" *ngIf="_customerCanEdit && item.isAvailable" [disabled]="!_editOrderItemForm.valid || _showGarnishFoodError" (click)="editOrderItem(item._id)">{{'ORDER_LIST.MODIFY_ITEM' | translate}}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -254,8 +254,8 @@
                                             <input mdInput [formControlName]="add._id" type="number" placeholder="{{ getAdditionInformation(add) }} {{_currencyCode}}" min="0" max="99">
                                         </md-input-container>
                                     </form>
-                                    <button md-button class="button-primary" *ngIf="_customerCanEdit" style="margin-top: 5%;" (click)="deleteOrderAddition(add._id)">{{'ORDER_LIST.DELETE_ADDITION_ORDER' | translate}}</button>
-                                    <button md-button class="button-primary" *ngIf="_customerCanEdit" style="margin-top: 5%;" (click)="editOrderAddition()">{{'ORDER_LIST.MODIFY_ADDITION_ORDER' | translate}}</button>
+                                    <button md-button class="primary-button" *ngIf="_customerCanEdit" style="margin-top: 5%;" (click)="deleteOrderAddition(add._id)">{{'ORDER_LIST.DELETE_ADDITION_ORDER' | translate}}</button>
+                                    <button md-button class="primary-button" *ngIf="_customerCanEdit" style="margin-top: 5%;" (click)="editOrderAddition()">{{'ORDER_LIST.MODIFY_ADDITION_ORDER' | translate}}</button>
                                 </div>
                             </div>
                         </div>

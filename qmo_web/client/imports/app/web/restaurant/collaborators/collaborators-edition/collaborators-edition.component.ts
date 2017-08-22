@@ -78,9 +78,7 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
         this._collaboratorEditionForm = this._formBuilder.group({
             name: [ this.selectUser.profile.first_name, [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 70 ) ] ],
             last_name: [ this.selectUser.profile.last_name, [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 70 ) ] ],
-            birthdate_dd: [ (this.selectUserDetail.birthdate.getDate() <= 9 ? '0' + this.selectUserDetail.birthdate.getDate() : this.selectUserDetail.birthdate.getDate() ), [ Validators.required, CustomValidators.dayOfDateValidator ] ],
-            birthdate_mm: [ ((this.selectUserDetail.birthdate.getMonth() + 1) <= 9 ? '0' + (this.selectUserDetail.birthdate.getMonth() + 1) : (this.selectUserDetail.birthdate.getMonth() + 1) ), [ Validators.required, CustomValidators.monthOfDateValidator ] ],
-            birthdate_yyyy: [ this.selectUserDetail.birthdate.getFullYear() ],
+            birthdate: [ this.selectUserDetail.birthdate, [ Validators.required ] ],
             restaurant_work: [ this.selectUserDetail.restaurant_work ],
             role: [ this.selectUserDetail.role_id ],
             phone: [ this.selectUserDetail.phone ],
@@ -176,9 +174,7 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
                         if ( this._collaboratorEditionForm.value.role === '200' ) {
                             UserDetails.update({ _id : this.selectUserDetail._id }, { $set : {
                                     restaurant_work: this._collaboratorEditionForm.value.restaurant_work,
-                                    birthdate : new Date("<" + this._collaboratorEditionForm.value.birthdate_yyyy + "-" + 
-                                                        this._collaboratorEditionForm.value.birthdate_mm + "-" + 
-                                                        this._collaboratorEditionForm.value.birthdate_dd + ">"),
+                                    birthdate : this._collaboratorEditionForm.value.birthdate,
                                     phone : this._collaboratorEditionForm.value.phone,
                                     table_assignment_init : Number.parseInt(this._collaboratorEditionForm.value.table_init.toString()),
                                     table_assignment_end  : Number.parseInt(this._collaboratorEditionForm.value.table_end.toString())
@@ -187,9 +183,7 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
                         } else {
                             UserDetails.update({ _id : this.selectUserDetail._id }, { $set : {
                                     restaurant_work: this._collaboratorEditionForm.value.restaurant_work,
-                                    birthdate : new Date("<" + this._collaboratorEditionForm.value.birthdate_yyyy + "-" + 
-                                                        this._collaboratorEditionForm.value.birthdate_mm + "-" + 
-                                                        this._collaboratorEditionForm.value.birthdate_dd + ">"),
+                                    birthdate : this._collaboratorEditionForm.value.birthdate,
                                     phone : this._collaboratorEditionForm.value.phone
                                 }
                             });
@@ -220,9 +214,7 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
     cancel(){
         this._collaboratorEditionForm.controls['name'].reset();
         this._collaboratorEditionForm.controls['last_name'].reset();
-        this._collaboratorEditionForm.controls['birthdate_dd'].reset();
-        this._collaboratorEditionForm.controls['birthdate_mm'].reset();
-        this._collaboratorEditionForm.controls['birthdate_yyyy'].reset();
+        this._collaboratorEditionForm.controls['birthdate'].reset();
         this._collaboratorEditionForm.controls['restaurant_work'].reset();
         this._collaboratorEditionForm.controls['phone'].reset();
         this._collaboratorEditionForm.controls['username'].reset();

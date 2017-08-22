@@ -32,6 +32,7 @@
     "OTHER": "Other...",
     "SIGN_OUT": "Sign Out",
     "VALUE": "Value",
+    "CHOOSE_A_DATE" : "Choose a date",
     "ORDER_STATUS": {
         "REGISTERED": "Registered",
         "IN_PROCESS": "In Process",

@@ -35,7 +35,7 @@
                 <md-checkbox [(ngModel)]="all_checked" [disabled]="enable_print" mdTooltip="{{tooltip_msg}}">{{'TABLES.SELECT_ALL' | translate}}
 
                 </md-checkbox>
-                <button md-raised-button class="button-secundary" type="button" (click)="printQrPdf()" style="margin-left: 10px;" [disabled]="enable_print"
+                <button md-raised-button class="secondary-button" type="button" (click)="printQrPdf()" style="margin-left: 10px;" [disabled]="enable_print"
                     mdTooltip="{{tooltip_msg}}">
                     <i class="fa fa-file-pdf-o" aria-hidden="true"></i> {{'TABLES.GENERATE_PDF' | translate}}
                     </button>

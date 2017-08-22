@@ -68,9 +68,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
         this._collaboratorRegisterForm = new FormGroup({
             name: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(70)]),
             last_name: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(70)]),
-            birthdate_dd: new FormControl('', [Validators.required, CustomValidators.dayOfDateValidator]),
-            birthdate_mm: new FormControl('', [Validators.required, CustomValidators.monthOfDateValidator]),
-            birthdate_yyyy: new FormControl('', [Validators.required, CustomValidators.yearOfDateValidator]),
+            birthdate: new FormControl('', [Validators.required]),
             restaurant_work: new FormControl('', [Validators.required]),
             role: new FormControl('', [Validators.required]),
             phone: new FormControl('', [Validators.minLength(1), Validators.maxLength(40)]),
@@ -134,9 +132,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                     && this._collaboratorRegisterForm.controls['last_name'].valid
                     && this._collaboratorRegisterForm.controls['restaurant_work'].valid
                     && this._collaboratorRegisterForm.controls['role'].valid
-                    && this._collaboratorRegisterForm.controls['birthdate_dd'].valid
-                    && this._collaboratorRegisterForm.controls['birthdate_mm'].valid
-                    && this._collaboratorRegisterForm.controls['birthdate_yyyy'].valid) {
+                    && this._collaboratorRegisterForm.controls['birthdate'].valid) {
                     return true;
                 } else {
                     return false;
@@ -234,9 +230,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                                     penalties: [],
                                     current_restaurant: "",
                                     current_table: '',
-                                    birthdate: new Date("<" + this._collaboratorRegisterForm.value.birthdate_yyyy + "-" +
-                                        this._collaboratorRegisterForm.value.birthdate_mm + "-" +
-                                        this._collaboratorRegisterForm.value.birthdate_dd + ">"),
+                                    birthdate : this._collaboratorRegisterForm.value.birthdate,
                                     phone: this._collaboratorRegisterForm.value.phone,
                                     enabled: true,
                                     table_assignment_init: Number.parseInt(this._collaboratorRegisterForm.value.table_init),
@@ -295,9 +289,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
     cancel() {
         this._collaboratorRegisterForm.controls['name'].reset();
         this._collaboratorRegisterForm.controls['last_name'].reset();
-        this._collaboratorRegisterForm.controls['birthdate_dd'].reset();
-        this._collaboratorRegisterForm.controls['birthdate_mm'].reset();
-        this._collaboratorRegisterForm.controls['birthdate_yyyy'].reset();
+        this._collaboratorRegisterForm.controls['birthdate'].reset();
         this._collaboratorRegisterForm.controls['restaurant_work'].reset();
         this._collaboratorRegisterForm.controls['phone'].reset();
         this._collaboratorRegisterForm.controls['username'].reset();

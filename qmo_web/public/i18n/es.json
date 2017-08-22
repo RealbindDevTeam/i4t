@@ -32,6 +32,7 @@
     "OTHER": "Otro...",
     "VALUE": "Valor",
     "SIGN_OUT": "Cerrar Sesión",
+    "CHOOSE_A_DATE" : "Elige una fecha",
     "ORDER_STATUS": {
         "REGISTERED": "Registrado",
         "IN_PROCESS": "En Proceso",
