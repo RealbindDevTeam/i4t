@@ -154,8 +154,11 @@ body {
 .main {
   padding: 4.5em 0 4.5em;
 	text-align: center;
-  height: calc(100% - 9em);
   background-color: whitesmoke;
+}
+
+.main-height{
+  height: calc(100% - 9em);
 }
 
 .main-w3lsrow {
@@ -181,11 +184,15 @@ body {
 }
 
 .login-form.login-form-image.signin{
-    background: url('/images/landing-2.png')no-repeat center -250px;
+  background: url('/images/landing-2.png')no-repeat center -250px;
 }
 
 .login-form.login-form-image.signup{
-    background: url('/images/signup.png')no-repeat right 0px;
+  background: url('/images/signup.png')no-repeat right 0px;
+}
+
+.login-form.login-form-image.admin-signup{
+  background: url('/images/admin-signup.png')no-repeat right 0px;
 }
 
 .signup-logo {

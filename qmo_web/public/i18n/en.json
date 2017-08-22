@@ -1043,7 +1043,8 @@
         "SOFTWARE_BY_REALBIND": "Realbind S.A.S Software",
         "INVOICE_SALE": "Factura de venta",
         "DATE": "Fecha-Hora",
-        "TOOLTIP_DOWNLOAD_INVOICE": "Download invoice"
+        "TOOLTIP_DOWNLOAD_INVOICE": "Download invoice",
+        "NO_PAYS": "You have no payments yet"
     },
     "ADMIN_SIGNUP": {
         "SLOGAN": "Administrator register",
@@ -1115,5 +1116,9 @@
         "DIALOG_SUBTITLE": "Change the restaurant where you want enable/disable the item",
         "CLOSE_DIALOG": "Close",
         "AVAILABILITY_CHANGED": "Item availability changed"
+    },
+    "NOT_FOUND": {
+        "PAGE_NOT_FOUND": "PAGE NOT FOUND",
+        "BACK": "Back to"
     }
 }

@@ -67,8 +67,8 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
         this._roles = Roles.find({}).zone();
         this._roleSub = MeteorObservable.subscribe('getRoleCollaborators').subscribe();
-        this._userDetailsSub = MeteorObservable.subscribe('getUsersDetailsForRestaurant', '' ).subscribe();
-        this._usersSub = MeteorObservable.subscribe( 'getUsersByRestaurant', '' ).subscribe(); 
+        //this._userDetailsSub = MeteorObservable.subscribe('getUsersDetailsForRestaurant', '' ).subscribe();
+        //this._usersSub = MeteorObservable.subscribe( 'getUsersByRestaurant', '' ).subscribe(); 
     }
 
     /**
@@ -79,9 +79,9 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
             let id_restaurant : string;
             id_restaurant = this._form.value.restaurant;
             this._userDetailsSub = MeteorObservable.subscribe('getUsersDetailsForRestaurant', id_restaurant ).subscribe(() => {
-                this._userDetails = UserDetails.find({}).zone();
+                this._userDetails = UserDetails.find({restaurant_work : id_restaurant}).zone();
             });
-
+            
             this._usersSub = MeteorObservable.subscribe( 'getUsersByRestaurant' , id_restaurant ).subscribe( () => {
                 this._users = Users.find({}).zone();
             });
@@ -133,8 +133,12 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
      */
     ngOnDestroy(){
         this._restaurantSub.unsubscribe();
-        this._userDetailsSub.unsubscribe();
-        this._usersSub.unsubscribe();
         this._roleSub.unsubscribe();
+        if(this._userDetailsSub){
+            this._userDetailsSub.unsubscribe();
+        }
+        if(this._usersSub){
+            this._usersSub.unsubscribe();
+        }
     }
 }
