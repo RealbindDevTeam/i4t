@@ -1043,7 +1043,8 @@
         "SOFTWARE_BY_REALBIND": "Realbind S.A.S Software",
         "INVOICE_SALE": "Factura de venta",
         "DATE": "Fecha-Hora",
-        "TOOLTIP_DOWNLOAD_INVOICE": "Download invoice"
+        "TOOLTIP_DOWNLOAD_INVOICE": "Download invoice",
+        "NO_PAYS" : "You have no payments yet"
     },
     "ADMIN_SIGNUP": {
         "SLOGAN": "Administrator register",
@@ -1109,5 +1110,9 @@
         "THERE_NOT_RESTAURANTS": "No restaurants yet register",
         "RESTAURANT_REGISTER": "Restaurant register",
         "MESSAGE": "Register one to enable this option"
+    },
+    "NOT_FOUND" : {
+        "PAGE_NOT_FOUND" : "PAGE NOT FOUND",
+        "BACK" : "Back to"
     }
 }

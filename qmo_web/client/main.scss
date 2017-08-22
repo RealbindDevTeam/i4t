@@ -373,6 +373,25 @@ md-ink-bar {
     Loading
 */
 
+.global-div {
+    position: absolute;
+    width: calc( 100% - 20px);
+    top: 20px;
+    bottom: 20px;
+}
+
+.div-whitout-overflow {
+    position: relative;
+    overflow: hidden;
+}
+
+.cards-div {
+    position: relative; 
+    overflow: scroll;
+    height: calc( 100vh - 90px);
+    width: 100%;
+}
+
 /* Absolute Center Spinner */
 .loading {
   position: fixed;
