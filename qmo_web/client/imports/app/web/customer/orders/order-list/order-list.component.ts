@@ -696,12 +696,17 @@ export class OrdersListComponent implements OnInit, OnDestroy {
             if (_pOrder.status === 'ORDER_STATUS.REGISTERED') {
                 let _lOrderItems: OrderItem[] = _pOrder.items;
                 _lOrderItems.forEach((it) => {
-                    let _lItem: Item = Items.findOne({ _id: it.itemId });
                     /**
+                    let _lItem: Item = Items.findOne({ _id: it.itemId });
                     if (_lItem.isAvailable === false) {
                         _lItemsIsAvailable = false;
                     }
-                     */
+                    */
+                    let _lItem: Item = Items.findOne({ _id: it.itemId });
+                    let aux = _lItem.restaurants.find(element => element.restaurantId === this.restaurantId);
+                    if (aux.isAvailable === false) {
+                        _lItemsIsAvailable = false
+                    }
                 });
                 if (_lItemsIsAvailable) {
                     Orders.update({ _id: _pOrder._id }, {
@@ -761,6 +766,15 @@ export class OrdersListComponent implements OnInit, OnDestroy {
 
     createNewOrderEvent(): void {
         this.createNewOrder.emit(true);
+    }
+
+    /**
+    * Function to get item avalaibility 
+    */
+    getItemAvailability(itemId: string): boolean {
+        let _itemRestaurant: Item = Items.collection.findOne({ _id: itemId }, { fields: { _id: 0, restaurants: 1 } });
+        let aux = _itemRestaurant.restaurants.find(element => element.restaurantId === this.restaurantId);
+        return aux.isAvailable;
     }
 
     /**
