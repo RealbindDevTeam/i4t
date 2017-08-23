@@ -3,7 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { MdDialogRef } from '@angular/material';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
@@ -28,6 +28,7 @@ import { FinancialText } from '../../../../../../../both/shared-components/resta
 import { FinancialSlider } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-slider';
 import { Parameter } from '../../../../../../../both/models/general/parameter.model';
 import { Parameters } from '../../../../../../../both/collections/general/parameter.collection';
+import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './restaurant-edition.component.html';
 import style from './restaurant-edition.component.scss';
@@ -43,7 +44,8 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     private _restaurantToEdit: Restaurant;
     private _restaurantEditionForm: FormGroup;
     private _paymentsFormGroup: FormGroup = new FormGroup({});
-
+    private _mdDialogRef : MdDialogRef<any>;
+    
     private _restaurantSub: Subscription;
     private _hoursSub: Subscription;
     private _currencySub: Subscription;
@@ -81,6 +83,8 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
 
     private _restaurantCurrency: string = '';
     private _countryIndicative: string;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
 
     private _edition_schedule: RestaurantSchedule;
 
@@ -106,7 +110,8 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         private _ngZone: NgZone,
         private _route: ActivatedRoute,
         private _router: Router,
-        private _userLanguageService: UserLanguageService) {
+        private _userLanguageService: UserLanguageService,
+        protected _mdDialog: MdDialog) {
 
         this._route.params.forEach((params: Params) => {
             this._restaurantToEdit = JSON.parse(params['param1']);
@@ -114,8 +119,8 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
 
-        console.log('---');
-        console.log(this._restaurantToEdit.other_city);
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
 
         if (this._restaurantToEdit.other_city !== '') {
             this._showOtherCity = true;
@@ -228,7 +233,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
      */
     editRestaurant(): void {
         if (!Meteor.userId()) {
-            alert('Please log in to add a restaurant');
+            this.openDialog(this.titleMsg, '', 'Please log in to add a restaurant', '', this.btnAcceptLbl, false);
             return;
         }
 
@@ -284,8 +289,9 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                 Meteor.userId(),
                 this._restaurantEditionForm.value.editId).then((result) => {
 
-                }).catch((error) => {
-                    alert('Upload image error. Only accept .png, .jpg, .jpeg files.');
+                }).catch((err) => {
+                    var error : string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
+                    this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
                 });
         }
         this.cancel();
@@ -573,6 +579,36 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             this._showFinancialElements = true;
             this._restaurantFinancialInformation = _pRestaurantFinancialInfo;
         }
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**

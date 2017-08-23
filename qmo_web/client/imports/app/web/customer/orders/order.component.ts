@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
@@ -11,6 +12,7 @@ import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
+import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './order.component.html';
 import style from './order.component.scss';
@@ -24,6 +26,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
     private _ordersForm                 : FormGroup;
+    private _mdDialogRef                : MdDialogRef<any>;
 
     private _tablesSub                  : Subscription;
     private _userDetailsSub             : Subscription;
@@ -31,6 +34,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
     private _currentRestaurant          : Restaurant;
     private _currentQRCode              : string;
+    private titleMsg                    : string;
+    private btnAcceptLbl                : string;
 
     private _showError                  : boolean = false;
     private _showAlphanumericCodeCard   : boolean = false;
@@ -47,9 +52,12 @@ export class OrdersComponent implements OnInit, OnDestroy {
      */
     constructor( private _translate: TranslateService, 
                  private _ngZone: NgZone,
-                 private _userLanguageService: UserLanguageService ) {
+                 private _userLanguageService: UserLanguageService,
+                 protected _mdDialog: MdDialog ) {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -101,7 +109,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
                     this._showOrderList = true;
                     this._showNewOrderButton = true;
                 }, ( error ) => {
-                    alert(`Failed to get Restaurant: ${error}`);
+                    this.openDialog(this.titleMsg, '', `Failed to get Restaurant: ${error}`, '', this.btnAcceptLbl, false);
                 });
             } else {
                 this._showError = true;
@@ -149,6 +157,36 @@ export class OrdersComponent implements OnInit, OnDestroy {
      */
     cancel():void{
         this._ordersForm.reset();
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**

@@ -5,7 +5,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '@angular/material';
 import { HttpModule, Http } from '@angular/http';
-import { MdSnackBar } from '@angular/material';
+import { MdSnackBar, MdDatepicker, MdNativeDateModule } from '@angular/material';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -69,6 +69,7 @@ moduleDefinition = {
     NgxPaginationModule,
     ChartModule,
     BrowserAnimationsModule,
+    MdNativeDateModule
     /*AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBXJSlwWRSHoRiZdqlOfHPqxxDRdqm8_Jk'
     })*/
@@ -90,7 +91,8 @@ moduleDefinition = {
     ChefGuard,
     CashierGuard,
     PayuPaymenteService,
-    SuperChefGuard
+    SuperChefGuard,
+    MdDatepicker
   ],
   bootstrap: [
     AppComponent

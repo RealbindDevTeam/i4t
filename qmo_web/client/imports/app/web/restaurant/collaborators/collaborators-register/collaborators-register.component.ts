@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { MdDialogRef, MdDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -16,6 +17,7 @@ import { UserProfile, UserProfileImage } from '../../../../../../../both/models/
 import { UserDetails } from '../../../../../../../both/collections/auth/user-detail.collection';
 import { UserDetail } from '../../../../../../../both/models/auth/user-detail.model';
 import { Users } from '../../../../../../../both/collections/auth/user.collection';
+import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 import template from './collaborators-register.component.html';
 
 @Component({
@@ -24,24 +26,30 @@ import template from './collaborators-register.component.html';
 })
 export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
 
-    public _selectedIndex: number = 0;
-    private _restaurantSub: Subscription;
-    private _roleSub: Subscription;
-    private _tableSub: Subscription;
-    private _collaboratorRegisterForm: FormGroup;
-    private _restaurants: Observable<Restaurant[]>;
-    private _roles: Observable<Role[]>;
-    private _tables: Observable<Table[]>;
-    private _userProfile = new UserProfile();
-    private _userProfileImage = new UserProfileImage();
-    private _tablesNumber: number[] = [];
-    private _userLang: string;
-    private _error: string;
-    private _selectedRestaurant: string;
-    private _message: string;
-    private _showConfirmError: boolean = false;
-    private _showTablesSelect: boolean = false;
-    private _disabledTablesAssignment: boolean = true;
+    private _collaboratorRegisterForm : FormGroup;
+    private _mdDialogRef              : MdDialogRef<any>;
+    private _restaurantSub            : Subscription;
+    private _roleSub                  : Subscription;
+    private _tableSub                 : Subscription;
+
+    private _restaurants              : Observable<Restaurant[]>;
+    private _roles                    : Observable<Role[]>;
+    private _tables                   : Observable<Table[]>;
+    
+    private _userProfile              = new UserProfile();
+    private _userProfileImage         = new UserProfileImage();
+
+    private _tablesNumber             : number[] = [];
+    public _selectedIndex             : number = 0;
+    private _userLang                 : string;
+    private _error                    : string;
+    private _selectedRestaurant       : string;
+    private _message                  : string;
+    private titleMsg                  : string;
+    private btnAcceptLbl              : string;
+    private _showConfirmError         : boolean = false;
+    private _showTablesSelect         : boolean = false;
+    private _disabledTablesAssignment : boolean = true;
 
     /**
      * CollaboratorsRegisterComponent constructor
@@ -51,14 +59,19 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
      * @param {NgZone} _zone 
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor(private _router: Router,
-        private _formBuilder: FormBuilder,
-        private _translate: TranslateService,
-        private _zone: NgZone,
-        private _userLanguageService: UserLanguageService) {
+    constructor( private _router: Router,
+                 private _formBuilder: FormBuilder,
+                 private _translate: TranslateService,
+                 private _zone: NgZone,
+                 private _userLanguageService: UserLanguageService,
+                 protected _mdDialog: MdDialog ) 
+    {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
         this._userLang = this._userLanguageService.getNavigationLanguage();
+
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -68,9 +81,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
         this._collaboratorRegisterForm = new FormGroup({
             name: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(70)]),
             last_name: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(70)]),
-            birthdate_dd: new FormControl('', [Validators.required, CustomValidators.dayOfDateValidator]),
-            birthdate_mm: new FormControl('', [Validators.required, CustomValidators.monthOfDateValidator]),
-            birthdate_yyyy: new FormControl('', [Validators.required, CustomValidators.yearOfDateValidator]),
+            birthdate: new FormControl('', [Validators.required]),
             restaurant_work: new FormControl('', [Validators.required]),
             role: new FormControl('', [Validators.required]),
             phone: new FormControl('', [Validators.minLength(1), Validators.maxLength(40)]),
@@ -134,9 +145,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                     && this._collaboratorRegisterForm.controls['last_name'].valid
                     && this._collaboratorRegisterForm.controls['restaurant_work'].valid
                     && this._collaboratorRegisterForm.controls['role'].valid
-                    && this._collaboratorRegisterForm.controls['birthdate_dd'].valid
-                    && this._collaboratorRegisterForm.controls['birthdate_mm'].valid
-                    && this._collaboratorRegisterForm.controls['birthdate_yyyy'].valid) {
+                    && this._collaboratorRegisterForm.controls['birthdate'].valid) {
                     return true;
                 } else {
                     return false;
@@ -210,7 +219,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                             }
                             if (!this._disabledTablesAssignment && this._collaboratorRegisterForm.value.table_end < this._collaboratorRegisterForm.value.table_init) {
                                 this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.SELECT_RANGE_VALID_TABLES');
-                                alert(this._message);
+                                this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
                                 return;
                             }
                         }
@@ -234,9 +243,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                                     penalties: [],
                                     current_restaurant: "",
                                     current_table: '',
-                                    birthdate: new Date("<" + this._collaboratorRegisterForm.value.birthdate_yyyy + "-" +
-                                        this._collaboratorRegisterForm.value.birthdate_mm + "-" +
-                                        this._collaboratorRegisterForm.value.birthdate_dd + ">"),
+                                    birthdate : this._collaboratorRegisterForm.value.birthdate,
                                     phone: this._collaboratorRegisterForm.value.phone,
                                     enabled: true,
                                     table_assignment_init: Number.parseInt(this._collaboratorRegisterForm.value.table_init),
@@ -262,29 +269,29 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
 
                             if (id_detail) {
                                 this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.MESSAGE_COLLABORATOR');
-                                alert(this._message);
+                                this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
                                 this.cancel();
                             }
                             else {
                                 this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.ERROR_INSERT');
-                                alert(this._message);
+                                this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
                             }
                         }, (error) => {
-                            alert(error);
+                            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
                         });
 
                     }
                 } else {
                     this._message = this.itemNameTraduction('SIGNUP.PASSWORD_NOT_MATCH');
-                    alert(this._message);
+                    this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
                 }
             } else {
                 this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.MESSAGE_FORM_INVALID');
-                alert(this._message);
+                this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
             }
         } else {
             this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.MESSAGE_NOT_LOGIN');
-            alert(this._message);
+            this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
             return;
         }
     }
@@ -295,9 +302,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
     cancel() {
         this._collaboratorRegisterForm.controls['name'].reset();
         this._collaboratorRegisterForm.controls['last_name'].reset();
-        this._collaboratorRegisterForm.controls['birthdate_dd'].reset();
-        this._collaboratorRegisterForm.controls['birthdate_mm'].reset();
-        this._collaboratorRegisterForm.controls['birthdate_yyyy'].reset();
+        this._collaboratorRegisterForm.controls['birthdate'].reset();
         this._collaboratorRegisterForm.controls['restaurant_work'].reset();
         this._collaboratorRegisterForm.controls['phone'].reset();
         this._collaboratorRegisterForm.controls['username'].reset();
@@ -318,6 +323,36 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
             wordTraduced = res;
         });
         return wordTraduced;
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**

@@ -37,8 +37,8 @@
         </md-select>
       </div>
       <br/>
-      <button md-raised-button class="button-secundary" [disabled]="!_subcategoryForm.valid" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
-      <button md-raised-button class="button-primary" [disabled]="!_subcategoryForm.valid" type="submit">{{'CREATE' | translate}}</button>
+      <button md-raised-button class="secondary-button" [disabled]="!_subcategoryForm.valid" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
+      <button md-raised-button class="primary-button" [disabled]="!_subcategoryForm.valid" type="submit">{{'CREATE' | translate}}</button>
     </form>
   </md-card-content>
 </md-card>
@@ -54,7 +54,7 @@
     </span>
   </md-card-content>
   <md-card-actions>
-    <button md-raised-button (click)="open(subcategory)" class="button-secundary">{{'SUBCATEGORIES.MODIFY' | translate}}</button>
+    <button md-raised-button (click)="open(subcategory)" class="secondary-button">{{'SUBCATEGORIES.MODIFY' | translate}}</button>
     <button md-raised-button *ngIf="subcategory.is_active" class="inactive-button" (click)="updateStatus(subcategory)">{{'SUBCATEGORIES.INACTIVATE' | translate}}</button>
     <button md-raised-button *ngIf="!subcategory.is_active" class="active-button" (click)="updateStatus(subcategory)">{{'SUBCATEGORIES.ACTIVATE' | translate}}</button>
   </md-card-actions>

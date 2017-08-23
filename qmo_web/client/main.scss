@@ -178,26 +178,26 @@ md-ink-bar {
   font-size: 0.9em;
 }
 
-.button-primary {
+.primary-button {
     background-color: $white_color-text !important;
     border: 1px solid $primary-color !important;
     box-shadow: none !important;
     color: $primary-color !important;
     font-weight: 600 !important;
 }
-.button-primary:hover {
+.primary-button:hover {
     color: $white_color-text !important;
     background-color: $primary-color !important;
 }
 
-.button-secundary {
-    background-color: $button-secundary !important;
+.secondary-button {
+    background-color: $button-secondary !important;
     box-shadow: none !important;
     color: $button-color-secundary !important;
 }
 
-.button-secundary:hover {
-    background-color: $button-secundary-hover !important;
+.secondary-button:hover {
+    background-color: $button-secondary-hover !important;
 }
 
 .inactive-button{
@@ -375,9 +375,12 @@ md-ink-bar {
 
 .global-div {
     position: absolute;
-    width: calc( 100% - 20px);
-    top: 20px;
-    bottom: 20px;
+    //width: calc( 100% - 48px);
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0;
+    width: 100%;
 }
 
 .div-whitout-overflow {

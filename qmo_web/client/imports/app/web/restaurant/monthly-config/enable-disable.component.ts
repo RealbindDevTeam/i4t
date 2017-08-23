@@ -13,6 +13,7 @@ import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { Table } from '../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
+import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './enable-disable.component.html';
 import style from './enable-disable.component.scss';
@@ -37,6 +38,8 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
     private _restaurantSub          : Subscription;
     private _tables                 : Observable<Table[]>;
     private _tableSub               : Subscription;
+    private titleMsg                : string;
+    private btnAcceptLbl            : string;
     private selectedRestaurantValue : string;
     private restaurantCode          : string = '';
     private tables_count            : number = 0;
@@ -53,10 +56,12 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
     constructor( private translate: TranslateService, 
                  public snackBar: MdSnackBar,
                  public _mdDialog: MdDialog, 
-                 private _userLanguageService: UserLanguageService ) {
+                 private _userLanguageService: UserLanguageService, ) {
         translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         translate.setDefaultLang( 'en' );
         this.selectedRestaurantValue = "";
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     ngOnInit() {
@@ -78,7 +83,7 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
         let snackMsg: string = this.itemNameTraduction('MONTHLY_CONFIG.TABLES_CREATE');
 
         if (!Meteor.userId()) {
-            alert('Please log in to add a restaurant');
+            this.openDialog(this.titleMsg, '', 'Please log in to add a restaurant', '', this.btnAcceptLbl, false);
             return;
         }
 
@@ -252,6 +257,36 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
     cancel(): void {
         if (this.selectedRestaurantValue !== "") { this.selectedRestaurantValue = ""; }
         this._tableForm.controls['tables_number'].reset();
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     ngOnDestroy() {
