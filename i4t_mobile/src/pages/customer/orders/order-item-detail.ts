@@ -19,7 +19,7 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
 
     @Input()
     resCode: string;
-    
+
     @Input()
     currency: string;
 
@@ -33,11 +33,11 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
 
     constructor() {
         this._currentOrderUserId = Meteor.userId();
-     }
+    }
 
     ngOnInit() {
         this._itemsSub = MeteorObservable.subscribe('itemsByUser', Meteor.userId()).subscribe(() => {
-            this._items = Items.find({_id: this.orderItem.itemId});
+            this._items = Items.find({ _id: this.orderItem.itemId });
         });
 
         this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByUserId', Meteor.userId()).subscribe();
@@ -53,11 +53,20 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
         }
     }
 
-    goToItemEdit(itemId, orderItemIndex){
+    goToItemEdit(itemId, orderItemIndex) {
         let arrValue: any[] = [];
         arrValue[0] = itemId;
         arrValue[1] = orderItemIndex;
         this.itemIdOut.emit(arrValue);
+    }
+
+    /**
+    * Function to get item avalaibility 
+    */
+    getItemAvailability(itemId: string): boolean {
+        let _itemRestaurant = Items.collection.findOne({ _id: itemId }, { fields: { _id: 0, restaurants: 1 } });
+        let aux = _itemRestaurant.restaurants.find(element => element.restaurantId === this.resCode);
+        return aux.isAvailable;
     }
 
     ngOnDestroy() {
