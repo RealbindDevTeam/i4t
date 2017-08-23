@@ -3,7 +3,7 @@ import { MeteorObservable } from "meteor-rxjs";
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { MdSnackBar } from '@angular/material';
+import { MdSnackBar, MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { UserLanguageService } from '../../../../../shared/services/user-language.service';
 import { Orders } from "../../../../../../../../both/collections/restaurant/order.collection";
 import { Order, OrderTranslateInfo } from '../../../../../../../../both/models/restaurant/order.model';
@@ -16,6 +16,7 @@ import { PaymentMethods } from '../../../../../../../../both/collections/general
 import { WaiterCallDetails } from '../../../../../../../../both/collections/restaurant/waiter-call-detail.collection';
 import { Payment } from '../../../../../../../../both/models/restaurant/payment.model';
 import { Payments } from '../../../../../../../../both/collections/restaurant/payment.collection';
+import { AlertConfirmComponent } from '../../../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './colombia-payment.component.html';
 import style from './colombia-payment.component.scss';
@@ -47,6 +48,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     private _paymentsNoPaid                     : Observable<Payment[]>;
     private _ordersToConfirm                    : Observable<Order[]>;
     private _ordersWithPendingConfirmation      : Observable<Order[]>;
+    private _mdDialogRef                        : MdDialogRef<any>;
 
     private _tipTotal                           : number = 0;
     private _ipoCom                             : number = 108;
@@ -60,6 +62,8 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     private _tipTotalString                     : string;
     private _currencyCode                       : string;
     private _tipValue                           : string;
+    private titleMsg                            : string;
+    private btnAcceptLbl                        : string;
 
     private _otherTipAllowed                    : boolean = true;
     private _paymentMethodId                    : string = '';
@@ -83,9 +87,12 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                  private _ngZone: NgZone,
                  private _router: Router,
                  public _snackBar: MdSnackBar,
-                 private _userLanguageService: UserLanguageService ) {
+                 private _userLanguageService: UserLanguageService,
+                 protected _mdDialog: MdDialog ) {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -242,10 +249,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
      * This function validate the payment method.
      */
     pay(){
-        let _lMessage1:string = this.itemNameTraduction( 'PAYMENTS.COLOMBIA.ORDER_PENDING_STATUS' );
-        let _lMessage2:string = this.itemNameTraduction( 'PAYMENTS.COLOMBIA.NO_ONLINE_PAYMENT' );
-        let _lMessage3:string = this.itemNameTraduction( 'PAYMENTS.COLOMBIA.PLEASE_SELECT_PAYMENT_METHOD' );
-        let _lMessage4:string = this.itemNameTraduction( 'PAYMENTS.COLOMBIA.PAYMENT_UNAVAILABLE' );
+        let _lMessage : string = "";
         if ( this.tabId !== "" && this.restId !== "" ) {
             if ( this._paymentMethodId === '10' || this._paymentMethodId === '20' || this._paymentMethodId === '30' ){
                 let _lOrdersWithPendingConfim:number = Orders.collection.find( { creation_user: this._user, restaurantId: this.restId, tableId: this.tabId, 
@@ -302,17 +306,21 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                     this._isCheckedOtherTip = false;
                     this.waiterCallForPay();
                 } else {
-                    alert( _lMessage1 );
+                    _lMessage = this.itemNameTraduction( 'PAYMENTS.COLOMBIA.ORDER_PENDING_STATUS' );
+                    this.openDialog(this.titleMsg, '', _lMessage, '', this.btnAcceptLbl, false);
                 } 
             } else {
                 if( this._paymentMethodId === '40' ){
-                    alert( _lMessage2 );
+                    _lMessage = this.itemNameTraduction( 'PAYMENTS.COLOMBIA.NO_ONLINE_PAYMENT' );
+                    this.openDialog(this.titleMsg, '', _lMessage, '', this.btnAcceptLbl, false);
                 } else {
-                    alert( _lMessage3 );
+                    _lMessage = this.itemNameTraduction( 'PAYMENTS.COLOMBIA.PLEASE_SELECT_PAYMENT_METHOD' );
+                    this.openDialog(this.titleMsg, '', _lMessage, '', this.btnAcceptLbl, false);
                 }
             }
         } else {
-            alert( _lMessage4 );
+            _lMessage = this.itemNameTraduction( 'PAYMENTS.COLOMBIA.PAYMENT_UNAVAILABLE' );
+            this.openDialog(this.titleMsg, '', _lMessage, '', this.btnAcceptLbl, false);
         }
     }
 
@@ -343,7 +351,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
             }, 1500 );
         } else {
             let _lMessage:string = this.itemNameTraduction( 'PAYMENTS.COLOMBIA.WAITER_ATTEND' );            
-            alert( _lMessage );
+            this.openDialog(this.titleMsg, '', _lMessage, '', this.btnAcceptLbl, false);
         }
     }
 
@@ -386,6 +394,36 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
      */
     viewPaymentDetail():void{
         this._router.navigate(['app/colPayInfo']);
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**

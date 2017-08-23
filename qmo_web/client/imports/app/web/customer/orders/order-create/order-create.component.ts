@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { MdSnackBar } from '@angular/material';
+import { MdSnackBar, MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Section } from '../../../../../../../both/models/administration/section.model';
 import { Sections } from '../../../../../../../both/collections/administration/section.collection';
@@ -23,6 +23,7 @@ import { Additions } from '../../../../../../../both/collections/administration/
 import { Order, OrderItem, OrderAddition } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
 import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
+import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './order-create.component.html';
 import style from './order-create.component.scss';
@@ -43,6 +44,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     private _garnishFormGroup: FormGroup = new FormGroup({});
     private _additionsFormGroup: FormGroup = new FormGroup({});
     private _additionsDetailFormGroup: FormGroup = new FormGroup({});
+    private _mdDialogRef            : MdDialogRef<any>;
 
     private _sectionsSub: Subscription;
     private _categoriesSub: Subscription;
@@ -71,6 +73,8 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     private _lastQuantity: number = 1;
     private _quantityCount: number = 1;
     private _currencyCode: string;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
 
     private _orderMenus: OrderMenu[] = [];
     private orderMenuSetup: OrderMenu[] = [];
@@ -89,9 +93,12 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         private _navigation: OrderNavigationService,
         private _ngZone: NgZone,
         public snackBar: MdSnackBar,
-        private _userLanguageService: UserLanguageService) {
+        private _userLanguageService: UserLanguageService,
+        protected _mdDialog: MdDialog) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -322,7 +329,9 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
                 this.snackBar.open(_lMessage, '', {
                     duration: 2500
                 });
-            }, (error) => { alert(`Error: ${error}`); });
+            }, (error) => { 
+                this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            });
             this.viewItemDetail(true);
         }
     }
@@ -535,7 +544,9 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
             this.snackBar.open(_lMessage, '', {
                 duration: 2500
             });
-        }, (error) => { alert(`Error: ${error}`); });
+        }, (error) => { 
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+        });
         this.viewAdditionDetail(true);
     }
 
@@ -546,6 +557,36 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         let _itemRestaurant: Item = Items.collection.findOne({ _id: itemId }, { fields: { _id: 0, restaurants: 1 } });
         let aux = _itemRestaurant.restaurants.find(element => element.restaurantId === this.restaurantId);
         return aux.isAvailable;
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**

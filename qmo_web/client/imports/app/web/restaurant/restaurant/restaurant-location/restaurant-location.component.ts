@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MdDialogRef } from '@angular/material';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 //import { MouseEvent } from "@agm/core";
 import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -8,6 +8,7 @@ import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
+import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './restaurant-location.component.html';
 import style from './restaurant-location.component.scss';
@@ -22,6 +23,10 @@ export class RestaurantLocationComponent implements OnInit, OnDestroy {
     
     public _restaurantLocation: Restaurant;
     private _restaurantSub: Subscription;
+    private _mdDialogRef: MdDialogRef<any>;
+    
+    private titleMsg    : string;
+    private btnAcceptLbl: string;
 
     public _lat: number = 37.4292;
     public _lng: number = -122.1381;
@@ -34,9 +39,12 @@ export class RestaurantLocationComponent implements OnInit, OnDestroy {
      */
     constructor( private _translate: TranslateService, 
                  public _dialogRef: MdDialogRef<any>,
-                 private _userLanguageService: UserLanguageService ){
+                 private _userLanguageService: UserLanguageService,
+                 protected _mdDialog: MdDialog ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -68,7 +76,8 @@ export class RestaurantLocationComponent implements OnInit, OnDestroy {
                 }
             }
         });
-        alert('Se ha actualizado la posicion del restaurante');
+        var message_translate = this.itemNameTraduction('RESTAURANT_LOCATION.MSG_UPDATE_POSITION');
+        this.openDialog(this.titleMsg, '', message_translate, '', this.btnAcceptLbl, false);
     }
 
     /**
@@ -106,6 +115,48 @@ export class RestaurantLocationComponent implements OnInit, OnDestroy {
         this._lat = $event.coords.lat;
         this._lng = $event.coords.lng;
     }*/
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
+    }
+
+    /**
+     * This function allow translate
+     * @param itemName 
+     */
+    itemNameTraduction(itemName: string): string {
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res;
+        });
+        return wordTraduced;
+    }
 
     /**
      * ngOnDestroy implementation

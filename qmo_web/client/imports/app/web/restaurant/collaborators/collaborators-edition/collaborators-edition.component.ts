@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { MdDialogRef } from '@angular/material';
+import { MdDialogRef, MdDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,6 +18,7 @@ import { UserDetails } from '../../../../../../../both/collections/auth/user-det
 import { UserDetail } from '../../../../../../../both/models/auth/user-detail.model';
 import { User } from '../../../../../../../both/models/auth/user.model';
 import { Users } from '../../../../../../../both/collections/auth/user.collection';
+import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 import template from './collaborators-edition.component.html';
 
 @Component({
@@ -27,18 +28,27 @@ import template from './collaborators-edition.component.html';
 })
 export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
 
-    private _userProfile      = new UserProfile();
-    private _userProfileImage = new UserProfileImage();
-    public selectUser                 : User;  
-    public selectUserDetail           : UserDetail;
     private _roleSub                  : Subscription;
     private _tableSub                 : Subscription;
     private _restaurantSub            : Subscription;
+    private _collaboratorEditionForm  : FormGroup;
+    private _mdDialogRef              : MdDialogRef<any>;
+
     private _restaurants              : Observable<Restaurant[]>;
     private _roles                    : Observable<Role[]>;
     private _tables                   : Observable<Table[]>;
-    private _collaboratorEditionForm  : FormGroup;
+    
+    private _userProfile              = new UserProfile();
+    private _userProfileImage         = new UserProfileImage();
+    private selectUser                : User;  
+    private selectUserDetail          : UserDetail;
+
     private _tablesNumber             : number[] = [];
+    private _selectedIndex            : number = 0;
+    private _tableInit                : number = 0;
+    private _tableEnd                 : number = 0;
+    private titleMsg                  : string;
+    private btnAcceptLbl              : string;
     private _userLang                 : string;
     private _error                    : string
     private _message                  : string;
@@ -46,9 +56,6 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
     private _showConfirmError         : boolean = false;
     private _showTablesSelect         : boolean = false;
     private _disabledTablesAssignment : boolean = true;
-    public _selectedIndex             : number = 0;
-    public _tableInit                 : number = 0;
-    public _tableEnd                  : number = 0;
 
     /**
      * CollaboratorsEditionComponent constructor
@@ -64,10 +71,13 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
                  private _translate: TranslateService,
                  private _zone: NgZone,
                  public _dialogRef: MdDialogRef<any>,
-                 private _userLanguageService: UserLanguageService )
+                 private _userLanguageService: UserLanguageService,
+                 protected _mdDialog: MdDialog )
     {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -159,7 +169,7 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
                             }
                             if(!this._disabledTablesAssignment && this._collaboratorEditionForm.value.table_end < this._collaboratorEditionForm.value.table_init){
                                 this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.SELECT_RANGE_VALID_TABLES');
-                                alert(this._message);
+                                this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
                                 return;
                             }
                         }
@@ -190,20 +200,20 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
                         }
                         this._dialogRef.close();
                         this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.MESSAGE_COLLABORATOR_EDIT');
-                        alert(this._message);
+                        this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
                         this.cancel();
                     }
                 } else {
                     this._message = this.itemNameTraduction('SIGNUP.PASSWORD_NOT_MATCH');
-                    alert(this._message);
+                    this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
                 }
             } else {
                 this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.MESSAGE_FORM_INVALID');
-                alert(this._message);
+                this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
             }
         } else {
             this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.MESSAGE_NOT_LOGIN');
-            alert(this._message);
+            this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
             return;
         }
     }
@@ -235,6 +245,36 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
             wordTraduced = res; 
         });
         return wordTraduced;
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**

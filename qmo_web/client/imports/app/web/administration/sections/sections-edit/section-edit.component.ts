@@ -3,7 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { MdDialogRef } from '@angular/material';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { MdSnackBar } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
@@ -11,6 +11,7 @@ import { Sections } from '../../../../../../../both/collections/administration/s
 import { Section } from '../../../../../../../both/models/administration/section.model';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
+import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './section-edit.component.html';
 import style from './section-edit.component.scss';
@@ -27,6 +28,7 @@ export class SectionEditComponent implements OnInit, OnDestroy {
     public _sectionToEdit           : Section;
     private _editForm               : FormGroup;
     private _restaurantsFormGroup   : FormGroup = new FormGroup({});
+    private _mdDialogRef            : MdDialogRef<any>;
 
     private _sections               : Observable<Section[]>;
     private _restaurants            : Observable<Restaurant[]>;
@@ -34,7 +36,9 @@ export class SectionEditComponent implements OnInit, OnDestroy {
     private _sectionsSub            : Subscription;
     private _restaurantSub          : Subscription;
 
-    private _sectionRestaurants     : string[];    
+    private _sectionRestaurants     : string[];
+    private titleMsg                : string;
+    private btnAcceptLbl            : string;
 
     /**
      * SectionEditComponent constructor
@@ -50,10 +54,13 @@ export class SectionEditComponent implements OnInit, OnDestroy {
                  public _dialogRef: MdDialogRef<any>, 
                  private _ngZone: NgZone, 
                  public snackBar: MdSnackBar,
-                 private _userLanguageService: UserLanguageService ){
+                 private _userLanguageService: UserLanguageService,
+                 protected _mdDialog: MdDialog ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
         this._sectionRestaurants = [];
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -102,7 +109,8 @@ export class SectionEditComponent implements OnInit, OnDestroy {
      */
     editSection():void{
         if( !Meteor.userId() ){
-            alert( 'Please log in to add a restaurant' );
+            var error : string = 'Please log in to add a restaurant';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
 
@@ -144,6 +152,36 @@ export class SectionEditComponent implements OnInit, OnDestroy {
             wordTraduced = res; 
         });
         return wordTraduced;
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**

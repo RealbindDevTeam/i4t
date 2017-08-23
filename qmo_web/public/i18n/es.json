@@ -33,6 +33,7 @@
     "VALUE": "Valor",
     "SIGN_OUT": "Cerrar Sesión",
     "CHOOSE_A_DATE" : "Elige una fecha",
+    "UPLOAD_IMG_ERROR" : "Error de carga de la imagen. Solo acepta .png, .jpg, .jpeg files.",
     "ORDER_STATUS": {
         "REGISTERED": "Registrado",
         "IN_PROCESS": "En Proceso",
@@ -630,7 +631,8 @@
         "TITTLE": "Ubicacion del Establecimiento",
         "TEXT": "Ingresa la ubicacion del establecimiento para que los clientes te puedan ubicar mejor",
         "UPDATE_POSITION": "Actualizar Posicion",
-        "CLOSE": "Cerrar"
+        "CLOSE": "Cerrar",
+        "MSG_UPDATE_POSITION" : "Se ha actualizado la posicion del restaurante"
     },
     "RESTAURANT_INFO_MASTER": {
         "TABLE_CODE": "Codigo de la Mesa",
