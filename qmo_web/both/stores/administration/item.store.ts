@@ -35,7 +35,7 @@ export const ItemImageThumbsStore = new UploadFS.store.GridFS({
     }
   });
 
-  /**
+/**
  * Create store to Item images
  */
 export const ItemImagesStore = new UploadFS.store.GridFS({

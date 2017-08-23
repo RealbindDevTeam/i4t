@@ -11,7 +11,7 @@ import { Countries } from '../../../../../both/collections/settings/country.coll
 import { Country } from '../../../../../both/models/settings/country.model';
 import { City } from '../../../../../both/models/settings/city.model';
 import { Cities } from '../../../../../both/collections/settings/city.collection';
-import { UserProfile, UserProfileImage } from '../../../../../both/models/auth/user-profile.model';
+import { UserProfile } from '../../../../../both/models/auth/user-profile.model';
 import { AuthClass } from './auth.class';
 
 import template from './admin-signup.component.html';
@@ -37,7 +37,6 @@ export class AdminSignupComponent extends AuthClass implements OnInit, OnDestroy
     private showLoginPassword: boolean = true;
     private showConfirmError: boolean = false;
     private userProfile = new UserProfile();
-    private userProfileImage = new UserProfileImage();
 
     /**
      * AdminSignupComponent Constructor
@@ -120,20 +119,6 @@ export class AdminSignupComponent extends AuthClass implements OnInit, OnDestroy
             this.userProfile.first_name = this.signupForm.value.firstName;
             this.userProfile.last_name = this.signupForm.value.lastName;
             this.userProfile.language_code = this.getUserLang();
-
-            this.userProfileImage.complete = null;
-            this.userProfileImage.extension = null;
-            this.userProfileImage.name = null;
-            this.userProfileImage.progress = null;
-            this.userProfileImage.size = null;
-            this.userProfileImage.store = null;
-            this.userProfileImage.token = null;
-            this.userProfileImage.type = null;
-            this.userProfileImage.uploaded_at = null;
-            this.userProfileImage.uploading = null;
-            this.userProfileImage.url = null;
-
-            this.userProfile.image = this.userProfileImage;
 
             if (this.signupForm.valid) {
                 let confirmMsg: string;

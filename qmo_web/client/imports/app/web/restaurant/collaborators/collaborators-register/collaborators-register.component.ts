@@ -12,7 +12,7 @@ import { Role } from '../../../../../../../both/models/auth/role.model';
 import { Roles } from '../../../../../../../both/collections/auth/role.collection';
 import { Table } from '../../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
-import { UserProfile, UserProfileImage } from '../../../../../../../both/models/auth/user-profile.model';
+import { UserProfile } from '../../../../../../../both/models/auth/user-profile.model';
 import { UserDetails } from '../../../../../../../both/collections/auth/user-detail.collection';
 import { UserDetail } from '../../../../../../../both/models/auth/user-detail.model';
 import { Users } from '../../../../../../../both/collections/auth/user.collection';
@@ -33,7 +33,6 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
     private _roles: Observable<Role[]>;
     private _tables: Observable<Table[]>;
     private _userProfile = new UserProfile();
-    private _userProfileImage = new UserProfileImage();
     private _tablesNumber: number[] = [];
     private _userLang: string;
     private _error: string;
@@ -184,20 +183,6 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                     this._userProfile.first_name = this._collaboratorRegisterForm.value.name;
                     this._userProfile.last_name = this._collaboratorRegisterForm.value.last_name;
                     this._userProfile.language_code = this._userLang;
-
-                    this._userProfileImage.complete = null;
-                    this._userProfileImage.extension = null;
-                    this._userProfileImage.name = null;
-                    this._userProfileImage.progress = null;
-                    this._userProfileImage.size = null;
-                    this._userProfileImage.store = null;
-                    this._userProfileImage.token = null;
-                    this._userProfileImage.type = null;
-                    this._userProfileImage.uploaded_at = null;
-                    this._userProfileImage.uploading = null;
-                    this._userProfileImage.url = null;
-
-                    this._userProfile.image = this._userProfileImage;
 
                     if (this._collaboratorRegisterForm.valid) {
 
