@@ -1,10 +1,9 @@
-<md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto"  *ngIf="(_orders | async)?.length <= 0">
+<md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" *ngIf="(_orders | async)?.length <= 0">
     <md-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
                 <div class="card_initial-image-container">
-                    <img class="card_initial-image" 
-                        src="/images/items.png"/>
+                    <img class="card_initial-image" src="/images/items.png" />
                 </div>
                 <div class="card_initial-copy">
                     <div class="card_initial-tagline">
@@ -56,7 +55,7 @@
                                                                 <div *ngIf="it.garnishFood.length > 0" class="order-item-garnishFood"> - {{'ORDER_LIST.GARNISH_FOOD' | translate}}: {{it.garnishFood.length}}</div>
                                                                 <div *ngIf="it.additions.length > 0" class="order-item-additions"> - {{'ORDER_LIST.ADDITIONS' | translate}}: {{it.additions.length}}</div>
                                                             </h5>
-                                                            <p md-line *ngIf="!item.isAvailable" class="item-unavailable">{{'ORDER_LIST.UNAVAILABLE' | translate}}</p>
+                                                            <p md-line *ngIf="!getItemAvailability(item._id)" class="item-unavailable">{{'ORDER_LIST.UNAVAILABLE' | translate}}</p>
                                                             <button md-icon-button *ngIf="or.status === 'ORDER_STATUS.REGISTERED'" (click)="showOrderItemDetail(it)">
                                                                 <md-icon class="item-icon">mode_edit</md-icon>
                                                             </button>
@@ -117,7 +116,7 @@
                                                                 <div *ngIf="it.garnishFood.length > 0" class="order-item-garnishFood"> - {{'ORDER_LIST.GARNISH_FOOD' | translate}}: {{it.garnishFood.length}}</div>
                                                                 <div *ngIf="it.additions.length > 0" class="order-item-additions"> - {{'ORDER_LIST.ADDITIONS' | translate}}: {{it.additions.length}}</div>
                                                             </h5>
-                                                            <p md-line *ngIf="!item.isAvailable" class="item-unavailable">{{'ORDER_LIST.UNAVAILABLE' | translate}}</p>
+                                                            <p md-line *ngIf="!getItemAvailability(item._id)" class="item-unavailable">{{'ORDER_LIST.UNAVAILABLE' | translate}}</p>
                                                             <button md-icon-button (click)="showOrderItemDetail(it)">
                                                                 <md-icon class="item-icon">visibility</md-icon>
                                                             </button>
@@ -153,7 +152,7 @@
                         <md-icon style="color: white;">add</md-icon>
                     </button>
                 </div>
-                
+
                 <div id="item-selected" class="item-detail">
                     <div *ngIf="_showDetails">
                         <div *ngIf="_showOrderItemDetail">
@@ -175,12 +174,12 @@
                                             <div>{{setUnitPrice(item)}}</div>
                                             <md-card-subtitle class="price">{{'ORDER_LIST.PRICE' | translate}}: {{ getItemPrice( item ) }} {{_currencyCode}}</md-card-subtitle>
                                             <md-card-subtitle>{{'ORDER_LIST.COOKING_TIME' | translate}}: {{item.time}}</md-card-subtitle>
-                                            <p *ngIf="!item.isAvailable" class="item-unavailable">{{'ORDER_LIST.ITEM_UNAVAILABLE' | translate}}</p>
-                                            <div *ngIf="item.isAvailable">
+                                            <p *ngIf="!getItemAvailability(item._id)" class="item-unavailable">{{'ORDER_LIST.ITEM_UNAVAILABLE' | translate}}</p>
+                                            <div *ngIf="getItemAvailability(item._id)">
                                                 <div>
                                                     <div class="quantity-count">
                                                         <span>{{'ORDER_LIST.QUANTITY' | translate}}: {{ _quantityCount }}</span>
-                                                    </div>  
+                                                    </div>
                                                     <div *ngIf="_customerCanEdit" class="inline-block">
                                                         <button md-button class="quantity-button" (click)="removeCount()">
                                                             <md-icon>remove</md-icon>
@@ -207,7 +206,8 @@
                                                                     </span>
                                                                 </p>
                                                             </div>
-                                                            <p *ngIf="_showGarnishFoodError" class="available-button">{{'ORDER_LIST.SELECT_MAX_VALID' | translate}} {{item.garnishFoodQuantity}} {{'ORDER_LIST.ELEMENTS' | translate}}</p>
+                                                            <p *ngIf="_showGarnishFoodError" class="available-button">{{'ORDER_LIST.SELECT_MAX_VALID' | translate}} {{item.garnishFoodQuantity}}
+                                                                {{'ORDER_LIST.ELEMENTS' | translate}}</p>
                                                         </md-tab>
                                                         <md-tab *ngIf="(item.additions.length > 0)" label="{{'ORDER_LIST.ADDITIONS' | translate}}">
                                                             <p>{{'ORDER_LIST.SELECT_ADDITIONS' | translate}}:</p>
@@ -226,8 +226,10 @@
                                             </div>
                                             <h3>{{'ORDER_LIST.TOTAL_PRICE' | translate}}: {{ _finalPrice }} {{_currencyCode}}</h3>
                                             <div>
-                                                <button md-button class="primary-button" *ngIf="_customerCanEdit" [disabled]="!_editOrderItemForm.valid || _showGarnishFoodError" (click)="deleteOrderItem(item._id)">{{'ORDER_LIST.DELETE_ITEM' | translate}}</button>
-                                                <button md-button class="primary-button" *ngIf="_customerCanEdit && item.isAvailable" [disabled]="!_editOrderItemForm.valid || _showGarnishFoodError" (click)="editOrderItem(item._id)">{{'ORDER_LIST.MODIFY_ITEM' | translate}}</button>
+                                                <button md-button class="primary-button" *ngIf="_customerCanEdit" [disabled]="!_editOrderItemForm.valid || _showGarnishFoodError"
+                                                    (click)="deleteOrderItem(item._id)">{{'ORDER_LIST.DELETE_ITEM' | translate}}</button>
+                                                <button md-button class="primary-button" *ngIf="_customerCanEdit && getItemAvailability(item._id)" [disabled]="!_editOrderItemForm.valid || _showGarnishFoodError"
+                                                    (click)="editOrderItem(item._id)">{{'ORDER_LIST.MODIFY_ITEM' | translate}}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -251,7 +253,8 @@
                                     <p>{{'ORDER_LIST.ADD_ADDITIONS' | translate}}:</p>
                                     <form [formGroup]="_additionsDetailFormGroup">
                                         <md-input-container style="width: 100%;">
-                                            <input mdInput [formControlName]="add._id" type="number" placeholder="{{ getAdditionInformation(add) }} {{_currencyCode}}" min="0" max="99">
+                                            <input mdInput [formControlName]="add._id" type="number" placeholder="{{ getAdditionInformation(add) }} {{_currencyCode}}"
+                                                min="0" max="99">
                                         </md-input-container>
                                     </form>
                                     <button md-button class="primary-button" *ngIf="_customerCanEdit" style="margin-top: 5%;" (click)="deleteOrderAddition(add._id)">{{'ORDER_LIST.DELETE_ADDITION_ORDER' | translate}}</button>

@@ -1,5 +1,5 @@
 import { Component, NgZone, Inject, OnInit, OnDestroy } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MdDialogRef, MD_DIALOG_DATA, MdSnackBar } from '@angular/material';
 import { MeteorObservable } from "meteor-rxjs";
 import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -27,7 +27,8 @@ export class EnableConfirmComponent implements OnInit, OnDestroy {
         private _zone: NgZone,
         @Inject(MD_DIALOG_DATA) public data: any,
         private translate: TranslateService,
-        private _userLanguageService: UserLanguageService) {
+        private _userLanguageService: UserLanguageService,
+        public snackBar: MdSnackBar) {
         translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         translate.setDefaultLang('en');
     }
@@ -52,7 +53,11 @@ export class EnableConfirmComponent implements OnInit, OnDestroy {
      * Function to update de item restaurant avalaibility
      */
     updateAvailableFlag(_restaurantId: string) {
+        let snackMsg: string = this.itemNameTraduction('ENABLE_DISABLED.AVAILABILITY_CHANGED');
         MeteorObservable.call('updateItemAvailable', _restaurantId, this.data.one._id).subscribe();
+        this.snackBar.open(snackMsg, '', {
+            duration: 1000,
+        });
     }
 
     /**
@@ -69,6 +74,18 @@ export class EnableConfirmComponent implements OnInit, OnDestroy {
         this._dialogRef.close({ success: false });
     }
 
+    /**
+     * This function cleans the tables_number fields form
+     * @param {string} itemName
+     * @return {string}
+     */
+    itemNameTraduction(itemName: string): string {
+        var wordTraduced: string;
+        this.translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res;
+        });
+        return wordTraduced;
+    }
 
     ngOnDestroy() {
         this._restaurantSub.unsubscribe();

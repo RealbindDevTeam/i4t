@@ -29,8 +29,8 @@
                                     </div>
                                     <md-card-actions>
                                         <button md-button (click)="showItemInformation(item)">{{'ORDER_CREATE.VIEW_DETAIL' | translate}}</button>
-                                        <p *ngIf="!item.isAvailable" class="button-action available-button">{{'ORDER_CREATE.UNAVAILABLE' | translate}}</p>
-                                        <p *ngIf="item.isAvailable"  class="button-action price-button">{{'ORDER_CREATE.PRICE' | translate}}: {{ getItemPrice( item ) }} {{_currencyCode}}</p>
+                                        <p *ngIf="!getItemAvailability(item._id)" class="button-action available-button">{{'ORDER_CREATE.UNAVAILABLE' | translate}}</p>
+                                        <p *ngIf="getItemAvailability(item._id)"  class="button-action price-button">{{'ORDER_CREATE.PRICE' | translate}}: {{ getItemPrice( item ) }} {{_currencyCode}}</p>
                                     </md-card-actions>
                                 </md-card>
                             </template>
@@ -48,8 +48,8 @@
                                             </div>
                                             <md-card-actions>
                                                 <button md-button (click)="showItemInformation(item)">{{'ORDER_CREATE.VIEW_DETAIL' | translate}}</button>
-                                                <p *ngIf="!item.isAvailable" class="button-action available-button">{{'ORDER_CREATE.UNAVAILABLE' | translate}}</p>
-                                                <p *ngIf="item.isAvailable"  class="button-action price-button">{{ getItemPrice( item ) }} {{_currencyCode}}</p>
+                                                <p *ngIf="!getItemAvailability(item._id)" class="button-action available-button">{{'ORDER_CREATE.UNAVAILABLE' | translate}}</p>
+                                                <p *ngIf="getItemAvailability(item._id)"  class="button-action price-button">{{ getItemPrice( item ) }} {{_currencyCode}}</p>
                                             </md-card-actions>
                                         </md-card>
                                     </template>
@@ -67,8 +67,8 @@
                                                     </div>
                                                     <md-card-actions>
                                                         <button md-button (click)="showItemInformation(item)">{{'ORDER_CREATE.VIEW_DETAIL' | translate}}</button>
-                                                        <p *ngIf="!item.isAvailable" class="button-action available-button">{{'ORDER_CREATE.UNAVAILABLE' | translate}}</p>
-                                                        <p *ngIf="item.isAvailable"  class="button-action price-button">{{ getItemPrice( item ) }} {{_currencyCode}}</p>
+                                                        <p *ngIf="!getItemAvailability(item._id)" class="button-action available-button">{{'ORDER_CREATE.UNAVAILABLE' | translate}}</p>
+                                                        <p *ngIf="getItemAvailability(item._id)"  class="button-action price-button">{{ getItemPrice( item ) }} {{_currencyCode}}</p>
                                                     </md-card-actions>
                                                 </md-card>
                                             </template>
@@ -104,8 +104,8 @@
                                     <md-card-subtitle class="description">{{itemDet.description}}</md-card-subtitle>
                                     <md-card-subtitle class="price">{{'ORDER_CREATE.PRICE' | translate}}: {{ getItemPrice( itemDet ) }} {{_currencyCode}}</md-card-subtitle>
                                     <md-card-subtitle>{{'ORDER_CREATE.COOKING_TIME' | translate}}: {{itemDet.time}}</md-card-subtitle>
-                                    <p *ngIf="!itemDet.isAvailable" class="available-button">{{'ORDER_CREATE.ITEM_UNAVAILABLE' | translate}}</p>
-                                    <div *ngIf="itemDet.isAvailable">
+                                    <p *ngIf="!getItemAvailability(itemDet._id)" class="available-button">{{'ORDER_CREATE.ITEM_UNAVAILABLE' | translate}}</p>
+                                    <div *ngIf="getItemAvailability(itemDet._id)">
                                         <div>
                                             <div class="quantity-count">
                                                 <span>{{'ORDER_CREATE.QUANTITY' | translate}}: {{ _quantityCount }}</span>
@@ -155,7 +155,7 @@
                                         </form>
                                     </div>
                                     <h3>{{'ORDER_CREATE.TOTAL_PRICE' | translate}}: {{ _finalPrice }} {{_currencyCode}}</h3>
-                                    <button *ngIf="itemDet.isAvailable" md-button class="primary-button" [disabled]="!_newOrderForm.valid || _showGarnishFoodError" (click)="AddItemToOrder(itemDet._id)">{{'ORDER_CREATE.ADD_ITEM' | translate}}</button>
+                                    <button *ngIf="getItemAvailability(itemDet._id)" md-button class="primary-button" [disabled]="!_newOrderForm.valid || _showGarnishFoodError" (click)="AddItemToOrder(itemDet._id)">{{'ORDER_CREATE.ADD_ITEM' | translate}}</button>
                                 </div>
                             </div>
                         </div>
