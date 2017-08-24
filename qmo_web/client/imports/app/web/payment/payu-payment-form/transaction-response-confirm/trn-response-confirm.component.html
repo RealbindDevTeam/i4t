@@ -10,7 +10,7 @@
         </md-list>
     </md-card-content>
     <md-card-actions align="end">
-        <button *ngIf="showCancelButton" md-raised-button class="button-secundary" (click)="cancel()">{{ 'PAYU_PAYMENT_FORM.PAY_ACCEPT' | translate }}</button>
-        <button *ngIf="!showCancelButton" md-raised-button class="button-primary" (click)="closeConfirm()">{{ 'PAYU_PAYMENT_FORM.PAY_ACCEPT' | translate }}</button>
+        <button *ngIf="showCancelButton" md-raised-button class="secondary-button" (click)="cancel()">{{ 'PAYU_PAYMENT_FORM.PAY_ACCEPT' | translate }}</button>
+        <button *ngIf="!showCancelButton" md-raised-button class="primary-button" (click)="closeConfirm()">{{ 'PAYU_PAYMENT_FORM.PAY_ACCEPT' | translate }}</button>
     </md-card-actions>
 </md-card>

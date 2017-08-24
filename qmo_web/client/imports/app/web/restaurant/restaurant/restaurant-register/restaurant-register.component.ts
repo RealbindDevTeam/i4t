@@ -31,6 +31,7 @@ import { Table } from '../../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
 import { PaymentsHistory } from '../../../../../../../both/collections/payment/payment-history.collection';
 import { PaymentHistory } from '../../../../../../../both/models/payment/payment-history.model';
+import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './restaurant-register.component.html';
 import style from './restaurant-register.component.scss';
@@ -88,6 +89,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _currentDate: Date;
     private _firstMonthDay: Date;
     private _lastMonthDay: Date;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
 
     /**
      * RestaurantRegisterComponent constructor
@@ -111,6 +114,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._nameImageFile = "";
         this._filesToUpload = [];
         this._createImage = false;
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -337,7 +342,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      */
     addRestaurant(): void {
         if (!this._user) {
-            alert('Please log in to add a restaurant');
+            this.openDialog(this.titleMsg, '', 'Please log in to add a restaurant', '', this.btnAcceptLbl, false);
             return;
         }
 
@@ -409,8 +414,9 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                             this._user,
                             _lNewRestaurant).then((result) => {
 
-                            }).catch((error) => {
-                                alert('Upload image error. Only accept .png, .jpg, .jpeg files.');
+                            }).catch((err) => {
+                                var error : string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
+                                this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
                             });
                     }
 
@@ -645,6 +651,36 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             }
         }
         return _lCode;
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**

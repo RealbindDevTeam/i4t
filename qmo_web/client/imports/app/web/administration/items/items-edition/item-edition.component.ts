@@ -3,7 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { MdDialogRef } from '@angular/material';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
 import { MdSnackBar } from '@angular/material';
@@ -27,6 +27,7 @@ import { Currency } from '../../../../../../../both/models/general/currency.mode
 import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
 import { Country } from '../../../../../../../both/models/settings/country.model';
 import { Countries } from '../../../../../../../both/collections/settings/country.collection';
+import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './item-edition.component.html';
 import style from './item-edition.component.scss';
@@ -46,6 +47,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
     private _restaurantsFormGroup: FormGroup = new FormGroup({});
     private _currenciesFormGroup: FormGroup = new FormGroup({});
     private _taxesFormGroup: FormGroup = new FormGroup({});
+    private _mdDialogRef: MdDialogRef<any>;
 
     private _sections: Observable<Section[]>;
     private _categories: Observable<Category[]>;
@@ -98,6 +100,8 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
     private _nameImageFileEdit: string;
     private _itemEditImage: string;
     private _restaurantsSelectedCount: number = 0;
+    private titleMsg : string;
+    private btnAcceptLbl : string;
 
     /**
      * ItemEditionComponent constructor
@@ -113,7 +117,8 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         private _ngZone: NgZone,
         public _dialogRef: MdDialogRef<any>,
         public snackBar: MdSnackBar,
-        private _userLanguageService: UserLanguageService) {
+        private _userLanguageService: UserLanguageService,
+        protected _mdDialog: MdDialog) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
         this._itemGarnishFood = [];
@@ -124,6 +129,8 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         this._itemAdditions = [];
         this._additionList = [];
         this._edition_addition = [];
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -435,7 +442,8 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
      */
     editItem(): void {
         if (!Meteor.userId()) {
-            alert('Please log in to edit a item');
+            var error : string = 'Please log in to edit a item';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
 
@@ -520,8 +528,9 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                     Meteor.userId(),
                     this._itemEditionForm.value.editId).then((result) => {
 
-                    }).catch((error) => {
-                        alert('Update image error. Only accept .png, .jpg, .jpeg files.');
+                    }).catch((err) => {
+                        var error : string = 'Update image error. Only accept .png, .jpg, .jpeg files.';
+                        this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
                     });
             }
 
@@ -645,6 +654,36 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                 }
             });
         }
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**

@@ -20,7 +20,7 @@
                             {{_email}}
                         </td>
                         <td>
-                            <button style="padding-left: 15px" md-raised-button [disabled]="!_disabled" class="button-secundary" (click)="open()">{{'MODIFY' | translate}}</button>
+                            <button style="padding-left: 15px" md-raised-button [disabled]="!_disabled" class="secondary-button" (click)="open()">{{'MODIFY' | translate}}</button>
                         </td>
                     </tr>
                     <tr>
@@ -31,7 +31,7 @@
                             <strong>********</strong>
                         </td>
                         <td>
-                            <button md-raised-button [disabled]="!_validateChangePass" class="button-secundary" (click)="openModalChangePassword()">{{'MODIFY' | translate}}</button>
+                            <button md-raised-button [disabled]="!_validateChangePass" class="secondary-button" (click)="openModalChangePassword()">{{'MODIFY' | translate}}</button>
                         </td>
                     </tr>
                     <tr><td></td></tr>
@@ -92,7 +92,7 @@
                     <md-option *ngFor="let lang of _languages | async" value="{{lang.language_code}}">{{lang.name}}</md-option>
                 </md-select>
 
-                <button align="end" md-raised-button class="button-primary" style="margin-top: 20px" [disabled]="!_disabled" (click)="editUserDetail(inputUserName, inputFirstName, inputLastName, inputLanguageCode)">{{'UPDATE' | translate}}</button>
+                <button align="end" md-raised-button class="primary-button" style="margin-top: 20px" [disabled]="!_disabled" (click)="editUserDetail(inputUserName, inputFirstName, inputLastName, inputLanguageCode)">{{'UPDATE' | translate}}</button>
             </div>
         </div>
 

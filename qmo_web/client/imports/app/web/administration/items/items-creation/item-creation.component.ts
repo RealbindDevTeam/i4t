@@ -3,6 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
@@ -25,6 +26,7 @@ import { Currency } from '../../../../../../../both/models/general/currency.mode
 import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
 import { Country } from '../../../../../../../both/models/settings/country.model';
 import { Countries } from '../../../../../../../both/collections/settings/country.collection';
+import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './item-creation.component.html';
 import style from './item-creation.component.scss';
@@ -44,6 +46,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
     private _restaurantsFormGroup: FormGroup = new FormGroup({});
     private _currenciesFormGroup: FormGroup = new FormGroup({});
     private _taxesFormGroup: FormGroup = new FormGroup({});
+    private _mdDialogRef: MdDialogRef<any>;
 
     private _sections: Observable<Section[]>;
     private _categories: Observable<Category[]>;
@@ -83,6 +86,8 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
     private _selectedSectionValue: string;
     private _selectedCategoryValue: string;
     private _selectedSubcategoryValue: string;
+    private titleMsg : string;
+    private btnAcceptLbl : string;
 
     /**
      * ItemComponent constructor
@@ -96,13 +101,16 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
         private _translate: TranslateService,
         private _ngZone: NgZone,
         private _router: Router,
-        private _userLanguageService: UserLanguageService) {
+        private _userLanguageService: UserLanguageService,
+        protected _mdDialog: MdDialog) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
         this._selectedSectionValue = "";
         this._selectedCategoryValue = "";
         this._selectedSubcategoryValue = "";
         this._filesToUpload = [];
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -245,7 +253,8 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
      */
     addItem(): void {
         if (!Meteor.userId()) {
-            alert('Please log in to add item');
+            var error : string = 'Please log in to add a item';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
 
@@ -328,8 +337,9 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
                         this._user,
                         _lNewItem).then((result) => {
 
-                        }).catch((error) => {
-                            alert('Upload image error. Only accept .png, .jpg, .jpeg files.');
+                        }).catch((err) => {
+                            var error : string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
+                            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
                         });
                 }
                 this._loading = false;
@@ -522,6 +532,48 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
                 }
             });
         }
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
+    }
+
+    /**
+     * This function allow translate
+     * @param itemName 
+     */
+    itemNameTraduction(itemName: string): string {
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res;
+        });
+        return wordTraduced;
     }
 
     /**

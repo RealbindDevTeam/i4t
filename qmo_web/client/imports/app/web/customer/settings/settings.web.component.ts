@@ -14,6 +14,7 @@ import { UserDetails } from '../../../../../../both/collections/auth/user-detail
 import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 import { ChangeEmailWebComponent } from './modal-dialog/change-email.web.component';
 import { ChangePasswordWebComponent } from '../../../web/customer/settings/modal-dialog/change-password.web.component';
+import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './settings.web.component.html';
 import style from './settings.web.component.scss';
@@ -30,6 +31,7 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     private _subscription           : Subscription;
     private _userObservable         : Observable<User[]>;
     private _languages              : Observable<Language[]>;
+    private _mdDialogRef            : MdDialogRef<any>;
     private _user                   : User;
     private _userDetail             : UserDetail;
     private _email                  : string;
@@ -40,11 +42,11 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     private _languageCode           : string;
     private _imageProfile           : string;
     private _lang_code              : string;
+    private titleMsg                : string;
+    private btnAcceptLbl            : string;
     private _disabled               : boolean
     private _validate               : boolean
     private _validateChangePass     : boolean
-
-    private _mdDialogRef: MdDialogRef<any>;
 
     /**
      * SettingsWebComponent Constructor
@@ -55,12 +57,14 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
      */
     constructor ( private _translate: TranslateService, 
                   public _mdDialog: MdDialog,
-                  private _userLanguageService: UserLanguageService ){
+                  private _userLanguageService: UserLanguageService, ){
         let _lUserLanguage = this._userLanguageService.getLanguage( Meteor.user() );
         _translate.use( _lUserLanguage );  
         _translate.setDefaultLang( 'en' ); 
         this._languageCode = _lUserLanguage;
         this._lang_code = _lUserLanguage;
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -117,7 +121,7 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
             });
             let message : string;
             message = this.itemNameTraduction('SETTINGS.USER_DETAIL_UPDATED');
-            alert(message);
+            this.openDialog(this.titleMsg, '', message, '', this.btnAcceptLbl, false);
         }
     }
 
@@ -176,6 +180,36 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
             wordTraduced = res; 
         });
         return wordTraduced;
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**

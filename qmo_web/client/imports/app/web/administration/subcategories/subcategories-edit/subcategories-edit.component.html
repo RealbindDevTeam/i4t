@@ -12,8 +12,8 @@
       <md-slide-toggle formControlName="editActive">{{'STATE' | translate}}</md-slide-toggle>
       <br/>
       <div>
-        <button md-raised-button class="button-secundary" type="button" (click)="_dialogRef.close()">{{'CANCEL' | translate}}</button>
-        <button md-raised-button class="button-primary" [disabled]="!_editForm.valid" type="submit">{{'UPDATE' | translate}}</button>
+        <button md-raised-button class="secondary-button" type="button" (click)="_dialogRef.close()">{{'CANCEL' | translate}}</button>
+        <button md-raised-button class="primary-button" [disabled]="!_editForm.valid" type="submit">{{'UPDATE' | translate}}</button>
       </div>
     </form>
   </md-card-content>

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { MdDialogRef } from '@angular/material';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
 import { MdSnackBar } from '@angular/material';
@@ -15,6 +15,7 @@ import { Currency } from '../../../../../../../both/models/general/currency.mode
 import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
 import { Country } from '../../../../../../../both/models/settings/country.model';
 import { Countries } from '../../../../../../../both/collections/settings/country.collection';
+import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './addition-edit.component.html';
 import style from './addition-edit.component.scss';
@@ -32,6 +33,7 @@ export class AdditionEditComponent implements OnInit, OnDestroy {
     private _editForm               : FormGroup;
     private _currenciesFormGroup    : FormGroup = new FormGroup({});    
     private _taxesFormGroup         : FormGroup = new FormGroup({});
+    private _mdDialogRef            : MdDialogRef<any>;
 
     private _additions              : Observable<Addition[]>;
     private _currencies             : Observable<Currency[]>;
@@ -42,6 +44,8 @@ export class AdditionEditComponent implements OnInit, OnDestroy {
     private _currenciesSub          : Subscription;
     private _countriesSub           : Subscription;
 
+    private titleMsg                : string;
+    private btnAcceptLbl            : string;
     private _restaurantCurrencies   : string [] = [];
     private _showCurrencies         : boolean = false;
     private _restaurantTaxes        : string [] = [];
@@ -61,9 +65,12 @@ export class AdditionEditComponent implements OnInit, OnDestroy {
                  public _dialogRef: MdDialogRef<any>, 
                  private _ngZone: NgZone, 
                  public snackBar: MdSnackBar,
-                 private _userLanguageService: UserLanguageService ){
+                 private _userLanguageService: UserLanguageService,
+                 protected _mdDialog: MdDialog ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' ); 
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -176,7 +183,8 @@ export class AdditionEditComponent implements OnInit, OnDestroy {
      */
     editAddition():void{
         if( !Meteor.userId() ){
-            alert('Please log in to add a restaurant');
+            var error : string = 'Please log in to add a restaurant';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
 
@@ -237,6 +245,36 @@ export class AdditionEditComponent implements OnInit, OnDestroy {
             wordTraduced = res; 
         });
         return wordTraduced;
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**

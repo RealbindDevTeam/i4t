@@ -14,6 +14,7 @@ import { Category } from '../../../../../../both/models/administration/category.
 import { SubcategoryEditComponent } from './subcategories-edit/subcategories-edit.component';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
+import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './subcategories.component.html';
 import style from './subcategories.component.scss';
@@ -27,6 +28,7 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
 
     private _user = Meteor.userId();
     private _subcategoryForm        : FormGroup;
+    private _mdDialogRef            : MdDialogRef<any>;
 
     private _subcategories          : Observable<Subcategory[]>;
     private _categories             : Observable<Category[]>;
@@ -37,6 +39,8 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
     private _restaurantSub          : Subscription;
 
     _selectedValue                  : string;
+    private titleMsg                : string;
+    private btnAcceptLbl            : string;
     _dialogRef                      : MdDialogRef<any>;
 
     /**
@@ -55,10 +59,13 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
                  private _translate: TranslateService, 
                  private _router: Router,
                  private _ngZone: NgZone,
-                 private _userLanguageService: UserLanguageService ){
+                 private _userLanguageService: UserLanguageService,
+                 protected _mdDialog: MdDialog ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
         this._selectedValue = "";
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -91,7 +98,8 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
      */
     addSubcategory():void{
         if( !Meteor.userId() ){
-            alert('Please log in to add a restaurant');
+            var error : string = 'Please log in to add a restaurant';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
 
@@ -179,6 +187,36 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
      */
     goToAddRestaurant(){
         this._router.navigate(['/app/restaurantRegister']);
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**

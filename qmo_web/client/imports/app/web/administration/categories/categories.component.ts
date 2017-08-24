@@ -15,6 +15,7 @@ import { Section } from '../../../../../../both/models/administration/section.mo
 import { CategoriesEditComponent } from './categories-edit/categories-edit.component';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
+import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './categories.component.html';
 import style from './categories.component.scss';
@@ -31,12 +32,15 @@ export class CategoryComponent implements OnInit, OnDestroy{
     private _categories         : Observable<Category[]>;
     private _sections           : Observable<Section[]>;
     private _restaurants        : Observable<Restaurant[]>;
+    private _mdDialogRef        : MdDialogRef<any>;
 
     private _categoriesSub      : Subscription;
     private _sectionsSub        : Subscription;
     private _restaurantSub      : Subscription;
 
     private _selectedValue      : string;
+    private titleMsg            : string;
+    private btnAcceptLbl        : string;
     public _dialogRef           : MdDialogRef<any>;
     
     /**
@@ -55,10 +59,13 @@ export class CategoryComponent implements OnInit, OnDestroy{
                  private _translate: TranslateService, 
                  private _router: Router,
                  private _ngZone: NgZone,
-                 private _userLanguageService: UserLanguageService ){
+                 private _userLanguageService: UserLanguageService,
+                 protected _mdDialog: MdDialog ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );         
         this._selectedValue = "";
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -91,7 +98,8 @@ export class CategoryComponent implements OnInit, OnDestroy{
      */
     addCategory():void{
         if( !Meteor.userId() ){
-            alert('Please log in to add a restaurant');
+            var error : string = 'Please log in to add a restaurant';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
 
@@ -179,6 +187,36 @@ export class CategoryComponent implements OnInit, OnDestroy{
      */
     goToAddRestaurant(){
         this._router.navigate(['/app/restaurantRegister']);
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**
