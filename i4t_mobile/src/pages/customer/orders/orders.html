@@ -55,7 +55,7 @@
                             </ion-row>
                             <div *ngIf="order">
                                 <div *ngFor="let itemId of order.items">
-                                    <order-item-detail [order]="order" [orderItem]="itemId" [resCode]="_res_code" (gotoedititem)="goToItemEdit($event, order)"></order-item-detail>
+                                    <order-item-detail [order]="order" [orderItem]="itemId" [resCode]="_res_code" [currency]="_currencyCode" (gotoedititem)="goToItemEdit($event, order)"></order-item-detail>
                                 </div>
                                 <div *ngIf="(order.additions.length > 0)">
                                     <span *ngFor="let addition of _additions | async">
