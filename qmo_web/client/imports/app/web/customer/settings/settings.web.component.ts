@@ -81,22 +81,13 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._languages = Languages.find({}).zone();
         this._subscription = MeteorObservable.subscribe('languages').subscribe();
 
         this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
 
         this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() =>{
-            this._userImageSub = MeteorObservable.subscribe( 'getUserImages', Meteor.userId() ).subscribe( () => {
-                this._ngZone.run( () => {
-                    let _lUserImage: UserProfileImage = UserImages.collection.findOne( { userId: Meteor.userId() });
-                    if( _lUserImage ){
-                        this._imageProfile = _lUserImage.url;
-                    } else {
-                        this._imageProfile = "/images/user_default_image.png";
-                    }
-                });
-            });
             this._disabled = false;
             this._validate = false;
             this._validateChangePass = false;
@@ -117,7 +108,30 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
             } else if (lUser.role_id === '200'  || lUser.role_id === '500'){
                 this._validateChangePass = true;
             }
+            this._userImageSub = MeteorObservable.subscribe( 'getUserImages', Meteor.userId() ).subscribe();
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._userSubscription ){ this._userSubscription.unsubscribe(); }
+        if( this._userDetailSubscription ){ this._userDetailSubscription.unsubscribe(); }
+        if( this._subscription ){ this._subscription.unsubscribe(); }
+        if( this._userImageSub ){ this._userImageSub.unsubscribe() }
+    }
+
+    /**
+     * Return user image
+     */
+    getUsetImage():string{
+        let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() });
+        if( _lUserImage ){
+            return _lUserImage.url;
+        } else {
+            return '/images/user_default_image.png';
+        }
     }
 
     /**
@@ -141,6 +155,10 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
             });
 
             if( this._createImage ){
+                let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() } );
+                if( _lUserImage ){
+                    UserImages.remove( { _id: _lUserImage._id } );
+                }
                 uploadUserImage( this._itemImageToInsert, Meteor.userId() ).then((result) => {
                     this._createImage = false;
                 }).catch((error) => {
@@ -226,9 +244,6 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
      * ngOnDestroy implementation
      */
     ngOnDestroy(){
-        if( this._userSubscription ){ this._userSubscription.unsubscribe(); }
-        if( this._userDetailSubscription ){ this._userDetailSubscription.unsubscribe(); }
-        if( this._subscription ){ this._subscription.unsubscribe(); }
-        if( this._userImageSub ){ this._userImageSub.unsubscribe() }
+        this.removeSubscriptions();
     }
 }
