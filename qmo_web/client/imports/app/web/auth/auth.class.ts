@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { UserLanguageService } from '../../shared/services/user-language.service';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { MeteorObservable } from 'meteor-rxjs';
 import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
@@ -20,19 +19,17 @@ export class AuthClass {
      * SignupWebComponent Constructor
      * @param {Router} router 
      * @param {NgZone} zone
-     * @param {UserLanguageService} _userLanguageService
      * @param {TranslateService} translate 
      * @param {MdDialog} _mdDialog
      */
     constructor(protected router: Router,
         protected zone: NgZone,
         protected translate: TranslateService,
-        protected _userLanguageService: UserLanguageService,
         protected _mdDialog: MdDialog) {
-
-        translate.use(this._userLanguageService.getNavigationLanguage());
+        
+        this.userLang = navigator.language.split('-')[0];
         translate.setDefaultLang('en');
-        this.userLang = this._userLanguageService.getNavigationLanguage();
+        translate.use( this.userLang );
 
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';

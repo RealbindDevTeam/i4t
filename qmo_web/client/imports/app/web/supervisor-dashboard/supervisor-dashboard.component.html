@@ -1,7 +1,29 @@
-<h3>Supervisor Dashboard</h3>
-<div class="flex-container layout-row layout-column-sm widgets">
-  <core-widget icon="comment" [count]="28" description="Comments" hexColor="#EC407A"></core-widget>
-  <core-widget icon="thumb_up" [count]="831" description="Likes" hexColor="#4CAF50" hexTextColor="#fff"></core-widget>
-  <core-widget icon="account_box" [count]="204" description="Sign Ups" hexColor="#EF5350"></core-widget>
-  <core-widget icon="credit_card" [count]="85" description="Sales" hexColor="#546E7A"></core-widget>
+<div *ngFor="let restaurant of _restaurants | async">
+  <div class="flex-container layout-row layout-column-sm widgets">
+    <md-card class="flex-item widget">
+      <md-card-content class="layout-stretch-between layout-row">
+        <div class="layout-column">
+          <md-list>
+              <md-list-item>
+                  <img md-list-avatar style="border-radius: 50%;width: 120px;height: 120px;margin-top: 2rem;" src="{{ getRestaurantId( restaurant._id ) }}">
+                  <h2 md-line>{{restaurant.name}}</h2>
+              </md-list-item>
+          </md-list>
+        </div>
+      </md-card-content>
+    </md-card>
+    <core-widget icon="local_atm" [count]="getDailySales( restaurant._id )" title="{{'ADMIN_DASHBOARD.SALES' | translate}} {{_currentDate | date: 'dd/MM/yyyy' }}" description="{{getRestaurantCurrency( restaurant.currencyId )}}" hexColor="#546E7A"></core-widget>
+  </div>
+  <div class="flex-container layout-row layout-column-sm widgets">
+      <core-widget icon="person" [count]="getRestaurantUsers( restaurant._id )" title="{{'ADMIN_DASHBOARD.USERS' | translate}}" description="{{'ADMIN_DASHBOARD.ACTIVES' | translate}}" hexColor="#546E7A"></core-widget>
+      <core-widget icon="thumb_up" [count]="getItemsSold( restaurant._id )" title="{{'ADMIN_DASHBOARD.ITEMS' | translate}}" description="{{'ADMIN_DASHBOARD.SOLD' | translate}}" hexColor="#F0BD4F"></core-widget>
+      <core-widget icon="local_cafe" [count]="getAdditionsSold( restaurant._id )" title="{{'ADMIN_DASHBOARD.ADDITIONS' | translate}}" description="{{'ADMIN_DASHBOARD.SOLD' | translate}}" hexColor="#4CAF50"></core-widget>
+      <core-widget icon="assignment_turned_in" [count]="getGarnishFoodSold( restaurant._id )" title="{{'ADMIN_DASHBOARD.GARNISHFOOD' | translate}}" description="{{'ADMIN_DASHBOARD.SOLD' | translate}}" hexColor="#EF5350"></core-widget>
+  </div>
+  <div class="flex-container layout-row layout-column-sm widgets">
+      <core-widget icon="done_all" [count]="getAvailableItems( restaurant._id )" title="{{'ADMIN_DASHBOARD.ITEMS' | translate}}" description="{{'ADMIN_DASHBOARD.AVAILABLE' | translate}}" hexColor="#546E7A"></core-widget>
+      <core-widget icon="warning" [count]="getNotAvailableItems( restaurant._id )" title="{{'ADMIN_DASHBOARD.ITEMS' | translate}}" description="{{'ADMIN_DASHBOARD.UNAVAILABLE' | translate}}" hexColor="#F0BD4F"></core-widget>
+      <core-widget icon="local_dining" [count]="getTablesWithFreeStatus( restaurant._id )" title="{{'ADMIN_DASHBOARD.TABLES' | translate}}" description="{{'ADMIN_DASHBOARD.FREE' | translate}}" hexColor="#4CAF50"></core-widget>
+      <core-widget icon="room_service" [count]="getTablesWithBusyStatus( restaurant._id )" title="{{'ADMIN_DASHBOARD.TABLES' | translate}}" description="{{'ADMIN_DASHBOARD.BUSY' | translate}}" hexColor="#EF5350"></core-widget>
+  </div>
 </div>
