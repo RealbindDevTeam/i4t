@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from "meteor-rxjs";
 import { Subscription } from "rxjs";
 import { UserLanguageService } from '../../../shared/services/user-language.service';
-import { Restaurants, RestaurantImages } from "../../../../../../both/collections/restaurant/restaurant.collection";
+import { RestaurantImageThumb } from '../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants, RestaurantImageThumbs } from "../../../../../../both/collections/restaurant/restaurant.collection";
 import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
 import { WaiterCallDetail } from '../../../../../../both/models/restaurant/waiter-call-detail.model';
 import { WaiterCallDetails } from '../../../../../../both/collections/restaurant/waiter-call-detail.collection';
@@ -22,7 +23,9 @@ import style from './calls.component.scss';
     template,
     styles: [ style ]
 })
-export class CallsComponent {
+export class CallsComponent implements OnInit, OnDestroy {
+
+    private _user = Meteor.userId();
 
     private _userRestaurantSubscription : Subscription;
     private _userSubscription           : Subscription;
@@ -45,10 +48,12 @@ export class CallsComponent {
      * @param {TranslateService} _translate 
      * @param {MdDialog} _mdDialog 
      * @param {UserLanguageService} _userLanguageService 
+     * @param {NgZone} _ngZone
      */
     constructor( public _translate: TranslateService,
                  public _mdDialog: MdDialog,
-                 private _userLanguageService: UserLanguageService ){
+                 private _userLanguageService: UserLanguageService,
+                 private _ngZone: NgZone ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
     }
@@ -57,25 +62,53 @@ export class CallsComponent {
      * ngOnInit Implementation
      */
     ngOnInit(){
-        this._userRestaurantSubscription = MeteorObservable.subscribe('getRestaurantByRestaurantWork', Meteor.userId()).subscribe(() => {
-            this._restaurants = Restaurants.find({});
+        this.removeSubscriptions();
+        this._userRestaurantSubscription = MeteorObservable.subscribe( 'getRestaurantByRestaurantWork', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._restaurants = Restaurants.find( { } ).zone();
+            });
         });
         
-        this._imgRestaurantSubscription = MeteorObservable.subscribe('restaurantImagesByRestaurantWork', Meteor.userId()).subscribe(() => {
-            this._imgRestaurant = RestaurantImages.find({});
+        this._imgRestaurantSubscription = MeteorObservable.subscribe( 'restaurantImagesByRestaurantWork', this._user ).subscribe();
+
+        this._userSubscription = MeteorObservable.subscribe( 'getUserSettings' ).subscribe();
+
+        this._callsDetailsSubscription = MeteorObservable.subscribe( 'waiterCallDetailByWaiterId', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._waiterCallDetail = WaiterCallDetails.find({}).zone();
+                this._waiterCallDetailCollection = WaiterCallDetails.collection.find({}).fetch()[0];
+            });
         });
 
-        this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe();
-
-        this._callsDetailsSubscription = MeteorObservable.subscribe('waiterCallDetailByWaiterId', Meteor.userId()).subscribe(() => {
-            this._waiterCallDetail = WaiterCallDetails.find({});
-            this._waiterCallDetailCollection = WaiterCallDetails.collection.find({}).fetch()[0];
+        this._tableSubscription = MeteorObservable.subscribe( 'getTablesByRestaurantWork', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._tables = Tables.find( { } ).zone();
+            });
         });
+    }
 
-        this._tableSubscription = MeteorObservable.subscribe('getTablesByRestaurantWork', Meteor.userId()).subscribe(() => {
-            this._tables = Tables.find({});
-        });
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._userRestaurantSubscription ){ this._userRestaurantSubscription.unsubscribe(); }
+        if( this._userSubscription ){ this._userSubscription.unsubscribe(); }
+        if( this._callsDetailsSubscription ){ this._callsDetailsSubscription.unsubscribe(); }
+        if( this._tableSubscription ){ this._tableSubscription.unsubscribe(); }
+        if( this._imgRestaurantSubscription ){ this._imgRestaurantSubscription.unsubscribe(); }
+    }
 
+    /**
+     * Get Restaurant Image
+     * @param {string} _pRestaurantId
+     */
+    getRestaurantImage(_pRestaurantId: string): string {
+        let _lRestaurantImageThumb: RestaurantImageThumb = RestaurantImageThumbs.findOne({ restaurantId: _pRestaurantId });
+        if (_lRestaurantImageThumb) {
+            return _lRestaurantImageThumb.url
+        } else {
+            return '/images/default-restaurant.png';
+        }
     }
 
     /**
@@ -135,9 +168,6 @@ export class CallsComponent {
      * NgOnDestroy Implementation
      */
     ngOnDestroy(){
-        this._userRestaurantSubscription.unsubscribe();
-        this._userSubscription.unsubscribe();
-        this._callsDetailsSubscription.unsubscribe();
-        this._tableSubscription.unsubscribe();
+        this.removeSubscriptions();
     }
 }

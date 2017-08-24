@@ -45,7 +45,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
   private _pageTitleInterval          : number;
   private _user                       : User;//Meteor.User;
   private _userName                   : string;
-  private _imageProfile               : string;
+  private _imageProfile               : string = '/images/user_default_image.png';
 
   /**
    * TopnavComponent Constructor
@@ -199,7 +199,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
       else if(_pUser.services.google){
         this._imageProfile = _pUser.services.google.picture;
       } else {
-        this._imageProfile = "/images/user_default_image.png";
+        this._imageProfile = '/images/user_default_image.png';
       }
     }
   }

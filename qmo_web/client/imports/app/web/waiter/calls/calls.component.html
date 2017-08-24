@@ -1,20 +1,18 @@
 <div class="call-card">
     <md-card class="card_image">
         <md-list>
-            <div *ngFor="let _imgRes of _imgRestaurant | async">
-                <md-list-item *ngFor="let _res of _restaurants | async">
-                        <img md-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{_imgRes.url}}">
-                    <h2 md-line style="font-size: 1.5rem;"> {{_res.name}} </h2>
-                    <p md-line style="font-size: 1rem;">
-                        <md-icon style="vertical-align: middle">location_on</md-icon>
-                        <span> {{_res.address}} </span>
-                    </p>
-                    <p md-line style="font-size: 1rem;">
-                        <md-icon style="vertical-align: middle">phone</md-icon>
-                        <span class="detail-message">{{_res.phone}} </span>
-                    </p>
-                </md-list-item>
-            </div>
+            <md-list-item *ngFor="let _res of _restaurants | async">
+                    <img md-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{ getRestaurantImage( _res._id ) }}">
+                <h2 md-line style="font-size: 1.5rem;"> {{_res.name}} </h2>
+                <p md-line style="font-size: 1rem;">
+                    <md-icon style="vertical-align: middle">location_on</md-icon>
+                    <span> {{_res.address}} </span>
+                </p>
+                <p md-line style="font-size: 1rem;">
+                    <md-icon style="vertical-align: middle">phone</md-icon>
+                    <span class="detail-message">{{_res.phone}} </span>
+                </p>
+            </md-list-item>
         </md-list>
     </md-card>
 </div>

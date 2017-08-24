@@ -77,8 +77,7 @@
     <div *ngFor="let user of _users | async">
         <div *ngIf="userdetail.user_id == user._id">
             <md-card-header style="height: 80px; background: #eee;">
-                <img class="img" *ngIf="!user.profile.image.url" md-list-avatar src="/images/user_default_image.png">
-                <img class="img" *ngIf="user.profile.image.url" md-list-avatar src="user.profile.image.url">
+                <img class="img" md-list-avatar src="/images/user_default_image.png">
                 <md-list>
                     <md-list-item>
                         <h3 md-line> {{user.profile.first_name}} {{user.profile.last_name}} </h3>
@@ -113,7 +112,7 @@
                         <span> {{userdetail.birthdate | date: 'dd/MM/yyyy'}} </span>
                     </li>
                     <li>
-                        <md-slide-toggle [(checked)]="userdetail.is_active" (change)="changeUserState()">
+                        <md-slide-toggle [(checked)]="userdetail.is_active" (change)="changeUserState(userdetail)">
                             {{ 'STATE' | translate }}
                         </md-slide-toggle>
                     </li>

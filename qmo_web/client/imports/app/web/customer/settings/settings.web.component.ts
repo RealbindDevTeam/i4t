@@ -105,8 +105,13 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
                 this._disabled = true;
                 this._validateChangePass = true;
                 this._userObservable = Users.find({}).zone();
-            } else if (lUser.role_id === '200'  || lUser.role_id === '500'){
+            } else if (lUser.role_id === '200'  || lUser.role_id === '500' || lUser.role_id === '600' ){
                 this._validateChangePass = true;
+                this._availableEditImage = false;
+                this._userName = this._user.username;
+                this._firstName = this._user.profile.first_name;
+                this._lastName = this._user.profile.last_name;
+                this._imageProfile = '/images/user_default_image.png'
             }
             this._userImageSub = MeteorObservable.subscribe( 'getUserImages', Meteor.userId() ).subscribe();
         });
