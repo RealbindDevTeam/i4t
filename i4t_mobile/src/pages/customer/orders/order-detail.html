@@ -1,5 +1,5 @@
 <ion-row center>
-    <ion-col col-3>
+    <ion-col col-2>
         <div>
             <ion-thumbnail item-left>
                 <img *ngIf="isUser" src="assets/img/my-orders.png">
@@ -10,12 +10,12 @@
     <ion-col>
         <div>
             {{'MOBILE.ORDERS.ORDER' | translate}}{{order.code}} <br/> {{'MOBILE.ORDERS.TOTAL' | translate}}{{order.totalPayment}}
-            COP<br/> {{'MOBILE.ORDERS.STATUS' | translate}}{{order.status | translate}} <br/>
+            {{currencyCode}}<br/> {{'MOBILE.ORDERS.STATUS' | translate}}{{order.status | translate}} <br/>
         </div>
     </ion-col>
     <ion-col showWhen="android">
         <div>
-            <ion-icon name="arrow-round-down" style="color: white; float: right"></ion-icon>
+            <ion-icon name="arrow-round-down" style="color: gray; float: right"></ion-icon>
         </div>
     </ion-col>
 </ion-row>

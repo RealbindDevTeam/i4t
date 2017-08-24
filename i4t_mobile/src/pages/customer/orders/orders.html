@@ -40,7 +40,7 @@
                         <ion-list no-lines style="margin: 0 -16px;">
                             <button ion-item (click)="showDetail(i)">
                                 <div *ngIf="order">
-                                    <order-detail [order]="order" [isUser]="true"></order-detail>
+                                    <order-detail [order]="order" [isUser]="true" [currencyCode]="_currencyCode"></order-detail>
                                 </div>
                             </button>
                         </ion-list>

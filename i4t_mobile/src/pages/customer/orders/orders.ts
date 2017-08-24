@@ -15,6 +15,7 @@ import { CodeTypeSelectPage } from '../code-type-select/code-type-select';
 import { SectionsPage } from '../sections/sections';
 import { ItemEditPage } from '../item-edit/item-edit';
 import { AdditionEditPage } from '../addition-edit/addition-edit';
+import { Currencies } from 'qmo_web/both/collections/general/currency.collection';
 
 @Component({
     selector: 'page-orders',
@@ -28,6 +29,7 @@ export class OrdersPage implements OnInit, OnDestroy {
     private _additionsSub: Subscription;
     private _itemsSub: Subscription;
     private _restaurantThumbSub: Subscription;
+    private _currencySub: Subscription;
 
     private _userLang: string;
     private _table_code: string = "";
@@ -36,6 +38,7 @@ export class OrdersPage implements OnInit, OnDestroy {
     private _currentUserId: string;
     private _orderIndex: number = -1;
     private selected: string = "";
+    private _currencyCode: string = "";
 
     private _userDetail;
     private _orders;
@@ -79,6 +82,12 @@ export class OrdersPage implements OnInit, OnDestroy {
         });
 
         this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByUserId', Meteor.userId()).subscribe();
+
+        this._currencySub = MeteorObservable.subscribe('getCurrenciesByCurrentUser', Meteor.userId()).subscribe(() => {
+            this._ngZone.run(() => {
+                this._currencyCode = Currencies.find({}).fetch()[0].code;
+            });
+        });
     }
 
     goToNewOrder() {
@@ -127,6 +136,12 @@ export class OrdersPage implements OnInit, OnDestroy {
         });
 
         this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByUserId', Meteor.userId()).subscribe();
+
+        this._currencySub = MeteorObservable.subscribe('getCurrenciesByCurrentUser', Meteor.userId()).subscribe(() => {
+            this._ngZone.run(() => {
+                this._currencyCode = Currencies.find({}).fetch()[0].code;
+            });
+        });
     }
 
     filterOrders(orders_selected) {
@@ -297,6 +312,7 @@ export class OrdersPage implements OnInit, OnDestroy {
         this._itemsSub.unsubscribe();
         this._restaurantThumbSub.unsubscribe();
         this._userDetailSub.unsubscribe();
+        this._currencySub.unsubscribe();
     }
 
     ionViewWillUnload() {
