@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { UserLanguageService } from '../../shared/services/user-language.service';
 import { CustomValidators } from '../../../../../both/shared-components/validators/custom-validator';
 import { ResetPasswordClass } from '../../../../../both/shared-components/auth/reset-password.class';
 import { AlertConfirmComponent } from '../../web/general/alert-confirm/alert-confirm.component';
@@ -30,15 +29,13 @@ export class ResetPasswordWebComponent extends ResetPasswordClass{
      * @param {NgZone} zone 
      * @param {TranslateService} translate 
      * @param {ActivatedRoute} activatedRoute
-     * @param {UserLanguageService} _userLanguageService
      */
     constructor( protected router: Router, 
                  protected zone: NgZone, 
                  protected translate: TranslateService, 
                  protected activatedRoute: ActivatedRoute,
-                 protected _userLanguageService: UserLanguageService,
                  protected _mdDialog: MdDialog ){
-        super(zone, translate, activatedRoute, _userLanguageService);
+                    super(zone, translate, activatedRoute);
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }

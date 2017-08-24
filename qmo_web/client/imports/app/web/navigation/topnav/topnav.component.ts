@@ -1,15 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { MeteorObservable } from 'meteor-rxjs';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { NavigationService } from '../navigation.service';
 import { SearchService } from '../../../shared/services/search.service';
 import { StringUtils } from '../../../shared/utils/string-utils';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
-import { Users } from '../../../../../../both/collections/auth/user.collection';
+import { Users, UserImages } from '../../../../../../both/collections/auth/user.collection';
 import { User } from '../../../../../../both/models/auth/user.model';
+import { UserProfileImage } from '../../../../../../both/models/auth/user-profile.model';
+
 
 import template from './topnav.component.html';
 import style from './topnav.component.scss';  
@@ -21,27 +23,29 @@ import style from './topnav.component.scss';
 })
 export class TopnavComponent implements OnInit, OnDestroy {
 
-  private _sidenavOpenStyle: string;
-  private _showSidenav: boolean;
-  private _sidenavOpened: boolean;
-  private _pageTitle: string;
-  private _browserTitle: string;
-  private _isLoadingRoute: boolean = false;
-  private _breadcrumbs: Array<{title: string, link: any[] | string}> = [];
-  private _autoBreadcrumbs: boolean = true;
-  private _searchToggled: boolean = false;
-  private _showToggleSidenav: boolean = false;
-  private _searchTerm: string = '';
-  private _itemsTopMenu: string = '';
+  private _subscriptions              : Subscription[] = [];
+  private _userSubscription           : Subscription;
+  private _userImageSub               : Subscription;
+  private _userImages                 : Observable<UserProfileImage[]>;
 
-  private _breadcrumbInterval: number;
-  private _pageTitleInterval: number;
-  private _subscriptions: Subscription[] = [];
+  private _sidenavOpenStyle           : string;
+  private _showSidenav                : boolean;
+  private _sidenavOpened              : boolean;
+  private _pageTitle                  : string;
+  private _browserTitle               : string;
+  private _isLoadingRoute             : boolean = false;
+  private _breadcrumbs                : Array<{title: string, link: any[] | string}> = [];
+  private _autoBreadcrumbs            : boolean = true;
+  private _searchToggled              : boolean = false;
+  private _showToggleSidenav          : boolean = false;
+  private _searchTerm                 : string = '';
+  private _itemsTopMenu               : string = '';
 
-  private _userSubscription: Subscription;
-  private _user: User;//Meteor.User;
-  private _userName: string;
-  private _imageProfile: string;
+  private _breadcrumbInterval         : number;
+  private _pageTitleInterval          : number;
+  private _user                       : User;//Meteor.User;
+  private _userName                   : string;
+  private _imageProfile               : string = '/images/user_default_image.png';
 
   /**
    * TopnavComponent Constructor
@@ -51,18 +55,21 @@ export class TopnavComponent implements OnInit, OnDestroy {
    * @param {Router} _router 
    * @param {TranslateService} _translate 
    * @param {UserLanguageService} _userLanguageService 
+   * @param {NavigationService} _navigation
    */
   constructor( private _navigation: NavigationService, 
                private _search: SearchService, 
                private _title: Title, 
                private _router: Router, 
                private _translate: TranslateService,
-               private _userLanguageService: UserLanguageService ) {
+               private _userLanguageService: UserLanguageService,
+               private _ngZone: NgZone ) {
                  _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
                  _translate.setDefaultLang( 'en' );
   }
 
   ngOnInit() {
+    this.removeSubscriptions();
     this._subscriptions.push(this._navigation.openSidenavStyle.subscribe(style => {
       this._sidenavOpenStyle = style;
     }));
@@ -132,6 +139,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
     }));
 
     this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() =>{
+      this._ngZone.run( () => {
         this._user = Users.collection.findOne({_id: Meteor.userId()});
         if(this._user.username){
           this._userName = this._user.username;
@@ -139,18 +147,13 @@ export class TopnavComponent implements OnInit, OnDestroy {
         else if(this._user.profile.name) {
           this._userName = this._user.profile.name;
         }
-        if(this._user.services.facebook){
-          this._imageProfile = "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
-        }
-        else if(this._user.services.twitter){
-          this._imageProfile = this._user.services.twitter.profile_image_url;
-        }
-        else if(this._user.services.google){
-          this._imageProfile = this._user.services.google.picture;
-        } else {
-          this._imageProfile = "/images/user_default_image.png";
-        }
-        
+        this._userImageSub = MeteorObservable.subscribe( 'getUserImages', Meteor.userId() ).subscribe( () => {
+          this._ngZone.run( () => {
+            this._userImages = UserImages.find( { } ).zone();
+            this._userImages.subscribe( () => { this.setUserImage( this._user ) });
+          });
+        });
+      });
     });
 
     MeteorObservable.call('getRole').subscribe((role) => {
@@ -177,6 +180,39 @@ export class TopnavComponent implements OnInit, OnDestroy {
     }, (error) => {
       alert(`Failed to to load layout ${error}`);
     });
+  }
+
+  /**
+   * Set user image
+   */
+  setUserImage( _pUser:User ):void{
+    let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() });
+    if( _lUserImage ){
+      this._imageProfile = _lUserImage.url;
+    } else {
+      if(_pUser.services.facebook){
+        this._imageProfile = "http://graph.facebook.com/" + _pUser.services.facebook.id + "/picture/?type=large";
+      }
+      else if(_pUser.services.twitter){
+        this._imageProfile = _pUser.services.twitter.profile_image_url;
+      }
+      else if(_pUser.services.google){
+        this._imageProfile = _pUser.services.google.picture;
+      } else {
+        this._imageProfile = '/images/user_default_image.png';
+      }
+    }
+  }
+
+  /**
+   * Remove all subscriptions
+   */
+  removeSubscriptions():void{
+    this._subscriptions.forEach(sub => {
+      if( sub ){ sub.unsubscribe(); }
+    });
+    if( this._userSubscription ){ this._userSubscription.unsubscribe(); }
+    if( this._userImageSub ){ this._userImageSub.unsubscribe(); }
   }
 
   get searchTerm(): string {
@@ -232,11 +268,10 @@ export class TopnavComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * ngOnDestroy Implementation
+   */
   ngOnDestroy(){
-    this._subscriptions.forEach(sub => {
-      sub.unsubscribe();
-    });
-    this._userSubscription.unsubscribe();
+    this.removeSubscriptions();
   }
-
 }

@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { Users } from '../../../../both/collections/auth/user.collection';
+import { Users, UserImages } from '../../../../both/collections/auth/user.collection';
 import { UserDetails } from '../../../../both/collections/auth/user-detail.collection';
 import { check } from 'meteor/check';
 
@@ -38,4 +38,12 @@ Meteor.publish( 'getUserByTableId', function( _pRestaurantId: string, _pTableId 
         _lUsers.push( user.user_id );
     });
     return Users.find( { _id: { $in: _lUsers } } );
+});
+
+/**
+ * Meteor publication return user image
+ */
+Meteor.publish( 'getUserImages', function( _pUserId: string ){
+    check( _pUserId, String );
+    return UserImages.find( { userId: _pUserId });
 });

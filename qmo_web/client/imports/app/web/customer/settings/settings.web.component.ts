@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Accounts } from 'meteor/accounts-base';
@@ -8,12 +8,14 @@ import { Subscription, Subject, Observable } from 'rxjs';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Language } from '../../../../../../both/models/settings/language.model';
 import { Languages } from '../../../../../../both/collections/settings/language.collection';
-import { Users } from '../../../../../../both/collections/auth/user.collection';
+import { Users, UserImages } from '../../../../../../both/collections/auth/user.collection';
 import { User } from '../../../../../../both/models/auth/user.model';
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 import { ChangeEmailWebComponent } from './modal-dialog/change-email.web.component';
 import { ChangePasswordWebComponent } from '../../../web/customer/settings/modal-dialog/change-password.web.component';
+import { uploadUserImage } from '../../../../../../both/methods/auth/user-profile.methods';
+import { UserProfileImage } from '../../../../../../both/models/auth/user-profile.model';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './settings.web.component.html';
@@ -29,11 +31,15 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     private _userSubscription       : Subscription;
     private _userDetailSubscription : Subscription;
     private _subscription           : Subscription;
+    private _userImageSub           : Subscription;
+
     private _userObservable         : Observable<User[]>;
     private _languages              : Observable<Language[]>;
+
     private _mdDialogRef            : MdDialogRef<any>;
     private _user                   : User;
     private _userDetail             : UserDetail;
+
     private _email                  : string;
     private _userName               : string;
     private _firstName              : string;
@@ -42,22 +48,30 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     private _languageCode           : string;
     private _imageProfile           : string;
     private _lang_code              : string;
+
     private titleMsg                : string;
     private btnAcceptLbl            : string;
     private _disabled               : boolean
     private _validate               : boolean
     private _validateChangePass     : boolean
+    private _createImage            : boolean = false;
+    private _availableEditImage     : boolean = true;
+
+    private _filesToUpload          : Array<File>;
+    private _itemImageToInsert      : File;
+    private _nameImageFile          : string;
 
     /**
      * SettingsWebComponent Constructor
      * @param {TranslateService} _translate 
-     * @param {MdDialog} _mdDialog 
-     * @param {ViewContainerRef} _viewContainerRef 
+     * @param {MdDialog} _mdDialog
      * @param {UserLanguageService} _userLanguageService 
+     * @param {NgZone} _ngZone
      */
     constructor ( private _translate: TranslateService, 
                   public _mdDialog: MdDialog,
-                  private _userLanguageService: UserLanguageService, ){
+                  private _userLanguageService: UserLanguageService,
+                  private _ngZone:NgZone ){
         let _lUserLanguage = this._userLanguageService.getLanguage( Meteor.user() );
         _translate.use( _lUserLanguage );  
         _translate.setDefaultLang( 'en' ); 
@@ -71,6 +85,7 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._languages = Languages.find({}).zone();
         this._subscription = MeteorObservable.subscribe('languages').subscribe();
 
@@ -81,10 +96,10 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
             this._validate = false;
             this._validateChangePass = false;
             this._user = Users.collection.findOne({_id: Meteor.userId()});
-            this._imageProfile = "/images/user_default_image.png";
 
             let lUser : UserDetail = UserDetails.collection.find({}).fetch()[0];
             if(this._user.services.facebook){
+                this._availableEditImage = false;
                 this._email = this._user.services.facebook.email;
                 this._userName = this._user.services.facebook.name;
                 this._firstName = this._user.services.facebook.first_name;
@@ -94,10 +109,38 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
                 this._disabled = true;
                 this._validateChangePass = true;
                 this._userObservable = Users.find({}).zone();
-            } else if (lUser.role_id === '200'  || lUser.role_id === '500'){
+            } else if (lUser.role_id === '200'  || lUser.role_id === '500' || lUser.role_id === '600' ){
                 this._validateChangePass = true;
+                this._availableEditImage = false;
+                this._userName = this._user.username;
+                this._firstName = this._user.profile.first_name;
+                this._lastName = this._user.profile.last_name;
+                this._imageProfile = '/images/user_default_image.png'
             }
+            this._userImageSub = MeteorObservable.subscribe( 'getUserImages', Meteor.userId() ).subscribe();
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._userSubscription ){ this._userSubscription.unsubscribe(); }
+        if( this._userDetailSubscription ){ this._userDetailSubscription.unsubscribe(); }
+        if( this._subscription ){ this._subscription.unsubscribe(); }
+        if( this._userImageSub ){ this._userImageSub.unsubscribe() }
+    }
+
+    /**
+     * Return user image
+     */
+    getUsetImage():string{
+        let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() });
+        if( _lUserImage ){
+            return _lUserImage.url;
+        } else {
+            return '/images/user_default_image.png';
+        }
     }
 
     /**
@@ -119,6 +162,19 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
                                     language_code: this._lang_code }
                     }
             });
+
+            if( this._createImage ){
+                let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() } );
+                if( _lUserImage ){
+                    UserImages.remove( { _id: _lUserImage._id } );
+                }
+                uploadUserImage( this._itemImageToInsert, Meteor.userId() ).then((result) => {
+                    this._createImage = false;
+                }).catch((error) => {
+                    alert('Upload image error. Only accept .png, .jpg, .jpeg files.');
+                });
+            }
+
             let message : string;
             message = this.itemNameTraduction('SETTINGS.USER_DETAIL_UPDATED');
             this.openDialog(this.titleMsg, '', message, '', this.btnAcceptLbl, false);
@@ -183,6 +239,17 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * When user wants add image, this function allow insert the image in the store
+     * @param {any} _fileInput
+     */
+    onChangeImage(_fileInput: any): void {
+        this._createImage = true;
+        this._filesToUpload = <Array<File>>_fileInput.target.files;
+        this._itemImageToInsert = this._filesToUpload[0];
+        this._nameImageFile = this._itemImageToInsert.name;
+    }
+    
+    /** 
     * This function open de error dialog according to parameters 
     * @param {string} title
     * @param {string} subtitle
@@ -216,8 +283,6 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
      * ngOnDestroy implementation
      */
     ngOnDestroy(){
-        this._userSubscription.unsubscribe();
-        this._userDetailSubscription.unsubscribe();
-        this._subscription.unsubscribe();
+        this.removeSubscriptions();
     }
 }

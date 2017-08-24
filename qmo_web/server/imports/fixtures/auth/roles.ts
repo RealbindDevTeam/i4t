@@ -19,7 +19,7 @@ export function loadRoles() {
             menus: []
         },{
             _id: "300",
-            is_active: true,
+            is_active: false,
             name: "ROLE.CASHIER",
             description: "restaurant cashier",
             menus: []

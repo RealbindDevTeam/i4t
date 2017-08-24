@@ -87,6 +87,20 @@ Meteor.publish('restaurantImageThumbsByRestaurantId', function (_restaurantId: s
 });
 
 /**
+ * Meteor publications getRestaurantImageThumbByRestaurantWork
+ * @param {string} _userId
+ */
+Meteor.publish('getRestaurantImageThumbByRestaurantWork', function (_userId: string) {
+    check(_userId, String);
+    var user_detail = UserDetails.collection.findOne({ user_id: _userId });
+    if (user_detail) {
+        return RestaurantImageThumbs.collection.find({ restaurantId: user_detail.restaurant_work });
+    } else {
+        return;
+    }
+});
+
+/**
  * Meteor publication restaurantImageThumbs with user Id condition
  * @param {string} _restaurantId 
  */

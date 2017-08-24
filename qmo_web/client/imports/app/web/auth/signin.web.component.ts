@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { UserLanguageService } from '../../shared/services/user-language.service';
 import { RecoverWebComponent } from './recover-password/recover.web.component';
 import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
 import { AuthClass } from './auth.class';
@@ -30,15 +29,13 @@ export class SigninWebComponent extends AuthClass implements OnInit {
      * @param {NgZone} zone 
      * @param {TranslateService} translate 
      * @param {MdDialog} mdDialog 
-     * @param {UserLanguageService} _userLanguageService 
      */
     constructor(protected router: Router,
         protected zone: NgZone,
         protected translate: TranslateService,
-        protected _userLanguageService: UserLanguageService,
         protected _mdDialog: MdDialog) {
 
-        super(router, zone, translate, _userLanguageService, _mdDialog);
+        super(router, zone, translate, _mdDialog);
         if (!Meteor.user()) {
             Meteor.logout();
         }
