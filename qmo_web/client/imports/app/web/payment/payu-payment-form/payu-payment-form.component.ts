@@ -29,6 +29,7 @@ import { Restaurants } from '../../../../../../both/collections/restaurant/resta
 import { Table } from '../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
 import { CcRequestColombia, Merchant, Transaction, Order, Payer, TX_VALUE, TX_TAX, TX_TAX_RETURN_BASE, CreditCard, ExtraParameters, AdditionalValues, Buyer, ShippingBillingAddress } from '../../../../../../both/models/payment/cc-request-colombia.model';
+import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
 import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
 
@@ -94,6 +95,9 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private scriptThreeSanitized        : any;
     private scriptFourSanitized         : any;
 
+    private titleMsg                    : string;
+    private btnAcceptLbl                : string;
+
     /**
      * PayuPaymentFormComponent Constructor
      * @param {Router} _router 
@@ -144,6 +148,9 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             this._currency = params['param2'];
             this._mode = params['param3'];
         });
+
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     ngOnInit() {
@@ -209,7 +216,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 this._ipAddress = ipPublic.ip;
             },
             error => {
-                alert(error);
+                this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             }
         );
 
@@ -475,7 +482,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             },
             error => {
                 //Response with status: 0  for URL: null
-                alert(error);
+                this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             }
         );
     }
@@ -578,6 +585,36 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             _wordTraduced = res;
         });
         return _wordTraduced;
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     ngOnDestroy() {

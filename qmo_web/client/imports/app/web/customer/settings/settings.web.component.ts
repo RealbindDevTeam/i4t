@@ -16,6 +16,7 @@ import { ChangeEmailWebComponent } from './modal-dialog/change-email.web.compone
 import { ChangePasswordWebComponent } from '../../../web/customer/settings/modal-dialog/change-password.web.component';
 import { uploadUserImage } from '../../../../../../both/methods/auth/user-profile.methods';
 import { UserProfileImage } from '../../../../../../both/models/auth/user-profile.model';
+import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './settings.web.component.html';
 import style from './settings.web.component.scss';
@@ -35,6 +36,7 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     private _userObservable         : Observable<User[]>;
     private _languages              : Observable<Language[]>;
 
+    private _mdDialogRef            : MdDialogRef<any>;
     private _user                   : User;
     private _userDetail             : UserDetail;
 
@@ -47,13 +49,14 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     private _imageProfile           : string;
     private _lang_code              : string;
 
+    private titleMsg                : string;
+    private btnAcceptLbl            : string;
     private _disabled               : boolean
     private _validate               : boolean
     private _validateChangePass     : boolean
     private _createImage            : boolean = false;
     private _availableEditImage     : boolean = true;
 
-    private _mdDialogRef            : MdDialogRef<any>;
     private _filesToUpload          : Array<File>;
     private _itemImageToInsert      : File;
     private _nameImageFile          : string;
@@ -61,8 +64,7 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     /**
      * SettingsWebComponent Constructor
      * @param {TranslateService} _translate 
-     * @param {MdDialog} _mdDialog 
-     * @param {ViewContainerRef} _viewContainerRef 
+     * @param {MdDialog} _mdDialog
      * @param {UserLanguageService} _userLanguageService 
      * @param {NgZone} _ngZone
      */
@@ -75,6 +77,8 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
         _translate.setDefaultLang( 'en' ); 
         this._languageCode = _lUserLanguage;
         this._lang_code = _lUserLanguage;
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -173,7 +177,7 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
 
             let message : string;
             message = this.itemNameTraduction('SETTINGS.USER_DETAIL_UPDATED');
-            alert(message);
+            this.openDialog(this.titleMsg, '', message, '', this.btnAcceptLbl, false);
         }
     }
 
@@ -243,6 +247,36 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
         this._filesToUpload = <Array<File>>_fileInput.target.files;
         this._itemImageToInsert = this._filesToUpload[0];
         this._nameImageFile = this._itemImageToInsert.name;
+    }
+    
+    /** 
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**

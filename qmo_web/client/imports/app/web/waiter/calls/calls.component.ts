@@ -11,6 +11,8 @@ import { WaiterCallDetail } from '../../../../../../both/models/restaurant/waite
 import { WaiterCallDetails } from '../../../../../../both/collections/restaurant/waiter-call-detail.collection';
 import { User } from '../../../../../../both/models/auth/user.model';
 import { Users } from '../../../../../../both/collections/auth/user.collection';
+import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
+import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 import { CallCloseConfirmComponent } from './call-close-confirm/call-close-confirm.component';
 import { PaymentConfirmComponent } from './payment-confirm/payment-confirm.component';
 import { SendOrderConfirmComponent } from './send-order-confirm/send-order-confirm.component';
@@ -27,14 +29,16 @@ export class CallsComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
 
+    
+    private _userDetailSubscription     : Subscription;
     private _userRestaurantSubscription : Subscription;
-    private _userSubscription           : Subscription;
     private _callsDetailsSubscription   : Subscription;
     private _tableSubscription          : Subscription;
     private _imgRestaurantSubscription  : Subscription;
 
     private _mdDialogRef                : MdDialogRef<any>;
 
+    private _userDetail                 : UserDetail;
     private _restaurants                : any;
     private _waiterCallDetail           : any;
     private _tables                     : any;
@@ -63,17 +67,18 @@ export class CallsComponent implements OnInit, OnDestroy {
      */
     ngOnInit(){
         this.removeSubscriptions();
-        this._userRestaurantSubscription = MeteorObservable.subscribe( 'getRestaurantByRestaurantWork', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._restaurants = Restaurants.find( { } ).zone();
-            });
+        this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe(()=>{
+            this._userDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+            if (this._userDetail){
+                this._userRestaurantSubscription = MeteorObservable.subscribe('getRestaurantById', this._userDetail.restaurant_work).subscribe(() => {
+                    this._restaurants = Restaurants.find({_id : this._userDetail.restaurant_work});
+                });
+                
+                this._imgRestaurantSubscription = MeteorObservable.subscribe( 'restaurantImagesByRestaurantWork', this._user ).subscribe();
+            }
         });
         
-        this._imgRestaurantSubscription = MeteorObservable.subscribe( 'restaurantImagesByRestaurantWork', this._user ).subscribe();
-
-        this._userSubscription = MeteorObservable.subscribe( 'getUserSettings' ).subscribe();
-
-        this._callsDetailsSubscription = MeteorObservable.subscribe( 'waiterCallDetailByWaiterId', this._user ).subscribe( () => {
+        this._callsDetailsSubscription = MeteorObservable.subscribe('waiterCallDetailByWaiterId', this._user ).subscribe(() => {
             this._ngZone.run( () => {
                 this._waiterCallDetail = WaiterCallDetails.find({}).zone();
                 this._waiterCallDetailCollection = WaiterCallDetails.collection.find({}).fetch()[0];
@@ -91,8 +96,8 @@ export class CallsComponent implements OnInit, OnDestroy {
      * Remove all subscriptions
      */
     removeSubscriptions():void{
+        if( this._userDetailSubscription ){ this._userDetailSubscription.unsubscribe(); }
         if( this._userRestaurantSubscription ){ this._userRestaurantSubscription.unsubscribe(); }
-        if( this._userSubscription ){ this._userSubscription.unsubscribe(); }
         if( this._callsDetailsSubscription ){ this._callsDetailsSubscription.unsubscribe(); }
         if( this._tableSubscription ){ this._tableSubscription.unsubscribe(); }
         if( this._imgRestaurantSubscription ){ this._imgRestaurantSubscription.unsubscribe(); }

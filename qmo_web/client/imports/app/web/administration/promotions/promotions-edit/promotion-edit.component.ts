@@ -4,13 +4,14 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { MdDialogRef } from '@angular/material';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Promotions, PromotionImages, PromotionImagesThumbs } from '../../../../../../../both/collections/administration/promotion.collection';
 import { Promotion, PromotionImage, PromotionImageThumb } from '../../../../../../../both/models/administration/promotion.model';
 import { uploadPromotionImage } from '../../../../../../../both/methods/administration/promotion.methods';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
+import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './promotion-edit.component.html';
 import style from './promotion-edit.component.scss';
@@ -26,6 +27,7 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
     public _promotionToEdit                 : Promotion;
     private _editForm                       : FormGroup;
     private _restaurantsFormGroup           : FormGroup = new FormGroup({});
+    private _mdDialogRef                    : MdDialogRef<any>;
 
     private _promotions                     : Observable<Promotion[]>;
     private _restaurants                    : Observable<Restaurant[]>;
@@ -46,6 +48,8 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
     private _promotionRestaurants           :string[];
     private _restaurantCreation             : Restaurant[];
 
+    private titleMsg                        : string;
+    private btnAcceptLbl                    : string;
     private _edition_restaurants            : string[];
     private _nameImageFileEdit              : string;
     
@@ -61,7 +65,8 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
                  private _translate: TranslateService, 
                  public _dialogRef: MdDialogRef<any>, 
                  private _ngZone: NgZone,
-                 private _userLanguageService: UserLanguageService ){
+                 private _userLanguageService: UserLanguageService,
+                 protected _mdDialog: MdDialog ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
         this._editFilesToUpload = [];
@@ -70,6 +75,8 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
         this._restaurantsList = [];
         this._promotionRestaurants = [];
         this._restaurantCreation = [];
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -126,7 +133,8 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
      */
     editPromotion(){
         if( !Meteor.userId() ){
-            alert('Please log in to add a restaurant');
+            var error : string = 'Please log in to add a restaurant';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
 
@@ -161,8 +169,9 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
                                       this._editForm.value.editId )
                                       .then( ( result ) => {
                       
-                }).catch( ( error ) => {
-                    alert('Upload image error. Only accept .png, .jpg, .jpeg files.');
+                }).catch( ( err ) => {
+                    var error : string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
+                    this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
                 });
             }
             this._dialogRef.close();
@@ -177,6 +186,48 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
         this._editFilesToUpload = <Array<File>> fileInput.target.files;
         this._editPromotionImageToInsert = this._editFilesToUpload[0];
         this._nameImageFileEdit = this._editPromotionImageToInsert.name;
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
+    }
+
+    /**
+     * This function allow translate
+     * @param itemName 
+     */
+    itemNameTraduction(itemName: string): string {
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res;
+        });
+        return wordTraduced;
     }
 
     /**

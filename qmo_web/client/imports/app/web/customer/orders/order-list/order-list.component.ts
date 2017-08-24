@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { MdSnackBar } from '@angular/material';
+import { MdSnackBar, MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Order, OrderItem, OrderAddition } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
@@ -15,6 +15,7 @@ import { GarnishFoodCol } from '../../../../../../../both/collections/administra
 import { Addition } from '../../../../../../../both/models/administration/addition.model';
 import { Additions } from '../../../../../../../both/collections/administration/addition.collection';
 import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
+import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './order-list.component.html';
 import style from './order-list.component.scss';
@@ -39,6 +40,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     private _itemImagesSub: Subscription;
     private _itemImageThumbsSub: Subscription;
     private _currenciesSub: Subscription;
+    private _mdDialogRef            : MdDialogRef<any>;
 
     private _orders: Observable<Order[]>;
     private _ordersTable: Observable<Order[]>;
@@ -71,6 +73,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     private _unitPrice: number = 0;
     private _orderItemIndex: number = -1;
     private _currencyCode: string;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
 
     _initialValue = 'customer';
     private _showCustomerOrders: boolean = true;
@@ -89,9 +93,12 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     constructor(private _translate: TranslateService,
         private _ngZone: NgZone,
         public snackBar: MdSnackBar,
-        private _userLanguageService: UserLanguageService) {
+        private _userLanguageService: UserLanguageService,
+        protected _mdDialog: MdDialog) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -680,7 +687,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                 );
                 this._showDetails = false;
             } else {
-                alert(this.itemNameTraduction("ORDER_LIST.ORDER_CANT_CANCEL"));
+                this.openDialog(this.titleMsg, '', this.itemNameTraduction("ORDER_LIST.ORDER_CANT_CANCEL"), '', this.btnAcceptLbl, false);
             }
             this.viewItemDetail(true);
         }
@@ -718,10 +725,10 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                     );
                     this._showDetails = false;
                 } else {
-                    alert(this.itemNameTraduction("ORDER_LIST.ORDER_ITEMS_UNAVAILABLE"));
+                    this.openDialog(this.titleMsg, '', this.itemNameTraduction("ORDER_LIST.ORDER_ITEMS_UNAVAILABLE"), '', this.btnAcceptLbl, false);
                 }
             } else {
-                alert(this.itemNameTraduction("ORDER_LIST.ORDER_CANT_CONFIRM"));
+                this.openDialog(this.titleMsg, '', this.itemNameTraduction("ORDER_LIST.ORDER_CANT_CONFIRM"), '', this.btnAcceptLbl, false);
             }
             this.viewItemDetail(true);
             this._orderCustomerIndex = -1;
@@ -775,6 +782,36 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         let _itemRestaurant: Item = Items.collection.findOne({ _id: itemId }, { fields: { _id: 0, restaurants: 1 } });
         let aux = _itemRestaurant.restaurants.find(element => element.restaurantId === this.restaurantId);
         return aux.isAvailable;
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**

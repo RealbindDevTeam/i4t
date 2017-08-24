@@ -5,7 +5,7 @@
                 <img md-list-avatar class="image" src="/images/waiter.png">
                 <h2 md-line class="card-title">{{'PAYMENTS.COLOMBIA.PENDING_PAYMENT_TITLE' | translate}}</h2>
                 <p md-line class="card-waiter-msg">{{'PAYMENTS.COLOMBIA.PENDING_PAYMENT_MSG' | translate}}</p>
-                <button md-raised-button class="button-primary card-button" (click)="viewPaymentDetail()">{{'PAYMENTS.COLOMBIA.VIEW_DETAIL' | translate}}</button>                
+                <button md-raised-button class="primary-button card-button" (click)="viewPaymentDetail()">{{'PAYMENTS.COLOMBIA.VIEW_DETAIL' | translate}}</button>                
             </md-list-item>
         </md-list>
     </md-card>
@@ -15,7 +15,7 @@
                 <img md-list-avatar class="image" src="/images/orders-detail.png">
                 <h2 md-line class="card-title">{{'PAYMENTS.COLOMBIA.ORDER_DETAILS' | translate}}</h2>
                 <p md-line class="card-subtitle">{{'PAYMENTS.COLOMBIA.VIEW_ORDERS_DETAIL' | translate}}</p>
-                <button md-raised-button class="button-primary card-button" (click)="viewOrderDetail()">{{'PAYMENTS.COLOMBIA.VIEW_DETAIL' | translate}}</button>
+                <button md-raised-button class="primary-button card-button" (click)="viewOrderDetail()">{{'PAYMENTS.COLOMBIA.VIEW_DETAIL' | translate}}</button>
             </md-list-item>
         </md-list>
     </md-card>
@@ -25,7 +25,7 @@
                 <img md-list-avatar class="image" src="/images/orders-transfer.png">
                 <h2 md-line class="card-title">{{'PAYMENTS.COLOMBIA.ADD_ORDER' | translate}}</h2>
                 <p md-line class="card-subtitle">{{'PAYMENTS.COLOMBIA.ADD_ORDER_MSG' | translate}}</p>
-                <button md-raised-button class="button-primary card-button" (click)="viewOrderTranslate()">{{'PAYMENTS.COLOMBIA.VIEW_DETAIL' | translate}}</button>
+                <button md-raised-button class="primary-button card-button" (click)="viewOrderTranslate()">{{'PAYMENTS.COLOMBIA.VIEW_DETAIL' | translate}}</button>
             </md-list-item>
         </md-list>
         <div *ngIf="_showAlertToConfirm" class="show-alert">
@@ -66,7 +66,7 @@
                 </div>
             </div>
             <div>
-                <button md-raised-button class="button-primary pay-button" [disabled]="_OutstandingBalance" (click)="pay()">{{'PAYMENTS.COLOMBIA.PAY' | translate}}</button>
+                <button md-raised-button class="primary-button pay-button" [disabled]="_OutstandingBalance" (click)="pay()">{{'PAYMENTS.COLOMBIA.PAY' | translate}}</button>
             </div>
         </md-card-content>
     </md-card>

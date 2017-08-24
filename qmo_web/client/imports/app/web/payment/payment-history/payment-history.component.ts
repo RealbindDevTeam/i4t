@@ -17,6 +17,7 @@ import { PaymentTransactions } from '../../../../../../both/collections/payment/
 import { PaymentTransaction } from '../../../../../../both/models/payment/payment-transaction.model';
 import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
 import { Table } from '../../../../../../both/models/restaurant/table.model';
+import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
 import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
 
@@ -46,6 +47,8 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
     private _activateMonth              : boolean;
     private _loading                    : boolean;
     private _mdDialogRef                : MdDialogRef<any>;
+    private titleMsg                    : string;
+    private btnAcceptLbl                : string;
 
     /**
      * PaymentHistoryComponent Constructor
@@ -67,6 +70,9 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
 
         this._currentDate = new Date();
         this._activateMonth = true;
+
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     ngOnInit() {
@@ -267,7 +273,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
                     });
                 },
                 error => {
-                    alert(error);
+                    this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
                 }
             );
             this._loading = false;
@@ -320,6 +326,36 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         } else {
             return '';
         }
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     ngOnDestroy() {

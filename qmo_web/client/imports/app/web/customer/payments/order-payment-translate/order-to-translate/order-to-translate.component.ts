@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { MdDialogRef } from '@angular/material';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../../shared/services/user-language.service';
@@ -13,6 +13,7 @@ import { Currency } from '../../../../../../../../both/models/general/currency.m
 import { Currencies } from '../../../../../../../../both/collections/general/currency.collection';
 import { Addition } from '../../../../../../../../both/models/administration/addition.model';
 import { Additions } from '../../../../../../../../both/collections/administration/addition.collection';
+import { AlertConfirmComponent } from '../../../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './order-to-translate.component.html';
 import style from './order-to-translate.component.scss';
@@ -35,6 +36,7 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
     private _itemImageThumbsSub         : Subscription;
     private _currencySub                : Subscription;
     private _additionsSub               : Subscription;
+    private _mdDialogRef                : MdDialogRef<any>;
 
     private _ordersTable                : Observable<Order[]>;
     private _items                      : Observable<Item[]>;
@@ -42,6 +44,8 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
     
     private _orderOthersIndex           : number = -1;
     private _currencyCode               : string;
+    private titleMsg                    : string;
+    private btnAcceptLbl                : string;
 
     /**
      * OrderToTranslateComponent constructor
@@ -53,9 +57,12 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
     constructor( private _translate: TranslateService, 
                  public _dialogRef: MdDialogRef<any>, 
                  private _ngZone: NgZone,
-                 private _userLanguageService: UserLanguageService ){
+                 private _userLanguageService: UserLanguageService,
+                 protected _mdDialog: MdDialog ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' ); 
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -136,9 +143,9 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
                                                              } 
                                                      } 
                              );
-                alert( _lMessageUser );
+                this.openDialog(this.titleMsg, '', _lMessageUser, '', this.btnAcceptLbl, false);
             }else {
-                alert( _lMessageNoPay );
+                this.openDialog(this.titleMsg, '', _lMessageNoPay, '', this.btnAcceptLbl, false);
             }
         }
     }
@@ -153,6 +160,36 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
             wordTraduced = res; 
         });
         return wordTraduced;
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**

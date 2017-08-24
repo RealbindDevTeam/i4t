@@ -15,6 +15,7 @@ import { UserDetails } from '../../../../../../both/collections/auth/user-detail
 import { User } from '../../../../../../both/models/auth/user.model';
 import { Users } from '../../../../../../both/collections/auth/user.collection';
 import { CollaboratorsEditionComponent } from './collaborators-edition/collaborators-edition.component';
+import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './collaborators.component.html';
 import style from './collaborators.component.scss';
@@ -38,6 +39,9 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
 
     private _form                   : FormGroup;
     public _dialogRef               : MdDialogRef<any>;
+    private _mdDialogRef            : MdDialogRef<any>;
+    private titleMsg                : string;
+    private btnAcceptLbl            : string;
 
     /**
      * CollaboratorsComponent Constructor
@@ -51,10 +55,13 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
                  private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
                  public _dialog: MdDialog,
-                 private _userLanguageService: UserLanguageService )
+                 private _userLanguageService: UserLanguageService,
+                 protected _mdDialog: MdDialog )
     {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     } 
 
     /**
@@ -97,7 +104,8 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
             });
 
         } else {
-            alert('Seleccione un restaurante para consultar');
+            var message_translate = this.itemNameTraduction('COLLABORATORS.COLLABORATORS_TEXT');
+            this.openDialog(this.titleMsg, '', message_translate, '', this.btnAcceptLbl, false);
         }
     }
 
@@ -122,7 +130,7 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
      * @param {string} _pUserDetailId
      */
     changeUserState( _pUserDetail: UserDetail ):void{
-        UserDetails.update( { _id: _pUserDetail._id }, { $set: { is_active: !_pUserDetail } } );
+        UserDetails.update( { _id: _pUserDetail._id }, { $set: { is_active: !_pUserDetail.is_active } } );
     }
     
     /**
@@ -137,6 +145,48 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
      */
     goToAddRestaurant(){
         this._router.navigate(['/app/restaurantRegister']);
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
+    }
+
+    /**
+     * This function allow translate
+     * @param itemName 
+     */
+    itemNameTraduction(itemName: string): string {
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res;
+        });
+        return wordTraduced;
     }
 
     /**
