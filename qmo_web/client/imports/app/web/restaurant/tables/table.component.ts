@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
@@ -38,6 +38,7 @@ export class TableComponent implements OnInit, OnDestroy {
   private tables_count        : number = 0;
   private all_checked         : boolean;
   private enable_print        : boolean;
+  private restaurant_name     : string = '';
 
   private tables_selected     : Table[];
   private isChecked           : false;
@@ -52,12 +53,13 @@ export class TableComponent implements OnInit, OnDestroy {
    * @param {Router} _router 
    * @param {UserLanguageService} _userLanguageService 
    */
-  constructor( private _formBuilder: FormBuilder, 
-               private translate: TranslateService, 
-               private _router: Router,
-               private _userLanguageService: UserLanguageService ) {
-    translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-    translate.setDefaultLang( 'en' );
+  constructor(private _formBuilder: FormBuilder,
+    private translate: TranslateService,
+    private _router: Router,
+    private _ngZone: NgZone,
+    private _userLanguageService: UserLanguageService) {
+    translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+    translate.setDefaultLang('en');
     this.selectedRestaurantValue = "";
     this.tables_selected = [];
     this.all_checked = false;
@@ -76,8 +78,12 @@ export class TableComponent implements OnInit, OnDestroy {
     });
     this.restaurants = Restaurants.find({ creation_user: Meteor.userId() }).zone();
     this.restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
-    this.tables = Tables.find({ is_active: true, creation_user: Meteor.userId() }).zone();
-    this.tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe();
+
+    this.tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe(() => {
+      this._ngZone.run(() => {
+        this.tables = Tables.find({ creation_user: Meteor.userId() }).zone();
+      });
+    });
     this.tooltip_msg = this.itemNameTraduction('TABLES.MSG_TOOLTIP');
   }
 
@@ -96,11 +102,12 @@ export class TableComponent implements OnInit, OnDestroy {
 
   changeRestaurantFilter(_pRestaurant) {
     if (_pRestaurant == 'All') {
-      this.tables = Tables.find({ is_active: true, creation_user: Meteor.userId() }).zone();
+      this.tables = Tables.find({ creation_user: Meteor.userId() }).zone();
       this.enable_print = true;
       this.tooltip_msg = this.itemNameTraduction('TABLES.MSG_TOOLTIP');
     } else {
-      this.tables = Tables.find({ restaurantId: _pRestaurant, is_active: true, creation_user: Meteor.userId() }).zone();
+      this.restaurant_name = Restaurants.findOne({ _id: _pRestaurant }).name;
+      this.tables = Tables.find({ restaurantId: _pRestaurant, creation_user: Meteor.userId() }).zone();
       this.enable_print = false;
       this.tooltip_msg = "";
       this.show_cards = true;
@@ -138,6 +145,7 @@ export class TableComponent implements OnInit, OnDestroy {
     let auxStr: string;
     let tableStr: string = this.itemNameTraduction('TABLES.TABLE');
     let codeStr: string = this.itemNameTraduction('TABLES.CODE');
+    let file_name = this.itemNameTraduction('TABLES.FILE_NAME');
     let countVar: number = 0;
 
     let qr_pdf = new jsPDF("portrait", "mm", "a4");
@@ -164,7 +172,7 @@ export class TableComponent implements OnInit, OnDestroy {
         });
       });
       this.tables_selected = [];
-      qr_pdf.output('dataurlnewwindow');
+      qr_pdf.output('save', this.restaurant_name.substr(0, 15) + '_' + file_name + '.pdf');
     } else if (!this.all_checked && this.tables_selected.length > 0) {
       this.tables_selected.forEach(table2 => {
         auxStr = table2._number.toString();
@@ -183,7 +191,7 @@ export class TableComponent implements OnInit, OnDestroy {
           qr_pdf.addPage();
         }
       });
-      qr_pdf.output('dataurlnewwindow');
+      qr_pdf.output('save', this.restaurant_name.substr(0, 15) + '_' + file_name + '.pdf');
     }
     //qr_pdf.save('qr_codes.pdf');
   }
