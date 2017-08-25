@@ -144,6 +144,12 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
      * @param {Order} _pOrder
      */
     markOrderToPay( _pOrder: Order ):void{
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+        
         let _lMessagePay:string = this.itemNameTraduction( 'ORDER_TRANS.ORDER_PAY' );
         let _lMessageUser: string = this.itemNameTraduction( 'ORDER_TRANS.USER_CONFIRM' );
         let _lMessageNoPay: string = this.itemNameTraduction( 'ORDER_TRANS.NO_PAY_POSSIBLE' );

@@ -108,6 +108,12 @@ export class OrdersComponent implements OnInit, OnDestroy {
      * This function validate if QR Code exists
      */
     validateQRCodeExists(){
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+        
         if( this._ordersForm.valid ){
             let _lTable:Table = Tables.findOne( { QR_code: this._ordersForm.value.qrCode } );
             if( _lTable ){

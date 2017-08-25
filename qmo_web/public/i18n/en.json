@@ -34,6 +34,7 @@
     "VALUE": "Value",
     "CHOOSE_A_DATE" : "Choose a date",
     "UPLOAD_IMG_ERROR" : "Upload image error. Only accept .png, .jpg, .jpeg files.",
+    "LOGIN_SYSTEM_OPERATIONS_MSG": "Please log in to perform system operations",
     "ORDER_STATUS": {
         "REGISTERED": "Registered",
         "IN_PROCESS": "In Process",

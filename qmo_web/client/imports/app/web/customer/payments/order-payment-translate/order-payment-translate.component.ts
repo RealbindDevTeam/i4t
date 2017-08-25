@@ -19,6 +19,7 @@ import { Restaurant } from '../../../../../../../both/models/restaurant/restaura
 import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
 import { Users } from '../../../../../../../both/collections/auth/user.collection';
 import { User } from '../../../../../../../both/models/auth/user.model';
+import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './order-payment-translate.component.html';
 import style from './order-payment-translate.component.scss';
@@ -47,6 +48,8 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
     private _tableId                            : string;
     private _currencyId                         : string;
     private _showPaymentInfo                    : boolean = false;
+    private titleMsg                            : string;
+    private btnAcceptLbl                        : string;
 
     /**
      * OrderPaymentTranslateComponent Constructor
@@ -63,6 +66,8 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
                  private _userLanguageService: UserLanguageService ) {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -124,8 +129,7 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * When user wants edit Addition, this function open dialog with Addition information
-     * @param {Addition} _addition
+     * Open dialog
      */
     open(){
         this._dialogRef = this._dialog.open( OrderToTranslateComponent, {
@@ -145,6 +149,12 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
      * @param {Order} _pOrder 
      */
     confirmOrderToPay( _pOrder: Order ):void{
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+
         let _lMessageUSer: string = this.itemNameTraduction( 'ORDER_PAYMENT_TRANS.THE_USER' );
         let _lMessageWantsToPay: string = this.itemNameTraduction( 'ORDER_PAYMENT_TRANS.WANTS_PAY' );
         let _lMessageAgree: string = this.itemNameTraduction( 'ORDER_PAYMENT_TRANS.AGREE' );
@@ -198,6 +208,36 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
             wordTraduced = res; 
         });
         return wordTraduced;
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._dialogRef = this._dialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._dialogRef.afterClosed().subscribe(result => {
+            this._dialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**

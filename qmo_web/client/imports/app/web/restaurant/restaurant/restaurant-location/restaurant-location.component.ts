@@ -74,6 +74,12 @@ export class RestaurantLocationComponent implements OnInit, OnDestroy {
      * Function to Add Restaurant Location
      */
     addRestaurantLocation():void{
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+        
         Restaurants.update( this._restaurantLocation._id, {
             $set: {
                 modification_user: Meteor.userId(),

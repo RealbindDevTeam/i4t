@@ -241,6 +241,12 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {string} _pItemId 
      */
     deleteOrderItem(_pItemId: string): void {
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+
         if (confirm(this.itemNameTraduction("ORDER_LIST.DELETE_ORDER"))) {
             let _lOrderItemToremove: OrderItem = this._currentOrder.items.filter(o => _pItemId === o.itemId && o.index === this._orderItemIndex)[0];
             let _lNewTotalPayment: number = this._currentOrder.totalPayment - _lOrderItemToremove.paymentItem;
@@ -270,6 +276,12 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {string} _pAdditionId 
      */
     deleteOrderAddition(_pAdditionId: string): void {
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+
         if (confirm(this.itemNameTraduction("ORDER_LIST.DELETE_ADDITION_CONFIRM"))) {
             let _lOrderAdditionToremove: OrderAddition = this._currentOrder.additions.filter(ad => ad.additionId === _pAdditionId)[0];
             let _lNewTotalPayment: number = this._currentOrder.totalPayment - _lOrderAdditionToremove.paymentAddition;
@@ -555,6 +567,12 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {string} _pItemToInsert
      */
     editOrderItem(_pItemToInsert: string): void {
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+
         if (this._editOrderItemForm.valid) {
             let arr: any[] = Object.keys(this._editOrderItemForm.value.garnishFood);
             let _lGarnishFoodToInsert: string[] = [];
@@ -628,6 +646,12 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * Modify addition in order
      */
     editOrderAddition(): void {
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+
         let arrAdd: any[] = Object.keys(this._additionsDetailFormGroup.value);
         let _lOrderAddition: OrderAddition;
 
@@ -690,6 +714,12 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {Order} _pOrder 
      */
     cancelCustomerOrder(_pOrder: Order) {
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+
         if (confirm(this.itemNameTraduction("ORDER_LIST.CANCEL_ORDER_CONFIRM"))) {
             if (_pOrder.status === 'ORDER_STATUS.REGISTERED') {
                 Orders.update({ _id: _pOrder._id }, {
@@ -712,17 +742,17 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {Order} _pOrder 
      */
     confirmCustomerOrder(_pOrder: Order) {
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+
         let _lItemsIsAvailable: boolean = true;
         if (confirm(this.itemNameTraduction("ORDER_LIST.CONFIRM_ORDER_MESSAGE"))) {
             if (_pOrder.status === 'ORDER_STATUS.REGISTERED') {
                 let _lOrderItems: OrderItem[] = _pOrder.items;
                 _lOrderItems.forEach((it) => {
-                    /**
-                    let _lItem: Item = Items.findOne({ _id: it.itemId });
-                    if (_lItem.isAvailable === false) {
-                        _lItemsIsAvailable = false;
-                    }
-                    */
                     let _lItem: Item = Items.findOne({ _id: it.itemId });
                     let aux = _lItem.restaurants.find(element => element.restaurantId === this.restaurantId);
                     if (aux.isAvailable === false) {

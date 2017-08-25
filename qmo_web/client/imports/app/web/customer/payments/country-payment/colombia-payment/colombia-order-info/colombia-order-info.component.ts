@@ -3,6 +3,7 @@ import { MeteorObservable } from "meteor-rxjs";
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { UserLanguageService } from '../../../../../../shared/services/user-language.service';
 import { Orders } from '../../../../../../../../../both/collections/restaurant/order.collection';
 import { Order, OrderTranslateInfo } from '../../../../../../../../../both/models/restaurant/order.model';
@@ -22,6 +23,7 @@ import { GarnishFood } from '../../../../../../../../../both/models/administrati
 import { GarnishFoodCol } from '../../../../../../../../../both/collections/administration/garnish-food.collection';
 import { Addition } from '../../../../../../../../../both/models/administration/addition.model';
 import { Additions } from '../../../../../../../../../both/collections/administration/addition.collection';
+import { AlertConfirmComponent } from '../../../../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './colombia-order-info.component.html';
 import style from './colombia-order-info.component.scss';
@@ -63,20 +65,27 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
     private _ipoCom             : number = 108;
     private _ipoComBaseString   : string;
     private _ipoComString       : string;
+    private titleMsg            : string;
+    private btnAcceptLbl        : string;
+    private _mdDialogRef        : MdDialogRef<any>;
 
     /**
      * ColombiaOrderInfoComponent Constructor
      * @param {TranslateService} _translate 
      * @param {NgZone} _ngZone 
      * @param {Router} _router
+     * @param {MdDialog} _dialog
      * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _translate: TranslateService, 
                  private _ngZone:NgZone, 
                  private _router: Router,
+                 public _dialog: MdDialog,
                  private _userLanguageService: UserLanguageService ) {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -189,6 +198,12 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
      * @param {Order} _pOrder 
      */
     returnOrderToFirstOwner( _pOrder:Order ):void{
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+
         let _lMessage:string = this.itemNameTraduction( 'PAYMENTS.COLOMBIA.RETURN_ORDER_USER' );
         if( confirm( _lMessage + this.getUserName( _pOrder.translateInfo.firstOrderOwner ) + ' ?' ) ) {
             let _lOrderTranslateInfo: OrderTranslateInfo = { firstOrderOwner: _pOrder.translateInfo.firstOrderOwner, confirmedToTranslate: false, 
@@ -302,6 +317,36 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
      */
     goToOrders(){
         this._router.navigate(['/app/orders']);
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._dialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**
