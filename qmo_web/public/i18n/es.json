@@ -472,7 +472,8 @@
         "MSG_TOOLTIP": "Debe seleccionar un establecimiento",
         "SEARCH_TABLES": "Seleccione el restaurante para mostrar las mesas asociadas",
         "MSG_INITIAL": "Crea las mesas con el código QR asociado",
-        "TABLES_SEARCH": "Búscar mesas"
+        "TABLES_SEARCH": "Búscar mesas",
+        "FILE_NAME": "mesas"
     },
     "GO_TO_STORE": {
         "TITTLE": "¿Qué te",

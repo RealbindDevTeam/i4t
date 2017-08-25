@@ -95,7 +95,8 @@ export class ItemDetailPage implements OnInit, OnDestroy {
           for (let item of this._item) {
             this._finalPrice = this.getItemPrice(item);
             this._unitPrice = this.getItemPrice(item);
-            this._showAddBtn = item.isAvailable;
+            let aux = item.restaurants.find(element => element.restaurantId === this._res_code);
+            this._showAddBtn = aux.isAvailable;
           }
           this._garnishFoodElementsCount = 0;
           this._showGarnishFoodError = false;
@@ -139,7 +140,7 @@ export class ItemDetailPage implements OnInit, OnDestroy {
       garnishFood: this._garnishFormGroup,
       additions: this._additionsFormGroup
     });
-    this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId',[ this._res_code ] ).subscribe( () => {
+    this._currenciesSub = MeteorObservable.subscribe('getCurrenciesByRestaurantsId', [this._res_code]).subscribe(() => {
       this._currencyCode = Currencies.collection.find({}).fetch()[0].code + ' ';
     });
   }
@@ -329,36 +330,46 @@ export class ItemDetailPage implements OnInit, OnDestroy {
    * Return Item price by current restaurant
    * @param {Item} _pItem 
    */
-  getItemPrice( _pItem:Item ): number{
-    return _pItem.restaurants.filter( r => r.restaurantId === this._res_code )[0].price;
+  getItemPrice(_pItem: Item): number {
+    return _pItem.restaurants.filter(r => r.restaurantId === this._res_code)[0].price;
   }
-  
+
   /**
    * Return Addition price by current restaurant
    * @param {Addition} _pAddition
    */
-  getAdditionsPrice( _pAddition : Addition ): number{
-    return _pAddition.restaurants.filter( r => r.restaurantId === this._res_code )[0].price;
+  getAdditionsPrice(_pAddition: Addition): number {
+    return _pAddition.restaurants.filter(r => r.restaurantId === this._res_code)[0].price;
   }
-  
+
   /**
    * Return Garnish food price by current restaurant
    * @param {GarnishFood} _pGarnishFood
    */
-  getGarnishFoodPrice( _pGarnishFood : GarnishFood ): number{
-    return _pGarnishFood.restaurants.filter( r => r.restaurantId === this._res_code )[0].price;
+  getGarnishFoodPrice(_pGarnishFood: GarnishFood): number {
+    return _pGarnishFood.restaurants.filter(r => r.restaurantId === this._res_code)[0].price;
   }
 
   /**
    * Return item name by id
    * @param _pItemId 
    */
-  getItemName ( _pItemId : string ) : string {
-    if(_pItemId){
-      return Items.findOne({ _id : _pItemId }).name;
+  getItemName(_pItemId: string): string {
+    if (_pItemId) {
+      return Items.findOne({ _id: _pItemId }).name;
     }
     return '';
   }
+
+  /**
+  * Function to get item avalaibility 
+  */
+  getItemAvailability(): boolean {
+    let _itemRestaurant = this._item[0];
+    let aux = _itemRestaurant.restaurants.find(element => element.restaurantId === this._res_code);
+    return aux.isAvailable;
+  }
+
 
   ngOnDestroy() {
     this._itemSub.unsubscribe();

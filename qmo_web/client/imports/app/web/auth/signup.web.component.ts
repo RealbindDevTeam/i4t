@@ -4,10 +4,9 @@ import { Router } from '@angular/router';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Accounts } from 'meteor/accounts-base';
 import { TranslateService } from '@ngx-translate/core';
-import { UserLanguageService } from '../../shared/services/user-language.service';
 import { CustomValidators } from '../../../../../both/shared-components/validators/custom-validator';
 import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
-import { UserProfile, UserProfileImage } from '../../../../../both/models/auth/user-profile.model';
+import { UserProfile } from '../../../../../both/models/auth/user-profile.model';
 import { AuthClass } from './auth.class';
 
 import template from './signup.web.component.html';
@@ -25,7 +24,6 @@ export class SignupWebComponent extends AuthClass implements OnInit {
     private showLoginPassword: boolean = true;
     private showConfirmError: boolean = false;
     private userProfile = new UserProfile();
-    private userProfileImage = new UserProfileImage();
 
     /**
      * SignupWebComponent Constructor
@@ -33,15 +31,13 @@ export class SignupWebComponent extends AuthClass implements OnInit {
      * @param {NgZone} zone 
      * @param {FormBuilder} formBuilder 
      * @param {TranslateService} translate 
-     * @param {UserLanguageService} _userLanguageService 
      */
     constructor(protected router: Router,
         protected zone: NgZone,
         protected translate: TranslateService,
-        protected _userLanguageService: UserLanguageService,
         protected _mdDialog: MdDialog) {
 
-        super(router, zone, translate, _userLanguageService, _mdDialog);
+        super(router, zone, translate, _mdDialog);
     }
 
     ngOnInit() {
@@ -62,20 +58,6 @@ export class SignupWebComponent extends AuthClass implements OnInit {
             this.userProfile.first_name = "";
             this.userProfile.last_name = "";
             this.userProfile.language_code = this.getUserLang();
-
-            this.userProfileImage.complete = null;
-            this.userProfileImage.extension = null;
-            this.userProfileImage.name = null;
-            this.userProfileImage.progress = null;
-            this.userProfileImage.size = null;
-            this.userProfileImage.store = null;
-            this.userProfileImage.token = null;
-            this.userProfileImage.type = null;
-            this.userProfileImage.uploaded_at = null;
-            this.userProfileImage.uploading = null;
-            this.userProfileImage.url = null;
-
-            this.userProfile.image = this.userProfileImage;
 
             if (this.signupForm.valid) {
                 let confirmMsg: string;

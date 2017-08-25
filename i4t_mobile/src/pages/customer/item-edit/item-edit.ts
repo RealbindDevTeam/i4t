@@ -115,7 +115,8 @@ export class ItemEditPage implements OnInit, OnDestroy {
         for (let item of this._item) {
           this._unitPrice = this.getItemPrice(item);
           this._showFooter = true;
-          if (item.isAvailable) {
+          let aux = item.restaurants.find(element => element.restaurantId === this._res_code);
+          if (aux.isAvailable) {
             this._showActionsBtn = true;
             this._showCancelBtn = true;
           } else {
@@ -133,26 +134,26 @@ export class ItemEditPage implements OnInit, OnDestroy {
 
     this._ordersSub = MeteorObservable.subscribe('getOrdersByTableId', this._res_code, this._table_code, this._statusArray).subscribe(() => {
       //MeteorObservable.autorun().subscribe(() => {
-        this._orders = Orders.find({ _id: this._order_code, creation_user: this._creation_user });
-        this._orderAux = Orders.collection.find({ _id: this._order_code, creation_user: this._creation_user }).fetch()[0];
-        for ( let itemOrder of this._orderAux.items ){
-          if (itemOrder.itemId === this._item_code && itemOrder.index === this._item_order_index) {
-            this._quantityCount = itemOrder.quantity;
-            this._finalPrice = itemOrder.paymentItem;
-            this._garnishFoodElementsCount = itemOrder.garnishFood.length;
+      this._orders = Orders.find({ _id: this._order_code, creation_user: this._creation_user });
+      this._orderAux = Orders.collection.find({ _id: this._order_code, creation_user: this._creation_user }).fetch()[0];
+      for (let itemOrder of this._orderAux.items) {
+        if (itemOrder.itemId === this._item_code && itemOrder.index === this._item_order_index) {
+          this._quantityCount = itemOrder.quantity;
+          this._finalPrice = itemOrder.paymentItem;
+          this._garnishFoodElementsCount = itemOrder.garnishFood.length;
 
-            if(itemOrder.quantity > 1){
-              this._disabledMinusBtn = false;
-            }
+          if (itemOrder.quantity > 1) {
+            this._disabledMinusBtn = false;
           }
         }
-        //this._orderAux.items.forEach((itemOrder) => {
-        //});
-        if (this._orderAux.status === 'ORDER_STATUS.REGISTERED' && this._orderAux.creation_user === this._currentUserId) {
-          this._showActionsBtn = true;
-        } else {
-          this._showActionsBtn = false;
-        }
+      }
+      //this._orderAux.items.forEach((itemOrder) => {
+      //});
+      if (this._orderAux.status === 'ORDER_STATUS.REGISTERED' && this._orderAux.creation_user === this._currentUserId) {
+        this._showActionsBtn = true;
+      } else {
+        this._showActionsBtn = false;
+      }
       //});
     });
 
@@ -165,7 +166,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
         let _actualOrder;
         _actualOrder = Orders.collection.find({ _id: this._order_code, creation_user: this._creation_user }).fetch()[0];
         //_actualOrder.items.forEach((itemOrder) => {
-        for ( let itemOrder of _actualOrder.items ){
+        for (let itemOrder of _actualOrder.items) {
           if (itemOrder.itemId === this._item_code && itemOrder.index === this._item_order_index) {
             this._orderItemGarnishFood = itemOrder.garnishFood;
           }
@@ -257,7 +258,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
 
     this._itemImageSub = MeteorObservable.subscribe('itemImagesByRestaurant', this._res_code).subscribe();
 
-    this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId',[ this._res_code ] ).subscribe( () => {
+    this._currenciesSub = MeteorObservable.subscribe('getCurrenciesByRestaurantsId', [this._res_code]).subscribe(() => {
       this._currencyCode = Currencies.collection.find({}).fetch()[0].code + ' ';
     });
   }
@@ -508,10 +509,10 @@ export class ItemEditPage implements OnInit, OnDestroy {
     return wordTraduced;
   }
 
-/**
- * Return the Image source (url)
- * @param  {string} _itemId 
- */
+  /**
+   * Return the Image source (url)
+   * @param  {string} _itemId 
+   */
   getItemImage(_itemId: string): string {
     let _itemImage;
     _itemImage = ItemImages.find().fetch().filter((i) => i.itemId === _itemId)[0];
@@ -524,35 +525,44 @@ export class ItemEditPage implements OnInit, OnDestroy {
    * Return Item price by current restaurant
    * @param {Item} _pItem 
    */
-  getItemPrice( _pItem:Item ): number{
-    return _pItem.restaurants.filter( r => r.restaurantId === this._res_code )[0].price;
+  getItemPrice(_pItem: Item): number {
+    return _pItem.restaurants.filter(r => r.restaurantId === this._res_code)[0].price;
   }
 
   /**
    * Return Addition price by current restaurant
    * @param {Addition} _pAddition
    */
-  getAdditionsPrice( _pAddition : Addition ): number{
-    return _pAddition.restaurants.filter( r => r.restaurantId === this._res_code )[0].price;
+  getAdditionsPrice(_pAddition: Addition): number {
+    return _pAddition.restaurants.filter(r => r.restaurantId === this._res_code)[0].price;
   }
-  
+
   /**
    * Return Garnish food price by current restaurant
    * @param {GarnishFood} _pGarnishFood
    */
-  getGarnishFoodPrice( _pGarnishFood : GarnishFood ): number{
-    return _pGarnishFood.restaurants.filter( r => r.restaurantId === this._res_code )[0].price;
+  getGarnishFoodPrice(_pGarnishFood: GarnishFood): number {
+    return _pGarnishFood.restaurants.filter(r => r.restaurantId === this._res_code)[0].price;
   }
 
   /**
    * Return item name by id
    * @param _pItemId 
    */
-  getItemName ( _pItemId : string ) : string {
-    if(_pItemId){
-      return Items.findOne({ _id : _pItemId }).name;
+  getItemName(_pItemId: string): string {
+    if (_pItemId) {
+      return Items.findOne({ _id: _pItemId }).name;
     }
     return '';
+  }
+
+  /**
+* Function to get item avalaibility 
+*/
+  getItemAvailability(): boolean {
+    let _itemRestaurant = this._item[0];
+    let aux = _itemRestaurant.restaurants.find(element => element.restaurantId === this._res_code);
+    return aux.isAvailable;
   }
 
   ngOnDestroy() {

@@ -31,12 +31,13 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
     private _userDetails            : Observable<UserDetail[]>;
     private _users                  : Observable<User[]>;
     private _roles                  : Observable<Role[]>;
+
     private _restaurantSub          : Subscription;
     private _userDetailsSub         : Subscription;
     private _roleSub                : Subscription;
     private _usersSub               : Subscription;
-    private _form                   : FormGroup;
 
+    private _form                   : FormGroup;
     public _dialogRef               : MdDialogRef<any>;
     private _mdDialogRef            : MdDialogRef<any>;
     private titleMsg                : string;
@@ -67,6 +68,7 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
      * ngOnInit Implementation
      */
     ngOnInit() {
+        this.removeSubscriptions();
         this._form = new FormGroup({
             restaurant: new FormControl('', [Validators.required]),
         });
@@ -74,8 +76,16 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
         this._roles = Roles.find({}).zone();
         this._roleSub = MeteorObservable.subscribe('getRoleCollaborators').subscribe();
-        //this._userDetailsSub = MeteorObservable.subscribe('getUsersDetailsForRestaurant', '' ).subscribe();
-        //this._usersSub = MeteorObservable.subscribe( 'getUsersByRestaurant', '' ).subscribe(); 
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        if( this._roleSub ){ this._roleSub.unsubscribe(); }
+        if(this._userDetailsSub){ this._userDetailsSub.unsubscribe(); }
+        if(this._usersSub){ this._usersSub.unsubscribe();}
     }
 
     /**
@@ -117,9 +127,10 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
 
     /**
      * Change user state
+     * @param {string} _pUserDetailId
      */
-    changeUserState(){
-
+    changeUserState( _pUserDetail: UserDetail ):void{
+        UserDetails.update( { _id: _pUserDetail._id }, { $set: { is_active: !_pUserDetail.is_active } } );
     }
     
     /**
@@ -182,13 +193,6 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
      * ngOnDestroy implementation
      */
     ngOnDestroy(){
-        this._restaurantSub.unsubscribe();
-        this._roleSub.unsubscribe();
-        if(this._userDetailsSub){
-            this._userDetailsSub.unsubscribe();
-        }
-        if(this._usersSub){
-            this._usersSub.unsubscribe();
-        }
+        this.removeSubscriptions();
     }
 }

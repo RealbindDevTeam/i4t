@@ -28,7 +28,7 @@ export class ItemCardComponent implements OnInit, OnDestroy {
   private _imageThumbSub: Subscription;
   private _currenciesSub: Subscription;
   private _currencyCode: string;
-  
+
 
   constructor(public _translate: TranslateService,
               private _userLanguageService: UserLanguageService) {
@@ -40,7 +40,7 @@ export class ItemCardComponent implements OnInit, OnDestroy {
     this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByRestaurant', this.resCode).subscribe(() => {
       this._imageThumbs = ItemImagesThumbs.find({});
     });
-    this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId',[ this.resCode ] ).subscribe( () => {
+    this._currenciesSub = MeteorObservable.subscribe('getCurrenciesByRestaurantsId', [this.resCode]).subscribe(() => {
       this._currencyCode = Currencies.collection.find({}).fetch()[0].code + ' ';
     });
   }
@@ -61,8 +61,17 @@ export class ItemCardComponent implements OnInit, OnDestroy {
    * Return Item price by current restaurant
    * @param {Item} _pItem 
    */
-  getItemPrice( _pItem:Item ): number{
-    return _pItem.restaurants.filter( r => r.restaurantId === this.resCode )[0].price;
+  getItemPrice(_pItem: Item): number {
+    return _pItem.restaurants.filter(r => r.restaurantId === this.resCode)[0].price;
+  }
+
+  /**
+  * Function to get item avalaibility 
+  */
+  getItemAvailability(): boolean {
+    let _itemRestaurant = this.itemIdIn;
+    let aux = _itemRestaurant.restaurants.find(element => element.restaurantId === this.resCode);
+    return aux.isAvailable;
   }
 
   ngOnDestroy() {
