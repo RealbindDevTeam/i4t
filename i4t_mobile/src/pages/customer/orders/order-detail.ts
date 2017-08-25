@@ -12,4 +12,7 @@ export class OrderDetailComponent {
 
 	@Input()
 	isUser : boolean;
+
+	@Input()
+	currencyCode : string;
 }

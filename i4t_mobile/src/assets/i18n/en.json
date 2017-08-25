@@ -312,7 +312,8 @@
             "TITLE": "Payments history",
             "TOTAL" : "Total",
             "TIP" : "Tip",
-            "TOTAL_ORDERS" : "Order total"
+            "TOTAL_ORDERS" : "Order total",
+            "NO_PAYMENTS" : "You have no payments yet"
         }
     },
     "CURRENCIES": {

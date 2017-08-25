@@ -9,6 +9,7 @@ import { PaymentsHistoryPage } from './payments-history/payments-history';
 import { InitialComponent } from '../../auth/initial/initial';
 import { Users } from 'qmo_web/both/collections/auth/user.collection';
 import { User } from 'qmo_web/both/models/auth/user.model';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 @Component({
   selector: 'page-options',
@@ -32,16 +33,17 @@ export class OptionsPage implements OnInit, OnDestroy {
   constructor(public _navCtrl: NavController, 
               public _navParams: NavParams, 
               public _app : App,
-              private _translate: TranslateService) {
-    var _userLang = navigator.language.split('-')[0];
+              private _translate: TranslateService,
+              private _userLanguageService: UserLanguageService) {
     _translate.setDefaultLang('en');
-    _translate.use(_userLang);
   }
 
   /**
    * ngOnInit implementation
    */
   ngOnInit() {
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+
     this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() =>{
         this._user = Users.collection.findOne({_id: Meteor.userId()});
         if(this._user.username){
@@ -71,6 +73,8 @@ export class OptionsPage implements OnInit, OnDestroy {
    * ionViewWillEnter implementation
    */
   ionViewWillEnter() {
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+
     this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() =>{
         this._user = Users.collection.findOne({_id: Meteor.userId()});
         if(this._user.username){

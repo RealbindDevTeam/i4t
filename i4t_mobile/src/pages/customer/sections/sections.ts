@@ -14,6 +14,7 @@ import { Items, ItemImagesThumbs } from 'qmo_web/both/collections/administration
 import { ItemDetailPage } from '../item-detail/item-detail';
 import { AdditionsPage } from './additions/additions';
 import { Storage } from '@ionic/storage';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 @Component({
   selector: 'page-sections',
@@ -50,29 +51,19 @@ export class SectionsPage implements OnInit, OnDestroy {
   private _item_code: string;
   private _additionsShow: boolean = false;
 
-  constructor(public _navCtrl: NavController, public _navParams: NavParams, public _translate: TranslateService, public _storage: Storage) {
-    this._userLang = navigator.language.split('-')[0];
+  constructor(public _navCtrl: NavController, 
+              public _navParams: NavParams, 
+              public _translate: TranslateService, 
+              public _storage: Storage,
+              private _userLanguageService: UserLanguageService) {
     _translate.setDefaultLang('en');
-    _translate.use(this._userLang);
-
     this._res_code = this._navParams.get("res_id");
     this._table_code = this._navParams.get("table_id");
-    
-    /*
-    let trobj = {
-      edoc_rs: this._res_code,
-      evalc_tb: this._table_code
-    };
-
-    this._storage.ready().then(() => {
-      this._storage.set('trobj', trobj);
-    });
-    */
-
     this.selected = 'all';
   }
 
   ngOnInit() {
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
 
     this._sectionsSub = MeteorObservable.subscribe('sectionsByRestaurant', this._res_code).subscribe(() => {
       this._sections = Sections.find({});

@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Addition } from 'qmo_web/both/models/administration/addition.model';
 import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
 import { OrderAddition } from 'qmo_web/both/models/restaurant/order.model';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 @Component({
   selector: 'page-add-additions',
@@ -28,7 +29,9 @@ export class AdditionsPage implements OnInit, OnDestroy {
     constructor( public _navCtrl    : NavController,
                  public _navParams  : NavParams,
                  private _translate : TranslateService,
-                 private _toastCtrl : ToastController ){
+                 private _toastCtrl : ToastController,
+                 private _userLanguageService: UserLanguageService ){
+        _translate.setDefaultLang('en');
         this._restaurantId = this._navParams.get("res_id");
         this._tableId      = this._navParams.get("table_id");
     }
@@ -37,6 +40,8 @@ export class AdditionsPage implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit(){
+        this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        
         this._additionsSub = MeteorObservable.subscribe( 'additionsByRestaurant', this._restaurantId ).subscribe( () => {
             this._additions = Additions.find( { } ).zone();
             this._additions.subscribe( () => { this.buildAdditionsForms(); });

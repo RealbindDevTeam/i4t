@@ -14,6 +14,7 @@ import { Item } from 'qmo_web/both/models/administration/item.model';
 import { Currencies } from 'qmo_web/both/collections/general/currency.collection';
 import { ModalObservationsEdit } from './modal-observations-edit';
 import { Storage } from '@ionic/storage';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 /*
   Generated class for the ItemEdit page.
@@ -72,13 +73,19 @@ export class ItemEditPage implements OnInit, OnDestroy {
   private _currencyCode: string;
   private _currenciesSub: Subscription;
 
-  constructor(public _navCtrl: NavController, public _navParams: NavParams, public _translate: TranslateService, public _storage: Storage,
-    public _modalCtrl: ModalController, public _loadingCtrl: LoadingController, private _toastCtrl: ToastController, private _ngZone: NgZone,
-    public _alertCtrl: AlertController) {
+  constructor(public _navCtrl: NavController, 
+              public _navParams: NavParams, 
+              public _translate: TranslateService, 
+              public _storage: Storage,
+              public _modalCtrl: ModalController, 
+              public _loadingCtrl: LoadingController, 
+              private _toastCtrl: ToastController, 
+              private _ngZone: NgZone,
+              public _alertCtrl: AlertController,
+              private _userLanguageService: UserLanguageService) {
 
     this._userLang = navigator.language.split('-')[0];
     _translate.setDefaultLang('en');
-    _translate.use(this._userLang);
     this._currentUserId = Meteor.userId();
     this._statusArray = ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED', 'ORDER_STATUS.DELIVERED'];
 
@@ -99,6 +106,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
 
     this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this._res_code).subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {

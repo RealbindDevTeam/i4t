@@ -10,6 +10,7 @@ import { Items } from 'qmo_web/both/collections/administration/item.collection';
 import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantImageThumbs } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 import { Storage } from '@ionic/storage';
 import { CodeTypeSelectPage } from '../code-type-select/code-type-select';
 import { SectionsPage } from '../sections/sections';
@@ -45,17 +46,23 @@ export class OrdersPage implements OnInit, OnDestroy {
     private _additions : any;
 
 
-    constructor(public _navCtrl: NavController, public _navParams: NavParams, public _app: App, public _translate: TranslateService,
-        public _storage: Storage, public alertCtrl: AlertController, public _loadingCtrl: LoadingController) {
-        this._userLang = navigator.language.split('-')[0];
+    constructor( public _navCtrl: NavController, 
+                 public _navParams: NavParams, 
+                 public _app: App, 
+                 public _translate: TranslateService,
+                 public alertCtrl: AlertController, 
+                 public _loadingCtrl: LoadingController ,
+                 private _userLanguageService: UserLanguageService ) {
         _translate.setDefaultLang('en');
-        _translate.use(this._userLang);
+
         this._currentUserId = Meteor.userId();
         this._statusArray = ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED'];
         this.selected = "all";
     }
 
     ngOnInit() {
+        this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+
         this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
             this._restaurants = Restaurants.find({});
         });
@@ -107,6 +114,8 @@ export class OrdersPage implements OnInit, OnDestroy {
     }
 
     ionViewWillEnter() {
+        this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+
         this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
             this._restaurants = Restaurants.find({});
         });

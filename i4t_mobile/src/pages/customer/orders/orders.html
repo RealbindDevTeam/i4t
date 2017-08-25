@@ -40,7 +40,7 @@
                         <ion-list no-lines style="margin: 0 -16px;">
                             <button ion-item (click)="showDetail(i)">
                                 <div *ngIf="order">
-                                    <order-detail [order]="order" [isUser]="true"></order-detail>
+                                    <order-detail [order]="order" [isUser]="true" [currencyCode]="_currencyCode"></order-detail>
                                 </div>
                             </button>
                         </ion-list>
@@ -64,7 +64,7 @@
                                                 <div class="item-divider-custom"></div>
                                                 <ion-item>
                                                     <ion-thumbnail item-left>
-                                                        <img src="/assets/img/default-plate.png">
+                                                        <img src="assets/img/default-plate.png">
                                                     </ion-thumbnail>
                                                     <h2 style="white-space: normal;">{{addition.name}} {{'MOBILE.ORDERS.ADDITION' | translate}}</h2> 
                                                     <p style="white-space: normal;">{{'MOBILE.PRICING' | translate}}: {{ad.paymentAddition}} {{_currencyCode}}</p>
@@ -89,7 +89,7 @@
                 <ion-card class="custom-padding-card">
                     <ion-list>
                         <button ion-item (click)="showDetail(i)">
-                            <order-detail [order]="order" [isUser]="false"></order-detail>
+                            <order-detail [order]="order" [isUser]="false" [currencyCode]="_currencyCode" ></order-detail>
                         </button>
                         <div *ngIf="_orderIndex == i">
                             <div *ngIf="order">
@@ -103,7 +103,7 @@
                                                 <div class="item-divider-custom"></div>
                                                 <ion-item >
                                                     <ion-thumbnail item-left>
-                                                        <img src="/assets/img/default-plate.png">
+                                                        <img src="assets/img/default-plate.png">
                                                     </ion-thumbnail>
                                                     <h2 style="white-space: normal;">{{addition.name}} {{'MOBILE.ORDERS.ADDITION' | translate}}</h2> 
                                                     <p style="white-space: normal;">{{'MOBILE.PRICING' | translate}}: {{ad.paymentAddition}} {{_currencyCode}}</p>

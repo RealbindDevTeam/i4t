@@ -2,15 +2,15 @@
     <ion-col col-3>
         <div>
             <ion-thumbnail item-left>
-                <img *ngIf="isUser" src="/assets/img/my-orders.png">
-                <img *ngIf="!isUser" src="/assets/img/others-orders.png">
+                <img *ngIf="isUser" src="assets/img/my-orders.png">
+                <img *ngIf="!isUser" src="assets/img/others-orders.png">
             </ion-thumbnail>
         </div>
     </ion-col>
     <ion-col>
         <div>
             {{'MOBILE.ORDERS.ORDER' | translate}}{{order.code}} <br/> {{'MOBILE.ORDERS.TOTAL' | translate}}{{order.totalPayment}}
-            COP<br/> {{'MOBILE.ORDERS.STATUS' | translate}}{{order.status | translate}} <br/>
+            {{currencyCode}}<br/> {{'MOBILE.ORDERS.STATUS' | translate}}{{order.status | translate}} <br/>
         </div>
     </ion-col>
     <ion-col showWhen="android">

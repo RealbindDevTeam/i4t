@@ -8,6 +8,7 @@ import { ChangeEmailPage } from './change-email/change-email';
 import { ChangePasswordPage } from './change-password/change-password';
 
 import { Users } from 'qmo_web/both/collections/auth/user.collection';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 @Component({
   selector: 'page-settings',
@@ -45,17 +46,57 @@ export class SettingsPage implements OnInit, OnDestroy {
               public _translate  : TranslateService,
               public _modalCtrl  : ModalController,
               public _loadingCtrl: LoadingController,
-              private _toastCtrl : ToastController,) {
-              
-    this._userLang = navigator.language.split('-')[0];
+              private _toastCtrl : ToastController,
+              private _userLanguageService: UserLanguageService) {
     _translate.setDefaultLang('en');
-    _translate.use(this._userLang);
   }
   
   /**
    * ngOnInit implementation
    */
   ngOnInit(){
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+
+    this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() =>{
+      this._disabled = false;
+      this._validate = false;
+      this._user = Users.collection.findOne({_id: Meteor.userId()});
+      this._imageProfile = "assets/img/user_default_image.png";
+
+      if(this._user.services.facebook){
+        this._email = this._user.services.facebook.email;
+        this._userName = this._user.services.facebook.name;
+        this._firstName = this._user.services.facebook.first_name;
+        this._lastName = this._user.services.facebook.last_name;
+        this._languageCode = this._user.services.facebook.locale;
+        this._imageProfile = "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
+      } else if(this._user.services.twitter){
+        this._email = this._user.services.twitter.email;
+        this._userName = this._user.services.twitter.screenName;
+        this._firstName = this._user.services.twitter.first_name;
+        this._lastName = this._user.services.twitter.last_name;
+        this._languageCode = this._user.services.twitter.lang;
+        this._imageProfile = this._user.services.twitter.profile_image_url;
+      } else if(this._user.services.google){
+        this._email = this._user.services.google.email;
+        this._userName = this._user.services.google.name;
+        this._firstName = this._user.services.google.given_name;
+        this._lastName = this._user.services.google.family_name;
+        this._languageCode = this._user.services.google.locale;
+        this._imageProfile = this._user.services.google.picture;
+      } else {
+        this._disabled = true;
+        this._userObservable = Users.find({}).zone();
+      }
+    });
+  }
+
+  /**
+   * ionViewWillEnter implementation
+   */
+  ionViewWillEnter() {
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+    
     this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() =>{
       this._disabled = false;
       this._validate = false;
@@ -115,23 +156,24 @@ export class SettingsPage implements OnInit, OnDestroy {
    */
   editUserDetail(_userName : any, _firstName : any, _lastName : any, _languageCode : any):void {
     if(this.validateUserName(_userName)){
-    let loading_msg = this.itemNameTraduction('MOBILE.WAITER_CALL.LOADING'); 
-
-    let loading = this._loadingCtrl.create({
-      content: loading_msg
-    });
-    
-    loading.present();
+      this._translate.use( _languageCode );
+      let loading_msg = this.itemNameTraduction('MOBILE.WAITER_CALL.LOADING'); 
+      
+      let loading = this._loadingCtrl.create({
+        content: loading_msg
+      });
+      
+      loading.present();
       setTimeout(() => {
         Users.update(
-        {_id: Meteor.userId()}, 
-        { $set:
-          {
-            username: _userName,
-            profile: {  first_name: _firstName,
-            last_name: _lastName,
-            language_code: _languageCode }
-          }
+          {_id: Meteor.userId()}, 
+          { $set:
+            {
+              username: _userName,
+              profile: {  first_name: _firstName,
+              last_name: _lastName,
+              language_code: _languageCode }
+            }
         });
         loading.dismiss();
         this.presentToast();

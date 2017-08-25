@@ -13,6 +13,7 @@ import { ModalObservations } from './modal-observations';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { Item } from 'qmo_web/both/models/administration/item.model';
 import { Currencies } from 'qmo_web/both/collections/general/currency.collection';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 /*
   Generated class for the ItemDetail page.
@@ -63,11 +64,15 @@ export class ItemDetailPage implements OnInit, OnDestroy {
   private _garnishFormGroup: FormGroup = new FormGroup({});
   private _additionsFormGroup: FormGroup = new FormGroup({});
 
-  constructor(public _navCtrl: NavController, public _navParams: NavParams, public _modalCtrl: ModalController,
-    public _translate: TranslateService, public _zone: NgZone, public _loadingCtrl: LoadingController, private toastCtrl: ToastController) {
-    this._userLang = navigator.language.split('-')[0];
+  constructor(public _navCtrl: NavController, 
+              public _navParams: NavParams, 
+              public _modalCtrl: ModalController,
+              public _translate: TranslateService, 
+              public _zone: NgZone, 
+              public _loadingCtrl: LoadingController, 
+              private toastCtrl: ToastController,
+              private _userLanguageService: UserLanguageService) {
     _translate.setDefaultLang('en');
-    _translate.use(this._userLang);
     this._currentUserId = Meteor.userId();
     this._statusArray = ['ORDER_STATUS.REGISTERED'];
   }
@@ -75,6 +80,8 @@ export class ItemDetailPage implements OnInit, OnDestroy {
   ionViewDidLoad() { }
 
   ngOnInit() {
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+    
     this._item_code = this._navParams.get("item_id");
     this._res_code = this._navParams.get("res_id");
     this._table_code = this._navParams.get("table_id");

@@ -312,7 +312,8 @@
             "TITLE": "Historial de pagos",
             "TOTAL" : "Total",
             "TIP" : "Propina",
-            "TOTAL_ORDERS" : "Total orden"
+            "TOTAL_ORDERS" : "Total orden",
+            "NO_PAYMENTS" : "Aún no tiene pagos realizados"
         }
     },
     "CURRENCIES": {

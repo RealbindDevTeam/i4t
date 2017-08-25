@@ -9,6 +9,7 @@ import { WaiterCallDetail } from 'qmo_web/both/models/restaurant/waiter-call-det
 import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-call-detail.collection';
 import { PaymentConfirmPage } from "./payment-confirm/payment-confirm";
 import { SendOrderDetailsPage } from './send-order-detail/send-order-detail';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 @Component({
   selector : 'calls-page',
@@ -41,16 +42,17 @@ export class CallsPage implements OnInit, OnDestroy {
               public _alertCtrl: AlertController,
               public _loadingCtrl: LoadingController,
               private _toastCtrl: ToastController,
-              public _navCtrl: NavController) {
-    this._userLang = navigator.language.split('-')[0];
+              public _navCtrl: NavController,
+              private _userLanguageService: UserLanguageService) {
     _translate.setDefaultLang('en');
-    _translate.use(this._userLang);
   }
 
   /**
    * ngOnInit Implementation
    */
   ngOnInit(){
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+    
     this._userRestaurantSubscription = MeteorObservable.subscribe('getRestaurantByRestaurantWork', Meteor.userId()).subscribe(() => {
       this._restaurants = Restaurants.find({});
     });

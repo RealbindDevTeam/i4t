@@ -2,6 +2,7 @@ import { Component, NgZone } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AlertController, NavController, NavParams, ViewController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 @Component({
   selector: 'page-change-password',
@@ -12,15 +13,33 @@ export class ChangePasswordPage {
     private _changePasswordForm: FormGroup;
     private _error : string;
 
+    /**
+     * ChangePasswordPage constructor
+     * @param _navCtrl 
+     * @param _navParams 
+     * @param _zone 
+     * @param viewCtrl 
+     * @param _alertCtrl 
+     * @param _translate 
+     * @param _userLanguageService 
+     */
     constructor(public _navCtrl: NavController, 
                 public _navParams: NavParams, 
                 private _zone: NgZone, 
                 public viewCtrl: ViewController, 
                 private _alertCtrl: AlertController, 
-                protected _translate: TranslateService) { 
+                protected _translate: TranslateService,
+                private _userLanguageService: UserLanguageService) 
+    { 
+        _translate.setDefaultLang('en');
     }
 
+    /**
+     * ngOnInit implementation
+     */
     ngOnInit() {
+        this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+
         this._changePasswordForm = new FormGroup({
           old_password : new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]),
           new_password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]),
@@ -29,6 +48,9 @@ export class ChangePasswordPage {
         this._error = '';
     }
 
+    /**
+     * Password change
+     */
     changePassword(){
         if(this._changePasswordForm.valid){
             if(this._changePasswordForm.value.new_password !== this._changePasswordForm.value.confirm_new_password){
@@ -52,10 +74,17 @@ export class ChangePasswordPage {
         }
     }
 
+    /**
+     * Component dismiss
+     */
     cancel() {
         this.viewCtrl.dismiss();
     }
 
+    /**
+     * This function allow show alert
+     * @param message 
+     */
     showAlert(message : string){
         var confirmTitle: string;
         var confirmSubtitle: string;
@@ -73,6 +102,10 @@ export class ChangePasswordPage {
         alert.present();
     }
     
+    /**
+     * This function show Error alert
+     * @param error 
+     */
     showError(error : string){
         var confirmTitle: string;
         var confirmSubtitle: string;
@@ -90,6 +123,10 @@ export class ChangePasswordPage {
         alert.present();
     }
 
+    /**
+     * This function allow string translate
+     * @param itemName 
+     */
     itemNameTraduction(itemName: string): string{
         var wordTraduced: string;
         this._translate.get(itemName).subscribe((res: string) => {

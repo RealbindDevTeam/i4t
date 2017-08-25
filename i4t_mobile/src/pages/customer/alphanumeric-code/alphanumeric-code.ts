@@ -5,6 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
 import { SectionsPage } from '../sections/sections';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 @Component({
   selector: 'page-alphanumeric-code',
@@ -17,13 +18,16 @@ export class AlphanumericCodePage {
   private _id_table: string;
   private _error_msg: string;
 
-  constructor(public _navCtrl: NavController, private _viewCtrl: ViewController, public _navParams: NavParams, public _translate: TranslateService, ) {
-    this._userLang = navigator.language.split('-')[0];
+  constructor(public _navCtrl: NavController, 
+              private _viewCtrl: ViewController, 
+              public _navParams: NavParams, 
+              public _translate: TranslateService,
+              private _userLanguageService: UserLanguageService) {
     _translate.setDefaultLang('en');
-    _translate.use(this._userLang);
   }
 
   ngOnInit() {
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
     this._ordersForm = new FormGroup({
       qrCode: new FormControl('', [Validators.required, Validators.minLength(6)])
     });

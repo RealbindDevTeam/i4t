@@ -8,6 +8,7 @@ import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 import { MyApp } from './app.component';
 import { InitialComponent } from '../pages/auth/initial/initial';
@@ -193,6 +194,7 @@ export function createTranslateLoader(http: Http) {
     SplashScreen,
     Facebook,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    UserLanguageService
   ]
 })
 export class AppModule {}
