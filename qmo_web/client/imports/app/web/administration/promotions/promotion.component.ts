@@ -73,6 +73,7 @@ export class PromotionComponent implements OnInit, OnDestroy {
      * Implements ngOnInit function
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._promotionForm = new FormGroup({
             name: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 50 ) ] ),
             description: new FormControl( '', [ Validators.maxLength( 150 ) ] ),
@@ -98,6 +99,15 @@ export class PromotionComponent implements OnInit, OnDestroy {
         this._promotionsSub = MeteorObservable.subscribe( 'promotions', Meteor.userId() ).subscribe();
         this._promotionThumbsSubsription = MeteorObservable.subscribe( 'promotionImageThumbs', Meteor.userId() ).subscribe();
         this._promotionThumbs = PromotionImagesThumbs.find( { } ).zone();
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._promotionsSub ){ this._promotionsSub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        if( this._promotionThumbsSubsription ){ this._promotionThumbsSubsription.unsubscribe(); }
     }
 
     /**
@@ -245,8 +255,6 @@ export class PromotionComponent implements OnInit, OnDestroy {
      * Implements ngOnDestroy function
      */
     ngOnDestroy(){
-        this._promotionsSub.unsubscribe();
-        this._restaurantSub.unsubscribe();
-        this._promotionThumbsSubsription.unsubscribe();
+        this.removeSubscriptions();
     }
 }

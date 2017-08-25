@@ -67,6 +67,7 @@ export class SectionEditComponent implements OnInit, OnDestroy {
      * Implements ngOnInit function
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._editForm = this._formBuilder.group({
             editId: [ this._sectionToEdit._id ],
             editName: [ this._sectionToEdit.name, Validators.required ],
@@ -86,6 +87,14 @@ export class SectionEditComponent implements OnInit, OnDestroy {
                 this._restaurants.subscribe( () => { this.createRestaurantForm(); });
             });
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._sectionsSub ){ this._sectionsSub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
     }
 
     /**
@@ -188,7 +197,6 @@ export class SectionEditComponent implements OnInit, OnDestroy {
      * Implements ngOnDestroy function
      */
     ngOnDestroy(){
-        this._sectionsSub.unsubscribe();
-        this._restaurantSub.unsubscribe();
+        this.removeSubscriptions();   
     }
 }

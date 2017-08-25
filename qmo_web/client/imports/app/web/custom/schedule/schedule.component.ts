@@ -21,22 +21,22 @@ export class IurestScheduleComponent implements OnInit, OnDestroy {
 
     @Output() finalSchedule = new EventEmitter();
 
-    private _hoursSub: Subscription;
-    private _hours: Observable<Hour[]>;
+    private _hoursSub           : Subscription;
+    private _hours              : Observable<Hour[]>;
 
-    private _selectedOpenTime: string;
-    private _selectedCloseTime: string;
-    private _allowWeekButtons: boolean;
+    private _selectedOpenTime   : string;
+    private _selectedCloseTime  : string;
+    private _allowWeekButtons   : boolean;
 
-    private _activeMonday: boolean;
-    private _activeTuesday: boolean;
-    private _activeWednesday: boolean;
-    private _activeThursday: boolean;
-    private _activeFriday: boolean;
-    private _activeSaturday: boolean;
-    private _activeSunday: boolean;
+    private _activeMonday       : boolean;
+    private _activeTuesday      : boolean;
+    private _activeWednesday    : boolean;
+    private _activeThursday     : boolean;
+    private _activeFriday       : boolean;
+    private _activeSaturday     : boolean;
+    private _activeSunday       : boolean;
 
-    private schedule: RestaurantSchedule;
+    private schedule            : RestaurantSchedule;
 
     /**
      * IurestScheduleComponent constructor
@@ -65,6 +65,7 @@ export class IurestScheduleComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit(){
+        this.removeSubscriptions();
         if( this.scheduleToEdit ){
             this.schedule = this.scheduleToEdit;
             this._activeMonday = this.schedule.monday.isActive;
@@ -119,6 +120,13 @@ export class IurestScheduleComponent implements OnInit, OnDestroy {
                 this._hours = Hours.find( {}, { sort: { hour: 1 } } );
             });
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._hoursSub ){ this._hoursSub.unsubscribe(); }
     }
 
     /**
@@ -268,6 +276,6 @@ export class IurestScheduleComponent implements OnInit, OnDestroy {
      * ngOnDestroy implementation
      */
     ngOnDestroy(){
-        this._hoursSub.unsubscribe();
+        this.removeSubscriptions();
     }
 }

@@ -83,6 +83,7 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy{
      * ngOnInit Implementation
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._paymentsSub = MeteorObservable.subscribe( 'getPaymentsToWaiter', this.call.restaurant_id, this.call.table_id ).subscribe( () => {
             this._ngZone.run( () => {
                 this._payments = Payments.find( { } ).zone();
@@ -130,6 +131,21 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy{
                 this._garnishFood = GarnishFoodCol.find( { } ).zone();
             });
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._paymentsSub ){ this._paymentsSub.unsubscribe(); }
+        if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
+        if( this._usersSub ){ this._usersSub.unsubscribe(); }
+        if( this._currencySub ){ this._currencySub.unsubscribe(); }
+        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
+        if( this._paymentMethodsSub ){ this._paymentMethodsSub.unsubscribe(); }
+        if( this._tablesSub ){ this._tablesSub.unsubscribe(); }
+        if( this._additionsSub ){ this._additionsSub.unsubscribe(); }
+        if( this._garnishFoodSub ){ this._garnishFoodSub.unsubscribe(); }
     }
 
     /**
@@ -271,14 +287,6 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy{
      * ngOnDestroy Implementation
      */
     ngOnDestroy(){
-        this._paymentsSub.unsubscribe();
-        this._ordersSub.unsubscribe();
-        this._usersSub.unsubscribe();
-        this._currencySub.unsubscribe();
-        this._itemsSub.unsubscribe();
-        this._paymentMethodsSub.unsubscribe();
-        this._tablesSub.unsubscribe();
-        this._additionsSub.unsubscribe();
-        this._garnishFoodSub.unsubscribe();
+        this.removeSubscriptions();
     }
 }

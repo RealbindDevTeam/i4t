@@ -38,13 +38,27 @@ export class LandingPageComponent implements OnInit, OnDestroy {
                     translate.use( userLang );
     }
 
+    /**
+     * ngOnDestroy Implementation
+     */
     ngOnDestroy(){
-        this._subscription.unsubscribe();
+        this.removeSubscriptions();
     }
 
+    /**
+     * ngOnInit Implementation
+     */
     ngOnInit(){
+        this.removeSubscriptions();
         this._languages = Languages.find({}).zone();
         this._subscription = MeteorObservable.subscribe('languages').subscribe();
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._subscription ){ this._subscription.unsubscribe(); }
     }
 
     public goToSection(section) {

@@ -21,15 +21,15 @@ import style from './restaurant-location.component.scss';
 })
 export class RestaurantLocationComponent implements OnInit, OnDestroy {
     
-    public _restaurantLocation: Restaurant;
-    private _restaurantSub: Subscription;
-    private _mdDialogRef: MdDialogRef<any>;
+    public _restaurantLocation      : Restaurant;
+    private _restaurantSub          : Subscription;
+    private _mdDialogRef            : MdDialogRef<any>;
     
-    private titleMsg    : string;
-    private btnAcceptLbl: string;
+    private titleMsg                : string;
+    private btnAcceptLbl            : string;
 
-    public _lat: number = 37.4292;
-    public _lng: number = -122.1381;
+    public _lat                     : number = 37.4292;
+    public _lng                     : number = -122.1381;
 
     /**
      * RestaurantLocationComponent constructor
@@ -51,6 +51,7 @@ export class RestaurantLocationComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit(){
+        this.removeSubscriptions();
         if( this._restaurantLocation.location.lat !== 0 && this._restaurantLocation.location.lng !== 0 ){
             this._lat = this._restaurantLocation.location.lat;
             this._lng = this._restaurantLocation.location.lng;
@@ -60,6 +61,13 @@ export class RestaurantLocationComponent implements OnInit, OnDestroy {
             }
         }
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', Meteor.userId() ).subscribe();
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
     }
 
     /**
@@ -162,6 +170,6 @@ export class RestaurantLocationComponent implements OnInit, OnDestroy {
      * ngOnDestroy implementation
      */
     ngOnDestroy(){
-        this._restaurantSub.unsubscribe();
+        this.removeSubscriptions();   
     }
 }

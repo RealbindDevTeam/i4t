@@ -27,10 +27,12 @@ let jsPDF = require('jspdf');
 export class TableComponent implements OnInit, OnDestroy {
 
   private tableForm           : FormGroup;
-  private restaurants         : Observable<Restaurant[]>;
   private restaurantSub       : Subscription;
-  private tables              : Observable<Table[]>;
   private tableSub            : Subscription;
+
+  private restaurants         : Observable<Restaurant[]>;
+  private tables              : Observable<Table[]>;
+
   selectedRestaurantValue     : string;
   private restaurantCode      : string = '';
   private tables_count        : number = 0;
@@ -63,7 +65,11 @@ export class TableComponent implements OnInit, OnDestroy {
     this.show_cards = false;
   }
 
+  /**
+   * ngOnInit Implementation
+   */
   ngOnInit() {
+    this.removeSubscriptions();
     this.tableForm = new FormGroup({
       restaurant: new FormControl('', [Validators.required]),
       tables_number: new FormControl('', [Validators.required])
@@ -73,6 +79,14 @@ export class TableComponent implements OnInit, OnDestroy {
     this.tables = Tables.find({ is_active: true, creation_user: Meteor.userId() }).zone();
     this.tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe();
     this.tooltip_msg = this.itemNameTraduction('TABLES.MSG_TOOLTIP');
+  }
+
+  /**
+   * Remove all subscriptions
+   */
+  removeSubscriptions():void{
+    if( this.restaurantSub ){ this.restaurantSub.unsubscribe(); }
+    if( this.tableSub ){ this.tableSub.unsubscribe(); }
   }
 
   changeRestaurant(_pRestaurant) {
@@ -112,9 +126,11 @@ export class TableComponent implements OnInit, OnDestroy {
     return _lCode;
   }
 
+  /**
+   * ngOnDestroy Implementation
+   */
   ngOnDestroy() {
-    this.restaurantSub.unsubscribe();
-    this.tableSub.unsubscribe();
+    this.removeSubscriptions();
   }
 
   printQrPdf() {

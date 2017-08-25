@@ -65,6 +65,7 @@ export class RestaurantComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit() {
+        this.removeSubscriptions();
         this.restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe( () => {
             this._ngZone.run( () => {
                 this.restaurants = Restaurants.find({ creation_user: this._user}).zone();
@@ -82,6 +83,17 @@ export class RestaurantComponent implements OnInit, OnDestroy {
                 this._restaurantImages = RestaurantImages.find({}).zone();
             });
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this.restaurantSub ){ this.restaurantSub.unsubscribe(); }
+        if( this.countriesSub ){ this.countriesSub.unsubscribe(); }
+        if( this.citiesSub ){ this.citiesSub.unsubscribe(); }
+        if( this._hoursSub ){ this._hoursSub.unsubscribe(); }
+        if( this._restaurantImagesSub ){ this._restaurantImagesSub.unsubscribe(); }
     }
 
     /**
@@ -168,10 +180,6 @@ export class RestaurantComponent implements OnInit, OnDestroy {
      * ngOnDestroy implementation
      */
     ngOnDestroy() {
-        this.restaurantSub.unsubscribe();
-        this.countriesSub.unsubscribe();
-        this.citiesSub.unsubscribe();
-        this._hoursSub.unsubscribe();
-        this._restaurantImagesSub.unsubscribe();
+        this.removeSubscriptions();   
     }
 }

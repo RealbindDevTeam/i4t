@@ -69,6 +69,7 @@ export class SectionComponent implements OnInit, OnDestroy {
      * Implements ngOnInit function
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._sectionForm = new FormGroup({
             name: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 50 ) ] ),
             restaurants: this._restaurantsFormGroup
@@ -86,6 +87,14 @@ export class SectionComponent implements OnInit, OnDestroy {
                 this._sections = Sections.find( { } ).zone();        
             });
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._sectionSub ){ this._sectionSub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
     }
 
     /**
@@ -236,7 +245,6 @@ export class SectionComponent implements OnInit, OnDestroy {
      * Implements ngOnDestroy function
      */
     ngOnDestroy(){
-        this._sectionSub.unsubscribe();
-        this._restaurantSub.unsubscribe();
+        this.removeSubscriptions();
     }
 }

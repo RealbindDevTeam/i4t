@@ -20,10 +20,11 @@ import style from '../item.component.scss';
 })
 export class ItemEnableComponent implements OnInit, OnDestroy {
 
-    private _itemsSub: Subscription;
-    private _itemImagesSub: Subscription;
-    private _items: Observable<Item[]>;
-    private _mdDialogRef: MdDialogRef<any>;
+    private _itemsSub           : Subscription;
+    private _itemImagesSub      : Subscription;
+
+    private _items              : Observable<Item[]>;
+    private _mdDialogRef        : MdDialogRef<any>;
 
     /**
      * ItemEnableComponent Constructor
@@ -43,12 +44,21 @@ export class ItemEnableComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit() {
+        this.removeSubscriptions();
         this._itemsSub = MeteorObservable.subscribe('items', Meteor.userId()).subscribe(() => {
             this._ngZone.run(() => {
                 this._items = Items.find({}).zone();
             });
         });
         this._itemImagesSub = MeteorObservable.subscribe('itemImages', Meteor.userId()).subscribe();
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
+        if( this._itemImagesSub ){ this._itemImagesSub.unsubscribe(); }
     }
 
     /**
@@ -81,7 +91,6 @@ export class ItemEnableComponent implements OnInit, OnDestroy {
      * ngOnDestroy implementation
      */
     ngOnDestroy() {
-        this._itemsSub.unsubscribe();
-        this._itemImagesSub.unsubscribe();
+        this.removeSubscriptions();   
     }
 }

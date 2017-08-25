@@ -34,10 +34,12 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
     restaurantStatus: EventEmitter<any> = new EventEmitter<any>();
 
     private _tableForm              : FormGroup;
-    private _restaurants            : Observable<Restaurant[]>;
     private _restaurantSub          : Subscription;
-    private _tables                 : Observable<Table[]>;
     private _tableSub               : Subscription;
+    
+    private _restaurants            : Observable<Restaurant[]>;
+    private _tables                 : Observable<Table[]>;
+
     private titleMsg                : string;
     private btnAcceptLbl            : string;
     private selectedRestaurantValue : string;
@@ -65,6 +67,7 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.removeSubscriptions();
         this._tableForm = new FormGroup({
             tables_number: new FormControl('', [Validators.required])
         });
@@ -74,6 +77,14 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
         this._tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe(() => {
             this._tables = this._tables = Tables.find({ restaurantId: this.restaurantId }).zone();
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        if( this._tableSub ){ this._tableSub.unsubscribe(); }
     }
 
     /**
@@ -289,8 +300,10 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
         });
     }
 
+    /**
+     * ngOnDestroy Implementation
+     */
     ngOnDestroy() {
-        this._restaurantSub.unsubscribe();
-        this._tableSub.unsubscribe();
+        this.removeSubscriptions();
     }
 }
