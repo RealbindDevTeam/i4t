@@ -23,8 +23,6 @@ let jsPDF = require('jspdf');
 export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
 
     private _invoicesHistorySubscription : Subscription;
-    private _userDetailsSubscription     : Subscription;
-    private _restaurantSubscription      : Subscription;
 
     private _invoices               : any;
     private _showPayments           : boolean = false;
@@ -46,6 +44,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
      * ngOnInit Implementation
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._invoicesHistorySubscription = MeteorObservable.subscribe('getInvoicesByUserId', Meteor.userId()).subscribe(()=> {
             this._ngZone.run( () => {
                 this._invoices = Invoices.find({});
@@ -61,6 +60,12 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         });
     }
 
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._invoicesHistorySubscription ){ this._invoicesHistorySubscription.unsubscribe(); }
+    }
 
     /**
      * Generate Invoice pdf
@@ -303,6 +308,6 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
      * ngOnDestroy Implementation
      */
     ngOnDestroy(){
-        this._invoicesHistorySubscription.unsubscribe();
+        this.removeSubscriptions();
     }
 }

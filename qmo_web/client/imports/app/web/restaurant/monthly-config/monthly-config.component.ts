@@ -24,7 +24,6 @@ export class MonthlyConfigComponent implements OnInit, OnDestroy {
     private _restaurantSub          : Subscription;
     private _showRestaurantList     : boolean = false;
     private _showEnableDisable      : boolean = false;
-    private _parameterSub           : Subscription;
     private _restaurantId           : string = "";
 
     /**
@@ -41,12 +40,20 @@ export class MonthlyConfigComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.removeSubscriptions();
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe(() => {
             this._restaurants = Restaurants.find({}).zone();
             if (this._restaurants) {
                 this._showRestaurantList = true;
             }
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
     }
 
     /**
@@ -73,6 +80,6 @@ export class MonthlyConfigComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this._restaurantSub.unsubscribe();
+        this.removeSubscriptions();
     }
 }

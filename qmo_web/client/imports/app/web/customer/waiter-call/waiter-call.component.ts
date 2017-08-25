@@ -52,6 +52,7 @@ export class WaiterCallComponent implements OnInit, OnDestroy {
    * ngOnInit Implementation
    */
   ngOnInit() {
+    this.removeSubscriptions();
     this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
     this._waiterCallDetailSubscription = MeteorObservable.subscribe('countWaiterCallDetailByUsrId', Meteor.userId()).subscribe();
 
@@ -74,6 +75,14 @@ export class WaiterCallComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  /**
+   * Remove all subscriptions
+   */
+  removeSubscriptions():void{
+    if( this._waiterCallDetailSubscription ){ this._waiterCallDetailSubscription.unsubscribe(); }
+    if( this._userDetailSubscription ){ this._userDetailSubscription.unsubscribe(); }
   }
 
   /**
@@ -122,8 +131,6 @@ export class WaiterCallComponent implements OnInit, OnDestroy {
    * ngOnDestroy implementation
    */
   ngOnDestroy(){
-    this._waiterCallDetailSubscription.unsubscribe();
-    this._userDetailSubscription.unsubscribe();
+    this.removeSubscriptions();
   }
-
 }

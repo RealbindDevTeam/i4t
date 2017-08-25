@@ -27,61 +27,61 @@ import style from './order-list.component.scss';
 })
 export class OrdersListComponent implements OnInit, OnDestroy {
 
-    @Input() restaurantId: string;
-    @Input() tableQRCode: string;
-    @Input() restaurantCurrency: string;
+    @Input() restaurantId           : string;
+    @Input() tableQRCode            : string;
+    @Input() restaurantCurrency     : string;
     @Output() createNewOrder = new EventEmitter();
 
     private _user = Meteor.userId();
-    private _ordersSub: Subscription;
-    private _itemsSub: Subscription;
-    private _garnishFoodSub: Subscription;
-    private _additionsSub: Subscription;
-    private _itemImagesSub: Subscription;
-    private _itemImageThumbsSub: Subscription;
-    private _currenciesSub: Subscription;
-    private _mdDialogRef            : MdDialogRef<any>;
+    private _ordersSub                  : Subscription;
+    private _itemsSub                   : Subscription;
+    private _garnishFoodSub             : Subscription;
+    private _additionsSub               : Subscription;
+    private _itemImagesSub              : Subscription;
+    private _itemImageThumbsSub         : Subscription;
+    private _currenciesSub              : Subscription;
+    private _mdDialogRef                : MdDialogRef<any>;
 
-    private _orders: Observable<Order[]>;
-    private _ordersTable: Observable<Order[]>;
-    private _items: Observable<Item[]>;
-    private _itemsToShowDetail: Observable<Item[]>;
-    private _garnishFoodCol: Observable<GarnishFood[]>;
-    private _additions: Observable<Addition[]>;
-    private _additionDetails: Observable<Addition[]>;
+    private _orders                     : Observable<Order[]>;
+    private _ordersTable                : Observable<Order[]>;
+    private _items                      : Observable<Item[]>;
+    private _itemsToShowDetail          : Observable<Item[]>;
+    private _garnishFoodCol             : Observable<GarnishFood[]>;
+    private _additions                  : Observable<Addition[]>;
+    private _additionDetails            : Observable<Addition[]>;
 
-    private _showOrderItemDetail: boolean = false;
-    private _currentOrder: Order;
-    private _customerCanEdit: boolean = false;
-    private _showDetails: boolean = false;
+    private _showOrderItemDetail        : boolean = false;
+    private _currentOrder               : Order;
+    private _customerCanEdit            : boolean = false;
+    private _showDetails                : boolean = false;
 
-    private _editOrderItemForm: FormGroup;
-    private _garnishFormGroup: FormGroup = new FormGroup({});
-    private _additionsFormGroup: FormGroup = new FormGroup({});
-    private _additionsDetailFormGroup: FormGroup = new FormGroup({});
+    private _editOrderItemForm          : FormGroup;
+    private _garnishFormGroup           : FormGroup = new FormGroup({});
+    private _additionsFormGroup         : FormGroup = new FormGroup({});
+    private _additionsDetailFormGroup   : FormGroup = new FormGroup({});
 
-    private _orderItemGarnishFood: string[] = [];
-    private _orderItemAdditions: string[] = [];
+    private _orderItemGarnishFood       : string[] = [];
+    private _orderItemAdditions         : string[] = [];
 
-    private _maxGarnishFoodElements: number = 0;
-    private _garnishFoodElementsCount: number = 0;
-    private _showGarnishFoodError: boolean = false;
+    private _maxGarnishFoodElements     : number = 0;
+    private _garnishFoodElementsCount   : number = 0;
+    private _showGarnishFoodError       : boolean = false;
 
-    private _lastQuantity: number = 1;
-    private _quantityCount: number = 1;
-    private _finalPrice: number = 0;
-    private _unitPrice: number = 0;
-    private _orderItemIndex: number = -1;
-    private _currencyCode: string;
-    private titleMsg: string;
-    private btnAcceptLbl: string;
+    private _lastQuantity               : number = 1;
+    private _quantityCount              : number = 1;
+    private _finalPrice                 : number = 0;
+    private _unitPrice                  : number = 0;
+    private _orderItemIndex             : number = -1;
+    private _currencyCode               : string;
+    private titleMsg                    : string;
+    private btnAcceptLbl                : string;
 
     _initialValue = 'customer';
-    private _showCustomerOrders: boolean = true;
-    private _showOtherOrders: boolean = false;
-    private _showAllOrders: boolean = false;
-    private _orderCustomerIndex: number = -1;
-    private _orderOthersIndex: number = -1;
+    private _showCustomerOrders         : boolean = true;
+    private _showOtherOrders            : boolean = false;
+    private _showAllOrders              : boolean = false;
+    private _orderCustomerIndex         : number = -1;
+    private _orderOthersIndex           : number = -1;
 
     /**
      * OrdersListComponent Constructor
@@ -105,6 +105,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit() {
+        this.removeSubscriptions();
         this._ordersSub = MeteorObservable.subscribe('getOrders', this.restaurantId, this.tableQRCode, ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED']).subscribe(() => {
             this._ngZone.run(() => {
                 this._orders = Orders.find({ creation_user: this._user }).zone();
@@ -142,6 +143,19 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                 this._currencyCode = Currencies.findOne({ _id: this.restaurantCurrency }).code + ' ';
             });
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
+        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
+        if( this._garnishFoodSub ){ this._garnishFoodSub.unsubscribe(); }
+        if( this._additionsSub ){ this._additionsSub.unsubscribe(); }
+        if( this._itemImagesSub ){ this._itemImagesSub.unsubscribe(); }
+        if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
+        if( this._itemImageThumbsSub ){ this._itemImageThumbsSub.unsubscribe(); }
     }
 
     /**
@@ -818,12 +832,6 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * ngOnDestroy implementation
      */
     ngOnDestroy() {
-        this._ordersSub.unsubscribe();
-        this._itemsSub.unsubscribe();
-        this._garnishFoodSub.unsubscribe();
-        this._additionsSub.unsubscribe();
-        this._itemImagesSub.unsubscribe();
-        this._currenciesSub.unsubscribe();
-        this._itemImageThumbsSub.unsubscribe();
+        this.removeSubscriptions();   
     }
 }

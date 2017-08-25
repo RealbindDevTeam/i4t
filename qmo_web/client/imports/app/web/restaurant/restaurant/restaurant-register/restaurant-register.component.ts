@@ -46,51 +46,51 @@ import * as QRious from 'qrious';
 export class RestaurantRegisterComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    private _restaurantForm: FormGroup;
-    private _paymentsFormGroup: FormGroup = new FormGroup({});
+    private _restaurantForm                 : FormGroup;
+    private _paymentsFormGroup              : FormGroup = new FormGroup({});
 
-    private _restaurantSub: Subscription;
-    private _hoursSub: Subscription;
-    private _currencySub: Subscription;
-    private _countriesSub: Subscription;
-    private _citiesSub: Subscription;
-    private _paymentMethodsSub: Subscription;
-    private _restaurantImagesSub: Subscription;
+    private _restaurantSub                  : Subscription;
+    private _hoursSub                       : Subscription;
+    private _currencySub                    : Subscription;
+    private _countriesSub                   : Subscription;
+    private _citiesSub                      : Subscription;
+    private _paymentMethodsSub              : Subscription;
+    private _restaurantImagesSub            : Subscription;
 
-    private _hours: Observable<Hour[]>;
-    private _countries: Observable<Country[]>;
-    private _cities: Observable<City[]>;
-    private _paymentMethods: Observable<PaymentMethod[]>;
-    private _tables: Observable<Table[]>;
+    private _hours                          : Observable<Hour[]>;
+    private _countries                      : Observable<Country[]>;
+    private _cities                         : Observable<City[]>;
+    private _paymentMethods                 : Observable<PaymentMethod[]>;
+    private _tables                         : Observable<Table[]>;
 
-    private _filesToUpload: Array<File>;
-    private _restaurantImageToInsert: File;
-    private _createImage: boolean;
-    private _nameImageFile: string;
-    public _selectedIndex: number = 0;
+    private _filesToUpload                  : Array<File>;
+    private _restaurantImageToInsert        : File;
+    private _createImage                    : boolean;
+    private _nameImageFile                  : string;
+    public _selectedIndex                   : number = 0;
 
-    private _queues: string[] = [];
-    private _selectedCountryValue: string;
-    private _selectedCityValue: string;
-    private _restaurantCurrency: string = '';
-    private _countryIndicative: string;
-    private _restaurantCurrencyId: string = '';
+    private _queues                         : string[] = [];
+    private _selectedCountryValue           : string;
+    private _selectedCityValue              : string;
+    private _restaurantCurrency             : string = '';
+    private _countryIndicative              : string;
+    private _restaurantCurrencyId           : string = '';
 
-    private _schedule: RestaurantSchedule;
-    private _financialElements: FinancialBase<any>[] = [];
-    private _showFinancialElements: boolean = false;
-    private _restaurantFinancialInformation: Object = {};
-    private _financialInformation: RestaurantFinancialElement[] = [];
-    private restaurantCode: string = '';
+    private _schedule                       : RestaurantSchedule;
+    private _financialElements              : FinancialBase<any>[] = [];
+    private _showFinancialElements          : boolean = false;
+    private _restaurantFinancialInformation : Object = {};
+    private _financialInformation           : RestaurantFinancialElement[] = [];
+    private restaurantCode                  : string = '';
 
-    private _loading: boolean;
-    private _showMessage: boolean = false;
-    private _mdDialogRef: MdDialogRef<any>;
-    private _currentDate: Date;
-    private _firstMonthDay: Date;
-    private _lastMonthDay: Date;
-    private titleMsg: string;
-    private btnAcceptLbl: string;
+    private _loading                        : boolean;
+    private _showMessage                    : boolean = false;
+    private _mdDialogRef                    : MdDialogRef<any>;
+    private _currentDate                    : Date;
+    private _firstMonthDay                  : Date;
+    private _lastMonthDay                   : Date;
+    private titleMsg                        : string;
+    private btnAcceptLbl                    : string;
 
     /**
      * RestaurantRegisterComponent constructor
@@ -122,6 +122,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * Implements ngOnInit implementation
      */
     ngOnInit() {
+        this.removeSubscriptions();
         this._restaurantForm = new FormGroup({
             country: new FormControl('', [Validators.required]),
             city: new FormControl('', [Validators.required]),
@@ -200,6 +201,19 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._currentDate = new Date();
         this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
         this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._hoursSub ){ this._hoursSub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        if( this._countriesSub ){ this._countriesSub.unsubscribe(); }
+        if( this._citiesSub ){ this._citiesSub.unsubscribe(); }
+        if( this._restaurantImagesSub ){ this._restaurantImagesSub.unsubscribe(); }
+        if( this._currencySub ){ this._currencySub.unsubscribe(); }
+        if( this._paymentMethodsSub ){ this._paymentMethodsSub.unsubscribe(); }
     }
 
     /**
@@ -687,12 +701,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * Implements ngOnDestroy function
      */
     ngOnDestroy() {
-        this._hoursSub.unsubscribe();
-        this._restaurantSub.unsubscribe();
-        this._countriesSub.unsubscribe();
-        this._citiesSub.unsubscribe();
-        this._restaurantImagesSub.unsubscribe();
-        this._currencySub.unsubscribe();
-        this._paymentMethodsSub.unsubscribe();
+        this.removeSubscriptions();       
     }
 }

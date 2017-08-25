@@ -32,12 +32,14 @@ import style from './payment-history.component.scss';
 export class PaymentHistoryComponent implements OnInit, OnDestroy {
 
     private _historyPaymentSub          : Subscription;
+    private _restaurantSub              : Subscription;
+    private _paymentTransactionSub      : Subscription;
+
     private _historyPayments            : Observable<PaymentHistory[]>;
     private _historyPayments2           : Observable<PaymentHistory[]>;
-    private _restaurantSub              : Subscription;
-    private _restaurants                : Observable<Restaurant[]>;
-    private _paymentTransactionSub      : Subscription;
     private _paymentTransactions        : Observable<PaymentTransaction[]>;
+    private _restaurants                : Observable<Restaurant[]>;
+
     private _selectedMonth              : string;
     private _selectedYear               : string;
     private _yearsArray                 : any[];
@@ -75,7 +77,11 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
+    /**
+     * ngOnInit Implementation
+     */
     ngOnInit() {
+        this.removeSubscriptions();
         this._historyPaymentSub = MeteorObservable.subscribe('getHistoryPaymentsByUser', Meteor.userId()).subscribe(() => {
             this._historyPayments = PaymentsHistory.find({
                 creation_user: Meteor.userId(),
@@ -105,6 +111,15 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         { value: '04', viewValue: '04' }, { value: '05', viewValue: '05' }, { value: '06', viewValue: '06' },
         { value: '07', viewValue: '07' }, { value: '08', viewValue: '08' }, { value: '09', viewValue: '09' },
         { value: '10', viewValue: '10' }, { value: '11', viewValue: '11' }, { value: '12', viewValue: '12' }];
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._historyPaymentSub ){ this._historyPaymentSub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        if( this._paymentTransactionSub ){ this._paymentTransactionSub.unsubscribe(); }
     }
 
     /**
@@ -358,9 +373,10 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         });
     }
 
+    /**
+     * ngOnDestroy Implementation
+     */
     ngOnDestroy() {
-        this._historyPaymentSub.unsubscribe();
-        this._restaurantSub.unsubscribe();
-        this._paymentTransactionSub.unsubscribe();
+        this.removeSubscriptions();   
     }
 }

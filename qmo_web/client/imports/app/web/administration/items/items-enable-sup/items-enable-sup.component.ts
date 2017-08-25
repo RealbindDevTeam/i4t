@@ -21,12 +21,13 @@ import style from '../item.component.scss';
 
 export class ItemEnableSupComponent implements OnInit, OnDestroy {
 
-    private _itemsSub: Subscription;
-    private _itemImagesSub: Subscription;
-    private _userDetailSub: Subscription;
-    private _items: Observable<Item[]>;
-    private _itemsFilter: Item[] = [];
-    private _userDetail: UserDetail;
+    private _itemsSub               : Subscription;
+    private _itemImagesSub          : Subscription;
+    private _userDetailSub          : Subscription;
+
+    private _items                  : Observable<Item[]>;
+    private _itemsFilter            : Item[] = [];
+    private _userDetail             : UserDetail;
 
     constructor(private _translate: TranslateService,
         private _ngZone: NgZone,
@@ -40,6 +41,7 @@ export class ItemEnableSupComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit() {
+        this.removeSubscriptions();
         this._itemsSub = MeteorObservable.subscribe('getItemsByUserRestaurantWork', Meteor.userId()).subscribe(() => {
             this._ngZone.run(() => {
                 this._items = Items.find({}).zone();
@@ -53,6 +55,15 @@ export class ItemEnableSupComponent implements OnInit, OnDestroy {
                 this._userDetail = UserDetails.collection.findOne({ user_id: Meteor.userId() });
             });
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
+        if( this._itemImagesSub ){ this._itemImagesSub.unsubscribe(); }
+        if( this._userDetailSub ){ this._userDetailSub.unsubscribe(); }
     }
 
     /**
@@ -113,8 +124,10 @@ export class ItemEnableSupComponent implements OnInit, OnDestroy {
         return wordTraduced;
     }
 
+    /**
+     * ngOnDestroy Implementation
+     */
     ngOnDestroy() {
-        this._itemsSub.unsubscribe();
-        this._itemImagesSub.unsubscribe();
+        this.removeSubscriptions();       
     }
 }

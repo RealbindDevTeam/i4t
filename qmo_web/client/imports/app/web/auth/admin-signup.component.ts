@@ -54,6 +54,7 @@ export class AdminSignupComponent extends AuthClass implements OnInit, OnDestroy
     }
 
     ngOnInit() {
+        this.removeSubscriptions();
         this.signupForm = new FormGroup({
             username: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
             email: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(255), CustomValidators.emailValidator]),
@@ -80,6 +81,14 @@ export class AdminSignupComponent extends AuthClass implements OnInit, OnDestroy
                 this._cities = Cities.find({ country: '' }).zone();
             });
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._countrySub ){ this._countrySub.unsubscribe(); }
+        if( this._citySub ){ this._citySub.unsubscribe(); }
     }
 
     /**
@@ -171,7 +180,6 @@ export class AdminSignupComponent extends AuthClass implements OnInit, OnDestroy
     }
 
     ngOnDestroy() {
-        this._countrySub.unsubscribe();
-        this._citySub.unsubscribe();
+        this.removeSubscriptions();
     }
 }

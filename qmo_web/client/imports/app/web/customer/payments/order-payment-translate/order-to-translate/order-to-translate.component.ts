@@ -69,6 +69,7 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
      * ngOnInit Implementation
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._ordersSub = MeteorObservable.subscribe( 'getOrdersByTableId', this._restaurantId, this._tableId,[ 'ORDER_STATUS.DELIVERED' ] ).subscribe( () => {
             this._ngZone.run( () => {
                 this._ordersTable = Orders.find( { creation_user: { $not: this._user }, status: 'ORDER_STATUS.DELIVERED', 'translateInfo.lastOrderOwner': '',
@@ -92,6 +93,17 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
                 this._additions = Additions.find( { } ).zone();
             });
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
+        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
+        if( this._itemImageThumbsSub ){ this._itemImageThumbsSub.unsubscribe(); }
+        if( this._currencySub ){ this._currencySub.unsubscribe(); }
+        if( this._additionsSub ){ this._additionsSub.unsubscribe(); }
     }
 
     /**
@@ -196,10 +208,6 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
      * ngOnDestroy Implementation
      */
     ngOnDestroy(){
-        this._ordersSub.unsubscribe();
-        this._itemsSub.unsubscribe();
-        this._itemImageThumbsSub.unsubscribe();
-        this._currencySub.unsubscribe();
-        this._additionsSub.unsubscribe();
+        this.removeSubscriptions();   
     }
 }

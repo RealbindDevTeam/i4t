@@ -77,6 +77,7 @@ export class AdditionEditComponent implements OnInit, OnDestroy {
      * Implements ngOnInit function
      */
     ngOnInit(){
+        this.removeSubscriptions();        
         this._editForm = this._formBuilder.group({
             editId: [ this._additionToEdit._id ],
             editName: [ this._additionToEdit.name, Validators.required ],
@@ -96,6 +97,16 @@ export class AdditionEditComponent implements OnInit, OnDestroy {
                 this._restaurants.subscribe( () => { this.buildControls(); });
             });
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._additionSub ){ this._additionSub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
+        if( this._countriesSub ){ this._countriesSub.unsubscribe(); }
     }
 
     /**
@@ -281,9 +292,6 @@ export class AdditionEditComponent implements OnInit, OnDestroy {
      * Implements ngOnDestroy function
      */
     ngOnDestroy(){
-        this._additionSub.unsubscribe();
-        this._restaurantSub.unsubscribe();
-        if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
-        if( this._countriesSub ){ this._countriesSub.unsubscribe(); }
+        this.removeSubscriptions();
     }
 }

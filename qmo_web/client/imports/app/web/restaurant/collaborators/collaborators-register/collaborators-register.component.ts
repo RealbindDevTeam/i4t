@@ -78,6 +78,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
      * ngOnInit Implementation
      */
     ngOnInit() {
+        this.removeSubscriptions();
         this._collaboratorRegisterForm = new FormGroup({
             name: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(70)]),
             last_name: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(70)]),
@@ -100,6 +101,16 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
             this._tables = Tables.find({});
         });
     }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        if( this._roleSub ){ this._roleSub.unsubscribe(); }
+        if( this._tableSub ){ this._tableSub.unsubscribe(); }
+    }
+
     /**
      * Validate waiter role is select to enabled tables assignment
      * @param _roleId 
@@ -345,9 +356,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
      * ngOnDestroy Implementation
      */
     ngOnDestroy() {
-        this._restaurantSub.unsubscribe();
-        this._roleSub.unsubscribe();
-        this._tableSub.unsubscribe();
+        this.removeSubscriptions();
     }
 
 }

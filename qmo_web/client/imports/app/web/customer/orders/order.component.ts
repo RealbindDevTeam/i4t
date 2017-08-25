@@ -64,6 +64,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit() {
+        this.removeSubscriptions();
         this._ordersForm = new FormGroup({
             qrCode: new FormControl( '', [ Validators.required, Validators.minLength( 1 ) ] )
         });
@@ -92,6 +93,15 @@ export class OrdersComponent implements OnInit, OnDestroy {
             });
         });
         this._tablesSub = MeteorObservable.subscribe( 'getAllTables' ).subscribe();
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._tablesSub ){ this._tablesSub.unsubscribe(); }
+        if( this._userDetailsSub ){ this._userDetailsSub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
     }
 
     /**
@@ -193,8 +203,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
      * ngOnDestroy implementation
      */
     ngOnDestroy(){
-        this._tablesSub.unsubscribe();
-        this._userDetailsSub.unsubscribe();
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        this.removeSubscriptions();
     }
 }

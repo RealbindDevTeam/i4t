@@ -65,6 +65,7 @@ export class CategoriesEditComponent implements OnInit, OnDestroy {
      * Implements ngOnInit function
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._editForm = this._formBuilder.group({
             editId: [ this._categoryToEdit._id ],
             editName: [ this._categoryToEdit.name, Validators.required ],
@@ -82,6 +83,14 @@ export class CategoriesEditComponent implements OnInit, OnDestroy {
                 this._sections = Sections.find( { } ).zone();
             });
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._categoriesSub ){ this._categoriesSub.unsubscribe(); }
+        if( this._sectionsSub ){ this._sectionsSub.unsubscribe(); }
     }
 
     /**
@@ -166,7 +175,6 @@ export class CategoriesEditComponent implements OnInit, OnDestroy {
      * Implements ngOnDestroy function
      */
     ngOnDestroy(){
-        this._categoriesSub.unsubscribe();
-        this._sectionsSub.unsubscribe();
+        this.removeSubscriptions();
     }
 }

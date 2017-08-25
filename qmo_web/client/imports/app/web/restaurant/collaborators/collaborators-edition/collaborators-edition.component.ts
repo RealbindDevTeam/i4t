@@ -84,6 +84,7 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit() {
+        this.removeSubscriptions();
         this.validateWaiterRole(this.selectUserDetail.role_id);
         this._collaboratorEditionForm = this._formBuilder.group({
             name: [ this.selectUser.profile.first_name, [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 70 ) ] ],
@@ -108,7 +109,15 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
         this._tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe(()=>{
             this._tables = Tables.find({});
         });
-        
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        if( this._roleSub ){ this._roleSub.unsubscribe(); }
+        if( this._tableSub ){ this._tableSub.unsubscribe(); }
     }
     
     /**
@@ -281,8 +290,6 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
      * ngOnDestroy implementation
      */
     ngOnDestroy(){
-        this._restaurantSub.unsubscribe();
-        this._roleSub.unsubscribe();
-        this._tableSub.unsubscribe();
+        this.removeSubscriptions();   
     }
 }

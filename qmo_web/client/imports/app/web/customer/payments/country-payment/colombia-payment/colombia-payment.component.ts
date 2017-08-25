@@ -99,6 +99,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
      * ngOnInit Implementation.
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._ordersSubscription = MeteorObservable.subscribe( 'getOrdersByAccount', this._user ).subscribe( () => {
            this._ngZone.run( () => {
                 this._orders = Orders.find( { creation_user: this._user, restaurantId: this.restId, tableId: this.tabId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] }, toPay : false } ).zone();
@@ -135,6 +136,19 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
             });
         });
         this._waiterCallsPaySub = MeteorObservable.subscribe('WaiterCallDetailForPayment', this.restId, this.tabId, 'PAYMENT' ).subscribe();
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._ordersSubscription ){ this._ordersSubscription.unsubscribe(); }
+        if( this._currencySub ){ this._currencySub.unsubscribe(); }
+        if( this._restaurantsSub ){ this._restaurantsSub.unsubscribe(); }
+        if( this._paymentMethodsSub ){ this._paymentMethodsSub.unsubscribe(); }
+        if( this._paymentsSub ){ this._paymentsSub.unsubscribe(); }
+        if( this._ordersTransfSub ){ this._ordersTransfSub.unsubscribe(); }
+        if( this._waiterCallsPaySub ){ this._waiterCallsPaySub.unsubscribe(); }
     }
 
     /**
@@ -430,12 +444,6 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
      * ngOnDestroy Implementation
      */
     ngOnDestroy(){
-        this._ordersSubscription.unsubscribe();
-        this._currencySub.unsubscribe();
-        this._restaurantsSub.unsubscribe();
-        this._paymentMethodsSub.unsubscribe();
-        this._paymentsSub.unsubscribe();
-        this._ordersTransfSub.unsubscribe();
-        this._waiterCallsPaySub.unsubscribe();
+        this.removeSubscriptions();
     }
 }

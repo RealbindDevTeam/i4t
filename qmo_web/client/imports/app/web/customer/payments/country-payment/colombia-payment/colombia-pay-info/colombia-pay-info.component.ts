@@ -83,6 +83,7 @@ export class ColombiaPayInfoComponent implements OnInit, OnDestroy{
      * ngOnInit Implementation
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByUser', this._user ).subscribe( () => {
             this._ngZone.run( () => {
                 let _lUserDetail: UserDetail = UserDetails.findOne( { user_id: this._user } );
@@ -144,6 +145,24 @@ export class ColombiaPayInfoComponent implements OnInit, OnDestroy{
                 this._paymentMethods = PaymentMethods.find( { } ).zone();
             });
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._userDetailsSub ){ this._userDetailsSub.unsubscribe(); }
+        if( this._paymentsSub ){ this._paymentsSub.unsubscribe(); }
+        if( this._restaurantSub ){  this._restaurantSub.unsubscribe(); }
+        if( this._currencySub ){ this._currencySub.unsubscribe(); }
+        if( this._tableSub ){ this._tableSub.unsubscribe(); }
+        if( this._usersSub ){ this._usersSub.unsubscribe(); }
+        if( this._paymentMethodsSub ){ this._paymentMethodsSub.unsubscribe(); }
+        if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
+        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
+        if( this._itemImageThumbsSub ){ this._itemImageThumbsSub.unsubscribe(); }
+        if( this._garnishFoodSub ){ this._garnishFoodSub.unsubscribe(); }
+        if( this._additionsSub ){ this._additionsSub.unsubscribe(); }
     }
 
     /**
@@ -217,17 +236,6 @@ export class ColombiaPayInfoComponent implements OnInit, OnDestroy{
      * ngOnDestroy Implementation
      */
     ngOnDestroy(){
-        this._userDetailsSub.unsubscribe();
-        if( this._paymentsSub ){ this._paymentsSub.unsubscribe(); }
-        if( this._restaurantSub ){  this._restaurantSub.unsubscribe(); }
-        if( this._currencySub ){ this._currencySub.unsubscribe(); }
-        if( this._tableSub ){ this._tableSub.unsubscribe(); }
-        if( this._usersSub ){ this._usersSub.unsubscribe(); }
-        this._paymentMethodsSub.unsubscribe();
-        if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
-        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
-        if( this._itemImageThumbsSub ){ this._itemImageThumbsSub.unsubscribe(); }
-        if( this._garnishFoodSub ){ this._garnishFoodSub.unsubscribe(); }
-        if( this._additionsSub ){ this._additionsSub.unsubscribe(); }
+        this.removeSubscriptions();
     }
 }

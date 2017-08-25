@@ -26,14 +26,16 @@ import style from './reactivate-restaurant.component.scss';
 })
 export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
 
-    private _currencies             : Observable<Currency[]>;
     private _currencySub            : Subscription;
     private _countrySub             : Subscription;
-    private _restaurants            : Observable<Restaurant[]>;
     private _restaurantSub          : Subscription;
     private _parameterSub           : Subscription;
-    private _tables                 : Observable<Table[]>;
     private _tableSub               : Subscription;
+
+    private _currencies             : Observable<Currency[]>;
+    private _restaurants            : Observable<Restaurant[]>;
+    private _tables                 : Observable<Table[]>;
+
     private _currentDate            : Date;
     private _firstMonthDay          : Date;
     private _lastMonthDay           : Date;
@@ -54,7 +56,11 @@ export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
         _translate.setDefaultLang( 'en' );
     }
 
+    /**
+     * ngOnInit Implementation
+     */
     ngOnInit() {
+        this.removeSubscriptions();
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
         this._restaurants = Restaurants.find({ creation_user: Meteor.userId(), isActive: false }).zone();
         this._currencySub = MeteorObservable.subscribe('getCurrenciesByUserId').subscribe();
@@ -67,6 +73,17 @@ export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
         this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
         this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
         this._firstNextMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 1);
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._currencySub ){ this._currencySub.unsubscribe(); }
+        if( this._countrySub ){ this._countrySub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        if( this._parameterSub ){ this._parameterSub.unsubscribe(); }
+        if( this._tableSub ){ this._tableSub.unsubscribe(); }
     }
 
     /**
@@ -203,11 +220,10 @@ export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
         }
     }
 
+    /**
+     * ngOnDestroy Implementation
+     */
     ngOnDestroy() {
-        this._currencySub.unsubscribe();
-        this._countrySub.unsubscribe();
-        this._restaurantSub.unsubscribe();
-        this._parameterSub.unsubscribe();
-        this._tableSub.unsubscribe();
+        this.removeSubscriptions();   
     }
 }

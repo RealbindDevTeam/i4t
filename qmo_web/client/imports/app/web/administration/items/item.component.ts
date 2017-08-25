@@ -58,6 +58,7 @@ export class ItemComponent implements OnInit, OnDestroy {
      * Implements ngOnInit function
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._items = Items.find( { } ).zone();
         this._itemsSub = MeteorObservable.subscribe( 'items', Meteor.userId() ).subscribe();
         this._itemImagesSub = MeteorObservable.subscribe( 'itemImages', Meteor.userId() ).subscribe();
@@ -67,6 +68,16 @@ export class ItemComponent implements OnInit, OnDestroy {
                 this._restaurants = Restaurants.find( { } ).zone();
             });
         });
+   }
+
+   /**
+    * Remove all subscriptions
+    */
+   removeSubscriptions():void{
+        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
+        if( this._itemImagesSub ){ this._itemImagesSub.unsubscribe(); }
+        if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
    }
 
     /**
@@ -163,9 +174,6 @@ export class ItemComponent implements OnInit, OnDestroy {
      * Implements ngOnDestroy function
      */
     ngOnDestroy(){
-        this._itemsSub.unsubscribe();
-        this._itemImagesSub.unsubscribe();
-        this._currenciesSub.unsubscribe();
-        this._restaurantSub.unsubscribe();
+        this.removeSubscriptions();    
     }
 }

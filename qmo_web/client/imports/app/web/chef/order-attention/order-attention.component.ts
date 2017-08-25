@@ -60,6 +60,7 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
      * ngOnInit Implementation
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._ordersSub = MeteorObservable.subscribe( 'getOrdersByRestaurantWork', this._user, [ 'ORDER_STATUS.IN_PROCESS' ] ).subscribe( () => {
             this._ngZone.run( () => {
                 this._ordersInProcess = Orders.find( { } ).zone();
@@ -85,6 +86,17 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
                 this._additions = Additions.find( { } ).zone();
             });
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
+        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
+        if( this._tablesSub ){ this._tablesSub.unsubscribe(); }
+        if( this._garnishFoodSub ){ this._garnishFoodSub.unsubscribe(); }
+        if( this._additionsSub ){ this._additionsSub.unsubscribe(); }
     }
 
     /**
@@ -134,10 +146,6 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
      * ngOnDestory Implementation
      */
     ngOnDestroy(){
-        this._ordersSub.unsubscribe();
-        this._itemsSub.unsubscribe();
-        this._tablesSub.unsubscribe();
-        this._garnishFoodSub.unsubscribe();
-        this._additionsSub.unsubscribe();
+        this.removeSubscriptions();    
     }
 }
