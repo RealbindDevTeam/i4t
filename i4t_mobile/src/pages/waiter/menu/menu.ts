@@ -2,8 +2,9 @@ import { Component, ViewChild } from '@angular/core';
 import { App, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { CallsPage } from '../calls/calls';
 import { InitialComponent } from '../../auth/initial/initial';
+import { CallsPage } from '../calls/calls';
+import { SettingsPage } from '../../customer/options/settings/settings';
 
 @Component({
   templateUrl: 'menu.html'
@@ -13,7 +14,7 @@ export class Menu {
 
   rootPage: any = CallsPage;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{icon: string, title: string, component: any}>;
 
   private _user : any;
 
@@ -31,7 +32,8 @@ export class Menu {
     this._user = Meteor.user();
 
     this.pages = [
-      { title: 'Calls', component: CallsPage }
+      { icon: 'home', title: 'MOBILE.WAITER_OPTIONS.CALLS', component: CallsPage },
+      { icon: 'settings',title: 'MOBILE.WAITER_OPTIONS.SETTINGS', component: SettingsPage }
     ];
 
   }

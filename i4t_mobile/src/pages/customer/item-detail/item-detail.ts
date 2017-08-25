@@ -323,6 +323,8 @@ export class ItemDetailPage implements OnInit, OnDestroy {
     _itemImage = ItemImages.find().fetch().filter((i) => i.itemId === _itemId)[0];
     if (_itemImage) {
       return _itemImage.url;
+    } else {
+      return 'assets/img/default-plate.png';
     }
   }
 

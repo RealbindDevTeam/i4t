@@ -50,6 +50,8 @@ export class ItemCardComponent implements OnInit, OnDestroy {
     _imageThumb = ItemImagesThumbs.find().fetch().filter((i) => i.itemId === _itemId)[0];
     if (_imageThumb) {
       return _imageThumb.url;
+    } else {
+      return 'assets/img/default-plate.png';
     }
   }
 

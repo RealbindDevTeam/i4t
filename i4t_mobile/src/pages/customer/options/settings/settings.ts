@@ -49,6 +49,7 @@ export class SettingsPage implements OnInit, OnDestroy {
               private _toastCtrl : ToastController,
               private _userLanguageService: UserLanguageService) {
     _translate.setDefaultLang('en');
+    this._user = Meteor.user();
   }
   
   /**
@@ -60,24 +61,24 @@ export class SettingsPage implements OnInit, OnDestroy {
     this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() =>{
       this._disabled = false;
       this._validate = false;
-      this._user = Users.collection.findOne({_id: Meteor.userId()});
+      //this._user = Users.collection.findOne({_id: Meteor.userId()});
       this._imageProfile = "assets/img/user_default_image.png";
 
-      if(this._user.services.facebook){
+      if(this._user.services && this._user.services.facebook){
         this._email = this._user.services.facebook.email;
         this._userName = this._user.services.facebook.name;
         this._firstName = this._user.services.facebook.first_name;
         this._lastName = this._user.services.facebook.last_name;
         this._languageCode = this._user.services.facebook.locale;
         this._imageProfile = "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
-      } else if(this._user.services.twitter){
+      } else if(this._user.services && this._user.services.twitter){
         this._email = this._user.services.twitter.email;
         this._userName = this._user.services.twitter.screenName;
         this._firstName = this._user.services.twitter.first_name;
         this._lastName = this._user.services.twitter.last_name;
         this._languageCode = this._user.services.twitter.lang;
         this._imageProfile = this._user.services.twitter.profile_image_url;
-      } else if(this._user.services.google){
+      } else if(this._user.services && this._user.services.google){
         this._email = this._user.services.google.email;
         this._userName = this._user.services.google.name;
         this._firstName = this._user.services.google.given_name;

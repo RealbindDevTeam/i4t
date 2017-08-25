@@ -65,9 +65,11 @@ export class OrdersPage implements OnInit, OnDestroy {
 
     ngOnInit() {
         this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-
+        this.removeSubscriptions();
         this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
-            this._restaurants = Restaurants.find({});
+            this._ngZone.run(() => {
+                this._restaurants = Restaurants.findOne({});
+            });
         });
 
         this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe(() => {
@@ -92,7 +94,9 @@ export class OrdersPage implements OnInit, OnDestroy {
 
         this._currencySub = MeteorObservable.subscribe('getCurrenciesByCurrentUser', Meteor.userId()).subscribe(() => {
             this._ngZone.run(() => {
-                this._currencyCode = Currencies.find({}).fetch()[0].code;
+                if(Currencies.find({}).fetch().length > 0) {
+                    this._currencyCode = Currencies.find({}).fetch()[0].code;
+                }
             });
         });
     }
@@ -129,9 +133,9 @@ export class OrdersPage implements OnInit, OnDestroy {
 
     ionViewWillEnter() {
         this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-
+        this.removeSubscriptions();
         this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
-            this._restaurants = Restaurants.find({});
+            this._restaurants = Restaurants.findOne({});
         });
 
         this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
@@ -148,7 +152,9 @@ export class OrdersPage implements OnInit, OnDestroy {
 
         this._currencySub = MeteorObservable.subscribe('getCurrenciesByCurrentUser', Meteor.userId()).subscribe(() => {
             this._ngZone.run(() => {
-                this._currencyCode = Currencies.find({}).fetch()[0].code;
+                if(Currencies.find({}).fetch().length > 0) {
+                    this._currencyCode = Currencies.find({}).fetch()[0].code;
+                }
             });
         });
     }
@@ -316,18 +322,14 @@ export class OrdersPage implements OnInit, OnDestroy {
     }
 
     ionViewWillLeave() {
-        this._restaurantSub.unsubscribe();
-        this._ordersSub.unsubscribe();
-        this._itemsSub.unsubscribe();
-        this._restaurantThumbSub.unsubscribe();
-        this._userDetailSub.unsubscribe();
-        this._currencySub.unsubscribe();
+        this.removeSubscriptions();
     }
 
     ionViewWillUnload() {
     }
 
     ngOnDestroy() {
+        this.removeSubscriptions();
     }
 
     getRestaurantThumb(_id: string): string {
@@ -335,6 +337,20 @@ export class OrdersPage implements OnInit, OnDestroy {
         _imageThumb = RestaurantImageThumbs.find().fetch().filter((i) => i.restaurantId === _id)[0];
         if (_imageThumb) {
             return _imageThumb.url;
+        } else {
+            return 'assets/img/default-restaurant.png';
         }
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if(this._restaurantSub) {this._restaurantSub.unsubscribe();}
+        if(this._ordersSub) {this._ordersSub.unsubscribe();}
+        if(this._itemsSub) {this._itemsSub.unsubscribe();}
+        if(this._restaurantThumbSub) {this._restaurantThumbSub.unsubscribe();}
+        if(this._userDetailSub) {this._userDetailSub.unsubscribe();}
+        if(this._currencySub) {this._currencySub.unsubscribe();}
     }
 }

@@ -10,11 +10,11 @@
     <div *ngIf="(_allOrders | async)?.length > 0">
         <ion-card>
             <ion-card-content>
-                <ion-item *ngFor="let _res of _restaurants | async">
+                <ion-item>
                     <ion-thumbnail item-left>
-                        <img src="{{getRestaurantThumb(_res._id)}}">
+                        <img src="{{getRestaurantThumb(_restaurants._id)}}">
                     </ion-thumbnail>
-                    <h1 style="white-space:normal">{{_res.name}} </h1>
+                    <h1 style="white-space:normal">{{_restaurants.name}} </h1>
                 </ion-item>
 
                 <ion-item-divider color="light" style="text-align: center; font-weight: bold">{{'MOBILE.ORDERS.TABLE_ORDERS' | translate}}</ion-item-divider>

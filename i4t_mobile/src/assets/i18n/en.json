@@ -31,7 +31,7 @@
         "MODIFY": "Modify",
         "CHOOSE_FILE": "Choose a file",
         "CLOSE" : "Close",
-        "VIEW" : "Ver",
+        "VIEW" : "View",
         "LANGUAGE" : {
             "ES" : "Spanish",
             "EN" : "English"
@@ -314,6 +314,10 @@
             "TIP" : "Tip",
             "TOTAL_ORDERS" : "Order total",
             "NO_PAYMENTS" : "You have no payments yet"
+        },
+        "WAITER_OPTIONS" : {
+            "CALLS" : "Home",
+            "SETTINGS" : "Settings"
         }
     },
     "CURRENCIES": {

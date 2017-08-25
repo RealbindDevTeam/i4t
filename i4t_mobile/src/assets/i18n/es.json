@@ -314,6 +314,10 @@
             "TIP" : "Propina",
             "TOTAL_ORDERS" : "Total orden",
             "NO_PAYMENTS" : "Aún no tiene pagos realizados"
+        },
+        "WAITER_OPTIONS" : {
+            "CALLS" : "Inicio",
+            "SETTINGS" : "Ajustes"
         }
     },
     "CURRENCIES": {

@@ -49,7 +49,7 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
         if (_imageThumb) {
             return _imageThumb.url;
         } else {
-            return '/assets/img/default-plate.png';
+            return 'assets/img/default-plate.png';
         }
     }
 
@@ -64,7 +64,7 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
     * Function to get item avalaibility 
     */
     getItemAvailability(itemId: string): boolean {
-        let _itemRestaurant = Items.collection.findOne({ _id: itemId }, { fields: { _id: 0, restaurants: 1 } });
+        let _itemRestaurant = Items.collection.findOne({ _id: itemId }, { fields: { restaurants: 1 } });
         let aux = _itemRestaurant.restaurants.find(element => element.restaurantId === this.resCode);
         return aux.isAvailable;
     }

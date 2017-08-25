@@ -51,8 +51,10 @@
         </p>
         <ion-toggle style="display: inline-block; position: absolute; right: 15px;top: 15px;" (ionChange)="receivedAllPayments($event)"></ion-toggle>
     </div>
-    <h3 style="display: inline-block;">{{'MOBILE.PAYMENTS.TOTAL_PAY' | translate}}</h3>
-    <h3 style="display: inline-block; position: absolute; right: 15px;">{{_totalPayment}} {{_currencyCode}}</h3>
+    <div style="display: block">
+        <h3 style="display: inline-block; margin-top: 1.6rem;">{{'MOBILE.PAYMENTS.TOTAL_PAY' | translate}}</h3>
+        <h3 style="display: inline-block; position: absolute; right: 15px;">{{_totalPayment}} {{_currencyCode}}</h3>
+    </div>
     <div>
         <button ion-button block outline (click)="validatePaymentsReceived()">{{'MOBILE.WAITER_CALL.PAY_CLOSE' | translate}}</button>
     </div>
