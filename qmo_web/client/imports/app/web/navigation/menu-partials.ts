@@ -74,7 +74,7 @@ export class WaiterMenuComponent extends RoutingClass {
                     <md-icon>restaurant_menu</md-icon>
                 </button>
                 <button md-icon-button id="menu-toggler" (click)="goToRoute('/app/itemsEnable')">
-                    <md-icon>iso</md-icon>
+                    <md-icon>view_list</md-icon>
                 </button>`
 })
 export class ChefMenuComponent extends RoutingClass {
