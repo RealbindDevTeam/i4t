@@ -21,13 +21,13 @@ import style from './payments.component.scss';
 export class PaymentsComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    private _userDetailsSub: Subscription;
-    private _restaurantSub: Subscription;
+    private _userDetailsSub         : Subscription;
+    private _restaurantSub          : Subscription;
 
-    private _currentRestaurant: Restaurant;
-    private _currentTable: string;
-    private _showInitCard: boolean = false;
-    private _showPaymentInfo: boolean = false;
+    private _currentRestaurant      : Restaurant;
+    private _currentTable           : string;
+    private _showInitCard           : boolean = false;
+    private _showPaymentInfo        : boolean = false;
 
     /**
      * PaymentsComponent Constructor
@@ -47,6 +47,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
      * ngOnInit Implementation
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByUser', this._user ).subscribe( () => {
             this._ngZone.run( () => {
                 let _lUserDetail: UserDetail = UserDetails.findOne( { user_id: this._user } );
@@ -69,6 +70,14 @@ export class PaymentsComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._userDetailsSub ){ this._userDetailsSub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+    }
+
+    /**
      * This function allow go to Orders
      */
     goToOrders(){
@@ -79,7 +88,6 @@ export class PaymentsComponent implements OnInit, OnDestroy {
      * ngOnDestroy Implementation
      */
     ngOnDestroy(){
-        this._userDetailsSub.unsubscribe();
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        this.removeSubscriptions();   
     }
 }

@@ -25,17 +25,17 @@ import style from './restaurant-info-master.component.scss';
 })
 export class RestaurantInfoMasterComponent implements OnInit, OnDestroy {
 
-    @Input() restaurant: Restaurant;
-    @Input() tableQRCode: string;
+    @Input() restaurant         : Restaurant;
+    @Input() tableQRCode        : string;
 
-    private _showTableInfo: boolean = false;
-    public _dialogRef: MdDialogRef<any>;
+    private _showTableInfo      : boolean = false;
+    public _dialogRef           : MdDialogRef<any>;
 
-    private _countriesSub: Subscription;
-    private _citiesSub: Subscription;
+    private _countriesSub       : Subscription;
+    private _citiesSub          : Subscription;
 
-    private _countries: Observable<Country[]>;
-    private _cities: Observable<City[]>;
+    private _countries          : Observable<Country[]>;
+    private _cities             : Observable<City[]>;
 
     /**
      * RestaurantInfoMasterComponent Constructor
@@ -51,6 +51,7 @@ export class RestaurantInfoMasterComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit(){
+        this.removeSubscriptions();
         if( this.tableQRCode ){
             this._showTableInfo = true;
         } else {
@@ -61,6 +62,14 @@ export class RestaurantInfoMasterComponent implements OnInit, OnDestroy {
         this._countries = Countries.find( { } ).zone();
         this._citiesSub = MeteorObservable.subscribe( 'cities' ).subscribe();
         this._cities = Cities.find( { } ).zone();
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._countriesSub ){ this._countriesSub.unsubscribe(); }
+        if( this._citiesSub ){ this._citiesSub.unsubscribe(); }
     }
 
     /**
@@ -112,7 +121,6 @@ export class RestaurantInfoMasterComponent implements OnInit, OnDestroy {
      * ngOnDestroy implementation
      */
     ngOnDestroy(){
-        this._countriesSub.unsubscribe();
-        this._citiesSub.unsubscribe();
+        this.removeSubscriptions();   
     }
 }

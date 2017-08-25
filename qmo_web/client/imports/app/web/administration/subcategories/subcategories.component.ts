@@ -72,6 +72,7 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
      * Implements ngOnInit function
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._subcategoryForm = new FormGroup({
             name: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 50 ) ] ),
             category: new FormControl( '' )  
@@ -91,6 +92,15 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
                 this._subcategories = Subcategories.find( { } ).zone();
             });
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._categoriesSub ){ this._categoriesSub.unsubscribe(); }
+        if( this._subcategorySub ){ this._subcategorySub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
     }
 
     /**
@@ -223,8 +233,6 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
      * Implements ngOnDestroy function
      */
     ngOnDestroy(){
-        this._categoriesSub.unsubscribe();
-        this._subcategorySub.unsubscribe();
-        this._restaurantSub.unsubscribe();
+        this.removeSubscriptions();
     }
 }

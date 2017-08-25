@@ -33,8 +33,19 @@ export class EnableConfirmComponent implements OnInit, OnDestroy {
         translate.setDefaultLang('en');
     }
 
+    /**
+     * ngOnInit Implementation
+     */
     ngOnInit() {
+        this.removeSubscriptions();
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe(() => { });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
     }
 
     /** 
@@ -87,8 +98,11 @@ export class EnableConfirmComponent implements OnInit, OnDestroy {
         return wordTraduced;
     }
 
+    /**
+     * ngOnDestroy Implementation
+     */
     ngOnDestroy() {
-        this._restaurantSub.unsubscribe();
+        this.removeSubscriptions();
     }
 }
 

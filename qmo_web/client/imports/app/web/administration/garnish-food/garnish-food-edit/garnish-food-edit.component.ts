@@ -77,6 +77,7 @@ export class GarnishFoodEditComponent implements OnInit, OnDestroy {
      * Implements ngOnInit function
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._editForm = this._formBuilder.group({
             editId: [ this._garnishFoodToEdit._id ],
             editName: [ this._garnishFoodToEdit.name, Validators.required ],
@@ -96,6 +97,16 @@ export class GarnishFoodEditComponent implements OnInit, OnDestroy {
                 this._restaurants.subscribe( () => { this.buildControls(); });
             });
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._garnishFoodSub ){ this._garnishFoodSub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
+        if( this._countriesSub ){ this._countriesSub.unsubscribe(); }
     }
 
     /**
@@ -281,9 +292,6 @@ export class GarnishFoodEditComponent implements OnInit, OnDestroy {
      * Implements ngOnDestroy function
      */
     ngOnDestroy(){
-        this._garnishFoodSub.unsubscribe();
-        this._restaurantSub.unsubscribe();
-        if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
-        if( this._countriesSub ){ this._countriesSub.unsubscribe(); }
+        this.removeSubscriptions();
     }
 }

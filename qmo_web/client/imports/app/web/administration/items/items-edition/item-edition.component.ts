@@ -40,68 +40,68 @@ import style from './item-edition.component.scss';
 export class ItemEditionComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    public _itemToEdit: Item;
-    private _itemEditionForm: FormGroup;
-    private _garnishFormGroup: FormGroup = new FormGroup({});
-    private _additionsFormGroup: FormGroup = new FormGroup({});
-    private _restaurantsFormGroup: FormGroup = new FormGroup({});
-    private _currenciesFormGroup: FormGroup = new FormGroup({});
-    private _taxesFormGroup: FormGroup = new FormGroup({});
-    private _mdDialogRef: MdDialogRef<any>;
+    public _itemToEdit                          : Item;
+    private _itemEditionForm                    : FormGroup;
+    private _garnishFormGroup                   : FormGroup = new FormGroup({});
+    private _additionsFormGroup                 : FormGroup = new FormGroup({});
+    private _restaurantsFormGroup               : FormGroup = new FormGroup({});
+    private _currenciesFormGroup                : FormGroup = new FormGroup({});
+    private _taxesFormGroup                     : FormGroup = new FormGroup({});
+    private _mdDialogRef                        : MdDialogRef<any>;
 
-    private _sections: Observable<Section[]>;
-    private _categories: Observable<Category[]>;
-    private _subcategories: Observable<Subcategory[]>;
-    private _currencies: Observable<Currency[]>;
+    private _sections                           : Observable<Section[]>;
+    private _categories                         : Observable<Category[]>;
+    private _subcategories                      : Observable<Subcategory[]>;
+    private _currencies                         : Observable<Currency[]>;
 
-    private _itemsSub: Subscription;
-    private _itemImagesSub: Subscription;
-    private _itemImageThumbsSub: Subscription;
-    private _sectionsSub: Subscription;
-    private _categorySub: Subscription;
-    private _subcategorySub: Subscription;
-    private _restaurantSub: Subscription;
-    private _garnishFoodSub: Subscription;
-    private _additionSub: Subscription;
-    private _currenciesSub: Subscription;
-    private _countriesSub: Subscription;
+    private _itemsSub                           : Subscription;
+    private _itemImagesSub                      : Subscription;
+    private _itemImageThumbsSub                 : Subscription;
+    private _sectionsSub                        : Subscription;
+    private _categorySub                        : Subscription;
+    private _subcategorySub                     : Subscription;
+    private _restaurantSub                      : Subscription;
+    private _garnishFoodSub                     : Subscription;
+    private _additionSub                        : Subscription;
+    private _currenciesSub                      : Subscription;
+    private _countriesSub                       : Subscription;
 
-    public _selectedIndex: number = 0;
-    private _showGarnishFood: boolean = true;
-    private _showAddition: boolean = true;
-    private _garnishFoodQuantity: number = 0;
-    private _showRestaurants: boolean = false;
-    private _showCurrencies: boolean = false;
-    private _showTaxes: boolean = false;
+    public _selectedIndex                       : number = 0;
+    private _showGarnishFood                    : boolean = true;
+    private _showAddition                       : boolean = true;
+    private _garnishFoodQuantity                : number = 0;
+    private _showRestaurants                    : boolean = false;
+    private _showCurrencies                     : boolean = false;
+    private _showTaxes                          : boolean = false;
 
-    private _itemSection: string;
-    private _itemCategory: string;
-    private _itemSubcategory: string;
-    private _selectedCategory: string = "";
-    private _selectedSection: string = "";
-    private _selectedSubcategory: string = "";
-    private _selectedTime: string;
+    private _itemSection                        : string;
+    private _itemCategory                       : string;
+    private _itemSubcategory                    : string;
+    private _selectedCategory                   : string = "";
+    private _selectedSection                    : string = "";
+    private _selectedSubcategory                : string = "";
+    private _selectedTime                       : string;
 
-    private _garnishFoodList: GarnishFood[];
-    private _itemGarnishFood: string[];
-    private _restaurantsGarnishFood: string[];
-    private _edition_garnishFood: string[];
-    private _itemAdditions: string[];
-    private _additionList: Addition[];
-    private _edition_addition: string[];
-    private _restaurantList: Restaurant[] = [];
-    private _itemRestaurants: ItemRestaurant[] = [];
-    private _restaurantCurrencies: string[] = [];
-    private _restaurantTaxes: string[] = [];
+    private _garnishFoodList                    : GarnishFood[];
+    private _itemGarnishFood                    : string[];
+    private _restaurantsGarnishFood             : string[];
+    private _edition_garnishFood                : string[];
+    private _itemAdditions                      : string[];
+    private _additionList                       : Addition[];
+    private _edition_addition                   : string[];
+    private _restaurantList                     : Restaurant[] = [];
+    private _itemRestaurants                    : ItemRestaurant[] = [];
+    private _restaurantCurrencies               : string[] = [];
+    private _restaurantTaxes                    : string[] = [];
 
-    private _editImage: boolean = false;
-    private _editFilesToUpload: Array<File>;
-    private _editItemImageToInsert: File;
-    private _nameImageFileEdit: string;
-    private _itemEditImage: string;
-    private _restaurantsSelectedCount: number = 0;
-    private titleMsg : string;
-    private btnAcceptLbl : string;
+    private _editImage                          : boolean = false;
+    private _editFilesToUpload                  : Array<File>;
+    private _editItemImageToInsert              : File;
+    private _nameImageFileEdit                  : string;
+    private _itemEditImage                      : string;
+    private _restaurantsSelectedCount           : number = 0;
+    private titleMsg                            : string;
+    private btnAcceptLbl                        : string;
 
     /**
      * ItemEditionComponent constructor
@@ -137,6 +137,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
      * implements ngOnInit function
      */
     ngOnInit() {
+        this.removeSubscriptions();
         let _restaurantsId: string[] = [];
         let _currenciesId: string[] = [];
         this._itemEditionForm = this._formBuilder.group({
@@ -282,6 +283,23 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                 if (this._additionList.length === 0) { this._showAddition = false; }
             });
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
+        if( this._itemImagesSub ){ this._itemImagesSub.unsubscribe(); }
+        if( this._itemImageThumbsSub ){ this._itemImageThumbsSub.unsubscribe(); }
+        if( this._sectionsSub ){ this._sectionsSub.unsubscribe(); }
+        if( this._categorySub ){ this._categorySub.unsubscribe(); }
+        if( this._subcategorySub ){ this._subcategorySub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        if( this._garnishFoodSub ){ this._garnishFoodSub.unsubscribe(); }
+        if( this._additionSub ) { this._additionSub.unsubscribe(); }
+        if( this._currenciesSub ) { this._currenciesSub.unsubscribe(); }
+        if( this._countriesSub ) { this._countriesSub.unsubscribe(); }
     }
 
     /**
@@ -690,16 +708,6 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
      * Implements ngOnDestroy function
      */
     ngOnDestroy() {
-        this._itemsSub.unsubscribe();
-        this._itemImagesSub.unsubscribe();
-        this._itemImageThumbsSub.unsubscribe();
-        this._sectionsSub.unsubscribe();
-        this._categorySub.unsubscribe();
-        this._subcategorySub.unsubscribe();
-        this._restaurantSub.unsubscribe();
-        this._garnishFoodSub.unsubscribe();
-        this._additionSub.unsubscribe();
-        if (this._currenciesSub) { this._currenciesSub.unsubscribe(); }
-        if (this._countriesSub) { this._countriesSub.unsubscribe(); }
+        this.removeSubscriptions();
     }
 }

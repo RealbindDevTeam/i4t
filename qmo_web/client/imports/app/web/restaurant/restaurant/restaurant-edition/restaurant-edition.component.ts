@@ -41,58 +41,57 @@ import style from './restaurant-edition.component.scss';
 export class RestaurantEditionComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    private _restaurantToEdit: Restaurant;
-    private _restaurantEditionForm: FormGroup;
-    private _paymentsFormGroup: FormGroup = new FormGroup({});
-    private _mdDialogRef : MdDialogRef<any>;
+    private _restaurantToEdit               : Restaurant;
+    private _restaurantEditionForm          : FormGroup;
+    private _paymentsFormGroup              : FormGroup = new FormGroup({});
+    private _mdDialogRef                    : MdDialogRef<any>;
     
-    private _restaurantSub: Subscription;
-    private _hoursSub: Subscription;
-    private _currencySub: Subscription;
-    private _countriesSub: Subscription;
-    private _citiesSub: Subscription;
-    private _paymentMethodsSub: Subscription;
-    private _restaurantImagesSub: Subscription;
-    private _restaurantImageThumbsSub: Subscription;
-    private _restaurantPlanSub: Subscription;
-    private _parameterSub: Subscription;
+    private _restaurantSub                  : Subscription;
+    private _hoursSub                       : Subscription;
+    private _currencySub                    : Subscription;
+    private _countriesSub                   : Subscription;
+    private _citiesSub                      : Subscription;
+    private _paymentMethodsSub              : Subscription;
+    private _restaurantImagesSub            : Subscription;
+    private _restaurantImageThumbsSub       : Subscription;
+    private _parameterSub                   : Subscription;
 
-    private _hours: Observable<Hour[]>;
-    private _countries: Observable<Country[]>;
-    private _cities: Observable<City[]>;
-    private _currencies: Observable<Currency[]>;
-    private _parameterDaysTrial: Observable<Parameter[]>;
+    private _hours                          : Observable<Hour[]>;
+    private _countries                      : Observable<Country[]>;
+    private _cities                         : Observable<City[]>;
+    private _currencies                     : Observable<Currency[]>;
+    private _parameterDaysTrial             : Observable<Parameter[]>;
 
-    private _paymentMethods: PaymentMethod[] = [];
-    private _paymentMethodsList: PaymentMethod[] = [];
-    private _restaurantPaymentMethods: string[] = [];
+    private _paymentMethods                 : PaymentMethod[] = [];
+    private _paymentMethodsList             : PaymentMethod[] = [];
+    private _restaurantPaymentMethods       : string[] = [];
 
-    private _filesToUpload: Array<File>;
-    private _restaurantImageToEdit: File;
-    private _editImage: boolean = false;
-    private _nameImageFileEdit: string = "";
-    public _selectedIndex: number = 0;
-    private _restaurantEditImage: string;
+    private _filesToUpload                  : Array<File>;
+    private _restaurantImageToEdit          : File;
+    private _editImage                      : boolean = false;
+    private _nameImageFileEdit              : string = "";
+    public _selectedIndex                   : number = 0;
+    private _restaurantEditImage            : string;
 
-    private _queue: string[] = [];
-    private _selectedCountryValue: string = "";
-    private _selectedCityValue: string = "";
+    private _queue                          : string[] = [];
+    private _selectedCountryValue           : string = "";
+    private _selectedCityValue              : string = "";
 
-    private _restaurantCountryValue: string;
-    private _restaurantCityValue: string;
+    private _restaurantCountryValue         : string;
+    private _restaurantCityValue            : string;
 
-    private _restaurantCurrency: string = '';
-    private _countryIndicative: string;
-    private titleMsg: string;
-    private btnAcceptLbl: string;
+    private _restaurantCurrency             : string = '';
+    private _countryIndicative              : string;
+    private titleMsg                        : string;
+    private btnAcceptLbl                    : string;
 
-    private _edition_schedule: RestaurantSchedule;
+    private _edition_schedule               : RestaurantSchedule;
 
-    private _scheduleToEdit: RestaurantSchedule;
-    private _financialElements: FinancialBase<any>[] = [];
-    private _showFinancialElements: boolean = false;
-    private _restaurantFinancialInformation: Object = {};
-    private _financialInformation: RestaurantFinancialElement[] = [];
+    private _scheduleToEdit                 : RestaurantSchedule;
+    private _financialElements              : FinancialBase<any>[] = [];
+    private _showFinancialElements          : boolean = false;
+    private _restaurantFinancialInformation : Object = {};
+    private _financialInformation           : RestaurantFinancialElement[] = [];
 
     private _showOtherCity: boolean;
 
@@ -133,6 +132,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit() {
+        this.removeSubscriptions();
         this._restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe();
 
         this._countriesSub = MeteorObservable.subscribe('countries').subscribe(() => {
@@ -226,6 +226,21 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         this._scheduleToEdit = this._restaurantToEdit.schedule;
         this._countryIndicative = this._restaurantToEdit.indicative;
         this._queue = this._restaurantToEdit.queue;
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        if( this._hoursSub ){ this._hoursSub.unsubscribe(); }
+        if( this._currencySub ){ this._currencySub.unsubscribe(); }
+        if( this._countriesSub ){ this._countriesSub.unsubscribe(); }
+        if( this._citiesSub ){ this._citiesSub.unsubscribe(); }
+        if( this._paymentMethodsSub ){ this._paymentMethodsSub.unsubscribe(); }
+        if( this._restaurantImagesSub ){ this._restaurantImagesSub.unsubscribe(); }
+        if( this._restaurantImageThumbsSub ){ this._restaurantImageThumbsSub.unsubscribe(); }
+        if( this._parameterSub ){ this._parameterSub.unsubscribe(); }
     }
 
     /**
@@ -615,13 +630,6 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
      * ngOnDestroy implementation
      */
     ngOnDestroy() {
-        this._restaurantSub.unsubscribe();
-        this._hoursSub.unsubscribe();
-        this._currencySub.unsubscribe();
-        this._countriesSub.unsubscribe();
-        this._citiesSub.unsubscribe();
-        this._paymentMethodsSub.unsubscribe();
-        this._restaurantImagesSub.unsubscribe();
-        this._restaurantImageThumbsSub.unsubscribe();
+        this.removeSubscriptions();   
     }
 }

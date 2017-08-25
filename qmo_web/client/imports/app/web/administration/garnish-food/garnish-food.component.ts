@@ -80,6 +80,7 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
      * Implements ngOnInit function
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._garnishFoodForm = new FormGroup({
             name: new FormControl( '', [ Validators.required, Validators.minLength(1), Validators.maxLength(50) ] ),
             currencies: this._currenciesFormGroup,
@@ -98,6 +99,16 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
                 this._garnishFoodCol = GarnishFoodCol.find( { } ).zone();
             });
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._garnishFoodSub ){ this._garnishFoodSub.unsubscribe(); }
+        if( this._restaurantsSub ){ this._restaurantsSub.unsubscribe(); }
+        if( this._currenciesSub ) { this._currenciesSub.unsubscribe(); }
+        if( this._countriesSub ) { this._countriesSub.unsubscribe(); }
     }
 
     /**
@@ -334,9 +345,6 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
      * Implements ngOnDestroy function
      */
     ngOnDestroy(){
-        this._garnishFoodSub.unsubscribe();
-        this._restaurantsSub.unsubscribe();
-        if( this._currenciesSub ) { this._currenciesSub.unsubscribe(); }
-        if( this._countriesSub ) { this._countriesSub.unsubscribe(); }
+        this.removeSubscriptions();
     }
 }

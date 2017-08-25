@@ -80,6 +80,7 @@ export class AdditionComponent implements OnInit, OnDestroy{
      * Implements ngOnInit function
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._additionForm = new FormGroup({
             name: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 50 ) ] ),
             currencies: this._currenciesFormGroup,
@@ -98,6 +99,16 @@ export class AdditionComponent implements OnInit, OnDestroy{
                 this._additions = Additions.find( { } ).zone();
             });
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._additionsSub ){ this._additionsSub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        if( this._currenciesSub ) { this._currenciesSub.unsubscribe(); }
+        if( this._countriesSub ) { this._countriesSub.unsubscribe(); }
     }
 
     /**
@@ -334,9 +345,6 @@ export class AdditionComponent implements OnInit, OnDestroy{
      * Implements ngOnDestroy function
      */
     ngOnDestroy(){
-        this._additionsSub.unsubscribe();
-        this._restaurantSub.unsubscribe();
-        if( this._currenciesSub ) { this._currenciesSub.unsubscribe(); }
-        if( this._countriesSub ) { this._countriesSub.unsubscribe(); }
+        this.removeSubscriptions();
     }
 }

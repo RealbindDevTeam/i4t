@@ -51,20 +51,22 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _selectedCardYear           : string;
     private _selectedCountry            : string;
     private _selectedCity               : string = "";
+
     private _cCPaymentMethodSub         : Subscription;
-    private _cCPaymentMethods           : Observable<CcPaymentMethod[]>;
     private _countrySub                 : Subscription;
-    private _countries                  : Observable<Country[]>;
     private _citySub                    : Subscription;
-    private _cities                     : Observable<City[]>;
     private _paymentTransactionSub      : Subscription;
-    private _paymentTransactions        : Observable<PaymentTransaction[]>;
     private _parameterSub               : Subscription;
-    private _parameters                 : Observable<Parameter[]>;
-    private _historyPaymentSub          : Subscription;
-    private _historyPayments            : Observable<PaymentHistory[]>;
     private _restaurantSub              : Subscription;
+
+    private _cCPaymentMethods           : Observable<CcPaymentMethod[]>;
+    private _countries                  : Observable<Country[]>;
+    private _cities                     : Observable<City[]>;
+    private _paymentTransactions        : Observable<PaymentTransaction[]>;
+    private _parameters                 : Observable<Parameter[]>;
+    private _historyPayments            : Observable<PaymentHistory[]>;
     private _restaurants                : Observable<Restaurant[]>;
+
     private _restaurantsIdsArray        : string[];
     private _restaurantsNamesArray      : string[];
     private _currentDate                : Date;
@@ -153,8 +155,11 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
+    /**
+     * ngOnInit Implementation
+     */
     ngOnInit() {
-
+        this.removeSubscriptions();
         this._paymentForm = new FormGroup({
             paymentMethod: new FormControl('', [Validators.required]),
             cardNumber: new FormControl('', [Validators.required, Validators.minLength(13), Validators.maxLength(20), CustomValidators.numericValidator]),
@@ -221,6 +226,18 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         );
 
         this._userAgent = navigator.userAgent;
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._cCPaymentMethodSub ){ this._cCPaymentMethodSub.unsubscribe(); }
+        if( this._countrySub ){ this._countrySub.unsubscribe(); }
+        if( this._citySub ){ this._citySub.unsubscribe(); }
+        if( this._paymentTransactionSub ){ this._paymentTransactionSub.unsubscribe(); }
+        if( this._parameterSub ){ this._parameterSub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
     }
 
     /**
@@ -617,12 +634,10 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         });
     }
 
+    /**
+     * ngOnDestroy Implementation
+     */
     ngOnDestroy() {
-        this._cCPaymentMethodSub.unsubscribe();
-        this._countrySub.unsubscribe();
-        this._citySub.unsubscribe();
-        this._paymentTransactionSub.unsubscribe();
-        this._parameterSub.unsubscribe();
-        this._restaurantSub.unsubscribe();
+        this.removeSubscriptions();
     }
 }

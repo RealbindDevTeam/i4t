@@ -31,15 +31,17 @@ export class RestaurantListComponent implements OnInit, OnDestroy {
     restaurantId: EventEmitter<any> = new EventEmitter<any>();
 
     private _tableForm              : FormGroup;
-    private _restaurants            : Observable<Restaurant[]>;
     private _restaurantSub          : Subscription;
-    private _currencies             : Observable<Currency[]>;
     private _currencySub            : Subscription;
-    private _tables                 : Observable<Table[]>;
     private _tableSub               : Subscription;
     private _countrySub             : Subscription;
-    private _currentDate            : Date;
+
+    private _restaurants            : Observable<Restaurant[]>;
+    private _currencies             : Observable<Currency[]>;
+    private _tables                 : Observable<Table[]>;
     private _parameters             : Observable<Parameter[]>;
+
+    private _currentDate            : Date;
     private _parameterSub           : Subscription;
 
     /**
@@ -56,6 +58,7 @@ export class RestaurantListComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.removeSubscription();
         this._tableForm = new FormGroup({
             restaurant: new FormControl('', [Validators.required]),
             tables_number: new FormControl('', [Validators.required])
@@ -73,6 +76,17 @@ export class RestaurantListComponent implements OnInit, OnDestroy {
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
 
         this._currentDate = new Date(2017, 6, 5);
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscription():void{
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        if( this._tableSub ){ this._tableSub.unsubscribe(); }
+        if( this._currencySub ){ this._currencySub.unsubscribe(); }
+        if( this._countrySub ){ this._countrySub.unsubscribe(); }
+        if( this._parameterSub ){ this._parameterSub.unsubscribe(); }
     }
 
     /**
@@ -160,11 +174,10 @@ export class RestaurantListComponent implements OnInit, OnDestroy {
         }
     }
 
+    /**
+     * ngOnDestroy Implementation
+     */
     ngOnDestroy() {
-        this._restaurantSub.unsubscribe();
-        this._tableSub.unsubscribe();
-        this._currencySub.unsubscribe();
-        this._countrySub.unsubscribe();
-        this._parameterSub.unsubscribe();
+        this.removeSubscription();
     }
 }

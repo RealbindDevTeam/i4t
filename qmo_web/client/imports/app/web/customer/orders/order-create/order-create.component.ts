@@ -35,49 +35,49 @@ import style from './order-create.component.scss';
 })
 export class OrderCreateComponent implements OnInit, OnDestroy {
 
-    @Input() restaurantId: string;
-    @Input() tableQRCode: string;
-    @Input() restaurantCurrency: string;
+    @Input() restaurantId               : string;
+    @Input() tableQRCode                : string;
+    @Input() restaurantCurrency         : string;
     @Output() finishOrdenCreation = new EventEmitter();
 
-    private _newOrderForm: FormGroup;
-    private _garnishFormGroup: FormGroup = new FormGroup({});
-    private _additionsFormGroup: FormGroup = new FormGroup({});
-    private _additionsDetailFormGroup: FormGroup = new FormGroup({});
-    private _mdDialogRef            : MdDialogRef<any>;
+    private _newOrderForm               : FormGroup;
+    private _garnishFormGroup           : FormGroup = new FormGroup({});
+    private _additionsFormGroup         : FormGroup = new FormGroup({});
+    private _additionsDetailFormGroup   : FormGroup = new FormGroup({});
+    private _mdDialogRef                : MdDialogRef<any>;
 
-    private _sectionsSub: Subscription;
-    private _categoriesSub: Subscription;
-    private _subcategoriesSub: Subscription;
-    private _itemsSub: Subscription;
-    private _garnishFoodSub: Subscription;
-    private _additionsSub: Subscription;
-    private _ordersSub: Subscription;
-    private _itemImagesSub: Subscription;
-    private _currenciesSub: Subscription;
+    private _sectionsSub                : Subscription;
+    private _categoriesSub              : Subscription;
+    private _subcategoriesSub           : Subscription;
+    private _itemsSub                   : Subscription;
+    private _garnishFoodSub             : Subscription;
+    private _additionsSub               : Subscription;
+    private _ordersSub                  : Subscription;
+    private _itemImagesSub              : Subscription;
+    private _currenciesSub              : Subscription;
 
-    private _sections: Observable<Section[]>;
-    private _categories: Observable<Category[]>;
-    private _subcategories: Observable<Subcategory[]>;
-    private _items: Observable<Item[]>;
-    private _itemDetail: Observable<Item[]>;
-    private _garnishFoodCol: Observable<GarnishFood[]>;
-    private _additions: Observable<Addition[]>;
+    private _sections                   : Observable<Section[]>;
+    private _categories                 : Observable<Category[]>;
+    private _subcategories              : Observable<Subcategory[]>;
+    private _items                      : Observable<Item[]>;
+    private _itemDetail                 : Observable<Item[]>;
+    private _garnishFoodCol             : Observable<GarnishFood[]>;
+    private _additions                  : Observable<Addition[]>;
 
-    private _finalPrice: number = 0;
-    private _maxGarnishFoodElements: number = 0;
-    private _garnishFoodElementsCount: number = 0;
-    private _numberColums: number = 3;
-    private _showGarnishFoodError: boolean = false;
-    private _unitPrice: number = 0;
-    private _lastQuantity: number = 1;
-    private _quantityCount: number = 1;
-    private _currencyCode: string;
-    private titleMsg: string;
-    private btnAcceptLbl: string;
+    private _finalPrice                 : number = 0;
+    private _maxGarnishFoodElements     : number = 0;
+    private _garnishFoodElementsCount   : number = 0;
+    private _numberColums               : number = 3;
+    private _showGarnishFoodError       : boolean = false;
+    private _unitPrice                  : number = 0;
+    private _lastQuantity               : number = 1;
+    private _quantityCount              : number = 1;
+    private _currencyCode               : string;
+    private titleMsg                    : string;
+    private btnAcceptLbl                : string;
 
-    private _orderMenus: OrderMenu[] = [];
-    private orderMenuSetup: OrderMenu[] = [];
+    private _orderMenus                 : OrderMenu[] = [];
+    private orderMenuSetup              : OrderMenu[] = [];
 
     /**
      * OrderCreateComponent Constructor
@@ -105,6 +105,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit() {
+        this.removeSubscriptions();
         this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this.restaurantId).subscribe(() => {
             this._ngZone.run(() => {
                 this._items = Items.find({}).zone();
@@ -156,6 +157,21 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
             garnishFood: this._garnishFormGroup,
             additions: this._additionsFormGroup
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._sectionsSub ){ this._sectionsSub.unsubscribe(); }
+        if( this._categoriesSub ){ this._categoriesSub.unsubscribe(); }
+        if( this._subcategoriesSub ){ this._subcategoriesSub.unsubscribe(); }
+        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
+        if( this._garnishFoodSub ){ this._garnishFoodSub.unsubscribe(); }
+        if( this._additionsSub ){ this._additionsSub.unsubscribe(); }
+        if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
+        if( this._itemImagesSub ){ this._itemImagesSub.unsubscribe(); }
+        if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
     }
 
     /**
@@ -593,14 +609,6 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * ngOnDestroy implementation
      */
     ngOnDestroy() {
-        this._sectionsSub.unsubscribe();
-        this._categoriesSub.unsubscribe();
-        this._subcategoriesSub.unsubscribe();
-        this._itemsSub.unsubscribe();
-        this._garnishFoodSub.unsubscribe();
-        this._additionsSub.unsubscribe();
-        this._ordersSub.unsubscribe();
-        this._itemImagesSub.unsubscribe();
-        this._currenciesSub.unsubscribe();
+        this.removeSubscriptions();   
     }
 }
