@@ -83,6 +83,7 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
      * Implements ngOnInit function
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._editForm = this._formBuilder.group({
             editId: [ this._promotionToEdit._id ],
             editName: [ this._promotionToEdit.name, Validators.required ],
@@ -126,6 +127,16 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
         } else {
             this._showImage = false;
         }
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._promotionsSub ){ this._promotionsSub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        if( this._promotionImagesSub ){ this._promotionImagesSub.unsubscribe(); }
+        if( this._promotionThumbsSub ){ this._promotionThumbsSub.unsubscribe(); }
     }
 
     /**
@@ -234,9 +245,6 @@ export class PromotionEditComponent implements OnInit, OnDestroy {
      * Implements ngOnDestroy function
      */
     ngOnDestroy(){
-        this._promotionsSub.unsubscribe();
-        this._restaurantSub.unsubscribe();
-        this._promotionImagesSub.unsubscribe();
-        this._promotionThumbsSub.unsubscribe();
+        this.removeSubscriptions();
     }
 }

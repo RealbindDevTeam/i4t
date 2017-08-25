@@ -69,6 +69,7 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
      * ngOnInit Implementation
      */
     ngOnInit(){
+        this.removeSubscriptions();
         this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByUser', this._user ).subscribe( () => {
             this._ngZone.run( () => {
                 let _lUserDetail: UserDetail = UserDetails.findOne( { user_id: this._user } );
@@ -108,6 +109,18 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
                 }
             });
         });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._userDetailsSub ){ this._userDetailsSub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        if( this._tableSub ){ this._tableSub.unsubscribe(); }
+        if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
+        if( this._currencySub ){ this._currencySub.unsubscribe(); }
+        if( this._usersSub ){ this._usersSub.unsubscribe(); }
     }
 
     /**
@@ -191,11 +204,6 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
      * ngOnDestroy Implementation
      */
     ngOnDestroy(){
-        this._userDetailsSub.unsubscribe();
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
-        if( this._tableSub ){ this._tableSub.unsubscribe(); }
-        if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
-        if( this._currencySub ){ this._currencySub.unsubscribe(); }
-        if( this._usersSub ){ this._usersSub.unsubscribe(); }
+        this.removeSubscriptions();
     }
 }

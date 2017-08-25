@@ -25,8 +25,19 @@ export class CreateConfirmComponent implements OnInit, OnDestroy{
         
     }
 
+    /**
+     * ngOnInit Implementation
+     */
     ngOnInit() {
+        this.removeSubscriptions();
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
+    }
+
+    /**
+     * Remove all Subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._parameterSub ){ this._parameterSub.unsubscribe(); }
     }
 
     getDiscountPercent(){
@@ -60,7 +71,10 @@ export class CreateConfirmComponent implements OnInit, OnDestroy{
         this._dialogRef.close({ success: false });
     }
 
+    /**
+     * ngOnDestroy Implementation
+     */
     ngOnDestroy(){
-        this._parameterSub.unsubscribe();
+        this.removeSubscriptions();
     }
 }

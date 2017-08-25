@@ -62,6 +62,7 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
      * ngOnInit Implementation
      */
     ngOnInit(){
+        this.removeSubscriptions();
         let _lRestaurantsId:string[] = [];
         this._restaurantsSub = MeteorObservable.subscribe( 'getRestaurantByRestaurantWork', this._user ).subscribe( () => {
             this._ngZone.run( () => {
@@ -78,6 +79,20 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
             });
         });
         this._tablesSub = MeteorObservable.subscribe( 'getTablesByRestaurantWork', this._user ).subscribe();
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._restaurantsSub ){ this._restaurantsSub.unsubscribe(); }
+        if( this._restaurantImgThumbSub ){ this._restaurantImgThumbSub.unsubscribe(); }
+        if( this._userDetailsSub ){ this._userDetailsSub.unsubscribe(); }
+        if( this._tablesSub ){ this._tablesSub.unsubscribe(); }
+        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
+        if( this._paymentsSub ){ this._paymentsSub.unsubscribe(); }
+        if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
+        if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
     }
 
     /**
@@ -220,13 +235,6 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
      * ngOnDestroy Implementation
      */
     ngOnDestroy(){
-        if( this._restaurantsSub ){ this._restaurantsSub.unsubscribe(); }
-        if( this._restaurantImgThumbSub ){ this._restaurantImgThumbSub.unsubscribe(); }
-        if( this._userDetailsSub ){ this._userDetailsSub.unsubscribe(); }
-        if( this._tablesSub ){ this._tablesSub.unsubscribe(); }
-        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
-        if( this._paymentsSub ){ this._paymentsSub.unsubscribe(); }
-        if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
-        if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
+        this.removeSubscriptions();
     }
 }
