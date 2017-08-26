@@ -123,7 +123,7 @@ export class MenuListComponent implements OnInit, OnDestroy {
                 this._items = Items.find({}).zone();
             });
         });
-        this._itemImagesSub = MeteorObservable.subscribe('getItemImageThumbsByRestaurantWork', Meteor.userId()).subscribe();
+        this._itemImagesSub = MeteorObservable.subscribe('getItemImageByRestaurantWork', Meteor.userId()).subscribe();
         //this._ordersSub = MeteorObservable.subscribe('getOrders', this.restaurantId, this.tableQRCode, ['ORDER_STATUS.REGISTERED']).subscribe(() => { });
         this._garnishFoodSub = MeteorObservable.subscribe('garnishFoodByRestaurantWork', Meteor.userId()).subscribe(() => {
             this._ngZone.run(() => {
@@ -159,13 +159,12 @@ export class MenuListComponent implements OnInit, OnDestroy {
             });
         });
 
-        /**
-        this._currenciesSub = MeteorObservable.subscribe('getCurrenciesByRestaurantsId', [this.restaurantId]).subscribe(() => {
+        this._currenciesSub = MeteorObservable.subscribe('getCurrenciesByRestaurantWork', Meteor.userId()).subscribe(() => {
             this._ngZone.run(() => {
-                this._currencyCode = Currencies.findOne({ _id: this.restaurantCurrency }).code + ' ';
+                this._currencyCode = Currencies.findOne({}).code + ' ';
             });
         });
-         */
+
 
         this._newOrderForm = new FormGroup({
             observations: new FormControl('', [Validators.maxLength(50)]),
