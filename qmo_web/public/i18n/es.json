@@ -829,7 +829,10 @@
         "TRY_AGAIN": "Por favor intenta nuevamente",
         "MSG_1": "Puedes ordenar lo que deseas",
         "NO_ORDERS": "Aún no tienes ordenes, puedes crear una orden nueva",
-        "ORDER": "Ordenar"
+        "ORDER": "Ordenar",
+        "TABLE_NO_ACTIVE": "El restaurante no tiene esta mesa activa para el servicio de Iurest",
+        "TABLE_NOT_EXISTS": "La Mesa no Existe. Por favor verifique el codigo.",
+        "IUREST_NO_ACTIVE": "El Restaurante no tiene el servicio de Iurest activo. No es posible ingresar."
     },
     "MONTHLY_PAYMENT": {
         "TITLE": "Pago del servicio mensual de Iurest",
@@ -852,12 +855,12 @@
         "FREE_DAYS_MSG": "No te cobramos este mes, disfrutalo"
     },
     "ORDER_PAYMENT_TRANS": {
-        "ORDER_TO_CONFIRM": "Cuando algun acompañante de tu mesa desea pagar una de tus ordenes, debes confirmar este proceso. Aca podras ver aquellas ordenes que otros usuarios desean pagar por ti.",
+        "ORDER_TO_CONFIRM": "Confirma aquellas ordenes que otros usuarios desean pagar por ti.",
         "NO_ORDERS": "No Se Encuentran Ordenes",
         "ORDERS": "Orden",
         "TOTAL": "Total",
         "CONFIRM": "Confirmar",
-        "PENDING_ORDERS": "Si deseas pagar ordenes de algun acompañante de tu mesa, esta seccion mostrara aquellas ordenes que se encuentran pendientes por confirmar para agregar a tu pago.",
+        "PENDING_ORDERS": "Mira las ordenes que se encuentran pendientes por confirmar para agregar a tu pago.",
         "CONSULT_TABLE_ORDERS": "Consultar Ordenes",
         "CONSULT_TABLE_ORDERS_TITLE": "Ordenes de la Mesa",
         "CONSULT_TABLE_ORDERS_SUBTITLE_1": "Consulta las ordenes de tus acompañantes",

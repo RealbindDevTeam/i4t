@@ -43,6 +43,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     private _showNewOrderButton         : boolean = false;
     private _showOrderCreation          : boolean = false;
     private _showOrderList              : boolean = false;
+    private _showTableIsNotActiveError  : boolean = false;
 
     /**
      * OrdersComponent Constructor
@@ -117,16 +118,24 @@ export class OrdersComponent implements OnInit, OnDestroy {
         if( this._ordersForm.valid ){
             let _lTable:Table = Tables.findOne( { QR_code: this._ordersForm.value.qrCode } );
             if( _lTable ){
-                MeteorObservable.call( 'getRestaurantByQRCode', _lTable.QR_code, this._user ).subscribe( ( _result: Restaurant ) => {
-                    this._currentRestaurant = _result;
-                    this._currentQRCode = _lTable.QR_code;
-                    this._showAlphanumericCodeCard = false;
-                    this._showRestaurantInformation = true;
-                    this._showOrderList = true;
-                    this._showNewOrderButton = true;
-                }, ( error ) => {
-                    this.openDialog(this.titleMsg, '', `Failed to get Restaurant: ${error}`, '', this.btnAcceptLbl, false);
-                });
+                if( _lTable.is_active ){
+                    MeteorObservable.call( 'getRestaurantByQRCode', _lTable.QR_code, this._user ).subscribe( ( _result: Restaurant ) => {
+                        this._currentRestaurant = _result;
+                        this._currentQRCode = _lTable.QR_code;
+                        this._showAlphanumericCodeCard = false;
+                        this._showRestaurantInformation = true;
+                        this._showOrderList = true;
+                        this._showNewOrderButton = true;
+                    }, ( error ) => {
+                        if( error.error === '400' ){
+                            this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.TABLE_NOT_EXISTS' ), '', this.btnAcceptLbl, false);
+                        } else if( error.error === '200' ){
+                            this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.IUREST_NO_ACTIVE' ), '', this.btnAcceptLbl, false);                            
+                        }
+                    });
+                } else {
+                    this._showTableIsNotActiveError = true;
+                }
             } else {
                 this._showError = true;
                 this._showAlphanumericCodeCard = true;
@@ -166,6 +175,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
      */
     hideMessageError(){
         this._showError = false;
+        this._showTableIsNotActiveError = false;
     }
 
     /**
@@ -203,6 +213,18 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
             }
         });
+    }
+
+    /**
+     * Return traduction
+     * @param {string} itemName 
+     */
+    itemNameTraduction(itemName: string): string{
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res; 
+        });
+        return wordTraduced;
     }
 
     /**

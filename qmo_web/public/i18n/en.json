@@ -829,7 +829,10 @@
         "TRY_AGAIN": "Please try again",
         "MSG_1": "You can sort what you want",
         "NO_ORDERS": "You do not have any orders yet, you can create a new order",
-        "ORDER": "Order"
+        "ORDER": "Order",
+        "TABLE_NO_ACTIVE": "The restaurant does not have this table active for the service of Iurest",
+        "TABLE_NOT_EXISTS": "The table does not exist. Please check the code.",
+        "IUREST_NO_ACTIVE": "The restaurant does not have the Iurest service active. It is not possible to enter."
     },
     "MONTHLY_PAYMENT": {
         "TITLE": "Iurest service invoicing",
@@ -852,12 +855,12 @@
         "FREE_DAYS_MSG": "We do not charge this month, enjoy it"
     },
     "ORDER_PAYMENT_TRANS": {
-        "ORDER_TO_CONFIRM": "When someone accompanying your table wishes to pay one of your orders, you must confirm this process. Here you can see the orders that other users wish to pay for you.",
+        "ORDER_TO_CONFIRM": "Confirm those orders that other users wish to pay for you.",
         "NO_ORDERS": "Orders Not Found",
         "ORDERS": "Order",
         "TOTAL": "Total",
         "CONFIRM": "Confirm",
-        "PENDING_ORDERS": "If you want to pay for orders from a companion of your table, this section will show that there are orders that are pending to confirm to add to your payment.",
+        "PENDING_ORDERS": "Look at the orders that are pending to be confirmed to add to your payment.",
         "CONSULT_TABLE_ORDERS": "Consult Orders",
         "CONSULT_TABLE_ORDERS_TITLE": "Table Orders",
         "CONSULT_TABLE_ORDERS_SUBTITLE_1": "Check the orders of your companions",

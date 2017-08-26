@@ -26,6 +26,10 @@
                     <p>{{'ORDERS.CODE_NOT_FOUND' | translate}}</p>
                     <p>{{'ORDERS.TRY_AGAIN' | translate}}</p>
                 </div>
+                <div *ngIf="_showTableIsNotActiveError" class="error">
+                    <p>{{'ORDERS.TABLE_NO_ACTIVE' | translate}}</p>
+                    <p>{{'ORDERS.TRY_AGAIN' | translate}}</p>
+                </div>
             </div>
         </div>
     </md-card-content>
