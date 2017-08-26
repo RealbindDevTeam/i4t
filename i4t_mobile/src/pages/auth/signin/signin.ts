@@ -1,6 +1,6 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { App, ViewController, NavController, AlertController, Platform } from 'ionic-angular';
+import { App, ViewController, NavController, AlertController, Platform, LoadingController } from 'ionic-angular';
 //import { OneSignal } from 'ionic-native';
 import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -33,6 +33,7 @@ export class SigninComponent implements OnInit {
                 public navCtrl: NavController, 
                 public alertCtrl: AlertController, 
                 public viewCtrl: ViewController,
+                public _loadingCtrl: LoadingController,
                 public _platform: Platform) {
 
         this.userLang = navigator.language.split('-')[0];
@@ -60,14 +61,23 @@ export class SigninComponent implements OnInit {
                         this.error = err;
                     } else {
                         MeteorObservable.call('getRole').subscribe((role) => {
-                            //role 400 customer
-                            if (role == "400") {
-                                //this.addUserDevice();
-                                this.navCtrl.push(TabsPage);
-                            } else if ( role == "200") {
-                                this._app.getRootNav().setRoot(Menu);
-                            } else {
-                            }
+                            let loading_msg = this.itemNameTraduction('MOBILE.SIGN_OUT.LOADING'); 
+                            
+                            let loading = this._loadingCtrl.create({
+                                content: loading_msg
+                            });
+                            loading.present();
+                            setTimeout(() => {
+                                loading.dismiss();
+                                //role 400 customer
+                                if (role == "400") {
+                                    //this.addUserDevice();
+                                    this.navCtrl.push(TabsPage);
+                                } else if ( role == "200") {
+                                    this._app.getRootNav().setRoot(Menu);
+                                } else {
+                                }
+                            }, 1500);
                         }, (error) => {
                             this.error = err;
                         });
@@ -112,23 +122,32 @@ export class SigninComponent implements OnInit {
     }
 
     insertUserDetail() {
-        MeteorObservable.call('getDetailsCount').subscribe((count) => {
-
-            if (count === 0) {
-                UserDetails.insert({
-                    user_id: Meteor.userId(),
-                    role_id: '400',
-                    is_active: true,
-                    restaurant_work: '',
-                    penalties: [],
-                    current_restaurant: '',
-                    current_table: ''
-                });
-            }
-            this.navCtrl.push(TabsPage);
-        }, (error) => {
-            this.error;
+        let loading_msg = this.itemNameTraduction('MOBILE.SIGN_OUT.LOADING'); 
+        
+        let loading = this._loadingCtrl.create({
+            content: loading_msg
         });
+        loading.present();
+        setTimeout(() => {
+            loading.dismiss();
+            MeteorObservable.call('getDetailsCount').subscribe((count) => {
+    
+                if (count === 0) {
+                    UserDetails.insert({
+                        user_id: Meteor.userId(),
+                        role_id: '400',
+                        is_active: true,
+                        restaurant_work: '',
+                        penalties: [],
+                        current_restaurant: '',
+                        current_table: ''
+                    });
+                }
+                this.navCtrl.push(TabsPage);
+            }, (error) => {
+                this.error;
+            });
+        }, 1500);
     }
 
     sendEmailPrompt() {
@@ -186,6 +205,10 @@ export class SigninComponent implements OnInit {
 
 
     }*/
+
+    loading(){
+        
+    }
 
     itemNameTraduction(itemName: string): string {
         var wordTraduced: string;

@@ -172,12 +172,12 @@
             "NO_PAY_POSSIBLE": "No es posible pagar una orden que no se haya entregado aun"
         },
         "ORDER_PAYMENT_TRANS": {
-            "ORDER_TO_CONFIRM": "Cuando algun acompañante de tu mesa desea pagar una de tus ordenes, debes confirmar este proceso. Aca podras ver aquellas ordenes que otros usuarios desean pagar por ti.",
+            "ORDER_TO_CONFIRM": "Confirma aquellas ordenes que otros usuarios desean pagar por ti.",
             "NO_ORDERS": "No se encuentran ordenes",
             "ORDERS": "Orden",
             "TOTAL": "Total",
             "CONFIRM": "Confirmar",
-            "PENDING_ORDERS": "Si deseas pagar ordenes de algun acompañante de tu mesa, esta seccion mostrara aquellas ordenes que se encuentran pendientes por confirmar para agregar a tu pago.",
+            "PENDING_ORDERS": "Mira las ordenes que se encuentran pendientes por confirmar para agregar a tu pago.",
             "CONSULT_TABLE_ORDERS": "Consultar Ordenes",
             "CONSULT_TABLE_ORDERS_TITLE": "Ordenes de la Mesa",
             "CONSULT_TABLE_ORDERS_SUBTITLE": "Consulta las ordenes de tus acompañantes y selecciona aquellas que desees pagar",
@@ -312,7 +312,19 @@
             "TITLE": "Historial de pagos",
             "TOTAL" : "Total",
             "TIP" : "Propina",
-            "TOTAL_ORDERS" : "Total orden"
+            "TOTAL_ORDERS" : "Total orden",
+            "NO_PAYMENTS" : "Aún no tiene pagos realizados"
+        },
+        "WAITER_OPTIONS" : {
+            "CALLS" : "Inicio",
+            "SETTINGS" : "Ajustes"
+        },
+        "SIGN_OUT" : {
+            "TITLE_CONFIRM" : "Cerrar sesión",
+            "CONTENT_CONFIRM" : "¿Estas seguro de salir de la aplicación?",
+            "NO_BTN" : "No",
+            "YES_BTN" : "SI",
+            "LOADING" : "Por favor espera..."
         }
     },
     "CURRENCIES": {

@@ -8,6 +8,7 @@ import { Addition } from 'qmo_web/both/models/administration/addition.model';
 import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
 import { Order, OrderAddition } from 'qmo_web/both/models/restaurant/order.model';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 @Component({
     selector: 'page-additions-page',
@@ -21,21 +22,27 @@ export class AdditionEditPage implements OnInit, OnDestroy {
     private _currentOrder               : Order;
     private _restaurantId               : string;
     private _additionDetails            : any;
-    
-    /**
-     * AdditionEditPage constructor
-     * @param _navCtrl 
-     * @param _navParams 
-     * @param _formBuilder 
-     * @param _translate 
-     */
+     
+     /**
+      * AdditionEditPage constructor
+      * @param _alertCtrl 
+      * @param _loadingCtrl 
+      * @param _navCtrl 
+      * @param _navParams 
+      * @param _formBuilder 
+      * @param _translate 
+      * @param _toastCtrl 
+      * @param _userLanguageService 
+      */
     constructor(public _alertCtrl: AlertController,
                 public _loadingCtrl: LoadingController,
                 public _navCtrl : NavController,
                 public _navParams: NavParams,
                 private _formBuilder: FormBuilder,
                 private _translate: TranslateService,
-                private _toastCtrl: ToastController){
+                private _toastCtrl: ToastController,
+                private _userLanguageService: UserLanguageService){
+        _translate.setDefaultLang('en');
         this._orderAddition = this._navParams.get("order_addition");
         this._currentOrder  = this._navParams.get("order");
         this._restaurantId  = this._navParams.get("restaurant");
@@ -45,6 +52,7 @@ export class AdditionEditPage implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit(){
+        this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         this._additionsSub = MeteorObservable.subscribe( 'additionsByCurrentRestaurant', Meteor.userId() ).subscribe( () => {
             this._additionDetails = Additions.find( { _id: this._orderAddition.additionId } ).zone();
         });

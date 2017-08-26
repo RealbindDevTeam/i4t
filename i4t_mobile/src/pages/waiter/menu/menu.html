@@ -14,13 +14,14 @@
     <ion-content>
         <ion-list>
             <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-                {{p.title}}
+                <ion-icon style="margin-left: 16px" name="{{p.icon}}"></ion-icon>
+                <span style="margin-left: 16px">{{p.title | translate}}</span>
             </button>
         </ion-list>
     </ion-content>
 
     <ion-footer padding>
-        <button ion-button block outline (click)="signOut()">{{'MOBILE.SETTINGS.SIGN_OUT' | translate}}</button>
+        <button ion-button block outline (click)="showComfirmSignOut()">{{'MOBILE.SETTINGS.SIGN_OUT' | translate}}</button>
     </ion-footer>
 
 </ion-menu>

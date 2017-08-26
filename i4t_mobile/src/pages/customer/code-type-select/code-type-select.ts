@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 import { AlphanumericCodePage } from '../alphanumeric-code/alphanumeric-code';
 import { SectionsPage } from '../sections/sections';
@@ -19,16 +20,33 @@ export class CodeTypeSelectPage {
   private _id_table: string;
   private _waitMsg: string;
 
+  /**
+   * CodeTypeSelectPage constructor
+   * @param _navCtrl 
+   * @param _viewCtrl 
+   * @param _navParams 
+   * @param _translate 
+   * @param alertCtrl 
+   * @param loadingCtrl 
+   * @param _app 
+   * @param _userLanguageService 
+   */
   constructor(private _navCtrl: NavController,
-    private _viewCtrl: ViewController,
-    public _navParams: NavParams,
-    public _translate: TranslateService,
-    public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController,
-    public _app: App, ) {
-    this._userLang = navigator.language.split('-')[0];
+              private _viewCtrl: ViewController,
+              public _navParams: NavParams,
+              public _translate: TranslateService,
+              public alertCtrl: AlertController,
+              public loadingCtrl: LoadingController,
+              public _app: App,
+              private _userLanguageService: UserLanguageService ) {
     _translate.setDefaultLang('en');
-    _translate.use(this._userLang);
+  }
+
+  /**
+   * ngOnInit implementation
+   */
+  ngOnInit(){
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
   }
 
   goToScann() {

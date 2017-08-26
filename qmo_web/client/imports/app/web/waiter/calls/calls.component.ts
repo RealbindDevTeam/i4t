@@ -73,10 +73,10 @@ export class CallsComponent implements OnInit, OnDestroy {
                 this._userRestaurantSubscription = MeteorObservable.subscribe('getRestaurantById', this._userDetail.restaurant_work).subscribe(() => {
                     this._restaurants = Restaurants.find({_id : this._userDetail.restaurant_work});
                 });
-                
-                this._imgRestaurantSubscription = MeteorObservable.subscribe( 'restaurantImagesByRestaurantWork', this._user ).subscribe();
             }
         });
+        
+        this._imgRestaurantSubscription = MeteorObservable.subscribe( 'getRestaurantImageThumbByRestaurantWork', this._user ).subscribe();
         
         this._callsDetailsSubscription = MeteorObservable.subscribe('waiterCallDetailByWaiterId', this._user ).subscribe(() => {
             this._ngZone.run( () => {

@@ -14,13 +14,13 @@
     <div class="content">
         <p>{{'MOBILE.CODE_TYPE_SELECT.CONTENT' | translate}}</p>
     </div>
-    
-    <div id="buttons">
-        <button ion-button block class="button-primary" (click)="goToScann()">
-            {{'MOBILE.CODE_TYPE_SELECT.QR' | translate}}
-        </button>
-        <button ion-button block class="button-primary" (click)="goToAlphanumericCode()">
-            {{'MOBILE.CODE_TYPE_SELECT.ALPHANUMERIC' | translate}}
-        </button>
-    </div>
 </ion-content>
+
+<ion-footer padding>
+    <button ion-button block outline (click)="goToScann()">
+        {{'MOBILE.CODE_TYPE_SELECT.QR' | translate}}
+    </button>
+    <button ion-button block outline (click)="goToAlphanumericCode()">
+        {{'MOBILE.CODE_TYPE_SELECT.ALPHANUMERIC' | translate}}
+    </button>
+</ion-footer>

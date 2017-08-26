@@ -10,6 +10,7 @@ import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 import { Users } from 'qmo_web/both/collections/auth/user.collection';
 import { WaiterCallDetail } from 'qmo_web/both/models/restaurant/waiter-call-detail.model';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 @Component({
   selector : 'payment-confirm-page',
@@ -33,17 +34,24 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
   private _totalPayment         : number = 0;
   private _ordersTotalPay       : number = 0;
 
-  /**
-   * PaymentConfirmPage constructor
-   * @param _translate 
-   * @param _params 
-   */
+   /**
+    * PaymentConfirmPage constructor
+    * @param _translate 
+    * @param _params 
+    * @param _alertCtrl 
+    * @param _loadingCtrl 
+    * @param _navCtrl 
+    * @param _toastCtrl 
+    * @param _userLanguageService 
+    */
   constructor( public _translate: TranslateService,
                public _params: NavParams,
                public _alertCtrl: AlertController,
                public _loadingCtrl: LoadingController,
                public _navCtrl: NavController,
-               private _toastCtrl: ToastController ) {
+               private _toastCtrl: ToastController,
+               private _userLanguageService: UserLanguageService ) {
+    _translate.setDefaultLang('en');
     this._call        = this._params.get('call');
     this._restauranId = this._call.restaurant_id;
     this._tableId     = this._call.table_id;
@@ -53,6 +61,7 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
    * ngOnInti Implementation
    */
   ngOnInit(){
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
     this._usersDetailSubscription = MeteorObservable.subscribe('getUsers').subscribe();
     this._tablesSubscription = MeteorObservable.subscribe('getTablesByRestaurant', this._restauranId).subscribe();
     this._currencySubscription = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', [ this._restauranId ] ).subscribe();
