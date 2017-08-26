@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { App, NavController, NavParams } from 'ionic-angular';
+import { App, AlertController, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -22,17 +22,22 @@ export class OptionsPage implements OnInit, OnDestroy {
   private _userName: string;
   private _imageProfile: string;
   private _userObservable;
-
-  /**
-   * OptionsPage constructor
-   * @param _navCtrl 
-   * @param _navParams 
-   * @param _app 
-   * @param _translate 
-   */
+   
+   /**
+    * OptionsPage constructor
+    * @param _navCtrl 
+    * @param _navParams 
+    * @param _app 
+    * @param _alertCtrl 
+    * @param _loadingCtrl 
+    * @param _translate 
+    * @param _userLanguageService 
+    */
   constructor(public _navCtrl: NavController, 
               public _navParams: NavParams, 
               public _app : App,
+              public _alertCtrl: AlertController,
+              public _loadingCtrl: LoadingController,
               private _translate: TranslateService,
               private _userLanguageService: UserLanguageService) {
     _translate.setDefaultLang('en');
@@ -116,11 +121,62 @@ export class OptionsPage implements OnInit, OnDestroy {
   }
 
   /**
+   * Function that allows show Signout comfirm dialog
+   * @param { any } _call 
+   */
+  showComfirmSignOut( _call : any) {
+    let btn_no  = this.itemNameTraduction('MOBILE.SIGN_OUT.NO_BTN'); 
+    let btn_yes = this.itemNameTraduction('MOBILE.SIGN_OUT.YES_BTN'); 
+    let title   = this.itemNameTraduction('MOBILE.SIGN_OUT.TITLE_CONFIRM'); 
+    let content = this.itemNameTraduction('MOBILE.SIGN_OUT.CONTENT_CONFIRM'); 
+
+    let prompt = this._alertCtrl.create({
+      title: title,
+      message: content,
+      buttons: [
+        {
+          text: btn_no,
+          handler: data => {
+          }
+        },
+        {
+          text: btn_yes,
+          handler: data => {
+            this.signOut();
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+  /**
    * User account sign out
    */
   signOut(){
-    this._app.getRootNav().setRoot(InitialComponent);
-    Meteor.logout();
+    let loading_msg = this.itemNameTraduction('MOBILE.SIGN_OUT.LOADING'); 
+    
+    let loading = this._loadingCtrl.create({
+      content: loading_msg
+    });
+    loading.present();
+    setTimeout(() => {
+      loading.dismiss();
+      this._app.getRootNav().setRoot(InitialComponent);
+      Meteor.logout();
+    }, 1500);
+  }
+
+  /**
+   * This function allow translate strings
+   * @param {string} _itemName 
+   */
+  itemNameTraduction(_itemName: string): string {
+    var wordTraduced: string;
+    this._translate.get(_itemName).subscribe((res: string) => {
+        wordTraduced = res;
+    });
+    return wordTraduced;
   }
 
   /**

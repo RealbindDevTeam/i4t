@@ -12,7 +12,8 @@
             <ion-avatar item-left>
                 <img src="{{_imageProfile}}">
             </ion-avatar>
-            <h2>{{user.username}}</h2>
+            <h2 *ngIf="user.username">{{user.username}}</h2>
+            <h2 *ngIf="user.profile.name">{{user.profile.name}}</h2>
         </ion-item>
     </ion-list>
 
@@ -29,6 +30,6 @@
 </ion-content>
 
 <ion-footer padding>
-    <button ion-button block outline (click)="signOut()">{{'MOBILE.SETTINGS.SIGN_OUT' | translate}}</button>
+    <button ion-button block outline (click)="showComfirmSignOut()">{{'MOBILE.SETTINGS.SIGN_OUT' | translate}}</button>
     <div showWhen="ios" style="height: 42px"></div>
 </ion-footer>

@@ -99,7 +99,9 @@
   </div>
 </ion-content>
 <ion-footer *ngIf="_showFooter" class="ion-footer-custom" padding>
-  <ion-label style="float: right; font-size: large; margin-top: 0px; font-weight: bold;">{{'MOBILE.SECTIONS.TOTAL' | translate}}{{_finalPrice}} {{_currencyCode}} </ion-label>
+  <div style="position: relative; width: 100%; text-align: right;">
+    <ion-label style="font-size: large; margin-top: 0px; font-weight: bold;">{{'MOBILE.SECTIONS.TOTAL' | translate}}{{_finalPrice}} {{_currencyCode}} </ion-label>
+  </div>
   <div>
     <button *ngIf="_showActionsBtn " style="float:left; width: 45%" ion-button outline (click)="deleteOrderItem()">{{'MOBILE.ITEM_EDIT.REMOVE' | translate}}</button>
     <button *ngIf="_showActionsBtn && _showCancelBtn" [disabled]="_disabledAddBtn" style="float: right; width: 45%" ion-button

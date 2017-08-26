@@ -30,10 +30,10 @@
                         <h3 *ngIf="pay.totalTip > 0">{{'MOBILE.PAYMENTS.TIP' | translate}}: {{pay.totalTip}} {{getCurrency(pay.currencyId)}}</h3>
                         <div style="margin-top: 9px;"></div>
                         <div showWhen="android" style="position: absolute; top: 0px; right: 10px;">
-                            <ion-toggle disabled checked="{{pay.received}}" (ionChange)="received(pay)"></ion-toggle>
+                            <ion-toggle checked="{{pay.received}}" (ionChange)="received(pay)"></ion-toggle>
                         </div>
                         <div showWhen="ios" style="position: absolute; top: 16px; right: 10px;">
-                            <ion-toggle disabled checked="{{pay.received}}" (ionChange)="received(pay)"></ion-toggle>
+                            <ion-toggle checked="{{pay.received}}" (ionChange)="received(pay)"></ion-toggle>
                         </div>
                     </div>
                 </ion-item-group>
