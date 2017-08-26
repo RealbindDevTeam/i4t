@@ -158,14 +158,11 @@ export class MenuListComponent implements OnInit, OnDestroy {
                 this._subcategories.subscribe(() => { this.buildCustomerMenu(); });
             });
         });
-
         this._currenciesSub = MeteorObservable.subscribe('getCurrenciesByRestaurantWork', Meteor.userId()).subscribe(() => {
             this._ngZone.run(() => {
                 this._currencyCode = Currencies.findOne({}).code + ' ';
             });
         });
-
-
         this._newOrderForm = new FormGroup({
             observations: new FormControl('', [Validators.maxLength(50)]),
             garnishFood: this._garnishFormGroup,
@@ -185,7 +182,8 @@ export class MenuListComponent implements OnInit, OnDestroy {
         if (this._additionsSub) { this._additionsSub.unsubscribe(); }
         //if (this._ordersSub) { this._ordersSub.unsubscribe(); }
         if (this._itemImagesSub) { this._itemImagesSub.unsubscribe(); }
-        //if (this._currenciesSub) { this._currenciesSub.unsubscribe(); }
+        if (this._currenciesSub) { this._currenciesSub.unsubscribe(); }
+        if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
     }
 
     /**
@@ -246,7 +244,7 @@ export class MenuListComponent implements OnInit, OnDestroy {
             if (this._additionsDetailFormGroup.contains(add._id)) {
                 this._additionsDetailFormGroup.controls[add._id].setValue('');
             } else {
-                let control: FormControl = new FormControl('', [Validators.minLength(1), Validators.maxLength(2)]);
+                let control: FormControl = new FormControl({ value: '', disabled: true }, [Validators.minLength(1), Validators.maxLength(2)]);
                 this._additionsDetailFormGroup.addControl(add._id, control);
             }
         });
@@ -527,21 +525,18 @@ export class MenuListComponent implements OnInit, OnDestroy {
      * Return addition information
      * @param {Addition} _pAddition
      */
-    /**
     getAdditionInformation(_pAddition: Addition): string {
         return _pAddition.name + ' - ' + _pAddition.restaurants.filter(r => r.restaurantId === this.restaurantId)[0].price + ' ';
     }
-     */
 
     /**
      * Return garnish food information
      * @param {GarnishFood} _pGarnishFood
      */
-    /**
+
     getGarnishFoodInformation(_pGarnishFood: GarnishFood): string {
         return _pGarnishFood.name + ' - ' + _pGarnishFood.restaurants.filter(r => r.restaurantId === this.restaurantId)[0].price + ' ';
     }
-     */
 
     /**
      * Return traduction
