@@ -158,21 +158,36 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
         let _lMessageUSer: string = this.itemNameTraduction( 'ORDER_PAYMENT_TRANS.THE_USER' );
         let _lMessageWantsToPay: string = this.itemNameTraduction( 'ORDER_PAYMENT_TRANS.WANTS_PAY' );
         let _lMessageAgree: string = this.itemNameTraduction( 'ORDER_PAYMENT_TRANS.AGREE' );
-        if( confirm( _lMessageUSer + this.getUserName( _pOrder.translateInfo.lastOrderOwner ) + _lMessageWantsToPay + _pOrder.code + _lMessageAgree ) ) {
-            let _lUser = _pOrder.translateInfo.lastOrderOwner;
-            Orders.update( { _id: _pOrder._id }, { $set: { creation_user: _lUser, modification_user: this._user, modification_date: new Date(), 
-                                                           'translateInfo.confirmedToTranslate': true, status: 'ORDER_STATUS.DELIVERED'
-                                                         } 
-                                                 } 
-                         );
-        } else {
-            let _lOrderTranslate: OrderTranslateInfo = { firstOrderOwner: _pOrder.translateInfo.firstOrderOwner, markedToTranslate: false, lastOrderOwner: '', confirmedToTranslate: false };
-            Orders.update( { _id: _pOrder._id }, { $set: { modification_user: this._user, modification_date: new Date(), 
-                                                           translateInfo: _lOrderTranslate, status: 'ORDER_STATUS.DELIVERED'
-                                                         } 
-                                                 } 
-                         );
-        }
+
+        this._dialogRef = this._dialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: 'Confirmar traslado de orden',
+                subtitle: '',
+                content: _lMessageUSer + this.getUserName( _pOrder.translateInfo.lastOrderOwner ) + _lMessageWantsToPay + _pOrder.code + _lMessageAgree,
+                buttonCancel: 'No',
+                buttonAccept: 'Si',
+                showCancel: true
+            }
+        });
+        this._dialogRef.afterClosed().subscribe(result => {
+            this._dialogRef = result;
+            if ( result.success ){
+                let _lUser = _pOrder.translateInfo.lastOrderOwner;
+                Orders.update( { _id: _pOrder._id }, { $set: { creation_user: _lUser, modification_user: this._user, modification_date: new Date(), 
+                                                               'translateInfo.confirmedToTranslate': true, status: 'ORDER_STATUS.DELIVERED'
+                                                             } 
+                                                     } 
+                             );
+            } else {
+                let _lOrderTranslate: OrderTranslateInfo = { firstOrderOwner: _pOrder.translateInfo.firstOrderOwner, markedToTranslate: false, lastOrderOwner: '', confirmedToTranslate: false };
+                Orders.update( { _id: _pOrder._id }, { $set: { modification_user: this._user, modification_date: new Date(), 
+                                                               translateInfo: _lOrderTranslate, status: 'ORDER_STATUS.DELIVERED'
+                                                             } 
+                                                     } 
+                             );
+            }
+        });
     }
 
     /**

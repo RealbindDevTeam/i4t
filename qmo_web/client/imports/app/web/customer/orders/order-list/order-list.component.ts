@@ -247,28 +247,42 @@ export class OrdersListComponent implements OnInit, OnDestroy {
             return;
         }
 
-        if (confirm(this.itemNameTraduction("ORDER_LIST.DELETE_ORDER"))) {
-            let _lOrderItemToremove: OrderItem = this._currentOrder.items.filter(o => _pItemId === o.itemId && o.index === this._orderItemIndex)[0];
-            let _lNewTotalPayment: number = this._currentOrder.totalPayment - _lOrderItemToremove.paymentItem;
-
-            Orders.update({ _id: this._currentOrder._id }, { $pull: { items: { itemId: _pItemId, index: this._orderItemIndex } } });
-            Orders.update({ _id: this._currentOrder._id },
-                {
-                    $set: {
-                        totalPayment: _lNewTotalPayment,
-                        modification_user: this._user,
-                        modification_date: new Date()
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: 'Eliminar Item de la Orden',
+                subtitle: '',
+                content: this.itemNameTraduction("ORDER_LIST.DELETE_ORDER"),
+                buttonCancel: 'No',
+                buttonAccept: 'Si',
+                showCancel: true
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if ( result.success ){
+                let _lOrderItemToremove: OrderItem = this._currentOrder.items.filter(o => _pItemId === o.itemId && o.index === this._orderItemIndex)[0];
+                let _lNewTotalPayment: number = this._currentOrder.totalPayment - _lOrderItemToremove.paymentItem;
+    
+                Orders.update({ _id: this._currentOrder._id }, { $pull: { items: { itemId: _pItemId, index: this._orderItemIndex } } });
+                Orders.update({ _id: this._currentOrder._id },
+                    {
+                        $set: {
+                            totalPayment: _lNewTotalPayment,
+                            modification_user: this._user,
+                            modification_date: new Date()
+                        }
                     }
-                }
-            );
-            this._showOrderItemDetail = false;
-            this._currentOrder = Orders.findOne({ _id: this._currentOrder._id });
-            this.viewItemDetail(true);
-            let _lMessage: string = this.itemNameTraduction('ORDER_LIST.ITEM_DELETED');
-            this.snackBar.open(_lMessage, '', {
-                duration: 2500
-            });
-        }
+                );
+                this._showOrderItemDetail = false;
+                this._currentOrder = Orders.findOne({ _id: this._currentOrder._id });
+                this.viewItemDetail(true);
+                let _lMessage: string = this.itemNameTraduction('ORDER_LIST.ITEM_DELETED');
+                this.snackBar.open(_lMessage, '', {
+                    duration: 2500
+                });
+            }
+        });
     }
 
     /**
@@ -282,27 +296,41 @@ export class OrdersListComponent implements OnInit, OnDestroy {
             return;
         }
 
-        if (confirm(this.itemNameTraduction("ORDER_LIST.DELETE_ADDITION_CONFIRM"))) {
-            let _lOrderAdditionToremove: OrderAddition = this._currentOrder.additions.filter(ad => ad.additionId === _pAdditionId)[0];
-            let _lNewTotalPayment: number = this._currentOrder.totalPayment - _lOrderAdditionToremove.paymentAddition;
-
-            Orders.update({ _id: this._currentOrder._id }, { $pull: { additions: { additionId: _pAdditionId } } });
-            Orders.update({ _id: this._currentOrder._id },
-                {
-                    $set: {
-                        totalPayment: _lNewTotalPayment,
-                        modification_user: this._user,
-                        modification_date: new Date()
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: 'Eliminar adicion de la Orden',
+                subtitle: '',
+                content: this.itemNameTraduction("ORDER_LIST.DELETE_ADDITION_CONFIRM"),
+                buttonCancel: 'No',
+                buttonAccept: 'Si',
+                showCancel: true
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if ( result.success ){
+                let _lOrderAdditionToremove: OrderAddition = this._currentOrder.additions.filter(ad => ad.additionId === _pAdditionId)[0];
+                let _lNewTotalPayment: number = this._currentOrder.totalPayment - _lOrderAdditionToremove.paymentAddition;
+    
+                Orders.update({ _id: this._currentOrder._id }, { $pull: { additions: { additionId: _pAdditionId } } });
+                Orders.update({ _id: this._currentOrder._id },
+                    {
+                        $set: {
+                            totalPayment: _lNewTotalPayment,
+                            modification_user: this._user,
+                            modification_date: new Date()
+                        }
                     }
-                }
-            );
-            this._currentOrder = Orders.findOne({ _id: this._currentOrder._id });
-            this.viewAdditionDetail(true);
-            let _lMessage: string = this.itemNameTraduction('ORDER_LIST.ADDITION_DELETED');
-            this.snackBar.open(_lMessage, '', {
-                duration: 2500
-            });
-        }
+                );
+                this._currentOrder = Orders.findOne({ _id: this._currentOrder._id });
+                this.viewAdditionDetail(true);
+                let _lMessage: string = this.itemNameTraduction('ORDER_LIST.ADDITION_DELETED');
+                this.snackBar.open(_lMessage, '', {
+                    duration: 2500
+                });
+            }
+        });
     }
 
     /**
@@ -720,21 +748,35 @@ export class OrdersListComponent implements OnInit, OnDestroy {
             return;
         }
 
-        if (confirm(this.itemNameTraduction("ORDER_LIST.CANCEL_ORDER_CONFIRM"))) {
-            if (_pOrder.status === 'ORDER_STATUS.REGISTERED') {
-                Orders.update({ _id: _pOrder._id }, {
-                    $set: {
-                        status: 'ORDER_STATUS.CANCELED', modification_user: this._user,
-                        modification_date: new Date()
-                    }
-                }
-                );
-                this._showDetails = false;
-            } else {
-                this.openDialog(this.titleMsg, '', this.itemNameTraduction("ORDER_LIST.ORDER_CANT_CANCEL"), '', this.btnAcceptLbl, false);
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: 'Cancelar Orden',
+                subtitle: '',
+                content: this.itemNameTraduction("ORDER_LIST.CANCEL_ORDER_CONFIRM"),
+                buttonCancel: 'No',
+                buttonAccept: 'Si',
+                showCancel: true
             }
-            this.viewItemDetail(true);
-        }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if ( result.success ){
+                if (_pOrder.status === 'ORDER_STATUS.REGISTERED') {
+                    Orders.update({ _id: _pOrder._id }, {
+                        $set: {
+                            status: 'ORDER_STATUS.CANCELED', modification_user: this._user,
+                            modification_date: new Date()
+                        }
+                    }
+                    );
+                    this._showDetails = false;
+                } else {
+                    this.openDialog(this.titleMsg, '', this.itemNameTraduction("ORDER_LIST.ORDER_CANT_CANCEL"), '', this.btnAcceptLbl, false);
+                }
+                this.viewItemDetail(true);
+            }
+        });
     }
 
     /**
@@ -749,34 +791,48 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         }
 
         let _lItemsIsAvailable: boolean = true;
-        if (confirm(this.itemNameTraduction("ORDER_LIST.CONFIRM_ORDER_MESSAGE"))) {
-            if (_pOrder.status === 'ORDER_STATUS.REGISTERED') {
-                let _lOrderItems: OrderItem[] = _pOrder.items;
-                _lOrderItems.forEach((it) => {
-                    let _lItem: Item = Items.findOne({ _id: it.itemId });
-                    let aux = _lItem.restaurants.find(element => element.restaurantId === this.restaurantId);
-                    if (aux.isAvailable === false) {
-                        _lItemsIsAvailable = false
-                    }
-                });
-                if (_lItemsIsAvailable) {
-                    Orders.update({ _id: _pOrder._id }, {
-                        $set: {
-                            status: 'ORDER_STATUS.IN_PROCESS', modification_user: this._user,
-                            modification_date: new Date()
-                        }
-                    }
-                    );
-                    this._showDetails = false;
-                } else {
-                    this.openDialog(this.titleMsg, '', this.itemNameTraduction("ORDER_LIST.ORDER_ITEMS_UNAVAILABLE"), '', this.btnAcceptLbl, false);
-                }
-            } else {
-                this.openDialog(this.titleMsg, '', this.itemNameTraduction("ORDER_LIST.ORDER_CANT_CONFIRM"), '', this.btnAcceptLbl, false);
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: 'Confirmar Orden',
+                subtitle: '',
+                content: this.itemNameTraduction("ORDER_LIST.CONFIRM_ORDER_MESSAGE"),
+                buttonCancel: 'No',
+                buttonAccept: 'Si',
+                showCancel: true
             }
-            this.viewItemDetail(true);
-            this._orderCustomerIndex = -1;
-        }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if ( result.success ){
+                if (_pOrder.status === 'ORDER_STATUS.REGISTERED') {
+                    let _lOrderItems: OrderItem[] = _pOrder.items;
+                    _lOrderItems.forEach((it) => {
+                        let _lItem: Item = Items.findOne({ _id: it.itemId });
+                        let aux = _lItem.restaurants.find(element => element.restaurantId === this.restaurantId);
+                        if (aux.isAvailable === false) {
+                            _lItemsIsAvailable = false
+                        }
+                    });
+                    if (_lItemsIsAvailable) {
+                        Orders.update({ _id: _pOrder._id }, {
+                            $set: {
+                                status: 'ORDER_STATUS.IN_PROCESS', modification_user: this._user,
+                                modification_date: new Date()
+                            }
+                        }
+                        );
+                        this._showDetails = false;
+                    } else {
+                        this.openDialog(this.titleMsg, '', this.itemNameTraduction("ORDER_LIST.ORDER_ITEMS_UNAVAILABLE"), '', this.btnAcceptLbl, false);
+                    }
+                } else {
+                    this.openDialog(this.titleMsg, '', this.itemNameTraduction("ORDER_LIST.ORDER_CANT_CONFIRM"), '', this.btnAcceptLbl, false);
+                }
+                this.viewItemDetail(true);
+                this._orderCustomerIndex = -1;
+            }
+        });
     }
 
     /**

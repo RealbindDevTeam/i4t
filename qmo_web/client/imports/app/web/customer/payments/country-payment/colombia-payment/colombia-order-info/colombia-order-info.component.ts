@@ -205,16 +205,30 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
         }
 
         let _lMessage:string = this.itemNameTraduction( 'PAYMENTS.COLOMBIA.RETURN_ORDER_USER' );
-        if( confirm( _lMessage + this.getUserName( _pOrder.translateInfo.firstOrderOwner ) + ' ?' ) ) {
-            let _lOrderTranslateInfo: OrderTranslateInfo = { firstOrderOwner: _pOrder.translateInfo.firstOrderOwner, confirmedToTranslate: false, 
-                                                             lastOrderOwner: '', markedToTranslate: false };
-            Orders.update( { _id: _pOrder._id }, { $set: { creation_user: _pOrder.translateInfo.firstOrderOwner,
-                                                           modification_user: this._user,
-                                                           translateInfo: _lOrderTranslateInfo 
-                                                         } 
-                                                 }
-                         );
-        }
+        this._mdDialogRef = this._dialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: 'Devolver Orden',
+                subtitle: '',
+                content:_lMessage + this.getUserName( _pOrder.translateInfo.firstOrderOwner ) + ' ?',
+                buttonCancel: 'No',
+                buttonAccept: 'Si',
+                showCancel: true
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if ( result.success ){
+                let _lOrderTranslateInfo: OrderTranslateInfo = { firstOrderOwner: _pOrder.translateInfo.firstOrderOwner, confirmedToTranslate: false, 
+                                                                 lastOrderOwner: '', markedToTranslate: false };
+                Orders.update( { _id: _pOrder._id }, { $set: { creation_user: _pOrder.translateInfo.firstOrderOwner,
+                                modification_user: this._user,
+                                translateInfo: _lOrderTranslateInfo 
+                                } 
+                        }
+                );
+            }
+        });
     }
 
     /**
