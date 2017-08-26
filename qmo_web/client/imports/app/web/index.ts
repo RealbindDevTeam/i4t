@@ -79,6 +79,7 @@ import { AlertConfirmComponent } from './general/alert-confirm/alert-confirm.com
 import { UserLanguageService } from '../shared/services/user-language.service';
 import { ItemEnableSupComponent } from './administration/items/items-enable-sup/items-enable-sup.component';
 import { EnableConfirmComponent } from './administration/items/items-enable/enable-confirm/enable-confirm.component';
+import { MenuListComponent } from './chef/menu-list/menu-list.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -132,7 +133,8 @@ export const WEB_DECLARATIONS = [
     CustomerPaymentsHistoryComponent,
     ColombiaPayInfoComponent,
     AdminSignupComponent,
-    ItemEnableSupComponent
+    ItemEnableSupComponent,
+    MenuListComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [
