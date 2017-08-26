@@ -164,7 +164,7 @@ export class AdditionComponent implements OnInit, OnDestroy{
      */
     addAddition():void{
         if( !Meteor.userId() ){
-            var error : string = 'Please log in to add a restaurant';
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
@@ -223,6 +223,12 @@ export class AdditionComponent implements OnInit, OnDestroy{
      * @param {Addition} _addition 
      */
     updateStatus( _addition:Addition ):void{
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+        
         Additions.update( _addition._id, {
             $set: {
                 is_active: !_addition.is_active,

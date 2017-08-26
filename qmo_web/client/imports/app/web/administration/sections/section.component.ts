@@ -57,8 +57,7 @@ export class SectionComponent implements OnInit, OnDestroy {
                  private _translate: TranslateService, 
                  private _ngZone: NgZone, 
                  private _router: Router,
-                 private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog ){
+                 private _userLanguageService: UserLanguageService ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
@@ -120,7 +119,7 @@ export class SectionComponent implements OnInit, OnDestroy {
      */
     addSection():void{
         if( !Meteor.userId() ){
-            var error : string = 'Please log in to add a restaurant';
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
@@ -161,6 +160,12 @@ export class SectionComponent implements OnInit, OnDestroy {
      * @param {Section} _section
      */
     updateStatus( _section:Section ):void{
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+
         Sections.update(_section._id,{
             $set: {
                 is_active: !_section.is_active,
@@ -222,7 +227,7 @@ export class SectionComponent implements OnInit, OnDestroy {
     */
     openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
         
-        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+        this._mdDialogRef = this._dialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
                 title: title,

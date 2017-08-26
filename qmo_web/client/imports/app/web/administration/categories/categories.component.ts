@@ -108,7 +108,7 @@ export class CategoryComponent implements OnInit, OnDestroy{
      */
     addCategory():void{
         if( !Meteor.userId() ){
-            var error : string = 'Please log in to add a restaurant';
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
@@ -171,6 +171,12 @@ export class CategoryComponent implements OnInit, OnDestroy{
      * @param {Category} _category
      */
     updateStatus( _category:Category ):void{
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+        
         Categories.update( _category._id,{
             $set: {
                 is_active: !_category.is_active,

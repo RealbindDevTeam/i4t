@@ -34,6 +34,9 @@
     "VALUE": "Value",
     "CHOOSE_A_DATE" : "Choose a date",
     "UPLOAD_IMG_ERROR" : "Upload image error. Only accept .png, .jpg, .jpeg files.",
+    "LOGIN_SYSTEM_OPERATIONS_MSG": "Please log in to perform system operations",
+    "YES": "Yes",
+    "NO": "No",
     "ORDER_STATUS": {
         "REGISTERED": "Registered",
         "IN_PROCESS": "In Process",
@@ -710,7 +713,11 @@
         "ITEM_DELETED": "Item Deleted from Order",
         "ADDITION_DELETED": "Addition Deleted from Order",
         "ITEM_EDITED": "Item Edited Correctly",
-        "ADDITION_EDITED": "Edited Adition Correctly"
+        "ADDITION_EDITED": "Edited Adition Correctly",
+        "DELETE_ITEM_DLG": "Remove Order Item",
+        "DELETE_ADITION_DLG": "Delete Order Addition",
+        "CANCEL_ORDER_DLG": "Cancel Order",
+        "CONFIRM_ORDER_DLG": "Confirm Order"
     },
     "PAYMENTS": {
         "THERE_IS_NOT_REST": "You are not in a restaurant",
@@ -761,7 +768,8 @@
             "TOTAL_ORDERS": "Total Orders",
             "TOTAL_TIP": "Total Tip",
             "PRICE": "Price",
-            "QUANT": "Quant. "
+            "QUANT": "Quant. ",
+            "RETURN_ORDER_DLG": "Return Order"
         }
     },
     "WAITER_CALL": {
@@ -821,7 +829,10 @@
         "TRY_AGAIN": "Please try again",
         "MSG_1": "You can sort what you want",
         "NO_ORDERS": "You do not have any orders yet, you can create a new order",
-        "ORDER": "Order"
+        "ORDER": "Order",
+        "TABLE_NO_ACTIVE": "The restaurant does not have this table active for the service of Iurest",
+        "TABLE_NOT_EXISTS": "The table does not exist. Please check the code.",
+        "IUREST_NO_ACTIVE": "The restaurant does not have the Iurest service active. It is not possible to enter."
     },
     "MONTHLY_PAYMENT": {
         "TITLE": "Iurest service invoicing",
@@ -844,12 +855,12 @@
         "FREE_DAYS_MSG": "We do not charge this month, enjoy it"
     },
     "ORDER_PAYMENT_TRANS": {
-        "ORDER_TO_CONFIRM": "When someone accompanying your table wishes to pay one of your orders, you must confirm this process. Here you can see the orders that other users wish to pay for you.",
+        "ORDER_TO_CONFIRM": "Confirm those orders that other users wish to pay for you.",
         "NO_ORDERS": "Orders Not Found",
         "ORDERS": "Order",
         "TOTAL": "Total",
         "CONFIRM": "Confirm",
-        "PENDING_ORDERS": "If you want to pay for orders from a companion of your table, this section will show that there are orders that are pending to confirm to add to your payment.",
+        "PENDING_ORDERS": "Look at the orders that are pending to be confirmed to add to your payment.",
         "CONSULT_TABLE_ORDERS": "Consult Orders",
         "CONSULT_TABLE_ORDERS_TITLE": "Table Orders",
         "CONSULT_TABLE_ORDERS_SUBTITLE_1": "Check the orders of your companions",
@@ -858,7 +869,8 @@
         "ORDERS_TO_PAY_TITLE": "Pending orders to add to your payment",
         "THE_USER": "The user ",
         "WANTS_PAY": " wants to pay the order ",
-        "AGREE": ", Do you agree?"
+        "AGREE": ", Do you agree?",
+        "DIALOG_TITLE": "Confirm Order Transfer"
     },
     "ORDER_TRANS": {
         "ORDERS": "Order",
@@ -873,7 +885,8 @@
         "ADDITION": "Addition",
         "ORDER_PAY": "Do you want to pay for the order ",
         "USER_CONFIRM": "The user who created the order must confirm that you will pay",
-        "NO_PAY_POSSIBLE": "It is not possible to pay for an order that has not yet been delivered"
+        "NO_PAY_POSSIBLE": "It is not possible to pay for an order that has not yet been delivered",
+        "PAY_ORDER_DLG": "Pay Order"
     },
     "PAYMENT_CONFIRM": {
         "TABLE": "Table ",

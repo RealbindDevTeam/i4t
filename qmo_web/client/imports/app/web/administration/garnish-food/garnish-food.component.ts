@@ -164,7 +164,7 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
      */
     addGarnishFood():void{
         if( !Meteor.userId() ){
-            var error : string = 'Please log in to add a restaurant';
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
@@ -223,6 +223,12 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
      * @param {GarnishFood} _garnishFood
      */
     updateStatus( _garnishFood: GarnishFood ):void {
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+        
         GarnishFoodCol.update( _garnishFood._id, {
             $set: {
                 is_active: !_garnishFood.is_active,

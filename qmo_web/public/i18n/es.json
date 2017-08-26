@@ -34,6 +34,9 @@
     "SIGN_OUT": "Cerrar Sesión",
     "CHOOSE_A_DATE" : "Elige una fecha",
     "UPLOAD_IMG_ERROR" : "Error de carga de la imagen. Solo acepta .png, .jpg, .jpeg files.",
+    "LOGIN_SYSTEM_OPERATIONS_MSG": "Por favor inicie sesión para realizar operaciones en el sistema",
+    "YES": "Si",
+    "NO": "No",
     "ORDER_STATUS": {
         "REGISTERED": "Registrado",
         "IN_PROCESS": "En Proceso",
@@ -710,7 +713,11 @@
         "ITEM_DELETED": "Item Eliminado de la Orden",
         "ADDITION_DELETED": "Adicion Eliminada de la Orden",
         "ITEM_EDITED": "Item Editado Correctamente",
-        "ADDITION_EDITED": "Adicion Editada Correctamente"
+        "ADDITION_EDITED": "Adicion Editada Correctamente",
+        "DELETE_ITEM_DLG": "Eliminar Item de la Orden",
+        "DELETE_ADITION_DLG": "Eliminar adicion de la Orden",
+        "CANCEL_ORDER_DLG": "Cancelar Orden",
+        "CONFIRM_ORDER_DLG": "Confirmar Orden"
     },
     "PAYMENTS": {
         "THERE_IS_NOT_REST": "No te encuentras en un restaurante",
@@ -761,7 +768,8 @@
             "TOTAL_ORDERS": "Total Ordenes",
             "TOTAL_TIP": "Total Propina",
             "PRICE": "Precio",
-            "QUANT": "Cant. "
+            "QUANT": "Cant. ",
+            "RETURN_ORDER_DLG": "Devolver Orden"
         }
     },
     "WAITER_CALL": {
@@ -821,7 +829,10 @@
         "TRY_AGAIN": "Por favor intenta nuevamente",
         "MSG_1": "Puedes ordenar lo que deseas",
         "NO_ORDERS": "Aún no tienes ordenes, puedes crear una orden nueva",
-        "ORDER": "Ordenar"
+        "ORDER": "Ordenar",
+        "TABLE_NO_ACTIVE": "El restaurante no tiene esta mesa activa para el servicio de Iurest",
+        "TABLE_NOT_EXISTS": "La Mesa no Existe. Por favor verifique el codigo.",
+        "IUREST_NO_ACTIVE": "El Restaurante no tiene el servicio de Iurest activo. No es posible ingresar."
     },
     "MONTHLY_PAYMENT": {
         "TITLE": "Pago del servicio mensual de Iurest",
@@ -844,12 +855,12 @@
         "FREE_DAYS_MSG": "No te cobramos este mes, disfrutalo"
     },
     "ORDER_PAYMENT_TRANS": {
-        "ORDER_TO_CONFIRM": "Cuando algun acompañante de tu mesa desea pagar una de tus ordenes, debes confirmar este proceso. Aca podras ver aquellas ordenes que otros usuarios desean pagar por ti.",
+        "ORDER_TO_CONFIRM": "Confirma aquellas ordenes que otros usuarios desean pagar por ti.",
         "NO_ORDERS": "No Se Encuentran Ordenes",
         "ORDERS": "Orden",
         "TOTAL": "Total",
         "CONFIRM": "Confirmar",
-        "PENDING_ORDERS": "Si deseas pagar ordenes de algun acompañante de tu mesa, esta seccion mostrara aquellas ordenes que se encuentran pendientes por confirmar para agregar a tu pago.",
+        "PENDING_ORDERS": "Mira las ordenes que se encuentran pendientes por confirmar para agregar a tu pago.",
         "CONSULT_TABLE_ORDERS": "Consultar Ordenes",
         "CONSULT_TABLE_ORDERS_TITLE": "Ordenes de la Mesa",
         "CONSULT_TABLE_ORDERS_SUBTITLE_1": "Consulta las ordenes de tus acompañantes",
@@ -858,7 +869,8 @@
         "ORDERS_TO_PAY_TITLE": "Ordenes pendientes para agregar a tu pago",
         "THE_USER": "El usuario ",
         "WANTS_PAY": " desea pagar la orden ",
-        "AGREE": ", usted esta de acuerdo?"
+        "AGREE": ", usted esta de acuerdo?",
+        "DIALOG_TITLE": "Confirmar Traslado de Orden"
     },
     "ORDER_TRANS": {
         "ORDERS": "Orden",
@@ -873,7 +885,8 @@
         "ADDITION": "Adicion",
         "ORDER_PAY": "Desea realizar el pago de la orden ",
         "USER_CONFIRM": "El usuario que creo la orden debe confirmar que tu la pagaras",
-        "NO_PAY_POSSIBLE": "No es posible pagar una orden que no se haya entregado aun"
+        "NO_PAY_POSSIBLE": "No es posible pagar una orden que no se haya entregado aun",
+        "PAY_ORDER_DLG": "Pagar Orden"
     },
     "PAYMENT_CONFIRM": {
         "TABLE": "Mesa ",

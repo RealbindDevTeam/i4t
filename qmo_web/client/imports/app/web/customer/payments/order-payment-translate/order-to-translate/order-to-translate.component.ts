@@ -144,22 +144,42 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
      * @param {Order} _pOrder
      */
     markOrderToPay( _pOrder: Order ):void{
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+        
         let _lMessagePay:string = this.itemNameTraduction( 'ORDER_TRANS.ORDER_PAY' );
         let _lMessageUser: string = this.itemNameTraduction( 'ORDER_TRANS.USER_CONFIRM' );
         let _lMessageNoPay: string = this.itemNameTraduction( 'ORDER_TRANS.NO_PAY_POSSIBLE' );
-        if( confirm( _lMessagePay + _pOrder.code + '?' ) ) {
-            if( _pOrder.status === 'ORDER_STATUS.DELIVERED' ){
-                let _lOrderTranslate: OrderTranslateInfo = { firstOrderOwner: _pOrder.creation_user, markedToTranslate: true, lastOrderOwner: this._user, confirmedToTranslate: false };
-                Orders.update( { _id: _pOrder._id }, { $set: { status: 'ORDER_STATUS.PENDING_CONFIRM', modification_user: this._user,
-                                                               modification_date: new Date(), translateInfo: _lOrderTranslate 
-                                                             } 
-                                                     } 
-                             );
-                this.openDialog(this.titleMsg, '', _lMessageUser, '', this.btnAcceptLbl, false);
-            }else {
-                this.openDialog(this.titleMsg, '', _lMessageNoPay, '', this.btnAcceptLbl, false);
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: this.itemNameTraduction( 'ORDER_TRANS.PAY_ORDER_DLG' ),
+                subtitle: '',
+                content:_lMessagePay + _pOrder.code + '?',
+                buttonCancel: this.itemNameTraduction( 'NO' ),
+                buttonAccept: this.itemNameTraduction( 'YES' ),
+                showCancel: true
             }
-        }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if ( result.success ){
+                if( _pOrder.status === 'ORDER_STATUS.DELIVERED' ){
+                    let _lOrderTranslate: OrderTranslateInfo = { firstOrderOwner: _pOrder.creation_user, markedToTranslate: true, lastOrderOwner: this._user, confirmedToTranslate: false };
+                    Orders.update( { _id: _pOrder._id }, { $set: { status: 'ORDER_STATUS.PENDING_CONFIRM', modification_user: this._user,
+                                                                   modification_date: new Date(), translateInfo: _lOrderTranslate 
+                                                                 } 
+                                                         } 
+                                 );
+                    this.openDialog(this.titleMsg, '', _lMessageUser, '', this.btnAcceptLbl, false);
+                }else {
+                    this.openDialog(this.titleMsg, '', _lMessageNoPay, '', this.btnAcceptLbl, false);
+                }
+            }
+        });
     }
 
     /**

@@ -14,6 +14,7 @@ import { Currency } from '../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../both/collections/general/currency.collection';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
+import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './item.component.html';
 import style from './item.component.scss';
@@ -34,6 +35,8 @@ export class ItemComponent implements OnInit, OnDestroy {
     private _restaurants        : Observable<Restaurant[]>;
 
     public _dialogRef           : MdDialogRef<any>;
+    private titleMsg            : string;
+    private btnAcceptLbl        : string;
 
     /**
      * ItemComponent contructor
@@ -52,6 +55,8 @@ export class ItemComponent implements OnInit, OnDestroy {
                  private _userLanguageService: UserLanguageService ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -107,6 +112,12 @@ export class ItemComponent implements OnInit, OnDestroy {
      * @param {Item} _item
      */
     updateStatus( _item: Item ):void {
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+
         Items.update( _item._id, {
             $set: {
                 is_active: !_item.is_active,
@@ -168,6 +179,36 @@ export class ItemComponent implements OnInit, OnDestroy {
         } else{
             return '/images/default-plate.png';
         }
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._dialogRef = this._dialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._dialogRef.afterClosed().subscribe(result => {
+            this._dialog = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**
