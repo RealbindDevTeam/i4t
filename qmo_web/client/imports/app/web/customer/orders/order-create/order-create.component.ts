@@ -303,6 +303,12 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * @param {string} _pItemToInsert 
      */
     AddItemToOrder(_pItemToInsert: string): void {
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+
         if (this._newOrderForm.valid) {
             let _lOrderItemIndex: number = 0;
             let _lOrder: Order = Orders.collection.find({ creation_user: Meteor.userId() }).fetch()[0];
@@ -539,6 +545,12 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * Add Additions to Order
      */
     AddAdditionsToOrder(): void {
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+        
         let _lOrderAdditionsToInsert: OrderAddition[] = [];
         let _lAdditionsPrice: number = 0;
         let arrAdd: any[] = Object.keys(this._additionsDetailFormGroup.value);

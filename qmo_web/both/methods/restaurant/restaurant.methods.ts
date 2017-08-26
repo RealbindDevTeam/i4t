@@ -88,40 +88,43 @@ Meteor.methods({
     getRestaurantByQRCode: function (_qrcode: string, _userId: string) {
         let _table: Table = Tables.collection.findOne({ QR_code: _qrcode });
         let _restaurant: Restaurant;
-
+        
         if (_table) {
-            if (_table.status === 'BUSY') {
-                UserDetails.collection.update({ user_id: _userId },
-                    {
-                        $set: {
-                            current_table: _table._id,
-                            current_restaurant: _table.restaurantId
-                        }
+            _restaurant = Restaurants.collection.findOne({ _id: _table.restaurantId });
+            if(_restaurant.isActive){
+                if (_table.status === 'BUSY') {
+                    UserDetails.collection.update({ user_id: _userId },
+                        {
+                            $set: {
+                                current_table: _table._id,
+                                current_restaurant: _table.restaurantId
+                            }
+                        });
+                    Tables.collection.update({ QR_code: _qrcode }, { $set: { amount_people: (_table.amount_people + 1) } });
+                } else if( _table.status === 'FREE' ) {
+                    Tables.collection.update({ QR_code: _qrcode }, { $set: { status: 'BUSY', amount_people: 1 } });
+                    Accounts.collection.insert({
+                        creation_date: new Date(),
+                        creation_user: _userId,
+                        restaurantId: _table.restaurantId,
+                        tableId: _table._id,
+                        status: 'OPEN',
+                        total_payment: 0
                     });
-                Tables.collection.update({ QR_code: _qrcode }, { $set: { amount_people: (_table.amount_people + 1) } });
-                _restaurant = Restaurants.collection.findOne({ _id: _table.restaurantId });
-            } else if( _table.status === 'FREE' ) {
-                Tables.collection.update({ QR_code: _qrcode }, { $set: { status: 'BUSY', amount_people: 1 } });
-                Accounts.collection.insert({
-                    creation_date: new Date(),
-                    creation_user: _userId,
-                    restaurantId: _table.restaurantId,
-                    tableId: _table._id,
-                    status: 'OPEN',
-                    total_payment: 0
-                });
-                UserDetails.collection.update({ user_id: _userId },
-                    {
-                        $set: {
-                            current_table: _table._id,
-                            current_restaurant: _table.restaurantId
-                        }
-                    });
-                _restaurant = Restaurants.collection.findOne({ _id: _table.restaurantId });
+                    UserDetails.collection.update({ user_id: _userId },
+                        {
+                            $set: {
+                                current_table: _table._id,
+                                current_restaurant: _table.restaurantId
+                            }
+                        });
+                }
+                return _restaurant;
+            } else {
+                throw new Meteor.Error('200');
             }
-            return _restaurant;
         } else {
-            throw new Meteor.Error('400', 'La mesa solicitada no existe');
+            throw new Meteor.Error('400');
         }
     },
 

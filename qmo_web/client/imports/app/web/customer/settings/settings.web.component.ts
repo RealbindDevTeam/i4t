@@ -151,6 +151,12 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
      * @param _languageCode 
      */
     editUserDetail(_userName : any, _firstName : any, _lastName : any, _languageCode : any):void {
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+        
         if(this.validateUserName(_userName)){
             Users.update(
                 {_id: Meteor.userId()}, 

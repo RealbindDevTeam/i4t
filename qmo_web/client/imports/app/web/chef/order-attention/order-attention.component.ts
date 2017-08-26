@@ -3,6 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Order, OrderItem } from '../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../both/collections/restaurant/order.collection';
@@ -14,6 +15,7 @@ import { GarnishFood } from '../../../../../../both/models/administration/garnis
 import { GarnishFoodCol } from '../../../../../../both/collections/administration/garnish-food.collection';
 import { Addition } from '../../../../../../both/models/administration/addition.model';
 import { Additions } from '../../../../../../both/collections/administration/addition.collection';
+import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './order-attention.component.html';
 import style from './order-attention.component.scss';
@@ -42,6 +44,9 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     private _showDetails                    : boolean = false;
     private _loading                        : boolean;
     private _showDetailsInProcess           : boolean = false;
+    private titleMsg                        : string;
+    private btnAcceptLbl                    : string;
+    public _dialogRef                       : MdDialogRef<any>;
 
     /**
      * OrderAttentionComponent Constructor
@@ -51,9 +56,12 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
      */
     constructor( private _translate: TranslateService, 
                  private _ngZone: NgZone,
-                 private _userLanguageService: UserLanguageService ) {
+                 private _userLanguageService: UserLanguageService,
+                 protected _mdDialog: MdDialog ) {
                     _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
                     _translate.setDefaultLang( 'en' );
+                    this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+                    this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -113,6 +121,12 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
      * @param {Order} _pOrder 
      */
     setPreparedState( _pOrder: Order ):void{
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+
         this._showDetailsInProcess = false;
         var restaurant_id = _pOrder.restaurantId;
         var table_id = _pOrder.tableId;
@@ -140,6 +154,36 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
             this._loading = false;
           });
         }, 1500);
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._dialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._dialogRef.afterClosed().subscribe(result => {
+            this._dialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
     
     /**

@@ -115,7 +115,7 @@ export class PromotionComponent implements OnInit, OnDestroy {
      */
     addPromotion():void{
         if( !Meteor.userId() ){
-            var error : string = 'Please log in to add a restaurant';
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
@@ -164,6 +164,12 @@ export class PromotionComponent implements OnInit, OnDestroy {
      * @param {Promotion} _promotion
      */
     updateStatus( _promotion:Promotion ):void {
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+        
         Promotions.update( _promotion._id, {
             $set: {
                 is_active: !_promotion.is_active,

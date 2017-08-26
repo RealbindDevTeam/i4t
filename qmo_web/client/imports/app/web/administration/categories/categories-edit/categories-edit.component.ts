@@ -98,7 +98,7 @@ export class CategoriesEditComponent implements OnInit, OnDestroy {
      */
     editCategory():void{
         if( !Meteor.userId() ){
-            var error : string = 'Please log in to add a restaurant';
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }

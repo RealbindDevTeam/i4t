@@ -241,28 +241,48 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {string} _pItemId 
      */
     deleteOrderItem(_pItemId: string): void {
-        if (confirm(this.itemNameTraduction("ORDER_LIST.DELETE_ORDER"))) {
-            let _lOrderItemToremove: OrderItem = this._currentOrder.items.filter(o => _pItemId === o.itemId && o.index === this._orderItemIndex)[0];
-            let _lNewTotalPayment: number = this._currentOrder.totalPayment - _lOrderItemToremove.paymentItem;
-
-            Orders.update({ _id: this._currentOrder._id }, { $pull: { items: { itemId: _pItemId, index: this._orderItemIndex } } });
-            Orders.update({ _id: this._currentOrder._id },
-                {
-                    $set: {
-                        totalPayment: _lNewTotalPayment,
-                        modification_user: this._user,
-                        modification_date: new Date()
-                    }
-                }
-            );
-            this._showOrderItemDetail = false;
-            this._currentOrder = Orders.findOne({ _id: this._currentOrder._id });
-            this.viewItemDetail(true);
-            let _lMessage: string = this.itemNameTraduction('ORDER_LIST.ITEM_DELETED');
-            this.snackBar.open(_lMessage, '', {
-                duration: 2500
-            });
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
         }
+
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: this.itemNameTraduction( 'ORDER_LIST.DELETE_ITEM_DLG' ),
+                subtitle: '',
+                content: this.itemNameTraduction("ORDER_LIST.DELETE_ORDER"),
+                buttonCancel: this.itemNameTraduction( 'NO' ),
+                buttonAccept: this.itemNameTraduction( 'YES' ),
+                showCancel: true
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if ( result.success ){
+                let _lOrderItemToremove: OrderItem = this._currentOrder.items.filter(o => _pItemId === o.itemId && o.index === this._orderItemIndex)[0];
+                let _lNewTotalPayment: number = this._currentOrder.totalPayment - _lOrderItemToremove.paymentItem;
+    
+                Orders.update({ _id: this._currentOrder._id }, { $pull: { items: { itemId: _pItemId, index: this._orderItemIndex } } });
+                Orders.update({ _id: this._currentOrder._id },
+                    {
+                        $set: {
+                            totalPayment: _lNewTotalPayment,
+                            modification_user: this._user,
+                            modification_date: new Date()
+                        }
+                    }
+                );
+                this._showOrderItemDetail = false;
+                this._currentOrder = Orders.findOne({ _id: this._currentOrder._id });
+                this.viewItemDetail(true);
+                let _lMessage: string = this.itemNameTraduction('ORDER_LIST.ITEM_DELETED');
+                this.snackBar.open(_lMessage, '', {
+                    duration: 2500
+                });
+            }
+        });
     }
 
     /**
@@ -270,27 +290,47 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {string} _pAdditionId 
      */
     deleteOrderAddition(_pAdditionId: string): void {
-        if (confirm(this.itemNameTraduction("ORDER_LIST.DELETE_ADDITION_CONFIRM"))) {
-            let _lOrderAdditionToremove: OrderAddition = this._currentOrder.additions.filter(ad => ad.additionId === _pAdditionId)[0];
-            let _lNewTotalPayment: number = this._currentOrder.totalPayment - _lOrderAdditionToremove.paymentAddition;
-
-            Orders.update({ _id: this._currentOrder._id }, { $pull: { additions: { additionId: _pAdditionId } } });
-            Orders.update({ _id: this._currentOrder._id },
-                {
-                    $set: {
-                        totalPayment: _lNewTotalPayment,
-                        modification_user: this._user,
-                        modification_date: new Date()
-                    }
-                }
-            );
-            this._currentOrder = Orders.findOne({ _id: this._currentOrder._id });
-            this.viewAdditionDetail(true);
-            let _lMessage: string = this.itemNameTraduction('ORDER_LIST.ADDITION_DELETED');
-            this.snackBar.open(_lMessage, '', {
-                duration: 2500
-            });
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
         }
+
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: this.itemNameTraduction( 'ORDER_LIST.DELETE_ADITION_DLG' ),
+                subtitle: '',
+                content: this.itemNameTraduction("ORDER_LIST.DELETE_ADDITION_CONFIRM"),
+                buttonCancel: this.itemNameTraduction( 'NO' ),
+                buttonAccept: this.itemNameTraduction( 'YES' ),
+                showCancel: true
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if ( result.success ){
+                let _lOrderAdditionToremove: OrderAddition = this._currentOrder.additions.filter(ad => ad.additionId === _pAdditionId)[0];
+                let _lNewTotalPayment: number = this._currentOrder.totalPayment - _lOrderAdditionToremove.paymentAddition;
+    
+                Orders.update({ _id: this._currentOrder._id }, { $pull: { additions: { additionId: _pAdditionId } } });
+                Orders.update({ _id: this._currentOrder._id },
+                    {
+                        $set: {
+                            totalPayment: _lNewTotalPayment,
+                            modification_user: this._user,
+                            modification_date: new Date()
+                        }
+                    }
+                );
+                this._currentOrder = Orders.findOne({ _id: this._currentOrder._id });
+                this.viewAdditionDetail(true);
+                let _lMessage: string = this.itemNameTraduction('ORDER_LIST.ADDITION_DELETED');
+                this.snackBar.open(_lMessage, '', {
+                    duration: 2500
+                });
+            }
+        });
     }
 
     /**
@@ -555,6 +595,12 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {string} _pItemToInsert
      */
     editOrderItem(_pItemToInsert: string): void {
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+
         if (this._editOrderItemForm.valid) {
             let arr: any[] = Object.keys(this._editOrderItemForm.value.garnishFood);
             let _lGarnishFoodToInsert: string[] = [];
@@ -628,6 +674,12 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * Modify addition in order
      */
     editOrderAddition(): void {
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+
         let arrAdd: any[] = Object.keys(this._additionsDetailFormGroup.value);
         let _lOrderAddition: OrderAddition;
 
@@ -690,21 +742,41 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {Order} _pOrder 
      */
     cancelCustomerOrder(_pOrder: Order) {
-        if (confirm(this.itemNameTraduction("ORDER_LIST.CANCEL_ORDER_CONFIRM"))) {
-            if (_pOrder.status === 'ORDER_STATUS.REGISTERED') {
-                Orders.update({ _id: _pOrder._id }, {
-                    $set: {
-                        status: 'ORDER_STATUS.CANCELED', modification_user: this._user,
-                        modification_date: new Date()
-                    }
-                }
-                );
-                this._showDetails = false;
-            } else {
-                this.openDialog(this.titleMsg, '', this.itemNameTraduction("ORDER_LIST.ORDER_CANT_CANCEL"), '', this.btnAcceptLbl, false);
-            }
-            this.viewItemDetail(true);
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
         }
+
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: this.itemNameTraduction( 'ORDER_LIST.CANCEL_ORDER_DLG' ),
+                subtitle: '',
+                content: this.itemNameTraduction("ORDER_LIST.CANCEL_ORDER_CONFIRM"),
+                buttonCancel: this.itemNameTraduction( 'NO' ),
+                buttonAccept: this.itemNameTraduction( 'YES' ),
+                showCancel: true
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if ( result.success ){
+                if (_pOrder.status === 'ORDER_STATUS.REGISTERED') {
+                    Orders.update({ _id: _pOrder._id }, {
+                        $set: {
+                            status: 'ORDER_STATUS.CANCELED', modification_user: this._user,
+                            modification_date: new Date()
+                        }
+                    }
+                    );
+                    this._showDetails = false;
+                } else {
+                    this.openDialog(this.titleMsg, '', this.itemNameTraduction("ORDER_LIST.ORDER_CANT_CANCEL"), '', this.btnAcceptLbl, false);
+                }
+                this.viewItemDetail(true);
+            }
+        });
     }
 
     /**
@@ -712,41 +784,55 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {Order} _pOrder 
      */
     confirmCustomerOrder(_pOrder: Order) {
-        let _lItemsIsAvailable: boolean = true;
-        if (confirm(this.itemNameTraduction("ORDER_LIST.CONFIRM_ORDER_MESSAGE"))) {
-            if (_pOrder.status === 'ORDER_STATUS.REGISTERED') {
-                let _lOrderItems: OrderItem[] = _pOrder.items;
-                _lOrderItems.forEach((it) => {
-                    /**
-                    let _lItem: Item = Items.findOne({ _id: it.itemId });
-                    if (_lItem.isAvailable === false) {
-                        _lItemsIsAvailable = false;
-                    }
-                    */
-                    let _lItem: Item = Items.findOne({ _id: it.itemId });
-                    let aux = _lItem.restaurants.find(element => element.restaurantId === this.restaurantId);
-                    if (aux.isAvailable === false) {
-                        _lItemsIsAvailable = false
-                    }
-                });
-                if (_lItemsIsAvailable) {
-                    Orders.update({ _id: _pOrder._id }, {
-                        $set: {
-                            status: 'ORDER_STATUS.IN_PROCESS', modification_user: this._user,
-                            modification_date: new Date()
-                        }
-                    }
-                    );
-                    this._showDetails = false;
-                } else {
-                    this.openDialog(this.titleMsg, '', this.itemNameTraduction("ORDER_LIST.ORDER_ITEMS_UNAVAILABLE"), '', this.btnAcceptLbl, false);
-                }
-            } else {
-                this.openDialog(this.titleMsg, '', this.itemNameTraduction("ORDER_LIST.ORDER_CANT_CONFIRM"), '', this.btnAcceptLbl, false);
-            }
-            this.viewItemDetail(true);
-            this._orderCustomerIndex = -1;
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
         }
+
+        let _lItemsIsAvailable: boolean = true;
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: this.itemNameTraduction( 'ORDER_LIST.CONFIRM_ORDER_DLG' ),
+                subtitle: '',
+                content: this.itemNameTraduction("ORDER_LIST.CONFIRM_ORDER_MESSAGE"),
+                buttonCancel: this.itemNameTraduction( 'NO' ),
+                buttonAccept: this.itemNameTraduction( 'YES' ),
+                showCancel: true
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if ( result.success ){
+                if (_pOrder.status === 'ORDER_STATUS.REGISTERED') {
+                    let _lOrderItems: OrderItem[] = _pOrder.items;
+                    _lOrderItems.forEach((it) => {
+                        let _lItem: Item = Items.findOne({ _id: it.itemId });
+                        let aux = _lItem.restaurants.find(element => element.restaurantId === this.restaurantId);
+                        if (aux.isAvailable === false) {
+                            _lItemsIsAvailable = false
+                        }
+                    });
+                    if (_lItemsIsAvailable) {
+                        Orders.update({ _id: _pOrder._id }, {
+                            $set: {
+                                status: 'ORDER_STATUS.IN_PROCESS', modification_user: this._user,
+                                modification_date: new Date()
+                            }
+                        }
+                        );
+                        this._showDetails = false;
+                    } else {
+                        this.openDialog(this.titleMsg, '', this.itemNameTraduction("ORDER_LIST.ORDER_ITEMS_UNAVAILABLE"), '', this.btnAcceptLbl, false);
+                    }
+                } else {
+                    this.openDialog(this.titleMsg, '', this.itemNameTraduction("ORDER_LIST.ORDER_CANT_CONFIRM"), '', this.btnAcceptLbl, false);
+                }
+                this.viewItemDetail(true);
+                this._orderCustomerIndex = -1;
+            }
+        });
     }
 
     /**

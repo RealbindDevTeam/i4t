@@ -108,7 +108,7 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
      */
     addSubcategory():void{
         if( !Meteor.userId() ){
-            var error : string = 'Please log in to add a restaurant';
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
@@ -156,6 +156,12 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
      * @param {Subcategory} _subcategory
      */
     updateStatus( _subcategory:Subcategory ):void{
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+        
         Subcategories.update( _subcategory._id,{
             $set: {
                 is_active: !_subcategory.is_active,
