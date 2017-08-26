@@ -156,11 +156,11 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
-                title: 'Pagar Orden',
+                title: this.itemNameTraduction( 'ORDER_TRANS.PAY_ORDER_DLG' ),
                 subtitle: '',
                 content:_lMessagePay + _pOrder.code + '?',
-                buttonCancel: 'No',
-                buttonAccept: 'Si',
+                buttonCancel: this.itemNameTraduction( 'NO' ),
+                buttonAccept: this.itemNameTraduction( 'YES' ),
                 showCancel: true
             }
         });

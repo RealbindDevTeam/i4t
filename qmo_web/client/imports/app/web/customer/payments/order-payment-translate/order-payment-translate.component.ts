@@ -162,11 +162,11 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
         this._dialogRef = this._dialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
-                title: 'Confirmar traslado de orden',
+                title: this.itemNameTraduction( 'ORDER_PAYMENT_TRANS.DIALOG_TITLE' ),
                 subtitle: '',
                 content: _lMessageUSer + this.getUserName( _pOrder.translateInfo.lastOrderOwner ) + _lMessageWantsToPay + _pOrder.code + _lMessageAgree,
-                buttonCancel: 'No',
-                buttonAccept: 'Si',
+                buttonCancel: this.itemNameTraduction( 'NO' ),
+                buttonAccept: this.itemNameTraduction( 'YES' ),
                 showCancel: true
             }
         });

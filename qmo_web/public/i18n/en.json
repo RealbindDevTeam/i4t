@@ -35,6 +35,8 @@
     "CHOOSE_A_DATE" : "Choose a date",
     "UPLOAD_IMG_ERROR" : "Upload image error. Only accept .png, .jpg, .jpeg files.",
     "LOGIN_SYSTEM_OPERATIONS_MSG": "Please log in to perform system operations",
+    "YES": "Yes",
+    "NO": "No",
     "ORDER_STATUS": {
         "REGISTERED": "Registered",
         "IN_PROCESS": "In Process",
@@ -711,7 +713,11 @@
         "ITEM_DELETED": "Item Deleted from Order",
         "ADDITION_DELETED": "Addition Deleted from Order",
         "ITEM_EDITED": "Item Edited Correctly",
-        "ADDITION_EDITED": "Edited Adition Correctly"
+        "ADDITION_EDITED": "Edited Adition Correctly",
+        "DELETE_ITEM_DLG": "Remove Order Item",
+        "DELETE_ADITION_DLG": "Delete Order Addition",
+        "CANCEL_ORDER_DLG": "Cancel Order",
+        "CONFIRM_ORDER_DLG": "Confirm Order"
     },
     "PAYMENTS": {
         "THERE_IS_NOT_REST": "You are not in a restaurant",
@@ -762,7 +768,8 @@
             "TOTAL_ORDERS": "Total Orders",
             "TOTAL_TIP": "Total Tip",
             "PRICE": "Price",
-            "QUANT": "Quant. "
+            "QUANT": "Quant. ",
+            "RETURN_ORDER_DLG": "Return Order"
         }
     },
     "WAITER_CALL": {
@@ -859,7 +866,8 @@
         "ORDERS_TO_PAY_TITLE": "Pending orders to add to your payment",
         "THE_USER": "The user ",
         "WANTS_PAY": " wants to pay the order ",
-        "AGREE": ", Do you agree?"
+        "AGREE": ", Do you agree?",
+        "DIALOG_TITLE": "Confirm Order Transfer"
     },
     "ORDER_TRANS": {
         "ORDERS": "Order",
@@ -874,7 +882,8 @@
         "ADDITION": "Addition",
         "ORDER_PAY": "Do you want to pay for the order ",
         "USER_CONFIRM": "The user who created the order must confirm that you will pay",
-        "NO_PAY_POSSIBLE": "It is not possible to pay for an order that has not yet been delivered"
+        "NO_PAY_POSSIBLE": "It is not possible to pay for an order that has not yet been delivered",
+        "PAY_ORDER_DLG": "Pay Order"
     },
     "PAYMENT_CONFIRM": {
         "TABLE": "Table ",

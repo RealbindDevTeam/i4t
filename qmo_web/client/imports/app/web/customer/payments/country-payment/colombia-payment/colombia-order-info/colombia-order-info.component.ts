@@ -208,11 +208,11 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
         this._mdDialogRef = this._dialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
-                title: 'Devolver Orden',
+                title: this.itemNameTraduction( 'PAYMENTS.COLOMBIA.RETURN_ORDER_DLG' ),
                 subtitle: '',
                 content:_lMessage + this.getUserName( _pOrder.translateInfo.firstOrderOwner ) + ' ?',
-                buttonCancel: 'No',
-                buttonAccept: 'Si',
+                buttonCancel: this.itemNameTraduction( 'NO' ),
+                buttonAccept: this.itemNameTraduction( 'YES' ),
                 showCancel: true
             }
         });

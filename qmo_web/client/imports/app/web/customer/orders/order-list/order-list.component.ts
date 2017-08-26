@@ -250,11 +250,11 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
-                title: 'Eliminar Item de la Orden',
+                title: this.itemNameTraduction( 'ORDER_LIST.DELETE_ITEM_DLG' ),
                 subtitle: '',
                 content: this.itemNameTraduction("ORDER_LIST.DELETE_ORDER"),
-                buttonCancel: 'No',
-                buttonAccept: 'Si',
+                buttonCancel: this.itemNameTraduction( 'NO' ),
+                buttonAccept: this.itemNameTraduction( 'YES' ),
                 showCancel: true
             }
         });
@@ -299,11 +299,11 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
-                title: 'Eliminar adicion de la Orden',
+                title: this.itemNameTraduction( 'ORDER_LIST.DELETE_ADITION_DLG' ),
                 subtitle: '',
                 content: this.itemNameTraduction("ORDER_LIST.DELETE_ADDITION_CONFIRM"),
-                buttonCancel: 'No',
-                buttonAccept: 'Si',
+                buttonCancel: this.itemNameTraduction( 'NO' ),
+                buttonAccept: this.itemNameTraduction( 'YES' ),
                 showCancel: true
             }
         });
@@ -751,11 +751,11 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
-                title: 'Cancelar Orden',
+                title: this.itemNameTraduction( 'ORDER_LIST.CANCEL_ORDER_DLG' ),
                 subtitle: '',
                 content: this.itemNameTraduction("ORDER_LIST.CANCEL_ORDER_CONFIRM"),
-                buttonCancel: 'No',
-                buttonAccept: 'Si',
+                buttonCancel: this.itemNameTraduction( 'NO' ),
+                buttonAccept: this.itemNameTraduction( 'YES' ),
                 showCancel: true
             }
         });
@@ -794,11 +794,11 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
-                title: 'Confirmar Orden',
+                title: this.itemNameTraduction( 'ORDER_LIST.CONFIRM_ORDER_DLG' ),
                 subtitle: '',
                 content: this.itemNameTraduction("ORDER_LIST.CONFIRM_ORDER_MESSAGE"),
-                buttonCancel: 'No',
-                buttonAccept: 'Si',
+                buttonCancel: this.itemNameTraduction( 'NO' ),
+                buttonAccept: this.itemNameTraduction( 'YES' ),
                 showCancel: true
             }
         });
