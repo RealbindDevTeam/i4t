@@ -41,7 +41,7 @@ export class ItemPayInfoComponent implements OnInit, OnDestroy {
         if (_imageThumb) {
             return _imageThumb.url;
         } else {
-            return '/assets/img/default-plate.png';
+            return 'assets/img/default-plate.png';
         }
     }
 

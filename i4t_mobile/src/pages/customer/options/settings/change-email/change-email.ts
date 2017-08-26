@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AlertController, NavController, NavParams, ViewController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 import { CustomValidators } from '../../../../../validators/custom-validator';
 
@@ -15,14 +16,32 @@ export class ChangeEmailPage {
     private _emailEditForm: FormGroup;
     private _error : string;
 
+    /**
+     * ChangeEmailPage constructor
+     * @param navCtrl 
+     * @param navParams 
+     * @param _zone 
+     * @param _translate 
+     * @param viewCtrl 
+     * @param _alertCtrl 
+     * @param _userLanguageService 
+     */
     constructor(public navCtrl: NavController, 
                 public navParams: NavParams, 
                 private _zone: NgZone, 
                 protected _translate: TranslateService, 
                 public viewCtrl: ViewController,
-                private _alertCtrl: AlertController) {}
+                private _alertCtrl: AlertController,
+                private _userLanguageService: UserLanguageService) {
+        _translate.setDefaultLang('en');
+    }
     
+    /**
+     * ngOnInit implementation
+     */
     ngOnInit() {
+        this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+
         this._emailEditForm = new FormGroup({
           email : new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(40), CustomValidators.emailValidator]),
           password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]),
@@ -32,10 +51,17 @@ export class ChangeEmailPage {
         this._error = '';
     }
 
+    /**
+     * Component dismiss
+     */
     cancel() {
         this.viewCtrl.dismiss();
     }
 
+    /**
+     * This function allow show alert
+     * @param message 
+     */
     showAlert(message : any){
         var confirmTitle: string;
         var confirmSubtitle: string;
@@ -53,6 +79,10 @@ export class ChangeEmailPage {
         alert.present();
     }
     
+    /**
+     * This function show Error alert
+     * @param error 
+     */
     showError(error : string){
         var confirmTitle: string;
         var confirmSubtitle: string;
@@ -70,6 +100,9 @@ export class ChangeEmailPage {
         alert.present();
     }
 
+    /**
+     * This function allow email change
+     */
     changeEmail() : void {
         let user = Meteor.user();
         let resp : boolean;
@@ -102,6 +135,9 @@ export class ChangeEmailPage {
         }
     }
 
+    /**
+     * User confirm
+     */
     confirmUser() : boolean {
         let resp : boolean;
         Meteor.loginWithPassword(this._emailEditForm.value.email, this._emailEditForm.value.password, function(error) {
@@ -116,6 +152,10 @@ export class ChangeEmailPage {
         return resp;
     }
 
+    /**
+     * This function allow string translate
+     * @param itemName 
+     */
     itemNameTraduction(itemName: string): string{
         var wordTraduced: string;
         this._translate.get(itemName).subscribe((res: string) => {

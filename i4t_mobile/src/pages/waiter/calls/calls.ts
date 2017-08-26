@@ -3,12 +3,15 @@ import { AlertController, LoadingController, NavController, ToastController  } f
 import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from "meteor-rxjs";
 import { Subscription } from "rxjs";
-import { Restaurants, RestaurantImages } from 'qmo_web/both/collections/restaurant/restaurant.collection';
+import { Restaurants, RestaurantImageThumbs } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 import { WaiterCallDetail } from 'qmo_web/both/models/restaurant/waiter-call-detail.model';
 import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-call-detail.collection';
+import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
+import { RestaurantImageThumb } from 'qmo_web/both/models/restaurant/restaurant.model';
 import { PaymentConfirmPage } from "./payment-confirm/payment-confirm";
 import { SendOrderDetailsPage } from './send-order-detail/send-order-detail';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 @Component({
   selector : 'calls-page',
@@ -17,11 +20,12 @@ import { SendOrderDetailsPage } from './send-order-detail/send-order-detail';
 export class CallsPage implements OnInit, OnDestroy {
 
   private _userRestaurantSubscription : Subscription;
-  private _userSubscription           : Subscription;
+  private _userDetailSubscription     : Subscription;
   private _callsDetailsSubscription   : Subscription;
   private _tableSubscription          : Subscription;
   private _imgRestaurantSubscription  : Subscription;
 
+  private _userDetail                 : any;
   private _restaurants                : any;
   private _waiterCallDetail           : any;
   private _tables                     : any;
@@ -41,25 +45,27 @@ export class CallsPage implements OnInit, OnDestroy {
               public _alertCtrl: AlertController,
               public _loadingCtrl: LoadingController,
               private _toastCtrl: ToastController,
-              public _navCtrl: NavController) {
-    this._userLang = navigator.language.split('-')[0];
+              public _navCtrl: NavController,
+              private _userLanguageService: UserLanguageService) {
     _translate.setDefaultLang('en');
-    _translate.use(this._userLang);
   }
 
   /**
    * ngOnInit Implementation
    */
   ngOnInit(){
-    this._userRestaurantSubscription = MeteorObservable.subscribe('getRestaurantByRestaurantWork', Meteor.userId()).subscribe(() => {
-      this._restaurants = Restaurants.find({});
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+    this.removeSubscriptions();
+    this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe(()=>{
+      this._userDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+      if (this._userDetail){
+        this._userRestaurantSubscription = MeteorObservable.subscribe('getRestaurantById', this._userDetail.restaurant_work).subscribe(() => {
+            this._restaurants = Restaurants.find({_id : this._userDetail.restaurant_work});
+        });
+      }
     });
-
-    this._imgRestaurantSubscription = MeteorObservable.subscribe('restaurantImagesByRestaurantWork', Meteor.userId()).subscribe(() => {
-        this._imgRestaurant = RestaurantImages.find({});
-    });
-
-    this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe();
+    
+    this._imgRestaurantSubscription = MeteorObservable.subscribe( 'getRestaurantImageThumbByRestaurantWork', Meteor.userId() ).subscribe();
 
     this._callsDetailsSubscription = MeteorObservable.subscribe('waiterCallDetailByWaiterId', Meteor.userId()).subscribe(() => {
       this._waiterCallDetail = WaiterCallDetails.find({});
@@ -70,6 +76,19 @@ export class CallsPage implements OnInit, OnDestroy {
       this._tables = Tables.find({});
     });
 
+  }
+
+  /**
+     * Get Restaurant Image
+     * @param {string} _pRestaurantId
+     */
+    getRestaurantImage(_pRestaurantId: string): string {
+      let _lRestaurantImageThumb: RestaurantImageThumb = RestaurantImageThumbs.findOne({ restaurantId: _pRestaurantId });
+      if (_lRestaurantImageThumb) {
+          return _lRestaurantImageThumb.url
+      } else {
+          return 'assets/img/default-restaurant.png';
+      }
   }
 
   /**
@@ -166,16 +185,22 @@ export class CallsPage implements OnInit, OnDestroy {
     this._navCtrl.push(SendOrderDetailsPage, { call : _call });
   }
 
-
   /**
    * NgOnDestroy Implementation
    */
   ngOnDestroy(){
-    this._userRestaurantSubscription.unsubscribe();
-    this._userSubscription.unsubscribe();
-    this._callsDetailsSubscription.unsubscribe();
-    this._tableSubscription.unsubscribe();
-    this._imgRestaurantSubscription.unsubscribe();
+    this.removeSubscriptions();
+  }
+
+  /**
+   * Remove all subscriptions
+   */
+  removeSubscriptions():void{
+    if( this._userDetailSubscription ){ this._userDetailSubscription.unsubscribe(); }
+    if( this._userRestaurantSubscription ){ this._userRestaurantSubscription.unsubscribe(); }
+    if( this._callsDetailsSubscription ){ this._callsDetailsSubscription.unsubscribe(); }
+    if( this._tableSubscription ){ this._tableSubscription.unsubscribe(); }
+    if( this._imgRestaurantSubscription ){ this._imgRestaurantSubscription.unsubscribe(); }
   }
 
 }

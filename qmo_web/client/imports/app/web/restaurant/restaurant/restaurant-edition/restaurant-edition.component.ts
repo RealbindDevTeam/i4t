@@ -248,7 +248,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
      */
     editRestaurant(): void {
         if (!Meteor.userId()) {
-            this.openDialog(this.titleMsg, '', 'Please log in to add a restaurant', '', this.btnAcceptLbl, false);
+            this.openDialog(this.titleMsg, '', 'LOGIN_SYSTEM_OPERATIONS_MSG', '', this.btnAcceptLbl, false);
             return;
         }
 

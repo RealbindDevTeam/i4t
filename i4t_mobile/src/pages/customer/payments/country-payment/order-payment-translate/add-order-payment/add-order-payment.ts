@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { Items } from 'qmo_web/both/collections/administration/item.collection';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 /*
   Generated class for the AddOrderPayment page.
@@ -37,12 +38,15 @@ export class AddOrderPaymentPage implements OnInit, OnDestroy {
    * @param _translate 
    * @param _loadingCtrl 
    * @param _toastCtrl 
+   * @param _userLanguageService 
    */
   constructor(public _navParams   : NavParams,
               public _alertCtrl   : AlertController,
               public _translate   : TranslateService,
               public _loadingCtrl : LoadingController,
-              private _toastCtrl  : ToastController) {
+              private _toastCtrl  : ToastController,
+              private _userLanguageService: UserLanguageService) {
+    _translate.setDefaultLang('en');
     this._restaurantId = this._navParams.get("restaurant");
     this._tableId      = this._navParams.get("table");
     this._currency     = this._navParams.get("currency");
@@ -53,6 +57,7 @@ export class AddOrderPaymentPage implements OnInit, OnDestroy {
    * ngOnInit Implementation. Find table to payment
    */
   ngOnInit(){
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
     this._ordersSubscription = MeteorObservable.subscribe( 'getOrdersByTableId', this._restaurantId, this._tableId,[ 'ORDER_STATUS.DELIVERED' ] ).subscribe( () => {
       this._ordersTable = Orders.find( { creation_user: { $not: Meteor.userId() }, status: 'ORDER_STATUS.DELIVERED', 'translateInfo.lastOrderOwner': '',
                                          'translateInfo.markedToTranslate': false, 'translateInfo.confirmedToTranslate': false, toPay : false } ).zone();

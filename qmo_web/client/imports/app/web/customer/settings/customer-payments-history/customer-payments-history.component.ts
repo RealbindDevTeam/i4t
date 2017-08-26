@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, NgZone, Input } from '@angular/core';
 import { MeteorObservable } from "meteor-rxjs";
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Invoice } from '../../../../../../../both/models/restaurant/invoice.model';
 import { Invoices } from '../../../../../../../both/collections/restaurant/invoice.collection';
@@ -9,6 +10,7 @@ import { Restaurant } from '../../../../../../../both/models/restaurant/restaura
 import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
 import { UserDetails } from '../../../../../../../both/collections/auth/user-detail.collection';
 import { UserDetail } from '../../../../../../../both/models/auth/user-detail.model';
+import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './customer-payments-history.component.html';
 import style from './customer-payments-history.component.scss';
@@ -26,18 +28,25 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
 
     private _invoices               : any;
     private _showPayments           : boolean = false;
+    public _dialogRef               : MdDialogRef<any>;
+    private titleMsg                : string;
+    private btnAcceptLbl            : string;
 
     /**
      * PaymentsHistoryComponent component
      * @param {NgZone} _ngZone 
      * @param {TranslateService} _translate 
+     * @param {MdDialog} _dialog
      * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _ngZone: NgZone,
                  public _translate: TranslateService, 
+                 public _dialog: MdDialog, 
                  private _userLanguageService: UserLanguageService ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -72,6 +81,12 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
      * @param { Invoice } _pInvoice 
      */
     invoiceGenerate( _pInvoice : Invoice ) {
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+
         let heightPage : number = this.calculateHeight(_pInvoice);
 
         let widthText   : number = 180;
@@ -302,6 +317,36 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         wordTraduced = res;
         });
         return wordTraduced;
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._dialogRef = this._dialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._dialogRef.afterClosed().subscribe(result => {
+            this._dialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**

@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { Order, OrderTranslateInfo } from 'qmo_web/both/models/restaurant/order.model';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { Users } from 'qmo_web/both/collections/auth/user.collection';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 /*
   Generated class for the ColombiaPaymentDetailsPage page.
@@ -31,26 +32,30 @@ export class ColombiaPaymentDetailsPage implements OnInit, OnDestroy {
     private _ipoComBaseString   : string;
     private _ipoComString       : string;
     private _currency           : string;
-
-    /**
-     * ColombiaPaymentDetailsPage constructor
-     * @param _translate 
-     * @param _navParams 
-     */
+     
+     /**
+      * ColombiaPaymentDetailsPage constructor
+      * @param _translate 
+      * @param _alertCtrl 
+      * @param _loadingCtrl 
+      * @param _toastCtrl 
+      * @param _navParams 
+      * @param _userLanguageService 
+      */
     constructor(public _translate: TranslateService,
                 public _alertCtrl: AlertController,
                 public _loadingCtrl: LoadingController,
                 private _toastCtrl: ToastController,
-                public _navParams: NavParams){
-        this._userLang = navigator.language.split('-')[0];
+                public _navParams: NavParams,
+                private _userLanguageService: UserLanguageService){
         _translate.setDefaultLang('en');
-        _translate.use(this._userLang);
     }
 
     /**
      * ngOnInit Implementation. That allow to calculate this values corresponding to Payment
      */
     ngOnInit(){
+        this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         this._ordersSubscription  = MeteorObservable.subscribe('getOrdersByAccount', Meteor.userId()).subscribe( () =>{
             MeteorObservable.autorun().subscribe(() => {
                 this._currency = this._navParams.get("currency");

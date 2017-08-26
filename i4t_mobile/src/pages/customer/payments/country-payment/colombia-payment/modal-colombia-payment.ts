@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Restaurants } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { PaymentMethods } from 'qmo_web/both/collections/general/paymentMethod.collection';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 @Component({
   selector: 'modal-colombia-payment',
@@ -34,11 +35,13 @@ export class ModalColombiaPayment implements OnInit, OnDestroy {
    * @param _viewCtrl 
    * @param _translate 
    * @param _params 
+   * @param _userLanguageService 
    */
   constructor(public _viewCtrl  : ViewController, 
               public _translate : TranslateService, 
-              public _params    : NavParams) {
-
+              public _params    : NavParams,
+              private _userLanguageService: UserLanguageService) {
+    _translate.setDefaultLang('en');
     this._tipTotal      = this._params.get('tip');
     this._otherTip      = this._params.get('other_tip');
     this._totalValue    = this._params.get('value');
@@ -57,6 +60,7 @@ export class ModalColombiaPayment implements OnInit, OnDestroy {
    * ngOnInit Implementation
    */
   ngOnInit(){
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
     this._paymentMethodsSubscription = MeteorObservable.subscribe('paymentMethods').subscribe(() => {
       this._paymentMethods = PaymentMethods.find({}).zone();
     });

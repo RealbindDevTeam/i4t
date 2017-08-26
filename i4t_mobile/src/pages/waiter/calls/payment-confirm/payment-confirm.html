@@ -30,10 +30,10 @@
                         <h3 *ngIf="pay.totalTip > 0">{{'MOBILE.PAYMENTS.TIP' | translate}}: {{pay.totalTip}} {{getCurrency(pay.currencyId)}}</h3>
                         <div style="margin-top: 9px;"></div>
                         <div showWhen="android" style="position: absolute; top: 0px; right: 10px;">
-                            <ion-toggle disabled checked="{{pay.received}}" (ionChange)="received(pay)"></ion-toggle>
+                            <ion-toggle checked="{{pay.received}}" (ionChange)="received(pay)"></ion-toggle>
                         </div>
                         <div showWhen="ios" style="position: absolute; top: 16px; right: 10px;">
-                            <ion-toggle disabled checked="{{pay.received}}" (ionChange)="received(pay)"></ion-toggle>
+                            <ion-toggle checked="{{pay.received}}" (ionChange)="received(pay)"></ion-toggle>
                         </div>
                     </div>
                 </ion-item-group>
@@ -51,8 +51,10 @@
         </p>
         <ion-toggle style="display: inline-block; position: absolute; right: 15px;top: 15px;" (ionChange)="receivedAllPayments($event)"></ion-toggle>
     </div>
-    <h3 style="display: inline-block;">{{'MOBILE.PAYMENTS.TOTAL_PAY' | translate}}</h3>
-    <h3 style="display: inline-block; position: absolute; right: 15px;">{{_totalPayment}} {{_currencyCode}}</h3>
+    <div style="display: block">
+        <h3 style="display: inline-block; margin-top: 1.6rem;">{{'MOBILE.PAYMENTS.TOTAL_PAY' | translate}}</h3>
+        <h3 style="display: inline-block; position: absolute; right: 15px;">{{_totalPayment}} {{_currencyCode}}</h3>
+    </div>
     <div>
         <button ion-button block outline (click)="validatePaymentsReceived()">{{'MOBILE.WAITER_CALL.PAY_CLOSE' | translate}}</button>
     </div>

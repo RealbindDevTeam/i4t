@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
 import { Invoice } from 'qmo_web/both/models/restaurant/invoice.model';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 @Component({
     selector: 'payments-history-detail-page',
@@ -10,10 +12,16 @@ export class PaymentsHistoryDetailPage implements OnInit, OnDestroy {
     
     private _invoice : Invoice;
     /**
-     * PaymentsHistoryDetailPage constrcutor
+     * PaymentsHistoryDetailPage constructor
+     * @param _navParams 
+     * @param _navCtrl 
+     * @param _translate 
+     * @param _userLanguageService 
      */    
     constructor( public _navParams : NavParams,
-                 public _navCtrl   : NavController ){
+                 public _navCtrl   : NavController,
+                 public _translate: TranslateService,
+                 private _userLanguageService: UserLanguageService ){
         this._invoice = this._navParams.get("invoice");
     }
 
@@ -21,7 +29,7 @@ export class PaymentsHistoryDetailPage implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit() {
-
+        this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
     }
 
     /**

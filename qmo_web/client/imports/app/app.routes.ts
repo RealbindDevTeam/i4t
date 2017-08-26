@@ -35,7 +35,6 @@ import { WaiterGuard } from './web/auth/navigation/waiter-guard.service';
 import { SupervisorGuard } from './web/auth/navigation/supervisor-guard.service';
 import { ChefGuard } from './web/auth/navigation/chef-guard.service';
 import { CashierGuard } from './web/auth/navigation/cashier-guard.service';
-import { SuperChefGuard } from './web/auth/navigation/super-chef-guard.service';
 import { PaymentsComponent } from './web/customer/payments/payments.component';
 import { MonthlyPaymentComponent } from './web/payment/monthly-payment/monthly-payment.component';
 import { SupervisorDashboardComponent } from './web/supervisor-dashboard/supervisor-dashboard.component';
@@ -54,25 +53,24 @@ import { MenuListComponent } from './web/chef/menu-list/menu-list.component';
 export const routes: Route[] = [
     {
         path: 'app', component: LayoutComponent, canActivateChild: ['canActivateForLoggedIn'], children: [
-            //{ path : '', redirectTo : 'dashboard', pathMatch: 'full' },
-            { path: 'dashboard', component: DashboardComponent, canActivate: [SuperChefGuard] },
+            { path: 'dashboard', component: DashboardComponent, canActivate: [AdminGuard] },
             { path: 'settings', component: SettingsWebComponent },
             { path: 'collaborators', component: CollaboratorsComponent, canActivate: [SupervisorGuard] },
             { path: 'collaborators-register', component: CollaboratorsRegisterComponent, canActivate: [SupervisorGuard] },
-            { path: 'sections', component: SectionComponent, canActivate: [SupervisorGuard] },
-            { path: 'categories', component: CategoryComponent, canActivate: [SupervisorGuard] },
-            { path: 'subcategories', component: SubcategoryComponent, canActivate: [SupervisorGuard] },
-            { path: 'additions', component: AdditionComponent, canActivate: [SupervisorGuard] },
-            { path: 'promotions', component: PromotionComponent, canActivate: [SupervisorGuard] },
-            { path: 'garnishFood', component: GarnishFoodComponent, canActivate: [SupervisorGuard] },
-            { path: 'items', component: ItemComponent, canActivate: [SupervisorGuard] },
-            { path: 'itemsCreation', component: ItemCreationComponent, canActivate: [SupervisorGuard] },
-            { path: 'restaurant', component: RestaurantComponent, canActivate: [SupervisorGuard] },
+            { path: 'sections', component: SectionComponent, canActivate: [AdminGuard] },
+            { path: 'categories', component: CategoryComponent, canActivate: [AdminGuard] },
+            { path: 'subcategories', component: SubcategoryComponent, canActivate: [AdminGuard] },
+            { path: 'additions', component: AdditionComponent, canActivate: [AdminGuard] },
+            { path: 'promotions', component: PromotionComponent, canActivate: [AdminGuard] },
+            { path: 'garnishFood', component: GarnishFoodComponent, canActivate: [AdminGuard] },
+            { path: 'items', component: ItemComponent, canActivate: [AdminGuard] },
+            { path: 'itemsCreation', component: ItemCreationComponent, canActivate: [AdminGuard] },
+            { path: 'restaurant', component: RestaurantComponent, canActivate: [AdminGuard] },
             { path: 'restaurantRegister', component: RestaurantRegisterComponent, canActivate: [AdminGuard] },
             { path: 'restaurantEdition/:param1', component: RestaurantEditionComponent, canActivate: [AdminGuard] },
             { path: 'tables', component: TableComponent, canActivate: [SupervisorGuard] },
             { path: 'orders', component: OrdersComponent, canActivate: [CustomerGuard] },
-            { path: 'itemsEnable', component: ItemEnableComponent, canActivate: [SuperChefGuard] },
+            { path: 'itemsEnable', component: ItemEnableComponent, canActivate: [SupervisorGuard] },
             { path: 'waiter-call', component: WaiterCallComponent, canActivate: [CustomerGuard] },
             { path: 'chefOrders', component: OrderAttentionComponent, canActivate: [ChefGuard] },
             { path: 'calls', component: CallsComponent, canActivate: [WaiterGuard] },

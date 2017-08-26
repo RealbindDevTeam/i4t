@@ -24,4 +24,13 @@
             </ion-card-content>
         </ion-card>
     </div>
+
+    <div *ngIf="(_invoices | async)?.length <= 0" style="padding: 0 16px;">
+        <div class="img">
+            <img src="assets/img/payments-history.png">
+        </div>
+        <div class="content" style="text-align: center">
+            <h1>{{'MOBILE.PAYMENTS_HISTORY.NO_PAYMENTS' | translate}}</h1>
+        </div>
+    </div>
 </ion-content>

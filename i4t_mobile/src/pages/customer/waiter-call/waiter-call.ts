@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
 import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-call-detail.collection';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 @Component({
   selector: 'page-waiter-call',
@@ -34,16 +35,17 @@ export class WaiterCallPage implements OnInit, OnDestroy {
   constructor(public _navCtrl: NavController, 
               public _navParams: NavParams,
               public _translate: TranslateService,
-              public _loadingCtrl: LoadingController) {
-    this._userLang = navigator.language.split('-')[0];
-    _translate.setDefaultLang('es');
-    _translate.use(this._userLang);
+              public _loadingCtrl: LoadingController,
+              private _userLanguageService: UserLanguageService) {
+    _translate.setDefaultLang('en');
   }
 
   /**
    * ngOnInit Implementation
    */
   ngOnInit() {
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+
     this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe( () => {
       MeteorObservable.autorun().subscribe(() => {
         this._userDetails = UserDetails.find({ user_id: Meteor.userId() });
@@ -80,6 +82,8 @@ export class WaiterCallPage implements OnInit, OnDestroy {
    * ionViewWillEnter implementation
    */
   ionViewWillEnter() {
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+
     this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe( () => {
       MeteorObservable.autorun().subscribe(() => {
         this._userDetails = UserDetails.find({ user_id: Meteor.userId() });

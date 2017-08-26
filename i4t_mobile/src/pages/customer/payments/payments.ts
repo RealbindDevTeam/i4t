@@ -5,6 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
 import { Restaurants } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 /*
   Generated class for the Payments page.
@@ -35,16 +36,17 @@ export class PaymentsPage implements OnInit, OnDestroy {
    */
   constructor(public _navCtrl: NavController, 
               public _navParams: NavParams, 
-              public _translate: TranslateService) {
-    this._userLang = navigator.language.split('-')[0];
+              public _translate: TranslateService,
+              private _userLanguageService: UserLanguageService) {
     _translate.setDefaultLang('en');
-    _translate.use(this._userLang);
   }
 
   /**
    * ngOnInit Implementation
    */
   ngOnInit(){
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+
     this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByUser', Meteor.userId() ).subscribe( () => {
       MeteorObservable.autorun().subscribe(() => {
         let _lUserDetail = UserDetails.findOne( { user_id: Meteor.userId() } );
@@ -68,6 +70,8 @@ export class PaymentsPage implements OnInit, OnDestroy {
    * ionViewWillEnter Implementation
    */
   ionViewWillEnter() {
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+
     this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByUser', Meteor.userId() ).subscribe( () => {
       MeteorObservable.autorun().subscribe(() => {
         let _lUserDetail = UserDetails.findOne( { user_id: Meteor.userId() } );

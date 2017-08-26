@@ -12,6 +12,7 @@ import { ColombiaPaymentDetailsPage } from "./colombia-payment-details/colombia-
 import { ColombiaPayInfoPage } from "./colombia-pay-info/colombia-pay-info";
 import { ModalColombiaPayment } from "./modal-colombia-payment";
 import { OrderPaymentTranslatePage } from "../order-payment-translate/order-payment-translate";
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 /*
   Generated class for the Colombia Payments page.
@@ -59,22 +60,31 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
   private _showAlertWithPendingConf: boolean = false;
   private _outstandingBalance: boolean = true;
 
+  /**
+   * ColombiaPaymentsPage constructor
+   * @param _navCtrl 
+   * @param _navParams 
+   * @param _translate 
+   * @param _modalCtrl 
+   * @param _loadingCtrl 
+   * @param _alertCtrl 
+   * @param _userLanguageService 
+   */
   constructor(public _navCtrl: NavController,
-    public _navParams: NavParams,
-    public _translate: TranslateService,
-    public _modalCtrl: ModalController,
-    public _loadingCtrl: LoadingController,
-    public _alertCtrl: AlertController) {
-    this._userLang = navigator.language.split('-')[0];
+              public _navParams: NavParams,
+              public _translate: TranslateService,
+              public _modalCtrl: ModalController,
+              public _loadingCtrl: LoadingController,
+              public _alertCtrl: AlertController,
+              private _userLanguageService: UserLanguageService) {
     _translate.setDefaultLang('en');
-    _translate.use(this._userLang);
-
   }
 
   /**
    * ngOnInit Implementation. Calculated the total to payment
    */
   ngOnInit() {
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
     this._accountSubscription = MeteorObservable.subscribe('getAccountsByUserId', Meteor.userId()).subscribe(() => {
       this._account = Accounts.collection.find({}).fetch()[0];
     });
@@ -132,6 +142,7 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
    * ionViewWillEnter Implementation. Calculated the total to payment
    */
   ionViewWillEnter() {
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
     this._accountSubscription = MeteorObservable.subscribe('getAccountsByUserId', Meteor.userId()).subscribe(() => {
       this._account = Accounts.collection.find({}).fetch()[0];
     });

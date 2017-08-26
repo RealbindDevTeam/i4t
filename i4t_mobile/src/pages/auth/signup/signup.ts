@@ -4,7 +4,7 @@ import { ViewController, NavController, AlertController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { CustomValidators } from '../../../validators/custom-validator';
-import { UserProfile, UserProfileImage } from 'qmo_web/both/models/auth/user-profile.model';
+import { UserProfile } from 'qmo_web/both/models/auth/user-profile.model';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
 import { SigninComponent } from '../signin/signin';
 import { Accounts } from 'meteor/accounts-base';
@@ -24,7 +24,6 @@ export class SignupComponent implements OnInit {
     showConfirmError: boolean = false;
     userLang: string;
     userProfile = new UserProfile();
-    userProfileImage = new UserProfileImage();
 
     constructor(public zone: NgZone, public formBuilder: FormBuilder, public translate: TranslateService,
         public navCtrl: NavController, public alertCtrl: AlertController, public viewCtrl: ViewController) {
@@ -51,20 +50,6 @@ export class SignupComponent implements OnInit {
             this.userProfile.first_name = "";
             this.userProfile.last_name = "";
             this.userProfile.language_code = this.userLang;
-
-            this.userProfileImage.complete = null;
-            this.userProfileImage.extension = null;
-            this.userProfileImage.name = null;
-            this.userProfileImage.progress = null;
-            this.userProfileImage.size = null;
-            this.userProfileImage.store = null;
-            this.userProfileImage.token = null;
-            this.userProfileImage.type = null;
-            this.userProfileImage.uploaded_at = null;
-            this.userProfileImage.uploading = null;
-            this.userProfileImage.url = null;
-
-            this.userProfile.image = this.userProfileImage;
 
             if (this.signupForm.valid) {
                 Accounts.createUser({

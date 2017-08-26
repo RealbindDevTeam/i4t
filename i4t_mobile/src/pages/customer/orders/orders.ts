@@ -10,6 +10,7 @@ import { Items } from 'qmo_web/both/collections/administration/item.collection';
 import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantImageThumbs } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 import { Storage } from '@ionic/storage';
 import { CodeTypeSelectPage } from '../code-type-select/code-type-select';
 import { SectionsPage } from '../sections/sections';
@@ -48,19 +49,27 @@ export class OrdersPage implements OnInit, OnDestroy {
     private _additions: any;
 
 
-    constructor(public _navCtrl: NavController, public _navParams: NavParams, public _app: App, public _translate: TranslateService,
-        public _storage: Storage, public alertCtrl: AlertController, public _loadingCtrl: LoadingController, private _ngZone: NgZone) {
-        this._userLang = navigator.language.split('-')[0];
+    constructor( public _navCtrl: NavController, 
+                 public _navParams: NavParams, 
+                 public _app: App, 
+                 public _translate: TranslateService,
+                 public alertCtrl: AlertController, 
+                 public _loadingCtrl: LoadingController ,
+                 private _userLanguageService: UserLanguageService,
+                 private _ngZone: NgZone ) {
         _translate.setDefaultLang('en');
-        _translate.use(this._userLang);
         this._currentUserId = Meteor.userId();
         this._statusArray = ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED'];
         this.selected = "all";
     }
 
     ngOnInit() {
+        this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        this.removeSubscriptions();
         this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
-            this._restaurants = Restaurants.find({});
+            this._ngZone.run(() => {
+                this._restaurants = Restaurants.findOne({});
+            });
         });
 
         this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe(() => {
@@ -85,7 +94,9 @@ export class OrdersPage implements OnInit, OnDestroy {
 
         this._currencySub = MeteorObservable.subscribe('getCurrenciesByCurrentUser', Meteor.userId()).subscribe(() => {
             this._ngZone.run(() => {
-                this._currencyCode = Currencies.find({}).fetch()[0].code;
+                if(Currencies.find({}).fetch().length > 0) {
+                    this._currencyCode = Currencies.find({}).fetch()[0].code;
+                }
             });
         });
     }
@@ -121,8 +132,10 @@ export class OrdersPage implements OnInit, OnDestroy {
     }
 
     ionViewWillEnter() {
+        this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        this.removeSubscriptions();
         this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
-            this._restaurants = Restaurants.find({});
+            this._restaurants = Restaurants.findOne({});
         });
 
         this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
@@ -139,7 +152,9 @@ export class OrdersPage implements OnInit, OnDestroy {
 
         this._currencySub = MeteorObservable.subscribe('getCurrenciesByCurrentUser', Meteor.userId()).subscribe(() => {
             this._ngZone.run(() => {
-                this._currencyCode = Currencies.find({}).fetch()[0].code;
+                if(Currencies.find({}).fetch().length > 0) {
+                    this._currencyCode = Currencies.find({}).fetch()[0].code;
+                }
             });
         });
     }
@@ -307,18 +322,14 @@ export class OrdersPage implements OnInit, OnDestroy {
     }
 
     ionViewWillLeave() {
-        this._restaurantSub.unsubscribe();
-        this._ordersSub.unsubscribe();
-        this._itemsSub.unsubscribe();
-        this._restaurantThumbSub.unsubscribe();
-        this._userDetailSub.unsubscribe();
-        this._currencySub.unsubscribe();
+        this.removeSubscriptions();
     }
 
     ionViewWillUnload() {
     }
 
     ngOnDestroy() {
+        this.removeSubscriptions();
     }
 
     getRestaurantThumb(_id: string): string {
@@ -326,6 +337,20 @@ export class OrdersPage implements OnInit, OnDestroy {
         _imageThumb = RestaurantImageThumbs.find().fetch().filter((i) => i.restaurantId === _id)[0];
         if (_imageThumb) {
             return _imageThumb.url;
+        } else {
+            return 'assets/img/default-restaurant.png';
         }
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if(this._restaurantSub) {this._restaurantSub.unsubscribe();}
+        if(this._ordersSub) {this._ordersSub.unsubscribe();}
+        if(this._itemsSub) {this._itemsSub.unsubscribe();}
+        if(this._restaurantThumbSub) {this._restaurantThumbSub.unsubscribe();}
+        if(this._userDetailSub) {this._userDetailSub.unsubscribe();}
+        if(this._currencySub) {this._currencySub.unsubscribe();}
     }
 }

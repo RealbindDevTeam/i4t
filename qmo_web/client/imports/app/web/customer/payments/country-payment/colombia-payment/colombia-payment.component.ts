@@ -263,6 +263,12 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
      * This function validate the payment method.
      */
     pay(){
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+        
         let _lMessage : string = "";
         if ( this.tabId !== "" && this.restId !== "" ) {
             if ( this._paymentMethodId === '10' || this._paymentMethodId === '20' || this._paymentMethodId === '30' ){

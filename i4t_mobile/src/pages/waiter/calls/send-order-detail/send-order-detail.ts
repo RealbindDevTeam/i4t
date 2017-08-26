@@ -9,6 +9,7 @@ import { Table } from 'qmo_web/both/models/restaurant/table.model';
 import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 import { WaiterCallDetail } from 'qmo_web/both/models/restaurant/waiter-call-detail.model';
 import { Users } from 'qmo_web/both/collections/auth/user.collection';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 @Component({
   selector : 'send-order-detail-page',
@@ -34,7 +35,9 @@ export class SendOrderDetailsPage implements OnInit, OnDestroy {
                  public _navCtrl     : NavController,
                  public _params      : NavParams,
                  public _translate   : TranslateService,
-                 private _toastCtrl  : ToastController ){
+                 private _toastCtrl  : ToastController,
+                 private _userLanguageService: UserLanguageService ){
+        _translate.setDefaultLang('en');
         this._call = this._params.get('call');
     }
 
@@ -42,6 +45,7 @@ export class SendOrderDetailsPage implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit(){
+        this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         this._orderSubscription = MeteorObservable.subscribe( 'getOrderById', this._call.order_id ).subscribe( () => {
             this._orders = Orders.find({});
         });
