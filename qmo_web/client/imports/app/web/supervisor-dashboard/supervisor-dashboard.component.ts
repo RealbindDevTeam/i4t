@@ -137,7 +137,7 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
      * @param {string} _pRestaurantId 
      */
     getAvailableItems( _pRestaurantId: string ):number{
-        return Items.collection.find( { 'restaurants.restaurantId': _pRestaurantId, isAvailable: true } ).count();
+        return Items.collection.find( { 'restaurants.restaurantId': _pRestaurantId, 'restaurants.isAvailable': true } ).count();
     }
 
     /**
@@ -145,7 +145,7 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
      * @param {string} _pRestaurantId
      */
     getNotAvailableItems( _pRestaurantId: string ):number{
-        return Items.collection.find( { 'restaurants.restaurantId': _pRestaurantId, isAvailable: false } ).count();
+        return Items.collection.find( { 'restaurants.restaurantId': _pRestaurantId, 'restaurants.isAvailable': false } ).count();
     }
 
     /**
