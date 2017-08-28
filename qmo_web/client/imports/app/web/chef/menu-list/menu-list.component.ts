@@ -37,9 +37,6 @@ import style from './menu-list.component.scss';
 })
 export class MenuListComponent implements OnInit, OnDestroy {
 
-    //@Input() restaurantId: string;
-    //@Input() tableQRCode: string;
-    //@Input() restaurantCurrency: string;
     @Output() finishOrdenCreation = new EventEmitter();
 
     private _newOrderForm: FormGroup;
@@ -85,7 +82,7 @@ export class MenuListComponent implements OnInit, OnDestroy {
     private orderMenuSetup: OrderMenu[] = [];
 
     /**
-     * OrderCreateComponent Constructor
+     * MenuListComponent Constructor
      * @param {FormBuilder} _formBuilder 
      * @param {TranslateService} _translate 
      * @param {OrderNavigationService} _navigation 
@@ -124,7 +121,6 @@ export class MenuListComponent implements OnInit, OnDestroy {
             });
         });
         this._itemImagesSub = MeteorObservable.subscribe('getItemImageByRestaurantWork', Meteor.userId()).subscribe();
-        //this._ordersSub = MeteorObservable.subscribe('getOrders', this.restaurantId, this.tableQRCode, ['ORDER_STATUS.REGISTERED']).subscribe(() => { });
         this._garnishFoodSub = MeteorObservable.subscribe('garnishFoodByRestaurantWork', Meteor.userId()).subscribe(() => {
             this._ngZone.run(() => {
                 this._garnishFoodCol = GarnishFoodCol.find({}).zone();
@@ -312,62 +308,6 @@ export class MenuListComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Add item in order with REGISTERED state
-     * @param {string} _pItemToInsert 
-     */
-    /**
-    AddItemToOrder(_pItemToInsert: string): void {
-        if (this._newOrderForm.valid) {
-            let _lOrderItemIndex: number = 0;
-            let _lOrder: Order = Orders.collection.find({ creation_user: Meteor.userId() }).fetch()[0];
-
-            if (_lOrder) {
-                _lOrderItemIndex = _lOrder.orderItemCount + 1;
-            } else {
-                _lOrderItemIndex = 1;
-            }
-
-            let arr: any[] = Object.keys(this._newOrderForm.value.garnishFood);
-            let _lGarnishFoodToInsert: string[] = [];
-
-            arr.forEach((gar) => {
-                if (this._newOrderForm.value.garnishFood[gar]) {
-                    _lGarnishFoodToInsert.push(gar);
-                }
-            });
-
-            let arrAdd: any[] = Object.keys(this._newOrderForm.value.additions);
-            let _lAdditionsToInsert: string[] = [];
-
-            arrAdd.forEach((add) => {
-                if (this._newOrderForm.value.additions[add]) {
-                    _lAdditionsToInsert.push(add);
-                }
-            });
-
-            let _lOrderItem: OrderItem = {
-                index: _lOrderItemIndex,
-                itemId: _pItemToInsert,
-                quantity: this._quantityCount,
-                observations: this._newOrderForm.value.observations,
-                garnishFood: _lGarnishFoodToInsert,
-                additions: _lAdditionsToInsert,
-                paymentItem: this._finalPrice
-            };
-            MeteorObservable.call('AddItemToOrder', _lOrderItem, this.restaurantId, this.tableQRCode, this.finalPrice).subscribe(() => {
-                let _lMessage: string = this.itemNameTraduction('ORDER_CREATE.ITEM_AGGREGATED');
-                this.snackBar.open(_lMessage, '', {
-                    duration: 2500
-                });
-            }, (error) => {
-                this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
-            });
-            this.viewItemDetail(true);
-        }
-    }
-     */
-
-    /**
      * Return to order component
      * @param {boolean} _finish 
      */
@@ -417,43 +357,6 @@ export class MenuListComponent implements OnInit, OnDestroy {
         this._garnishFoodElementsCount = 0;
         this._newOrderForm.reset();
     }
-
-    /**
-     * Calculate final price when garnish food is selected
-     * @param {any} _event 
-     * @param {number} _price 
-     */
-
-    /**
-   calculateFinalPriceGarnishFood(_event: any, _pGarnishFood: GarnishFood): void {
-       let _price = _pGarnishFood.restaurants.filter(r => r.restaurantId === this.restaurantId)[0].price;
-       if (_event.checked) {
-           this._finalPrice = (Number.parseInt(this._finalPrice.toString()) + (Number.parseInt(_price.toString()) * this._quantityCount));
-           this._garnishFoodElementsCount += 1;
-           this.validateGarnishFoodElements();
-       } else {
-           this._finalPrice = Number.parseInt(this._finalPrice.toString()) - (Number.parseInt(_price.toString()) * this._quantityCount);
-           this._garnishFoodElementsCount -= 1;
-           this.validateGarnishFoodElements();
-       }
-   }
-    */
-
-    /**
-     * Calculate final price when addition is selected
-     * @param {any} _event 
-     * @param {number} _price 
-     */
-    /**
-    calculateFinalPriceAddition(_event: any, _pAddition: Addition): void {
-        let _price = _pAddition.restaurants.filter(r => r.restaurantId === this.restaurantId)[0].price;
-        if (_event.checked) {
-            this._finalPrice = (Number.parseInt(this._finalPrice.toString()) + (Number.parseInt(_price.toString()) * this._quantityCount));
-        } else {
-            this._finalPrice = Number.parseInt(this._finalPrice.toString()) - (Number.parseInt(_price.toString()) * this._quantityCount);
-        }
-    }
-     */
 
     /**
      * Return _quantityCount
@@ -549,49 +452,6 @@ export class MenuListComponent implements OnInit, OnDestroy {
         });
         return wordTraduced;
     }
-
-    /**
-     * Return Addition price
-     * @param {Addition} _pAddition 
-     */
-    /**
-    getAdditionPrice(_pAddition: Addition): number {
-        return _pAddition.restaurants.filter(r => r.restaurantId === this.restaurantId)[0].price;
-    }
-     */
-
-    /**
-     * Add Additions to Order
-     */
-    /**
-    AddAdditionsToOrder(): void {
-        let _lOrderAdditionsToInsert: OrderAddition[] = [];
-        let _lAdditionsPrice: number = 0;
-        let arrAdd: any[] = Object.keys(this._additionsDetailFormGroup.value);
-
-        arrAdd.forEach((add) => {
-            if (this._additionsDetailFormGroup.value[add]) {
-                let _lAddition: Addition = Additions.findOne({ _id: add });
-                let _lOrderAddition: OrderAddition = {
-                    additionId: add,
-                    quantity: this._additionsDetailFormGroup.value[add],
-                    paymentAddition: (this.getAdditionPrice(_lAddition) * (this._additionsDetailFormGroup.value[add]))
-                };
-                _lAdditionsPrice += _lOrderAddition.paymentAddition;
-                _lOrderAdditionsToInsert.push(_lOrderAddition);
-            }
-        });
-        MeteorObservable.call('AddAdditionsToOrder', _lOrderAdditionsToInsert, this.restaurantId, this.tableQRCode, _lAdditionsPrice).subscribe(() => {
-            let _lMessage: string = this.itemNameTraduction('ORDER_CREATE.ADDITON_AGGREGATED');
-            this.snackBar.open(_lMessage, '', {
-                duration: 2500
-            });
-        }, (error) => {
-            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
-        });
-        this.viewAdditionDetail(true);
-    }
-     */
 
     /**
      * Function to get item avalaibility 

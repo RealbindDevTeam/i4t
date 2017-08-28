@@ -35,7 +35,7 @@
                         <div *ngIf="_showCustomerOrders || _showAllOrders">
                             <div *ngFor="let or of _orders | async; let i = index">
                                 <md-toolbar class="customer-order" (click)="showCustomerOrderDetail(or,i)">
-                                    <i class="fa fa-list-alt" aria-hidden="true" class="order-icon"></i>
+                                    <img style="width: 3rem;" src="/images/my-orders.png">
                                     <span class="order-code">{{'ORDER_LIST.ORDERS' | translate}} # {{or.code}}</span>
                                     <span>{{'ORDER_LIST.TOTAL' | translate}}: {{or.totalPayment}} {{_currencyCode}}</span>
                                     <span class="app-flex-filler"></span>
@@ -96,7 +96,7 @@
                         <div *ngIf="_showOtherOrders || _showAllOrders">
                             <div *ngFor="let or of _ordersTable | async; let in = index">
                                 <md-toolbar class="other-order" (click)="showOthersOrderDetail(or,in)">
-                                    <i class="fa fa-list-alt" aria-hidden="true" class="order-icon"></i>
+                                    <img style="width: 3rem;" src="/images/others-orders.png">
                                     <span class="order-code">{{'ORDER_LIST.ORDERS' | translate}} # {{or.code}}</span>
                                     <span>{{'ORDER_LIST.TOTAL' | translate}}: {{or.totalPayment}} {{_currencyCode}}</span>
                                     <span class="app-flex-filler"></span>
