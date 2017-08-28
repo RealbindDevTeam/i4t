@@ -5,15 +5,15 @@
         <md-card-subtitle >
             <md-icon md-tooltip="Pais">room</md-icon>                   
             <span *ngFor="let country of _countries | async" >
-                <template [ngIf]="country._id == restaurant.countryId">                
+                <ng-template [ngIf]="country._id == restaurant.countryId">                
                     <md-card-subtitle class="display-info">{{country.name}}</md-card-subtitle>
-                </template>
+                </ng-template>
             </span>                                    
             <label> - </label>                  
             <span *ngFor="let city of _cities | async" >
-                <template [ngIf]="city._id == restaurant.cityId">                
+                <ng-template [ngIf]="city._id == restaurant.cityId">                
                     <md-card-subtitle class="display-info">{{city.name}}</md-card-subtitle>
-                </template>
+                </ng-template>
             </span>
             {{restaurant.address}}
         </md-card-subtitle>

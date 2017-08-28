@@ -47,10 +47,10 @@
   <md-card-title>{{subcategory.name}}</md-card-title>
   <md-card-content>
     <span *ngFor="let cat of _categories | async" >
-      <template [ngIf]="cat._id == subcategory.category">                
+      <ng-template [ngIf]="cat._id == subcategory.category">                
         <p *ngIf="cat.is_active" class="category-active">{{'SUBCATEGORIES.CATEGORY' | translate}}: {{cat.name}}</p>
         <p *ngIf="!cat.is_active" class="category-inactive">{{'SUBCATEGORIES.CATEGORY' | translate}}: {{cat.name}}</p>
-      </template>
+      </ng-template>
     </span>
   </md-card-content>
   <md-card-actions>

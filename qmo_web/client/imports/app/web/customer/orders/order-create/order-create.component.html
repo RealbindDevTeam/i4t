@@ -19,7 +19,7 @@
                 <div class="items">
                     <span *ngFor="let section of _sections | async" >
                         <span *ngFor="let item of _items | async">
-                            <template [ngIf]="item.sectionId === section._id && item.categoryId === '' && item.subcategoryId === ''">
+                            <ng-template [ngIf]="item.sectionId === section._id && item.categoryId === '' && item.subcategoryId === ''">
                                 <md-card class="cards">
                                     <md-card-header>
                                         <md-card-title>{{item.name}}</md-card-title>
@@ -33,12 +33,12 @@
                                         <p *ngIf="getItemAvailability(item._id)"  class="button-action price-button">{{'ORDER_CREATE.PRICE' | translate}}: {{ getItemPrice( item ) }} {{_currencyCode}}</p>
                                     </md-card-actions>
                                 </md-card>
-                            </template>
+                            </ng-template>
                         </span>
                         <span *ngFor="let category of _categories | async">
-                            <template [ngIf]="category.section === section._id">
+                            <ng-template [ngIf]="category.section === section._id">
                                 <span *ngFor="let item of _items | async">
-                                    <template [ngIf]="item.sectionId === section._id && item.categoryId === category._id && item.subcategoryId === ''">
+                                    <ng-template [ngIf]="item.sectionId === section._id && item.categoryId === category._id && item.subcategoryId === ''">
                                         <md-card class="cards">
                                             <md-card-header>
                                                 <md-card-title>{{item.name}}</md-card-title>
@@ -52,12 +52,12 @@
                                                 <p *ngIf="getItemAvailability(item._id)"  class="button-action price-button">{{ getItemPrice( item ) }} {{_currencyCode}}</p>
                                             </md-card-actions>
                                         </md-card>
-                                    </template>
+                                    </ng-template>
                                 </span>
                                 <span *ngFor="let subcategory of _subcategories | async">
-                                    <template [ngIf]="subcategory.category === category._id">
+                                    <ng-template [ngIf]="subcategory.category === category._id">
                                         <span *ngFor="let item of _items | async">
-                                            <template [ngIf]="item.sectionId === section._id && item.categoryId === category._id && item.subcategoryId === subcategory._id">
+                                            <ng-template [ngIf]="item.sectionId === section._id && item.categoryId === category._id && item.subcategoryId === subcategory._id">
                                                 <md-card id="card-main" class="cards">
                                                     <md-card-header>
                                                         <md-card-title>{{item.name}}</md-card-title>
@@ -71,11 +71,11 @@
                                                         <p *ngIf="getItemAvailability(item._id)"  class="button-action price-button">{{ getItemPrice( item ) }} {{_currencyCode}}</p>
                                                     </md-card-actions>
                                                 </md-card>
-                                            </template>
+                                            </ng-template>
                                         </span>
-                                    </template>
+                                    </ng-template>
                                 </span>
-                            </template>
+                            </ng-template>
                         </span>
                     </span>
                 </div>
@@ -131,9 +131,9 @@
                                                     <div formGroupName="garnishFood">
                                                         <p *ngFor="let garnish of _garnishFoodCol | async">
                                                             <span *ngFor="let gar of itemDet.garnishFood">
-                                                                <template [ngIf]="garnish._id === gar">
+                                                                <ng-template [ngIf]="garnish._id === gar">
                                                                     <md-checkbox [formControlName]="garnish._id" (change)="calculateFinalPriceGarnishFood($event, garnish)" [class.invalid]="!_newOrderForm.controls.garnishFood.valid">{{ getGarnishFoodInformation(garnish) }} {{_currencyCode}}<div class="inline-block"> x {{_quantityCount}}</div></md-checkbox> 
-                                                                </template>
+                                                                </ng-template>
                                                             </span>
                                                         </p>
                                                     </div>
@@ -144,9 +144,9 @@
                                                     <div formGroupName="additions">
                                                         <p *ngFor="let addition of _additions | async">
                                                             <span *ngFor="let add of itemDet.additions">
-                                                                <template [ngIf]="addition._id === add">
+                                                                <ng-template [ngIf]="addition._id === add">
                                                                     <md-checkbox [formControlName]="addition._id" (change)="calculateFinalPriceAddition($event, addition)" [class.invalid]="!_newOrderForm.controls.additions.valid">{{ getAdditionInformation(addition) }} {{_currencyCode}}<div class="inline-block">x {{_quantityCount}}</div></md-checkbox> 
-                                                                </template>
+                                                                </ng-template>
                                                             </span>
                                                         </p>
                                                     </div>

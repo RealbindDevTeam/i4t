@@ -77,9 +77,9 @@
         <td>          
           <!--label *ngIf="promotion.urlImageThumb == '-'" class="label-field-void">{{'PROMOTIONS.IMAGE_NOT_AVAILABLE' | translate}}</label-->
           <span *ngFor="let thumb of _promotionThumbs | async" >
-            <template [ngIf]="thumb.promotionId == promotion._id">
+            <ng-template [ngIf]="thumb.promotionId == promotion._id">
               <img src="{{thumb.url}}"/>
-            </template>
+            </ng-template>
           </span>
         </td>
         <td><md-slide-toggle [(checked)]="promotion.is_active" (change)="updateStatus(promotion)"></md-slide-toggle></td>

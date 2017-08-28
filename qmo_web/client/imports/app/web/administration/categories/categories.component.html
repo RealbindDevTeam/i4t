@@ -46,10 +46,10 @@
   <md-card-title>{{category.name}}</md-card-title>
   <md-card-content>
     <span *ngFor="let sec of _sections | async" >
-      <template [ngIf]="sec._id == category.section">                           
+      <ng-template [ngIf]="sec._id == category.section">                           
         <p *ngIf="sec.is_active" class="section-active">{{'CATEGORIES.SECTION' | translate}}: {{sec.name}}</p>
         <p *ngIf="!sec.is_active" class="section-inactive">{{'CATEGORIES.SECTION' | translate}}: {{sec.name}}</p>
-      </template>
+      </ng-template>
     </span>
   </md-card-content>
   <md-card-actions>

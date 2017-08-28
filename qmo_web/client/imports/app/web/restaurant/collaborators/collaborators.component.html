@@ -97,10 +97,10 @@
                             </button>
                             <ul class="list">
                                 <li *ngFor="let role of _roles | async">
-                                    <template [ngIf]="role._id == userdetail.role_id">
+                                    <ng-template [ngIf]="role._id == userdetail.role_id">
                                         <md-icon md-tooltip="{{'JOB' | translate}}" style="vertical-align: middle">assignment ind</md-icon>
                                         <label> {{ role.name | translate }} </label>
-                                    </template>
+                                    </ng-template>
                                 </li>
                                 <li *ngIf="user.emails">
                                     <md-icon style="vertical-align: middle" md-tooltip="{{'EMAIL' | translate}}">mail outline</md-icon>
