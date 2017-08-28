@@ -12,7 +12,7 @@
             <md-list *ngIf="(or.items.length > 0)">
                 <span *ngFor="let item of _items | async">
                     <span *ngFor="let it of or.items">
-                        <template [ngIf]="item._id === it.itemId">
+                        <ng-template [ngIf]="item._id === it.itemId">
                             <md-list-item>
                                 <img md-list-avatar class="item-image" src="{{ getItemImage(item._id) }}">
                                 <h4 md-line>{{item.name}}</h4>
@@ -23,21 +23,21 @@
                                 </h5>
                             </md-list-item>
                             <md-divider></md-divider>
-                        </template>
+                        </ng-template>
                     </span>
                 </span>
             </md-list>
             <md-list *ngIf="(or.additions.length > 0)">
                 <span *ngFor="let addition of _additions | async">
                     <span *ngFor="let ad of or.additions">
-                        <template [ngIf]="addition._id === ad.additionId">
+                        <ng-template [ngIf]="addition._id === ad.additionId">
                             <md-list-item>
                                 <img md-list-avatar class="item-image" src="/images/default-plate.png">
                                 <h4 md-line>{{addition.name}} <div class="addition-message">({{'ORDER_TRANS.ADDITION' | translate}})</div></h4>
                                 <p md-line>{{'ORDER_TRANS.PRICE' | translate}}: {{ad.paymentAddition}} {{_currencyCode}} - {{'ORDER_TRANS.QUANT' | translate}} {{ad.quantity}}</p>
                             </md-list-item>
                             <md-divider></md-divider>
-                        </template>
+                        </ng-template>
                     </span>
                 </span>
             </md-list>

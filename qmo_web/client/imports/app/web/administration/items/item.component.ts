@@ -89,7 +89,7 @@ export class ItemComponent implements OnInit, OnDestroy {
      * This function open item creation wizard
      */
     openItemCreation():void{
-        this._router.navigate(['app/itemsCreation']);
+        this._router.navigate(['app/items-creation']);
     }
 
     /**
@@ -165,7 +165,7 @@ export class ItemComponent implements OnInit, OnDestroy {
      * Go to add new Restaurant
      */
     goToAddRestaurant(){
-        this._router.navigate(['/app/restaurantRegister']);
+        this._router.navigate(['/app/restaurant-register']);
     }
 
     /**
