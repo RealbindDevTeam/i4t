@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnDestroy, Input, ViewChildren, QueryList } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, Input, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MenuItem } from '../../menu-item';
 import { StringUtils } from '../../../../shared/utils/string-utils';
@@ -9,9 +9,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 
 @Component({
-  selector : 'c-sidenav-item',
-  styles : [ `md-icon { color: #e53935; }` ],
-  template : `
+  selector: 'c-sidenav-item',
+  styles: [`md-icon { color: #e53935; }`],
+  template: `
     <a md-list-item *ngIf="hasExternalLink" (click)="clicked($event)" [href]="menuItem.link" [ngClass]="{ 'active' : active }">
       <md-icon *ngIf="showIcon">{{menuItem.icon}}</md-icon>
       <span class="title">{{ menuItem.title }}</span>
@@ -46,6 +46,7 @@ export class SidenavItemComponent implements AfterViewInit, OnDestroy {
 
   @Input() set active(active: boolean) {
     this._active = active;
+    this.cdRef.detectChanges();
   }
 
   @Input() parent: SidenavItemComponent;
@@ -65,40 +66,41 @@ export class SidenavItemComponent implements AfterViewInit, OnDestroy {
    * @param {TranslateService} _translate 
    * @param {UserLanguageService} _userLanguageService 
    */
-  constructor( private _navigation: NavigationService, 
-               private _router: Router, 
-               private _activatedRoute: ActivatedRoute,  
-               private _translate: TranslateService,
-               private _userLanguageService: UserLanguageService ) {
-                 _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-                 _translate.setDefaultLang( 'en' );
+  constructor(private _navigation: NavigationService,
+    private _router: Router,
+    private _activatedRoute: ActivatedRoute,
+    private _translate: TranslateService,
+    private _userLanguageService: UserLanguageService,
+    private cdRef: ChangeDetectorRef) {
+    _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+    _translate.setDefaultLang('en');
   }
 
   ngAfterViewInit() {
-    if(!this.hasChildren && this.hasLink) {
+    if (!this.hasChildren && this.hasLink) {
       this._subscription = this._navigation.currentRoute.subscribe(currentRoute => { // Open up the current menu item on initial load (i.e. someones refreshes the page or you go directly to an inner page)
         this._currentRoute = currentRoute;
-        if(this.isActive(currentRoute)) {
+        if (this.isActive(currentRoute)) {
           let hasShowOnly: boolean = false;
           let parent: SidenavItemComponent = this;
           while (parent !== undefined && parent !== null) {
-            if(!StringUtils.isNull(parent, 'menuItem') && parent.menuItem.showOnly) {
+            if (!StringUtils.isNull(parent, 'menuItem') && parent.menuItem.showOnly) {
               hasShowOnly = true;
               break;
             }
             parent = parent.parent;
           }
-          if(!hasShowOnly) {
+          if (!hasShowOnly) {
             this.toggle(true);
           } else {
             this._navigation.activeMenuItem.take(1).subscribe(activeMenu => {
               this._navigation.tempMenuItems.take(1).subscribe(tempMenus => {
-                if(activeMenu === null && tempMenus === null) {
+                if (activeMenu === null && tempMenus === null) {
                   this._navigation.showOnly(parent.menuItem);
-                } else if(tempMenus !== null && tempMenus.length > 0) {
+                } else if (tempMenus !== null && tempMenus.length > 0) {
                   parent.toggle(true, null, true);
-                } else if(activeMenu !== null && tempMenus !== null && tempMenus.length === 0) {
-                  if(parent.parent !== undefined && parent.parent !== null) {
+                } else if (activeMenu !== null && tempMenus !== null && tempMenus.length === 0) {
+                  if (parent.parent !== undefined && parent.parent !== null) {
                     parent.parent.toggle(true, null, false, true);
                   }
                 }
@@ -107,9 +109,9 @@ export class SidenavItemComponent implements AfterViewInit, OnDestroy {
           }
         }
       });
-    } else if(this.menuItem.showOnly) {
+    } else if (this.menuItem.showOnly) {
       this._navigation.tempMenuItems.take(1).subscribe(tempMenus => {
-        if(tempMenus !== null && tempMenus.length > 0) {
+        if (tempMenus !== null && tempMenus.length > 0) {
           this.toggle(true, null, true, true);
         }
       });
@@ -117,53 +119,52 @@ export class SidenavItemComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if(this._subscription) {
+    if (this._subscription) {
       this._subscription.unsubscribe();
     }
   }
 
   toggleDropdown(active: boolean) {
     this.active = active;
-    if(this.children) {
+    if (this.children) {
       this.children.forEach(childMenu => {
         childMenu.toggle(false, undefined, true);
       });
     }
-    if(this.parent && active) {
+    if (this.parent && active) {
       this.parent.toggle(active, this);
     }
 
-    if(this.menuItem.showOnly && active) {
+    if (this.menuItem.showOnly && active) {
       this._navigation.showOnly(this.menuItem);
     }
-
   }
 
   toggle(active: boolean, child?: SidenavItemComponent, noParent: boolean = false, noChildren: boolean = false): void {
     this.active = active;
-    if(!noChildren && this.children) {
+    if (!noChildren && this.children) {
       this.children.forEach(childComponent => {
-        if(child !== undefined) {
-          if(child !== childComponent) {
+        if (child !== undefined) {
+          if (child !== childComponent) {
             childComponent.toggle(false, undefined, true);
           }
         } else {
           childComponent.toggle(active, undefined, true);
         }
       });
-    } else if(active) {
+    } else if (active) {
       this._navigation.setActiveMenuItem(this.menuItem);
     }
 
-    if(this.parent !== undefined && !noParent) {
+    if (this.parent !== undefined && !noParent) {
       this.parent.toggle(active, this);
     }
   }
 
   clicked(event: MouseEvent) {
-    if(this.menuItem.clickHandler !== null) {
+    if (this.menuItem.clickHandler !== null) {
       let clickResult: boolean = this.menuItem.clickHandler(event, this._navigation, this);
-      if(clickResult) {
+      if (clickResult) {
         this.toggleDropdown(!this._active);
       }
     } else {
@@ -172,14 +173,14 @@ export class SidenavItemComponent implements AfterViewInit, OnDestroy {
   }
 
   isActive(currentRoute: string): boolean {
-    if(StringUtils.isEmpty(currentRoute)) {
+    if (StringUtils.isEmpty(currentRoute)) {
       return false;
     }
-    if(StringUtils.cleanLinkString(currentRoute) === this.menuItem.link) {
-      if(this.hasQuery) {
+    if (StringUtils.cleanLinkString(currentRoute) === this.menuItem.link) {
+      if (this.hasQuery) {
         let active: boolean = false;
         this._activatedRoute.queryParams.take(1).subscribe(params => {
-          if(StringUtils.deepCompare(this.menuItem.queryParams, params)) {
+          if (StringUtils.deepCompare(this.menuItem.queryParams, params)) {
             active = true;
           }
         });
@@ -187,7 +188,7 @@ export class SidenavItemComponent implements AfterViewInit, OnDestroy {
       } else {
         return true;
       }
-    } else if(this.menuItem.pathMatch === 'partial' && StringUtils.startsWith(currentRoute, this.menuItem.link)) {
+    } else if (this.menuItem.pathMatch === 'partial' && StringUtils.startsWith(currentRoute, this.menuItem.link)) {
       return true;
     }
     return false;
@@ -199,9 +200,9 @@ export class SidenavItemComponent implements AfterViewInit, OnDestroy {
 
   get height(): number {
     let addedHeight = 0;
-    if(this.children) {
+    if (this.children) {
       this.children.forEach(childComponent => {
-        if(childComponent.active) {
+        if (childComponent.active) {
           addedHeight += childComponent.height;
         }
       });
@@ -210,7 +211,7 @@ export class SidenavItemComponent implements AfterViewInit, OnDestroy {
   }
 
   get levelClass(): string {
-    if(this.level < 4) {
+    if (this.level < 4) {
       return `level${this.level}`;
     }
     return 'level5';
@@ -221,28 +222,28 @@ export class SidenavItemComponent implements AfterViewInit, OnDestroy {
   }
 
   get hasExternalLink(): boolean {
-    if(!this.menuItem) {
+    if (!this.menuItem) {
       return false;
     }
     return !StringUtils.isEmpty(this.menuItem.link) && (StringUtils.startsWith(this.menuItem.link, 'http://') || StringUtils.startsWith(this.menuItem.link, 'https://'));
   }
 
   get hasLink(): boolean {
-    if(!this.menuItem || this.hasExternalLink) {
+    if (!this.menuItem || this.hasExternalLink) {
       return false;
     }
     return !StringUtils.isEmpty(this.menuItem.link);
   }
 
   get hasChildren(): boolean {
-    if(!this.menuItem) {
+    if (!this.menuItem) {
       return false;
     }
     return this.menuItem.children.length > 0;
   }
 
   get hasQuery(): boolean {
-    if(!this.menuItem) {
+    if (!this.menuItem) {
       return false;
     }
     return !this.menuItem.queryParams ? false : Object.getOwnPropertyNames(this.menuItem.queryParams).length !== 0;
