@@ -55,11 +55,11 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     private _validate               : boolean
     private _validateChangePass     : boolean
     private _createImage            : boolean = false;
-    private _availableEditImage     : boolean = true;
+    //private _availableEditImage     : boolean = true;
+    private _loading                : boolean = false;
 
     private _filesToUpload          : Array<File>;
     private _itemImageToInsert      : File;
-    private _nameImageFile          : string;
 
     /**
      * SettingsWebComponent Constructor
@@ -99,7 +99,7 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
 
             let lUser : UserDetail = UserDetails.collection.find({}).fetch()[0];
             if(this._user.services.facebook){
-                this._availableEditImage = false;
+                //this._availableEditImage = false;
                 this._email = this._user.services.facebook.email;
                 this._userName = this._user.services.facebook.name;
                 this._firstName = this._user.services.facebook.first_name;
@@ -111,11 +111,11 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
                 this._userObservable = Users.find({}).zone();
             } else if (lUser.role_id === '200'  || lUser.role_id === '500' || lUser.role_id === '600' ){
                 this._validateChangePass = true;
-                this._availableEditImage = false;
+                //this._availableEditImage = false;
                 this._userName = this._user.username;
                 this._firstName = this._user.profile.first_name;
                 this._lastName = this._user.profile.last_name;
-                this._imageProfile = '/images/user_default_image.png'
+                //this._imageProfile = '/images/user_default_image.png'
             }
             this._userImageSub = MeteorObservable.subscribe( 'getUserImages', Meteor.userId() ).subscribe();
         });
@@ -168,18 +168,6 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
                                     language_code: this._lang_code }
                     }
             });
-
-            if( this._createImage ){
-                let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() } );
-                if( _lUserImage ){
-                    UserImages.remove( { _id: _lUserImage._id } );
-                }
-                uploadUserImage( this._itemImageToInsert, Meteor.userId() ).then((result) => {
-                    this._createImage = false;
-                }).catch((error) => {
-                    alert('Upload image error. Only accept .png, .jpg, .jpeg files.');
-                });
-            }
 
             let message : string;
             message = this.itemNameTraduction('SETTINGS.USER_DETAIL_UPDATED');
@@ -249,10 +237,24 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
      * @param {any} _fileInput
      */
     onChangeImage(_fileInput: any): void {
-        this._createImage = true;
-        this._filesToUpload = <Array<File>>_fileInput.target.files;
-        this._itemImageToInsert = this._filesToUpload[0];
-        this._nameImageFile = this._itemImageToInsert.name;
+        this._loading = true;
+        setTimeout(() => {
+            this._createImage = true;
+            this._filesToUpload = <Array<File>>_fileInput.target.files;
+            this._itemImageToInsert = this._filesToUpload[0];
+
+            let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() } );
+            if( _lUserImage ){
+                UserImages.remove( { _id: _lUserImage._id } );
+            }
+            uploadUserImage( this._itemImageToInsert, Meteor.userId() ).then((result) => {
+                this._createImage = false;
+            }).catch((err) => {
+                var error : string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
+                this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            });
+            this._loading = false;
+        }, 3000);
     }
     
     /** 

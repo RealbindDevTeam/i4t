@@ -131,6 +131,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         y = this.calculateY(y, 30);
         pdf.setFontType("bold");
         pdf.text( this.itemNameTraduction('PAYMENTS_HISTORY.INVOICE_SALE'), 10, y);
+        //TODO Invoice number
         pdf.text( '9811261128', 120, y);
         
         y = this.calculateY(y, 10);
@@ -248,8 +249,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             title: this.itemNameTraduction('PAYMENTS_HISTORY.INVOICE_SALE'),
             author: this.itemNameTraduction('PAYMENTS_HISTORY.SOFTWARE_BY_REALBIND'),
         });
-
-        pdf.output('dataurlnewwindow');
+        pdf.save('9811261128-' + this.dateFormater(_pInvoice.creation_date) +'.pdf');
     }
 
     /**
