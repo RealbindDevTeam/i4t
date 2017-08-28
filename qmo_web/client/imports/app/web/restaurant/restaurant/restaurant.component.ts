@@ -100,7 +100,7 @@ export class RestaurantComponent implements OnInit, OnDestroy {
      * Function to open RestaurantRegisterComponent
      */
     openRestaurantRegister() {
-        this.router.navigate(['app/restaurantRegister']);
+        this.router.navigate(['app/restaurant-register']);
     }
 
     /**
@@ -138,7 +138,7 @@ export class RestaurantComponent implements OnInit, OnDestroy {
      * @param {Restaurant} _restaurant 
      */
     openRestaurantEdition(_restaurant: Restaurant) {
-        this.router.navigate( [ 'app/restaurantEdition', JSON.stringify(_restaurant) ], { skipLocationChange: true } );
+        this.router.navigate( [ 'app/restaurant-edition', JSON.stringify(_restaurant) ], { skipLocationChange: true } );
     }
 
     /**

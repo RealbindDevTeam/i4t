@@ -237,7 +237,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * Go to add new Restaurant
    */
   goToAddRestaurant(){
-      this._router.navigate(['/app/restaurantRegister']);
+      this._router.navigate(['/app/restaurant-register']);
   }
 
   /**

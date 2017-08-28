@@ -399,21 +399,21 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
      * Show orders details
      */
     viewOrderDetail():void{
-        this._router.navigate(['app/colOrdersInfo']);
+        this._router.navigate(['app/col-orders-info']);
     }
 
     /**
      * Show Orders Translate
      */
     viewOrderTranslate():void{
-        this._router.navigate(['app/OrdersTranslate']);
+        this._router.navigate(['app/orders-translate']);
     }
 
     /**
      * Show payment details
      */
     viewPaymentDetail():void{
-        this._router.navigate(['app/colPayInfo']);
+        this._router.navigate(['app/col-pay-info']);
     }
 
     /**

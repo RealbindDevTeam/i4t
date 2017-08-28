@@ -76,7 +76,7 @@ export class MonthlyConfigComponent implements OnInit, OnDestroy {
     }
 
     goToAddRestaurant(){
-        this._router.navigate(['/app/restaurantRegister']);
+        this._router.navigate(['/app/restaurant-register']);
     }
 
     ngOnDestroy() {
