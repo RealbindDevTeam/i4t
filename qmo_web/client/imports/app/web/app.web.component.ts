@@ -25,7 +25,7 @@ export class AppComponent implements OnInit{
                private _financialControlService: FinancialControlService,
                private _userLanguageService: UserLanguageService ) {
                 var stopStyle = [ 'font-family: Roboto, "Helvetica Neue", sans-serif', 
-                                  'font-size: 1.6rem', 
+                                  'font-size: 1.7rem', 
                                   'color: Red', 
                                   'font-weight: 600'].join(';'); 
                 console.log( '%c Stop!!', stopStyle);                
