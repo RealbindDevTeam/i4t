@@ -39,17 +39,18 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
     
     private _userProfile              = new UserProfile();
 
-    private _tablesNumber             : number[] = [];
-    public _selectedIndex             : number = 0;
-    private _userLang                 : string;
-    private _error                    : string;
-    private _selectedRestaurant       : string;
-    private _message                  : string;
-    private titleMsg                  : string;
-    private btnAcceptLbl              : string;
-    private _showConfirmError         : boolean = false;
-    private _showTablesSelect         : boolean = false;
-    private _disabledTablesAssignment : boolean = true;
+    private _tablesNumber              : number[] = [];
+    public _selectedIndex              : number = 0;
+    private _userLang                  : string;
+    private _error                     : string;
+    private _selectedRestaurant        : string;
+    private _message                   : string;
+    private titleMsg                   : string;
+    private btnAcceptLbl               : string;
+    private _showConfirmError          : boolean = false;
+    private _showTablesSelect          : boolean = false;
+    private _showTablesSelectByRest    : boolean = false;
+    private _disabledTablesAssignment  : boolean = true;
 
     /**
      * CollaboratorsRegisterComponent constructor
@@ -112,6 +113,18 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Validate restaurantId is select to enabled tables assignment
+     * @param _pRestaurantId 
+     */
+    validateRestaurantSelection(_pRestaurantId : string){
+        if(_pRestaurantId){
+            this._showTablesSelectByRest = true;
+        } else {
+            this._showTablesSelectByRest = false;
+        }
+    }
+
+    /**
      * Validate waiter role is select to enabled tables assignment
      * @param _roleId 
      */
@@ -134,7 +147,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
         if (_pEvent.checked) {
             this._disabledTablesAssignment = false;
             let tablesCount: number = 0;
-            tablesCount = Tables.collection.find({}).count();
+            tablesCount = Tables.collection.find({restaurantId : this._collaboratorRegisterForm.value.restaurant_work}).count();
             for (var index = 1; index <= tablesCount; index++) {
                 this._tablesNumber.push(index);
             }
@@ -209,7 +222,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
 
                         if (this._collaboratorRegisterForm.value.role === '200') {
                             if (this._disabledTablesAssignment || (this._collaboratorRegisterForm.value.table_init === 0 && this._collaboratorRegisterForm.value.table_end === 0)) {
-                                this._collaboratorRegisterForm.value.table_end = Tables.collection.find({}).count();
+                                this._collaboratorRegisterForm.value.table_end = Tables.collection.find({restaurantId : this._collaboratorRegisterForm.value.restaurant_work}).count();
                                 if (this._collaboratorRegisterForm.value.table_end > 0) {
                                     this._collaboratorRegisterForm.value.table_init = 1;
                                 }

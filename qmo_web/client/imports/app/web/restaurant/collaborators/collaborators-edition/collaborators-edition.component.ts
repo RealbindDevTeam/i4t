@@ -106,9 +106,7 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
         this._roles = Roles.find({}).zone();
         this._roleSub = MeteorObservable.subscribe('getRoleCollaborators').subscribe();
-        this._tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe(()=>{
-            this._tables = Tables.find({});
-        });
+        this._tableSub = MeteorObservable.subscribe('getTablesByRestaurantWork', this.selectUser._id).subscribe();
     }
 
     /**
