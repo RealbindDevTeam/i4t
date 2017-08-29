@@ -55,7 +55,6 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     private _validate               : boolean
     private _validateChangePass     : boolean
     private _createImage            : boolean = false;
-    //private _availableEditImage     : boolean = true;
     private _loading                : boolean = false;
 
     private _filesToUpload          : Array<File>;
@@ -99,7 +98,6 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
 
             let lUser : UserDetail = UserDetails.collection.find({}).fetch()[0];
             if(this._user.services.facebook){
-                //this._availableEditImage = false;
                 this._email = this._user.services.facebook.email;
                 this._userName = this._user.services.facebook.name;
                 this._firstName = this._user.services.facebook.first_name;
@@ -111,11 +109,9 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
                 this._userObservable = Users.find({}).zone();
             } else if (lUser.role_id === '200'  || lUser.role_id === '500' || lUser.role_id === '600' ){
                 this._validateChangePass = true;
-                //this._availableEditImage = false;
                 this._userName = this._user.username;
                 this._firstName = this._user.profile.first_name;
                 this._lastName = this._user.profile.last_name;
-                //this._imageProfile = '/images/user_default_image.png'
             }
             this._userImageSub = MeteorObservable.subscribe( 'getUserImages', Meteor.userId() ).subscribe();
         });
