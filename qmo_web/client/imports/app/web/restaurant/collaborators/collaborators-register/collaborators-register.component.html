@@ -11,7 +11,7 @@
                             <tr>
                                 <td style="width: 50%">
                                     <md-select required formControlName="restaurant_work" placeholder="{{'COLLABORATORS_REGISTER.SELECT_RESTAURANT' | translate}}" style="width: 100%;">
-                                        <md-option *ngFor="let rest of _restaurants | async" value="{{rest._id}}">{{rest.name}}</md-option>
+                                        <md-option *ngFor="let rest of _restaurants | async" value="{{rest._id}}" (click)="validateRestaurantSelection(rest._id)">{{rest.name}}</md-option>
                                     </md-select>
                                 </td>
                                 <td>
@@ -53,7 +53,7 @@
                                     </md-input-container>
                                 </td>
                             </tr>
-                            <tr *ngIf="_showTablesSelect">
+                            <tr *ngIf="_showTablesSelect && _showTablesSelectByRest">
                                 <td colspan="1" style="padding-top: 10px; width: 50%">
                                     <md-checkbox class="checkbox" (change)="pushSelectArray($event)">{{'COLLABORATORS_REGISTER.TABLES_ASSIGNMENT' | translate}}</md-checkbox>
                                     <md-select style="width: 100px;" formControlName="table_init" [disabled]="_disabledTablesAssignment">
