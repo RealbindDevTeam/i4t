@@ -8,7 +8,8 @@
                             <!--div *ngIf="!_availableEditImage">
                                 <img src="{{_imageProfile}}" />
                             </div-->
-                            <div *ngIf="_availableEditImage">
+                            <!--div *ngIf="_availableEditImage"-->
+                            <div>
                                 <input accept=".png, .jpg, .jpeg" (change)="onChangeImage($event)" style="display: none" type="file" name="file-1[]" id="file-1" data-multiple-caption="{count} files selected"/>
                                 <label for="file-1">
                                     <div class="avatarWrapper">
