@@ -51,9 +51,9 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
 
     private titleMsg                : string;
     private btnAcceptLbl            : string;
-    private _disabled               : boolean
-    private _validate               : boolean
-    private _validateChangePass     : boolean
+    private _disabled               : boolean = true;
+    private _validate               : boolean;
+    private _validateChangePass     : boolean = false;
     private _createImage            : boolean = false;
     private _loading                : boolean = false;
 
@@ -79,18 +79,32 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
-
+    
     /**
      * ngOnInit implementation
      */
     ngOnInit(){
         this.removeSubscriptions();
-        this._languages = Languages.find({}).zone();
-        this._subscription = MeteorObservable.subscribe('languages').subscribe();
-
-        this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
-
+        this._subscription = MeteorObservable.subscribe('languages').subscribe(()=>{
+            this._languages = Languages.find({}).zone();
+        });
+        
         this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() =>{
+            this._user = Users.findOne({_id: Meteor.userId()});
+            this._userDetail = UserDetails.findOne({user_id: Meteor.userId()});
+
+            if(this._userDetail.role_id){
+                if( this._userDetail.role_id == '100' || this._userDetail.role_id == '400' ){
+                    this._disabled = false;
+                } else if (this._userDetail.role_id == '200' || this._userDetail.role_id == '500' || this._userDetail.role_id == '600'){
+                    this._disabled = true;
+                }
+            }
+        });
+
+        //this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
+
+        /*this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() =>{
             this._disabled = false;
             this._validate = false;
             this._validateChangePass = false;
@@ -114,7 +128,7 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
                 this._lastName = this._user.profile.last_name;
             }
             this._userImageSub = MeteorObservable.subscribe( 'getUserImages', Meteor.userId() ).subscribe();
-        });
+        });*/
     }
 
     /**
@@ -131,11 +145,16 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
      * Return user image
      */
     getUsetImage():string{
-        let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() });
-        if( _lUserImage ){
-            return _lUserImage.url;
+        if(this._user && this._user.services.facebook){
+            return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
         } else {
-            return '/images/user_default_image.png';
+            let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() });
+            if( _lUserImage ){
+                return _lUserImage.url;
+            } 
+            else {
+                return '/images/user_default_image.png';
+            }
         }
     }
 
@@ -153,48 +172,20 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
             return;
         }
         
-        if(this.validateUserName(_userName)){
-            Users.update(
-                {_id: Meteor.userId()}, 
-                { $set:
-                    {
-                        username: _userName.value,
-                        profile: {  first_name: _firstName.value,
-                                    last_name: _lastName.value,
-                                    language_code: this._lang_code }
-                    }
-            });
+        Users.update(
+            {_id: Meteor.userId()}, 
+            { $set:
+                {
+                    username: _userName.value,
+                    profile: {  first_name: _firstName.value,
+                                last_name: _lastName.value,
+                                language_code: this._lang_code }
+                }
+        });
 
-            let message : string;
-            message = this.itemNameTraduction('SETTINGS.USER_DETAIL_UPDATED');
-            this.openDialog(this.titleMsg, '', message, '', this.btnAcceptLbl, false);
-        }
-    }
-
-    /**
-     * Validate username field
-     * @param _userName 
-     */
-    validateUserName(_userName : any) : boolean{
-        if(_userName.value === null || _userName.value === '' || _userName.value.length == 0){
-            this._message = this.itemNameTraduction('SIGNUP.REQUIRED_USERNAME');
-            this._validate = true;
-            return false;
-        }
-        else if (_userName.value.length < 6) {
-            this._message = this.itemNameTraduction('SIGNUP.MIN_LENGTH_USERNAME');
-            this._validate = true;
-            return false;
-        } 
-        else if (_userName.value.length > 20){
-            this._message = this.itemNameTraduction('SIGNUP.MAX_LENGTH_USERNAME');
-            this._validate = true;
-            return false;
-        }
-        else {
-            this._validate = false;
-            return true;
-        }
+        let message : string;
+        message = this.itemNameTraduction('SETTINGS.USER_DETAIL_UPDATED');
+        this.openDialog(this.titleMsg, '', message, '', this.btnAcceptLbl, false);
     }
 
     open() {

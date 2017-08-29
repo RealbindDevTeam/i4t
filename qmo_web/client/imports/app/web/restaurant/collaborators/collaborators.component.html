@@ -1,26 +1,26 @@
 <md-card md-cell="12" class="demo-card demo-basic" *ngIf="(_restaurants | async)?.length <= 0">
-        <md-card-content>
-            <div class="card_initial">
-                <div class="card_initial has-image">
-                    <div class="card_initial-image-container">
-                        <img class="card_initial-image" 
-                            src="/images/empleados.png"/>
+    <md-card-content>
+        <div class="card_initial">
+            <div class="card_initial has-image">
+                <div class="card_initial-image-container">
+                    <img class="card_initial-image" 
+                        src="/images/empleados.png"/>
+                </div>
+                <div class="card_initial-copy">
+                    <div class="card_initial-tagline">
+                        {{'SECTIONS.THERE_NOT_RESTAURANTS' | translate}}
                     </div>
-                    <div class="card_initial-copy">
-                        <div class="card_initial-tagline">
-                            {{'SECTIONS.THERE_NOT_RESTAURANTS' | translate}}
-                        </div>
-                        <div class="card_initial-additional-links">
-                            {{'SECTIONS.MESSAGE' | translate}}
-                        </div>
-                    </div>
-                    <div class="card_initial-button">
-                        <button md-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
+                    <div class="card_initial-additional-links">
+                        {{'SECTIONS.MESSAGE' | translate}}
                     </div>
                 </div>
+                <div class="card_initial-button">
+                    <button md-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
+                </div>
             </div>
-        </md-card-content>
-    </md-card>
+        </div>
+    </md-card-content>
+</md-card>
     
 <div *ngIf="(_restaurants | async)?.length > 0" class="global-div">
     <div class="div-whitout-overflow">
@@ -124,7 +124,9 @@
                     </div>
                 </div>
             </md-card>
-            <button *ngIf="(_userDetails | async)?.length > 0" class="fixed-action-btn" md-fab (click)="openCollaboratorstRegister()"> <md-icon style="color: white;">add</md-icon></button>
+            <button *ngIf="(_userDetails | async)?.length > 0" class="fixed-action-btn" md-fab (click)="openCollaboratorstRegister()">
+                <md-icon style="color: white;">add</md-icon>
+            </button>
         </div>
     </div>
 </div>

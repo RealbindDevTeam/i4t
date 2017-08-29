@@ -57,60 +57,47 @@
 <md-card>
     <md-card-title>{{'SETTINGS.MY_DATA' | translate}}</md-card-title>
     <md-card-content>
-        <div *ngIf="!_disabled">
-
-            <md-input-container style="width: 100%">
-                <input mdInput placeholder="{{'SETTINGS.USERNAME' | translate}}" style="width: 100%" minlength="1" maxlength="20" [disabled]="!_disabled" [(ngModel)]="_userName" #inputUserName (blur)="validateFields()">
-                </input>
-                <md-hint align="end">{{inputUserName.value.length}} / 20</md-hint>
-            </md-input-container>
-            <div *ngIf="_validate" class="error-message">{{_message}}</div>
-
-            <md-input-container style="width: 100%">
-                <input mdInput placeholder="{{'SETTINGS.FIRST_NAME' | translate}}" style="width: 100%" minlength="1" maxlength="30" [disabled]="!_disabled" [(ngModel)]="_firstName"  #inputFirstName>
-                </input>
-                <md-hint align="end">{{inputFirstName.value.length}} / 30</md-hint>
-            </md-input-container>
-
-             <md-input-container style="width: 100%">
-                <input mdInput placeholder="{{'SETTINGS.LAST_NAME' | translate}}" style="width: 100%" minlength="1" maxlength="30" [disabled]="!_disabled" [(ngModel)]="_lastName" #inputLastName>
-                </input>
-                <md-hint align="end">{{inputLastName.value.length}} / 30</md-hint>
-            </md-input-container>
-
-             <md-input-container style="width: 100%">
-                <input mdInput placeholder="{{'SETTINGS.LANGUAGE' | translate}}" style="width: 100%" minlength="1" maxlength="30" [disabled]="!_disabled" [(ngModel)]="_languageCode"  #inputLanguageCode>
-                </input>
-                <md-hint align="end">{{inputLanguageCode.value.length}} / 30</md-hint>
-            </md-input-container>
-        </div>
-
-        <div *ngIf="_disabled">
-            <div *ngFor="let user of _userObservable | async" >
+        <div *ngIf="_user">
+            <div *ngIf="_user.username">
                 <md-input-container style="width: 100%">
-                    <input mdInput class="demo-full-width" #inputUserName placeholder="{{'SETTINGS.USERNAME' | translate}}" class="demo-full-width" style="width: 100%" minlength="1" maxlength="20" disabled value="{{user.username}}"/>
+                    <input mdInput class="demo-full-width" #inputUserName placeholder="{{'SETTINGS.USERNAME' | translate}}" class="demo-full-width" style="width: 100%" disabled value="{{_user.username}}"/>
                     <md-hint align="end">{{inputUserName.value.length}} / 20</md-hint>
                 </md-input-container>
-                <div *ngIf="_validate" class="error-message">{{_message}}</div>
-
+                
                 <md-input-container style="width: 100%">
-                    <input mdInput placeholder="{{'SETTINGS.FIRST_NAME' | translate}}" style="width: 100%" minlength="1" maxlength="30" #inputFirstName value="{{user.profile.first_name}}"/>
+                    <input mdInput placeholder="{{'SETTINGS.FIRST_NAME' | translate}}" style="width: 100%" minlength="1" maxlength="30" #inputFirstName [disabled]="!_disabled" value="{{_user.profile.first_name}}"/>
                     <md-hint align="end">{{inputFirstName.value.length}} / 30</md-hint>
                 </md-input-container>
-
+    
                 <md-input-container style="width: 100%">
-                    <input mdInput placeholder="{{'SETTINGS.LAST_NAME' | translate}}" style="width: 100%" minlength="1" maxlength="30" #inputLastName value="{{user.profile.last_name}}"/>
+                    <input mdInput placeholder="{{'SETTINGS.LAST_NAME' | translate}}" style="width: 100%" minlength="1" maxlength="30" #inputLastName [disabled]="!_disabled" value="{{_user.profile.last_name}}"/>
                     <md-hint align="end">{{inputLastName.value.length}} / 30</md-hint>
                 </md-input-container>
 
-                <md-select required #inputLanguageCode placeholder="{{'SETTINGS.LANGUAGE' | translate}}" style="width: 100%;margin-top: 1%;" [(ngModel)]="_lang_code">
+                <md-select required #inputLanguageCode placeholder="{{'SETTINGS.LANGUAGE' | translate}}" style="width: 100%; margin-top: 1%;" [(ngModel)]="_lang_code">
                     <md-option *ngFor="let lang of _languages | async" value="{{lang.language_code}}">{{lang.name}}</md-option>
                 </md-select>
+        
+                <button align="end" md-raised-button class="primary-button" style="margin-top: 20px" (click)="editUserDetail(inputUserName, inputFirstName, inputLastName, inputLanguageCode)">{{'UPDATE' | translate}}</button>
+            </div>
 
-                <button align="end" md-raised-button class="primary-button" style="margin-top: 20px" [disabled]="!_disabled" (click)="editUserDetail(inputUserName, inputFirstName, inputLastName, inputLanguageCode)">{{'UPDATE' | translate}}</button>
+            <div *ngIf="_user.profile.name">
+                <md-input-container style="width: 100%">
+                    <input mdInput class="demo-full-width" #inputUserName placeholder="{{'SETTINGS.USERNAME' | translate}}" class="demo-full-width" style="width: 100%" disabled value="{{_user.profile.name}}"/>
+                    <md-hint align="end">{{inputUserName.value.length}} / 20</md-hint>
+                </md-input-container>
+
+                <md-input-container style="width: 100%">
+                    <input mdInput placeholder="{{'SETTINGS.FIRST_NAME' | translate}}" style="width: 100%" minlength="1" maxlength="30" #inputFirstName disabled value="{{_user.services.facebook.first_name}}"/>
+                    <md-hint align="end">{{inputFirstName.value.length}} / 30</md-hint>
+                </md-input-container>
+    
+                <md-input-container style="width: 100%">
+                    <input mdInput placeholder="{{'SETTINGS.LAST_NAME' | translate}}" style="width: 100%" minlength="1" maxlength="30" #inputLastName disabled value="{{_user.services.facebook.last_name}}"/>
+                    <md-hint align="end">{{inputLastName.value.length}} / 30</md-hint>
+                </md-input-container>
             </div>
         </div>
-
 
     </md-card-content>
 </md-card>
