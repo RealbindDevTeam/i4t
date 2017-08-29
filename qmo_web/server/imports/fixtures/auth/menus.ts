@@ -160,7 +160,7 @@ export function loadMenus() {
                         _id: "3007",
                         is_active: true,
                         name: "MENUS.MENU_DEFINITION.ITEMS_ENABLE",
-                        url: "/app/itemsEnable",
+                        url: "/app/items-enable",
                         icon_name: "",
                         order: 3007
                     }
@@ -170,7 +170,7 @@ export function loadMenus() {
                 _id: "3100",
                 is_active: true,
                 name: "MENUS.MENU_DEFINITION.ITEMS_ENABLE",
-                url: "/app/itemsEnableS",
+                url: "/app/items-enable-sup",
                 icon_name: "done all",
                 order: 3100
             },
@@ -202,7 +202,7 @@ export function loadMenus() {
                 _id: "7000",
                 is_active: true,
                 name: "MENUS.ADMINISTRATION.ORDERS_CHEF",
-                url: "/app/chefOrders",
+                url: "/app/chef-orders",
                 icon_name: "dns",
                 order: 7000
             }

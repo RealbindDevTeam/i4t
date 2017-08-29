@@ -23,7 +23,18 @@ export class AppComponent implements OnInit{
                private _elementRef: ElementRef, 
                private _orderNavigationService: OrderNavigationService, 
                private _financialControlService: FinancialControlService,
-               private _userLanguageService: UserLanguageService ) {}
+               private _userLanguageService: UserLanguageService ) {
+                var stopStyle = [ 'font-family: Roboto, "Helvetica Neue", sans-serif', 
+                                  'font-size: 1.7rem', 
+                                  'color: Red', 
+                                  'font-weight: 600'].join(';'); 
+                console.log( '%c Stop!!', stopStyle);                
+                var msgStyle = [ 'font-family: Roboto, "Helvetica Neue", sans-serif', 
+                                 'font-size: 1.4rem', 
+                                 'color: #114b5f', 
+                                 'font-weight: 500'].join(';');
+                console.log( '%c This browser function is intended for developers. If someone tells you to copy and paste something here to enable a function of Iurest or to "hack" someone\'s account, it is a fraud. If you do, this person can access your account.', msgStyle);
+               }
   
   ngOnInit(){
     this._router.events.subscribe((event: Event) => {

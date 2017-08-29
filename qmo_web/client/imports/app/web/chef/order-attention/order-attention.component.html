@@ -22,9 +22,9 @@
         <span class="order-code">{{'ORDER_ATTENTION.ORDER' | translate}} # {{order.code}}</span>
         <span class="app-flex-filler"></span>
         <span *ngFor="let table of _tables | async">
-            <template [ngIf]="table._id === order.tableId">
+            <ng-template [ngIf]="table._id === order.tableId">
                 <span class="order-table">{{'ORDER_ATTENTION.TABLE' | translate}} {{table._number}}</span>
-            </template>
+            </ng-template>
         </span>
     </md-toolbar>
 </div>
@@ -39,7 +39,7 @@
                     <md-divider></md-divider>
                     <span *ngFor="let item of _items | async">
                         <span *ngFor="let it of order.items">
-                            <template [ngIf]="item._id === it.itemId">
+                            <ng-template [ngIf]="item._id === it.itemId">
                                 <h2 class="name">{{it.quantity}} - {{item.name}}</h2>
                                 <p *ngIf="it.observations" class="observations">{{'ORDER_ATTENTION.OBSERVATIONS' | translate}}: {{it.observations}}</p>
                                 <p *ngIf="(it.garnishFood.length <= 0)" class="no-garnish">{{'ORDER_ATTENTION.NO_GARNISH_FOOD' | translate}}</p>
@@ -47,9 +47,9 @@
                                     <p class="garnish-title">{{'ORDER_ATTENTION.GARNISH_FOOD' | translate}}:</p>
                                     <span *ngFor="let garnish of _garnishFoodCol | async">
                                         <span *ngFor="let gar of it.garnishFood">
-                                            <template [ngIf]="gar === garnish._id">
+                                            <ng-template [ngIf]="gar === garnish._id">
                                                 <p class="garnish-name">- {{garnish.name}}</p>     
-                                            </template>
+                                            </ng-template>
                                         </span>
                                     </span>
                                 </div>
@@ -58,22 +58,22 @@
                                     <p class="addition-title">{{'ORDER_ATTENTION.ADDITIONS' | translate}}:</p>
                                     <span *ngFor="let addition of _additions | async">
                                         <span *ngFor="let add of it.additions">
-                                            <template [ngIf]="add === addition._id">
+                                            <ng-template [ngIf]="add === addition._id">
                                                 <p class="addition-name">- {{it.quantity}} {{addition.name}}</p>  
-                                            </template>
+                                            </ng-template>
                                         </span>
                                     </span>
                                 </div>
                                 <md-divider></md-divider>
-                            </template>
+                            </ng-template>
                         </span>
                     </span>
                     <span *ngFor="let addit of _additions | async">
                         <span *ngFor="let ad of order.additions">
-                            <template [ngIf]="addit._id === ad.additionId">
+                            <ng-template [ngIf]="addit._id === ad.additionId">
                                 <h2 class="name">{{ad.quantity}} {{'ORDER_ATTENTION.ADDITION' | translate}} - {{addit.name}}</h2>
                                 <md-divider></md-divider>
-                            </template>
+                            </ng-template>
                         </span>
                     </span>
                 </md-card-content>

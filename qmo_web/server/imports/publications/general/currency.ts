@@ -45,3 +45,18 @@ Meteor.publish('getCurrenciesByCurrentUser', function (_userId: string) {
         return Currencies.collection.find({ _id: '0' });
     }
 });
+
+/**
+ * Meteor publication return currency by restaurant work
+ * @param {string} _userId
+ */
+Meteor.publish('getCurrenciesByRestaurantWork', function (_userId: string) {
+    let _userDetail = UserDetails.findOne({ user_id: _userId });
+    let _currenciesIds: string[] = [];
+    if (_userDetail.restaurant_work != '') {
+        let _restaurant = Restaurants.findOne({ _id: _userDetail.restaurant_work });
+        return Currencies.collection.find({ _id: _restaurant.currencyId });
+    } else {
+        return Currencies.collection.find({ _id: '0' });
+    }
+});

@@ -18,8 +18,9 @@ Meteor.publish('getOrders', function (_restaurantId: string, _tableQRCode: strin
     check(_tableQRCode, String);
 
     let _lTable: Table = Tables.collection.findOne({ QR_code: _tableQRCode });
-    if( _lTable ){
-        return Orders.collection.find({ restaurantId: _restaurantId, tableId: _lTable._id, status: { $in: _status } });
+    let _lAccount: Account = Accounts.findOne({restaurantId: _restaurantId, tableId: _lTable._id, status: 'OPEN'});
+    if( _lTable && _lAccount ){
+        return Orders.collection.find({ accountId: _lAccount._id, restaurantId: _restaurantId, tableId: _lTable._id, status: { $in: _status } });
     } else {
         return;
     }
@@ -32,7 +33,8 @@ Meteor.publish('getOrders', function (_restaurantId: string, _tableQRCode: strin
 */
 Meteor.publish('getOrdersByTableId', function (_restaurantId: string, _tableId, _status: string[]) {
     check(_restaurantId, String);
-    return Orders.collection.find({ restaurantId: _restaurantId, tableId: _tableId, status: { $in: _status } });
+    let _lAccount: Account = Accounts.findOne({restaurantId: _restaurantId, tableId: _tableId, status: 'OPEN'});
+    return Orders.collection.find({ accountId: _lAccount._id, restaurantId: _restaurantId, tableId: _tableId, status: { $in: _status } });
 });
 
 /**
@@ -48,7 +50,7 @@ Meteor.publish('getOrdersByUserId', function (_userId: string, _status: string[]
             let _lAccount: Account = Accounts.findOne({restaurantId: _lUserDetail.current_restaurant, 
                                                        tableId: _lUserDetail.current_table,
                                                        status: 'OPEN'});
-            return Orders.collection.find({ creation_user: _userId, restaurantId: _lAccount.restaurantId, tableId: _lAccount.tableId, status: { $in: _status } });
+            return Orders.collection.find({ accountId: _lAccount._id, restaurantId: _lAccount.restaurantId, tableId: _lAccount.tableId, status: { $in: _status } });
         } else {
             return;
         }
@@ -109,7 +111,9 @@ Meteor.publish('getOrdersByAccount', function (_userId: string) {
 Meteor.publish( 'getOrdersWithConfirmationPending', function( _restaurantId:string, _tableId:string ) {
     check( _restaurantId, String );
     check( _tableId, String );   
-    return Orders.find( { restaurantId: _restaurantId,
+    let _lAccount: Account = Accounts.findOne({restaurantId: _restaurantId, tableId: _tableId, status: 'OPEN'});
+    return Orders.find( { accountId: _lAccount._id,
+                          restaurantId: _restaurantId,
                           tableId: _tableId,
                           status: 'ORDER_STATUS.PENDING_CONFIRM', 
                           'translateInfo.markedToTranslate': true, 

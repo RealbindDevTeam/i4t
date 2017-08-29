@@ -139,7 +139,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param {string} _pRestaurantId 
    */
   getAvailableItems( _pRestaurantId: string ):number{
-    return Items.collection.find( { 'restaurants.restaurantId': _pRestaurantId, isAvailable: true } ).count();
+    return Items.collection.find( { 'restaurants.restaurantId': _pRestaurantId, 'restaurants.isAvailable': true } ).count();
   }
 
   /**
@@ -147,7 +147,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param {string} _pRestaurantId
    */
   getNotAvailableItems( _pRestaurantId: string ):number{
-    return Items.collection.find( { 'restaurants.restaurantId': _pRestaurantId, isAvailable: false } ).count();
+    return Items.collection.find( { 'restaurants.restaurantId': _pRestaurantId, 'restaurants.isAvailable': false } ).count();
   }
 
   /**
@@ -237,7 +237,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * Go to add new Restaurant
    */
   goToAddRestaurant(){
-      this._router.navigate(['/app/restaurantRegister']);
+      this._router.navigate(['/app/restaurant-register']);
   }
 
   /**

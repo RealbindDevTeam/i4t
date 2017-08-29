@@ -82,7 +82,7 @@ export class SigninWebComponent extends AuthClass implements OnInit {
                                         break;
                                     }
                                     case '500': {
-                                        this.router.navigate(['app/chefOrders']);
+                                        this.router.navigate(['app/chef-orders']);
                                         break;
                                     }
                                     case '600': {
