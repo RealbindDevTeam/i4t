@@ -76,7 +76,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
         this._tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe();
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
 
-        this._currentDate = new Date(2017, 6, 3);
+        this._currentDate = new Date(2017, 7, 5);
         this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
         this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
         this._firstNextMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 1);

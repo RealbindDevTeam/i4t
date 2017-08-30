@@ -16,6 +16,8 @@ import { Countries } from '../../../../../../both/collections/settings/country.c
 import { Country } from '../../../../../../both/models/settings/country.model';
 import { Parameters } from '../../../../../../both/collections/general/parameter.collection';
 import { Parameter } from '../../../../../../both/models/general/parameter.model';
+import { PaymentsHistory } from '../../../../../../both/collections/payment/payment-history.collection';
+import { PaymentHistory } from '../../../../../../both/models/payment/payment-history.model';
 
 import template from './restaurant-list.component.html';
 import style from './restaurant-list.component.scss';
@@ -30,19 +32,20 @@ export class RestaurantListComponent implements OnInit, OnDestroy {
     @Output('gotoenabledisabled')
     restaurantId: EventEmitter<any> = new EventEmitter<any>();
 
-    private _tableForm              : FormGroup;
-    private _restaurantSub          : Subscription;
-    private _currencySub            : Subscription;
-    private _tableSub               : Subscription;
-    private _countrySub             : Subscription;
+    private _tableForm: FormGroup;
+    private _restaurantSub: Subscription;
+    private _currencySub: Subscription;
+    private _tableSub: Subscription;
+    private _countrySub: Subscription;
+    private _paymentHistorySub: Subscription;
 
-    private _restaurants            : Observable<Restaurant[]>;
-    private _currencies             : Observable<Currency[]>;
-    private _tables                 : Observable<Table[]>;
-    private _parameters             : Observable<Parameter[]>;
+    private _restaurants: Observable<Restaurant[]>;
+    private _currencies: Observable<Currency[]>;
+    private _tables: Observable<Table[]>;
+    private _parameters: Observable<Parameter[]>;
 
-    private _currentDate            : Date;
-    private _parameterSub           : Subscription;
+    private _currentDate: Date;
+    private _parameterSub: Subscription;
 
     /**
      * RestaurantListComponent Constructor
@@ -50,11 +53,11 @@ export class RestaurantListComponent implements OnInit, OnDestroy {
      * @param {Router} _router 
      * @param {UserLanguageService} _userLanguageService 
      */
-    constructor( private translate: TranslateService, 
-                 private _router: Router, 
-                 private _userLanguageService: UserLanguageService ) {
-        translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        translate.setDefaultLang( 'en' );
+    constructor(private translate: TranslateService,
+        private _router: Router,
+        private _userLanguageService: UserLanguageService) {
+        translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        translate.setDefaultLang('en');
     }
 
     ngOnInit() {
@@ -74,19 +77,21 @@ export class RestaurantListComponent implements OnInit, OnDestroy {
         });
         this._countrySub = MeteorObservable.subscribe('countries').subscribe();
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
+        this._paymentHistorySub = MeteorObservable.subscribe('getHistoryPaymentsByUser', Meteor.userId()).subscribe();
 
-        this._currentDate = new Date(2017, 6, 5);
+        this._currentDate = new Date(2017, 7, 5);
     }
 
     /**
      * Remove all subscriptions
      */
-    removeSubscription():void{
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
-        if( this._tableSub ){ this._tableSub.unsubscribe(); }
-        if( this._currencySub ){ this._currencySub.unsubscribe(); }
-        if( this._countrySub ){ this._countrySub.unsubscribe(); }
-        if( this._parameterSub ){ this._parameterSub.unsubscribe(); }
+    removeSubscription(): void {
+        if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
+        if (this._tableSub) { this._tableSub.unsubscribe(); }
+        if (this._currencySub) { this._currencySub.unsubscribe(); }
+        if (this._countrySub) { this._countrySub.unsubscribe(); }
+        if (this._parameterSub) { this._parameterSub.unsubscribe(); }
+        if (this._paymentHistorySub) { this._paymentHistorySub.unsubscribe(); }
     }
 
     /**
@@ -173,6 +178,39 @@ export class RestaurantListComponent implements OnInit, OnDestroy {
             }
         }
     }
+
+    /**
+     * This function validate the conditions for enable or disable modify button
+     * @param {Restaurant} _restaurant
+     * @return {string}
+     */
+    validateConditions(_restaurant: Restaurant): boolean {
+        let periodDays: boolean;
+        let paymentHistory: PaymentHistory;
+        if (_restaurant.freeDays) {
+            return false;
+        } else {
+            periodDays = this.validatePeriodDays();
+            if (periodDays) {
+                paymentHistory = PaymentsHistory.findOne({
+                    month: (this._currentDate.getMonth() + 1).toString(),
+                    year: (this._currentDate.getFullYear()).toString(),
+                    restaurantIds: {
+                        $in: [_restaurant._id]
+                    },
+                    status: 'TRANSACTION_STATUS.APPROVED'
+                });
+                if (paymentHistory) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return !periodDays;
+            }
+        }
+    }
+
 
     /**
      * ngOnDestroy Implementation
