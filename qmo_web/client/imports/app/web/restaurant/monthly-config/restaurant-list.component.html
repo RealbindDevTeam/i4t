@@ -23,7 +23,7 @@
                         <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">{{getActiveTables(restaurant)}}</td>
                         <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">{{getRestaurantStatus(restaurant) | translate}}</td>
                         <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">
-                            <button md-raised-button [disabled]="!validatePeriodDays() && !restaurant.freeDays" (click)="goToEnableDisable(restaurant._id)">{{'MONTHLY_CONFIG.BTN_EDIT' | translate}}</button>
+                            <button md-raised-button [disabled]="validateConditions(restaurant)" (click)="goToEnableDisable(restaurant._id)">{{'MONTHLY_CONFIG.BTN_EDIT' | translate}}</button>
                         </td>
                     </tr>
                 </tbody>
