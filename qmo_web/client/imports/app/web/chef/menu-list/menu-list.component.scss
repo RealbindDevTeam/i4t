@@ -209,11 +209,8 @@ $menu-navegation-color : #F5F5F5;
                         -webkit-flex: 1 1 auto;
                         flex: 1 1 auto;
 
-                        .cards{
-                            width: 240px;
-                            display: inline-block; 
-                            margin-right: 20px; 
-                            vertical-align: top;
+                        .custom-cards{
+                            width: 240px !important;
                         }
 
                         .crop {
