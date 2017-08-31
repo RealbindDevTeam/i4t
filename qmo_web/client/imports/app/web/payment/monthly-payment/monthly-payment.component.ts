@@ -27,24 +27,24 @@ import style from './monthly-payment.component.scss';
 })
 export class MonthlyPaymentComponent implements OnInit, OnDestroy {
 
-    private _restaurants            : Observable<Restaurant[]>;
-    private _currencies             : Observable<Currency[]>;
-    private _tables                 : Observable<Table[]>;
+    private _restaurants: Observable<Restaurant[]>;
+    private _currencies: Observable<Currency[]>;
+    private _tables: Observable<Table[]>;
 
-    private _restaurantSub          : Subscription;
-    private _currencySub            : Subscription;
-    private _countrySub             : Subscription;
-    private _tableSub               : Subscription;
-    private _parameterSub           : Subscription;
+    private _restaurantSub: Subscription;
+    private _currencySub: Subscription;
+    private _countrySub: Subscription;
+    private _tableSub: Subscription;
+    private _parameterSub: Subscription;
 
-    private _restaurantsArray       : Restaurant[];
-    private _currentDate            : Date;
-    private _firstMonthDay          : Date;
-    private _lastMonthDay           : Date;
-    private _firstNextMonthDay      : Date;
-    private _maxPaymentDay          : Date;
-    private _restaurantsTotalPrice  : number;
-    private _mode                   : string;
+    private _restaurantsArray: Restaurant[];
+    private _currentDate: Date;
+    private _firstMonthDay: Date;
+    private _lastMonthDay: Date;
+    private _firstNextMonthDay: Date;
+    private _maxPaymentDay: Date;
+    private _restaurantsTotalPrice: number;
+    private _mode: string;
 
     /**
      * MonthlyPaymentComponent Constructor
@@ -53,12 +53,12 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
      * @param {TranslateService} translate 
      * @param {UserLanguageService} _userLanguageService 
      */
-    constructor( private router: Router,
-                 private _formBuilder: FormBuilder,
-                 private translate: TranslateService, 
-                 private _userLanguageService: UserLanguageService ) {
-        translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        translate.setDefaultLang( 'en' );
+    constructor(private router: Router,
+        private _formBuilder: FormBuilder,
+        private translate: TranslateService,
+        private _userLanguageService: UserLanguageService) {
+        translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        translate.setDefaultLang('en');
 
         this._mode = 'normal';
     }
@@ -76,7 +76,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
         this._tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe();
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
 
-        this._currentDate = new Date(2017, 7, 5);
+        this._currentDate = new Date();
         this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
         this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
         this._firstNextMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 1);
@@ -85,12 +85,12 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
-        if( this._currencySub ){ this._currencySub.unsubscribe(); }
-        if( this._countrySub ){ this._countrySub.unsubscribe(); }
-        if( this._tableSub ){ this._tableSub.unsubscribe(); }
-        if( this._parameterSub ){ this._parameterSub.unsubscribe(); }
+    removeSubscriptions(): void {
+        if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
+        if (this._currencySub) { this._currencySub.unsubscribe(); }
+        if (this._countrySub) { this._countrySub.unsubscribe(); }
+        if (this._tableSub) { this._tableSub.unsubscribe(); }
+        if (this._parameterSub) { this._parameterSub.unsubscribe(); }
     }
 
     /**

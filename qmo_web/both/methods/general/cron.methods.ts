@@ -32,7 +32,7 @@ if (Meteor.isServer) {
          */
         sendEmailChargeSoon: function (_countryId: string) {
             let parameter: Parameter = Parameters.collection.findOne({ name: 'from_email' });
-            let currentDate = new Date(2017, 6, 28);
+            let currentDate = new Date();
             let lastMonthDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
             let auxArray: string[] = [];
 
@@ -80,7 +80,7 @@ if (Meteor.isServer) {
          */
         sendEmailExpireSoon: function (_countryId: string) {
             let parameter: Parameter = Parameters.collection.findOne({ name: 'from_email' });
-            let currentDate = new Date(2017, 6, 3);
+            let currentDate = new Date();
             let firstMonthDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
             let maxPaymentDay = new Date(firstMonthDay);
             let endDay = Parameters.collection.findOne({ name: 'end_payment_day' });
