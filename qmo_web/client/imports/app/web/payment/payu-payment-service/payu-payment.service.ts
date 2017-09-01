@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Http, Headers } from "@angular/http";
-import { CcRequestColombia } from '../../../../../../both/models/payment/cc-request-colombia.model';
+import { CcRequestColombia, CusPayInfo } from '../../../../../../both/models/payment/cc-request-colombia.model';
 
 @Injectable()
 export class PayuPaymenteService {
@@ -9,6 +9,7 @@ export class PayuPaymenteService {
     private payuReportsApiURI = 'https://sandbox.api.payulatam.com/reports-api/4.0/service.cgi';
     private payuPaymentsApiURI = 'https://sandbox.api.payulatam.com/payments-api/4.0/service.cgi';
     private ipPublicURI = 'https://api.ipify.org?format=json';
+    private ipCusPayInfo = 'http://192.168.0.10:9000/api/getCusPayInfo';
 
     private headers = new Headers({
         //'Host': 'sandbox.api.payulatam.com',
@@ -85,5 +86,12 @@ export class PayuPaymenteService {
      */
     private handleError(error: any): Observable<any> {
         return Observable.throw(error.message || error);
+    }
+
+    /**
+    * This function get CusPayInfo
+    */
+    getCusPayInfo():Observable<CusPayInfo> {
+        return this.http.get( this.ipCusPayInfo, { headers: this.headers } ).map(res => res.json() as CusPayInfo[]).catch( this.handleError );
     }
 }
