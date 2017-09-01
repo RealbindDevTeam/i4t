@@ -9,8 +9,6 @@
                     <div class="card_initial-tagline">
                         {{'ITEMS.MESSAGE' | translate}}
                     </div>
-                    <!--div class="card_initial-additional-links">
-                    </div-->
                 </div>
             </div>
         </div>
@@ -19,14 +17,11 @@
 
 <div class="main" *ngIf="(_items | async)?.length > 0">
     <div class="main-overflow">
-        <md-card class="cards" *ngFor="let item of _items | async">
-            <md-card-header>
-                <md-card-title>{{item.name}}</md-card-title>
-            </md-card-header>
-            <div class="crop">
+        <md-card class="custom-cards" *ngFor="let item of _items | async">
+            <div class="header-card">
                 <img src="{{ getItemImage(item._id) }}">
+                <span class="mat-card-title">{{item.name}}</span>
             </div>
-            <br/>
             <md-card-content>
                 <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
                 <p *ngIf="item.description.length <= 50">{{item.description}}</p>

@@ -80,6 +80,9 @@ import { UserLanguageService } from '../shared/services/user-language.service';
 import { ItemEnableSupComponent } from './administration/items/items-enable-sup/items-enable-sup.component';
 import { EnableConfirmComponent } from './administration/items/items-enable/enable-confirm/enable-confirm.component';
 import { MenuListComponent } from './chef/menu-list/menu-list.component';
+import { SupervisorCollaboratorsComponent } from './supervisor/collaborators/supervisor-collaborators.component';
+import { SupervisorCollaboratorsEditionComponent } from './supervisor/collaborators/collaborators-edition/supervisor-collaborators-edition.component';
+import { SupervisorCollaboratorsRegisterComponent } from './supervisor/collaborators/collaborators-register/supervisor-collaborators-register.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -134,7 +137,9 @@ export const WEB_DECLARATIONS = [
     ColombiaPayInfoComponent,
     AdminSignupComponent,
     ItemEnableSupComponent,
-    MenuListComponent
+    MenuListComponent,
+    SupervisorCollaboratorsComponent,
+    SupervisorCollaboratorsRegisterComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [
@@ -163,7 +168,8 @@ export const MODAL_DIALOG_DECLARATIONS = [
     TrnResponseConfirmComponent,
     VerifyResultComponent,
     AlertConfirmComponent,
-    EnableConfirmComponent
+    EnableConfirmComponent,
+    SupervisorCollaboratorsEditionComponent
 ];
 
 export const SERVICES_DECLARATIONS = [
