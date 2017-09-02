@@ -23,6 +23,22 @@ if (Meteor.isServer) {
             credentialList[1] = '4Vj8eK4rloUd272L48hsrarnUA';
 
             return credentialList;
+        },
+        getPayuPaymentsUrl(): string {
+            let url: string;
+            return url = Parameters.findOne({ name: 'payu_payments_url' }).value;
+        },
+        getPayuReportUrl(): string {
+            let url: string;
+            return url = Parameters.findOne({ name: 'payu_reports_url' }).value;
+        },
+        getPublicIpServiceUrl(): string {
+            let url: string;
+            return url = Parameters.findOne({ name: 'ip_public_service_url' }).value;
+        },
+        getPayuPayInfoUrl(): string {
+            let url: string;
+            return url = Parameters.findOne({ name: 'payu_pay_info_url' }).value;
         }
     });
 }

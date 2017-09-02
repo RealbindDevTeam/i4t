@@ -53,6 +53,9 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _selectedCardYear: string;
     private _selectedCountry: string;
     private _selectedCity: string = "";
+    private _selectedAddress: string;
+    private _selectedPhone: string;
+    private _selectedDniNumber: string;
 
     private _cCPaymentMethodSub: Subscription;
     private _countrySub: Subscription;
@@ -134,15 +137,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         this._timestamp = this._currentDate.getTime().toString();
         this._deviceSessionId = md5(this._session_id + this._timestamp);
         this._sessionUserId = this._deviceSessionId + Meteor.userId();
-
-        let _scriptTwo: string = 'https://maf.pagosonline.net/ws/fp/clear.png?id=';
-        let _scriptThree: string = 'https://maf.pagosonline.net/ws/fp/check.js?id=';
-        let _scriptFour: string = 'https://maf.pagosonline.net/ws/fp/fp.swf?id=';
-
-        this.scriptTwoSanitized = this._domSanitizer.bypassSecurityTrustUrl(_scriptTwo + this._sessionUserId);
-        this.scriptThreeSanitized = this._domSanitizer.bypassSecurityTrustResourceUrl(_scriptThree + this._sessionUserId);
-        this.scriptFourSanitized = this._domSanitizer.bypassSecurityTrustResourceUrl(_scriptFour + this._sessionUserId);
-
         this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
         this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
 
@@ -161,16 +155,21 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
      */
     ngOnInit() {
         let _scriptOne: string;
+        let _scriptTwo: string;
+        let _scriptThree: string;
+        let _scriptFour: string;
 
         this.removeSubscriptions();
         this._paymentForm = new FormGroup({
             paymentMethod: new FormControl('', [Validators.required]),
+            fullName: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(150)]),
             cardNumber: new FormControl('', [Validators.required, Validators.minLength(13), Validators.maxLength(20), CustomValidators.numericValidator]),
             expirationMonth: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]),
             expirationYear: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]),
             securityCode: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(4), CustomValidators.numericValidator]),
+            firstName: new FormControl({ value: Meteor.user().profile.first_name, disabled: true }, [Validators.required, Validators.minLength(1), Validators.maxLength(70)]),
+            lastName: new FormControl({ value: Meteor.user().profile.last_name, disabled: true }, [Validators.required, Validators.minLength(1), Validators.maxLength(70)]),
             email: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(255), CustomValidators.emailValidator]),
-            fullName: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(150)]),
             dniNumber: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(20)]),
             country: new FormControl('', [Validators.required]),
             city: new FormControl('', [Validators.required]),
@@ -184,27 +183,64 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             });
         });
 
-        this._countrySub = MeteorObservable.subscribe('countries').subscribe(() => {
-            this._ngZone.run(() => {
-                this._countries = Countries.find({}).zone();
-            });
-        });
-
-        this._citySub = MeteorObservable.subscribe('cities').subscribe(() => {
-            this._ngZone.run(() => {
-                this._cities = Cities.find({ country: '' }).zone();
-            });
-        });
-
         this._paymentTransactionSub = MeteorObservable.subscribe('getTransactions').subscribe();
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe(() => {
             this._ngZone.run(() => {
                 _scriptOne = Parameters.findOne({ name: 'payu_script_p_tag' }).value;
-                console.log(_scriptOne);
+                _scriptTwo = Parameters.findOne({ name: 'payu_script_img_tag' }).value;
+                _scriptThree = Parameters.findOne({ name: 'payu_script_script_tag' }).value;
+                _scriptFour = Parameters.findOne({ name: 'payu_script_object_tag' }).value;
+
                 this.scriptOneSanitized = this._domSanitizer.bypassSecurityTrustStyle(_scriptOne + this._sessionUserId + ')');
+                this.scriptTwoSanitized = this._domSanitizer.bypassSecurityTrustUrl(_scriptTwo + this._sessionUserId);
+                this.scriptThreeSanitized = this._domSanitizer.bypassSecurityTrustResourceUrl(_scriptThree + this._sessionUserId);
+                this.scriptFourSanitized = this._domSanitizer.bypassSecurityTrustResourceUrl(_scriptFour + this._sessionUserId);
             });
         });
-        this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
+        this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe(() => {
+            this._ngZone.run(() => {
+                let auxUsrDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+                this._paymentForm.get('dniNumber').setValue(auxUsrDetail.dni_number);
+                this._paymentForm.get('dniNumber').disable();
+                this._paymentForm.get('streetOne').setValue(auxUsrDetail.address);
+                this._paymentForm.get('streetOne').disable();
+                this._paymentForm.get('contactPhone').setValue(auxUsrDetail.contact_phone);
+                this._paymentForm.get('contactPhone').disable();
+
+                let auxEmail: string = Meteor.user().emails[0].address;
+                this._paymentForm.get('email').setValue(auxEmail);
+                this._paymentForm.get('email').disable();
+
+                this._selectedAddress = auxUsrDetail.address;
+                this._selectedPhone = auxUsrDetail.contact_phone;
+                this._selectedDniNumber = auxUsrDetail.dni_number;
+
+                this._countrySub = MeteorObservable.subscribe('countries').subscribe(() => {
+                    this._ngZone.run(() => {
+                        let auxCountry = Countries.findOne({ _id: auxUsrDetail.country_id });
+                        this._paymentForm.get('country').setValue(this.itemNameTraduction(auxCountry.name));
+                        this._paymentForm.get('country').disable();
+
+                        this._selectedCountry = auxCountry.name;
+                    });
+                });
+
+                this._citySub = MeteorObservable.subscribe('cities').subscribe(() => {
+                    this._ngZone.run(() => {
+                        if (auxUsrDetail.city_id !== '') {
+                            let auxCity = Cities.findOne({ _id: auxUsrDetail.city_id });
+                            this._paymentForm.get('city').setValue(auxCity.name);
+                            this._paymentForm.get('city').disable();
+                            this._selectedCity = auxCity.name;
+                        } else {
+                            this._paymentForm.get('city').setValue(auxUsrDetail.other_city);
+                            this._paymentForm.get('city').disable();
+                            this._selectedCity = auxUsrDetail.other_city;
+                        }
+                    });
+                });
+            });
+        });
 
         if (this._mode === 'normal') {
             this._restaurantSub = MeteorObservable.subscribe('currentRestaurantsNoPayed', Meteor.userId()).subscribe();
@@ -287,20 +323,20 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             });
         }
 
-
         this._mdDialogRef = this._mdDialog.open(CcPaymentConfirmComponent, {
             disableClose: true,
             data: {
-                streetone: this._paymentForm.value.streetOne,
+                streetone: this._selectedAddress,
                 city: this._selectedCity,
-                country: this._countryName,
+                country: this._selectedCountry,
                 fullname: this._paymentForm.value.fullName,
-                telephone: this._paymentForm.value.contactPhone,
+                telephone: this._selectedPhone,
                 ccmethod: this._paymentLogoName,
                 cardnumber: this._paymentForm.value.cardNumber,
                 price: this._valueToPay,
                 currency: this._currency,
-                restaurantArray: this._restaurantsNamesArray
+                restaurantArray: this._restaurantsNamesArray,
+                customerName: Meteor.user().profile.first_name + ' ' + Meteor.user().profile.last_name
             },
             height: '85%',
             width: '51,5%'
@@ -427,13 +463,13 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         creditCard.name = 'APPROVED';
 
         payer.fullName = this._paymentForm.value.fullName;
-        payer.emailAddress = this._paymentForm.value.email;
-        payer.contactPhone = this._paymentForm.value.contactPhone;
-        payer.dniNumber = this._paymentForm.value.dniNumber;
+        payer.emailAddress = Meteor.user().emails[0].address;
+        payer.contactPhone = this._selectedPhone;
+        payer.dniNumber = this._selectedDniNumber;
 
-        payerBillingAddress.street1 = this._paymentForm.value.streetOne;
+        payerBillingAddress.street1 = this._selectedAddress;
         payerBillingAddress.city = this._selectedCity;
-        payerBillingAddress.country = this._selectedCountry;
+        payerBillingAddress.country = buyerCountry;
         payer.billingAddress = payerBillingAddress;
 
         extraParameters.INSTALLMENTS_NUMBER = 1;
@@ -456,6 +492,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 
         //ccRequestColombia.test = false;
         ccRequestColombia.test = true;
+
+        console.log(JSON.stringify(ccRequestColombia));
 
         let transactionMessage: string;
         let transactionIcon: string;
