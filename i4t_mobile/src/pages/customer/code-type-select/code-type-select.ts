@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
+import { Table } from 'qmo_web/both/models/restaurant/table.model';
 import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 import { AlphanumericCodePage } from '../alphanumeric-code/alphanumeric-code';
@@ -26,8 +27,8 @@ export class CodeTypeSelectPage {
    * @param _viewCtrl 
    * @param _navParams 
    * @param _translate 
-   * @param alertCtrl 
-   * @param loadingCtrl 
+   * @param _alertCtrl 
+   * @param _loadingCtrl 
    * @param _app 
    * @param _userLanguageService 
    */
@@ -35,8 +36,8 @@ export class CodeTypeSelectPage {
               private _viewCtrl: ViewController,
               public _navParams: NavParams,
               public _translate: TranslateService,
-              public alertCtrl: AlertController,
-              public loadingCtrl: LoadingController,
+              public _alertCtrl: AlertController,
+              public _loadingCtrl: LoadingController,
               public _app: App,
               private _userLanguageService: UserLanguageService ) {
     _translate.setDefaultLang('en');
@@ -57,19 +58,23 @@ export class CodeTypeSelectPage {
     });
 
     this._waitMsg = this.itemNameTraduction('MOBILE.SECTIONS.WAIT_QR');
-    let loader = this.loadingCtrl.create({
+    let loader = this._loadingCtrl.create({
       duration: 500
     });
     loader.present();
   }
 
   goToSections(qr_code: string) {
-    MeteorObservable.call('getIdTableByQr', qr_code).subscribe((table_id: string) => {
-      if (table_id) {
-        this._id_table = table_id;
-        this.forwardToSections(qr_code);
+    MeteorObservable.call('getIdTableByQr', qr_code).subscribe((table: Table) => {
+      if(table){
+        if (table.is_active) {
+          this._id_table = table._id;
+          this.forwardToSections(qr_code);
+        } else {
+          this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.TABLE_NO_ACTIVE'));
+        }
       } else {
-        alert('Invalid table');
+        this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.TABLE_NOT_EXISTS'));
       }
     });
   }
@@ -87,9 +92,35 @@ export class CodeTypeSelectPage {
           alert('Invalid table');
         }
       }, (error) => {
-        alert(`Failed to get restaurant ${error}`);
+        if( error.error === '400' ){
+          this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.TABLE_NOT_EXISTS'));
+        } else if( error.error === '200' ){
+          this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.IUREST_NO_ACTIVE'));
+        }
       });
     }
+  }
+  
+  /**
+   * Show message confirm
+   * @param _pContent 
+   */
+  showConfirmMessage( _pContent :any ){
+    let okBtn   = this.itemNameTraduction('MOBILE.OK'); 
+    let title   = this.itemNameTraduction('MOBILE.WAITER_CALL.TITLE_PROMPT'); 
+  
+    let prompt = this._alertCtrl.create({
+      title: title,
+      message: _pContent,
+      buttons: [
+        {
+          text: okBtn,
+          handler: data => {
+          }
+        }
+      ]
+    });
+    prompt.present();
   }
 
   goToAlphanumericCode() {
