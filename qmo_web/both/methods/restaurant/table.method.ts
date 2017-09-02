@@ -13,9 +13,9 @@ Meteor.methods({
     },
 
     getIdTableByQr: function (_qrCode) {
-        let table = Tables.collection.findOne({ QR_code: _qrCode });
+        let table = Tables.collection.findOne({ QR_code: _qrCode, is_active : true });
         if (typeof table != "undefined" || table != null) {
-            return table._id;
+            return table;
         } else {
             return null;
         }

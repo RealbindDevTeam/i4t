@@ -27,6 +27,7 @@ export class PaymentDetailConfirmComponent implements OnInit, OnDestroy {
    * ngOnInit Implementation
    */
   ngOnInit(){
+    this.removeSubscriptions();
     this._orderSubscription = MeteorObservable.subscribe('getOrderById', this.orderId).subscribe(()=>{
       this._orders = Orders.find({ _id: this.orderId });
     });
@@ -48,8 +49,14 @@ export class PaymentDetailConfirmComponent implements OnInit, OnDestroy {
    * ngOnDestroy Implementation
    */
   ngOnDestroy(){
-    //this._userSubscription.unsubscribe();
-    this._orderSubscription.unsubscribe();
+    this.removeSubscriptions();
+  }
+
+  /**
+   * Remove all subscriptions
+   */
+  removeSubscriptions():void{
+    if( this._orderSubscription ){ this._orderSubscription.unsubscribe(); }
   }
 
 }

@@ -1,56 +1,55 @@
 <md-card>
     <md-card-title>{{'SETTINGS.LOGIN' | translate}}</md-card-title>
     <md-card-content>
-        
-                <table *ngIf="_user" cellspacing="0">
-                    <tr>
-                        <td style="width: 20%;text-align: center;" rowspan="3">
-                            <div>
-                                <input accept=".png, .jpg, .jpeg" (change)="onChangeImage($event)" style="display: none" type="file" name="file-1[]" id="file-1" data-multiple-caption="{count} files selected"/>
-                                <label for="file-1">
-                                    <div class="avatarWrapper">
-                                        <div class="avatar cursor-pointer">
-                                            <div *ngIf="!_user.services.facebook && !_loading" class="uploadOverlay">
-                                                <i class="fa fa-camera"></i>
-                                            </div>
-                                            <img *ngIf="!_loading" src="{{ getUsetImage() }}">
-                                            <div *ngIf="_loading" class="processing-overlay">
-                                                <md-spinner class="spinner"></md-spinner>
-                                            </div>
-                                        </div>
+        <table *ngIf="_user" cellspacing="0">
+            <tr>
+                <td style="width: 20%;text-align: center;" rowspan="3">
+                    <div>
+                        <input accept=".png, .jpg, .jpeg" (change)="onChangeImage($event)" style="display: none" type="file" name="file-1[]" id="file-1" data-multiple-caption="{count} files selected"/>
+                        <label for="file-1">
+                            <div class="avatarWrapper">
+                                <div class="avatar cursor-pointer">
+                                    <div *ngIf="!_user.services.facebook && !_loading" class="uploadOverlay">
+                                        <i class="fa fa-camera"></i>
                                     </div>
-                                </label>
+                                    <img *ngIf="!_loading" src="{{ getUsetImage() }}">
+                                    <div *ngIf="_loading" class="processing-overlay">
+                                        <md-spinner class="spinner"></md-spinner>
+                                    </div>
+                                </div>
                             </div>
-                        </td>
-                        <td style="width: 40vh">
-                            <label>{{'EMAIL' | translate}}:</label>
-                        </td>
-                        
-                        <td style="width: 60vh">
-                            <strong *ngIf="_user.emails">
-                                {{_user.emails[0].address}}
-                            </strong>
-                            <strong *ngIf="_user.services.facebook">
-                                {{_user.services.facebook.email}}
-                            </strong>
-                        </td>
-                        <td>
-                            <button md-raised-button [disabled]="_validateChangeEmail" class="secondary-button" (click)="open()">{{'MODIFY' | translate}}</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label>{{'PASSWORD' | translate}}:</label>
-                        </td>
-                        <td>
-                            <strong>********</strong>
-                        </td>
-                        <td>
-                            <button md-raised-button [disabled]="_validateChangePass" class="secondary-button" (click)="openModalChangePassword()">{{'MODIFY' | translate}}</button>
-                        </td>
-                    </tr>
-                    <tr><td></td></tr>
-                </table>
+                        </label>
+                    </div>
+                </td>
+                <td style="width: 40vh">
+                    <label>{{'EMAIL' | translate}}:</label>
+                </td>
+                
+                <td style="width: 60vh">
+                    <strong *ngIf="_user.emails">
+                        {{_user.emails[0].address}}
+                    </strong>
+                    <strong *ngIf="_user.services.facebook">
+                        {{_user.services.facebook.email}}
+                    </strong>
+                </td>
+                <td>
+                    <button md-raised-button [disabled]="_validateChangeEmail" class="secondary-button" (click)="open()">{{'MODIFY' | translate}}</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>{{'PASSWORD' | translate}}:</label>
+                </td>
+                <td>
+                    <strong>********</strong>
+                </td>
+                <td>
+                    <button md-raised-button [disabled]="_validateChangePass" class="secondary-button" (click)="openModalChangePassword()">{{'MODIFY' | translate}}</button>
+                </td>
+            </tr>
+            <tr><td></td></tr>
+        </table>
     </md-card-content>
 </md-card>
 

@@ -32,9 +32,10 @@
         "CHOOSE_FILE": "Seleccionar archivo",
         "CLOSE" : "Cerrar",
         "VIEW" : "Ver",
+        "OK" : "Ok",
         "LANGUAGE" : {
-            "ES" : "Español",
-            "EN" : "Ingles"
+            "es" : "Español",
+            "en" : "Ingles"
         },
         "INITIAL": {
             "SIGNUP": "Registrarse",
@@ -154,7 +155,10 @@
             "DELETE_ADDITION_CONFIRM": "Esta seguro de eliminar la adicion de la orden?",
             "ADDITION_DELETED": "Adicion Eliminada de la Orden",
             "ADDITION_EDITED": "Adicion Editada Correctamente",
-            "QUANT":"Cant."
+            "QUANT":"Cant.",
+            "TABLE_NOT_EXISTS": "La Mesa no Existe. Por favor verifique el codigo",
+            "TABLE_NO_ACTIVE": "La mesa no tiene el servicio de Iurest activo. No es posible ingresar",
+            "IUREST_NO_ACTIVE": "El Restaurante no tiene el servicio de Iurest activo. No es posible ingresar"
         },
         "ORDER_TRANS": {
             "ORDERS": "Orden",
