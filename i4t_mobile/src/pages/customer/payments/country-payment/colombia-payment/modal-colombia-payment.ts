@@ -61,6 +61,7 @@ export class ModalColombiaPayment implements OnInit, OnDestroy {
    */
   ngOnInit(){
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+    this.removeSubscriptions();
     this._paymentMethodsSubscription = MeteorObservable.subscribe('paymentMethods').subscribe(() => {
       this._paymentMethods = PaymentMethods.find({}).zone();
     });
@@ -134,8 +135,15 @@ export class ModalColombiaPayment implements OnInit, OnDestroy {
    * ngOnDestroy Implementation
    */
   ngOnDestroy(){
-    this._paymentMethodsSubscription.unsubscribe();
-    this._restaurantsSubscription.unsubscribe();
+    this.removeSubscriptions();
+  }
+
+  /**
+   * Remove all subscriptions
+   */
+  removeSubscriptions():void{
+    if( this._paymentMethodsSubscription ){ this._paymentMethodsSubscription.unsubscribe(); }
+    if( this._restaurantsSubscription ){ this._restaurantsSubscription.unsubscribe(); }
   }
 
 }

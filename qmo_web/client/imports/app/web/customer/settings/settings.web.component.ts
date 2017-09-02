@@ -37,7 +37,6 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     private _userSubscription       : Subscription;
     private _userDetailSubscription : Subscription;
     private _subscription           : Subscription;
-    private _userImageSub           : Subscription;
     private _countrySubscription    : Subscription;
     private _citySubscription       : Subscription;
 
@@ -178,7 +177,6 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
         if( this._userSubscription ){ this._userSubscription.unsubscribe(); }
         if( this._userDetailSubscription ){ this._userDetailSubscription.unsubscribe(); }
         if( this._subscription ){ this._subscription.unsubscribe(); }
-        if( this._userImageSub ){ this._userImageSub.unsubscribe() }
         if( this._countrySubscription ){ this._countrySubscription.unsubscribe(); }
         if( this._citySubscription ){ this._citySubscription.unsubscribe() }
     }

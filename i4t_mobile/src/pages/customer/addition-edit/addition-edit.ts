@@ -53,6 +53,7 @@ export class AdditionEditPage implements OnInit, OnDestroy {
      */
     ngOnInit(){
         this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        this.removeSubscriptions();
         this._additionsSub = MeteorObservable.subscribe( 'additionsByCurrentRestaurant', Meteor.userId() ).subscribe( () => {
             this._additionDetails = Additions.find( { _id: this._orderAddition.additionId } ).zone();
         });
@@ -213,6 +214,13 @@ export class AdditionEditPage implements OnInit, OnDestroy {
      * ngOnDestroy implementation
      */
     ngOnDestroy(){
-        this._additionsSub.unsubscribe();
+        this.removeSubscriptions();
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._additionsSub ){ this._additionsSub.unsubscribe(); }
     }
 }

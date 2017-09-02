@@ -46,6 +46,7 @@ export class SendOrderDetailsPage implements OnInit, OnDestroy {
      */
     ngOnInit(){
         this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        this.removeSubscriptions();
         this._orderSubscription = MeteorObservable.subscribe( 'getOrderById', this._call.order_id ).subscribe( () => {
             this._orders = Orders.find({});
         });
@@ -137,9 +138,16 @@ export class SendOrderDetailsPage implements OnInit, OnDestroy {
      * ngOnDestroy implementation
      */
     ngOnDestroy(){
-        this._orderSubscription.unsubscribe();
-        this._usersSubscription.unsubscribe();
-        this._tablesSubscription.unsubscribe();
-        this._additionsSubscription.unsubscribe();
+        this.removeSubscriptions();
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._orderSubscription ){ this._orderSubscription.unsubscribe(); }
+        if( this._usersSubscription ){ this._usersSubscription.unsubscribe(); }
+        if( this._tablesSubscription ){ this._tablesSubscription.unsubscribe(); }
+        if( this._additionsSubscription ){ this._additionsSubscription.unsubscribe(); }
     }
 }
