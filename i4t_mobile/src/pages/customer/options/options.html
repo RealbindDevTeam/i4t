@@ -10,7 +10,7 @@
     <ion-list inset>
         <ion-item *ngFor="let user of _userObservable | async">
             <ion-avatar item-left>
-                <img src="{{_imageProfile}}">
+                <img src="{{ getUsetImage() }}">
             </ion-avatar>
             <h2 *ngIf="user.username">{{user.username}}</h2>
             <h2 *ngIf="user.profile.name">{{user.profile.name}}</h2>

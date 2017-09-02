@@ -7,7 +7,8 @@ import { Subscription } from 'rxjs';
 import { SettingsPage } from './settings/settings';
 import { PaymentsHistoryPage } from './payments-history/payments-history';
 import { InitialComponent } from '../../auth/initial/initial';
-import { Users } from 'qmo_web/both/collections/auth/user.collection';
+import { UserProfileImage } from 'qmo_web/both/models/auth/user-profile.model';
+import { Users, UserImages } from 'qmo_web/both/collections/auth/user.collection';
 import { User } from 'qmo_web/both/models/auth/user.model';
 import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
@@ -17,7 +18,8 @@ import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/
 })
 export class OptionsPage implements OnInit, OnDestroy {
 
-  private _userSubscription: Subscription;
+  private _userSubscription      : Subscription;
+  private _userImageSubscription : Subscription;
   private _user: User;
   private _userName: string;
   private _imageProfile: string;
@@ -47,61 +49,52 @@ export class OptionsPage implements OnInit, OnDestroy {
    * ngOnInit implementation
    */
   ngOnInit() {
-    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-
-    this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() =>{
-        this._user = Users.collection.findOne({_id: Meteor.userId()});
-        if(this._user.username){
-          this._userName = this._user.username;
-        }
-        else if(this._user.profile.name) {
-          this._userName = this._user.profile.name;
-        }
-        if(this._user.services.facebook){
-          this._imageProfile = "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
-        }
-        else if(this._user.services.twitter){
-          this._imageProfile = this._user.services.twitter.profile_image_url;
-        }
-        else if(this._user.services.google){
-          this._imageProfile = this._user.services.google.picture;
-        } else {
-          this._imageProfile = "assets/img/user_default_image.png";
-        }
-        this._userObservable = Users.find({}).zone();
-        
-    });
-
+    this.init();
   }
 
   /**
    * ionViewWillEnter implementation
    */
   ionViewWillEnter() {
+    this.init();
+  }
+
+  init(){
+    this.removeSubscriptions();
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
 
+    this._userImageSubscription = MeteorObservable.subscribe('getUserImages', Meteor.userId()).subscribe();
+
     this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() =>{
-        this._user = Users.collection.findOne({_id: Meteor.userId()});
-        if(this._user.username){
-          this._userName = this._user.username;
-        }
-        else if(this._user.profile.name) {
-          this._userName = this._user.profile.name;
-        }
-        if(this._user.services.facebook){
-          this._imageProfile = "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
-        }
-        else if(this._user.services.twitter){
-          this._imageProfile = this._user.services.twitter.profile_image_url;
-        }
-        else if(this._user.services.google){
-          this._imageProfile = this._user.services.google.picture;
-        } else {
-          this._imageProfile = "assets/img/user_default_image.png";
-        }
-        this._userObservable = Users.find({}).zone();
-        
+      this._user = Users.collection.findOne({_id: Meteor.userId()});
+      if(this._user.username) {
+        this._userName = this._user.username;
+      }
+      if(this._user.services.facebook){
+        this._userName = this._user.profile.name;
+        this._imageProfile = "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
+      } else {
+        this._imageProfile = "assets/img/user_default_image.png";
+      }
+      this._userObservable = Users.find({}).zone();
     });
+  }
+
+  /**
+   * Return user image
+   */
+  getUsetImage():string{
+    if(this._user && this._user.services.facebook){
+      return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
+    } else {
+      let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() });
+      if( _lUserImage ){
+        return _lUserImage.url;
+      } 
+      else {
+        return 'assets/img/user_default_image.png';
+      }
+    }
   }
 
   /**
@@ -183,14 +176,22 @@ export class OptionsPage implements OnInit, OnDestroy {
    * ionViewWillLeave implementation
    */
   ionViewWillLeave() {
-    this._userSubscription.unsubscribe();
+    this.removeSubscriptions();
   }
 
   /**
    * ngOnDestroy Implementation
    */
   ngOnDestroy(){
-    this._userSubscription.unsubscribe();
+    this.removeSubscriptions();
+  }
+
+  /**
+   * Remove all subscription
+   */
+  removeSubscriptions(){
+    if( this._userSubscription ){ this._userSubscription.unsubscribe(); }
+    if( this._userImageSubscription ){ this._userImageSubscription.unsubscribe(); }
   }
 
 }
