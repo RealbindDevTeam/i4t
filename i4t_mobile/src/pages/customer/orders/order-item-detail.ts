@@ -36,6 +36,7 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.removeSubscriptions();
         this._itemsSub = MeteorObservable.subscribe('itemsByUser', Meteor.userId()).subscribe(() => {
             this._items = Items.find({ _id: this.orderItem.itemId });
         });
@@ -70,12 +71,18 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this._imageThumbSub.unsubscribe();
-        this._itemsSub.unsubscribe();
+        this.removeSubscriptions();
     }
 
     ionViewWillLeave() {
-        this._imageThumbSub.unsubscribe();
-        this._itemsSub.unsubscribe();
+        this.removeSubscriptions();
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._imageThumbSub ){ this._imageThumbSub.unsubscribe(); }
+        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
     }
 }
