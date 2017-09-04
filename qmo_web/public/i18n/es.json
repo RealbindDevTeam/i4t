@@ -509,7 +509,11 @@
         "MESSAGE_NOT_LOGIN": "Por favor ingresar al sistema para agregar un colaborador",
         "SELECT_RANGE_VALID_TABLES": "Seleccionar un rango valido de mesas",
         "TABLES_ASSIGNMENT": "Asignación de mesas",
-        "MESSAGE_COLLABORATOR_EDIT": "Colaborador actualizado exitosamente"
+        "MESSAGE_COLLABORATOR_EDIT": "Colaborador actualizado exitosamente",
+        "USER_EXISTS": "El usuario ya se encuentra en uso. Por favor ingrese otro nombre de usuario.",
+        "USERS_ROL": "Los usuarios con el rol ",
+        "PREFIX": " deben tener el prefijo ",
+        "USER_NAME_WILL_BE": "El nombre del usuario sera "
     },
     "ITEMS": {
         "ITEMS_MANAGEMENT": "Administracion de items",

@@ -509,7 +509,11 @@
         "MESSAGE_NOT_LOGIN": "Please log in to add a restaurant",
         "SELECT_RANGE_VALID_TABLES": "Select a valid range of the tables",
         "TABLES_ASSIGNMENT": "Assignment of tables",
-        "MESSAGE_COLLABORATOR_EDIT": "Collaborator updated successfully"
+        "MESSAGE_COLLABORATOR_EDIT": "Collaborator updated successfully",
+        "USER_EXISTS": "The user is already in use. Please enter another username.",
+        "USERS_ROL": "Users with the role ",
+        "PREFIX": " must have the prefix ",
+        "USER_NAME_WILL_BE": "The username will be "
     },
     "ITEMS": {
         "ITEMS_MANAGEMENT": "Item management",
