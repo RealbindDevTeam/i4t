@@ -141,6 +141,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         if (this._historyPaymentSub) { this._historyPaymentSub.unsubscribe(); }
         if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
         if (this._paymentTransactionSub) { this._paymentTransactionSub.unsubscribe(); }
+        if (this._parameterSub) { this._parameterSub.unsubscribe(); }
     }
 
     /**
