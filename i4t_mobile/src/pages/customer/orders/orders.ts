@@ -133,7 +133,6 @@ export class OrdersPage implements OnInit, OnDestroy {
 
     ionViewWillEnter() {
         this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        this.removeSubscriptions();
         this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
             this._restaurants = Restaurants.findOne({});
         });

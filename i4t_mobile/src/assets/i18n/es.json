@@ -72,7 +72,8 @@
                 "SUBTITLE": "Ingresa tu correo electrónico",
                 "SEND": "Enviar",
                 "CANCEL": "Cancelar"
-            }
+            },
+            "USER_NO_ACTIVE": "Tu usuario no se encuentra activo. Por favor contacta al administrador"
         },
         "RESET_PASWORD": {
             "TITLE": "Cambiar contraseña",

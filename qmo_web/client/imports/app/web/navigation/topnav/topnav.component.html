@@ -28,7 +28,7 @@
 
   <div class="buttom-profile">
     <button md-icon-button [md-menu-trigger-for]="menu" id="user-dropdown-toggler" style="padding: 0;">
-      <img class="profile-img" md-list-avatar src="{{_imageProfile}}">
+      <img class="profile-img" md-list-avatar src="{{ getUsetImage() }}">
       {{ _userName }}
       <md-icon>keyboard_arrow_down</md-icon>
     </button>
