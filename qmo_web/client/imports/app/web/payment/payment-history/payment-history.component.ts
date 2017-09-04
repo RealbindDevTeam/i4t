@@ -1,11 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
-import { getPayuMerchantInfo } from '../../../../../../both/methods/general/parameter.methods';
 import { VerifyResultComponent } from './verify-result/verify-result.component';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { PaymentsHistory } from '../../../../../../both/collections/payment/payment-history.collection';
@@ -18,6 +17,8 @@ import { PaymentTransaction } from '../../../../../../both/models/payment/paymen
 import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
 import { Table } from '../../../../../../both/models/restaurant/table.model';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
+import { Parameter } from '../../../../../../both/models/general/parameter.model';
+import { Parameters } from '../../../../../../both/collections/general/parameter.collection';
 
 import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
 
@@ -31,26 +32,30 @@ import style from './payment-history.component.scss';
 })
 export class PaymentHistoryComponent implements OnInit, OnDestroy {
 
-    private _historyPaymentSub          : Subscription;
-    private _restaurantSub              : Subscription;
-    private _paymentTransactionSub      : Subscription;
+    private _historyPaymentSub: Subscription;
+    private _restaurantSub: Subscription;
+    private _paymentTransactionSub: Subscription;
+    private _parameterSub: Subscription;
 
-    private _historyPayments            : Observable<PaymentHistory[]>;
-    private _historyPayments2           : Observable<PaymentHistory[]>;
-    private _paymentTransactions        : Observable<PaymentTransaction[]>;
-    private _restaurants                : Observable<Restaurant[]>;
+    private _historyPayments: Observable<PaymentHistory[]>;
+    private _historyPayments2: Observable<PaymentHistory[]>;
+    private _paymentTransactions: Observable<PaymentTransaction[]>;
+    private _restaurants: Observable<Restaurant[]>;
 
-    private _selectedMonth              : string;
-    private _selectedYear               : string;
-    private _yearsArray                 : any[];
-    private _monthsArray                : any[];
-    private _currentDate                : Date;
-    private _currentYear                : number;
-    private _activateMonth              : boolean;
-    private _loading                    : boolean;
-    private _mdDialogRef                : MdDialogRef<any>;
-    private titleMsg                    : string;
-    private btnAcceptLbl                : string;
+    private _selectedMonth: string;
+    private _selectedYear: string;
+    private _yearsArray: any[];
+    private _monthsArray: any[];
+    private _currentDate: Date;
+    private _currentYear: number;
+    private _activateMonth: boolean;
+    private _loading: boolean;
+    private _mdDialogRef: MdDialogRef<any>;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
+
+    private al: string;
+    private ak: string;
 
     /**
      * PaymentHistoryComponent Constructor
@@ -61,14 +66,15 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
      * @param {PayuPaymenteService} _payuPaymentService 
      * @param {UserLanguageService} _userLanguageService 
      */
-    constructor( private _router: Router,
-                 private _formBuilder: FormBuilder,
-                 private _translate: TranslateService,
-                 public _mdDialog: MdDialog,
-                 private _payuPaymentService: PayuPaymenteService,
-                 private _userLanguageService: UserLanguageService ) {
-        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        _translate.setDefaultLang( 'en' );
+    constructor(private _router: Router,
+        private _formBuilder: FormBuilder,
+        private _translate: TranslateService,
+        public _mdDialog: MdDialog,
+        private _payuPaymentService: PayuPaymenteService,
+        private _ngZone: NgZone,
+        private _userLanguageService: UserLanguageService) {
+        _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        _translate.setDefaultLang('en');
 
         this._currentDate = new Date();
         this._activateMonth = true;
@@ -98,6 +104,21 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
         this._paymentTransactionSub = MeteorObservable.subscribe('getTransactionsByUser', Meteor.userId()).subscribe();
 
+        this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe(() => {
+            this._ngZone.run(() => {
+                let payInfoUrl = Parameters.findOne({ name: 'payu_pay_info_url' }).value;
+                this._payuPaymentService.getCusPayInfo(payInfoUrl).subscribe(
+                    payInfo => {
+                        this.al = payInfo.al;
+                        this.ak = payInfo.ak;
+                    },
+                    error => {
+                        this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                    }
+                );
+            });
+        });
+
         this._currentYear = this._currentDate.getFullYear();
         this._yearsArray = [];
         this._yearsArray.push({ value: this._currentYear, viewValue: this._currentYear });
@@ -116,10 +137,10 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._historyPaymentSub ){ this._historyPaymentSub.unsubscribe(); }
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
-        if( this._paymentTransactionSub ){ this._paymentTransactionSub.unsubscribe(); }
+    removeSubscriptions(): void {
+        if (this._historyPaymentSub) { this._historyPaymentSub.unsubscribe(); }
+        if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
+        if (this._paymentTransactionSub) { this._paymentTransactionSub.unsubscribe(); }
     }
 
     /**
@@ -209,26 +230,20 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         let merchant = new Merchant();
         let details = new Details();
         let credentialArray: string[] = [];
-        let apilogin: string;
-        let apikey: string;
         let historyPayment = PaymentsHistory.collection.findOne({ transactionId: _transactionId });
         let paymentTransaction = PaymentTransactions.collection.findOne({ _id: historyPayment.transactionId });
 
         this._loading = true;
         setTimeout(() => {
-            credentialArray = getPayuMerchantInfo();
-            apilogin = credentialArray[0];
-            apikey = credentialArray[1];
-
             responseQuery.language = Meteor.user().profile.language_code;
             responseQuery.command = 'TRANSACTION_RESPONSE_DETAIL';
-            merchant.apiLogin = apilogin;
-            merchant.apiKey = apikey;
+            merchant.apiLogin = this.al;
+            merchant.apiKey = this.ak;
             responseQuery.merchant = merchant;
             details.transactionId = paymentTransaction.responsetransactionId;
-            //details.transactionId = 'a10b1413-4be2-4974-9eb2-e1c1aa13113f';
             responseQuery.details = details;
-            responseQuery.test = false;
+            //responseQuery.test = false;
+            responseQuery.test = true;
 
             let responseMessage: string;
             let responseIcon: string;
@@ -236,37 +251,37 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
             this._payuPaymentService.getTransactionResponse(responseQuery).subscribe(
                 response => {
                     if (response.code === 'ERROR') {
-                        responseMessage = 'PAYMENT_HISTORY.VERIFY_ERROR'
+                        responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_ERROR'
                         responseIcon = 'trn_declined.png';
                     } else if (response.code === 'SUCCESS') {
                         switch (response.result.payload.state) {
                             case "APPROVED": {
                                 this.updateAllStatus(historyPayment, paymentTransaction, response);
-                                responseMessage = 'PAYMENT_HISTORY.VERIFY_APPROVED';
+                                responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_APPROVED';
                                 responseIcon = 'trn_approved.png';
                                 break;
                             }
                             case "DECLINED": {
                                 this.updateAllStatus(historyPayment, paymentTransaction, response);
-                                responseMessage = 'PAYMENT_HISTORY.VERIFY_DECLINED';
+                                responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_DECLINED';
                                 responseIcon = 'trn_declined.png';
                                 break;
                             }
                             case "PENDING": {
                                 this.updateAllStatus(historyPayment, paymentTransaction, response);
-                                responseMessage = 'PAYMENT_HISTORY.VERIFY_PENDING';
+                                responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_PENDING';
                                 responseIcon = 'trn_pending.png';
                                 break;
                             }
                             case "EXPIRED": {
                                 this.updateAllStatus(historyPayment, paymentTransaction, response);
-                                responseMessage = 'PAYMENT_HISTORY.VERIFY_EXPIRED';
+                                responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_EXPIRED';
                                 responseIcon = 'trn_declined.png';
                                 break;
                             }
                             default: {
                                 this.updateAllStatus(historyPayment, paymentTransaction, response);
-                                responseMessage = 'PAYMENT_HISTORY.VERIFY_ERROR';
+                                responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_ERROR';
                                 responseIcon = 'trn_declined.png';
                                 break;
                             }
@@ -321,10 +336,10 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
 
         if (_response.result.payload.state == 'APPROVED') {
             _historyPayment.restaurantIds.forEach((restaurantId) => {
-                Restaurants.collection.update({ _id: restaurantId }, { $set: { isActive: true } });
+                Restaurants.collection.update({ _id: restaurantId }, { $set: { isActive: true, firstPay: false } });
 
                 Tables.collection.find({ restaurantId: restaurantId }).forEach((table: Table) => {
-                    Tables.collection.update({ _id: table._id }, { $set: { is_active: true } });
+                    Tables.collection.update({ _id: table._id }, { $set: { is_active: true, firstPay: true } });
                 });
             });
         }
@@ -353,7 +368,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
     * @param {boolean} showBtnCancel
     */
     openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
-        
+
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
@@ -377,6 +392,6 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
      * ngOnDestroy Implementation
      */
     ngOnDestroy() {
-        this.removeSubscriptions();   
+        this.removeSubscriptions();
     }
 }

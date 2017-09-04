@@ -950,7 +950,7 @@
         "TITLE": "Medio de pago",
         "SUBTITLE": "Por favor diligencia todos los campos para realizar el pago",
         "SELECT_METHOD": "Medio de pago *",
-        "CARD_NUMBER": "Número de tarjeta *",
+        "CARD_NUMBER": "Número de tarjeta (Sin espacion ni guiones) *",
         "EXPIRATION_YEAR": "Año de caducidad *",
         "EXPIRATION_MONTH": "Mes de caducidad *",
         "SECURITY_CODE": "Código de seguridad *",
@@ -964,7 +964,7 @@
         "SECURITY_CODE_REQUIRED": "- El código no puede estar vacio",
         "BILLING_INFORMATION": "Información de facturación",
         "PAYER_EMAIL": "Correo electrónico *",
-        "PAYER_FULLNAME": "Nombres y apellidos *",
+        "PAYER_FULLNAME": "Nombre impreso en tarjeta *",
         "EMAIL_INVALID": "- Formato de correo inválido",
         "EMAIL_MIN": "- El email debe tener mínimo 6 caracteres",
         "EMAIL_MAX": "- EL email debe tener máximo 255 caracteres",
@@ -999,7 +999,9 @@
         "TRANSACTION_ERROR": "Error procesando la transacción",
         "TRANSACTION_MSG": "Puedes ir al menú Pagos > Historial de pagos, para revisar el estado de tus pagos",
         "PAY_ACCEPT": "Aceptar",
-        "AUTH_ERROR_MSG": "Los datos ingresados de tu tarjeta no coinciden, por favor verificalos"
+        "AUTH_ERROR_MSG": "Los datos ingresados de tu tarjeta no coinciden, por favor verificalos",
+        "FIRST_NAME": "Nombres",
+        "LAST_NAME": "Apellidos"
     },
     "RES_PAYMENT_HISTORY": {
         "TITLE": "Historial de pagos",
