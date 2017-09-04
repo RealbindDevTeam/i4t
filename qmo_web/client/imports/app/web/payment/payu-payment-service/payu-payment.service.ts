@@ -8,11 +8,8 @@ import { Parameters } from '../../../../../../both/collections/general/parameter
 @Injectable()
 export class PayuPaymenteService {
 
-    private payuReportsApiURI = 'https://sandbox.api.payulatam.com/reports-api/4.0/service.cgi';
-    //private payuPaymentsApiURI = 'https://sandbox.api.payulatam.com/payments-api/4.0/service.cgi';
     private payuPaymentsApiURI: string;
-    private ipPublicURI: string;
-    private ipCusPayInfo = 'http://192.168.0.10:9000/api/getCusPayInfo';
+    private payuReportsApiURI: string;
 
     private _parameterSub: Subscription;
 
@@ -29,10 +26,9 @@ export class PayuPaymenteService {
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe(() => {
             this._ngZone.run(() => {
                 this.payuPaymentsApiURI = Parameters.findOne({ name: 'payu_payments_url' }).value;
-                this.ipPublicURI = Parameters.findOne({ name: 'ip_public_service_url' }).value;
+                this.payuReportsApiURI = Parameters.findOne({ name: 'payu_reports_url' }).value;
             })
         });
-
     }
 
     /**
@@ -65,9 +61,7 @@ export class PayuPaymenteService {
      */
     getReportsPing(obj: any): Observable<any> {
         return this.http
-            .post(this.payuReportsApiURI,
-            JSON.stringify(obj),
-            { headers: this.headers })
+            .post(this.payuReportsApiURI,JSON.stringify(obj),{ headers: this.headers })
             .map(res => res.json())
             .catch(this.handleError);
     }
@@ -79,9 +73,7 @@ export class PayuPaymenteService {
      */
     getPaymentsPing(obj: any): Observable<any> {
         return this.http
-            .post(this.payuReportsApiURI,
-            JSON.stringify(obj),
-            { headers: this.headers })
+            .post(this.payuReportsApiURI,JSON.stringify(obj),{ headers: this.headers })
             .map(res => res.json())
             .catch(this.handleError);
     }

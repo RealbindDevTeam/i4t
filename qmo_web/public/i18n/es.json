@@ -949,7 +949,7 @@
         "TITLE": "Medio de pago",
         "SUBTITLE": "Por favor diligencia todos los campos para realizar el pago",
         "SELECT_METHOD": "Medio de pago *",
-        "CARD_NUMBER": "Número de tarjeta *",
+        "CARD_NUMBER": "Número de tarjeta (Sin espacion ni guiones) *",
         "EXPIRATION_YEAR": "Año de caducidad *",
         "EXPIRATION_MONTH": "Mes de caducidad *",
         "SECURITY_CODE": "Código de seguridad *",

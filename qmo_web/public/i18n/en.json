@@ -949,7 +949,7 @@
         "TITLE": "Payment method",
         "SUBTITLE": "Please, fill all the fields to do the payment ",
         "SELECT_METHOD": "Payment method *",
-        "CARD_NUMBER": "Card number *",
+        "CARD_NUMBER": "Card number (No spaces, no dashes)*",
         "EXPIRATION_YEAR": "Expiration year *",
         "EXPIRATION_MONTH": "Expiration month *",
         "SECURITY_CODE": "Security code *",
@@ -1002,7 +1002,7 @@
         "FIRST_NAME": "Firstname",
         "LAST_NAME": "Lastname"
     },
-    "PAYMENT_HISTORY": {
+    "RES_PAYMENT_HISTORY": {
         "TITLE": "Payment history",
         "SUBTITLE": "Check your payments and their status",
         "DATE": "Date",

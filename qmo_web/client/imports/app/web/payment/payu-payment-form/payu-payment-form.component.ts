@@ -11,7 +11,6 @@ import { UserLanguageService } from '../../../shared/services/user-language.serv
 import { CustomValidators } from '../../../../../../both/shared-components/validators/custom-validator';
 import { CcPaymentConfirmComponent } from './cc-payment-confirm/cc-payment-confirm.component';
 import { TrnResponseConfirmComponent } from './transaction-response-confirm/trn-response-confirm.component';
-import { getPayuMerchantInfo } from '../../../../../../both/methods/general/parameter.methods';
 import { CcPaymentMethods } from '../../../../../../both/collections/payment/cc-payment-methods.collection';
 import { CcPaymentMethod } from '../../../../../../both/models/payment/cc-payment-method.model';
 import { Countries } from '../../../../../../both/collections/settings/country.collection';
@@ -213,10 +212,10 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 let payInfoUrl = Parameters.findOne({ name: 'payu_pay_info_url' }).value;
                 this._payuPaymentService.getCusPayInfo(payInfoUrl).subscribe(
                     payInfo => {
-                        payInfo.al = this.al;
-                        payInfo.ak = this.ak;
-                        payInfo.ai = this.ai;
-                        payInfo.mi = this.mi;
+                        this.al = payInfo.al;
+                        this.ak = payInfo.ak;
+                        this.ai = payInfo.ai;
+                        this.mi = payInfo.mi
                     },
                     error => {
                         this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
@@ -427,10 +426,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 creation_user: Meteor.userId()
             });
         }
-
         paymentTransaction = PaymentTransactions.collection.findOne({}, { sort: { count: -1 } });
-
-        credentialArray = getPayuMerchantInfo();
         apilogin = this.al;
         apikey = this.ak;
 
@@ -440,7 +436,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         merchant.apiKey = apikey;
         ccRequestColombia.merchant = merchant;
 
-        order.accountId = this.ai;
+        order.accountId = Number(this.ai);
         order.referenceCode = paymentTransaction.referenceCode;
         order.description = this.itemNameTraduction('PAYU_PAYMENT_FORM.ORDER_DESCRIPTION');
         order.language = Meteor.user().profile.language_code;
@@ -478,7 +474,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         creditCard.securityCode = this._paymentForm.value.securityCode;
         creditCard.expirationDate = this._selectedCardYear + '/' + this._selectedCardMonth;
         //creditCard.name = this._paymentForm.value.fullName;
-        creditCard.name = 'APPROVED';
+        creditCard.name = 'PENDING';
 
         payer.fullName = this._paymentForm.value.fullName;
         payer.emailAddress = Meteor.user().emails[0].address;
@@ -511,15 +507,12 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         //ccRequestColombia.test = false;
         ccRequestColombia.test = true;
 
-        console.log(JSON.stringify(ccRequestColombia));
-
         let transactionMessage: string;
         let transactionIcon: string;
         let showCancelBtn: boolean = false;
 
         this._payuPaymentService.authorizeAndCapture(ccRequestColombia).subscribe(
             response => {
-                console.log(JSON.stringify(response));
                 if (response.code == 'ERROR') {
                     transactionMessage = 'PAYU_PAYMENT_FORM.AUTH_ERROR_MSG';
                     transactionIcon = 'trn_declined.png';
@@ -635,11 +628,13 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         });
 
         if (this._mode != 'normal') {
-            Restaurants.collection.update({ _id: this._mode }, { $set: { isActive: true } });
+            Restaurants.collection.update({ _id: this._mode }, { $set: { isActive: true, firstPay: false } });
 
             Tables.collection.find({ restaurantId: this._mode }).forEach((table: Table) => {
                 Tables.collection.update({ _id: table._id }, { $set: { is_active: true } });
             });
+        } else {
+            Restaurants.collection.update({ _id: { $in: this._restaurantsIdsArray } }, { $set: { isActive: true, firstPay: false } });
         }
     }
 
