@@ -105,6 +105,10 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 
     private titleMsg: string;
     private btnAcceptLbl: string;
+    private al: string;
+    private ak: string;
+    private mi: string;
+    private ai: number;
 
     /**
      * PayuPaymentFormComponent Constructor
@@ -195,6 +199,29 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 this.scriptTwoSanitized = this._domSanitizer.bypassSecurityTrustUrl(_scriptTwo + this._sessionUserId);
                 this.scriptThreeSanitized = this._domSanitizer.bypassSecurityTrustResourceUrl(_scriptThree + this._sessionUserId);
                 this.scriptFourSanitized = this._domSanitizer.bypassSecurityTrustResourceUrl(_scriptFour + this._sessionUserId);
+
+                let ipPublicUrl = Parameters.findOne({ name: 'ip_public_service_url' }).value;
+                this._payuPaymentService.getPublicIp(ipPublicUrl).subscribe(
+                    ipPublic => {
+                        this._ipAddress = ipPublic.ip;
+                    },
+                    error => {
+                        this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                    }
+                );
+
+                let payInfoUrl = Parameters.findOne({ name: 'payu_pay_info_url' }).value;
+                this._payuPaymentService.getCusPayInfo(payInfoUrl).subscribe(
+                    payInfo => {
+                        payInfo.al = this.al;
+                        payInfo.ak = this.ak;
+                        payInfo.ai = this.ai;
+                        payInfo.mi = this.mi;
+                    },
+                    error => {
+                        this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                    }
+                );
             });
         });
         this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe(() => {
@@ -261,15 +288,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             let auxYear = { value: this._currentYear + i, viewValue: this._currentYear + i };
             this._yearsArray.push(auxYear);
         }
-
-        this._payuPaymentService.getPublicIp().subscribe(
-            ipPublic => {
-                this._ipAddress = ipPublic.ip;
-            },
-            error => {
-                this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
-            }
-        );
 
         this._userAgent = navigator.userAgent;
     }
@@ -402,8 +420,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             });
         } else {
             PaymentTransactions.collection.insert({
-                count: 68,
-                referenceCode: 'M0NP' + 68,
+                count: 1,
+                referenceCode: 'M0NP' + 1,
                 status: 'PREPARED',
                 creation_date: new Date(),
                 creation_user: Meteor.userId()
@@ -413,8 +431,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         paymentTransaction = PaymentTransactions.collection.findOne({}, { sort: { count: -1 } });
 
         credentialArray = getPayuMerchantInfo();
-        apilogin = credentialArray[0];
-        apikey = credentialArray[1];
+        apilogin = this.al;
+        apikey = this.ak;
 
         ccRequestColombia.language = Meteor.user().profile.language_code;
         ccRequestColombia.command = 'SUBMIT_TRANSACTION';
@@ -422,7 +440,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         merchant.apiKey = apikey;
         ccRequestColombia.merchant = merchant;
 
-        order.accountId = 512321;
+        order.accountId = this.ai;
         order.referenceCode = paymentTransaction.referenceCode;
         order.description = this.itemNameTraduction('PAYU_PAYMENT_FORM.ORDER_DESCRIPTION');
         order.language = Meteor.user().profile.language_code;
@@ -560,7 +578,12 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             },
             error => {
                 //Response with status: 0  for URL: null
-                this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                if (error.message) {
+                    this.openDialog(this.titleMsg, '', error.message, '', this.btnAcceptLbl, false);
+                } else {
+                    this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                }
+                this._loading = false;
             }
         );
     }
@@ -647,7 +670,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     * @return {string}
     */
     generateOrderSignature(_apikey: string, _referenceCode): string {
-        let merchantId: string = '508029';
+        let merchantId: string = this.mi;
         let signatureEncoded: string = md5(_apikey + '~' + merchantId + '~' + _referenceCode + '~' + this._valueToPay + '~' + this._currency);
         return signatureEncoded;
     }
