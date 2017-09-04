@@ -2,7 +2,7 @@
     <ion-header>
         <ion-toolbar>
             <div style="display: inline-flex; padding-left: 16px;">
-                <img style="width: 36px; height: 36px; border-radius: 50%; overflow: hidden; margin: 8px 16px 8px 0;" src="assets/img/user_default_image.png">
+                <img style="width: 36px; height: 36px; border-radius: 50%; overflow: hidden; margin: 8px 16px 8px 0;" src="{{ getUsetImage() }}">
                 <div style="margin: 8px 8px 8px 0; color: white">
                     <h2 style="margin: 0 0 2px; font-size: 1.7rem; font-weight: 400;">{{_user.profile['first_name']}} {{_user.profile['last_name']}}</h2>
                     <h3 style="overflow: inherit; font-size: 1.4rem; line-height: normal; margin: 0 0 2px;">{{_user.username}}</h3>
@@ -14,7 +14,9 @@
     <ion-content>
         <ion-list>
             <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-                <ion-icon style="margin-left: 16px" name="{{p.icon}}"></ion-icon>
+                <ion-avatar item-left>
+                    <img src="{{p.icon}}">
+                </ion-avatar>
                 <span style="margin-left: 16px">{{p.title | translate}}</span>
             </button>
         </ion-list>
