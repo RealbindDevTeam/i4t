@@ -51,6 +51,7 @@ import { ItemEnableSupComponent } from './web/administration/items/items-enable-
 import { MenuListComponent } from './web/chef/menu-list/menu-list.component';
 import { SupervisorCollaboratorsComponent } from './web/supervisor/collaborators/supervisor-collaborators.component';
 import { SupervisorCollaboratorsRegisterComponent } from './web/supervisor/collaborators/collaborators-register/supervisor-collaborators-register.component';
+import { SupervisorTableComponent } from './web/supervisor/tables/supervisor-tables.component';
 
 export const routes: Route[] = [
     {
@@ -70,7 +71,7 @@ export const routes: Route[] = [
             { path: 'restaurant', component: RestaurantComponent, canActivate: [AdminGuard] },
             { path: 'restaurant-register', component: RestaurantRegisterComponent, canActivate: [AdminGuard] },
             { path: 'restaurant-edition/:param1', component: RestaurantEditionComponent, canActivate: [AdminGuard] },
-            { path: 'tables', component: TableComponent, canActivate: [SupervisorGuard] },
+            { path: 'tables', component: TableComponent, canActivate: [AdminGuard] },
             { path: 'orders', component: OrdersComponent, canActivate: [CustomerGuard] },
             { path: 'items-enable', component: ItemEnableComponent, canActivate: [SupervisorGuard] },
             { path: 'waiter-call', component: WaiterCallComponent, canActivate: [CustomerGuard] },
@@ -90,7 +91,8 @@ export const routes: Route[] = [
             { path: 'items-enable-sup', component: ItemEnableSupComponent, canActivate: [SupervisorGuard] },
             { path: 'menu-list', component: MenuListComponent},
             { path: 'supervisor-collaborators', component: SupervisorCollaboratorsComponent, canActivate: [SupervisorGuard] },
-            { path: 'supervisor-collaborators-register', component: SupervisorCollaboratorsRegisterComponent, canActivate: [SupervisorGuard] }
+            { path: 'supervisor-collaborators-register', component: SupervisorCollaboratorsRegisterComponent, canActivate: [SupervisorGuard] },
+            { path: 'supervisor-tables', component: SupervisorTableComponent, canActivate: [SupervisorGuard] }
         ]
     },
     { path: '', component: LandingPageComponent },

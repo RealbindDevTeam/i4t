@@ -71,6 +71,14 @@ export function loadMenus() {
                 order: 1100
             },
             {
+                _id: "1200",
+                is_active: true,
+                name: "MENUS.ADMINISTRATION.TABLES",
+                url: "/app/supervisor-tables",
+                icon_name: "restaurant",
+                order: 1200
+            },
+            {
                 _id: "2000",
                 is_active: true,
                 name: "MENUS.PAYMENTS.PAYMENTS",

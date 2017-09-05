@@ -47,6 +47,8 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
     private _message                   : string;
     private titleMsg                   : string;
     private btnAcceptLbl               : string;
+    private _userPrefix                : string = '';
+    private _selectedRol               : string;
     private _showConfirmError          : boolean = false;
     private _showTablesSelect          : boolean = false;
     private _showTablesSelectByRest    : boolean = false;
@@ -128,13 +130,17 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
      * Validate waiter role is select to enabled tables assignment
      * @param _roleId 
      */
-    validateWaiterRole(_roleId: string) {
-        if (_roleId === '200') {
+    validateRole(_role: Role) {
+        if (_role._id === '200') {
             this._showTablesSelect = true;
         } else {
             this._showConfirmError = false;
             this._showTablesSelect = false;
             this._disabledTablesAssignment = true;
+        }
+        if( _role.user_prefix !== undefined && _role.user_prefix !== null ){
+            this._userPrefix = _role.user_prefix + '-';
+            this._selectedRol = _role.name;
         }
     }
 
@@ -237,7 +243,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                         let info: any = ({
                             "email": this._collaboratorRegisterForm.value.email,
                             "password": this._collaboratorRegisterForm.value.password,
-                            "username": this._collaboratorRegisterForm.value.username,
+                            "username": this._userPrefix + this._collaboratorRegisterForm.value.username,
                             "profile": this._userProfile,
                         });
 
@@ -287,7 +293,12 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                                 this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
                             }
                         }, (error) => {
-                            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                            if( error.error === 403 ){
+                                this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.USER_EXISTS');
+                                this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);                             
+                            } else {
+                                this.openDialog(this.titleMsg, '', error.reason, '', this.btnAcceptLbl, false);
+                            }
                         });
 
                     }
