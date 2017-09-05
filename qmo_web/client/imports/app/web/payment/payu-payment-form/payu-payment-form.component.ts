@@ -474,7 +474,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         creditCard.securityCode = this._paymentForm.value.securityCode;
         creditCard.expirationDate = this._selectedCardYear + '/' + this._selectedCardMonth;
         //creditCard.name = this._paymentForm.value.fullName;
-        creditCard.name = 'PENDING';
+        creditCard.name = 'APPROVED';
 
         payer.fullName = this._paymentForm.value.fullName;
         payer.emailAddress = Meteor.user().emails[0].address;
@@ -627,14 +627,18 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             creation_user: Meteor.userId()
         });
 
-        if (this._mode != 'normal') {
-            Restaurants.collection.update({ _id: this._mode }, { $set: { isActive: true, firstPay: false } });
+        if (_response.transactionResponse.state == 'APPROVED') {
+            if (this._mode != 'normal') {
+                Restaurants.collection.update({ _id: this._mode }, { $set: { isActive: true, firstPay: false } });
 
-            Tables.collection.find({ restaurantId: this._mode }).forEach((table: Table) => {
-                Tables.collection.update({ _id: table._id }, { $set: { is_active: true } });
-            });
-        } else {
-            Restaurants.collection.update({ _id: { $in: this._restaurantsIdsArray } }, { $set: { isActive: true, firstPay: false } });
+                Tables.collection.find({ restaurantId: this._mode }).forEach((table: Table) => {
+                    Tables.collection.update({ _id: table._id }, { $set: { is_active: true } });
+                });
+            } else {
+                this._restaurantsIdsArray.forEach((resId: string) => {
+                    Restaurants.collection.update({ _id: resId }, { $set: { isActive: true, firstPay: false } });
+                });
+            }
         }
     }
 
