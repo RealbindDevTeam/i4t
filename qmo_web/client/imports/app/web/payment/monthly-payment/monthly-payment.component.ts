@@ -59,7 +59,6 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
         private _userLanguageService: UserLanguageService) {
         translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         translate.setDefaultLang('en');
-
         this._mode = 'normal';
     }
 

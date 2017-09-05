@@ -26,7 +26,7 @@
         <div class="menu-items">
             <div class="menu-items-content">
                 <div class="items">
-                    <div id="center" style="width: 80%; margin: 0 auto">
+                    <div id="center" style="width: 80%; margin: 0 auto; max-width: 740px;">
                         <md-select placeholder="{{'ORDER_LIST.TABLE_ORDERS' | translate}}" class="orders-bar" [(ngModel)]="_initialValue">
                             <md-option (click)="changeOrderFilter('all')" value="all">{{'ORDER_LIST.ALL_ORDERS' | translate}}</md-option>
                             <md-option (click)="changeOrderFilter('customer')" value="customer">{{'ORDER_LIST.MY_ORDERS' | translate}}</md-option>
@@ -40,6 +40,7 @@
                                     <span>{{'ORDER_LIST.TOTAL' | translate}}: {{or.totalPayment}} {{_currencyCode}}</span>
                                     <span class="app-flex-filler"></span>
                                     <span class="order-status">{{'ORDER_LIST.STATUS' | translate}}: {{or.status | translate}}</span>
+                                    <md-icon>keyboard_arrow_right</md-icon>
                                 </md-toolbar>
                                 <md-card *ngIf="_orderCustomerIndex == i">
                                     <md-card-content>
@@ -95,12 +96,13 @@
                         </div>
                         <div *ngIf="_showOtherOrders || _showAllOrders">
                             <div *ngFor="let or of _ordersTable | async; let in = index">
-                                <md-toolbar class="other-order" (click)="showOthersOrderDetail(or,in)">
+                                <md-toolbar class="customer-order" (click)="showOthersOrderDetail(or,in)">
                                     <img style="width: 3rem;" src="/images/others-orders.png">
                                     <span class="order-code">{{'ORDER_LIST.ORDERS' | translate}} # {{or.code}}</span>
                                     <span>{{'ORDER_LIST.TOTAL' | translate}}: {{or.totalPayment}} {{_currencyCode}}</span>
                                     <span class="app-flex-filler"></span>
                                     <span class="order-status">{{'ORDER_LIST.STATUS' | translate}}: {{or.status | translate}}</span>
+                                    <md-icon>keyboard_arrow_right</md-icon>
                                 </md-toolbar>
                                 <md-card *ngIf="_orderOthersIndex == in">
                                     <md-card-content>

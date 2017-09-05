@@ -144,4 +144,5 @@ export class CusPayInfo {
     al: string;
     ak: string;
     mi: string;
+    ai: number
 }

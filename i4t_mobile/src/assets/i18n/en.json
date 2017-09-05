@@ -72,7 +72,8 @@
                 "SUBTITLE": "Enter your email",
                 "SEND": "Send",
                 "CANCEL": "Cancel"
-            }
+            },
+            "USER_NO_ACTIVE": "You user is not activated. Please you contact the admin"
         },
         "RESET_PASWORD": {
             "TITLE": "Reset password",
