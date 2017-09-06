@@ -84,6 +84,9 @@ import { SupervisorCollaboratorsComponent } from './supervisor/collaborators/sup
 import { SupervisorCollaboratorsEditionComponent } from './supervisor/collaborators/collaborators-edition/supervisor-collaborators-edition.component';
 import { SupervisorCollaboratorsRegisterComponent } from './supervisor/collaborators/collaborators-register/supervisor-collaborators-register.component';
 import { SupervisorTableComponent } from './supervisor/tables/supervisor-tables.component';
+import { RestaurantFacebookComponent } from './restaurant/restaurant/social-network/facebook/restaurant-facebook.component';
+import { RestaurantInstagramComponent } from './restaurant/restaurant/social-network/instagram/restaurant-instagram.component';
+import { RestaurantTwitterComponent } from './restaurant/restaurant/social-network/twitter/restaurant-twitter.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -171,7 +174,10 @@ export const MODAL_DIALOG_DECLARATIONS = [
     VerifyResultComponent,
     AlertConfirmComponent,
     EnableConfirmComponent,
-    SupervisorCollaboratorsEditionComponent
+    SupervisorCollaboratorsEditionComponent,
+    RestaurantFacebookComponent,
+    RestaurantInstagramComponent,
+    RestaurantTwitterComponent
 ];
 
 export const SERVICES_DECLARATIONS = [

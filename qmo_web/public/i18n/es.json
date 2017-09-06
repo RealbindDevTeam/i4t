@@ -458,7 +458,16 @@
         "EMAIL": "Correo Electronico",
         "MSG_INITIAL": "Administra la información de tus restaurantes",
         "CITY_OTHER": "Si la ciudad de tu restaurante no se encuentra en la opción de ciudades, escribela en el siguiente campo",
-        "WHICH_ONE": "Cual?"
+        "WHICH_ONE": "Cual?",
+        "INSTAGRAM_LINK_UPDATED": "Link de Instagram Actualizado",
+        "TWITTER_LINK_UPDATED": "Link de Twitter Actualizado",
+        "FACEBOOK_LINK_UPDATED": "Link de Facebook Actualizado",
+        "ADD_INSTAGRAM_LINK": "Agrega el link de tu pagina en Instagram para que tus clientes puedan verla",
+        "INSTAGRAM_LINK": "Link de tu pagina en Instagram",
+        "ADD_TWITTER_LINK": "Agrega el link de tu pagina en Twitter para que tus clientes puedan verla",
+        "TWITTER_LINK": "Link de tu pagina en Twitter",
+        "ADD_FACEBOOK_LINK": "Agrega el link de tu pagina en Facebook para que tus clientes puedan verla",
+        "FACEBOOK_LINK": "Link de tu pagina en Facebook"
     },
     "TABLES": {
         "TABLES_CREATION": "Creación de mesas",
