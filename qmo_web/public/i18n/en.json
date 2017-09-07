@@ -1014,6 +1014,7 @@
         "AMOUNT": "Amount",
         "ITEMS": "Items",
         "STATUS": "Status",
+        "INVOICE": "Invoice",
         "DATE_FILTER": "Filter by year and month:",
         "YEAR_FILTER": "Year",
         "MONTH_FILTER": "Month",
@@ -1027,7 +1028,19 @@
         "VERIFY_ACCEPT": "Accept",
         "VERIFY_MSG": "You can check the status again in 15 min",
         "MSG_INITIAL": "You have not payments made yet",
-        "ALL_FILTER": "All"
+        "ALL_FILTER": "All",
+        "GENERATE_INVOICE": "Generate",
+        "INVOICE_LBL": "Invoice",
+        "NUMBER_LBL": "Number: ",
+        "DATE_LBL": "Date: ",
+        "CUSTOMER_LBL": "Customer",
+        "DESCRIPTION_LBL": "Description",
+        "DESCRIPTION": "Monthly Iurest Service",
+        "PERIOD_LBL": "Period",
+        "AMOUNT_LBL": "Amount (no IVA)",
+        "SUBTOTAL": "SubTotal: ",
+        "IVA": "IVA: ",
+        "TOTAL": "Total: "
     },
     "TRANSACTION_STATUS": {
         "APPROVED": "Approved",
