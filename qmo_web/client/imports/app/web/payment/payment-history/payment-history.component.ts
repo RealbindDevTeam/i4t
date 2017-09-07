@@ -19,11 +19,20 @@ import { Table } from '../../../../../../both/models/restaurant/table.model';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 import { Parameter } from '../../../../../../both/models/general/parameter.model';
 import { Parameters } from '../../../../../../both/collections/general/parameter.collection';
+import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
+import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
+import { City } from '../../../../../../both/models/settings/city.model';
+import { Cities } from '../../../../../../both/collections/settings/city.collection';
+import { Country } from '../../../../../../both/models/settings/country.model';
+import { Countries } from '../../../../../../both/collections/settings/country.collection';
 
 import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
 
 import template from './payment-history.component.html';
 import style from './payment-history.component.scss';
+
+let jsPDF = require('jspdf');
+let base64 = require('base-64');
 
 @Component({
     selector: 'payment-history',
@@ -36,6 +45,9 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
     private _restaurantSub: Subscription;
     private _paymentTransactionSub: Subscription;
     private _parameterSub: Subscription;
+    private _userDetailSub: Subscription;
+    private _countrySub: Subscription;
+    private _citySub: Subscription;
 
     private _historyPayments: Observable<PaymentHistory[]>;
     private _historyPayments2: Observable<PaymentHistory[]>;
@@ -88,6 +100,10 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
      */
     ngOnInit() {
         this.removeSubscriptions();
+
+        this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
+        this._countrySub = MeteorObservable.subscribe('countries').subscribe();
+        this._citySub = MeteorObservable.subscribe('cities').subscribe();
         this._historyPaymentSub = MeteorObservable.subscribe('getHistoryPaymentsByUser', Meteor.userId()).subscribe(() => {
             this._historyPayments = PaymentsHistory.find({
                 creation_user: Meteor.userId(),
@@ -106,6 +122,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
 
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe(() => {
             this._ngZone.run(() => {
+
                 let payInfoUrl = Parameters.findOne({ name: 'payu_pay_info_url' }).value;
                 this._payuPaymentService.getCusPayInfo(payInfoUrl).subscribe(
                     payInfo => {
@@ -142,6 +159,9 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
         if (this._paymentTransactionSub) { this._paymentTransactionSub.unsubscribe(); }
         if (this._parameterSub) { this._parameterSub.unsubscribe(); }
+        if (this._userDetailSub) { this._userDetailSub.unsubscribe(); }
+        if (this._countrySub) { this._countrySub.unsubscribe(); }
+        if (this._citySub) { this._citySub.unsubscribe(); }
     }
 
     /**
@@ -360,6 +380,103 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * This function generates de invoice
+     */
+    generateInvoice(_paymentHistory: PaymentHistory) {
+        let company_name = Parameters.findOne({ name: 'company_name' }).value;
+        let company_address = Parameters.findOne({ name: 'company_address' }).value;
+        let company_city = Parameters.findOne({ name: 'company_city' }).value;
+        let company_country = Parameters.findOne({ name: 'company_country' }).value;
+        let company_rut = Parameters.findOne({ name: 'company_nit' }).value;
+        let parameterTax = Parameters.findOne({ name: 'colombia_tax_iva' });
+        let invoice_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.INVOICE_LBL');
+        let number_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.NUMBER_LBL');
+        let date_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.DATE_LBL');
+        let customer_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.CUSTOMER_LBL');
+        let desc_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.DESCRIPTION_LBL');
+        let period_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.PERIOD_LBL');
+        let amount_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.AMOUNT_LBL');
+        let description = this.itemNameTraduction('RES_PAYMENT_HISTORY.DESCRIPTION');
+        let subtotal_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.SUBTOTAL');
+        let iva_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.IVA');
+        let total_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.TOTAL');
+
+        let user_detail: UserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+        let country: Country = Countries.findOne({ _id: user_detail.country_id });
+        let countryTraduced = this.itemNameTraduction(country.name);
+        let city: City = Cities.findOne({ _id: user_detail.city_id });
+
+        let qr_pdf = new jsPDF("portrait", "mm", "a4");
+
+        var myImage = new Image();
+        myImage.src = '/images/logo_iurest_200_x_100.png';
+
+        myImage.onload = function () {
+            qr_pdf.addImage(myImage, 'png', 13, 10, 42, 20);
+
+            qr_pdf.setFontSize(10);
+            qr_pdf.text(company_name, 155, 15);
+            qr_pdf.text(company_address, 155, 20);
+            qr_pdf.text(company_city + ', ' + company_country, 155, 25);
+            qr_pdf.text(company_rut, 155, 30);
+
+            qr_pdf.setFontSize(12);
+            qr_pdf.setFontStyle('bold');
+            qr_pdf.text(invoice_lbl, 15, 45);
+            qr_pdf.setFontStyle('normal');
+            qr_pdf.text(number_lbl + '1234567890', 15, 50);
+
+            let dateFormated = _paymentHistory.creation_date.getDate() + '/' + (_paymentHistory.creation_date.getMonth() + 1) + '/' + _paymentHistory.creation_date.getFullYear();
+            qr_pdf.text(date_lbl + dateFormated, 15, 55);
+
+            qr_pdf.setFontSize(12);
+            qr_pdf.setFontStyle('bold');
+            qr_pdf.text(customer_lbl, 15, 65);
+            qr_pdf.setFontStyle('normal');
+            qr_pdf.text(Meteor.user().profile.first_name + ' ' + Meteor.user().profile.last_name, 15, 70);
+            qr_pdf.text(user_detail.address, 15, 75);
+            qr_pdf.text(city.name + ', ' + countryTraduced, 15, 80);
+
+            qr_pdf.setFontStyle('bold');
+            qr_pdf.text(desc_lbl, 15, 95);
+            qr_pdf.text(period_lbl, 110, 95);
+            qr_pdf.text(amount_lbl, 195, 95, 'right');
+            qr_pdf.line(15, 97, 195, 97);
+            qr_pdf.setFontStyle('normal');
+            qr_pdf.text(description, 15, 105);
+            let datePeriod = _paymentHistory.startDate.getDate() + '/' + (_paymentHistory.startDate.getMonth() + 1) + '/' + _paymentHistory.startDate.getFullYear() +
+                ' - ' + _paymentHistory.endDate.getDate() + '/' + (_paymentHistory.endDate.getMonth() + 1) + '/' + _paymentHistory.endDate.getFullYear();
+            qr_pdf.text(datePeriod, 110, 105);
+
+            let percentValue = Number(parameterTax.value);
+            let baseValue = (Number(_paymentHistory.paymentValue) - ((Number(_paymentHistory.paymentValue) * percentValue) / 100)).toString();
+            let taxValue = ((Number(_paymentHistory.paymentValue) * percentValue) / 100).toString();
+
+            qr_pdf.text(baseValue, 185, 105, 'right');
+            qr_pdf.text(_paymentHistory.currency, 195, 105, 'right');
+            qr_pdf.line(15, 110, 195, 110);
+
+            qr_pdf.setFontStyle('bold');
+            qr_pdf.text(subtotal_lbl, 110, 120);
+            qr_pdf.setFontStyle('normal');
+            qr_pdf.text(baseValue, 185, 120, 'right');
+            qr_pdf.text(_paymentHistory.currency, 195, 120, 'right');
+            qr_pdf.setFontStyle('bold');
+            qr_pdf.text(iva_lbl, 110, 125);
+            qr_pdf.setFontStyle('normal');
+            qr_pdf.text(taxValue, 185, 125, 'right');
+            qr_pdf.text(_paymentHistory.currency, 195, 125, 'right');
+            qr_pdf.setFontStyle('bold');
+            qr_pdf.text(total_lbl, 110, 130);
+            qr_pdf.setFontStyle('normal');
+            qr_pdf.text(_paymentHistory.paymentValue, 185, 130, 'right');
+            qr_pdf.text(_paymentHistory.currency, 195, 130, 'right');
+
+            qr_pdf.output('save', 'prueba.pdf');
+        }
+    }
+
+    /**
     * This function open de error dialog according to parameters 
     * @param {string} title
     * @param {string} subtitle
@@ -387,6 +504,14 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
 
             }
         });
+    }
+
+    itemNameTraduction(itemName: string): string {
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res;
+        });
+        return wordTraduced;
     }
 
     /**
