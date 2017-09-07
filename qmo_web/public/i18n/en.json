@@ -467,7 +467,9 @@
         "ADD_TWITTER_LINK": "Add the link of your page to Twitter so your customers can see it",
         "TWITTER_LINK": "Link to your page on Twitter",
         "ADD_FACEBOOK_LINK": "Add the link of your page to Facebook so your customers can see it",
-        "FACEBOOK_LINK": "Link to your page on Facebook"
+        "FACEBOOK_LINK": "Link to your page on Facebook",
+        "RESTAURANT_INACTIVE": "Inactive Restaurant",
+        "RESTAURANT_ACTIVE": "Active Restaurant"
     },
     "TABLES": {
         "TABLES_CREATION": "Creating tables",
