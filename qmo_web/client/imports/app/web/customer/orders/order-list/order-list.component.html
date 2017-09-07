@@ -27,6 +27,7 @@
             <div class="menu-items-content">
                 <div class="items">
                     <div id="center" style="width: 80%; margin: 0 auto; max-width: 740px;">
+                        <restaurant-info [restaurantId]="restaurantId" [tableQRCode]="tableQRCode"></restaurant-info>
                         <md-select placeholder="{{'ORDER_LIST.TABLE_ORDERS' | translate}}" class="orders-bar" [(ngModel)]="_initialValue">
                             <md-option (click)="changeOrderFilter('all')" value="all">{{'ORDER_LIST.ALL_ORDERS' | translate}}</md-option>
                             <md-option (click)="changeOrderFilter('customer')" value="customer">{{'ORDER_LIST.MY_ORDERS' | translate}}</md-option>

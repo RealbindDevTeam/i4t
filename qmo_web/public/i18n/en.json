@@ -32,8 +32,8 @@
     "OTHER": "Other...",
     "SIGN_OUT": "Sign Out",
     "VALUE": "Value",
-    "CHOOSE_A_DATE" : "Choose a date",
-    "UPLOAD_IMG_ERROR" : "Upload image error. Only accept .png, .jpg, .jpeg files.",
+    "CHOOSE_A_DATE": "Choose a date",
+    "UPLOAD_IMG_ERROR": "Upload image error. Only accept .png, .jpg, .jpeg files.",
     "LOGIN_SYSTEM_OPERATIONS_MSG": "Please log in to perform system operations",
     "YES": "Yes",
     "NO": "No",
@@ -458,7 +458,18 @@
         "EMAIL": "Email",
         "MSG_INITIAL": "Manage your restaurant information",
         "CITY_OTHER": "If the city of your restaurant is not in the cities option, you can specify it in the next field",
-        "WHICH_ONE": "Which one?"
+        "WHICH_ONE": "Which one?",
+        "INSTAGRAM_LINK_UPDATED": "Instagram Link Updated",
+        "TWITTER_LINK_UPDATED": "Twitter Link Updated",
+        "FACEBOOK_LINK_UPDATED": "Facebook Link Updated",
+        "ADD_INSTAGRAM_LINK": "Add the link of your page to Instagram so your customers can see it",
+        "INSTAGRAM_LINK": "Link to your page on Instagram",
+        "ADD_TWITTER_LINK": "Add the link of your page to Twitter so your customers can see it",
+        "TWITTER_LINK": "Link to your page on Twitter",
+        "ADD_FACEBOOK_LINK": "Add the link of your page to Facebook so your customers can see it",
+        "FACEBOOK_LINK": "Link to your page on Facebook",
+        "RESTAURANT_INACTIVE": "Inactive Restaurant",
+        "RESTAURANT_ACTIVE": "Active Restaurant"
     },
     "TABLES": {
         "TABLES_CREATION": "Creating tables",
@@ -510,7 +521,11 @@
         "MESSAGE_NOT_LOGIN": "Please log in to add a restaurant",
         "SELECT_RANGE_VALID_TABLES": "Select a valid range of the tables",
         "TABLES_ASSIGNMENT": "Assignment of tables",
-        "MESSAGE_COLLABORATOR_EDIT": "Collaborator updated successfully"
+        "MESSAGE_COLLABORATOR_EDIT": "Collaborator updated successfully",
+        "USER_EXISTS": "The user is already in use. Please enter another username.",
+        "USERS_ROL": "Users with the role ",
+        "PREFIX": " must have the prefix ",
+        "USER_NAME_WILL_BE": "The username will be "
     },
     "ITEMS": {
         "ITEMS_MANAGEMENT": "Item management",
@@ -637,7 +652,7 @@
         "TEXT": "Enter the location of the establishment so that customers can locate you better",
         "UPDATE_POSITION": "Update Position",
         "CLOSE": "Close",
-        "MSG_UPDATE_POSITION" : "The position of the restaurant has been updated"
+        "MSG_UPDATE_POSITION": "The position of the restaurant has been updated"
     },
     "RESTAURANT_INFO_MASTER": {
         "TABLE_CODE": "Table Code",
@@ -950,7 +965,7 @@
         "TITLE": "Payment method",
         "SUBTITLE": "Please, fill all the fields to do the payment ",
         "SELECT_METHOD": "Payment method *",
-        "CARD_NUMBER": "Card number *",
+        "CARD_NUMBER": "Card number (No spaces, no dashes)*",
         "EXPIRATION_YEAR": "Expiration year *",
         "EXPIRATION_MONTH": "Expiration month *",
         "SECURITY_CODE": "Security code *",
@@ -964,7 +979,7 @@
         "SECURITY_CODE_REQUIRED": "- The code number cannot be empty",
         "BILLING_INFORMATION": "Billing information",
         "PAYER_EMAIL": "Email *",
-        "PAYER_FULLNAME": "First and last name *",
+        "PAYER_FULLNAME": "Name on card",
         "EMAIL_INVALID": "- Invalid email format",
         "EMAIL_MIN": "- The email must be at least 6 characters long",
         "EMAIL_MAX": "- The email cannot exceed 255 characters long",
@@ -999,15 +1014,18 @@
         "TRANSACTION_ERROR": "Error processing the transaction",
         "TRANSACTION_MSG": "You can go to the menu Payments > Payments History, to check the status of your payments",
         "PAY_ACCEPT": "Accept",
-        "AUTH_ERROR_MSG": "the entered card data does not match, please check it"
+        "AUTH_ERROR_MSG": "the entered card data does not match, please check it",
+        "FIRST_NAME": "Firstname",
+        "LAST_NAME": "Lastname"
     },
-    "PAYMENT_HISTORY": {
+    "RES_PAYMENT_HISTORY": {
         "TITLE": "Payment history",
         "SUBTITLE": "Check your payments and their status",
         "DATE": "Date",
         "AMOUNT": "Amount",
         "ITEMS": "Items",
         "STATUS": "Status",
+        "INVOICE": "Invoice",
         "DATE_FILTER": "Filter by year and month:",
         "YEAR_FILTER": "Year",
         "MONTH_FILTER": "Month",
@@ -1021,7 +1039,19 @@
         "VERIFY_ACCEPT": "Accept",
         "VERIFY_MSG": "You can check the status again in 15 min",
         "MSG_INITIAL": "You have not payments made yet",
-        "ALL_FILTER": "All"
+        "ALL_FILTER": "All",
+        "GENERATE_INVOICE": "Generate",
+        "INVOICE_LBL": "Invoice",
+        "NUMBER_LBL": "Number: ",
+        "DATE_LBL": "Date: ",
+        "CUSTOMER_LBL": "Customer",
+        "DESCRIPTION_LBL": "Description",
+        "DESCRIPTION": "Monthly Iurest Service",
+        "PERIOD_LBL": "Period",
+        "AMOUNT_LBL": "Amount (no IVA)",
+        "SUBTOTAL": "SubTotal: ",
+        "IVA": "IVA: ",
+        "TOTAL": "Total: "
     },
     "TRANSACTION_STATUS": {
         "APPROVED": "Approved",
@@ -1145,5 +1175,12 @@
     "NOT_FOUND": {
         "PAGE_NOT_FOUND": "PAGE NOT FOUND",
         "BACK": "Back to"
+    },
+    "TOPNAV": {
+        "ORDERS": "Orders",
+        "PAYMENTS": "Payments",
+        "WAITER": "Waiter",
+        "CALLS": "Calls",
+        "MENU": "Menu"
     }
 }

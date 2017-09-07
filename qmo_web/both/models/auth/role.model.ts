@@ -5,4 +5,5 @@ export interface Role extends CollectionObject {
     name: string;
     description: string;
     menus: string[];
+    user_prefix?: string;
 }

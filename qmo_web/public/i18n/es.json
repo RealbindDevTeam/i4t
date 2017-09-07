@@ -32,8 +32,8 @@
     "OTHER": "Otro...",
     "VALUE": "Valor",
     "SIGN_OUT": "Cerrar Sesión",
-    "CHOOSE_A_DATE" : "Elige una fecha",
-    "UPLOAD_IMG_ERROR" : "Error de carga de la imagen. Solo acepta .png, .jpg, .jpeg files.",
+    "CHOOSE_A_DATE": "Elige una fecha",
+    "UPLOAD_IMG_ERROR": "Error de carga de la imagen. Solo acepta .png, .jpg, .jpeg files.",
     "LOGIN_SYSTEM_OPERATIONS_MSG": "Por favor inicie sesión para realizar operaciones en el sistema",
     "YES": "Si",
     "NO": "No",
@@ -458,7 +458,18 @@
         "EMAIL": "Correo Electronico",
         "MSG_INITIAL": "Administra la información de tus restaurantes",
         "CITY_OTHER": "Si la ciudad de tu restaurante no se encuentra en la opción de ciudades, escribela en el siguiente campo",
-        "WHICH_ONE": "Cual?"
+        "WHICH_ONE": "Cual?",
+        "INSTAGRAM_LINK_UPDATED": "Link de Instagram Actualizado",
+        "TWITTER_LINK_UPDATED": "Link de Twitter Actualizado",
+        "FACEBOOK_LINK_UPDATED": "Link de Facebook Actualizado",
+        "ADD_INSTAGRAM_LINK": "Agrega el link de tu pagina en Instagram para que tus clientes puedan verla",
+        "INSTAGRAM_LINK": "Link de tu pagina en Instagram",
+        "ADD_TWITTER_LINK": "Agrega el link de tu pagina en Twitter para que tus clientes puedan verla",
+        "TWITTER_LINK": "Link de tu pagina en Twitter",
+        "ADD_FACEBOOK_LINK": "Agrega el link de tu pagina en Facebook para que tus clientes puedan verla",
+        "FACEBOOK_LINK": "Link de tu pagina en Facebook",
+        "RESTAURANT_INACTIVE": "Restaurante Inactivo",
+        "RESTAURANT_ACTIVE": "Restaurante Activo"
     },
     "TABLES": {
         "TABLES_CREATION": "Creación de mesas",
@@ -510,7 +521,11 @@
         "MESSAGE_NOT_LOGIN": "Por favor ingresar al sistema para agregar un colaborador",
         "SELECT_RANGE_VALID_TABLES": "Seleccionar un rango valido de mesas",
         "TABLES_ASSIGNMENT": "Asignación de mesas",
-        "MESSAGE_COLLABORATOR_EDIT": "Colaborador actualizado exitosamente"
+        "MESSAGE_COLLABORATOR_EDIT": "Colaborador actualizado exitosamente",
+        "USER_EXISTS": "El usuario ya se encuentra en uso. Por favor ingrese otro nombre de usuario.",
+        "USERS_ROL": "Los usuarios con el rol ",
+        "PREFIX": " deben tener el prefijo ",
+        "USER_NAME_WILL_BE": "El nombre del usuario sera "
     },
     "ITEMS": {
         "ITEMS_MANAGEMENT": "Administracion de items",
@@ -637,7 +652,7 @@
         "TEXT": "Ingresa la ubicacion del establecimiento para que los clientes te puedan ubicar mejor",
         "UPDATE_POSITION": "Actualizar Posicion",
         "CLOSE": "Cerrar",
-        "MSG_UPDATE_POSITION" : "Se ha actualizado la posicion del restaurante"
+        "MSG_UPDATE_POSITION": "Se ha actualizado la posicion del restaurante"
     },
     "RESTAURANT_INFO_MASTER": {
         "TABLE_CODE": "Codigo de la Mesa",
@@ -950,7 +965,7 @@
         "TITLE": "Medio de pago",
         "SUBTITLE": "Por favor diligencia todos los campos para realizar el pago",
         "SELECT_METHOD": "Medio de pago *",
-        "CARD_NUMBER": "Número de tarjeta *",
+        "CARD_NUMBER": "Número de tarjeta (Sin espacion ni guiones) *",
         "EXPIRATION_YEAR": "Año de caducidad *",
         "EXPIRATION_MONTH": "Mes de caducidad *",
         "SECURITY_CODE": "Código de seguridad *",
@@ -964,7 +979,7 @@
         "SECURITY_CODE_REQUIRED": "- El código no puede estar vacio",
         "BILLING_INFORMATION": "Información de facturación",
         "PAYER_EMAIL": "Correo electrónico *",
-        "PAYER_FULLNAME": "Nombres y apellidos *",
+        "PAYER_FULLNAME": "Nombre impreso en tarjeta *",
         "EMAIL_INVALID": "- Formato de correo inválido",
         "EMAIL_MIN": "- El email debe tener mínimo 6 caracteres",
         "EMAIL_MAX": "- EL email debe tener máximo 255 caracteres",
@@ -999,7 +1014,9 @@
         "TRANSACTION_ERROR": "Error procesando la transacción",
         "TRANSACTION_MSG": "Puedes ir al menú Pagos > Historial de pagos, para revisar el estado de tus pagos",
         "PAY_ACCEPT": "Aceptar",
-        "AUTH_ERROR_MSG": "Los datos ingresados de tu tarjeta no coinciden, por favor verificalos"
+        "AUTH_ERROR_MSG": "Los datos ingresados de tu tarjeta no coinciden, por favor verificalos",
+        "FIRST_NAME": "Nombres",
+        "LAST_NAME": "Apellidos"
     },
     "RES_PAYMENT_HISTORY": {
         "TITLE": "Historial de pagos",
@@ -1008,6 +1025,7 @@
         "AMOUNT": "Valor",
         "ITEMS": "Items",
         "STATUS": "Estado",
+        "INVOICE": "Factura",
         "DATE_FILTER": "Filtro por año y mes:",
         "YEAR_FILTER": "Año",
         "MONTH_FILTER": "Mes",
@@ -1021,7 +1039,19 @@
         "VERIFY_ACCEPT": "Aceptar",
         "VERIFY_MSG": "Puedes consultar el estado de nuevo en 15 min",
         "MSG_INITIAL": "Aún no tienes pagos realizados",
-        "ALL_FILTER": "Todos"
+        "ALL_FILTER": "Todos",
+        "GENERATE_INVOICE": "Generar",
+        "INVOICE_LBL": "Factura de venta",
+        "NUMBER_LBL": "Número: ",
+        "DATE_LBL": "Fecha: ",
+        "CUSTOMER_LBL": "Cliente",
+        "DESCRIPTION_LBL": "Descripción",
+        "DESCRIPTION": "Servicio mensual Iurest",
+        "PERIOD_LBL": "Periodo",
+        "AMOUNT_LBL": "Valor sin IVA",
+        "SUBTOTAL": "SubTotal: ",
+        "IVA": "IVA: ",
+        "TOTAL": "Total: "
     },
     "TRANSACTION_STATUS": {
         "APPROVED": "Aprobado",
@@ -1145,5 +1175,12 @@
     "NOT_FOUND": {
         "PAGE_NOT_FOUND": "Esta página no esta disponible",
         "BACK": "Resgresar a"
+    },
+    "TOPNAV": {
+        "ORDERS": "Ordenes",
+        "PAYMENTS": "Pagos",
+        "WAITER": "Mesero",
+        "CALLS": "Llamados",
+        "MENU": "Menu"
     }
 }
