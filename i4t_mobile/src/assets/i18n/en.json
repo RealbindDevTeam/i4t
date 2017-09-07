@@ -59,7 +59,12 @@
             "CONFIRM_TITLE": "User created",
             "CONFIRM_SUBTITLE": "Now you can enjoy iurest",
             "CONFIRM_BTN": "Ok",
-            "OR" : "or"
+            "OR" : "or",
+            "SYSTEM_MSG": "System message",
+            "USER_EMAIL_EXISTS": "Username and/or email already exists, please check the entered info and try again",
+            "ERROR": "An error has occurred registering user",
+            "ACCEPT": "Accept",
+            "SUCCESS": "The user has been created succesfully"
         },
         "SIGNIN": {
             "EMAIL_USERNAME": "Email/Username",

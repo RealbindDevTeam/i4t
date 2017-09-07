@@ -8,7 +8,6 @@ md-progress-bar {
 
 md-toolbar {
   position: fixed;
-  //background-color: #EF5350;
   background-color: #3c4146;
   color: #fafafa;
   z-index: 999;
@@ -29,7 +28,7 @@ md-toolbar {
 
 .logo {
   padding: 0 40px 0 40px;
-  height: 39px;
+  height: 60px;
   image-rendering: optimizeSpeed;
   image-rendering: -moz-crisp-edges;
   image-rendering: -o-crisp-edges;
