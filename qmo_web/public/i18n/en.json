@@ -1155,5 +1155,12 @@
     "NOT_FOUND": {
         "PAGE_NOT_FOUND": "PAGE NOT FOUND",
         "BACK": "Back to"
+    },
+    "TOPNAV": {
+        "ORDERS": "Orders",
+        "PAYMENTS": "Payments",
+        "WAITER": "Waiter",
+        "CALLS": "Calls",
+        "MENU": "Menu"
     }
 }

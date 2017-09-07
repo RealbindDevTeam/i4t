@@ -1155,5 +1155,12 @@
     "NOT_FOUND": {
         "PAGE_NOT_FOUND": "Esta página no esta disponible",
         "BACK": "Resgresar a"
+    },
+    "TOPNAV": {
+        "ORDERS": "Ordenes",
+        "PAYMENTS": "Pagos",
+        "WAITER": "Mesero",
+        "CALLS": "Llamados",
+        "MENU": "Menu"
     }
 }
