@@ -106,6 +106,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
 
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe(() => {
             this._ngZone.run(() => {
+                
                 let payInfoUrl = Parameters.findOne({ name: 'payu_pay_info_url' }).value;
                 this._payuPaymentService.getCusPayInfo(payInfoUrl).subscribe(
                     payInfo => {

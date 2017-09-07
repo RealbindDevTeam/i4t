@@ -1014,6 +1014,7 @@
         "AMOUNT": "Valor",
         "ITEMS": "Items",
         "STATUS": "Estado",
+        "INVOICE": "Factura",
         "DATE_FILTER": "Filtro por año y mes:",
         "YEAR_FILTER": "Año",
         "MONTH_FILTER": "Mes",

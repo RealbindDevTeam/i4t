@@ -1014,6 +1014,7 @@
         "AMOUNT": "Amount",
         "ITEMS": "Items",
         "STATUS": "Status",
+        "INVOICE": "Invoice",
         "DATE_FILTER": "Filter by year and month:",
         "YEAR_FILTER": "Year",
         "MONTH_FILTER": "Month",
