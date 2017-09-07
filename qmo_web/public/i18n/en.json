@@ -458,7 +458,18 @@
         "EMAIL": "Email",
         "MSG_INITIAL": "Manage your restaurant information",
         "CITY_OTHER": "If the city of your restaurant is not in the cities option, you can specify it in the next field",
-        "WHICH_ONE": "Which one?"
+        "WHICH_ONE": "Which one?",
+        "INSTAGRAM_LINK_UPDATED": "Instagram Link Updated",
+        "TWITTER_LINK_UPDATED": "Twitter Link Updated",
+        "FACEBOOK_LINK_UPDATED": "Facebook Link Updated",
+        "ADD_INSTAGRAM_LINK": "Add the link of your page to Instagram so your customers can see it",
+        "INSTAGRAM_LINK": "Link to your page on Instagram",
+        "ADD_TWITTER_LINK": "Add the link of your page to Twitter so your customers can see it",
+        "TWITTER_LINK": "Link to your page on Twitter",
+        "ADD_FACEBOOK_LINK": "Add the link of your page to Facebook so your customers can see it",
+        "FACEBOOK_LINK": "Link to your page on Facebook",
+        "RESTAURANT_INACTIVE": "Inactive Restaurant",
+        "RESTAURANT_ACTIVE": "Active Restaurant"
     },
     "TABLES": {
         "TABLES_CREATION": "Creating tables",
@@ -1157,5 +1168,12 @@
     "NOT_FOUND": {
         "PAGE_NOT_FOUND": "PAGE NOT FOUND",
         "BACK": "Back to"
+    },
+    "TOPNAV": {
+        "ORDERS": "Orders",
+        "PAYMENTS": "Payments",
+        "WAITER": "Waiter",
+        "CALLS": "Calls",
+        "MENU": "Menu"
     }
 }

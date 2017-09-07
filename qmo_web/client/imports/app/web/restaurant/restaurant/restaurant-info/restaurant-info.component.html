@@ -1,0 +1,27 @@
+<md-card style="margin-top: 1rem;">
+    <md-list>
+        <md-list-item *ngFor="let _res of _restaurants | async">
+            <img md-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{ getRestaurantImage( _res._id ) }}">
+            <h2 md-line style="font-size: 1.3rem;"> {{_res.name}} </h2>
+            <p md-line style="font-size: 1rem;">
+                <md-icon style="vertical-align: middle">location_on</md-icon>   
+                <span *ngFor="let city of _cities | async" >
+                    <ng-template [ngIf]="city._id == _res.cityId">                
+                        <span>{{city.name | translate}}</span>
+                    </ng-template>
+                </span>             
+                <span *ngFor="let country of _countries | async" >
+                    <ng-template [ngIf]="country._id == _res.countryId">                
+                        <span>, {{country.name | translate}}</span>
+                    </ng-template>
+                </span>
+                <label> - </label>  
+                <span>{{_res.address}}</span>
+            </p>
+            <p md-line style="font-size: 1rem;font-weight: bold;">
+                <md-icon style="vertical-align: middle">restaurant</md-icon>
+                <span>{{'RESTAURANT_INFO_MASTER.TABLE_CODE' | translate}}: {{tableQRCode}}</span>
+            </p>
+        </md-list-item>
+    </md-list>
+</md-card>

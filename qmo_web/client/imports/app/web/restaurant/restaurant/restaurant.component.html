@@ -62,17 +62,18 @@
                         <button md-icon-button md-tooltip="{{'RESTAURANT.SCHEDULE' | translate}}" (click)="openSchedule(restaurant)">
                             <i class="fa fa-calendar" aria-hidden="true"></i>
                         </button>
-
-                        <button md-icon-button md-tooltip="Facebook">
+                        <button md-icon-button md-tooltip="Facebook" (click)="openFacebookLink(restaurant)">
                             <i class="fa fa-facebook" aria-hidden="true"></i>
                         </button>
-                        <button md-icon-button md-tooltip="Twitter">
+                        <button md-icon-button md-tooltip="Twitter" (click)="openTwitterLink(restaurant)">
                             <i class="fa fa-twitter" aria-hidden="true"></i>
                         </button>
-                        <button md-icon-button md-tooltip="Instagram">
+                        <button md-icon-button md-tooltip="Instagram" (click)="openInstagramLink(restaurant)">
                             <i class="fa fa-instagram" aria-hidden="true"></i>
                         </button>
                     </div>
+                    <p *ngIf="!restaurant.isActive" class="restaurant-inactive">{{'RESTAURANT.RESTAURANT_INACTIVE' | translate}}</p>
+                    <p *ngIf="restaurant.isActive" class="restaurant-active">{{'RESTAURANT.RESTAURANT_ACTIVE' | translate}}</p>
                 </md-card-content>
             </md-card>
         </div>

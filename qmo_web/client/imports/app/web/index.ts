@@ -35,9 +35,8 @@ import { RestaurantEditionComponent } from './restaurant/restaurant/restaurant-e
 import { RestaurantLocationComponent } from './restaurant/restaurant/restaurant-location/restaurant-location.component';
 import { IurestScheduleComponent } from './custom/schedule/schedule.component';
 import { CollaboratorsEditionComponent } from './restaurant/collaborators/collaborators-edition/collaborators-edition.component';
-import { RestaurantInfoMasterComponent } from './restaurant/restaurant/restaurant-info-master/restaurant-info-master.componet';
+import { RestaurantInfoComponent } from './restaurant/restaurant/restaurant-info/restaurant-info.component';
 import { RestaurantLocationInfoComponent } from './restaurant/restaurant/restaurant-location-info/restaurant-location-info.component';
-import { RestaurantInfoDetailComponent } from './restaurant/restaurant/restaurant-info-detail/restaurant-info-detail.component';
 import { OrderNavigationService } from './customer/orders/order-navigation/order-navigation.service';
 import { OrderMenuOptionComponent } from './customer/orders/order-navigation/order-menu-option.component';
 import { OrderCreateComponent } from './customer/orders/order-create/order-create.component';
@@ -84,6 +83,9 @@ import { SupervisorCollaboratorsComponent } from './supervisor/collaborators/sup
 import { SupervisorCollaboratorsEditionComponent } from './supervisor/collaborators/collaborators-edition/supervisor-collaborators-edition.component';
 import { SupervisorCollaboratorsRegisterComponent } from './supervisor/collaborators/collaborators-register/supervisor-collaborators-register.component';
 import { SupervisorTableComponent } from './supervisor/tables/supervisor-tables.component';
+import { RestaurantFacebookComponent } from './restaurant/restaurant/social-network/facebook/restaurant-facebook.component';
+import { RestaurantInstagramComponent } from './restaurant/restaurant/social-network/instagram/restaurant-instagram.component';
+import { RestaurantTwitterComponent } from './restaurant/restaurant/social-network/twitter/restaurant-twitter.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -103,7 +105,7 @@ export const WEB_DECLARATIONS = [
     RestaurantComponent,
     RestaurantRegisterComponent,
     RestaurantEditionComponent,
-    RestaurantInfoMasterComponent,
+    RestaurantInfoComponent,
     IurestScheduleComponent,
     TableComponent,
     OrdersComponent,
@@ -157,7 +159,6 @@ export const MODAL_DIALOG_DECLARATIONS = [
     ItemEditionComponent,
     RestaurantLocationComponent,
     RestaurantLocationInfoComponent,
-    RestaurantInfoDetailComponent,
     RestaurantScheduleComponent,
     CallCloseConfirmComponent,
     OrderToTranslateComponent,
@@ -171,7 +172,10 @@ export const MODAL_DIALOG_DECLARATIONS = [
     VerifyResultComponent,
     AlertConfirmComponent,
     EnableConfirmComponent,
-    SupervisorCollaboratorsEditionComponent
+    SupervisorCollaboratorsEditionComponent,
+    RestaurantFacebookComponent,
+    RestaurantInstagramComponent,
+    RestaurantTwitterComponent
 ];
 
 export const SERVICES_DECLARATIONS = [
