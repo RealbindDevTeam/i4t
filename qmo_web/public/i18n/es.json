@@ -1030,7 +1030,7 @@
         "MSG_INITIAL": "Aún no tienes pagos realizados",
         "ALL_FILTER": "Todos",
         "GENERATE_INVOICE": "Generar",
-        "INVOICE_LBL": "Factura",
+        "INVOICE_LBL": "Factura de venta",
         "NUMBER_LBL": "Número: ",
         "DATE_LBL": "Fecha: ",
         "CUSTOMER_LBL": "Cliente",

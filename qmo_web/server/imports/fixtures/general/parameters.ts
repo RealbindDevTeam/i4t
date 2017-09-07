@@ -21,7 +21,7 @@ export function loadParameters() {
             { _id: '1200', name: 'company_address', value: 'Cra 6 # 58-43 Of 201', description: 'Realbind company address' },
             { _id: '1300', name: 'company_country', value: 'Colombia', description: 'Realbind country location' },
             { _id: '1400', name: 'company_city', value: 'Bogotá', description: 'Realbind city location' },
-            { _id: '1500', name: 'company_nit', value: 'NIT: 78301921-1', description: 'Realbind NIT' }
+            { _id: '1500', name: 'company_nit', value: 'NIT: 901036585-0', description: 'Realbind NIT' }
         ];
 
         parameters.forEach((parameter: Parameter) => Parameters.insert(parameter));
