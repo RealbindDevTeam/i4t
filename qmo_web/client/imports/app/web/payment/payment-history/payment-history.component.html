@@ -16,9 +16,9 @@
                     <table class="striped" width="100%" style="border:0.5px solid; border-color: lightgrey; margin-top: 15px">
                         <thead>
                             <tr>
-                                <th data-field="date" style="width: 8%">{{'RES_PAYMENT_HISTORY.DATE' | translate}}</th>
+                                <th data-field="date" style="width: 9%">{{'RES_PAYMENT_HISTORY.DATE' | translate}}</th>
                                 <th data-field="amount" style="width: 10%">{{'RES_PAYMENT_HISTORY.AMOUNT' | translate}}</th>
-                                <th data-field="items" style="width: 54%">{{'RES_PAYMENT_HISTORY.ITEMS' | translate}}</th>
+                                <th data-field="items" style="width: 53%">{{'RES_PAYMENT_HISTORY.ITEMS' | translate}}</th>
                                 <th data-field="status" style="width: 16%">{{'RES_PAYMENT_HISTORY.STATUS' | translate}}</th>
                                 <th data-field="invoice" style="width: 12%">{{'RES_PAYMENT_HISTORY.INVOICE' | translate}}</th>
                             </tr>
@@ -46,7 +46,7 @@
                                 </td>
                                 <td>
                                     <div class="cust-center-align">
-                                        <button md-raised-button *ngIf="historyPayment.status == 'TRANSACTION_STATUS.APPROVED'" (click)="checkTransactionStatus(historyPayment.transactionId)">{{'RES_PAYMENT_HISTORY.VERIFIY_BTN' | translate}}</button>
+                                        <button md-raised-button *ngIf="historyPayment.status == 'TRANSACTION_STATUS.APPROVED'" (click)="generateInvoice(historyPayment)">{{'RES_PAYMENT_HISTORY.GENERATE_INVOICE' | translate}}</button>
                                     </div>
                                 </td>
                             </tr>
