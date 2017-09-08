@@ -1143,18 +1143,25 @@
         "LABEL_LEGAL_END": "you accept the terms and conditions."
     },
     "ADMIN_DASHBOARD": {
+        "TITLE" : "Welcome to Iurest",
+        "CARD_CONTENT" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "LINK" : {
+            "NEW_RESTAURANT" : "Restaurants",
+            "NEW_COLLABORATOR" : "Collaborators",
+            "ITEMS" : "Items",
+            "ENABLE-ITEMS" : "Enable items"
+        },
         "SALES": "Sales ",
-        "USERS": "Users",
-        "ACTIVES": "Actives",
-        "ITEMS": "Items",
+        "USERS": "Active users",
+        "ITEMS": "Items sold",
         "SOLD": "Sold",
         "ADDITIONS": "Additions",
         "GARNISHFOOD": "Garnish Food",
         "AVAILABLE": "Available",
         "UNAVAILABLE": "Unavailable",
         "TABLES": "Tables",
-        "FREE": "Free",
-        "BUSY": "Busy",
+        "FREE": "Free tables",
+        "BUSY": "Busy tables",
         "THERE_NOT_RESTAURANTS": "No restaurants yet register",
         "RESTAURANT_REGISTER": "Restaurant register",
         "MESSAGE": "Register one to enable this option"

@@ -59,7 +59,12 @@
             "CONFIRM_TITLE": "Usuario creado",
             "CONFIRM_SUBTITLE": "Ahora puedes disfrutar de iurest",
             "CONFIRM_BTN": "Aceptar",
-            "OR" : "ó"
+            "OR" : "ó",
+            "SYSTEM_MSG": "Mensaje del sistema",
+            "USER_EMAIL_EXISTS": "El usuario y/o correo ya existe, por favor revisa los datos ingresados e intenta de nuevo",
+            "ERROR": "Se ha presentado un error registrando el usuario",
+            "ACCEPT": "Aceptar",
+            "SUCCESS": "El usuario ha sido creado con exito"
         },
         "SIGNIN": {
             "EMAIL_USERNAME": "Correo electronico/Nombre usuario",
