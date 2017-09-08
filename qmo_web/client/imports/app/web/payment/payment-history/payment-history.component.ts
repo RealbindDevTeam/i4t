@@ -400,6 +400,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         let subtotal_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.SUBTOTAL');
         let iva_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.IVA');
         let total_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.TOTAL');
+        let fileName = this.itemNameTraduction('RES_PAYMENT_HISTORY.INVOICE');
 
         let user_detail: UserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
         let country: Country = Countries.findOne({ _id: user_detail.country_id });
@@ -409,7 +410,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         let qr_pdf = new jsPDF("portrait", "mm", "a4");
 
         var myImage = new Image();
-        myImage.src = '/images/logo_iurest_200_x_100.png';
+        myImage.src = '/images/logo_iurest.png';
 
         myImage.onload = function () {
             qr_pdf.addImage(myImage, 'png', 13, 10, 42, 20);
@@ -469,10 +470,10 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
             qr_pdf.setFontStyle('bold');
             qr_pdf.text(total_lbl, 110, 130);
             qr_pdf.setFontStyle('normal');
-            qr_pdf.text(_paymentHistory.paymentValue, 185, 130, 'right');
+            qr_pdf.text(_paymentHistory.paymentValue.toString(), 185, 130, 'right');
             qr_pdf.text(_paymentHistory.currency, 195, 130, 'right');
 
-            qr_pdf.output('save', 'prueba.pdf');
+            qr_pdf.output('save', fileName + '_' + dateFormated + '.pdf');
         }
     }
 

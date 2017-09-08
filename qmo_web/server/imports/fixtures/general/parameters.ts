@@ -21,7 +21,11 @@ export function loadParameters() {
             { _id: '1200', name: 'company_address', value: 'Cra 6 # 58-43 Of 201', description: 'Realbind company address' },
             { _id: '1300', name: 'company_country', value: 'Colombia', description: 'Realbind country location' },
             { _id: '1400', name: 'company_city', value: 'Bogotá', description: 'Realbind city location' },
-            { _id: '1500', name: 'company_nit', value: 'NIT: 901036585-0', description: 'Realbind NIT' }
+            { _id: '1500', name: 'company_nit', value: 'NIT: 901036585-0', description: 'Realbind NIT' },
+            { _id: '1600', name: 'iurest_url', value: 'https://www.iurest.com', description: 'iurest url page' },
+            { _id: '1700', name: 'facebook_link', value: 'https://www.facebook.com', description: 'facebook link for iurest' },
+            { _id: '1800', name: 'twitter_link', value: 'https://www.twitter.com', description: 'twitter link for iurest' },
+            { _id: '1900', name: 'instagram_link', value: 'https://www.instagram.com', description: 'instagram link for iurest' }
         ];
 
         parameters.forEach((parameter: Parameter) => Parameters.insert(parameter));
