@@ -74,12 +74,21 @@ export class SigninComponent implements OnInit {
                                     //this.addUserDevice();
                                     this.navCtrl.push(TabsPage);
                                 } else if ( role == "200") {
-                                    MeteorObservable.call('validateUserIsActive').subscribe((active) => {
-                                        if(active){
-                                            this._app.getRootNav().setRoot(Menu);
+                                    MeteorObservable.call('validateRestaurantIsActive').subscribe((_restaruantActive) => {
+                                        if(_restaruantActive){
+
+                                            
+                                            MeteorObservable.call('validateUserIsActive').subscribe((active) => {
+                                                if(active){
+                                                    this._app.getRootNav().setRoot(Menu);
+                                                } else {
+                                                    let contentMessage = this.itemNameTraduction("MOBILE.SIGNIN.USER_NO_ACTIVE");
+                                                    this.showComfirm(contentMessage);
+                                                }
+                                            });
                                         } else {
-                                            let contentMessage = this.itemNameTraduction("MOBILE.SIGNIN.USER_NO_ACTIVE");
-                                            this.showComfirm(contentMessage);
+                                            let confirmMsg = this.itemNameTraduction('MOBILE.SIGNIN.RESTAURANT_NO_ACTIVE');
+                                            this.showComfirm(confirmMsg);
                                         }
                                     });
                                 } else {
