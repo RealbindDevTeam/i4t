@@ -102,7 +102,8 @@
         "USER_PASS_INCORRECT": "Username and/or password are incorrect, please check the entered info and try again",
         "ERROR": "An error has occurred starting session",
         "ACCEPT": "Accept",
-        "USER_NO_ACTIVE": "You user is not activated. Please you contact the admin"
+        "USER_NO_ACTIVE": "You user is not activated. Please you contact the admin",
+        "RESTAURANT_NO_ACTIVE": "The restaurant is not activated. Please you contact the admin"
     },
     "RESET_PASWORD": {
         "TITLE": "Reset password",

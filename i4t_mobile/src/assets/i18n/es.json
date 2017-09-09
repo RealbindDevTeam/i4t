@@ -78,7 +78,8 @@
                 "SEND": "Enviar",
                 "CANCEL": "Cancelar"
             },
-            "USER_NO_ACTIVE": "Tu usuario no se encuentra activo. Por favor contacta al administrador"
+            "USER_NO_ACTIVE": "Tu usuario no se encuentra activo. Por favor contacta al administrador",
+            "RESTAURANT_NO_ACTIVE": "El restaurante no se encuentra activo. Por favor contacta al administrador"
         },
         "RESET_PASWORD": {
             "TITLE": "Cambiar contraseña",

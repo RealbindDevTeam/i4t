@@ -102,7 +102,8 @@
         "USER_PASS_INCORRECT": "El usuario y/o contraseña son incorrectos, por favor revisa los datos ingresados e intenta de nuevo",
         "ERROR": "Se ha presentado un error iniciando sesión",
         "ACCEPT": "Aceptar",
-        "USER_NO_ACTIVE": "Tu usuario no se encuentra activo. Por favor contacta al administrador"
+        "USER_NO_ACTIVE": "Tu usuario no se encuentra activo. Por favor contacta al administrador",
+        "RESTAURANT_NO_ACTIVE": "El restaurante no se encuentra activo. Por favor contacta al administrador"
     },
     "RESET_PASWORD": {
         "TITLE": "Cambiar contraseña",
