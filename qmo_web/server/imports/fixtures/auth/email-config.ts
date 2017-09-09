@@ -5,12 +5,7 @@ import { Parameters } from '../../../../both/collections/general/parameter.colle
 import { EmailContents } from '../../../../both/collections/general/email-content.collection';
 import { EmailContent } from '../../../../both/models/general/email-content.model';
 
-//var greetVar;
-//var welcomeMsgVar;
-//var btnTextVar;
-//var beforeMsgVar;
-//var regardVar;
-//var followMsgVar;
+let fromVar = Parameters.collection.findOne({ name: 'from_email' }).value;
 
 Accounts.urls.resetPassword = function (token) {
     return Meteor.absoluteUrl('reset-password/' + token);
@@ -27,10 +22,85 @@ function greet() {
         let regardVar = Meteor.call('getEmailContent', emailContent.lang_dictionary, 'regardVar');
         let followMsgVar = Meteor.call('getEmailContent', emailContent.lang_dictionary, 'followMsgVar');
 
+        let facebookVar = Parameters.collection.findOne({ name: 'facebook_link' }).value;
+        let twitterVar = Parameters.collection.findOne({ name: 'twitter_link' }).value;
+        let instagramVar = Parameters.collection.findOne({ name: 'instagram_link' }).value;
+        let iurestVar = Parameters.collection.findOne({ name: 'iurest_url' }).value;
+        let iurestImgVar = Parameters.collection.findOne({ name: 'iurest_img_url' }).value;
+
         var greeting = (user.profile && user.profile.first_name) ? (greetVar + ' ' + user.profile.first_name + ",") : greetVar;
-        console.log(greeting);
+
         return `
-               <table border="0" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f5f5f5"><tbody><tr><td style="padding: 20px 0 30px 0;"><table style="border-collapse: collapse; box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);" border="0" width="60%" cellspacing="0" cellpadding="0" align="center"><tbody><tr><td style="padding: 10px 0 10px 0;" align="center" bgcolor="#3c4146"><img style="display: block;" src="logo_iurest_white.png" alt="Reset passwd" /></td></tr><tr><td style="padding: 10px 30px 10px 30px;" bgcolor="#ffffff"><table border="0" width="100%" cellspacing="0" cellpadding="0"><tbody><tr><td style="padding: 15px 0 0 0; font-family: Arial, sans-serif; font-size: 24px; font-weight: bold;">${greeting}</td></tr><tr><td style="padding: 15px 0 10px 0; font-family: Arial, sans-serif;">${welcomeMsgVar}</td></tr><tr><td style="padding: 20px 0 20px 0; font-family: Arial, sans-serif;"><div align="center"><a style="background-color: white; border-style: solid; border-width: 2px; color: #EF5350; text-align: center; padding: 10px 30px; text-decoration: none; font-weight: bold " href="${url}">${btnTextVar}</a></div></td></tr><tr><td style="padding: 0 0 0 0; font-family: Arial, sans-serif;"><p>${beforeMsgVar} <br /> ${regardVar}</p></td></tr></tbody></table></td></tr><tr><td style="padding: 0px 30px 10px 30px;" bgcolor="#ffffff"><hr /><table border="0" width="100%" cellspacing="0" cellpadding="0"><tbody><tr><td style="font-family: Arial, sans-serif;">${followMsgVar}</td><td align="right"><table border="0" cellspacing="0" cellpadding="0"><tbody><tr><td><a href="http://www.facebook.com/"> <img style="display: block;" src="https://s24.postimg.org/ddsjhe0id/facebook.png" alt="Facebook" /> </a></td><td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td><td><a href="http://www.twitter.com/"> <img style="display: block;" src="https://s30.postimg.org/68qpc9wox/twitter.png" alt="Twitter" /> </a></td><td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td><td><a href="http://www.google.com/"> <img style="display: block;" src="https://s28.postimg.org/wmdctg1cd/google.png" alt="Facebook" /> </a></td></tr></tbody></table></td></tr><tr><td style="font-family: Arial, sans-serif; padding: 10px 0 10px 0;"><a style="font-family: Arial, sans-serif; text-decoration: none; float: left;" href="https://www.iurest.com/">https://www.iurest.com</a></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table>
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f5f5f5">
+        <tbody>
+            <tr>
+                <td style="padding: 20px 0 30px 0;">
+                    <table style="border-collapse: collapse; box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);"
+                        border="0" width="60%" cellspacing="0" cellpadding="0" align="center">
+                        <tbody>
+                            <tr>
+                                <td style="padding: 10px 0 10px 0;" align="center" bgcolor="#3c4146"><img style="display: block;" src=${iurestImgVar}'logo_iurest_white.png' alt="Reset passwd" /></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px 30px 10px 30px;" bgcolor="#ffffff">
+                                    <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding: 15px 0 0 0; font-family: Arial, sans-serif; font-size: 24px; font-weight: bold;">${greeting}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 15px 0 10px 0; font-family: Arial, sans-serif;">${welcomeMsgVar}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 20px 0 20px 0; font-family: Arial, sans-serif;">
+                                                    <div align="center"><a style="background-color: white; border-style: solid; border-width: 2px; color: #EF5350; text-align: center; padding: 10px 30px; text-decoration: none; font-weight: bold "
+                                                            href="${url}">${btnTextVar}</a></div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 0 0 0 0; font-family: Arial, sans-serif;">
+                                                    <p>${beforeMsgVar} <br /> ${regardVar}</p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0px 30px 10px 30px;" bgcolor="#ffffff">
+                                    <hr />
+                                    <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                                        <tbody>
+                                            <tr>
+                                                <td style="font-family: Arial, sans-serif;">${followMsgVar}</td>
+                                                <td align="right">
+                                                    <table border="0" cellspacing="0" cellpadding="0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><a href=${facebookVar}> <img style="display: block;" src=${iurestImgVar}'facebook_red.png' alt="Facebook" /> </a></td>
+                                                                <td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td>
+                                                                <td><a href=${twitterVar}> <img style="display: block;" src=${iurestImgVar}'twitter_red.png' alt="Twitter" /> </a></td>
+                                                                <td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td>
+                                                                <td><a href=${instagramVar}> <img style="display: block;" src=${iurestImgVar}'instagram_red.png' alt="Instagram" /> </a></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-family: Arial, sans-serif; padding: 10px 0 10px 0;"><a style="font-family: Arial, sans-serif; text-decoration: none; float: left;"
+                                                        href=${iurestVar}>iurest.com</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
                `;
     };
 }
@@ -58,18 +128,14 @@ function greetText() {
 }
 
 Accounts.emailTemplates = {
-    from: "Iurest <no-reply@iurest.com>",
+    from: fromVar,
     siteName: Meteor.absoluteUrl().replace(/^https?:\/\//, '').replace(/\/$/, ''),
     resetPassword: {
         subject: function (user) {
-            if (user.profile.language_code === 'en') {
-                return "Reset your password on " + Accounts.emailTemplates.siteName;
-            }
+            let emailContent: EmailContent = EmailContents.collection.findOne({ language: user.profile.language_code });
+            let subjectVar = Meteor.call('getEmailContent', emailContent.lang_dictionary, 'resetPasswordSubjectVar');
 
-            if (user.profile.language_code === 'es') {
-                return "Cambio de contraseña en " + Accounts.emailTemplates.siteName;
-            }
-
+            return subjectVar + ' ' + Accounts.emailTemplates.siteName;
         },
         html: greet(),
         text: greetText(),

@@ -25,7 +25,8 @@ export function loadParameters() {
             { _id: '1600', name: 'iurest_url', value: 'https://www.iurest.com', description: 'iurest url page' },
             { _id: '1700', name: 'facebook_link', value: 'https://www.facebook.com', description: 'facebook link for iurest' },
             { _id: '1800', name: 'twitter_link', value: 'https://www.twitter.com', description: 'twitter link for iurest' },
-            { _id: '1900', name: 'instagram_link', value: 'https://www.instagram.com', description: 'instagram link for iurest' }
+            { _id: '1900', name: 'instagram_link', value: 'https://www.instagram.com', description: 'instagram link for iurest' },
+            { _id: '1610', name: 'iurest_img_url', value: 'https://www.iurest.com/images/', description: 'iurest images url' }
         ];
 
         parameters.forEach((parameter: Parameter) => Parameters.insert(parameter));

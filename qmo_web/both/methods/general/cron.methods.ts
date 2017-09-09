@@ -36,6 +36,7 @@ if (Meteor.isServer) {
             let facebook: Parameter = Parameters.collection.findOne({ name: 'facebook_link' });
             let twitter: Parameter = Parameters.collection.findOne({ name: 'twitter_link' });
             let instagram: Parameter = Parameters.collection.findOne({ name: 'instagram_link' });
+            let iurestImgVar: Parameter = Parameters.collection.findOne({ name: 'iurest_img_url' });
 
             let currentDate = new Date();
             let lastMonthDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
@@ -72,7 +73,8 @@ if (Meteor.isServer) {
                     iurestUrl: iurest_url.value,
                     facebookLink: facebook.value,
                     twitterLink: twitter.value,
-                    instagramLink: instagram.value
+                    instagramLink: instagram.value,
+                    iurestImgVar: iurestImgVar.value
                 }
 
                 Email.send({
@@ -93,6 +95,7 @@ if (Meteor.isServer) {
             let facebook: Parameter = Parameters.collection.findOne({ name: 'facebook_link' });
             let twitter: Parameter = Parameters.collection.findOne({ name: 'twitter_link' });
             let instagram: Parameter = Parameters.collection.findOne({ name: 'instagram_link' });
+            let iurestImgVar: Parameter = Parameters.collection.findOne({ name: 'iurest_img_url' });
 
             let currentDate = new Date();
             let firstMonthDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
@@ -133,7 +136,8 @@ if (Meteor.isServer) {
                     iurestUrl: iurest_url.value,
                     facebookLink: facebook.value,
                     twitterLink: twitter.value,
-                    instagramLink: instagram.value
+                    instagramLink: instagram.value,
+                    iurestImgVar: iurestImgVar.value
                 }
 
                 Email.send({
@@ -179,6 +183,7 @@ if (Meteor.isServer) {
             let facebook: Parameter = Parameters.collection.findOne({ name: 'facebook_link' });
             let twitter: Parameter = Parameters.collection.findOne({ name: 'twitter_link' });
             let instagram: Parameter = Parameters.collection.findOne({ name: 'instagram_link' });
+            let iurestImgVar: Parameter = Parameters.collection.findOne({ name: 'iurest_img_url' });
 
             let auxArray: string[] = [];
 
@@ -213,7 +218,8 @@ if (Meteor.isServer) {
                     iurestUrl: iurest_url.value,
                     facebookLink: facebook.value,
                     twitterLink: twitter.value,
-                    instagramLink: instagram.value
+                    instagramLink: instagram.value,
+                    iurestImgVar: iurestImgVar.value
                 }
 
                 Email.send({
