@@ -1,4 +1,4 @@
-<md-card *ngIf="(restaurants | async)?.length <= 0" md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
+<md-card *ngIf="(restaurants | async)?.length <= 0" md-cell="12" class="demo-card demo-basic">
     <md-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
@@ -22,7 +22,7 @@
     </md-card-content>
 </md-card>
 
-<div class="global-div">
+<div class="global-div" *ngIf="(restaurants | async)?.length>0">
     <div class="div-whitout-overflow">
         <div class="cards-div">
             <md-card *ngFor="let restaurant of restaurants | async" class="custom-cards">

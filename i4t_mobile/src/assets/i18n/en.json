@@ -78,7 +78,8 @@
                 "SEND": "Send",
                 "CANCEL": "Cancel"
             },
-            "USER_NO_ACTIVE": "You user is not activated. Please you contact the admin"
+            "USER_NO_ACTIVE": "You user is not activated. Please you contact the admin",
+            "RESTAURANT_NO_ACTIVE": "The restaurant is not activated. Please you contact the admin"
         },
         "RESET_PASWORD": {
             "TITLE": "Reset password",
