@@ -24,7 +24,7 @@ export class RecoverClass {
 
     ngOnInit() {
         this.recoverForm = new FormGroup({
-            email: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(40), CustomValidators.emailValidator])
+            email: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(255), CustomValidators.emailValidator])
         });
     }
 
