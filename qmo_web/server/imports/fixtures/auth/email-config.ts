@@ -39,7 +39,7 @@ function greet() {
                         border="0" width="60%" cellspacing="0" cellpadding="0" align="center">
                         <tbody>
                             <tr>
-                                <td style="padding: 10px 0 10px 0;" align="center" bgcolor="#3c4146"><img style="display: block;" src=${iurestImgVar}'logo_iurest_white.png' alt="Reset passwd" /></td>
+                                <td style="padding: 10px 0 10px 0;" align="center" bgcolor="#3c4146"><img style="display: block;" src=${iurestImgVar}logo_iurest_white.png alt="Reset passwd" /></td>
                             </tr>
                             <tr>
                                 <td style="padding: 10px 30px 10px 30px;" bgcolor="#ffffff">
@@ -77,11 +77,11 @@ function greet() {
                                                     <table border="0" cellspacing="0" cellpadding="0">
                                                         <tbody>
                                                             <tr>
-                                                                <td><a href=${facebookVar}> <img style="display: block;" src=${iurestImgVar}'facebook_red.png' alt="Facebook" /> </a></td>
+                                                                <td><a href=${facebookVar}> <img style="display: block;" src=${iurestImgVar}facebook_red.png alt="Facebook" /> </a></td>
                                                                 <td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td>
-                                                                <td><a href=${twitterVar}> <img style="display: block;" src=${iurestImgVar}'twitter_red.png' alt="Twitter" /> </a></td>
+                                                                <td><a href=${twitterVar}> <img style="display: block;" src=${iurestImgVar}twitter_red.png alt="Twitter" /> </a></td>
                                                                 <td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td>
-                                                                <td><a href=${instagramVar}> <img style="display: block;" src=${iurestImgVar}'instagram_red.png' alt="Instagram" /> </a></td>
+                                                                <td><a href=${instagramVar}> <img style="display: block;" src=${iurestImgVar}instagram_red.png alt="Instagram" /> </a></td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
