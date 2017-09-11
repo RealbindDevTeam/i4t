@@ -40,5 +40,9 @@ page-initial {
       position: absolute !important;
       width:100%;
       
+      img {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
   }
 }

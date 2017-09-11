@@ -165,7 +165,8 @@
             "QUANT": "Quant. ",
             "TABLE_NOT_EXISTS": "The table does not exist. Please check the code",
             "TABLE_NO_ACTIVE": "The table does not have the Iurest service active. It is not possible to enter",
-            "IUREST_NO_ACTIVE": "The restaurant does not have the Iurest service active. It is not possible to enter"
+            "IUREST_NO_ACTIVE": "The restaurant does not have the Iurest service active. It is not possible to enter",
+            "TABLE" : "Table"
         },
         "ORDER_PAYMENT_TRANS": {
             "ORDER_TO_CONFIRM": "Confirm those orders that other users wish to pay for you.",
@@ -204,13 +205,13 @@
             "CONTENT": "You do not have bill yet",
             "BILL": "Bill Payment",
             "ORDER": "Order # ",
-            "VIEW_DETAIL": "View detail",
-            "ADD_ORDER": "Add order",
+            "VIEW_DETAIL": "View detail orders",
+            "ADD_ORDER": "Add orders",
             "PAYMENT_METHOD": "Payment method",
             "TOTAL_BILL": "Total bill",
             "TOTAL_PAY": "Total pay",
             "PAY_BTN": "Pay",
-            "PAY_DETAIL_TITTLE":"Payment detail",
+            "PAY_DETAIL_TITTLE":"Detail of the orders",
             "PAY_ORDER":"Order",
             "SUBTOTAL":"SubTotal",
             "INC":"Inc",

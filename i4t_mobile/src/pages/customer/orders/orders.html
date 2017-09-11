@@ -1,13 +1,13 @@
 <ion-header>
     <ion-navbar>
         <ion-title>
-            <img id="signup-logo" src="assets/img/logo_iurest_mobile_white.png">
+            <img id="signup-logo" src="assets/img/logo_iurest_white.png">
         </ion-title>
     </ion-navbar>
 </ion-header>
 
 <ion-content>
-    <div *ngIf="(_allOrders | async)?.length > 0">
+    <div *ngIf="_restaurants">
         <ion-card>
             <ion-card-content>
                 <ion-item>
@@ -15,6 +15,9 @@
                         <img src="{{getRestaurantThumb(_restaurants._id)}}">
                     </ion-thumbnail>
                     <h1 style="white-space:normal">{{_restaurants.name}} </h1>
+                    <p *ngIf="_table">
+                        {{'MOBILE.ORDERS.TABLE' | translate}} {{_table._number}}
+                    </p>
                 </ion-item>
 
                 <ion-item-divider color="light" style="text-align: center; font-weight: bold">{{'MOBILE.ORDERS.TABLE_ORDERS' | translate}}</ion-item-divider>
@@ -66,9 +69,9 @@
                                                     <ion-thumbnail item-left>
                                                         <img src="assets/img/default-plate.png">
                                                     </ion-thumbnail>
-                                                    <h2 style="white-space: normal;">{{addition.name}} {{'MOBILE.ORDERS.ADDITION' | translate}}</h2> 
+                                                    <h2 style="white-space: normal; margin-top: 11px;">{{addition.name}} {{'MOBILE.ORDERS.ADDITION' | translate}}</h2> 
                                                     <p style="white-space: normal;">{{'MOBILE.PRICING' | translate}}: {{ad.paymentAddition}} {{_currencyCode}}</p>
-                                                    <p style="white-space: normal;">{{'MOBILE.SECTIONS.QUANTITY' | translate}} {{ad.quantity}}</p>
+                                                    <p style="white-space: normal; margin-bottom: 11px;">{{'MOBILE.SECTIONS.QUANTITY' | translate}} {{ad.quantity}}</p>
                                                     <button *ngIf="order.creation_user === _currentUserId && order.status === 'ORDER_STATUS.REGISTERED'" (click)="showAdditionsDetail(ad, order)" ion-button icon-only clear item-right >
                                                         <ion-icon name="create"></ion-icon>
                                                     </button>
@@ -124,7 +127,7 @@
         </div>
     </div>
     
-    <div *ngIf="(_allOrders | async)?.length <= 0" style="padding: 0 16px;">
+    <div *ngIf="!_restaurants">
         <div class="img">
             <img src="assets/img/platos-orden.png">
         </div>

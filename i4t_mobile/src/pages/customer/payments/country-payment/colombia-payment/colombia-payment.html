@@ -1,70 +1,81 @@
 <div>
     <div class="ion-content-custom">
-        <h3 style="padding-left: 16px">{{'MOBILE.PAYMENTS.BILL' | translate}}</h3>
-        
-        <ion-card *ngIf="_paymentCreated" (click)="goToPaymentInfo()">
+
+        <ion-card *ngIf="_paymentCreated">
             <ion-card-content>
-                <div style="display: -webkit-inline-box;">
-                    <ion-avatar item-left>
-                        <img class="img-cards" src="assets/img/payment-pending.png">
-                    </ion-avatar>
-                    <div style="width: 80%">
-                        <h2>{{'MOBILE.PAYMENTS.PENDING_PAYMENT_MSG' | translate}}</h2>
-                    </div>
-                </div>
-            </ion-card-content>
-        </ion-card>
-        
-        <ion-card (click)="goToPaymentDetails()">
-            <ion-card-content>
-                <div class="item-block">
-                    <img class="img-cards" src="assets/img/view-detail.png">
-                    <div class="header-title">
-                        <div class="label">
-                            <span>
-                            </span>
-                            <p>{{'MOBILE.PAYMENTS.VIEW_DETAIL' | translate}}</p>
+                <ion-list no-lines>
+                    <button ion-item style="padding-left: 0;" (click)="goToPaymentInfo()">
+                        <div class="item-block">
+                            <img class="img-cards" src="assets/img/payment-pending.png">
+                            <div class="header-title">
+                                <div class="label">
+                                    <p>{{'MOBILE.PAYMENTS.PENDING_PAYMENT_MSG' | translate}}</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </button>
+                </ion-list>
             </ion-card-content>
         </ion-card>
 
-        <ion-card (click)="goToAddOrders()">
+        <ion-card>
             <ion-card-content>
-                <div class="item-block">
-                    <img class="img-cards" src="assets/img/add-order.png">
-                    <div class="header-title">
-                        <div class="label">
-                            <span>
-                            </span>
-                            <p>{{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}</p>
+                <ion-list no-lines>
+                    <button ion-item style="padding-left: 0;" (click)="goToPaymentDetails()">
+                        <div class="item-block">
+                            <img class="img-cards" src="assets/img/view-detail.png">
+                            <div class="header-title">
+                                <div class="label">
+                                    <p>{{'MOBILE.PAYMENTS.VIEW_DETAIL' | translate}}</p>
+                                </div>
+                            </div>
                         </div>
-                        <ion-icon *ngIf="_showAlertToConfirm" style="color: red" name="information-circle"></ion-icon>
-                        <ion-icon *ngIf="_showAlertWithPendingConf" style="color: darkgoldenrod" name="information-circle"></ion-icon>
-                    </div>
-                </div>
+                    </button>  
+                </ion-list>
             </ion-card-content>
         </ion-card>
 
-        <ion-card (click)="presentModal()">
+        <ion-card>
             <ion-card-content>
-                <div class="item-block">
-                    <img *ngIf="_paymentMethod == 'MOBILE.PAYMENTS.PAYMENT_METHOD'" class="img-cards" src="assets/img/payment-methods.png">
-                    <img *ngIf="_paymentMethod == 'PAYMENT_METHODS.CASH'" class="img-cards" src="assets/img/pago.png">
-                    <img *ngIf="_paymentMethod == 'PAYMENT_METHODS.CREDIT_CARD'" class="img-cards" src="assets/img/pago_tarjeta_credito.png">
-                    <img *ngIf="_paymentMethod == 'PAYMENT_METHODS.DEBIT_CARD'" class="img-cards" src="assets/img/pago_tarjeta_debito.png">
-                    <img *ngIf="_paymentMethod == 'PAYMENT_METHODS.ONLINE'" class="img-cards" src="assets/img/payment-online.png">
-                    <div class="header-title">
-                        <div class="label">
-                            <span>
-                                {{'MOBILE.PAYMENTS.MODAL_TITLE' | translate}}
-                            </span>
-                            <p>{{_paymentMethod | translate}}</p>
-                            <p>{{'MOBILE.PAYMENTS.TIP' | translate}}&nbsp;{{_tipTotal}} {{_currencyCode}}</p>
+                <ion-list no-lines>
+                    <button ion-item style="padding-left: 0;" (click)="goToAddOrders()">
+                        <div class="item-block">
+                            <img class="img-cards" src="assets/img/add-order.png">
+                            <div class="header-title">
+                                <div class="label">
+                                    <p>{{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}</p>
+                                </div>
+                                <ion-icon *ngIf="_showAlertToConfirm" style="color: red" name="information-circle"></ion-icon>
+                                <ion-icon *ngIf="_showAlertWithPendingConf" style="color: darkgoldenrod" name="information-circle"></ion-icon>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </button>
+                </ion-list>
+            </ion-card-content>
+        </ion-card>
+
+        <ion-card>
+            <ion-card-content>
+                <ion-list no-lines>
+                    <button ion-item style="padding-left: 0;" (click)="presentModal()">
+                        <div class="item-block">
+                            <img *ngIf="_paymentMethod == 'MOBILE.PAYMENTS.SELECT_PAYMENT_METHOD'" class="img-cards" src="assets/img/payment-methods.png">
+                            <img *ngIf="_paymentMethod == 'PAYMENT_METHODS.CASH'" class="img-cards" src="assets/img/pago.png">
+                            <img *ngIf="_paymentMethod == 'PAYMENT_METHODS.CREDIT_CARD'" class="img-cards" src="assets/img/pago_tarjeta_credito.png">
+                            <img *ngIf="_paymentMethod == 'PAYMENT_METHODS.DEBIT_CARD'" class="img-cards" src="assets/img/pago_tarjeta_debito.png">
+                            <img *ngIf="_paymentMethod == 'PAYMENT_METHODS.ONLINE'" class="img-cards" src="assets/img/payment-online.png">
+                            <div class="header-title">
+                                <div class="label">
+                                    <span>
+                                        {{'MOBILE.PAYMENTS.MODAL_TITLE' | translate}}
+                                    </span>
+                                    <p>{{_paymentMethod | translate}}</p>
+                                    <p>{{'MOBILE.PAYMENTS.TIP' | translate}}&nbsp;{{_tipTotal}} {{_currencyCode}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                </ion-list>
             </ion-card-content>
         </ion-card>
     </div>
