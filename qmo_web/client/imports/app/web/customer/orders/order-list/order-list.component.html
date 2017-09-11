@@ -1,4 +1,4 @@
-<md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" *ngIf="(_orders | async)?.length <= 0">
+<md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" *ngIf="(_orders | async)?.length <= 0 && (_ordersTable | async)?.length <= 0">
     <md-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
@@ -21,7 +21,7 @@
     </md-card-content>
 </md-card>
 
-<div class="order-form-1" *ngIf="(_orders | async)?.length > 0">
+<div class="order-form-1" *ngIf="(_orders | async)?.length > 0 || (_ordersTable | async)?.length > 0">
     <div class="order-form-2">
         <div class="menu-items">
             <div class="menu-items-content">

@@ -1183,6 +1183,24 @@
         "PAYMENTS": "Pagos",
         "WAITER": "Mesero",
         "CALLS": "Llamados",
-        "MENU": "Menu"
+        "MENU": "Menu",
+        "TABLES": "Mesas"
+    },
+    "CHANGE_TABLE": {
+        "THERE_IS_NOT_REST": "No te encuentras en un restaurante",
+        "THERE_IS_NOT_REST_MSG": "Ve a la opción de ordenes e ingresa el código",
+        "GO_TO_ORDERS": "Ir a ordenes",
+        "MSG_INITIAL": "Ingresa el Codigo de la Mesa a la cual te deseas cambiar",
+        "CANCEL": "Cancelar",
+        "ENTER": "Ingresar código",
+        "CHANGE_TABLE_OK": "El cambio de mesa se ha realizado correctamente",
+        "TABLE_DESTINY_NOT_EXISTS": "El codigo de la nueva mesa no existe. Por favor intenta nuevamente.",
+        "TABLE_DESTINY_NO_ACTIVE": "La mesa ingresada no esta activa para el servicio de Iurest",
+        "TABLE_DESTINY_NO_RESTAURANT": "El codigo de la mesa ingresada no pertenece al restaurante en el que te encuentras en este momento. Por favor intenta nuevamente.",
+        "PENDING_ORDERS": "Tienes ordenes pendientes por confirmar que afectan tu pago. Por favor revisa e intenta nuevamente.",
+        "ORDERS_PAY_PROCESS": "Tienes ordenes en proceso de pago. No es posible realizar hacer el cambio de mesa.",
+        "WAITER_CALL_PENDING": "Se encuentran llamados al mesero pendientes por atender. Una vez se atienda el llamado puedes realizar el cambio de mesa.",
+        "TABLE_DESTINY_STATUS_ERROR": "Se ha producido un error validando el estado de la nueva mesa. Por favor intenta nuevamente.",
+        "GENERAL_ERROR": "Se ha producido un error cambiando la mesa. Por favor intenta nuevamente."
     }
 }
