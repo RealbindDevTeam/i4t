@@ -103,7 +103,8 @@
         "ERROR": "An error has occurred starting session",
         "ACCEPT": "Accept",
         "USER_NO_ACTIVE": "You user is not activated. Please you contact the admin",
-        "RESTAURANT_NO_ACTIVE": "The restaurant is not activated. Please you contact the admin"
+        "RESTAURANT_NO_ACTIVE": "The restaurant is not activated. Please you contact the admin",
+        "DONT_ACCOUNT": "No account?"
     },
     "RESET_PASWORD": {
         "TITLE": "Reset password",
@@ -1144,13 +1145,13 @@
         "LABEL_LEGAL_END": "you accept the terms and conditions."
     },
     "ADMIN_DASHBOARD": {
-        "TITLE" : "Welcome to Iurest",
-        "CARD_CONTENT" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "LINK" : {
-            "NEW_RESTAURANT" : "Restaurants",
-            "NEW_COLLABORATOR" : "Collaborators",
-            "ITEMS" : "Items",
-            "ENABLE-ITEMS" : "Enable items"
+        "TITLE": "Welcome to Iurest",
+        "CARD_CONTENT": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "LINK": {
+            "NEW_RESTAURANT": "Restaurants",
+            "NEW_COLLABORATOR": "Collaborators",
+            "ITEMS": "Items",
+            "ENABLE-ITEMS": "Enable items"
         },
         "SALES": "Sales ",
         "USERS": "Active users",

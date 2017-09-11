@@ -400,19 +400,26 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         let subtotal_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.SUBTOTAL');
         let iva_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.IVA');
         let total_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.TOTAL');
+        let fileName = this.itemNameTraduction('RES_PAYMENT_HISTORY.INVOICE');
+        let auxCity: string;
 
         let user_detail: UserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
         let country: Country = Countries.findOne({ _id: user_detail.country_id });
         let countryTraduced = this.itemNameTraduction(country.name);
         let city: City = Cities.findOne({ _id: user_detail.city_id });
+        if (city) {
+            auxCity = city.name;
+        } else {
+            auxCity = user_detail.other_city;
+        }
 
         let qr_pdf = new jsPDF("portrait", "mm", "a4");
 
         var myImage = new Image();
-        myImage.src = '/images/logo_iurest_200_x_100.png';
+        myImage.src = '/images/logo_iurest.png';
 
         myImage.onload = function () {
-            qr_pdf.addImage(myImage, 'png', 13, 10, 42, 20);
+            qr_pdf.addImage(myImage, 'png', 13, 13, 35, 10);
 
             qr_pdf.setFontSize(10);
             qr_pdf.text(company_name, 155, 15);
@@ -435,7 +442,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
             qr_pdf.setFontStyle('normal');
             qr_pdf.text(Meteor.user().profile.first_name + ' ' + Meteor.user().profile.last_name, 15, 70);
             qr_pdf.text(user_detail.address, 15, 75);
-            qr_pdf.text(city.name + ', ' + countryTraduced, 15, 80);
+            qr_pdf.text(auxCity + ', ' + countryTraduced, 15, 80);
 
             qr_pdf.setFontStyle('bold');
             qr_pdf.text(desc_lbl, 15, 95);
@@ -469,10 +476,10 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
             qr_pdf.setFontStyle('bold');
             qr_pdf.text(total_lbl, 110, 130);
             qr_pdf.setFontStyle('normal');
-            qr_pdf.text(_paymentHistory.paymentValue, 185, 130, 'right');
+            qr_pdf.text(_paymentHistory.paymentValue.toString(), 185, 130, 'right');
             qr_pdf.text(_paymentHistory.currency, 195, 130, 'right');
 
-            qr_pdf.output('save', 'prueba.pdf');
+            qr_pdf.output('save', fileName + '_' + dateFormated + '.pdf');
         }
     }
 

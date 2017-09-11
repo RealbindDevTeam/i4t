@@ -621,7 +621,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             year: (this._currentDate.getFullYear()).toString(),
             status: 'TRANSACTION_STATUS.' + _response.transactionResponse.state,
             transactionId: transactionId,
-            paymentValue: this._valueToPay,
+            paymentValue: Number(this._valueToPay),
             currency: this._currency,
             creation_date: new Date(),
             creation_user: Meteor.userId()
