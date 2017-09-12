@@ -657,7 +657,7 @@
         "MSG_UPDATE_POSITION": "Se ha actualizado la posicion del restaurante"
     },
     "RESTAURANT_INFO_MASTER": {
-        "TABLE_CODE": "Codigo de la Mesa",
+        "TABLE_CODE": "Numero de la Mesa",
         "INFORMATION": "Informacion",
         "SCHEDULE": "Horario",
         "LOCATION": "Ubicacion"
@@ -668,7 +668,7 @@
         "MESSAGE": "Lo sentimos. Este establecimiento no ha ingresado aun su ubicacion actual"
     },
     "ORDER_CREATE": {
-        "PRICE": "Precio",
+        "PRICE": "Precio Unitario",
         "VIEW_DETAIL": "Ver Detalle",
         "UNAVAILABLE": "No Disponible",
         "SELECT_ITEM": "Selecciona un ítem para ver el detalle",
@@ -682,7 +682,7 @@
         "ADDITIONS": "Adiciones",
         "SELECT_ADDITIONS": "Por favor seleccione las adiciones que desee",
         "TOTAL_PRICE": "Precio Total",
-        "ADD_ITEM": "Agregar Item a la Orden",
+        "ADD_ITEM": "Agregar a la Orden",
         "SHOW_ALL": "Mostrar todos",
         "COOKING_TIME": "Tiempo de Cocción",
         "ADD_ADDITIONS": "Selecciona las adiciones que desees agregar a la orden e indica su cantidad",
@@ -699,9 +699,10 @@
         "TOTAL": "Total",
         "STATUS": "Estado",
         "PRICE": "Precio",
+        "UNIT_PRICE": "Precio Unitario",
         "UNAVAILABLE": "No Disponible",
-        "CANCEL_ORDER": "Cancelar Orden",
-        "CONFIRM_ORDER": "Confirmar Orden",
+        "CANCEL_ORDER": "Cancelar",
+        "CONFIRM_ORDER": "Confirmar",
         "SELECT_ITEM": "Seleccione un Item para detallar, editar o eliminar de la orden",
         "QUANTITY": "Cantidad",
         "ITEM_UNAVAILABLE": "En este momento el item no se encuentra disponible para agregar a la orden",
@@ -713,8 +714,8 @@
         "ADDITIONS": "Adiciones",
         "SELECT_ADDITIONS": "Por favor seleccione las adiciones que desee",
         "TOTAL_PRICE": "Precio Total",
-        "MODIFY_ITEM": "Modificar Item",
-        "DELETE_ITEM": "Eliminar Item",
+        "MODIFY_ITEM": "Modificar",
+        "DELETE_ITEM": "Remover",
         "DELETE_ORDER": "Esta seguro de eliminar el item de la orden?",
         "CANCEL_ORDER_CONFIRM": "Esta seguro de cancelar la orden?",
         "ORDER_CANT_CANCEL": "La orden No se puede cancelar.",
@@ -745,7 +746,7 @@
         "COLOMBIA": {
             "GARNISH_FOOD": "Guarnicion",
             "ADDITION": "Adicion",
-            "ORDER_DETAILS": "Ver Detalle Ordenes",
+            "ORDER_DETAILS": "Detalle Ordenes",
             "PAY_ORDER": "Orden",
             "SUBTOTAL": "SubTotal",
             "INC": "Inc",
@@ -879,7 +880,7 @@
         "TOTAL": "Total",
         "CONFIRM": "Confirmar",
         "PENDING_ORDERS": "Mira las ordenes que se encuentran pendientes por confirmar para agregar a tu pago.",
-        "CONSULT_TABLE_ORDERS": "Consultar Ordenes",
+        "CONSULT_TABLE_ORDERS": "Agregar Orden",
         "CONSULT_TABLE_ORDERS_TITLE": "Ordenes de la Mesa",
         "CONSULT_TABLE_ORDERS_SUBTITLE_1": "Consulta las ordenes de tus acompañantes",
         "CONSULT_TABLE_ORDERS_SUBTITLE_2": "y selecciona aquellas que desees pagar",

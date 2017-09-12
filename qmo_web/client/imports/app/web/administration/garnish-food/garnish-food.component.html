@@ -57,7 +57,7 @@
         </div>
       </div>
       <button md-raised-button class="secondary-button" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
-      <button md-raised-button class="primary-button" type="submit">{{'CREATE' | translate}}</button>
+      <button md-raised-button class="primary-button" [disabled]="!_garnishFoodForm.valid" type="submit">{{'CREATE' | translate}}</button>
     </form>    
   </md-card-content>
 </md-card>
