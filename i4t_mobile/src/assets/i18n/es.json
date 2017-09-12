@@ -326,6 +326,10 @@
             "TOTAL_ORDERS" : "Total orden",
             "NO_PAYMENTS" : "Aún no tiene pagos realizados"
         },
+        "CHANGE_TABLE":{
+            "TITLE": "Cambiar mesa",
+            "NO_RESTAURANT": "No estas en ningun restaurante todavia"
+        },
         "WAITER_OPTIONS" : {
             "CALLS" : "Inicio",
             "SETTINGS" : "Ajustes"

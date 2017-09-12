@@ -58,6 +58,7 @@ import { AdditionPayInfoComponent } from '../pages/customer/payments/country-pay
 import { PaymentsHistoryPage } from '../pages/customer/options/payments-history/payments-history';
 import { PaymentsHistoryDetailPage } from '../pages/customer/options/payments-history/payments-history-detail/payments-history-detail';
 import { Menu } from '../pages/waiter/menu/menu';
+import { ChangeTablePage } from '../pages/customer/options/change-table/change-table';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -111,7 +112,8 @@ export function createTranslateLoader(http: Http) {
     AdditionPayInfoComponent,
     PaymentsHistoryPage,
     PaymentsHistoryDetailPage,
-    Menu
+    Menu,
+    ChangeTablePage
   ],
   imports: [
     BrowserModule,
@@ -187,14 +189,15 @@ export function createTranslateLoader(http: Http) {
     AdditionPayInfoComponent,
     PaymentsHistoryPage,
     PaymentsHistoryDetailPage,
-    Menu
+    Menu,
+    ChangeTablePage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     Facebook,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     UserLanguageService
   ]
 })
-export class AppModule {}
+export class AppModule { }

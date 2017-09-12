@@ -1,0 +1,23 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>{{'MOBILE.CHANGE_TABLE.TITLE' | translate}}</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <div *ngIf="_res_code != ''" style="padding: 0 16px;">
+        <h1>hola</h1>
+    </div>
+
+    <div *ngIf="_res_code == ''" style="padding: 0 16px;">
+        <div class="img">
+            <img src="assets/img/platos-orden.png">
+        </div>
+        <div class="content" style="text-align: center">
+            <h1>{{'MOBILE.CHANGE_TABLE.NO_RESTAURANT' | translate}}</h1>
+        </div>
+    </div>
+</ion-content>
+
+<ion-footer padding>
+</ion-footer>
