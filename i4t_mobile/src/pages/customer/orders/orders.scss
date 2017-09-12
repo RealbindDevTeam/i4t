@@ -29,8 +29,18 @@ page-orders {
     }
 
     .unavailable-item{
-        color:#D50000; 
-        font-weight: bold; 
+        color:#D50000;
+        font-weight: bold;
+    }
+
+    .label-ios {
+        margin: 0px 8px 0px 0;
+    }
+    
+    order-item-detail, page-additions-page {
+        .label-ios {
+            margin: 11px 8px 11px 0;
+        }
     }
 
     //Android
