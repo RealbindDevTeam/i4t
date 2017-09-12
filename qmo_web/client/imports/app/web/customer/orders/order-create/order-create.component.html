@@ -29,7 +29,7 @@
                                         </button>
                                     </div>
                                     <md-card-content>
-                                        <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
+                                        <p *ngIf="item.description.length > 50">{{item.description.substring(0, 50)}}...</p>
                                         <p *ngIf="item.description.length <= 50">{{item.description}}</p>
                                         <ul class="list">
                                             <li *ngIf="!getItemAvailability(item._id)" class="available-button">
@@ -58,7 +58,7 @@
                                                 </button>
                                             </div>
                                             <md-card-content>
-                                                <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
+                                                <p *ngIf="item.description.length > 50">{{item.description.substring(0, 50)}}...</p>
                                                 <p *ngIf="item.description.length <= 50">{{item.description}}</p>
                                                 <ul class="list">
                                                     <li *ngIf="!getItemAvailability(item._id)" class="available-button">
@@ -87,7 +87,7 @@
                                                         </button>
                                                     </div>
                                                     <md-card-content>
-                                                        <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
+                                                        <p *ngIf="item.description.length > 50">{{item.description.substring(0, 50)}}...</p>
                                                         <p *ngIf="item.description.length <= 50">{{item.description}}</p>
                                                         <ul class="list">
                                                             <li *ngIf="!getItemAvailability(item._id)" class="available-button">
