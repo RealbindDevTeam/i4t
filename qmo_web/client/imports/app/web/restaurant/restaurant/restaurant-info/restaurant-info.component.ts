@@ -7,6 +7,7 @@ import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { Restaurant, RestaurantImageThumb } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantImageThumbs } from '../../../../../../../both/collections/restaurant/restaurant.collection';
+import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
 import { Countries } from '../../../../../../../both/collections/settings/country.collection';
 import { Country } from '../../../../../../../both/models/settings/country.model'; 
 import { City } from '../../../../../../../both/models/settings/city.model';
@@ -29,11 +30,13 @@ export class RestaurantInfoComponent implements OnInit, OnDestroy {
     @Input() tableQRCode        : string;
 
     public _dialogRef           : MdDialogRef<any>;
+    private _tableNumber        : number;
 
     private _countriesSub       : Subscription;
     private _citiesSub          : Subscription;
     private _restaurantSub      : Subscription;
     private _restaurantThumbSub : Subscription;
+    private _tablesSub          : Subscription;
 
     private _countries          : Observable<Country[]>;
     private _cities             : Observable<City[]>;
@@ -74,6 +77,11 @@ export class RestaurantInfoComponent implements OnInit, OnDestroy {
             });
         });
         this._restaurantThumbSub = MeteorObservable.subscribe( 'restaurantImageThumbsByRestaurantId', this.restaurantId ).subscribe();
+        this._tablesSub = MeteorObservable.subscribe( 'getTableByQRCode', this.tableQRCode ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._tableNumber = Tables.collection.findOne( { QR_code: this.tableQRCode } )._number;
+            });
+        });
     }
 
     /**
@@ -84,6 +92,7 @@ export class RestaurantInfoComponent implements OnInit, OnDestroy {
         if( this._citiesSub ){ this._citiesSub.unsubscribe(); }
         if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
         if( this._restaurantThumbSub ){ this._restaurantThumbSub.unsubscribe(); }
+        if( this._tablesSub ){ this._tablesSub.unsubscribe(); }
     }
 
     /**

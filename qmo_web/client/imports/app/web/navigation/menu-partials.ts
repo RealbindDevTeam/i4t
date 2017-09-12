@@ -37,6 +37,9 @@ export class RoutingClass {
                 </button>
                 <button md-icon-button id="menu-toggler" mdTooltip="{{'TOPNAV.WAITER' | translate}}" (click)="goToRoute('/app/waiter-call')">
                     <md-icon>record_voice_over</md-icon>
+                </button>
+                <button md-icon-button id="menu-toggler" mdTooltip="{{'TOPNAV.TABLES' | translate}}" (click)="goToRoute('/app/change-table')">
+                    <md-icon>compare_arrows</md-icon>
                 </button>`
 })
 export class CustomerMenuComponent extends RoutingClass {

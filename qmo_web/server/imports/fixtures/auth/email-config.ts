@@ -5,8 +5,6 @@ import { Parameters } from '../../../../both/collections/general/parameter.colle
 import { EmailContents } from '../../../../both/collections/general/email-content.collection';
 import { EmailContent } from '../../../../both/models/general/email-content.model';
 
-let fromVar = Parameters.collection.findOne({ name: 'from_email' }).value;
-
 Accounts.urls.resetPassword = function (token) {
     return Meteor.absoluteUrl('reset-password/' + token);
 };
@@ -128,7 +126,7 @@ function greetText() {
 }
 
 Accounts.emailTemplates = {
-    from: fromVar,
+    from: '',
     siteName: Meteor.absoluteUrl().replace(/^https?:\/\//, '').replace(/\/$/, ''),
     resetPassword: {
         subject: function (user) {
@@ -154,3 +152,8 @@ Accounts.emailTemplates = {
     }
 };
 
+
+Accounts.emailTemplates.resetPassword.from = () => {
+    let fromVar = Parameters.collection.findOne({ name: 'from_email' }).value;
+    return fromVar;
+};

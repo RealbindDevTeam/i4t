@@ -65,3 +65,12 @@ Meteor.publish( 'getTablesByRestaurantWork', function( _userId: string ){
         return;
     }
 });
+
+/**
+ * Meteor publication tables by QR Code
+ * @param {string} _lQRCode
+ */
+Meteor.publish('getTableByQRCode', function ( _lQRCode: string ){
+    check(_lQRCode, String);
+    return Tables.collection.find( { QR_code: _lQRCode } );
+});
