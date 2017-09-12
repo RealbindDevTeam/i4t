@@ -1,21 +1,4 @@
-component-colombia-payments {
-    
-    .ion-footer-custom{
-        background: white;
-        position: fixed;
-        bottom: 41px;
-    }
-    
-    .ion-footer-custom{
-        background: white;
-        position: absolute;
-        bottom: 0px;
-        left: 0;
-        z-index: 10;
-        display: block;
-        width: 100%;
-    }
-
+colombia-page-payment-details {
     .header-title {
         display: -webkit-flex;
         display: -ms-flexbox;
@@ -53,7 +36,6 @@ component-colombia-payments {
 
     .img-cards{
         width: 40px;
-        border-radius: 50%;
         margin-right: 8px;
     }
 }
