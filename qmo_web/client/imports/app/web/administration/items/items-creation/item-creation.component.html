@@ -128,7 +128,7 @@
                                     <md-checkbox *ngFor="let addition of _additions" [formControlName]="addition._id" [class.invalid]="!_itemForm.controls.additions.valid" class="checkbox">{{addition.name}}</md-checkbox>
                                 </div>
                             </div>
-                            <p *ngIf="!canFinish()" class="garnishQuantityMsg">{{'ITEMS.GARNISHFOOD_QUANTITY_MSG' | translate}}</p>
+                            <p *ngIf="!showGarnishFoodQuantityMsg()" class="garnishQuantityMsg">{{'ITEMS.GARNISHFOOD_QUANTITY_MSG' | translate}}</p>
                         </md-card-content>
                         <md-card-actions align="end">
                             <button md-raised-button (click)="cancel()">{{'CANCEL' | translate}}</button>

@@ -239,6 +239,13 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
      * This fuction allow wizard to create item
      */
     canFinish(): boolean {
+        return this._itemForm.valid;
+    }
+
+    /**
+     * Show Garnish Food Quantity Message
+     */
+    showGarnishFoodQuantityMsg():boolean {
         let arrGarnishFood: any[] = Object.keys(this._itemForm.value.garnishFood);
         let _lGarnish: string[] = [];
         let _lGarnishQuantOk: boolean = false;
@@ -257,11 +264,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
         } else {
             _lGarnishQuantOk = true;
         }
-        if (this._itemForm.valid && _lGarnishQuantOk) {
-            return true;
-        } else {
-            return false;
-        }
+        return _lGarnishQuantOk;
     }
 
     /**
@@ -378,6 +381,9 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
 
         this._categories = Categories.find({ section: _section, is_active: true }).zone();
         if (this._categories.isEmpty) { this._selectedCategoryValue = ""; }
+        if( this._subcategories ){
+            if ( this._subcategories.isEmpty ){ this._selectedSubcategoryValue = ""; }
+        }
 
         let _lSection: Section = Sections.findOne({ _id: _section });
 
