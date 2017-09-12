@@ -7,10 +7,13 @@
 </ion-header>
 
 <ion-content>
-    <ion-card>
+    <ion-card *ngFor="let order of _orders | async">
         <ion-card-content>
-            <ion-item-group *ngFor="let order of _orders | async">
+            <ion-item-group>
                 <ion-item-divider style="background-color: white;">
+                    <ion-thumbnail item-left>
+                        <img class="img-cards" src="assets/img/my-orders.png">
+                    </ion-thumbnail>
                     <h2 style="display: inline-flex; font-weight: bold;">{{ 'MOBILE.PAYMENTS.PAY_ORDER' | translate }} # {{order.code}}</h2>
                     <div style="display: inline-flex; position: absolute; right: 0;">
                         <h2 style="font-weight: bold;"> {{order.totalPayment}} {{_currency}}</h2>
@@ -19,9 +22,7 @@
                         </button>
                     </div>
                 </ion-item-divider>
-                <div *ngFor="let itemId of order.items">
-                    <colombia-payment-item-detail [order]="order" [orderItem]="itemId" [resCode]="order.restaurantId" [currencyCode]="_currency"></colombia-payment-item-detail>
-                </div>
+                <order-detail-pay-info [orderId]="order._id" [restaurantId]="order.restaurantId" [currency]="_currency"></order-detail-pay-info>
             </ion-item-group>
         </ion-card-content>
     </ion-card>

@@ -37,7 +37,7 @@ export class OrderDetailPayInfoPage implements OnInit, OnDestroy {
   }
 
   ngOnInit(){
-    this.removeSubscriptions();
+    //this.removeSubscriptions();
     this._ordersSubscription = MeteorObservable.subscribe( 'getOrderById', this.orderId ).subscribe(()=>{
       this._orders = Orders.find({_id : this.orderId});
     });
