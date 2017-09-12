@@ -1,0 +1,54 @@
+<md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" *ngIf="!_showInfo">
+    <md-card-content>
+        <div class="card_initial">
+            <div class="card_initial has-image">
+                <div class="card_initial-image-container">
+                <img class="card_initial-image" src="/images/platos.png"/>
+                </div>
+                <div class="card_initial-copy">
+                <div class="card_initial-tagline">
+                    {{'CHANGE_TABLE.THERE_IS_NOT_REST' | translate}}
+                </div>
+                <div class="card_initial-additional-links">
+                    {{'CHANGE_TABLE.THERE_IS_NOT_REST_MSG' | translate}}
+                </div>
+                </div>
+                <div class="card_initial-button">
+                <button md-raised-button (click)="goToOrders()">{{'CHANGE_TABLE.GO_TO_ORDERS' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </md-card-content>
+</md-card>
+
+<div *ngIf="_showInfo" style="width: 80%; margin: 0 auto; max-width: 740px;">
+    <restaurant-info [restaurantId]="_currentRestaurant" [tableQRCode]="_currentQRCodeTable"></restaurant-info>
+    <md-card md-cell="12" class="demo-card demo-basic">
+        <md-card-content>
+            <div class="card_initial">
+                <div class="card_initial has-image" style="margin: auto;">
+                    <form [formGroup]="_changeTableForm" (ngSubmit)="changeUserTable();">
+                        <div class="card_initial-image-container">
+                            <img class="card_initial-image" 
+                                src="/images/platos-orden.png"/>
+                        </div>
+                        <div class="card_initial-copy">
+                            <div class="card_initial-tagline">
+                                {{'CHANGE_TABLE.MSG_INITIAL' | translate}}
+                            </div>
+                            <div class="card_initial-additional-links">
+                                <md-input-container>
+                                    <input mdInput required formControlName="qrCodeDestiny" minlength="6" class="code" #input [value]="input.value.toUpperCase()">
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div class="card_initial-button">
+                            <button md-raised-button (click)="cancel()">{{'CHANGE_TABLE.CANCEL' | translate}}</button>
+                            <button md-raised-button [disabled]="!_changeTableForm.valid" type="submit">{{'CHANGE_TABLE.ENTER' | translate}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </md-card-content>
+    </md-card>
+</div>

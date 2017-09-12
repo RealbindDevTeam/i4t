@@ -44,7 +44,22 @@
         </md-card-content>
     </md-card>
 </div>
-<md-card>
-    <md-card-title *ngIf="(_ordersTable | async)?.length <= 0">{{'ORDER_TRANS.NO_ORDERS' | translate}}</md-card-title>
-    <button md-raised-button class="secondary-button" (click)="close()">{{'CLOSE' | translate}}</button>
+<md-card md-cell="12" class="demo-card demo-basic payment-info" *ngIf="(_ordersTable | async)?.length <= 0">
+    <md-card-content>
+        <div class="card_initial">
+            <div class="card_initial has-image">
+            <div class="card_initial-image-container">
+                <img class="card_initial-image" src="/images/mesas.png"/>
+            </div>
+            <div class="card_initial-copy">
+                <div class="card_initial-tagline">
+                    {{'ORDER_TRANS.NO_ORDERS' | translate}}
+                </div>
+            </div>
+            <div class="card_initial-button">
+                <button md-raised-button (click)="close()">{{'CLOSE' | translate}}</button>
+            </div>
+            </div>
+        </div>
+    </md-card-content>
 </md-card>
