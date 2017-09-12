@@ -1201,6 +1201,7 @@
         "ORDERS_PAY_PROCESS": "You have orders in process of payment. It is not possible to make the change of table.",
         "WAITER_CALL_PENDING": "They are called to the waiter waiting to be served. Once the call is answered you can change the table.",
         "TABLE_DESTINY_STATUS_ERROR": "An error occurred while validating the status of the new table. Please try again.",
-        "GENERAL_ERROR": "An error occurred while changing the table. Please try again."
+        "GENERAL_ERROR": "An error occurred while changing the table. Please try again.",
+        "SAME_TABLE_ERROR": "It is not possible to perform the operation with the actual table code. Please check and try again."
     }
 }

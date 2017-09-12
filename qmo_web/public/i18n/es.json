@@ -1201,6 +1201,7 @@
         "ORDERS_PAY_PROCESS": "Tienes ordenes en proceso de pago. No es posible realizar hacer el cambio de mesa.",
         "WAITER_CALL_PENDING": "Se encuentran llamados al mesero pendientes por atender. Una vez se atienda el llamado puedes realizar el cambio de mesa.",
         "TABLE_DESTINY_STATUS_ERROR": "Se ha producido un error validando el estado de la nueva mesa. Por favor intenta nuevamente.",
-        "GENERAL_ERROR": "Se ha producido un error cambiando la mesa. Por favor intenta nuevamente."
+        "GENERAL_ERROR": "Se ha producido un error cambiando la mesa. Por favor intenta nuevamente.",
+        "SAME_TABLE_ERROR": "No es posible realizar la operacion con el codigo de mesa actual. Por favor revisa e intenta nuevamente."
     }
 }

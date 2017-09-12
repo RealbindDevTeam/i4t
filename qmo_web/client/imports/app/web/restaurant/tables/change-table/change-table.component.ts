@@ -106,20 +106,22 @@ export class ChangeTableComponent implements OnInit, OnDestroy {
                 this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.CHANGE_TABLE_OK' ), '', this.btnAcceptLbl, false);
                 this._router.navigate(['/app/orders']);
             }, ( error ) => {
-                if( error.error === '100' ){
+                if( error.error === '200' ){
                     this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.TABLE_DESTINY_NOT_EXISTS' ), '', this.btnAcceptLbl, false);
-                } else if( error.error === '101' ){
+                } else if( error.error === '201' ){
                     this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.TABLE_DESTINY_NO_ACTIVE' ), '', this.btnAcceptLbl, false);
-                } else if( error.error === '102' ){
+                } else if( error.error === '202' ){
                     this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.TABLE_DESTINY_NO_RESTAURANT' ), '', this.btnAcceptLbl, false);
-                } else if( error.error === '103' ){
+                } else if( error.error === '203' ){
                     this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.PENDING_ORDERS' ), '', this.btnAcceptLbl, false);
-                } else if( error.error === '104' ){
+                } else if( error.error === '204' ){
                     this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.ORDERS_PAY_PROCESS' ), '', this.btnAcceptLbl, false);
-                } else if( error.error === '105' ){
+                } else if( error.error === '205' ){
                     this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.WAITER_CALL_PENDING' ), '', this.btnAcceptLbl, false);
-                } else if( error.error === '106' ){
+                } else if( error.error === '206' ){
                     this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.TABLE_DESTINY_STATUS_ERROR' ), '', this.btnAcceptLbl, false);
+                } else if( error.error === '207' ){
+                    this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.SAME_TABLE_ERROR' ), '', this.btnAcceptLbl, false);
                 } else {
                     this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.GENERAL_ERROR' ), '', this.btnAcceptLbl, false);
                 }
