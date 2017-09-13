@@ -162,7 +162,7 @@ export class SignupComponent implements OnInit {
      */
     showComfirm( _pContent : string ) {
         let okBtn   = this.itemNameTraduction('MOBILE.OK'); 
-        let title   = this.itemNameTraduction('MOBILE.WAITER_CALL.TITLE_PROMPT'); 
+        let title   = this.itemNameTraduction('MOBILE.SYSTEM_MSG'); 
       
         let prompt = this._alertCtrl.create({
           title: title,

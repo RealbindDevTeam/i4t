@@ -33,6 +33,7 @@
         "CLOSE" : "Cerrar",
         "VIEW" : "Ver",
         "OK" : "Ok",
+        "SYSTEM_MSG": "Mensaje del sistema",
         "LANGUAGE" : {
             "es" : "Español",
             "en" : "Ingles"

@@ -12,6 +12,7 @@ import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 export class OrderPaymentDetailComponent {
     @Input() orderCon      : Order;
     @Input() ordersConfirm : boolean;
+    @Input() currency      : string;
 
     constructor(public _translate   : TranslateService,
                 public _alertCtrl   : AlertController,
