@@ -11,6 +11,8 @@ import { Accounts } from 'meteor/accounts-base';
 import { Meteor } from 'meteor/meteor';
 import { InitialComponent } from '../initial/initial';
 
+import { Facebook } from '@ionic-native/facebook';
+
 @Component({
     selector: 'page-signup',
     templateUrl: 'signup.html'
@@ -25,13 +27,13 @@ export class SignupComponent implements OnInit {
     userLang: string;
     userProfile = new UserProfile();
 
-    constructor( public zone: NgZone, 
-                 public _alertCtrl: AlertController,
-                 public formBuilder: FormBuilder, 
-                 public translate: TranslateService,
-                 public navCtrl: NavController, 
-                 public alertCtrl: AlertController, 
-                 public viewCtrl: ViewController) {
+    constructor(public zone: NgZone,
+        public _alertCtrl: AlertController,
+        public formBuilder: FormBuilder,
+        public translate: TranslateService,
+        public navCtrl: NavController,
+        public alertCtrl: AlertController,
+        public viewCtrl: ViewController) {
 
         this.userLang = navigator.language.split('-')[0];
         translate.setDefaultLang('en');
@@ -95,6 +97,7 @@ export class SignupComponent implements OnInit {
         }
     }
 
+    
     loginWithFacebook() {
         Meteor.loginWithFacebook({ requestPermissions: ['public_profile', 'email'], loginStyle: 'popup' }, (err) => {
 
@@ -107,6 +110,7 @@ export class SignupComponent implements OnInit {
             });
         });
     }
+    
 
     loginWithTwitter() {
         Meteor.loginWithTwitter({ requestPermissions: [] }, (err) => {
@@ -160,20 +164,20 @@ export class SignupComponent implements OnInit {
      * Function that allows show comfirm dialog
      * @param { any } _call 
      */
-    showComfirm( _pContent : string ) {
-        let okBtn   = this.itemNameTraduction('MOBILE.OK'); 
-        let title   = this.itemNameTraduction('MOBILE.WAITER_CALL.TITLE_PROMPT'); 
-      
+    showComfirm(_pContent: string) {
+        let okBtn = this.itemNameTraduction('MOBILE.OK');
+        let title = this.itemNameTraduction('MOBILE.WAITER_CALL.TITLE_PROMPT');
+
         let prompt = this._alertCtrl.create({
-          title: title,
-          message: _pContent,
-          buttons: [
-            {
-              text: okBtn,
-              handler: data => {
-              }
-            }
-          ]
+            title: title,
+            message: _pContent,
+            buttons: [
+                {
+                    text: okBtn,
+                    handler: data => {
+                    }
+                }
+            ]
         });
         prompt.present();
     }

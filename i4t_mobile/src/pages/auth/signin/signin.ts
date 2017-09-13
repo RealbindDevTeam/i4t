@@ -9,6 +9,8 @@ import { Meteor } from 'meteor/meteor';
 import { TabsPage } from '../../customer/tabs/tabs';
 import { Menu } from '../../waiter/menu/menu';
 
+import { Facebook } from '@ionic-native/facebook';
+
 /*
   Generated class for the Signin page.
 
@@ -26,15 +28,15 @@ export class SigninComponent implements OnInit {
     role_id: string;
     userLang: string;
 
-    constructor(public _app : App,
-                public zone: NgZone, 
-                public formBuilder: FormBuilder, 
-                public translate: TranslateService,
-                public navCtrl: NavController, 
-                public _alertCtrl: AlertController, 
-                public viewCtrl: ViewController,
-                public _loadingCtrl: LoadingController,
-                public _platform: Platform) {
+    constructor(public _app: App,
+        public zone: NgZone,
+        public formBuilder: FormBuilder,
+        public translate: TranslateService,
+        public navCtrl: NavController,
+        public _alertCtrl: AlertController,
+        public viewCtrl: ViewController,
+        public _loadingCtrl: LoadingController,
+        public _platform: Platform) {
 
         this.userLang = navigator.language.split('-')[0];
         translate.setDefaultLang('en');
@@ -61,8 +63,8 @@ export class SigninComponent implements OnInit {
                         this.error = err;
                     } else {
                         MeteorObservable.call('getRole').subscribe((role) => {
-                            let loading_msg = this.itemNameTraduction('MOBILE.SIGN_OUT.LOADING'); 
-                            
+                            let loading_msg = this.itemNameTraduction('MOBILE.SIGN_OUT.LOADING');
+
                             let loading = this._loadingCtrl.create({
                                 content: loading_msg
                             });
@@ -73,13 +75,11 @@ export class SigninComponent implements OnInit {
                                     //role 400 customer
                                     //this.addUserDevice();
                                     this.navCtrl.push(TabsPage);
-                                } else if ( role == "200") {
+                                } else if (role == "200") {
                                     MeteorObservable.call('validateRestaurantIsActive').subscribe((_restaruantActive) => {
-                                        if(_restaruantActive){
-
-                                            
+                                        if (_restaruantActive) {
                                             MeteorObservable.call('validateUserIsActive').subscribe((active) => {
-                                                if(active){
+                                                if (active) {
                                                     this._app.getRootNav().setRoot(Menu);
                                                 } else {
                                                     let contentMessage = this.itemNameTraduction("MOBILE.SIGNIN.USER_NO_ACTIVE");
@@ -103,6 +103,7 @@ export class SigninComponent implements OnInit {
         }
     }
 
+    
     loginWithFacebook() {
         Meteor.loginWithFacebook({ requestPermissions: ['public_profile', 'email'] }, (err) => {
             this.zone.run(() => {
@@ -114,6 +115,7 @@ export class SigninComponent implements OnInit {
             });
         });
     }
+    
 
     loginWithTwitter() {
         Meteor.loginWithTwitter({ requestPermissions: [] }, (err) => {
@@ -138,8 +140,8 @@ export class SigninComponent implements OnInit {
     }
 
     insertUserDetail() {
-        let loading_msg = this.itemNameTraduction('MOBILE.SIGN_OUT.LOADING'); 
-        
+        let loading_msg = this.itemNameTraduction('MOBILE.SIGN_OUT.LOADING');
+
         let loading = this._loadingCtrl.create({
             content: loading_msg
         });
@@ -147,7 +149,7 @@ export class SigninComponent implements OnInit {
         setTimeout(() => {
             loading.dismiss();
             MeteorObservable.call('getDetailsCount').subscribe((count) => {
-    
+
                 if (count === 0) {
                     UserDetails.insert({
                         user_id: Meteor.userId(),
@@ -226,20 +228,20 @@ export class SigninComponent implements OnInit {
      * Function that allows show comfirm dialog
      * @param { any } _call 
      */
-    showComfirm( _pContent : string ) {
-        let okBtn   = this.itemNameTraduction('MOBILE.OK'); 
-        let title   = this.itemNameTraduction('MOBILE.WAITER_CALL.TITLE_PROMPT'); 
-      
+    showComfirm(_pContent: string) {
+        let okBtn = this.itemNameTraduction('MOBILE.OK');
+        let title = this.itemNameTraduction('MOBILE.WAITER_CALL.TITLE_PROMPT');
+
         let prompt = this._alertCtrl.create({
-          title: title,
-          message: _pContent,
-          buttons: [
-            {
-              text: okBtn,
-              handler: data => {
-              }
-            }
-          ]
+            title: title,
+            message: _pContent,
+            buttons: [
+                {
+                    text: okBtn,
+                    handler: data => {
+                    }
+                }
+            ]
         });
         prompt.present();
     }

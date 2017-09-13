@@ -7,7 +7,6 @@ import { MomentModule } from 'angular2-moment';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 import { MyApp } from './app.component';
@@ -59,6 +58,9 @@ import { PaymentsHistoryPage } from '../pages/customer/options/payments-history/
 import { PaymentsHistoryDetailPage } from '../pages/customer/options/payments-history/payments-history-detail/payments-history-detail';
 import { Menu } from '../pages/waiter/menu/menu';
 import { ChangeTablePage } from '../pages/customer/options/change-table/change-table';
+
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { Facebook } from '@ionic-native/facebook';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -195,9 +197,10 @@ export function createTranslateLoader(http: Http) {
   providers: [
     StatusBar,
     SplashScreen,
-    Facebook,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    UserLanguageService
+    UserLanguageService,
+    BarcodeScanner,
+    Facebook
   ]
 })
 export class AppModule { }
