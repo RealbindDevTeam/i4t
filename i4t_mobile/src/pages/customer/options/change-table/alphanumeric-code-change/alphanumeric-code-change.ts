@@ -1,38 +1,34 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { AlertController, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { AlertController, NavController, NavParams, ViewController } from 'ionic-angular';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner';
-import { TabsPage } from '../../tabs/tabs';
-import { AlphanumericCodeChangePage } from './alphanumeric-code-change/alphanumeric-code-change';
-
 import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
+import { TabsPage } from '../../../tabs/tabs';
 
 @Component({
-    selector: 'change-table',
-    templateUrl: 'change-table.html'
+    selector: 'alphanumeric-code-change',
+    templateUrl: 'alphanumeric-code-change.html'
 })
 
-export class ChangeTablePage implements OnInit, OnDestroy {
+export class AlphanumericCodeChangePage {
 
+    private _ordersForm: FormGroup;
     private _tablesSub: Subscription;
-    private _table;
-    private _waitMsg: string;
-
     private _res_code: string = '';
     private _table_code: string = '';
+    private _table;
 
 
     constructor(public _navCtrl: NavController,
-        public _navParams: NavParams,
         public _alertCtrl: AlertController,
-        public _loadingCtrl: LoadingController,
-        private _translate: TranslateService,
+        private _viewCtrl: ViewController,
+        public _navParams: NavParams,
+        public _translate: TranslateService,
         private _userLanguageService: UserLanguageService,
-        private _ngZone: NgZone,
-        private barcodeScanner: BarcodeScanner) {
+        private _ngZone: NgZone) {
         _translate.setDefaultLang('en');
 
         this._res_code = this._navParams.get("res_id");
@@ -40,6 +36,7 @@ export class ChangeTablePage implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.removeSubscriptions();
         this.init();
     }
 
@@ -49,6 +46,9 @@ export class ChangeTablePage implements OnInit, OnDestroy {
 
     init() {
         this._translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        this._ordersForm = new FormGroup({
+            qrCode: new FormControl('', [Validators.required, Validators.minLength(6)])
+        });
         if (this._res_code !== '' && this._table_code !== '') {
             this._tablesSub = MeteorObservable.subscribe('getTableById', this._table_code).subscribe(() => {
                 this._ngZone.run(() => {
@@ -58,23 +58,8 @@ export class ChangeTablePage implements OnInit, OnDestroy {
         }
     }
 
-    goToScann() {
-        this.barcodeScanner.scan().then((result) => {
-            this.goToSections(result.text);
-        }, (err) => {
-            // An error occurred
-        });
-
-        this._waitMsg = this.itemNameTraduction('MOBILE.SECTIONS.WAIT_QR');
-        let loader = this._loadingCtrl.create({
-            duration: 500
-        });
-        loader.present();
-    }
-
-
-    goToSections(qr_code: string) {
-        MeteorObservable.call('changeCurrentTable', Meteor.userId(), this._res_code, this._table.QR_code, qr_code).subscribe(() => {
+    validateQRCodeExists() {
+        MeteorObservable.call('changeCurrentTable', Meteor.userId(), this._res_code, this._table.QR_code, this._ordersForm.value.qrCode.toString().toUpperCase()).subscribe(() => {
             this.showConfirmMessage(this.itemNameTraduction('MOBILE.CHANGE_TABLE.CHANGE_TABLE_OK'));
             this._navCtrl.setRoot(TabsPage);
         }, (error) => {
@@ -99,6 +84,7 @@ export class ChangeTablePage implements OnInit, OnDestroy {
             }
         });
     }
+
 
     /**
    * Show message confirm
@@ -130,10 +116,6 @@ export class ChangeTablePage implements OnInit, OnDestroy {
         return wordTraduced;
     }
 
-    goToAlphanumericCode() {
-        this._navCtrl.push(AlphanumericCodeChangePage, { res_id: this._res_code, table_id: this._table_code });
-    }
-
     ngOnDestroy() {
         this.removeSubscriptions();
     }
@@ -143,10 +125,9 @@ export class ChangeTablePage implements OnInit, OnDestroy {
     }
 
     /**
-     * Remove all subscriptions
-     */
+    * Remove all subscriptions
+    */
     removeSubscriptions() {
         if (this._tablesSub) { this._tablesSub.unsubscribe(); }
     }
-
 }

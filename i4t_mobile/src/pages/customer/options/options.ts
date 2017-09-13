@@ -116,7 +116,7 @@ export class OptionsPage implements OnInit, OnDestroy {
   goToChangeTable() {
     //this._navCtrl = this._app.getRootNav();
     let userDetail = UserDetails.findOne({ user_id: Meteor.userId() });
-    this._navCtrl.push(ChangeTablePage, { res_id: userDetail.current_restaurant });
+    this._navCtrl.push(ChangeTablePage, { res_id: userDetail.current_restaurant, table_id: userDetail.current_table });
   }
 
   /**

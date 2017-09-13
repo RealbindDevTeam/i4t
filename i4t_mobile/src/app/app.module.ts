@@ -58,6 +58,7 @@ import { PaymentsHistoryPage } from '../pages/customer/options/payments-history/
 import { PaymentsHistoryDetailPage } from '../pages/customer/options/payments-history/payments-history-detail/payments-history-detail';
 import { Menu } from '../pages/waiter/menu/menu';
 import { ChangeTablePage } from '../pages/customer/options/change-table/change-table';
+import { AlphanumericCodeChangePage } from '../pages/customer/options/change-table/alphanumeric-code-change/alphanumeric-code-change';
 
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Facebook } from '@ionic-native/facebook';
@@ -115,7 +116,8 @@ export function createTranslateLoader(http: Http) {
     PaymentsHistoryPage,
     PaymentsHistoryDetailPage,
     Menu,
-    ChangeTablePage
+    ChangeTablePage,
+    AlphanumericCodeChangePage
   ],
   imports: [
     BrowserModule,
@@ -192,7 +194,8 @@ export function createTranslateLoader(http: Http) {
     PaymentsHistoryPage,
     PaymentsHistoryDetailPage,
     Menu,
-    ChangeTablePage
+    ChangeTablePage,
+    AlphanumericCodeChangePage
   ],
   providers: [
     StatusBar,
