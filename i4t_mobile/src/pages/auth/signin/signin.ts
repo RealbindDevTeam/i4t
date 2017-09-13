@@ -56,9 +56,15 @@ export class SigninComponent implements OnInit {
     login() {
         if (this.signinForm.valid) {
             Meteor.loginWithPassword(this.signinForm.value.email, this.signinForm.value.password, (err) => {
+                let confirmMsg: string;
                 this.zone.run(() => {
                     if (err) {
-                        this.error = err;
+                        if (err.reason === 'User not found' || err.reason === 'Incorrect password') {
+                            confirmMsg = this.itemNameTraduction('MOBILE.SIGNIN.USER_PASS_INCORRECT');
+                        } else {
+                            confirmMsg = this.itemNameTraduction('MOBILE.SIGNIN.ERROR');
+                        }
+                        this.showComfirm(confirmMsg);
                     } else {
                         MeteorObservable.call('getRole').subscribe((role) => {
                             let loading_msg = this.itemNameTraduction('MOBILE.SIGN_OUT.LOADING'); 
