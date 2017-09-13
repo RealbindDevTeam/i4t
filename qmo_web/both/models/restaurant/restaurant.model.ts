@@ -103,6 +103,11 @@ export interface RestaurantSchedule {
         isActive: boolean,
         opening_time: string,
         closing_time: string
+    },
+    holiday?: {
+        isActive: boolean,
+        opening_time: string,
+        closing_time: string
     }
 };
 
