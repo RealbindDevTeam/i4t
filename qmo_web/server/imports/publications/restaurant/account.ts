@@ -33,7 +33,7 @@ Meteor.publish( 'getAccountsByUserId', function( _userId : string ){
     let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
     if( _lUserDetail ){
         if(_lUserDetail.current_restaurant !== "" && _lUserDetail.current_table !== ""){
-            return Accounts.collection.find( { restaurantId : _lUserDetail.current_restaurant, tableId : _lUserDetail.current_table } );
+            return Accounts.collection.find( { restaurantId : _lUserDetail.current_restaurant, tableId : _lUserDetail.current_table, status: 'OPEN' } );
         } else {
             return;
         }

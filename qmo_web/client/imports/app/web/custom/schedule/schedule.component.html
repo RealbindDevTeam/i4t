@@ -14,6 +14,7 @@
 <md-button-toggle md-tooltip="{{'SCHEDULE.FRIDAY' | translate}}" [(checked)]="schedule.friday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Fri">{{'SCHEDULE.FRIDAY_LETTER' | translate}}</md-button-toggle>
 <md-button-toggle md-tooltip="{{'SCHEDULE.SATURDAY' | translate}}" [(checked)]="schedule.saturday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Sat">{{'SCHEDULE.SATURDAY_LETTER' | translate}}</md-button-toggle>
 <md-button-toggle md-tooltip="{{'SCHEDULE.SUNDAY' | translate}}" [(checked)]="schedule.sunday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Sun">{{'SCHEDULE.SUNDAY_LETTER' | translate}}</md-button-toggle>
+<md-button-toggle md-tooltip="{{'SCHEDULE.HOLIDAY' | translate}}" [(checked)]="schedule.holiday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Hol">{{'SCHEDULE.HOLIDAY_LETTER' | translate}}</md-button-toggle>
 <br/>
 <br/>
 <button md-raised-button [(disabled)]="!_allowWeekButtons" (click)="buildSchedule()">{{'SCHEDULE.ADD_SCHEDULE' | translate}}</button>
@@ -32,7 +33,7 @@
         <tr *ngIf="!schedule.monday.isActive && !schedule.tuesday.isActive && 
                 !schedule.wednesday.isActive && !schedule.thursday.isActive && 
                 !schedule.friday.isActive && !schedule.saturday.isActive && 
-                !schedule.sunday.isActive">
+                !schedule.sunday.isActive && !schedule.holiday.isActive">
             <td colspan="4">
                 <label>{{'SCHEDULE.NO_RESTAURANT_HOURS' | translate}}</label>
             </td>
@@ -103,6 +104,16 @@
             <td><label>{{schedule.sunday.closing_time}}</label></td>
             <td>
             <button md-icon-button md-tooltip="{{'SCHEDULE.DELETE' | translate}}" (click)="inactiveDay('Sun')">
+                <md-icon>clear</md-icon>
+            </button>
+            </td> 
+        </tr>
+        <tr *ngIf="schedule.holiday.isActive">
+            <td><label>{{'WEEK.HOLIDAY' | translate}}</label></td>
+            <td><label>{{schedule.holiday.opening_time}}</label></td>
+            <td><label>{{schedule.holiday.closing_time}}</label></td>
+            <td>
+            <button md-icon-button md-tooltip="{{'SCHEDULE.DELETE' | translate}}" (click)="inactiveDay('Hol')">
                 <md-icon>clear</md-icon>
             </button>
             </td> 

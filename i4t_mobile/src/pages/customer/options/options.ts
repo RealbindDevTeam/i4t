@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { App, AlertController, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -27,7 +27,6 @@ export class OptionsPage implements OnInit, OnDestroy {
   private _user: User;
   private _userName: string;
   private _imageProfile: string;
-  private _userObservable;
 
   /**
    * OptionsPage constructor
@@ -44,6 +43,7 @@ export class OptionsPage implements OnInit, OnDestroy {
     public _app: App,
     public _alertCtrl: AlertController,
     public _loadingCtrl: LoadingController,
+    private _ngZone: NgZone,
     private _translate: TranslateService,
     private _userLanguageService: UserLanguageService) {
     _translate.setDefaultLang('en');
@@ -71,17 +71,9 @@ export class OptionsPage implements OnInit, OnDestroy {
     this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
 
     this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() => {
-      this._user = Users.collection.findOne({ _id: Meteor.userId() });
-      if (this._user.username) {
-        this._userName = this._user.username;
-      }
-      if (this._user.services.facebook) {
-        this._userName = this._user.profile.name;
-        this._imageProfile = "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
-      } else {
-        this._imageProfile = "assets/img/user_default_image.png";
-      }
-      this._userObservable = Users.find({}).zone();
+      this._ngZone.run(() => {
+        this._user = Users.findOne({ _id: Meteor.userId() });
+      });
     });
   }
 

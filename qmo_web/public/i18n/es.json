@@ -313,7 +313,8 @@
         "THURSDAY": "Jueves",
         "FRIDAY": "Viernes",
         "SATURDAY": "Sabado",
-        "SUNDAY": "Domingo"
+        "SUNDAY": "Domingo",
+        "HOLIDAY": "Festivo"
     },
     "PAYMENT_METHODS": {
         "CASH": "Efectivo",
@@ -594,6 +595,7 @@
         "FRIDAY": "Viernes",
         "SATURDAY": "Sabado",
         "SUNDAY": "Domingo",
+        "HOLIDAY": "Festivo",
         "MONDAY_LETTER": "Lu",
         "TUESDAY_LETTER": "Ma",
         "WEDNESDAY_LETTER": "Mi",
@@ -601,6 +603,7 @@
         "FRIDAY_LETTER": "Vi",
         "SATURDAY_LETTER": "Sa",
         "SUNDAY_LETTER": "Do",
+        "HOLIDAY_LETTER": "Fe",
         "ADD_SCHEDULE": "Agregar al Horario",
         "WEEKDAY": "Día de la semana",
         "OPENING_HOUR": "Hora de Apertura",
