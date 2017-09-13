@@ -35,6 +35,7 @@ export class ColombiaPaymentItemDetailComponent implements OnInit, OnDestroy {
      * ngOnInit Implementation. Find the items corresponding to RestaurantId
      */
     ngOnInit() {
+        this.removeSubscriptions();
         this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this.resCode).subscribe(() => {
             this._items = Items.find({_id: this.orderItem.itemId});
         });
@@ -44,6 +45,13 @@ export class ColombiaPaymentItemDetailComponent implements OnInit, OnDestroy {
      * ngOnDestroy Implementation
      */
     ngOnDestroy() {
-        this._itemsSub.unsubscribe();
+        this.removeSubscriptions();
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
     }
 }

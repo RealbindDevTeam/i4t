@@ -74,7 +74,7 @@ export class SigninWebComponent extends AuthClass implements OnInit {
                                         break;
                                     }
                                     case '200': {
-                                        this.router.navigate(['app/calls']);
+                                        this.validateUserIsActive('app/calls');
                                         break;
                                     }
                                     case '400': {
@@ -82,11 +82,11 @@ export class SigninWebComponent extends AuthClass implements OnInit {
                                         break;
                                     }
                                     case '500': {
-                                        this.router.navigate(['app/chef-orders']);
+                                        this.validateUserIsActive('app/chef-orders');
                                         break;
                                     }
                                     case '600': {
-                                        this.router.navigate(['app/dashboards']);
+                                        this.validateUserIsActive('app/dashboards');
                                         break;
                                     }
                                 }
@@ -102,6 +102,29 @@ export class SigninWebComponent extends AuthClass implements OnInit {
         else {
             this.router.navigate(['go-to-store']);
         }
+    }
+
+    /**
+     * Validate user is active
+     * @param _pRoute 
+     */
+    validateUserIsActive( _pRoute : string){
+        MeteorObservable.call('validateRestaurantIsActive').subscribe((_restaruantActive) => {
+            if(_restaruantActive){
+                
+                MeteorObservable.call('validateUserIsActive').subscribe((_active) => {
+                    if(_active){
+                        this.router.navigate([_pRoute]);
+                    } else {
+                        let confirmMsg = 'SIGNIN.USER_NO_ACTIVE';
+                        this.openDialog(this.titleMsg, '', confirmMsg, '', this.btnAcceptLbl, false);
+                    }
+                });
+            } else {
+                let confirmMsg = 'SIGNIN.RESTAURANT_NO_ACTIVE';
+                this.openDialog(this.titleMsg, '', confirmMsg, '', this.btnAcceptLbl, false);
+            }
+        });
     }
 
     /**

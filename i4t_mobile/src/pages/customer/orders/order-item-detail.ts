@@ -4,6 +4,7 @@ import { ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.c
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
 import { Items } from 'qmo_web/both/collections/administration/item.collection';
+import { ItemRestaurant } from 'qmo_web/both/models/administration/item.model';
 
 @Component({
     selector: 'order-item-detail',
@@ -64,18 +65,19 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
     * Function to get item avalaibility 
     */
     getItemAvailability(itemId: string): boolean {
-        let _itemRestaurant = Items.collection.findOne({ _id: itemId }, { fields: { restaurants: 1 } });
-        let aux = _itemRestaurant.restaurants.find(element => element.restaurantId === this.resCode);
-        return aux.isAvailable;
+        let _item = Items.find().fetch().filter((i) => i._id === itemId)[0];
+        if( _item ){
+            return ( _item.restaurants.filter( r => r.restaurantId === this.resCode )[0] ).isAvailable;
+        }
     }
 
     ngOnDestroy() {
-        this._imageThumbSub.unsubscribe();
-        this._itemsSub.unsubscribe();
+        if( this._imageThumbSub ){ this._imageThumbSub.unsubscribe(); }
+        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
     }
 
     ionViewWillLeave() {
-        this._imageThumbSub.unsubscribe();
-        this._itemsSub.unsubscribe();
+        if( this._imageThumbSub ){ this._imageThumbSub.unsubscribe(); }
+        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
     }
 }

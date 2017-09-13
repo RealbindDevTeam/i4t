@@ -32,8 +32,8 @@
     "OTHER": "Otro...",
     "VALUE": "Valor",
     "SIGN_OUT": "Cerrar Sesión",
-    "CHOOSE_A_DATE" : "Elige una fecha",
-    "UPLOAD_IMG_ERROR" : "Error de carga de la imagen. Solo acepta .png, .jpg, .jpeg files.",
+    "CHOOSE_A_DATE": "Elige una fecha",
+    "UPLOAD_IMG_ERROR": "Error de carga de la imagen. Solo acepta .png, .jpg, .jpeg files.",
     "LOGIN_SYSTEM_OPERATIONS_MSG": "Por favor inicie sesión para realizar operaciones en el sistema",
     "YES": "Si",
     "NO": "No",
@@ -101,7 +101,10 @@
         "SYSTEM_MSG": "Mensaje del sistema",
         "USER_PASS_INCORRECT": "El usuario y/o contraseña son incorrectos, por favor revisa los datos ingresados e intenta de nuevo",
         "ERROR": "Se ha presentado un error iniciando sesión",
-        "ACCEPT": "Aceptar"
+        "ACCEPT": "Aceptar",
+        "USER_NO_ACTIVE": "Tu usuario no se encuentra activo. Por favor contacta al administrador",
+        "RESTAURANT_NO_ACTIVE": "El restaurante no se encuentra activo. Por favor contacta al administrador",
+        "DONT_ACCOUNT": "No tienes cuenta?"
     },
     "RESET_PASWORD": {
         "TITLE": "Cambiar contraseña",
@@ -310,7 +313,8 @@
         "THURSDAY": "Jueves",
         "FRIDAY": "Viernes",
         "SATURDAY": "Sabado",
-        "SUNDAY": "Domingo"
+        "SUNDAY": "Domingo",
+        "HOLIDAY": "Festivo"
     },
     "PAYMENT_METHODS": {
         "CASH": "Efectivo",
@@ -457,7 +461,18 @@
         "EMAIL": "Correo Electronico",
         "MSG_INITIAL": "Administra la información de tus restaurantes",
         "CITY_OTHER": "Si la ciudad de tu restaurante no se encuentra en la opción de ciudades, escribela en el siguiente campo",
-        "WHICH_ONE": "Cual?"
+        "WHICH_ONE": "Cual?",
+        "INSTAGRAM_LINK_UPDATED": "Link de Instagram Actualizado",
+        "TWITTER_LINK_UPDATED": "Link de Twitter Actualizado",
+        "FACEBOOK_LINK_UPDATED": "Link de Facebook Actualizado",
+        "ADD_INSTAGRAM_LINK": "Agrega el link de tu pagina en Instagram para que tus clientes puedan verla",
+        "INSTAGRAM_LINK": "Link de tu pagina en Instagram",
+        "ADD_TWITTER_LINK": "Agrega el link de tu pagina en Twitter para que tus clientes puedan verla",
+        "TWITTER_LINK": "Link de tu pagina en Twitter",
+        "ADD_FACEBOOK_LINK": "Agrega el link de tu pagina en Facebook para que tus clientes puedan verla",
+        "FACEBOOK_LINK": "Link de tu pagina en Facebook",
+        "RESTAURANT_INACTIVE": "Restaurante Inactivo",
+        "RESTAURANT_ACTIVE": "Restaurante Activo"
     },
     "TABLES": {
         "TABLES_CREATION": "Creación de mesas",
@@ -509,7 +524,11 @@
         "MESSAGE_NOT_LOGIN": "Por favor ingresar al sistema para agregar un colaborador",
         "SELECT_RANGE_VALID_TABLES": "Seleccionar un rango valido de mesas",
         "TABLES_ASSIGNMENT": "Asignación de mesas",
-        "MESSAGE_COLLABORATOR_EDIT": "Colaborador actualizado exitosamente"
+        "MESSAGE_COLLABORATOR_EDIT": "Colaborador actualizado exitosamente",
+        "USER_EXISTS": "El usuario ya se encuentra en uso. Por favor ingrese otro nombre de usuario.",
+        "USERS_ROL": "Los usuarios con el rol ",
+        "PREFIX": " deben tener el prefijo ",
+        "USER_NAME_WILL_BE": "El nombre del usuario sera "
     },
     "ITEMS": {
         "ITEMS_MANAGEMENT": "Administracion de items",
@@ -576,6 +595,7 @@
         "FRIDAY": "Viernes",
         "SATURDAY": "Sabado",
         "SUNDAY": "Domingo",
+        "HOLIDAY": "Festivo",
         "MONDAY_LETTER": "Lu",
         "TUESDAY_LETTER": "Ma",
         "WEDNESDAY_LETTER": "Mi",
@@ -583,6 +603,7 @@
         "FRIDAY_LETTER": "Vi",
         "SATURDAY_LETTER": "Sa",
         "SUNDAY_LETTER": "Do",
+        "HOLIDAY_LETTER": "Fe",
         "ADD_SCHEDULE": "Agregar al Horario",
         "WEEKDAY": "Día de la semana",
         "OPENING_HOUR": "Hora de Apertura",
@@ -636,10 +657,10 @@
         "TEXT": "Ingresa la ubicacion del establecimiento para que los clientes te puedan ubicar mejor",
         "UPDATE_POSITION": "Actualizar Posicion",
         "CLOSE": "Cerrar",
-        "MSG_UPDATE_POSITION" : "Se ha actualizado la posicion del restaurante"
+        "MSG_UPDATE_POSITION": "Se ha actualizado la posicion del restaurante"
     },
     "RESTAURANT_INFO_MASTER": {
-        "TABLE_CODE": "Codigo de la Mesa",
+        "TABLE_CODE": "Numero de la Mesa",
         "INFORMATION": "Informacion",
         "SCHEDULE": "Horario",
         "LOCATION": "Ubicacion"
@@ -650,7 +671,7 @@
         "MESSAGE": "Lo sentimos. Este establecimiento no ha ingresado aun su ubicacion actual"
     },
     "ORDER_CREATE": {
-        "PRICE": "Precio",
+        "PRICE": "Precio Unitario",
         "VIEW_DETAIL": "Ver Detalle",
         "UNAVAILABLE": "No Disponible",
         "SELECT_ITEM": "Selecciona un ítem para ver el detalle",
@@ -664,7 +685,7 @@
         "ADDITIONS": "Adiciones",
         "SELECT_ADDITIONS": "Por favor seleccione las adiciones que desee",
         "TOTAL_PRICE": "Precio Total",
-        "ADD_ITEM": "Agregar Item a la Orden",
+        "ADD_ITEM": "Agregar a la Orden",
         "SHOW_ALL": "Mostrar todos",
         "COOKING_TIME": "Tiempo de Cocción",
         "ADD_ADDITIONS": "Selecciona las adiciones que desees agregar a la orden e indica su cantidad",
@@ -681,9 +702,10 @@
         "TOTAL": "Total",
         "STATUS": "Estado",
         "PRICE": "Precio",
+        "UNIT_PRICE": "Precio Unitario",
         "UNAVAILABLE": "No Disponible",
-        "CANCEL_ORDER": "Cancelar Orden",
-        "CONFIRM_ORDER": "Confirmar Orden",
+        "CANCEL_ORDER": "Cancelar",
+        "CONFIRM_ORDER": "Confirmar",
         "SELECT_ITEM": "Seleccione un Item para detallar, editar o eliminar de la orden",
         "QUANTITY": "Cantidad",
         "ITEM_UNAVAILABLE": "En este momento el item no se encuentra disponible para agregar a la orden",
@@ -695,8 +717,8 @@
         "ADDITIONS": "Adiciones",
         "SELECT_ADDITIONS": "Por favor seleccione las adiciones que desee",
         "TOTAL_PRICE": "Precio Total",
-        "MODIFY_ITEM": "Modificar Item",
-        "DELETE_ITEM": "Eliminar Item",
+        "MODIFY_ITEM": "Modificar",
+        "DELETE_ITEM": "Remover",
         "DELETE_ORDER": "Esta seguro de eliminar el item de la orden?",
         "CANCEL_ORDER_CONFIRM": "Esta seguro de cancelar la orden?",
         "ORDER_CANT_CANCEL": "La orden No se puede cancelar.",
@@ -727,7 +749,7 @@
         "COLOMBIA": {
             "GARNISH_FOOD": "Guarnicion",
             "ADDITION": "Adicion",
-            "ORDER_DETAILS": "Ver Detalle Ordenes",
+            "ORDER_DETAILS": "Detalle Ordenes",
             "PAY_ORDER": "Orden",
             "SUBTOTAL": "SubTotal",
             "INC": "Inc",
@@ -861,7 +883,7 @@
         "TOTAL": "Total",
         "CONFIRM": "Confirmar",
         "PENDING_ORDERS": "Mira las ordenes que se encuentran pendientes por confirmar para agregar a tu pago.",
-        "CONSULT_TABLE_ORDERS": "Consultar Ordenes",
+        "CONSULT_TABLE_ORDERS": "Agregar Orden",
         "CONSULT_TABLE_ORDERS_TITLE": "Ordenes de la Mesa",
         "CONSULT_TABLE_ORDERS_SUBTITLE_1": "Consulta las ordenes de tus acompañantes",
         "CONSULT_TABLE_ORDERS_SUBTITLE_2": "y selecciona aquellas que desees pagar",
@@ -949,7 +971,7 @@
         "TITLE": "Medio de pago",
         "SUBTITLE": "Por favor diligencia todos los campos para realizar el pago",
         "SELECT_METHOD": "Medio de pago *",
-        "CARD_NUMBER": "Número de tarjeta *",
+        "CARD_NUMBER": "Número de tarjeta (Sin espacion ni guiones) *",
         "EXPIRATION_YEAR": "Año de caducidad *",
         "EXPIRATION_MONTH": "Mes de caducidad *",
         "SECURITY_CODE": "Código de seguridad *",
@@ -963,7 +985,7 @@
         "SECURITY_CODE_REQUIRED": "- El código no puede estar vacio",
         "BILLING_INFORMATION": "Información de facturación",
         "PAYER_EMAIL": "Correo electrónico *",
-        "PAYER_FULLNAME": "Nombres y apellidos *",
+        "PAYER_FULLNAME": "Nombre impreso en tarjeta *",
         "EMAIL_INVALID": "- Formato de correo inválido",
         "EMAIL_MIN": "- El email debe tener mínimo 6 caracteres",
         "EMAIL_MAX": "- EL email debe tener máximo 255 caracteres",
@@ -998,7 +1020,9 @@
         "TRANSACTION_ERROR": "Error procesando la transacción",
         "TRANSACTION_MSG": "Puedes ir al menú Pagos > Historial de pagos, para revisar el estado de tus pagos",
         "PAY_ACCEPT": "Aceptar",
-        "AUTH_ERROR_MSG": "Los datos ingresados de tu tarjeta no coinciden, por favor verificalos"
+        "AUTH_ERROR_MSG": "Los datos ingresados de tu tarjeta no coinciden, por favor verificalos",
+        "FIRST_NAME": "Nombres",
+        "LAST_NAME": "Apellidos"
     },
     "RES_PAYMENT_HISTORY": {
         "TITLE": "Historial de pagos",
@@ -1007,6 +1031,7 @@
         "AMOUNT": "Valor",
         "ITEMS": "Items",
         "STATUS": "Estado",
+        "INVOICE": "Factura",
         "DATE_FILTER": "Filtro por año y mes:",
         "YEAR_FILTER": "Año",
         "MONTH_FILTER": "Mes",
@@ -1020,7 +1045,19 @@
         "VERIFY_ACCEPT": "Aceptar",
         "VERIFY_MSG": "Puedes consultar el estado de nuevo en 15 min",
         "MSG_INITIAL": "Aún no tienes pagos realizados",
-        "ALL_FILTER": "Todos"
+        "ALL_FILTER": "Todos",
+        "GENERATE_INVOICE": "Generar",
+        "INVOICE_LBL": "Factura de venta",
+        "NUMBER_LBL": "Número: ",
+        "DATE_LBL": "Fecha: ",
+        "CUSTOMER_LBL": "Cliente",
+        "DESCRIPTION_LBL": "Descripción",
+        "DESCRIPTION": "Servicio mensual Iurest",
+        "PERIOD_LBL": "Periodo",
+        "AMOUNT_LBL": "Valor sin IVA",
+        "SUBTOTAL": "SubTotal: ",
+        "IVA": "IVA: ",
+        "TOTAL": "Total: "
     },
     "TRANSACTION_STATUS": {
         "APPROVED": "Aprobado",
@@ -1112,18 +1149,25 @@
         "LABEL_LEGAL_END": "aceptas los terminos y condiciones."
     },
     "ADMIN_DASHBOARD": {
+        "TITLE" : "Te damos la bienvenida a Iurest",
+        "CARD_CONTENT" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "LINK" : {
+            "NEW_RESTAURANT" : "Restaurantes",
+            "NEW_COLLABORATOR" : "Colaboradores",
+            "ITEMS" : "Items",
+            "ENABLE-ITEMS" : "Habilitar items"
+        },
         "SALES": "Ventas ",
-        "USERS": "Usuarios",
-        "ACTIVES": "Activos",
-        "ITEMS": "Items",
+        "USERS": "Usuarios activos",
+        "ITEMS": "Items vendidos",
         "SOLD": "Vendidos",
         "ADDITIONS": "Adiciones",
         "GARNISHFOOD": "Guarniciones",
         "AVAILABLE": "Habilitados",
         "UNAVAILABLE": "Inhabilitados",
         "TABLES": "Mesas",
-        "FREE": "Libres",
-        "BUSY": "Ocupadas",
+        "FREE": "Mesas Libres",
+        "BUSY": "Mesas Ocupadas",
         "THERE_NOT_RESTAURANTS": "Aún no hay restaurantes registrados",
         "RESTAURANT_REGISTER": "Registrar restaurante",
         "MESSAGE": "Regístra uno para habilitar esta opción"
@@ -1137,5 +1181,31 @@
     "NOT_FOUND": {
         "PAGE_NOT_FOUND": "Esta página no esta disponible",
         "BACK": "Resgresar a"
+    },
+    "TOPNAV": {
+        "ORDERS": "Ordenes",
+        "PAYMENTS": "Pagos",
+        "WAITER": "Mesero",
+        "CALLS": "Llamados",
+        "MENU": "Menu",
+        "TABLES": "Mesas"
+    },
+    "CHANGE_TABLE": {
+        "THERE_IS_NOT_REST": "No te encuentras en un restaurante",
+        "THERE_IS_NOT_REST_MSG": "Ve a la opción de ordenes e ingresa el código",
+        "GO_TO_ORDERS": "Ir a ordenes",
+        "MSG_INITIAL": "Ingresa el Codigo de la Mesa a la cual te deseas cambiar",
+        "CANCEL": "Cancelar",
+        "ENTER": "Ingresar código",
+        "CHANGE_TABLE_OK": "El cambio de mesa se ha realizado correctamente",
+        "TABLE_DESTINY_NOT_EXISTS": "El codigo de la nueva mesa no existe. Por favor intenta nuevamente.",
+        "TABLE_DESTINY_NO_ACTIVE": "La mesa ingresada no esta activa para el servicio de Iurest",
+        "TABLE_DESTINY_NO_RESTAURANT": "El codigo de la mesa ingresada no pertenece al restaurante en el que te encuentras en este momento. Por favor intenta nuevamente.",
+        "PENDING_ORDERS": "Tienes ordenes pendientes por confirmar que afectan tu pago. Por favor revisa e intenta nuevamente.",
+        "ORDERS_PAY_PROCESS": "Tienes ordenes en proceso de pago. No es posible realizar hacer el cambio de mesa.",
+        "WAITER_CALL_PENDING": "Se encuentran llamados al mesero pendientes por atender. Una vez se atienda el llamado puedes realizar el cambio de mesa.",
+        "TABLE_DESTINY_STATUS_ERROR": "Se ha producido un error validando el estado de la nueva mesa. Por favor intenta nuevamente.",
+        "GENERAL_ERROR": "Se ha producido un error cambiando la mesa. Por favor intenta nuevamente.",
+        "SAME_TABLE_ERROR": "No es posible realizar la operacion con el codigo de mesa actual. Por favor revisa e intenta nuevamente."
     }
 }

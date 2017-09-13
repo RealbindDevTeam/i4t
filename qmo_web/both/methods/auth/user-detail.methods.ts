@@ -74,6 +74,17 @@ if (Meteor.isServer) {
             let count: number;
             count = UserDetails.collection.find({ user_id: this.userId }).count();
             return count;
+        },
+        /**
+         * Validate user is active
+         */
+        validateUserIsActive : function(){
+            let userDetail = UserDetails.collection.findOne({ user_id: this.userId });
+            if(userDetail){
+                return userDetail.is_active;
+            } else {
+                return false;
+            }
         }
     });
 }

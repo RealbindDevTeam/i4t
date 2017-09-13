@@ -53,7 +53,7 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
   private _userLang: string;
   private _currencyCode: string;
   private _type: string = "PAYMENT";
-  private _paymentMethod: string = "PAYMENT_METHODS.CASH";
+  private _paymentMethod: string = "MOBILE.PAYMENTS.SELECT_PAYMENT_METHOD";
   private _paymentCreated: boolean = false;
   private _ordersValidate: boolean = false;
   private _showAlertToConfirm: boolean = false;
@@ -85,6 +85,7 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+    this.removeSubscriptions();
     this._accountSubscription = MeteorObservable.subscribe('getAccountsByUserId', Meteor.userId()).subscribe(() => {
       this._account = Accounts.collection.find({}).fetch()[0];
     });
@@ -143,6 +144,7 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
    */
   ionViewWillEnter() {
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+    this.removeSubscriptions();
     this._accountSubscription = MeteorObservable.subscribe('getAccountsByUserId', Meteor.userId()).subscribe(() => {
       this._account = Accounts.collection.find({}).fetch()[0];
     });
@@ -429,24 +431,26 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
    * ionViewWillLeave Implementation. Subscription unsubscribe
    */
   ionViewWillLeave() {
-    this._accountSubscription.unsubscribe();
-    this._ordersSubscription.unsubscribe();
-    this._currencySubscription.unsubscribe();
-    this._restaurantsSubscription.unsubscribe();
-    this._waiterCallsPaySubscription.unsubscribe();
-    this._ordersTransSubscription.unsubscribe();
+    this.removeSubscriptions();
   }
 
   /**
    * ngOnDestroy Implementation. Subscription unsubscribe
    */
   ngOnDestroy() {
-    this._accountSubscription.unsubscribe();
-    this._ordersSubscription.unsubscribe();
-    this._currencySubscription.unsubscribe();
-    this._restaurantsSubscription.unsubscribe();
-    this._waiterCallsPaySubscription.unsubscribe();
-    this._ordersTransSubscription.unsubscribe();
+    this.removeSubscriptions();
+  }
+
+  /**
+   * Remove all subscriptions
+   */
+  removeSubscriptions():void{
+    if( this._accountSubscription ){ this._accountSubscription.unsubscribe(); }
+    if( this._ordersSubscription ){ this._ordersSubscription.unsubscribe(); }
+    if( this._currencySubscription ){ this._currencySubscription.unsubscribe(); }
+    if( this._restaurantsSubscription ){ this._restaurantsSubscription.unsubscribe(); }
+    if( this._waiterCallsPaySubscription ){ this._waiterCallsPaySubscription.unsubscribe(); }
+    if( this._ordersTransSubscription ){ this._ordersTransSubscription.unsubscribe(); }
   }
 
 }

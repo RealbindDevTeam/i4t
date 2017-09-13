@@ -1,0 +1,60 @@
+<md-card *ngIf="(restaurants | async)?.length <= 0" md-cell="12" class="demo-card demo-basic">
+        <md-card-content>
+            <div class="card_initial">
+                <div class="card_initial has-image">
+                    <div class="card_initial-image-container">
+                        <img class="card_initial-image" 
+                            src="/images/mesas.png"/>
+                    </div>
+                    <div class="card_initial-copy">
+                        <div class="card_initial-tagline">
+                            {{'SECTIONS.THERE_NOT_RESTAURANTS' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </md-card-content>
+    </md-card>
+    
+    <div *ngIf="(tables | async)?.length > 0" style="width: 100%">
+        <md-card>
+            <md-card-title>{{'TABLES.TABLES_SEARCH' | translate}} - {{restaurant_name}}</md-card-title>
+            <md-card-content>
+                <div *ngIf="show_cards">
+                    <md-checkbox [(ngModel)]="all_checked" [disabled]="enable_print" mdTooltip="{{tooltip_msg}}">{{'TABLES.SELECT_ALL' | translate}}</md-checkbox>
+                    <button md-raised-button class="secondary-button" type="button" (click)="printQrPdf()" style="margin-left: 10px;" [disabled]="enable_print"
+                        mdTooltip="{{tooltip_msg}}">
+                        <i class="fa fa-file-pdf-o" aria-hidden="true"></i> {{'TABLES.GENERATE_PDF' | translate}}
+                    </button>
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+    <br/>
+    <div *ngIf="show_cards">
+        <md-card id="qr-card" *ngFor="let table of tables | async" style="display: inline-block; margin-right: 20px; width:250px">
+            <md-card-header>
+                <md-card-title *ngFor="let rest of restaurants | async">
+                    <div *ngIf="rest._id == table.restaurantId">
+                        <label>{{rest.name}}</label>
+                    </div>
+                </md-card-title>
+                <md-card-subtitle>
+                    <label>{{'TABLES.TABLE_CODE' | translate}}: <strong>{{table.QR_code}}</strong> </label>
+                </md-card-subtitle>
+                <md-card-subtitle>
+                    <label>#{{table._number}}</label>
+                </md-card-subtitle>
+            </md-card-header>
+            <md-card-content>
+                <br/>
+                <label style="margin-left: 8px"></label>
+                <div align="center">
+                    <img style="width:100px;height:100px;" src='{{table.QR_URI}}'></img>
+                </div>
+                <div align="center" style="margin-top: 10px">
+                    <md-checkbox [checked]="all_checked" (change)="addToPrintArray(table, $event.checked)" [disabled]="enable_print">{{'TABLES.SELECT' | translate}}</md-checkbox>
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>

@@ -12,7 +12,7 @@ import style from './cc-payment-confirm.component.scss';
     selector: 'cc-payment-confirm',
     template,
     styles: [style],
-    providers: [ UserLanguageService ]
+    providers: [UserLanguageService]
 })
 
 export class CcPaymentConfirmComponent implements OnInit, OnDestroy {
@@ -27,14 +27,14 @@ export class CcPaymentConfirmComponent implements OnInit, OnDestroy {
      * @param {TranslateService} translate 
      * @param {UserLanguageService} _userLanguageService 
      */
-    constructor( public _dialogRef: MdDialogRef<any>, 
-                 private _zone: NgZone, 
-                 @Inject(MD_DIALOG_DATA) public data: any, 
-                 private translate: TranslateService,
-                 private _userLanguageService: UserLanguageService ) {
-        translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        translate.setDefaultLang( 'en' );
-
+    constructor(public _dialogRef: MdDialogRef<any>,
+        private _zone: NgZone,
+        @Inject(MD_DIALOG_DATA) public data: any,
+        private translate: TranslateService,
+        private _userLanguageService: UserLanguageService) {
+        translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        translate.setDefaultLang('en');
+        
         this._cardNumber = data.cardnumber.substring(data.cardnumber.length - 4);
     }
 

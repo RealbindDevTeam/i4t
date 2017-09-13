@@ -3,7 +3,7 @@
         <div class="login-form login-form-image signin">
             <div class="signup-logo">
                 <a [routerLink]="['/']">
-                    <img src="/images/logo_iurest_white.png">
+                    <img src="/images/logo_iurest_190_x_60.png">
                 </a>
                 <h3>{{'SIGNUP.SLOGAN' | translate}}</h3>
             </div>
@@ -43,8 +43,11 @@
                 -->
                 <button md-raised-button class="primary-button" type="submit" [disabled]="!signinForm.valid">{{'SIGNIN.START_SESSION' | translate}}</button>
             </form>
-            <div style="text-align: center">
+            <div style="text-align: center; padding-top: 10px">
                 <button style="margin: 0 auto" md-button (click)="openDialogForgotPassword()">{{'SIGNIN.FORGOT_PASSWORD' | translate}}</button>
+            </div>
+            <div style="text-align: center; padding-top: 10px">
+                {{'SIGNIN.DONT_ACCOUNT'| translate}} <span class="right-align"><a routerLink="/signup">{{'LANDING.SIGNUP' | translate}}</a></span>
             </div>
         </div>
     </div>

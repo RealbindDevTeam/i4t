@@ -140,5 +140,15 @@ Meteor.methods({
         } else {
             return null;
         }
+    },
+
+    validateRestaurantIsActive : function (){
+        let userDetail = UserDetails.collection.findOne({ user_id: this.userId });
+        if(userDetail){
+            let restaurant = Restaurants.collection.findOne({_id : userDetail.restaurant_work});
+            return restaurant.isActive;
+        } else {
+            return false;
+        }
     }
 });

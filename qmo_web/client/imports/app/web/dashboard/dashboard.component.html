@@ -1,3 +1,67 @@
+<md-card class="landing-welcome-card">
+    <md-card-content>
+        <div class="left-content custom">
+            <div class="content">
+                <md-card-title>
+                    {{'ADMIN_DASHBOARD.TITLE' | translate}}
+                </md-card-title>
+                <md-card-subtitle>
+                    {{'ADMIN_DASHBOARD.CARD_CONTENT' | translate}}
+                </md-card-subtitle>
+            </div>
+        </div>
+        <div class="action-links custom">
+            <a class="dashboard-links" [routerLink]="['/app/restaurant']">
+                <md-icon class="vertical-align-middle" md-tooltip="{{'ADMIN_DASHBOARD.LINK.NEW_RESTAURANT' | translate}}">store</md-icon>
+                {{'ADMIN_DASHBOARD.LINK.NEW_RESTAURANT' | translate}}
+            </a>
+            <a class="dashboard-links" [routerLink]="['/app/collaborators']">
+                <md-icon class="vertical-align-middle" md-tooltip="{{'ADMIN_DASHBOARD.LINK.NEW_COLLABORATOR' | translate}}">person</md-icon>
+                {{'ADMIN_DASHBOARD.LINK.NEW_COLLABORATOR' | translate}}
+            </a>
+            <a class="dashboard-links" [routerLink]="['/app/items']">
+                <md-icon class="vertical-align-middle" md-tooltip="{{'ADMIN_DASHBOARD.LINK.ITEMS' | translate}}">local_dining</md-icon>
+                {{'ADMIN_DASHBOARD.LINK.ITEMS' | translate}}
+            </a>
+            <a class="dashboard-links" [routerLink]="['/app/items-enable']">
+                <md-icon class="vertical-align-middle" md-tooltip="{{'ADMIN_DASHBOARD.LINK.ENABLE-ITEMS' | translate}}">check</md-icon>
+                {{'ADMIN_DASHBOARD.LINK.ENABLE-ITEMS' | translate}}
+            </a>
+        </div>
+    </md-card-content>
+</md-card>
+
+<md-card *ngFor="let restaurant of _restaurants | async" class="custom-cards">
+    <div>
+        <span class="mat-card-title title">{{restaurant.name}}</span>
+        <span class="mat-card-subtitle">{{restaurant.address}}</span>
+    </div>
+    <md-card-content>
+        <ul class="list">
+            <li>
+                <md-icon style="color: #81C784;" class="vertical-align-middle" md-tooltip="{{'ADMIN_DASHBOARD.SALES' | translate}}">local_atm</md-icon>
+                <label>{{getDailySales( restaurant._id)}} {{getRestaurantCurrency( restaurant.currencyId )}}</label>
+            </li>
+            <li>
+                <md-icon style="color: #90CAF9;" class="vertical-align-middle" md-tooltip="{{'ADMIN_DASHBOARD.USERS' | translate}}">person</md-icon>
+                <label>{{getRestaurantUsers( restaurant._id )}} {{'ADMIN_DASHBOARD.USERS' | translate}}</label>
+            </li>
+            <li>
+                <md-icon style="color: #81C784;" class="vertical-align-middle" md-tooltip="{{'ADMIN_DASHBOARD.FREE' | translate}}">check</md-icon>
+                <label>{{getTablesWithFreeStatus( restaurant._id )}} {{'ADMIN_DASHBOARD.FREE' | translate}}</label>
+            </li>
+            <li>
+                <md-icon style="color: #EF5350;" class="vertical-align-middle" md-tooltip="{{'ADMIN_DASHBOARD.BUSY' | translate}}">not_interested</md-icon>
+                <label>{{getTablesWithBusyStatus( restaurant._id )}} {{'ADMIN_DASHBOARD.BUSY' | translate}}</label>
+            </li>
+            <li>
+                <md-icon style="color: #FDD835;" class="vertical-align-middle" md-tooltip="{{'ADMIN_DASHBOARD.ITEMS' | translate}}">thumb_up</md-icon>
+                <label>{{getItemsSold( restaurant._id )}} {{'ADMIN_DASHBOARD.ITEMS' | translate}}</label>
+            </li>
+        </ul>
+    </md-card-content>
+</md-card>
+
 <md-card md-cell="12" class="demo-card demo-basic" *ngIf="(_restaurants | async)?.length <= 0">
     <md-card-content>
         <div class="card_initial">
@@ -21,35 +85,3 @@
         </div>
     </md-card-content>
 </md-card>
-<div *ngIf="(_restaurants | async)?.length > 0">
-  <div *ngFor="let restaurant of _restaurants | async">
-    <div class="flex-container layout-row layout-column-sm widgets">
-      <md-card class="flex-item widget">
-        <md-card-content class="layout-stretch-between layout-row">
-          <div class="layout-column">
-            <md-list>
-                <md-list-item>
-                    <img md-list-avatar style="border-radius: 50%;width: 120px;height: 120px;margin-top: 2rem;" src="{{ getRestaurantId( restaurant._id ) }}">
-                    <h2 md-line>{{restaurant.name}}</h2>
-                </md-list-item>
-            </md-list>
-          </div>
-        </md-card-content>
-      </md-card>
-      <core-widget icon="local_atm" [count]="getDailySales( restaurant._id )" title="{{'ADMIN_DASHBOARD.SALES' | translate}} {{_currentDate | date: 'dd/MM/yyyy' }}" description="{{getRestaurantCurrency( restaurant.currencyId )}}" hexColor="#546E7A"></core-widget>
-    </div>
-    <div class="flex-container layout-row layout-column-sm widgets">
-        <core-widget icon="person" [count]="getRestaurantUsers( restaurant._id )" title="{{'ADMIN_DASHBOARD.USERS' | translate}}" description="{{'ADMIN_DASHBOARD.ACTIVES' | translate}}" hexColor="#546E7A"></core-widget>
-        <core-widget icon="thumb_up" [count]="getItemsSold( restaurant._id )" title="{{'ADMIN_DASHBOARD.ITEMS' | translate}}" description="{{'ADMIN_DASHBOARD.SOLD' | translate}}" hexColor="#F0BD4F"></core-widget>
-        <core-widget icon="local_cafe" [count]="getAdditionsSold( restaurant._id )" title="{{'ADMIN_DASHBOARD.ADDITIONS' | translate}}" description="{{'ADMIN_DASHBOARD.SOLD' | translate}}" hexColor="#4CAF50"></core-widget>
-        <core-widget icon="assignment_turned_in" [count]="getGarnishFoodSold( restaurant._id )" title="{{'ADMIN_DASHBOARD.GARNISHFOOD' | translate}}" description="{{'ADMIN_DASHBOARD.SOLD' | translate}}" hexColor="#EF5350"></core-widget>
-    </div>
-    <div class="flex-container layout-row layout-column-sm widgets">
-        <core-widget icon="done_all" [count]="getAvailableItems( restaurant._id )" title="{{'ADMIN_DASHBOARD.ITEMS' | translate}}" description="{{'ADMIN_DASHBOARD.AVAILABLE' | translate}}" hexColor="#546E7A"></core-widget>
-        <core-widget icon="warning" [count]="getNotAvailableItems( restaurant._id )" title="{{'ADMIN_DASHBOARD.ITEMS' | translate}}" description="{{'ADMIN_DASHBOARD.UNAVAILABLE' | translate}}" hexColor="#F0BD4F"></core-widget>
-        <core-widget icon="local_dining" [count]="getTablesWithFreeStatus( restaurant._id )" title="{{'ADMIN_DASHBOARD.TABLES' | translate}}" description="{{'ADMIN_DASHBOARD.FREE' | translate}}" hexColor="#4CAF50"></core-widget>
-        <core-widget icon="room_service" [count]="getTablesWithBusyStatus( restaurant._id )" title="{{'ADMIN_DASHBOARD.TABLES' | translate}}" description="{{'ADMIN_DASHBOARD.BUSY' | translate}}" hexColor="#EF5350"></core-widget>
-    </div>
-    <md-divider></md-divider>
-  </div>
-</div>

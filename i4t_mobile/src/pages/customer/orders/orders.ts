@@ -9,6 +9,7 @@ import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collectio
 import { Items } from 'qmo_web/both/collections/administration/item.collection';
 import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantImageThumbs } from 'qmo_web/both/collections/restaurant/restaurant.collection';
+import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 import { Storage } from '@ionic/storage';
@@ -24,29 +25,31 @@ import { Currencies } from 'qmo_web/both/collections/general/currency.collection
 })
 export class OrdersPage implements OnInit, OnDestroy {
 
-    private _userDetailSub: Subscription;
-    private _restaurantSub: Subscription;
-    private _ordersSub: Subscription;
-    private _additionsSub: Subscription;
-    private _itemsSub: Subscription;
-    private _restaurantThumbSub: Subscription;
-    private _currencySub: Subscription;
+    private _userDetailSub      : Subscription;
+    private _restaurantSub      : Subscription;
+    private _tablesSub          : Subscription;
+    private _ordersSub          : Subscription;
+    private _additionsSub       : Subscription;
+    private _itemsSub           : Subscription;
+    private _restaurantThumbSub : Subscription;
+    private _currencySub        : Subscription;
 
-    private _userLang: string;
-    private _table_code: string = "";
-    private _res_code: string = "";
-    private _statusArray: string[];
-    private _currentUserId: string;
-    private _orderIndex: number = -1;
-    private selected: string = "";
-    private _currencyCode: string = "";
+    private _userLang      : string;
+    private _table_code    : string = "";
+    private _res_code      : string = "";
+    private _statusArray   : string[];
+    private _currentUserId : string;
+    private _orderIndex    : number = -1;
+    private selected       : string = "";
+    private _currencyCode  : string = "";
 
+    private _restaurants : any;
+    private _table       : any;
+    private _additions   : any;
     private _userDetail;
     private _orders;
     private _allOrders;
-    private _restaurants;
     private _items;
-    private _additions: any;
 
 
     constructor( public _navCtrl: NavController, 
@@ -64,18 +67,29 @@ export class OrdersPage implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         this.removeSubscriptions();
-        this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
-            this._ngZone.run(() => {
-                this._restaurants = Restaurants.findOne({});
-            });
-        });
+        this.init();
+    }
 
+    ionViewWillEnter() {
+        this.init();
+    }
+
+    init(){
+        this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );        
         this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe(() => {
             this._ngZone.run(() => {
                 this._userDetail = UserDetails.findOne({ user_id: Meteor.userId() });
                 this._res_code = this._userDetail.current_restaurant;
+                if(this._userDetail){
+                    this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
+                        this._ngZone.run(() => {
+                            this._tablesSub = MeteorObservable.subscribe('getTableById', this._userDetail.current_table).subscribe();
+                            this._restaurants = Restaurants.findOne({ _id : this._userDetail.current_restaurant });
+                            this._table = Tables.findOne({ _id : this._userDetail.current_table });
+                        });
+                    });
+                }
             });
         });
 
@@ -129,34 +143,6 @@ export class OrdersPage implements OnInit, OnDestroy {
     }
 
     ionViewDidLoad() {
-    }
-
-    ionViewWillEnter() {
-        this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        this.removeSubscriptions();
-        this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
-            this._restaurants = Restaurants.findOne({});
-        });
-
-        this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
-
-        this._ordersSub = MeteorObservable.subscribe('getOrdersByUserId', Meteor.userId(), this._statusArray).subscribe(() => {
-            this._orders = Orders.find({ status: { $in: this._statusArray } });
-            this._allOrders = Orders.find({ status: { $in: this._statusArray } });
-        });
-        this._itemsSub = MeteorObservable.subscribe('itemsByUser', Meteor.userId()).subscribe(() => {
-            this._items = Items.find({});
-        });
-
-        this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByUserId', Meteor.userId()).subscribe();
-
-        this._currencySub = MeteorObservable.subscribe('getCurrenciesByCurrentUser', Meteor.userId()).subscribe(() => {
-            this._ngZone.run(() => {
-                if(Currencies.find({}).fetch().length > 0) {
-                    this._currencyCode = Currencies.find({}).fetch()[0].code;
-                }
-            });
-        });
     }
 
     filterOrders(orders_selected) {
@@ -348,6 +334,7 @@ export class OrdersPage implements OnInit, OnDestroy {
     removeSubscriptions():void{
         if(this._restaurantSub) {this._restaurantSub.unsubscribe();}
         if(this._ordersSub) {this._ordersSub.unsubscribe();}
+        if(this._tablesSub) {this._tablesSub.unsubscribe();}
         if(this._itemsSub) {this._itemsSub.unsubscribe();}
         if(this._restaurantThumbSub) {this._restaurantThumbSub.unsubscribe();}
         if(this._userDetailSub) {this._userDetailSub.unsubscribe();}
