@@ -1,52 +1,56 @@
-<md-card md-cell="12" class="demo-card demo-basic" *ngIf="(_restaurants | async)?.length <= 0">
-    <md-card-content>
-        <div class="card_initial">
-            <div class="card_initial has-image">
-                <div class="card_initial-image-container">
-                    <img class="card_initial-image" 
-                        src="/images/items.png"/>
-                </div>
-                <div class="card_initial-copy">
-                    <div class="card_initial-tagline">
-                        {{'SECTIONS.THERE_NOT_RESTAURANTS' | translate}}
+<div [hidden]="_thereAreRestaurants">
+    <md-card md-cell="12" class="demo-card demo-basic">
+        <md-card-content>
+            <div class="card_initial">
+                <div class="card_initial has-image">
+                    <div class="card_initial-image-container">
+                        <img class="card_initial-image" 
+                            src="/images/items.png"/>
                     </div>
-                    <div class="card_initial-additional-links">
-                        {{'SECTIONS.MESSAGE' | translate}}
+                    <div class="card_initial-copy">
+                        <div class="card_initial-tagline">
+                            {{'SECTIONS.THERE_NOT_RESTAURANTS' | translate}}
+                        </div>
+                        <div class="card_initial-additional-links">
+                            {{'SECTIONS.MESSAGE' | translate}}
+                        </div>
                     </div>
-                </div>
-                <div class="card_initial-button">
-                    <button md-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
+                    <div class="card_initial-button">
+                        <button md-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </md-card-content>
-</md-card>
+        </md-card-content>
+    </md-card>
+</div>
 
-<md-card *ngIf="(_restaurants | async)?.length > 0 && (_items | async)?.length <= 0" md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
-    <md-card-content>
-        <div class="card_initial">
-            <div class="card_initial has-image">
-                <div class="card_initial-image-container">
-                    <img class="card_initial-image" 
-                        src="/images/platos.png"/>
-                </div>
-                <div class="card_initial-copy">
-                    <div class="card_initial-tagline">
-                        {{ 'ITEMS.MSG_INITIAL' | translate }}
+<div [hidden]="!_thereAreRestaurants && _thereAreItems">
+    <md-card *ngIf="(_restaurants | async)?.length > 0 && (_items | async)?.length <= 0" md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
+        <md-card-content>
+            <div class="card_initial">
+                <div class="card_initial has-image">
+                    <div class="card_initial-image-container">
+                        <img class="card_initial-image" 
+                            src="/images/platos.png"/>
                     </div>
-                    <div class="card_initial-additional-links">
-                        
+                    <div class="card_initial-copy">
+                        <div class="card_initial-tagline">
+                            {{ 'ITEMS.MSG_INITIAL' | translate }}
+                        </div>
+                        <div class="card_initial-additional-links">
+                            
+                        </div>
                     </div>
-                </div>
-                <div class="card_initial-button">
-                    <button md-raised-button (click)="openItemCreation()">{{'ITEMS.CREATE_NEW_ITEM' | translate}}</button>
+                    <div class="card_initial-button">
+                        <button md-raised-button (click)="openItemCreation()">{{'ITEMS.CREATE_NEW_ITEM' | translate}}</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </md-card-content>
-</md-card>
+        </md-card-content>
+    </md-card>
+</div>
 
-<div class="main" *ngIf="(_restaurants | async)?.length > 0 &&  (_items | async)?.length > 0">
+<div class="main" [hidden]="!_thereAreRestaurants && !_thereAreItems">
     <div class="main-overflow">
         <md-card id="card-main" class="custom-cards" *ngFor="let item of _items | async">
                 <div class="header-card">

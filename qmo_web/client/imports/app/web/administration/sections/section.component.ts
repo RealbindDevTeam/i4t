@@ -40,6 +40,7 @@ export class SectionComponent implements OnInit, OnDestroy {
     private _showRestaurants        : boolean = true;
     private titleMsg                : string;
     private btnAcceptLbl            : string;
+    private _thereAreRestaurants    : boolean = true;
 
     /**
      * SectionComponent constructor
@@ -77,7 +78,7 @@ export class SectionComponent implements OnInit, OnDestroy {
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
             this._ngZone.run(() => {
                 this._restaurants = Restaurants.find( { } ).zone();
-                this._restaurants.subscribe( () => { this.createRestaurantForm(); });
+                this._restaurants.subscribe( () => { this.createRestaurantForm(); this.countRestaurants(); });
             });
         });
 
@@ -86,6 +87,13 @@ export class SectionComponent implements OnInit, OnDestroy {
                 this._sections = Sections.find( { } ).zone();        
             });
         });
+    }
+
+    /**
+     * Validate if restaurants exists
+     */
+    countRestaurants():void{
+        Restaurants.find( { } ).fetch().length > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
     }
 
     /**

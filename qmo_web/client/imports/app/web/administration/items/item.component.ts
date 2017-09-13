@@ -26,17 +26,20 @@ import style from './item.component.scss';
 })
 export class ItemComponent implements OnInit, OnDestroy {
 
-    private _itemsSub           : Subscription;
-    private _itemImagesThumbSub : Subscription;
-    private _currenciesSub      : Subscription;
-    private _restaurantSub      : Subscription;
+    private _user = Meteor.userId();
+    private _itemsSub               : Subscription;
+    private _itemImagesThumbSub     : Subscription;
+    private _currenciesSub          : Subscription;
+    private _restaurantSub          : Subscription;
 
-    private _items              : Observable<Item[]>;
-    private _restaurants        : Observable<Restaurant[]>;
+    private _items                  : Observable<Item[]>;
+    private _restaurants            : Observable<Restaurant[]>;
 
-    public _dialogRef           : MdDialogRef<any>;
-    private titleMsg            : string;
-    private btnAcceptLbl        : string;
+    public _dialogRef               : MdDialogRef<any>;
+    private titleMsg                : string;
+    private btnAcceptLbl            : string;
+    private _thereAreRestaurants    : boolean = true;
+    private _thereAreItems          : boolean = true;
 
     /**
      * ItemComponent contructor
@@ -64,16 +67,35 @@ export class ItemComponent implements OnInit, OnDestroy {
      */
     ngOnInit(){
         this.removeSubscriptions();
-        this._items = Items.find( { } ).zone();
-        this._itemsSub = MeteorObservable.subscribe( 'items', Meteor.userId() ).subscribe();
-        this._itemImagesThumbSub = MeteorObservable.subscribe( 'itemImageThumbs', Meteor.userId() ).subscribe();
+        this._itemsSub = MeteorObservable.subscribe( 'items',this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._items = Items.find( { } ).zone();
+                this._items.subscribe( () => { this.countItems(); } );
+            });
+        });
+        this._itemImagesThumbSub = MeteorObservable.subscribe( 'itemImageThumbs', this._user ).subscribe();
         this._currenciesSub = MeteorObservable.subscribe( 'currencies' ).subscribe();
-        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', Meteor.userId() ).subscribe( () => {
+        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
             this._ngZone.run( () => {
                 this._restaurants = Restaurants.find( { } ).zone();
+                this._restaurants.subscribe( () => { this.countRestaurants(); } );
             });
         });
    }
+
+    /**
+     * Validate if restaurants exists
+     */
+    countRestaurants():void{
+        Restaurants.find( { } ).fetch().length > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
+    }
+
+    /**
+     * Validate if items exists
+     */
+    countItems():void{
+        Items.find( { } ).fetch().length > 0 ? this._thereAreItems = true : this._thereAreItems = false;
+    }
 
    /**
     * Remove all subscriptions
