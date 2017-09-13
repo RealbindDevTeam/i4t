@@ -1,15 +1,15 @@
 {
-    "PAYMENT_METHODS.CASH" : "Cash",
-    "PAYMENT_METHODS.CREDIT_CARD" : "Credit card",
-    "PAYMENT_METHODS.DEBIT_CARD" : "Debit card",
-    "PAYMENT_METHODS.ONLINE" : "Online",
+    "PAYMENT_METHODS.CASH": "Cash",
+    "PAYMENT_METHODS.CREDIT_CARD": "Credit card",
+    "PAYMENT_METHODS.DEBIT_CARD": "Debit card",
+    "PAYMENT_METHODS.ONLINE": "Online",
     "ORDER_STATUS": {
         "REGISTERED": "Registered",
         "IN_PROCESS": "In Process",
         "PREPARED": "Prepared",
         "CANCELED": "Canceled",
         "DELIVERED": "Delivered",
-        "PENDING_CONFIRM" : "Pending confirmation for payment"
+        "PENDING_CONFIRM": "Pending confirmation for payment"
     },
     "MOBILE": {
         "CANCEL": "Cancel",
@@ -30,12 +30,12 @@
         "UPDATE": "Update",
         "MODIFY": "Modify",
         "CHOOSE_FILE": "Choose a file",
-        "CLOSE" : "Close",
-        "VIEW" : "View",
-        "OK" : "Ok",
-        "LANGUAGE" : {
-            "es" : "Spanish",
-            "en" : "English"
+        "CLOSE": "Close",
+        "VIEW": "View",
+        "OK": "Ok",
+        "LANGUAGE": {
+            "es": "Spanish",
+            "en": "English"
         },
         "INITIAL": {
             "SIGNUP": "Sign Up",
@@ -59,7 +59,7 @@
             "CONFIRM_TITLE": "User created",
             "CONFIRM_SUBTITLE": "Now you can enjoy iurest",
             "CONFIRM_BTN": "Ok",
-            "OR" : "or",
+            "OR": "or",
             "SYSTEM_MSG": "System message",
             "USER_EMAIL_EXISTS": "Username and/or email already exists, please check the entered info and try again",
             "ERROR": "An error has occurred registering user",
@@ -118,8 +118,8 @@
                 "CONFIRM_BTN": "Ok",
                 "ERROR_TITLE": "Error"
             },
-            "SIGN_OUT":"Sign out",
-            "MSG_COMFIRM" : "Your data has been updated"
+            "SIGN_OUT": "Sign out",
+            "MSG_COMFIRM": "Your data has been updated"
         },
         "CODE_TYPE_SELECT": {
             "TITTLE": "Code type",
@@ -155,9 +155,9 @@
             "TOTAL": "Total: ",
             "STATUS": "Status: ",
             "ADD_ADDITIONS": "Select the additions you wish to add to the order and indicate the quantity",
-            "ADD_ADDITION_ORDER" : "Add addition to the order",
+            "ADD_ADDITION_ORDER": "Add addition to the order",
             "ADDITON_AGGREGATED": "Correct Aggregate Addition",
-            "ADDITION" : "(Addition)",
+            "ADDITION": "(Addition)",
             "MODIFY_ADDITION_ORDER": "Modify Addition",
             "DELETE_ADDITION_ORDER": "Delete Addition",
             "DELETE_ADDITION_CONFIRM": "Are you sure to delete the addition from the order?",
@@ -167,7 +167,7 @@
             "TABLE_NOT_EXISTS": "The table does not exist. Please check the code",
             "TABLE_NO_ACTIVE": "The table does not have the Iurest service active. It is not possible to enter",
             "IUREST_NO_ACTIVE": "The restaurant does not have the Iurest service active. It is not possible to enter",
-            "TABLE" : "Table"
+            "TABLE": "Table"
         },
         "ORDER_PAYMENT_TRANS": {
             "ORDER_TO_CONFIRM": "Confirm those orders that other users wish to pay for you.",
@@ -212,64 +212,64 @@
             "TOTAL_BILL": "Total bill",
             "TOTAL_PAY": "Total pay",
             "PAY_BTN": "Pay",
-            "PAY_DETAIL_TITTLE":"Detail of the orders",
-            "PAY_ORDER":"Order",
-            "SUBTOTAL":"SubTotal",
-            "INC":"Inc",
-            "TOTAL":"Total",
-            "TIPS":"Tip",
-            "TOTAL_TO_PAY":"Total to pay",
-            "TIPS_OTHER_VALUE" : "Other value",
-            "MODAL_TITLE" : "Payment options",
-            "TITLE_SERVICES_INCLUDE" : "¿Want you include the service?",
-            "CONTENT_SERVICES_INCLUDE_INIT" : "Keep in mind that the tip suggested of the restaurant is equivalent to",
-            "CONTENT_SERVICES_INCLUDE_END" : "of your total account, but you can modify it",
-            "TIP" : "Tip",
-            "TIP_OTHER_VALUE" : "Other value",
-            "SELECT_PAYMENT_METHOD" : "Select payment method",
-            "CONFIRM_PAYMENT_METHOD" : "You must select a payment method",
-            "ADD_ORDER_PAYMENT" : "Add order to account",
-            "BTN_PAY" : "Pay",
-            "CONFIRM_TO_ADD_ACCOUNT" : "¿Want you to pay the order",
-            "CONFIRM_OWNER_ORDER" : "The owner of the order must confirm the request for payment",
-            "CONFIRM_ORDER_STATUS" : "The order has not been delivered",
-            "CONFIRM_PAY_OTHER_USER" : "¿You want to transfer order payment",
-            "SUCCESSFUL_PAY_OTHER_USER" : "Payment of order has been transferred",
-            "PAYMENTS_TO_BE_CONFIRM" : "You have pending orders by confirmation",
-            "MOMENT_ANSWER" : "In a moment we will answer you",
-            "MOMENT_PAY_ANSWER" : "In a moment we will receive your payment",
-            "PAY_CONFIRM_MODAL" : "No payments received",
-            "SELECT_ALL_PAYMENTS" : "Select all payments",
-            "PAY_PENDING" : "Payment pending to receive",
+            "PAY_DETAIL_TITTLE": "Detail of the orders",
+            "PAY_ORDER": "Order",
+            "SUBTOTAL": "SubTotal",
+            "INC": "Inc",
+            "TOTAL": "Total",
+            "TIPS": "Tip",
+            "TOTAL_TO_PAY": "Total to pay",
+            "TIPS_OTHER_VALUE": "Other value",
+            "MODAL_TITLE": "Payment options",
+            "TITLE_SERVICES_INCLUDE": "¿Want you include the service?",
+            "CONTENT_SERVICES_INCLUDE_INIT": "Keep in mind that the tip suggested of the restaurant is equivalent to",
+            "CONTENT_SERVICES_INCLUDE_END": "of your total account, but you can modify it",
+            "TIP": "Tip",
+            "TIP_OTHER_VALUE": "Other value",
+            "SELECT_PAYMENT_METHOD": "Select payment method",
+            "CONFIRM_PAYMENT_METHOD": "You must select a payment method",
+            "ADD_ORDER_PAYMENT": "Add order to account",
+            "BTN_PAY": "Pay",
+            "CONFIRM_TO_ADD_ACCOUNT": "¿Want you to pay the order",
+            "CONFIRM_OWNER_ORDER": "The owner of the order must confirm the request for payment",
+            "CONFIRM_ORDER_STATUS": "The order has not been delivered",
+            "CONFIRM_PAY_OTHER_USER": "¿You want to transfer order payment",
+            "SUCCESSFUL_PAY_OTHER_USER": "Payment of order has been transferred",
+            "PAYMENTS_TO_BE_CONFIRM": "You have pending orders by confirmation",
+            "MOMENT_ANSWER": "In a moment we will answer you",
+            "MOMENT_PAY_ANSWER": "In a moment we will receive your payment",
+            "PAY_CONFIRM_MODAL": "No payments received",
+            "SELECT_ALL_PAYMENTS": "Select all payments",
+            "PAY_PENDING": "Payment pending to receive",
             "PENDING_PAYMENT_MSG": "In a moment a waiter will receive your payment(s)",
             "RETURN_ORDER_USER": "¿Do you want to return the order to the user?",
-            "ORDER_RETURNED" : "Order returned",
+            "ORDER_RETURNED": "Order returned",
             "GARNISH_FOOD": "Garnish Food",
             "ADDITION": "Addition",
-            "PAY_DETAIL" : "Payment Detail",
-            "NO_PAYED" : "No payed",
-            "PAYED" : "Payed"
+            "PAY_DETAIL": "Payment Detail",
+            "NO_PAYED": "No payed",
+            "PAYED": "Payed"
         },
         "WAITER_CALL": {
             "TITTLE": "Call waiter",
             "CONTENT": "Press the button to call the waiter",
-            "THERE_IS_NOT_CODE_REST" : "!Ups¡ You are not in any restaurant",
-            "THERE_IS_NOT_CODE_REST_INS" : "Go to the order option and enter the code to call the waiter",
-            "RECEIVE_CALL" : "We receive your call!",
-            "ONE_MOMENT" : "In a moment we will answer you",
-            "TITLE_PROMPT" : "Request close",
-            "CONTENT_PROMPT" : "¿Want you close the client request?",
-            "LOADING" : "Please wait...",
-            "MSG_COMFIRM" : "Request closed",
-            "TURN" :"Turn",
-            "TABLE" :"Table",
-            "CALL_LABEL_SEND_ORDER" : "Order to deliver",
-            "CALL_LABEL_CUSTOMER" : "Customer's call",
-            "CALL_LABEL_CUSTOMER_PAYMENT" : "Customer's payment",
-            "PAY_CONFIRM" : "Payment confirm",
-            "PAY_CLOSE" : "Close payments received",
-            "NO_WAITERS" : "No waiters assignment in the restaurant",
-            "ALPHANUMERIC_CODE" : "Table code"
+            "THERE_IS_NOT_CODE_REST": "!Ups¡ You are not in any restaurant",
+            "THERE_IS_NOT_CODE_REST_INS": "Go to the order option and enter the code to call the waiter",
+            "RECEIVE_CALL": "We receive your call!",
+            "ONE_MOMENT": "In a moment we will answer you",
+            "TITLE_PROMPT": "Request close",
+            "CONTENT_PROMPT": "¿Want you close the client request?",
+            "LOADING": "Please wait...",
+            "MSG_COMFIRM": "Request closed",
+            "TURN": "Turn",
+            "TABLE": "Table",
+            "CALL_LABEL_SEND_ORDER": "Order to deliver",
+            "CALL_LABEL_CUSTOMER": "Customer's call",
+            "CALL_LABEL_CUSTOMER_PAYMENT": "Customer's payment",
+            "PAY_CONFIRM": "Payment confirm",
+            "PAY_CLOSE": "Close payments received",
+            "NO_WAITERS": "No waiters assignment in the restaurant",
+            "ALPHANUMERIC_CODE": "Table code"
         },
         "SECTIONS": {
             "MENU": "Menu",
@@ -294,8 +294,8 @@
             "LOADING_MSG": "Adding to order ...",
             "TOAST_MSG": "Item was added successfully",
             "WAIT_QR": "Please wait ...",
-            "TIME" : "Approximate Cooking Time:",
-            "ADDITION" : "Adiciones"
+            "TIME": "Approximate Cooking Time:",
+            "ADDITION": "Adiciones"
         },
         "ITEM_EDIT": {
             "MODIFY": "Modify",
@@ -321,23 +321,39 @@
             "ORDER_DELIVERED": "Order Delivered",
             "ORDER_DETAIL": "Order detail"
         },
-        "PAYMENTS_HISTORY" : {
+        "PAYMENTS_HISTORY": {
             "TITLE": "Payments history",
-            "TOTAL" : "Total",
-            "TIP" : "Tip",
-            "TOTAL_ORDERS" : "Order total",
-            "NO_PAYMENTS" : "You have no payments yet"
+            "TOTAL": "Total",
+            "TIP": "Tip",
+            "TOTAL_ORDERS": "Order total",
+            "NO_PAYMENTS": "You have no payments yet"
         },
-        "WAITER_OPTIONS" : {
-            "CALLS" : "Home",
-            "SETTINGS" : "Settings"
+        "CHANGE_TABLE": {
+            "TITLE": "Change table",
+            "NO_RESTAURANT": "You are not in a restaurant yet",
+            "CONTENT": "Select the code type to change the table",
+            "DIALOG_ALERT": "Message",
+            "CHANGE_TABLE_OK": "The table change was successful",
+            "TABLE_DESTINY_NOT_EXISTS": "The code for the new table does not exist. Please try again.",
+            "TABLE_DESTINY_NO_ACTIVE": "The table entered is not active for the Iurest service",
+            "TABLE_DESTINY_NO_RESTAURANT": "The code of the table entered does not belong to the restaurant where you are at the moment. Please try again.",
+            "PENDING_ORDERS": "You have pending orders to confirm affecting your payment. Please check and try again.",
+            "ORDERS_PAY_PROCESS": "You have orders in process of payment. It is not possible to make the change of table.",
+            "WAITER_CALL_PENDING": "They are called to the waiter waiting to be served. Once the call is answered you can change the table.",
+            "TABLE_DESTINY_STATUS_ERROR": "An error occurred while validating the status of the new table. Please try again.",
+            "GENERAL_ERROR": "An error occurred while changing the table. Please try again.",
+            "SAME_TABLE_ERROR": "It is not possible to perform the operation with the actual table code. Please check and try again."
         },
-        "SIGN_OUT" : {
-            "TITLE_CONFIRM" : "SIGNOUT",
-            "CONTENT_CONFIRM" : "Are you sure to leave the application?",
-            "NO_BTN" : "No",
-            "YES_BTN" : "Yes",
-            "LOADING" : "Please wait..."
+        "WAITER_OPTIONS": {
+            "CALLS": "Home",
+            "SETTINGS": "Settings"
+        },
+        "SIGN_OUT": {
+            "TITLE_CONFIRM": "SIGNOUT",
+            "CONTENT_CONFIRM": "Are you sure to leave the application?",
+            "NO_BTN": "No",
+            "YES_BTN": "Yes",
+            "LOADING": "Please wait..."
         }
     },
     "CURRENCIES": {
