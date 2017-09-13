@@ -20,14 +20,14 @@ export const ItemImageThumbsStore = new UploadFS.store.GridFS({
       remove: loggedIn
     }),
     transformWrite(from, to, fileId, file) {
-      // Resize to 100x100
+      // Resize to 150x150
       //var require: any;
       const gm = require('gm');
    
       gm(from, file.name)
-        .resize(100, 100, "!")
+        .resize(150, 150, "!")
         .gravity('Center')
-        .extent(100, 100)
+        .extent(150, 150)
         .quality(75)
         .stream()
         .pipe(to);

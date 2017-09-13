@@ -12,8 +12,8 @@ import { Category } from '../../../../../../../both/models/administration/catego
 import { Categories } from '../../../../../../../both/collections/administration/category.collection';
 import { Subcategory } from '../../../../../../../both/models/administration/subcategory.model';
 import { Subcategories } from '../../../../../../../both/collections/administration/subcategory.collection';
-import { Item, ItemImage } from '../../../../../../../both/models/administration/item.model';
-import { Items, ItemImages } from '../../../../../../../both/collections/administration/item.collection';
+import { Item, ItemImage, ItemImageThumb } from '../../../../../../../both/models/administration/item.model';
+import { Items, ItemImages, ItemImagesThumbs } from '../../../../../../../both/collections/administration/item.collection';
 import { OrderMenu } from '../order-navigation/order-menu';
 import { OrderNavigationService } from '../order-navigation/order-navigation.service';
 import { GarnishFood } from '../../../../../../../both/models/administration/garnish-food.model';
@@ -55,6 +55,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     private _ordersSub                  : Subscription;
     private _itemImagesSub              : Subscription;
     private _currenciesSub              : Subscription;
+    private _itemImagesThumbSub         : Subscription;
 
     private _sections                   : Observable<Section[]>;
     private _categories                 : Observable<Category[]>;
@@ -112,6 +113,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
             });
         });
         this._itemImagesSub = MeteorObservable.subscribe('itemImagesByRestaurant', this.restaurantId).subscribe();
+        this._itemImagesThumbSub = MeteorObservable.subscribe( 'itemImageThumbsByRestaurant', this.restaurantId ).subscribe();
         this._ordersSub = MeteorObservable.subscribe('getOrders', this.restaurantId, this.tableQRCode, ['ORDER_STATUS.REGISTERED']).subscribe(() => { });
         this._garnishFoodSub = MeteorObservable.subscribe('garnishFoodByRestaurant', this.restaurantId).subscribe(() => {
             this._ngZone.run(() => {
@@ -172,6 +174,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
         if( this._itemImagesSub ){ this._itemImagesSub.unsubscribe(); }
         if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
+        if( this._itemImagesThumbSub ){ this._itemImagesThumbSub.unsubscribe(); }
     }
 
     /**
@@ -293,6 +296,19 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         let _lItemImage: ItemImage = ItemImages.findOne({ itemId: _itemId });
         if (_lItemImage) {
             return _lItemImage.url;
+        } else {
+            return '/images/default-plate.png';
+        }
+    }
+
+    /**
+     * Return item thumb image
+     * @param {string} _itemId
+     */
+    getItemThumbImage(_itemId: string): string {
+        let _lItemImageThumb: ItemImageThumb = ItemImagesThumbs.findOne({ itemId: _itemId });
+        if (_lItemImageThumb) {
+            return _lItemImageThumb.url;
         } else {
             return '/images/default-plate.png';
         }
