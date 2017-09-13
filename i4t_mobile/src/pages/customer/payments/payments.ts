@@ -46,7 +46,7 @@ export class PaymentsPage implements OnInit, OnDestroy {
    */
   ngOnInit(){
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-    this.removeSubscriptions();
+
     this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByUser', Meteor.userId() ).subscribe( () => {
       MeteorObservable.autorun().subscribe(() => {
         let _lUserDetail = UserDetails.findOne( { user_id: Meteor.userId() } );
@@ -71,7 +71,7 @@ export class PaymentsPage implements OnInit, OnDestroy {
    */
   ionViewWillEnter() {
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-    this.removeSubscriptions();
+
     this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByUser', Meteor.userId() ).subscribe( () => {
       MeteorObservable.autorun().subscribe(() => {
         let _lUserDetail = UserDetails.findOne( { user_id: Meteor.userId() } );
@@ -95,20 +95,14 @@ export class PaymentsPage implements OnInit, OnDestroy {
    * ionViewWillLeave Implementation. Subscription unsubscribe
    */
   ionViewWillLeave() {
-    this.removeSubscriptions();
+      if( this._userDetailsSub ){ this._userDetailsSub.unsubscribe(); }
+      if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
   }
-  
+
   /**
    * ngOnDestroy Implementation. Subscription unsubscribe
    */
   ngOnDestroy(){
-    this.removeSubscriptions();
-  }
-
-  /**
-   * Remove all subscriptions
-   */
-  removeSubscriptions():void{
     if( this._userDetailsSub ){ this._userDetailsSub.unsubscribe(); }
     if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
   }

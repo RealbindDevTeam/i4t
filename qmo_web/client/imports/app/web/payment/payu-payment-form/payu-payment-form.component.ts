@@ -11,6 +11,7 @@ import { UserLanguageService } from '../../../shared/services/user-language.serv
 import { CustomValidators } from '../../../../../../both/shared-components/validators/custom-validator';
 import { CcPaymentConfirmComponent } from './cc-payment-confirm/cc-payment-confirm.component';
 import { TrnResponseConfirmComponent } from './transaction-response-confirm/trn-response-confirm.component';
+import { getPayuMerchantInfo } from '../../../../../../both/methods/general/parameter.methods';
 import { CcPaymentMethods } from '../../../../../../both/collections/payment/cc-payment-methods.collection';
 import { CcPaymentMethod } from '../../../../../../both/models/payment/cc-payment-method.model';
 import { Countries } from '../../../../../../both/collections/settings/country.collection';
@@ -29,8 +30,6 @@ import { Table } from '../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
 import { CcRequestColombia, Merchant, Transaction, Order, Payer, TX_VALUE, TX_TAX, TX_TAX_RETURN_BASE, CreditCard, ExtraParameters, AdditionalValues, Buyer, ShippingBillingAddress } from '../../../../../../both/models/payment/cc-request-colombia.model';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
-import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
-import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 
 import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
 
@@ -46,68 +45,60 @@ let md5 = require('md5');
 })
 export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 
-    private _paymentForm: FormGroup = new FormGroup({});
-    private _selectedPaymentMethod: string;
-    private _selectedCardMonth: string;
-    private _selectedCardYear: string;
-    private _selectedCountry: string;
-    private _selectedCity: string = "";
-    private _selectedAddress: string;
-    private _selectedPhone: string;
-    private _selectedDniNumber: string;
+    private _paymentForm                : FormGroup = new FormGroup({});
+    private _selectedPaymentMethod      : string;
+    private _selectedCardMonth          : string;
+    private _selectedCardYear           : string;
+    private _selectedCountry            : string;
+    private _selectedCity               : string = "";
 
-    private _cCPaymentMethodSub: Subscription;
-    private _countrySub: Subscription;
-    private _citySub: Subscription;
-    private _paymentTransactionSub: Subscription;
-    private _parameterSub: Subscription;
-    private _restaurantSub: Subscription;
-    private _userDetailSub: Subscription;
+    private _cCPaymentMethodSub         : Subscription;
+    private _countrySub                 : Subscription;
+    private _citySub                    : Subscription;
+    private _paymentTransactionSub      : Subscription;
+    private _parameterSub               : Subscription;
+    private _restaurantSub              : Subscription;
 
-    private _cCPaymentMethods: Observable<CcPaymentMethod[]>;
-    private _countries: Observable<Country[]>;
-    private _cities: Observable<City[]>;
-    private _paymentTransactions: Observable<PaymentTransaction[]>;
-    private _parameters: Observable<Parameter[]>;
-    private _historyPayments: Observable<PaymentHistory[]>;
-    private _restaurants: Observable<Restaurant[]>;
+    private _cCPaymentMethods           : Observable<CcPaymentMethod[]>;
+    private _countries                  : Observable<Country[]>;
+    private _cities                     : Observable<City[]>;
+    private _paymentTransactions        : Observable<PaymentTransaction[]>;
+    private _parameters                 : Observable<Parameter[]>;
+    private _historyPayments            : Observable<PaymentHistory[]>;
+    private _restaurants                : Observable<Restaurant[]>;
 
-    private _restaurantsIdsArray: string[];
-    private _restaurantsNamesArray: string[];
-    private _currentDate: Date;
-    private _currentYear: number;
-    private _yearsArray: any[];
-    private _monthsArray: any[];
-    private _paymentLogoName: string = "";
-    private _deviceSessionId: string;
-    private _mdDialogRef: MdDialogRef<any>;
-    private _mdDialogRef2: MdDialogRef<any>;
-    private _countryName: string;
-    private _ccMethodPayment: string;
-    private _session_id: string;
-    private _timestamp: string;
-    private _ipAddress: string;
-    private _userAgent: string;
-    private _sessionUserId: string;
-    private _loading: boolean;
-    private _firstMonthDay: Date;
-    private _lastMonthDay: Date;
+    private _restaurantsIdsArray        : string[];
+    private _restaurantsNamesArray      : string[];
+    private _currentDate                : Date;
+    private _currentYear                : number;
+    private _yearsArray                 : any[];
+    private _monthsArray                : any[];
+    private _paymentLogoName            : string = "";
+    private _deviceSessionId            : string;
+    private _mdDialogRef                : MdDialogRef<any>;
+    private _mdDialogRef2               : MdDialogRef<any>;
+    private _countryName                : string;
+    private _ccMethodPayment            : string;
+    private _session_id                 : string;
+    private _timestamp                  : string;
+    private _ipAddress                  : string;
+    private _userAgent                  : string;
+    private _sessionUserId              : string;
+    private _loading                    : boolean;
+    private _firstMonthDay              : Date;
+    private _lastMonthDay               : Date;
 
-    private _valueToPay: number;
-    private _currency: string;
-    private _mode: string;
-    private post: any;
-    private scriptOneSanitized: any;
-    private scriptTwoSanitized: any;
-    private scriptThreeSanitized: any;
-    private scriptFourSanitized: any;
+    private _valueToPay                 : number;
+    private _currency                   : string;
+    private _mode                       : string;
+    private post                        : any;
+    private scriptOneSanitized          : any;
+    private scriptTwoSanitized          : any;
+    private scriptThreeSanitized        : any;
+    private scriptFourSanitized         : any;
 
-    private titleMsg: string;
-    private btnAcceptLbl: string;
-    private al: string;
-    private ak: string;
-    private mi: string;
-    private ai: number;
+    private titleMsg                    : string;
+    private btnAcceptLbl                : string;
 
     /**
      * PayuPaymentFormComponent Constructor
@@ -121,18 +112,18 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
      * @param {DomSanitizer} _domSanitizer 
      * @param {UserLanguageService} _userLanguageService 
      */
-    constructor(private _router: Router,
-        private _activateRoute: ActivatedRoute,
-        private _formBuilder: FormBuilder,
-        private _translate: TranslateService,
-        private _payuPaymentService: PayuPaymenteService,
-        private _ngZone: NgZone,
-        public _mdDialog: MdDialog,
-        private _domSanitizer: DomSanitizer,
-        private _userLanguageService: UserLanguageService) {
+    constructor( private _router: Router, 
+                 private _activateRoute: ActivatedRoute,
+                 private _formBuilder: FormBuilder,
+                 private _translate: TranslateService,
+                 private _payuPaymentService: PayuPaymenteService,
+                 private _ngZone: NgZone,
+                 public _mdDialog: MdDialog,
+                 private _domSanitizer: DomSanitizer,
+                 private _userLanguageService: UserLanguageService ) {
 
-        _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
-        _translate.setDefaultLang('en');
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' );
 
         this._currentDate = new Date();
 
@@ -140,6 +131,17 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         this._timestamp = this._currentDate.getTime().toString();
         this._deviceSessionId = md5(this._session_id + this._timestamp);
         this._sessionUserId = this._deviceSessionId + Meteor.userId();
+
+        let _scriptOne: string = 'url(https://maf.pagosonline.net/ws/fp?id=';
+        let _scriptTwo: string = 'https://maf.pagosonline.net/ws/fp/clear.png?id=';
+        let _scriptThree: string = 'https://maf.pagosonline.net/ws/fp/check.js?id=';
+        let _scriptFour: string = 'https://maf.pagosonline.net/ws/fp/fp.swf?id=';
+
+        this.scriptOneSanitized = this._domSanitizer.bypassSecurityTrustStyle(_scriptOne + this._sessionUserId + ')');
+        this.scriptTwoSanitized = this._domSanitizer.bypassSecurityTrustUrl(_scriptTwo + this._sessionUserId);
+        this.scriptThreeSanitized = this._domSanitizer.bypassSecurityTrustResourceUrl(_scriptThree + this._sessionUserId);
+        this.scriptFourSanitized = this._domSanitizer.bypassSecurityTrustResourceUrl(_scriptFour + this._sessionUserId);
+
         this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
         this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
 
@@ -157,22 +159,15 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
      * ngOnInit Implementation
      */
     ngOnInit() {
-        let _scriptOne: string;
-        let _scriptTwo: string;
-        let _scriptThree: string;
-        let _scriptFour: string;
-
         this.removeSubscriptions();
         this._paymentForm = new FormGroup({
             paymentMethod: new FormControl('', [Validators.required]),
-            fullName: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(150)]),
             cardNumber: new FormControl('', [Validators.required, Validators.minLength(13), Validators.maxLength(20), CustomValidators.numericValidator]),
             expirationMonth: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]),
             expirationYear: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]),
             securityCode: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(4), CustomValidators.numericValidator]),
-            firstName: new FormControl({ value: Meteor.user().profile.first_name, disabled: true }, [Validators.required, Validators.minLength(1), Validators.maxLength(70)]),
-            lastName: new FormControl({ value: Meteor.user().profile.last_name, disabled: true }, [Validators.required, Validators.minLength(1), Validators.maxLength(70)]),
             email: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(255), CustomValidators.emailValidator]),
+            fullName: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(150)]),
             dniNumber: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(20)]),
             country: new FormControl('', [Validators.required]),
             city: new FormControl('', [Validators.required]),
@@ -186,87 +181,20 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             });
         });
 
+        this._countrySub = MeteorObservable.subscribe('countries').subscribe(() => {
+            this._ngZone.run(() => {
+                this._countries = Countries.find({}).zone();
+            });
+        });
+
+        this._citySub = MeteorObservable.subscribe('cities').subscribe(() => {
+            this._ngZone.run(() => {
+                this._cities = Cities.find({ country: '' }).zone();
+            });
+        });
+
         this._paymentTransactionSub = MeteorObservable.subscribe('getTransactions').subscribe();
-        this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe(() => {
-            this._ngZone.run(() => {
-                _scriptOne = Parameters.findOne({ name: 'payu_script_p_tag' }).value;
-                _scriptTwo = Parameters.findOne({ name: 'payu_script_img_tag' }).value;
-                _scriptThree = Parameters.findOne({ name: 'payu_script_script_tag' }).value;
-                _scriptFour = Parameters.findOne({ name: 'payu_script_object_tag' }).value;
-
-                this.scriptOneSanitized = this._domSanitizer.bypassSecurityTrustStyle(_scriptOne + this._sessionUserId + ')');
-                this.scriptTwoSanitized = this._domSanitizer.bypassSecurityTrustUrl(_scriptTwo + this._sessionUserId);
-                this.scriptThreeSanitized = this._domSanitizer.bypassSecurityTrustResourceUrl(_scriptThree + this._sessionUserId);
-                this.scriptFourSanitized = this._domSanitizer.bypassSecurityTrustResourceUrl(_scriptFour + this._sessionUserId);
-
-                let ipPublicUrl = Parameters.findOne({ name: 'ip_public_service_url' }).value;
-                this._payuPaymentService.getPublicIp(ipPublicUrl).subscribe(
-                    ipPublic => {
-                        this._ipAddress = ipPublic.ip;
-                    },
-                    error => {
-                        this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
-                    }
-                );
-
-                let payInfoUrl = Parameters.findOne({ name: 'payu_pay_info_url' }).value;
-                this._payuPaymentService.getCusPayInfo(payInfoUrl).subscribe(
-                    payInfo => {
-                        this.al = payInfo.al;
-                        this.ak = payInfo.ak;
-                        this.ai = payInfo.ai;
-                        this.mi = payInfo.mi
-                    },
-                    error => {
-                        this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
-                    }
-                );
-            });
-        });
-        this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe(() => {
-            this._ngZone.run(() => {
-                let auxUsrDetail = UserDetails.findOne({ user_id: Meteor.userId() });
-                this._paymentForm.get('dniNumber').setValue(auxUsrDetail.dni_number);
-                this._paymentForm.get('dniNumber').disable();
-                this._paymentForm.get('streetOne').setValue(auxUsrDetail.address);
-                this._paymentForm.get('streetOne').disable();
-                this._paymentForm.get('contactPhone').setValue(auxUsrDetail.contact_phone);
-                this._paymentForm.get('contactPhone').disable();
-
-                let auxEmail: string = Meteor.user().emails[0].address;
-                this._paymentForm.get('email').setValue(auxEmail);
-                this._paymentForm.get('email').disable();
-
-                this._selectedAddress = auxUsrDetail.address;
-                this._selectedPhone = auxUsrDetail.contact_phone;
-                this._selectedDniNumber = auxUsrDetail.dni_number;
-
-                this._countrySub = MeteorObservable.subscribe('countries').subscribe(() => {
-                    this._ngZone.run(() => {
-                        let auxCountry = Countries.findOne({ _id: auxUsrDetail.country_id });
-                        this._paymentForm.get('country').setValue(this.itemNameTraduction(auxCountry.name));
-                        this._paymentForm.get('country').disable();
-
-                        this._selectedCountry = auxCountry.name;
-                    });
-                });
-
-                this._citySub = MeteorObservable.subscribe('cities').subscribe(() => {
-                    this._ngZone.run(() => {
-                        if (auxUsrDetail.city_id !== '') {
-                            let auxCity = Cities.findOne({ _id: auxUsrDetail.city_id });
-                            this._paymentForm.get('city').setValue(auxCity.name);
-                            this._paymentForm.get('city').disable();
-                            this._selectedCity = auxCity.name;
-                        } else {
-                            this._paymentForm.get('city').setValue(auxUsrDetail.other_city);
-                            this._paymentForm.get('city').disable();
-                            this._selectedCity = auxUsrDetail.other_city;
-                        }
-                    });
-                });
-            });
-        });
+        this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
 
         if (this._mode === 'normal') {
             this._restaurantSub = MeteorObservable.subscribe('currentRestaurantsNoPayed', Meteor.userId()).subscribe();
@@ -288,20 +216,28 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             this._yearsArray.push(auxYear);
         }
 
+        this._payuPaymentService.getPublicIp().subscribe(
+            ipPublic => {
+                this._ipAddress = ipPublic.ip;
+            },
+            error => {
+                this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            }
+        );
+
         this._userAgent = navigator.userAgent;
     }
 
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions(): void {
-        if (this._cCPaymentMethodSub) { this._cCPaymentMethodSub.unsubscribe(); }
-        if (this._countrySub) { this._countrySub.unsubscribe(); }
-        if (this._citySub) { this._citySub.unsubscribe(); }
-        if (this._paymentTransactionSub) { this._paymentTransactionSub.unsubscribe(); }
-        if (this._parameterSub) { this._parameterSub.unsubscribe(); }
-        if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
-        if (this._userDetailSub) { this._userDetailSub.unsubscribe(); }
+    removeSubscriptions():void{
+        if( this._cCPaymentMethodSub ){ this._cCPaymentMethodSub.unsubscribe(); }
+        if( this._countrySub ){ this._countrySub.unsubscribe(); }
+        if( this._citySub ){ this._citySub.unsubscribe(); }
+        if( this._paymentTransactionSub ){ this._paymentTransactionSub.unsubscribe(); }
+        if( this._parameterSub ){ this._parameterSub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
     }
 
     /**
@@ -340,20 +276,20 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             });
         }
 
+
         this._mdDialogRef = this._mdDialog.open(CcPaymentConfirmComponent, {
             disableClose: true,
             data: {
-                streetone: this._selectedAddress,
+                streetone: this._paymentForm.value.streetOne,
                 city: this._selectedCity,
-                country: this._selectedCountry,
+                country: this._countryName,
                 fullname: this._paymentForm.value.fullName,
-                telephone: this._selectedPhone,
+                telephone: this._paymentForm.value.contactPhone,
                 ccmethod: this._paymentLogoName,
                 cardnumber: this._paymentForm.value.cardNumber,
                 price: this._valueToPay,
                 currency: this._currency,
-                restaurantArray: this._restaurantsNamesArray,
-                customerName: Meteor.user().profile.first_name + ' ' + Meteor.user().profile.last_name
+                restaurantArray: this._restaurantsNamesArray
             },
             height: '85%',
             width: '51,5%'
@@ -376,9 +312,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     fillAuthorizationCaptureObject() {
         let paymentTransactionF: PaymentTransaction;
         let paymentTransaction: PaymentTransaction;
-        let userDetail: UserDetail;
-        let buyerCity: string;
-        let buyerCountry: string;
 
         let ccRequestColombia = new CcRequestColombia();
         let merchant = new Merchant();
@@ -398,16 +331,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         let apikey: string;
         let credentialArray: string[] = [];
 
-        userDetail = UserDetails.findOne({ user_id: Meteor.userId() });
-
-        if (userDetail.city_id !== '') {
-            buyerCity = Cities.findOne({ _id: userDetail.city_id }).name;
-        } else {
-            buyerCity = userDetail.other_city
-        }
-
-        buyerCountry = Countries.findOne({ _id: userDetail.country_id }).alfaCode2;
-
         paymentTransactionF = PaymentTransactions.collection.findOne({}, { sort: { count: -1 } });
         if (paymentTransactionF) {
             PaymentTransactions.collection.insert({
@@ -419,16 +342,19 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             });
         } else {
             PaymentTransactions.collection.insert({
-                count: 1,
-                referenceCode: 'M0NP' + 1,
+                count: 68,
+                referenceCode: 'M0NP' + 68,
                 status: 'PREPARED',
                 creation_date: new Date(),
                 creation_user: Meteor.userId()
             });
         }
+
         paymentTransaction = PaymentTransactions.collection.findOne({}, { sort: { count: -1 } });
-        apilogin = this.al;
-        apikey = this.ak;
+
+        credentialArray = getPayuMerchantInfo();
+        apilogin = credentialArray[0];
+        apikey = credentialArray[1];
 
         ccRequestColombia.language = Meteor.user().profile.language_code;
         ccRequestColombia.command = 'SUBMIT_TRANSACTION';
@@ -436,22 +362,25 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         merchant.apiKey = apikey;
         ccRequestColombia.merchant = merchant;
 
-        order.accountId = Number(this.ai);
+        order.accountId = 512321;
+        //order.referenceCode = 'monthly_payment_000000005';
         order.referenceCode = paymentTransaction.referenceCode;
         order.description = this.itemNameTraduction('PAYU_PAYMENT_FORM.ORDER_DESCRIPTION');
         order.language = Meteor.user().profile.language_code;
+        //order.notifyUrl = 'http://http://192.168.0.3:3000';
         order.signature = this.generateOrderSignature(apikey, paymentTransaction.referenceCode);
 
         buyer.merchantBuyerId = Meteor.userId();
-        buyer.fullName = Meteor.user().profile.first_name + ' ' + Meteor.user().profile.last_name;
+        //buyer.fullName = 'Don quijote de la mancha';
+        buyer.fullName = 'Carlos Leonardo Gonzalez';
         buyer.emailAddress = Meteor.user().emails[0].address;
-        buyer.contactPhone = userDetail.contact_phone;
-        buyer.dniNumber = userDetail.dni_number;
+        buyer.contactPhone = '9876543213';
+        buyer.dniNumber = '1231238998712'
 
         //buyer shipping address
-        buyerShippingAddress.street1 = userDetail.address;
-        buyerShippingAddress.city = buyerCity;
-        buyerShippingAddress.country = buyerCountry;
+        buyerShippingAddress.street1 = 'Calle falsa 123';
+        buyerShippingAddress.city = 'Bogota';
+        buyerShippingAddress.country = 'CO';
 
         //aditional values
         tx_value.value = Number(this._valueToPay);
@@ -477,13 +406,13 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         creditCard.name = 'APPROVED';
 
         payer.fullName = this._paymentForm.value.fullName;
-        payer.emailAddress = Meteor.user().emails[0].address;
-        payer.contactPhone = this._selectedPhone;
-        payer.dniNumber = this._selectedDniNumber;
+        payer.emailAddress = this._paymentForm.value.email;
+        payer.contactPhone = this._paymentForm.value.contactPhone;
+        payer.dniNumber = this._paymentForm.value.dniNumber;
 
-        payerBillingAddress.street1 = this._selectedAddress;
+        payerBillingAddress.street1 = this._paymentForm.value.streetOne;
         payerBillingAddress.city = this._selectedCity;
-        payerBillingAddress.country = buyerCountry;
+        payerBillingAddress.country = this._selectedCountry;
         payer.billingAddress = payerBillingAddress;
 
         extraParameters.INSTALLMENTS_NUMBER = 1;
@@ -503,8 +432,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         transaction.userAgent = this._userAgent;
 
         ccRequestColombia.transaction = transaction;
-
-        //ccRequestColombia.test = false;
         ccRequestColombia.test = true;
 
         let transactionMessage: string;
@@ -513,6 +440,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 
         this._payuPaymentService.authorizeAndCapture(ccRequestColombia).subscribe(
             response => {
+
                 if (response.code == 'ERROR') {
                     transactionMessage = 'PAYU_PAYMENT_FORM.AUTH_ERROR_MSG';
                     transactionIcon = 'trn_declined.png';
@@ -571,12 +499,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             },
             error => {
                 //Response with status: 0  for URL: null
-                if (error.message) {
-                    this.openDialog(this.titleMsg, '', error.message, '', this.btnAcceptLbl, false);
-                } else {
-                    this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
-                }
-                this._loading = false;
+                this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             }
         );
     }
@@ -621,24 +544,18 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             year: (this._currentDate.getFullYear()).toString(),
             status: 'TRANSACTION_STATUS.' + _response.transactionResponse.state,
             transactionId: transactionId,
-            paymentValue: Number(this._valueToPay),
+            paymentValue: this._valueToPay,
             currency: this._currency,
             creation_date: new Date(),
             creation_user: Meteor.userId()
         });
 
-        if (_response.transactionResponse.state == 'APPROVED') {
-            if (this._mode != 'normal') {
-                Restaurants.collection.update({ _id: this._mode }, { $set: { isActive: true, firstPay: false } });
-
-                Tables.collection.find({ restaurantId: this._mode }).forEach((table: Table) => {
-                    Tables.collection.update({ _id: table._id }, { $set: { is_active: true } });
-                });
-            } else {
-                this._restaurantsIdsArray.forEach((resId: string) => {
-                    Restaurants.collection.update({ _id: resId }, { $set: { isActive: true, firstPay: false } });
-                });
-            }
+        if (this._mode != 'normal') {
+            Restaurants.collection.update({ _id: this._mode }, { $set: { isActive: true } });
+            
+            Tables.collection.find({ restaurantId: this._mode }).forEach((table: Table) => {
+                Tables.collection.update({ _id: table._id }, { $set: { is_active: true } });
+            });
         }
     }
 
@@ -669,7 +586,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     * @return {string}
     */
     generateOrderSignature(_apikey: string, _referenceCode): string {
-        let merchantId: string = this.mi;
+        let merchantId: string = '508029';
         let signatureEncoded: string = md5(_apikey + '~' + merchantId + '~' + _referenceCode + '~' + this._valueToPay + '~' + this._currency);
         return signatureEncoded;
     }
@@ -697,7 +614,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     * @param {boolean} showBtnCancel
     */
     openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
-
+        
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {

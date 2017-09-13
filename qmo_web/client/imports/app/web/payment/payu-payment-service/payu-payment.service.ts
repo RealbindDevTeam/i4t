@@ -1,17 +1,14 @@
-import { Injectable, NgZone } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { MeteorObservable } from 'meteor-rxjs';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Http, Headers } from "@angular/http";
-import { CcRequestColombia, CusPayInfo } from '../../../../../../both/models/payment/cc-request-colombia.model';
-import { Parameters } from '../../../../../../both/collections/general/parameter.collection';
+import { CcRequestColombia } from '../../../../../../both/models/payment/cc-request-colombia.model';
 
 @Injectable()
 export class PayuPaymenteService {
 
-    private payuPaymentsApiURI: string;
-    private payuReportsApiURI: string;
-
-    private _parameterSub: Subscription;
+    private payuReportsApiURI = 'https://sandbox.api.payulatam.com/reports-api/4.0/service.cgi';
+    private payuPaymentsApiURI = 'https://sandbox.api.payulatam.com/payments-api/4.0/service.cgi';
+    private ipPublicURI = 'https://api.ipify.org?format=json';
 
     private headers = new Headers({
         //'Host': 'sandbox.api.payulatam.com',
@@ -21,15 +18,7 @@ export class PayuPaymenteService {
         //'Content-Length': 'length',
     });
 
-    constructor(private http: Http, private _ngZone: NgZone) {
-
-        this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe(() => {
-            this._ngZone.run(() => {
-                this.payuPaymentsApiURI = Parameters.findOne({ name: 'payu_payments_url' }).value;
-                this.payuReportsApiURI = Parameters.findOne({ name: 'payu_reports_url' }).value;
-            })
-        });
-    }
+    constructor(private http: Http) { }
 
     /**
      * This function sends the autorization and capture JSON to PayU platform
@@ -61,7 +50,9 @@ export class PayuPaymenteService {
      */
     getReportsPing(obj: any): Observable<any> {
         return this.http
-            .post(this.payuReportsApiURI,JSON.stringify(obj),{ headers: this.headers })
+            .post(this.payuReportsApiURI,
+            JSON.stringify(obj),
+            { headers: this.headers })
             .map(res => res.json())
             .catch(this.handleError);
     }
@@ -73,7 +64,9 @@ export class PayuPaymenteService {
      */
     getPaymentsPing(obj: any): Observable<any> {
         return this.http
-            .post(this.payuReportsApiURI,JSON.stringify(obj),{ headers: this.headers })
+            .post(this.payuReportsApiURI,
+            JSON.stringify(obj),
+            { headers: this.headers })
             .map(res => res.json())
             .catch(this.handleError);
     }
@@ -82,15 +75,8 @@ export class PayuPaymenteService {
      * This function gets client public ip
      * @return {Observable<any>}
      */
-    getPublicIp(url: string) {
-        return this.http.get(url).map(res => res.json()).catch(this.handleError);
-    }
-
-    /**
-    * This function get CusPayInfo
-    */
-    getCusPayInfo(url: string): Observable<CusPayInfo> {
-        return this.http.get(url, { headers: this.headers }).map(res => res.json() as CusPayInfo[]).catch(this.handleError);
+    getPublicIp() {
+        return this.http.get(this.ipPublicURI).map(res => res.json()).catch(this.handleError);
     }
 
     /**

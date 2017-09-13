@@ -19,19 +19,20 @@
 
 <div class="main" *ngIf="(_items | async)?.length > 0">
     <div class="main-overflow">
-        <md-card class="custom-cards" *ngFor="let item of _items | async">
-            <div class="header-card">
+        <md-card class="cards" *ngFor="let item of _items | async">
+            <md-card-header>
+                <md-card-title>{{item.name}}</md-card-title>
+            </md-card-header>
+            <div class="crop">
                 <img src="{{ getItemImage(item._id) }}">
-                <span class="mat-card-title">{{item.name}}</span>
             </div>
+            <br/>
             <md-card-content style="margin-bottom: 0px">
                 <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
                 <p *ngIf="item.description.length <= 50">{{item.description}}</p>
             </md-card-content>
             <md-card-actions>
-                <button md-button class="primary-button" (click)="openDialog(item)" style="width: 100%">
-                    {{'ENABLE_DISABLED.BTN_TOGGLE_MSG' | translate}}
-                </button>
+                <button md-button class="primary-button" (click)="openDialog(item)">{{'ENABLE_DISABLED.BTN_TOGGLE_MSG' | translate}}</button>
             </md-card-actions>
         </md-card>
     </div>

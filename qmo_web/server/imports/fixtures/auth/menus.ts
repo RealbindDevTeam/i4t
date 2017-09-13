@@ -66,17 +66,9 @@ export function loadMenus() {
                 _id: "1100",
                 is_active: true,
                 name: "MENUS.ADMINISTRATION.COLLABORATORS",
-                url: "/app/supervisor-collaborators",
+                url: "/app/collaborators",
                 icon_name: "supervisor account",
                 order: 1100
-            },
-            {
-                _id: "1200",
-                is_active: true,
-                name: "MENUS.ADMINISTRATION.TABLES",
-                url: "/app/supervisor-tables",
-                icon_name: "restaurant",
-                order: 1200
             },
             {
                 _id: "2000",

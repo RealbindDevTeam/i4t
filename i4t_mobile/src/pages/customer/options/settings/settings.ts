@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LoadingController, ModalController, NavController, NavParams, ToastController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -8,12 +7,7 @@ import { Subscription } from 'rxjs';
 import { ChangeEmailPage } from './change-email/change-email';
 import { ChangePasswordPage } from './change-password/change-password';
 
-import { UserProfileImage } from 'qmo_web/both/models/auth/user-profile.model';
-import { Language } from 'qmo_web/both/models/settings/language.model';
-import { Languages } from 'qmo_web/both/collections/settings/language.collection';
-import { Users, UserImages } from 'qmo_web/both/collections/auth/user.collection';
-import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
-import { UserDetail } from 'qmo_web/both/models/auth/user-detail.model';
+import { Users } from 'qmo_web/both/collections/auth/user.collection';
 import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 @Component({
@@ -22,11 +16,7 @@ import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/
 })
 export class SettingsPage implements OnInit, OnDestroy {
 
-  private _userSubscription       : Subscription;
-  private _userDetailSubscription : Subscription;
-  private _languagesSubscription  : Subscription;
-  private _userImageSubscription  : Subscription;
-  private _userForm               : FormGroup = new FormGroup({});
+  private _userSubscription: Subscription;
 
   private _disabled     : boolean
   private _validate     : boolean
@@ -38,13 +28,9 @@ export class SettingsPage implements OnInit, OnDestroy {
   private _languageCode : string;
   private _imageProfile : string;
   private _userLang     : string;
-
-  private _user           : any;
-  private _userDetail     : any;
-  private _languages      : any;
   
-  private _validateChangeEmail    : boolean = true;
-  private _validateChangePass     : boolean = true;
+  private _user           : any;
+  private _userObservable : any;
 
   /**
    * SettingsPage constructor
@@ -60,10 +46,8 @@ export class SettingsPage implements OnInit, OnDestroy {
               public _translate  : TranslateService,
               public _modalCtrl  : ModalController,
               public _loadingCtrl: LoadingController,
-              private formBuilder: FormBuilder,
               private _toastCtrl : ToastController,
-              private _userLanguageService: UserLanguageService,
-              private _ngZone : NgZone) {
+              private _userLanguageService: UserLanguageService) {
     _translate.setDefaultLang('en');
     this._user = Meteor.user();
   }
@@ -72,67 +56,79 @@ export class SettingsPage implements OnInit, OnDestroy {
    * ngOnInit implementation
    */
   ngOnInit(){
-    this.init();
+    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+
+    this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() =>{
+      this._disabled = false;
+      this._validate = false;
+      //this._user = Users.collection.findOne({_id: Meteor.userId()});
+      this._imageProfile = "assets/img/user_default_image.png";
+
+      if(this._user.services && this._user.services.facebook){
+        this._email = this._user.services.facebook.email;
+        this._userName = this._user.services.facebook.name;
+        this._firstName = this._user.services.facebook.first_name;
+        this._lastName = this._user.services.facebook.last_name;
+        this._languageCode = this._user.services.facebook.locale;
+        this._imageProfile = "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
+      } else if(this._user.services && this._user.services.twitter){
+        this._email = this._user.services.twitter.email;
+        this._userName = this._user.services.twitter.screenName;
+        this._firstName = this._user.services.twitter.first_name;
+        this._lastName = this._user.services.twitter.last_name;
+        this._languageCode = this._user.services.twitter.lang;
+        this._imageProfile = this._user.services.twitter.profile_image_url;
+      } else if(this._user.services && this._user.services.google){
+        this._email = this._user.services.google.email;
+        this._userName = this._user.services.google.name;
+        this._firstName = this._user.services.google.given_name;
+        this._lastName = this._user.services.google.family_name;
+        this._languageCode = this._user.services.google.locale;
+        this._imageProfile = this._user.services.google.picture;
+      } else {
+        this._disabled = true;
+        this._userObservable = Users.find({}).zone();
+      }
+    });
   }
 
   /**
    * ionViewWillEnter implementation
    */
   ionViewWillEnter() {
-    this.init();
-  }
-
-  init(){
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
     
-    this.removeSubscriptions();
-    
-    this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe();
-    this._userImageSubscription = MeteorObservable.subscribe('getUserImages', Meteor.userId()).subscribe();
-    
-    this._languagesSubscription = MeteorObservable.subscribe('languages').subscribe(()=>{
-      this._ngZone.run(() => {
-        this._languages = Languages.find({}).zone();
-      });
-    });
-    
-    
-    this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe(()=>{
-      this._ngZone.run( ()=> {
-        this._user = Users.findOne({_id: Meteor.userId()});;
-        this._userDetail = UserDetails.findOne({user_id: Meteor.userId()});
-        let controlsDisabled : boolean = false
-        
-        if(this._user && this._user.services.facebook){
-          controlsDisabled = true;
-          this._userForm = new FormGroup({
-            username: new FormControl({value: this._user.services.facebook.name, disabled : controlsDisabled}),
-            first_name: new FormControl({value: this._user.services.facebook.first_name, disabled : controlsDisabled}),
-            last_name: new FormControl({value: this._user.services.facebook.last_name, disabled : controlsDisabled}),
-          });
-        }
-            
-        if(this._user && this._user.username){
-          this._userForm = this.formBuilder.group({
-            username: new FormControl({value: this._user.username, disabled : !controlsDisabled}),
-            language_code: new FormControl({value: this._user.profile.language_code, disabled : controlsDisabled})
-          });
+    this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() =>{
+      this._disabled = false;
+      this._validate = false;
+      this._user = Users.collection.findOne({_id: Meteor.userId()});
+      this._imageProfile = "assets/img/user_default_image.png";
 
-          this._validateChangePass = false;
-          
-          if(this._userDetail.role_id === '400') {
-            this._validateChangeEmail = false;
-          } else {
-            controlsDisabled = true
-          }
-          
-          let first_name : FormControl =  new FormControl({value: this._user.profile.first_name, disabled : controlsDisabled});
-          this._userForm.addControl('first_name', first_name);
-          
-          let last_name : FormControl =  new FormControl({value: this._user.profile.last_name, disabled : controlsDisabled});
-          this._userForm.addControl('last_name', last_name);
-        }
-        });
+      if(this._user.services.facebook){
+        this._email = this._user.services.facebook.email;
+        this._userName = this._user.services.facebook.name;
+        this._firstName = this._user.services.facebook.first_name;
+        this._lastName = this._user.services.facebook.last_name;
+        this._languageCode = this._user.services.facebook.locale;
+        this._imageProfile = "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
+      } else if(this._user.services.twitter){
+        this._email = this._user.services.twitter.email;
+        this._userName = this._user.services.twitter.screenName;
+        this._firstName = this._user.services.twitter.first_name;
+        this._lastName = this._user.services.twitter.last_name;
+        this._languageCode = this._user.services.twitter.lang;
+        this._imageProfile = this._user.services.twitter.profile_image_url;
+      } else if(this._user.services.google){
+        this._email = this._user.services.google.email;
+        this._userName = this._user.services.google.name;
+        this._firstName = this._user.services.google.given_name;
+        this._lastName = this._user.services.google.family_name;
+        this._languageCode = this._user.services.google.locale;
+        this._imageProfile = this._user.services.google.picture;
+      } else {
+        this._disabled = true;
+        this._userObservable = Users.find({}).zone();
+      }
     });
   }
 
@@ -154,10 +150,14 @@ export class SettingsPage implements OnInit, OnDestroy {
 
   /**
    * This function allow update data of the user
+   * @param _userName 
+   * @param _firstName 
+   * @param _lastName 
+   * @param _languageCode 
    */
-  editUserDetail() : void {
-    if(this._userForm.valid){
-      this._translate.use( this._userForm.value.language_code );
+  editUserDetail(_userName : any, _firstName : any, _lastName : any, _languageCode : any):void {
+    if(this.validateUserName(_userName)){
+      this._translate.use( _languageCode );
       let loading_msg = this.itemNameTraduction('MOBILE.WAITER_CALL.LOADING'); 
       
       let loading = this._loadingCtrl.create({
@@ -170,9 +170,10 @@ export class SettingsPage implements OnInit, OnDestroy {
           {_id: Meteor.userId()}, 
           { $set:
             {
-              profile: {  first_name: this._userForm.value.first_name,
-              last_name: this._userForm.value.last_name,
-              language_code: this._userForm.value.language_code }
+              username: _userName,
+              profile: {  first_name: _firstName,
+              last_name: _lastName,
+              language_code: _languageCode }
             }
         });
         loading.dismiss();
@@ -199,19 +200,28 @@ export class SettingsPage implements OnInit, OnDestroy {
   }
 
   /**
-   * Return user image
+   * Validate the username
+   * @param _userName 
    */
-  getUsetImage():string{
-    if(this._user.services && this._user.services.facebook){
-      return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
-    } else {
-      let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() });
-      if( _lUserImage ){
-        return _lUserImage.url;
-      } 
-      else {
-        return 'assets/img/user_default_image.png';
-      }
+  validateUserName(_userName : any) : boolean{
+    if(_userName === null || _userName === '' || _userName.length == 0){
+      this._message = this.itemNameTraduction('SIGNUP.REQUIRED_USERNAME');
+      this._validate = true;
+      return false;
+    }
+    else if (_userName.length < 6) {
+      this._message = this.itemNameTraduction('SIGNUP.MIN_LENGTH_USERNAME');
+      this._validate = true;
+      return false;
+    } 
+    else if (_userName.length > 20){
+      this._message = this.itemNameTraduction('SIGNUP.MAX_LENGTH_USERNAME');
+      this._validate = true;
+      return false;
+    }
+    else {
+      this._validate = false;
+      return true;
     }
   }
 
@@ -228,20 +238,10 @@ export class SettingsPage implements OnInit, OnDestroy {
   }
 
   /**
-   * Remove all subscription
-   */
-  removeSubscriptions(){
-    if( this._userSubscription ){ this._userSubscription.unsubscribe(); }
-    if( this._userDetailSubscription ){ this._userDetailSubscription.unsubscribe(); }
-    if( this._languagesSubscription ){ this._languagesSubscription.unsubscribe(); }
-    if( this._userImageSubscription ){ this._userImageSubscription.unsubscribe(); }
-  }
-
-  /**
    * ngOnDestroy implementation
    */
   ngOnDestroy(){
-    this.removeSubscriptions();
+    this._userSubscription.unsubscribe();
   }
 
 }

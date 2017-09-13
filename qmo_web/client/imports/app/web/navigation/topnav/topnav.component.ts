@@ -45,6 +45,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
   private _pageTitleInterval: number;
   private _user: User;//Meteor.User;
   private _userName: string;
+  private _imageProfile: string = '/images/user_default_image.png';
 
   /**
    * TopnavComponent Constructor
@@ -146,7 +147,12 @@ export class TopnavComponent implements OnInit, OnDestroy {
         else if (this._user.profile.name) {
           this._userName = this._user.profile.name;
         }
-        this._userImageSub = MeteorObservable.subscribe('getUserImages', Meteor.userId()).subscribe();
+        this._userImageSub = MeteorObservable.subscribe('getUserImages', Meteor.userId()).subscribe(() => {
+          this._ngZone.run(() => {
+            this._userImages = UserImages.find({}).zone();
+            this._userImages.subscribe(() => { this.setUserImage(this._user) });
+          });
+        });
       });
     });
 
@@ -180,21 +186,26 @@ export class TopnavComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Return user image
+   * Set user image
    */
-  getUsetImage():string{
-    if(this._user && this._user.services.facebook){
-        return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
+  setUserImage(_pUser: User): void {
+    let _lUserImage: UserProfileImage = UserImages.findOne({ userId: Meteor.userId() });
+    if (_lUserImage) {
+      this._imageProfile = _lUserImage.url;
     } else {
-        let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() });
-        if( _lUserImage ){
-            return _lUserImage.url;
-        } 
-        else {
-            return '/images/user_default_image.png';
-        }
+      if (_pUser.services.facebook) {
+        this._imageProfile = "http://graph.facebook.com/" + _pUser.services.facebook.id + "/picture/?type=large";
+      }
+      else if (_pUser.services.twitter) {
+        this._imageProfile = _pUser.services.twitter.profile_image_url;
+      }
+      else if (_pUser.services.google) {
+        this._imageProfile = _pUser.services.google.picture;
+      } else {
+        this._imageProfile = '/images/user_default_image.png';
+      }
     }
-}
+  }
 
   /**
    * Remove all subscriptions

@@ -107,7 +107,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-    this.removeSubscriptions();
+
     this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this._res_code).subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this._items = Items.find({ _id: this._item_code }).zone();
@@ -568,18 +568,11 @@ export class ItemEditPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.removeSubscriptions();
-  }
-
-  /**
-   * Remove all subscriptions
-   */
-  removeSubscriptions():void{
-    if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
-    if( this._additionSub ){ this._additionSub.unsubscribe(); }
-    if( this._garnishSub ){ this._garnishSub.unsubscribe(); }
-    if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
-    if( this._itemImageSub ){ this._itemImageSub.unsubscribe(); }
-    if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
+    this._itemsSub.unsubscribe();
+    this._additionSub.unsubscribe();
+    this._garnishSub.unsubscribe();
+    this._ordersSub.unsubscribe();
+    this._itemImageSub.unsubscribe();
+    this._currenciesSub.unsubscribe();
   }
 }

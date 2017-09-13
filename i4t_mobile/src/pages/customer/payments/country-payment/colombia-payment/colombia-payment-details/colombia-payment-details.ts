@@ -56,7 +56,6 @@ export class ColombiaPaymentDetailsPage implements OnInit, OnDestroy {
      */
     ngOnInit(){
         this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        this.removeSubscriptions();
         this._ordersSubscription  = MeteorObservable.subscribe('getOrdersByAccount', Meteor.userId()).subscribe( () =>{
             MeteorObservable.autorun().subscribe(() => {
                 this._currency = this._navParams.get("currency");
@@ -190,13 +189,6 @@ export class ColombiaPaymentDetailsPage implements OnInit, OnDestroy {
      * ngOnDestroy Implementation.
      */
     ngOnDestroy(){
-        this.removeSubscriptions();
-    }
-
-    /**
-     * Remove all subscriptions
-     */
-    removeSubscriptions():void{
-        if( this._ordersSubscription ){ this._ordersSubscription.unsubscribe(); }
+        this._ordersSubscription.unsubscribe();
     }
 }

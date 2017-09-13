@@ -52,7 +52,6 @@ export class OrderPaymentTranslatePage implements OnInit, OnDestroy {
      */
     ngOnInit(){
       this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-      this.removeSubscriptions();
       this._ordersSubscription = MeteorObservable.subscribe( 'getOrdersWithConfirmationPending', this._restaurantId, this._tableId ).subscribe( () => {
           this._ordersToConfirm = Orders.find( { status: 'ORDER_STATUS.PENDING_CONFIRM', 
                                                   'translateInfo.firstOrderOwner': Meteor.userId(), 
@@ -67,7 +66,6 @@ export class OrderPaymentTranslatePage implements OnInit, OnDestroy {
      */
     ionViewWillEnter() {
       this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-      this.removeSubscriptions();
       this._ordersSubscription = MeteorObservable.subscribe( 'getOrdersWithConfirmationPending', this._restaurantId, this._tableId ).subscribe( () => {
           this._ordersToConfirm = Orders.find( { status: 'ORDER_STATUS.PENDING_CONFIRM', 
                                                   'translateInfo.firstOrderOwner': Meteor.userId(), 
@@ -88,20 +86,13 @@ export class OrderPaymentTranslatePage implements OnInit, OnDestroy {
      * ionViewWillLeave implementation
      */
     ionViewWillLeave() {
-      this.removeSubscriptions();
+      this._ordersSubscription.unsubscribe();
     }
 
     /**
      * ngOnDestroy implementation
      */
     ngOnDestroy(){
-      this.removeSubscriptions();
-    }
-
-    /**
-     * Remove all subscriptions
-     */
-    removeSubscriptions():void{
-      if( this._ordersSubscription ){ this._ordersSubscription.unsubscribe(); }
+      this._ordersSubscription.unsubscribe();
     }
 }

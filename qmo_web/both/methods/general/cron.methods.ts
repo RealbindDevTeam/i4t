@@ -32,13 +32,7 @@ if (Meteor.isServer) {
          */
         sendEmailChargeSoon: function (_countryId: string) {
             let parameter: Parameter = Parameters.collection.findOne({ name: 'from_email' });
-            let iurest_url: Parameter = Parameters.collection.findOne({ name: 'iurest_url' });
-            let facebook: Parameter = Parameters.collection.findOne({ name: 'facebook_link' });
-            let twitter: Parameter = Parameters.collection.findOne({ name: 'twitter_link' });
-            let instagram: Parameter = Parameters.collection.findOne({ name: 'instagram_link' });
-            let iurestImgVar: Parameter = Parameters.collection.findOne({ name: 'iurest_img_url' });
-
-            let currentDate = new Date();
+            let currentDate = new Date(2017, 6, 28);
             let lastMonthDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
             let auxArray: string[] = [];
 
@@ -69,12 +63,7 @@ if (Meteor.isServer) {
                     reminderMsgVar2: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'reminderChargeSoonMsgVar2'),
                     dateVar: Meteor.call('convertDateToSimple', lastMonthDay),
                     regardVar: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'regardVar'),
-                    followMsgVar: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'followMsgVar'),
-                    iurestUrl: iurest_url.value,
-                    facebookLink: facebook.value,
-                    twitterLink: twitter.value,
-                    instagramLink: instagram.value,
-                    iurestImgVar: iurestImgVar.value
+                    followMsgVar: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'followMsgVar')
                 }
 
                 Email.send({
@@ -91,13 +80,7 @@ if (Meteor.isServer) {
          */
         sendEmailExpireSoon: function (_countryId: string) {
             let parameter: Parameter = Parameters.collection.findOne({ name: 'from_email' });
-            let iurest_url: Parameter = Parameters.collection.findOne({ name: 'iurest_url' });
-            let facebook: Parameter = Parameters.collection.findOne({ name: 'facebook_link' });
-            let twitter: Parameter = Parameters.collection.findOne({ name: 'twitter_link' });
-            let instagram: Parameter = Parameters.collection.findOne({ name: 'instagram_link' });
-            let iurestImgVar: Parameter = Parameters.collection.findOne({ name: 'iurest_img_url' });
-
-            let currentDate = new Date();
+            let currentDate = new Date(2017, 6, 3);
             let firstMonthDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
             let maxPaymentDay = new Date(firstMonthDay);
             let endDay = Parameters.collection.findOne({ name: 'end_payment_day' });
@@ -115,7 +98,7 @@ if (Meteor.isServer) {
 
             Users.collection.find({ _id: { $in: auxArray } }).forEach((user: User) => {
                 let auxRestaurants: string[] = [];
-                Restaurants.collection.find({ creation_user: user._id, isActive: true, freeDays: false }, { fields: { _id: 0, name: 1 } }).forEach((name: Restaurant) => {
+                Restaurants.collection.find({ creation_user: user._id }, { fields: { _id: 0, name: 1 } }).forEach((name: Restaurant) => {
                     auxRestaurants.push(name.name);
                 });
 
@@ -132,12 +115,7 @@ if (Meteor.isServer) {
                     dateVar: Meteor.call('convertDateToSimple', maxPaymentDay),
                     reminderMsgVar3: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'reminderExpireSoonMsgVar3'),
                     regardVar: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'regardVar'),
-                    followMsgVar: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'followMsgVar'),
-                    iurestUrl: iurest_url.value,
-                    facebookLink: facebook.value,
-                    twitterLink: twitter.value,
-                    instagramLink: instagram.value,
-                    iurestImgVar: iurestImgVar.value
+                    followMsgVar: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'followMsgVar')
                 }
 
                 Email.send({
@@ -179,12 +157,6 @@ if (Meteor.isServer) {
          */
         sendEmailRestExpired: function (_countryId: string) {
             let parameter: Parameter = Parameters.collection.findOne({ name: 'from_email' });
-            let iurest_url: Parameter = Parameters.collection.findOne({ name: 'iurest_url' });
-            let facebook: Parameter = Parameters.collection.findOne({ name: 'facebook_link' });
-            let twitter: Parameter = Parameters.collection.findOne({ name: 'twitter_link' });
-            let instagram: Parameter = Parameters.collection.findOne({ name: 'instagram_link' });
-            let iurestImgVar: Parameter = Parameters.collection.findOne({ name: 'iurest_img_url' });
-
             let auxArray: string[] = [];
 
             Restaurants.collection.find({ countryId: _countryId, isActive: false, freeDays: false, firstPay: false }).forEach((restaurant: Restaurant) => {
@@ -198,7 +170,7 @@ if (Meteor.isServer) {
 
             Users.collection.find({ _id: { $in: auxArray } }).forEach((user: User) => {
                 let auxRestaurants: string[] = [];
-                Restaurants.collection.find({ creation_user: user._id, isActive: false, freeDays: false, firstPay: false }, { fields: { _id: 0, name: 1 } }).forEach((name: Restaurant) => {
+                Restaurants.collection.find({ creation_user: user._id, isActive: false, freeDays: false }, { fields: { _id: 0, name: 1 } }).forEach((name: Restaurant) => {
                     auxRestaurants.push(name.name);
                 });
 
@@ -214,12 +186,7 @@ if (Meteor.isServer) {
                     reminderMsgVar2: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'reminderRestExpiredVar2'),
                     reminderMsgVar3: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'reminderRestExpiredVar3'),
                     regardVar: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'regardVar'),
-                    followMsgVar: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'followMsgVar'),
-                    iurestUrl: iurest_url.value,
-                    facebookLink: facebook.value,
-                    twitterLink: twitter.value,
-                    instagramLink: instagram.value,
-                    iurestImgVar: iurestImgVar.value
+                    followMsgVar: Meteor.call('getEmailContent', emailContent.lang_dictionary, 'followMsgVar')
                 }
 
                 Email.send({

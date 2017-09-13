@@ -26,20 +26,20 @@ import style from './reactivate-restaurant.component.scss';
 })
 export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
 
-    private _currencySub: Subscription;
-    private _countrySub: Subscription;
-    private _restaurantSub: Subscription;
-    private _parameterSub: Subscription;
-    private _tableSub: Subscription;
+    private _currencySub            : Subscription;
+    private _countrySub             : Subscription;
+    private _restaurantSub          : Subscription;
+    private _parameterSub           : Subscription;
+    private _tableSub               : Subscription;
 
-    private _currencies: Observable<Currency[]>;
-    private _restaurants: Observable<Restaurant[]>;
-    private _tables: Observable<Table[]>;
+    private _currencies             : Observable<Currency[]>;
+    private _restaurants            : Observable<Restaurant[]>;
+    private _tables                 : Observable<Table[]>;
 
-    private _currentDate: Date;
-    private _firstMonthDay: Date;
-    private _lastMonthDay: Date;
-    private _firstNextMonthDay: Date;
+    private _currentDate            : Date;
+    private _firstMonthDay          : Date;
+    private _lastMonthDay           : Date;
+    private _firstNextMonthDay      : Date;
 
     /**
      * ReactivateRestaurantComponent Constructor
@@ -48,12 +48,12 @@ export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate 
      * @param {UserLanguageService} _userLanguageService 
      */
-    constructor(private _router: Router,
-        private _formBuilder: FormBuilder,
-        private _translate: TranslateService,
-        private _userLanguageService: UserLanguageService) {
-        _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
-        _translate.setDefaultLang('en');
+    constructor( private _router: Router,
+                 private _formBuilder: FormBuilder,
+                 private _translate: TranslateService,
+                 private _userLanguageService: UserLanguageService ) {
+        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        _translate.setDefaultLang( 'en' );
     }
 
     /**
@@ -69,7 +69,7 @@ export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
         this._tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe();
 
-        this._currentDate = new Date();
+        this._currentDate = new Date(2017, 6, 6);
         this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
         this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
         this._firstNextMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 1);
@@ -78,12 +78,12 @@ export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions(): void {
-        if (this._currencySub) { this._currencySub.unsubscribe(); }
-        if (this._countrySub) { this._countrySub.unsubscribe(); }
-        if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
-        if (this._parameterSub) { this._parameterSub.unsubscribe(); }
-        if (this._tableSub) { this._tableSub.unsubscribe(); }
+    removeSubscriptions():void{
+        if( this._currencySub ){ this._currencySub.unsubscribe(); }
+        if( this._countrySub ){ this._countrySub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        if( this._parameterSub ){ this._parameterSub.unsubscribe(); }
+        if( this._tableSub ){ this._tableSub.unsubscribe(); }
     }
 
     /**
@@ -224,6 +224,6 @@ export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
      * ngOnDestroy Implementation
      */
     ngOnDestroy() {
-        this.removeSubscriptions();
+        this.removeSubscriptions();   
     }
 }

@@ -34,7 +34,7 @@ export class PaymentsHistoryPage implements OnInit, OnDestroy {
    */
   ngOnInit(){
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-    this.removeSubscriptions();
+
     this._invoicesHistorySubscription = MeteorObservable.subscribe('getInvoicesByUserId', Meteor.userId()).subscribe(()=> {
       this._invoices = Invoices.find({});
     });
@@ -52,13 +52,6 @@ export class PaymentsHistoryPage implements OnInit, OnDestroy {
    * ngOnDestroy implementation
    */
   ngOnDestroy(){
-    this.removeSubscriptions();
-  }
-
-  /**
-   * Remove all subscriptions
-   */
-  removeSubscriptions():void{
-    if( this._invoicesHistorySubscription ){ this._invoicesHistorySubscription.unsubscribe(); }
+    this._invoicesHistorySubscription.unsubscribe();
   }
 }

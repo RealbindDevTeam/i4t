@@ -16,7 +16,7 @@
                                 </td>
                                 <td>
                                     <md-select required formControlName="role" placeholder="{{'COLLABORATORS_REGISTER.SELECT_ROLE' | translate}}" style="width: 100%;">
-                                        <md-option *ngFor="let rol of _roles | async" value="{{rol._id}}" (click)="validateRole(rol)" >{{rol.name | translate}}</md-option>
+                                        <md-option *ngFor="let rol of _roles | async" value="{{rol._id}}" (click)="validateWaiterRole(rol._id)" >{{rol.name | translate}}</md-option>
                                     </md-select>
                                 </td>
                             </tr>
@@ -83,13 +83,9 @@
                         <table style="width: 100%" cellspacing="0">
                             <tr>
                                 <td>
-                                    <md-input-container style="width: 10%">
-                                        <input mdInput value="{{_userPrefix}}" disabled/>
+                                    <md-input-container style="width: 100%">
+                                        <input mdInput style="width: 60%" required formControlName="username" placeholder="{{'USERNAME' | translate}}"/>
                                     </md-input-container>
-                                    <md-input-container style="width: 89%">
-                                        <input mdInput #uname required formControlName="username" placeholder="{{'USERNAME' | translate}}"/>
-                                    </md-input-container>
-                                    <p>{{'COLLABORATORS_REGISTER.USERS_ROL' | translate}}<span style="font-weight: bold;">{{_selectedRol | translate}}</span>{{'COLLABORATORS_REGISTER.PREFIX' | translate}}<span style="font-weight: bold;">{{_userPrefix}}</span>. {{'COLLABORATORS_REGISTER.USER_NAME_WILL_BE' | translate}}<span style="font-weight: bold;">{{_userPrefix}}{{uname.value}}</span></p>
                                     <div *ngIf="_collaboratorRegisterForm.controls['username'].hasError('required') && _collaboratorRegisterForm.controls['username'].touched" class="error-message">{{'SIGNUP.REQUIRED_USERNAME' | translate}}</div>
                                     <div *ngIf="_collaboratorRegisterForm.controls['username'].hasError('minlength') && _collaboratorRegisterForm.controls['username'].touched" class="error-message">{{'SIGNUP.MIN_LENGTH_USERNAME' | translate}}</div>
                                     <div *ngIf="_collaboratorRegisterForm.controls['username'].hasError('maxlength') && _collaboratorRegisterForm.controls['username'].touched" class="error-message">{{'SIGNUP.MAX_LENGTH_USERNAME' | translate}}</div>

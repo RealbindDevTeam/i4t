@@ -193,14 +193,14 @@ $menu-navegation-color : #F5F5F5;
                     
                     .items {
                         overflow: scroll;
-                        //margin-top: 20px;
-                        //margin-left: 20px;
+                        margin-top: 20px;
+                        margin-left: 20px;
                         display: -webkit-box;
                         display: -moz-box;
                         display: -ms-flexbox;
                         display: -webkit-flex;
                         display: flex;
-                        height: calc( 100vh - 64px);
+                        height: calc( 100vh - 90px);
                         width: 100%;
                         -webkit-flex-direction: column;
                         flex-direction: column;
@@ -209,8 +209,11 @@ $menu-navegation-color : #F5F5F5;
                         -webkit-flex: 1 1 auto;
                         flex: 1 1 auto;
 
-                        .custom-cards{
-                            width: 240px !important;
+                        .cards{
+                            width: 240px;
+                            display: inline-block; 
+                            margin-right: 20px; 
+                            vertical-align: top;
                         }
 
                         .crop {
@@ -332,14 +335,10 @@ $menu-navegation-color : #F5F5F5;
 
 .available-button {
     color: #D50000;
-    font-weight: bold;
-    font-size: 1.1rem;
 }
 
 .price-button {
     color: #333;
-    font-weight: bold;
-    font-size: 1.1rem;
 }
 
 .color-button-icon {

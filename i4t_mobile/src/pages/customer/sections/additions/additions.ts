@@ -41,7 +41,7 @@ export class AdditionsPage implements OnInit, OnDestroy {
      */
     ngOnInit(){
         this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        this.removeSubscriptions();
+        
         this._additionsSub = MeteorObservable.subscribe( 'additionsByRestaurant', this._restaurantId ).subscribe( () => {
             this._additions = Additions.find( { } ).zone();
             this._additions.subscribe( () => { this.buildAdditionsForms(); });
@@ -135,13 +135,6 @@ export class AdditionsPage implements OnInit, OnDestroy {
      * ngOnDestroy implementation
      */
     ngOnDestroy(){
-        this.removeSubscriptions();
-    }
-
-    /**
-     * Remove all subscriptions
-     */
-    removeSubscriptions():void{
-        if( this._additionsSub ){ this._additionsSub.unsubscribe(); }
+        this._additionsSub.unsubscribe();
     }
 }

@@ -37,7 +37,6 @@ export class OrderDetailPayInfoPage implements OnInit, OnDestroy {
   }
 
   ngOnInit(){
-    //this.removeSubscriptions();
     this._ordersSubscription = MeteorObservable.subscribe( 'getOrderById', this.orderId ).subscribe(()=>{
       this._orders = Orders.find({_id : this.orderId});
     });
@@ -93,17 +92,10 @@ export class OrderDetailPayInfoPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    this.removeSubscriptions();
-  }
-
-  /**
-   * Remove all subscriptions
-   */
-  removeSubscriptions():void{
-    if( this._ordersSubscription ){ this._ordersSubscription.unsubscribe(); }
-    if( this._additionsSubscription ){ this._additionsSubscription.unsubscribe(); }
-    if( this._garnishFoodSubscription ){ this._garnishFoodSubscription.unsubscribe(); }
-    if( this._restaurantSubscription ){ this._restaurantSubscription.unsubscribe(); }
+    this._ordersSubscription.unsubscribe();
+    this._additionsSubscription.unsubscribe();
+    this._garnishFoodSubscription.unsubscribe();
+    this._restaurantSubscription.unsubscribe();
   }
 
 }

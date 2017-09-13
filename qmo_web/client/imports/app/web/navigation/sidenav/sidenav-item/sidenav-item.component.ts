@@ -10,7 +10,7 @@ import { UserLanguageService } from '../../../../shared/services/user-language.s
 
 @Component({
   selector: 'c-sidenav-item',
-  styles: [`md-icon { color: #ef5350; }`],
+  styles: [`md-icon { color: #e53935; }`],
   template: `
     <a md-list-item *ngIf="hasExternalLink" (click)="clicked($event)" [href]="menuItem.link" [ngClass]="{ 'active' : active }">
       <md-icon *ngIf="showIcon">{{menuItem.icon}}</md-icon>

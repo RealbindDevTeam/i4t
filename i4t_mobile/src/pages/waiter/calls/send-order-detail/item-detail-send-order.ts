@@ -25,7 +25,7 @@ export class ItemDetailSendOrderComponent implements OnInit, OnDestroy {
    * ngOnInit Implementation
    */
   ngOnInit(){
-    this.removeSubscriptions();
+    console
     this._itemsSubscription = MeteorObservable.subscribe( 'itemById', this.item.itemId ).subscribe( () => {
         this._items = Items.find({_id: this.item.itemId});
     });
@@ -35,14 +35,7 @@ export class ItemDetailSendOrderComponent implements OnInit, OnDestroy {
    * ngOnDestroy Implementation
    */
   ngOnDestroy(){
-    this.removeSubscriptions();
-  }
-
-  /**
-   * Remove all subscriptions
-   */
-  removeSubscriptions():void{
-    if( this._itemsSubscription ){ this._itemsSubscription.unsubscribe(); }
+    this._itemsSubscription.unsubscribe();
   }
 
 }

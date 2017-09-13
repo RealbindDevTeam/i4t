@@ -3,26 +3,21 @@ import { App, AlertController, LoadingController, Nav, Platform } from 'ionic-an
 import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { MeteorObservable } from 'meteor-rxjs';
 import { InitialComponent } from '../../auth/initial/initial';
 import { CallsPage } from '../calls/calls';
 import { SettingsPage } from '../../customer/options/settings/settings';
-import { UserProfileImage } from 'qmo_web/both/models/auth/user-profile.model';
-import { UserImages } from 'qmo_web/both/collections/auth/user.collection';
-import { Subscription } from 'rxjs';
 
 @Component({
   templateUrl: 'menu.html'
 })
 export class Menu {
   @ViewChild(Nav) nav: Nav;
-  private _userImageSubscription : Subscription;
-  private _user : any;
 
   rootPage: any = CallsPage;
 
   pages: Array<{icon: string, title: string, component: any}>;
 
+  private _user : any;
 
    /**
     * Menu constructor
@@ -45,14 +40,10 @@ export class Menu {
     this._user = Meteor.user();
 
     this.pages = [
-      { icon: 'assets/img/restaurant-pay-detail.png', title: 'MOBILE.WAITER_OPTIONS.CALLS', component: CallsPage },
-      { icon: 'assets/img/settings.png',title: 'MOBILE.WAITER_OPTIONS.SETTINGS', component: SettingsPage }
+      { icon: 'home', title: 'MOBILE.WAITER_OPTIONS.CALLS', component: CallsPage },
+      { icon: 'settings',title: 'MOBILE.WAITER_OPTIONS.SETTINGS', component: SettingsPage }
     ];
 
-  }
-
-  ngOnInit(){
-    this._userImageSubscription = MeteorObservable.subscribe('getUserImages', Meteor.userId()).subscribe();
   }
 
   /**
@@ -122,19 +113,6 @@ export class Menu {
   }
 
   /**
-   * Return user image
-   */
-  getUsetImage():string{
-      let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() });
-      if( _lUserImage ){
-        return _lUserImage.url;
-      } 
-      else {
-        return 'assets/img/user_default_image.png';
-      }
-  }
-
-  /**
    * This function allow translate strings
    * @param {string} _itemName 
    */
@@ -144,16 +122,5 @@ export class Menu {
         wordTraduced = res;
     });
     return wordTraduced;
-  }
-
-  /**
-   * Remove all subscription
-   */
-  removeSubscriptions(){
-    if( this._userImageSubscription ){ this._userImageSubscription.unsubscribe(); }
-  }
-
-  ngOnDestroy(){
-    this.removeSubscriptions();
   }
 }

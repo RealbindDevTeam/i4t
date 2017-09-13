@@ -12,9 +12,9 @@
     <ion-card>
         <ion-card-content>
             <ion-item style="padding-left: 0;">
-                <ion-thumbnail item-left>
+                <ion-avatar item-left>
                     <img src="assets/img/table-whitout-background.png">
-                </ion-thumbnail>
+                </ion-avatar>
                 <h2 style="font-weight: bold;">
                     {{'MOBILE.ORDER_PAYMENT_TRANS.CONSULT_TABLE_ORDERS_TITLE' | translate}}
                 </h2>
@@ -22,7 +22,7 @@
             <p>
                 {{'MOBILE.ORDER_PAYMENT_TRANS.CONSULT_TABLE_ORDERS_SUBTITLE' | translate}}
             </p>
-            <button ion-button small text-left outline (click)="goToAddOrders()">{{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}</button>
+            <button ion-button small clear text-left style="color: #5090ff" (click)="goToAddOrders()">{{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}</button>
         </ion-card-content>
     </ion-card>
 

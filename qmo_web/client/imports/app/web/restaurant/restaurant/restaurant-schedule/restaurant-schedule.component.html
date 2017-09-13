@@ -53,11 +53,6 @@
                     <td><label>{{_restaurantSchedule.schedule.sunday.opening_time}}</label></td>
                     <td><label>{{_restaurantSchedule.schedule.sunday.closing_time}}</label></td>
                 </tr>
-                <tr *ngIf="_restaurantSchedule.schedule.holiday.isActive">
-                    <td><label>{{'WEEK.HOLIDAY' | translate}}</label></td>
-                    <td><label>{{_restaurantSchedule.schedule.holiday.opening_time}}</label></td>
-                    <td><label>{{_restaurantSchedule.schedule.holiday.closing_time}}</label></td>
-                </tr>
             </tbody>                        
         </table>
         <div align="center" style="padding-top: 10px">

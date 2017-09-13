@@ -25,7 +25,6 @@ export class GarnishSendOrderComponent implements OnInit, OnDestroy {
    * ngOnInit Implementation
    */
   ngOnInit(){
-    this.removeSubscriptions();
     this._garnishFoodSubscription = MeteorObservable.subscribe( 'garnishFoodById', this.garnish ).subscribe( () => {
         this._garnishFood = GarnishFoodCol.find({});
     });
@@ -35,13 +34,6 @@ export class GarnishSendOrderComponent implements OnInit, OnDestroy {
    * ngOnDestroy Implementation
    */
   ngOnDestroy(){
-    this.removeSubscriptions();
-  }
-
-  /**
-   * Remove all subscriptions
-   */
-  removeSubscriptions():void{
-    if( this._garnishFoodSubscription ){ this._garnishFoodSubscription.unsubscribe(); }
+    this._garnishFoodSubscription.unsubscribe();
   }
 }

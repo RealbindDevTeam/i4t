@@ -215,15 +215,15 @@ md-ink-bar {
 
 .active-button{
     background-color: $white_color-text !important;
-    border: 1px solid #8BC34A !important;
+    border: 1px solid green !important;
     box-shadow: none !important;
-    color: #8BC34A !important;
+    color: green !important;
     font-weight: 600 !important;
 }
 
 .active-button:hover {
     color: $white_color-text !important;
-    background-color: #8BC34A !important;
+    background-color: green !important;
 }
 
 /*
@@ -432,40 +432,4 @@ md-ink-bar {
 
 .md-tooltip {
     font-size: $tooltip-fontsize-sm !important;
-}
-
-/* Custom cards */
-
-.custom-cards {
-    display: inline-block !important; 
-    margin: 24px 0 12px 24px !important;
-    width: 260px !important;
-    vertical-align: top !important;
-
-    .header-card {
-        text-align: -webkit-center;
-
-        img {
-            width: 160px; 
-            height: 160px; 
-            border-radius: 50%; 
-            margin-bottom: 16px;
-        }
-
-        .btn-position-edition{
-            position: absolute;
-            top: 120px;
-            right: 60px;
-        }
-    }
-}
-
-.list {
-    list-style-type:none;
-    margin-top: 10px;
-    padding-left: 0;
-}
-
-.vertical-align-middle {
-    vertical-align: middle !important;
 }

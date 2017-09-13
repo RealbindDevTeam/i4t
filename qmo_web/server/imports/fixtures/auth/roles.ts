@@ -16,15 +16,13 @@ export function loadRoles() {
             is_active: true,
             name: "ROLE.WAITER",
             description: "restaurant waiter",
-            menus: [],
-            user_prefix: 'wa'
+            menus: []
         },{
             _id: "300",
             is_active: false,
             name: "ROLE.CASHIER",
             description: "restaurant cashier",
-            menus: [],
-            user_prefix: 'ca'            
+            menus: []
         },{
             _id: "400",
             is_active: true,
@@ -36,15 +34,13 @@ export function loadRoles() {
             is_active: true,
             name: "ROLE.CHEF",
             description: "restaurant chef",
-            menus: ["7000"],
-            user_prefix: 'cf'            
+            menus: ["7000"]
         },{
             _id: "600",
             is_active: true,
             name: "ROLE.SUPERVISOR",
             description: "restaurant supervisor",
-            menus: ["910","1100","3100", "1200"],
-            user_prefix: 'sp'            
+            menus: ["910","1100","3100"]
         }];
 
         roles.forEach((role: Role) => Roles.insert(role));

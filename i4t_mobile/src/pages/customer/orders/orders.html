@@ -1,23 +1,20 @@
 <ion-header>
     <ion-navbar>
         <ion-title>
-            <img class="nav-logo" src="assets/img/logo_iurest_1000_x_260.png">
+            <img id="signup-logo" src="assets/img/logo_iurest_mobile_white.png">
         </ion-title>
     </ion-navbar>
 </ion-header>
 
 <ion-content>
-    <div *ngIf="_restaurants">
+    <div *ngIf="(_allOrders | async)?.length > 0">
         <ion-card>
             <ion-card-content>
-                <ion-item style="padding-left: 0">
+                <ion-item>
                     <ion-thumbnail item-left>
                         <img src="{{getRestaurantThumb(_restaurants._id)}}">
                     </ion-thumbnail>
-                    <h1 style="white-space:normal; font-size: 1.8rem">{{_restaurants.name}} </h1>
-                    <p *ngIf="_table">
-                        {{'MOBILE.ORDERS.TABLE' | translate}} {{_table._number}}
-                    </p>
+                    <h1 style="white-space:normal">{{_restaurants.name}} </h1>
                 </ion-item>
 
                 <ion-item-divider color="light" style="text-align: center; font-weight: bold">{{'MOBILE.ORDERS.TABLE_ORDERS' | translate}}</ion-item-divider>
@@ -34,14 +31,17 @@
                 </ion-list>
             </ion-card-content>
         </ion-card>
+        <hr showWhen="android" />
 
         <div *ngFor="let order of _orders | async; let i = index">
             <div *ngIf="order.creation_user == _currentUserId">
                 <ion-card>
-                    <ion-card-content>
+                    <ion-card-content style="padding: 13px 16px 0 16px;">
                         <ion-list no-lines style="margin: 0 -16px;">
                             <button ion-item (click)="showDetail(i)">
-                                <order-detail *ngIf="order" [order]="order" [isUser]="true" [currencyCode]="_currencyCode"></order-detail>
+                                <div *ngIf="order">
+                                    <order-detail [order]="order" [isUser]="true" [currencyCode]="_currencyCode"></order-detail>
+                                </div>
                             </button>
                         </ion-list>
                         <div *ngIf="_orderIndex == i" style="margin: 0 -16px;">
@@ -66,9 +66,9 @@
                                                     <ion-thumbnail item-left>
                                                         <img src="assets/img/default-plate.png">
                                                     </ion-thumbnail>
-                                                    <h2 style="white-space: normal; margin-top: 11px;">{{addition.name}} {{'MOBILE.ORDERS.ADDITION' | translate}}</h2> 
+                                                    <h2 style="white-space: normal;">{{addition.name}} {{'MOBILE.ORDERS.ADDITION' | translate}}</h2> 
                                                     <p style="white-space: normal;">{{'MOBILE.PRICING' | translate}}: {{ad.paymentAddition}} {{_currencyCode}}</p>
-                                                    <p style="white-space: normal; margin-bottom: 11px;">{{'MOBILE.SECTIONS.QUANTITY' | translate}} {{ad.quantity}}</p>
+                                                    <p style="white-space: normal;">{{'MOBILE.SECTIONS.QUANTITY' | translate}} {{ad.quantity}}</p>
                                                     <button *ngIf="order.creation_user === _currentUserId && order.status === 'ORDER_STATUS.REGISTERED'" (click)="showAdditionsDetail(ad, order)" ion-button icon-only clear item-right >
                                                         <ion-icon name="create"></ion-icon>
                                                     </button>
@@ -124,7 +124,7 @@
         </div>
     </div>
     
-    <div *ngIf="!_restaurants">
+    <div *ngIf="(_allOrders | async)?.length <= 0" style="padding: 0 16px;">
         <div class="img">
             <img src="assets/img/platos-orden.png">
         </div>
@@ -133,11 +133,15 @@
             <p>{{'MOBILE.ORDERS.CONTENT' | translate}}</p>
         </div>
     </div>
-    <div style="height: 48px"></div>
+
+    <div showWhen="ios" style="height: 90px">
+    </div>
+    <div showWhen="android" style="height: 45px">
+    </div>
 </ion-content>
 
 <ion-footer>
     <ion-fab right bottom>
-        <button ion-fab class="fab" (click)="goToNewOrder()"><ion-icon name="add"></ion-icon></button>
+        <button ion-fab class="fab" color="danger" (click)="goToNewOrder()"><ion-icon name="add"></ion-icon></button>
     </ion-fab>
 </ion-footer>

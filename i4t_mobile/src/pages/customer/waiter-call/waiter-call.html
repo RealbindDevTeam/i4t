@@ -1,9 +1,11 @@
 <ion-header>
-    <ion-navbar>
-        <ion-title>
-            <img class="nav-logo" src="assets/img/logo_iurest_1000_x_260.png">
-        </ion-title>
-    </ion-navbar>
+
+  <ion-navbar>
+      <ion-title>
+          <img id="signup-logo" src="assets/img/logo_iurest_mobile_white.png">
+      </ion-title>
+  </ion-navbar>
+
 </ion-header>
 
 <ion-content>
@@ -81,14 +83,11 @@
             </circle>
         </g>
     </svg>
-</ion-content>
-
-<ion-footer *ngIf="_userRestaurant && _validatedWaterCall && (_waiters | async)?.length > 0">
-    <div class="description" padding>
+    <div *ngIf="_userRestaurant && _validatedWaterCall && (_waiters | async)?.length > 0" class="description" padding>
         <h1>{{'MOBILE.WAITER_CALL.RECEIVE_CALL' | translate}}</h1>
         <p>{{'MOBILE.WAITER_CALL.ONE_MOMENT' | translate}}</p>
         <button ion-button block outline type="submit" (click)="cancelWaiterCall()">
             {{'MOBILE.CANCEL' | translate}}
         </button>
     </div>
-</ion-footer>
+</ion-content>

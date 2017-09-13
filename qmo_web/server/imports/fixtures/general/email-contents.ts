@@ -25,8 +25,7 @@ export function loadEmailContents() {
                     { label: 'reminderRestExpiredVar', traduction: 'Your monthly Iurest service for: '},
                     { label: 'reminderRestExpiredVar2', traduction: 'Has expired'},
                     { label: 'reminderRestExpiredVar3', traduction: 'If you want to continue using all the system features, entering with your email or username and select the menu Payments > Reactivate '},
-                    { label: 'restExpiredEmailSubjectVar', traduction: 'Your Iurest service has expired'},
-                    { label: 'resetPasswordSubjectVar', traduction: 'Reset your password on'}
+                    { label: 'restExpiredEmailSubjectVar', traduction: 'Your Iurest service has expired'}
                 ]
             },
             {
@@ -50,8 +49,7 @@ export function loadEmailContents() {
                     { label: 'reminderRestExpiredVar', traduction: 'Tu servicio mensual de Iurest para: '},
                     { label: 'reminderRestExpiredVar2', traduction: 'ha expirado'},
                     { label: 'reminderRestExpiredVar3', traduction: 'Si deseas seguir usando todas las funcionalidades del sistema, ingresa con tu usuario o correo y selecciona la opción Pagos > Reactivar '},
-                    { label: 'restExpiredEmailSubjectVar', traduction: 'Tu servicio de Iurest ha expirado'},
-                    { label: 'resetPasswordSubjectVar', traduction: 'Cambio de contraseña en'}
+                    { label: 'restExpiredEmailSubjectVar', traduction: 'Tu servicio de Iurest ha expirado'}
                 ]
             }
         ];

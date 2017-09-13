@@ -48,23 +48,26 @@
 
 <div class="main" *ngIf="(_restaurants | async)?.length > 0 &&  (_items | async)?.length > 0">
     <div class="main-overflow">
-        <md-card id="card-main" class="custom-cards" *ngFor="let item of _items | async">
-                <div class="header-card">
-                    <img src="{{ getItemImage(item._id) }}">
-                    <span class="mat-card-title">{{item.name}}</span>
-                    <button md-tooltip="{{'ITEMS.EDIT_ITEM' | translate}}" md-fab class="btn-position-edition" (click)="open(item)">
-                        <md-icon style="color: white;" class="md-24">create</md-icon>
-                    </button>
-                </div>
+        <md-card id="card-main" class="cards" *ngFor="let item of _items | async">
+            <md-card-header>
+                <md-card-title>{{item.name}}</md-card-title>
+            </md-card-header>
+
+            <div class="crop">
+                <img src="{{ getItemImage(item._id) }}">                
+            </div>
+            <div style="position: relative">
+                <button md-tooltip="{{'ITEMS.EDIT_ITEM' | translate}}" md-fab class="btn-position-create" (click)="open(item)"> <md-icon style="color: white;" class="md-24">create</md-icon></button>
+            </div>
             <md-card-content>
                 <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
                 <p *ngIf="item.description.length <= 50">{{item.description}}</p>
                 <div class="card-item-price">{{showItemPrices(item.prices)}}</div>
-                <div class="card-item-tax">{{showItemTaxes(item.prices)}}</div>
+                <div class="card-item-tax">{{showItemTaxes(item.prices)}}</div>    
             </md-card-content>
             <md-card-actions class="card-actions">
-                <button md-raised-button *ngIf="item.is_active" class="inactive-button" style="width: 100%" (click)="updateStatus(item)">{{'ITEMS.INACTIVATE' | translate}}</button>
-                <button md-raised-button *ngIf="!item.is_active" class="active-button" style="width: 100%" (click)="updateStatus(item)">{{'ITEMS.ACTIVATE' | translate}}</button>
+                <button md-raised-button *ngIf="item.is_active" class="inactive-button" (click)="updateStatus(item)">{{'ITEMS.INACTIVATE' | translate}}</button>
+                <button md-raised-button *ngIf="!item.is_active" class="active-button" (click)="updateStatus(item)">{{'ITEMS.ACTIVATE' | translate}}</button>
             </md-card-actions>
         </md-card>
     </div>

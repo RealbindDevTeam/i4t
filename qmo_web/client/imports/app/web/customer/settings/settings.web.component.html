@@ -1,121 +1,116 @@
 <md-card>
     <md-card-title>{{'SETTINGS.LOGIN' | translate}}</md-card-title>
     <md-card-content>
-        <table *ngIf="_user" cellspacing="0">
-            <tr>
-                <td style="width: 20%;text-align: center;" rowspan="3">
-                    <div>
-                        <input [attr.disabled]="_user.services.facebook && _loading" accept=".png, .jpg, .jpeg" (change)="onChangeImage($event)" style="display: none" type="file" name="file-1[]" id="file-1" data-multiple-caption="{count} files selected"/>
-                        <label for="file-1">
-                            <div class="avatarWrapper">
-                                <div class="avatar cursor-pointer">
-                                    <div *ngIf="!_user.services.facebook && !_loading" class="uploadOverlay">
-                                        <i class="fa fa-camera"></i>
+        
+                <table cellspacing="0">
+                    <tr>
+                        <td style="width: 20%;text-align: center;" rowspan="3">
+                            <div>
+                                <input accept=".png, .jpg, .jpeg" (change)="onChangeImage($event)" style="display: none" type="file" name="file-1[]" id="file-1" data-multiple-caption="{count} files selected"/>
+                                <label for="file-1">
+                                    <div class="avatarWrapper">
+                                        <div class="avatar cursor-pointer">
+                                            <div *ngIf="!_loading" class="uploadOverlay">
+                                                <i class="fa fa-camera"></i>
+                                            </div>
+                                            <img *ngIf="!_loading" src="{{ getUsetImage() }}">
+                                            <div *ngIf="_loading" class="processing-overlay">
+                                                <md-spinner class="spinner"></md-spinner>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <img *ngIf="!_loading" src="{{ getUsetImage() }}">
-                                    <div *ngIf="_loading" class="processing-overlay">
-                                        <md-spinner class="spinner"></md-spinner>
-                                    </div>
-                                </div>
+                                </label>
                             </div>
-                        </label>
-                    </div>
-                </td>
-                <td style="width: 40vh">
-                    <label>{{'EMAIL' | translate}}:</label>
-                </td>
-                
-                <td style="width: 60vh">
-                    <strong *ngIf="_user.emails">
-                        {{_user.emails[0].address}}
-                    </strong>
-                    <strong *ngIf="_user.services.facebook">
-                        {{_user.services.facebook.email}}
-                    </strong>
-                </td>
-                <td>
-                    <button md-raised-button [disabled]="_validateChangeEmail" class="secondary-button" (click)="open()">{{'MODIFY' | translate}}</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label>{{'PASSWORD' | translate}}:</label>
-                </td>
-                <td>
-                    <strong>********</strong>
-                </td>
-                <td>
-                    <button md-raised-button [disabled]="_validateChangePass" class="secondary-button" (click)="openModalChangePassword()">{{'MODIFY' | translate}}</button>
-                </td>
-            </tr>
-            <tr><td></td></tr>
-        </table>
+                        </td>
+                        <td style="width: 40vh">
+                            <label>{{'EMAIL' | translate}}:</label>
+                        </td>
+                        
+                        <td *ngIf="_disabled" style="width: 60vh">
+                            <strong  *ngFor="let user of _userObservable | async">
+                                {{user.emails[0].address}}
+                            </strong>
+                        </td>
+                        <td *ngIf="!_disabled" style="width: 60vh">
+                            {{_email}}
+                        </td>
+                        <td>
+                            <button style="padding-left: 15px" md-raised-button [disabled]="!_disabled" class="secondary-button" (click)="open()">{{'MODIFY' | translate}}</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>{{'PASSWORD' | translate}}:</label>
+                        </td>
+                        <td>
+                            <strong>********</strong>
+                        </td>
+                        <td>
+                            <button md-raised-button [disabled]="!_validateChangePass" class="secondary-button" (click)="openModalChangePassword()">{{'MODIFY' | translate}}</button>
+                        </td>
+                    </tr>
+                    <tr><td></td></tr>
+                </table>
     </md-card-content>
 </md-card>
 
 <md-card>
     <md-card-title>{{'SETTINGS.MY_DATA' | translate}}</md-card-title>
     <md-card-content>
-        <div *ngIf="_user">
-            <form [formGroup]="_userForm" (ngSubmit)="editUserDetail()">
+        <div *ngIf="!_disabled">
+
+            <md-input-container style="width: 100%">
+                <input mdInput placeholder="{{'SETTINGS.USERNAME' | translate}}" style="width: 100%" minlength="1" maxlength="20" [disabled]="!_disabled" [(ngModel)]="_userName" #inputUserName (blur)="validateFields()">
+                </input>
+                <md-hint align="end">{{inputUserName.value.length}} / 20</md-hint>
+            </md-input-container>
+            <div *ngIf="_validate" class="error-message">{{_message}}</div>
+
+            <md-input-container style="width: 100%">
+                <input mdInput placeholder="{{'SETTINGS.FIRST_NAME' | translate}}" style="width: 100%" minlength="1" maxlength="30" [disabled]="!_disabled" [(ngModel)]="_firstName"  #inputFirstName>
+                </input>
+                <md-hint align="end">{{inputFirstName.value.length}} / 30</md-hint>
+            </md-input-container>
+
+             <md-input-container style="width: 100%">
+                <input mdInput placeholder="{{'SETTINGS.LAST_NAME' | translate}}" style="width: 100%" minlength="1" maxlength="30" [disabled]="!_disabled" [(ngModel)]="_lastName" #inputLastName>
+                </input>
+                <md-hint align="end">{{inputLastName.value.length}} / 30</md-hint>
+            </md-input-container>
+
+             <md-input-container style="width: 100%">
+                <input mdInput placeholder="{{'SETTINGS.LANGUAGE' | translate}}" style="width: 100%" minlength="1" maxlength="30" [disabled]="!_disabled" [(ngModel)]="_languageCode"  #inputLanguageCode>
+                </input>
+                <md-hint align="end">{{inputLanguageCode.value.length}} / 30</md-hint>
+            </md-input-container>
+        </div>
+
+        <div *ngIf="_disabled">
+            <div *ngFor="let user of _userObservable | async" >
                 <md-input-container style="width: 100%">
-                    <input formControlName="username" mdInput class="demo-full-width" #inputUserName placeholder="{{'SETTINGS.USERNAME' | translate}}" class="demo-full-width" style="width: 100%"/>
+                    <input mdInput class="demo-full-width" #inputUserName placeholder="{{'SETTINGS.USERNAME' | translate}}" class="demo-full-width" style="width: 100%" minlength="1" maxlength="20" disabled value="{{user.username}}"/>
                     <md-hint align="end">{{inputUserName.value.length}} / 20</md-hint>
                 </md-input-container>
-                
+                <div *ngIf="_validate" class="error-message">{{_message}}</div>
+
                 <md-input-container style="width: 100%">
-                    <input formControlName="first_name" mdInput placeholder="{{'SETTINGS.FIRST_NAME' | translate}}" style="width: 100%" #inputFirstName/>
+                    <input mdInput placeholder="{{'SETTINGS.FIRST_NAME' | translate}}" style="width: 100%" minlength="1" maxlength="30" #inputFirstName value="{{user.profile.first_name}}"/>
                     <md-hint align="end">{{inputFirstName.value.length}} / 30</md-hint>
                 </md-input-container>
-    
+
                 <md-input-container style="width: 100%">
-                    <input formControlName="last_name" mdInput placeholder="{{'SETTINGS.LAST_NAME' | translate}}" style="width: 100%" #inputLastName/>
+                    <input mdInput placeholder="{{'SETTINGS.LAST_NAME' | translate}}" style="width: 100%" minlength="1" maxlength="30" #inputLastName value="{{user.profile.last_name}}"/>
                     <md-hint align="end">{{inputLastName.value.length}} / 30</md-hint>
                 </md-input-container>
 
-                <div *ngIf="_userDetail.role_id === '100'">
-                    <md-input-container style="width: 100%">
-                        <input mdInput formControlName="dniNumber" placeholder="{{'ADMIN_SIGNUP.DNI_NUMBER' | translate}}" name="dniNumber" required></input>
-                    </md-input-container>
-                    <div *ngIf="_userForm.controls['dniNumber'].hasError('required') && _userForm.controls['dniNumber'].touched" class="error-message">{{'ADMIN_SIGNUP.REQUIRED_DNI' | translate}}</div>
-                    <div *ngIf="_userForm.controls['dniNumber'].hasError('maxlength') && _userForm.controls['dniNumber'].touched" class="error-message">{{'ADMIN_SIGNUP.MAX_LENGTH_DNI' | translate}}</div>
+                <md-select required #inputLanguageCode placeholder="{{'SETTINGS.LANGUAGE' | translate}}" style="width: 100%;margin-top: 1%;" [(ngModel)]="_lang_code">
+                    <md-option *ngFor="let lang of _languages | async" value="{{lang.language_code}}">{{lang.name}}</md-option>
+                </md-select>
 
-                    <md-input-container style="width: 100%">
-                        <input mdInput formControlName="contactPhone" placeholder="{{'ADMIN_SIGNUP.CONTACT_PHONE' | translate}}" name="contactPhone" required></input>
-                    </md-input-container>
-                    <div *ngIf="_userForm.controls['contactPhone'].hasError('required') && _userForm.controls['contactPhone'].touched" class="error-message">{{'ADMIN_SIGNUP.REQUIRED_PHONE' | translate}}</div>
-                    <div *ngIf="_userForm.controls['contactPhone'].hasError('maxlength') && _userForm.controls['contactPhone'].touched" class="error-message">{{'ADMIN_SIGNUP.MAX_LENGTH_PHONE' | translate}}</div>
-
-                    <md-input-container style="width: 100%">
-                        <input mdInput formControlName="shippingAddress" placeholder="{{'ADMIN_SIGNUP.ADDRESS' | translate}}" name="shippingAddress" required></input>
-                    </md-input-container>
-                    <div *ngIf="_userForm.controls['shippingAddress'].hasError('required') && _userForm.controls['shippingAddress'].touched" class="error-message">{{'ADMIN_SIGNUP.REQUIRED_ADDRESS' | translate}}</div>
-                    <div *ngIf="_userForm.controls['shippingAddress'].hasError('maxlength') && _userForm.controls['shippingAddress'].touched" class="error-message">{{'ADMIN_SIGNUP.MAX_LENGTH_ADDRESS' | translate}}</div>
-                    <md-select formControlName="country" placeholder="{{'ADMIN_SIGNUP.COUNTRY' | translate}}" style="width: 100%; margin-top: 10px">
-                        <md-option *ngFor="let country of _countries | async" value="{{country._id}}" (click)="changeCountry(country._id)">{{country.name | translate}}</md-option>
-                    </md-select>
-                    
-                    <md-select formControlName="city" placeholder="{{'ADMIN_SIGNUP.CITY' | translate}}" style="width: 100%; margin-top: 24px">
-                        <md-option *ngFor="let city of _cities | async" value="{{city._id}}" (click)="changeCity()">{{city.name}}</md-option>
-                        <md-option *ngIf="(_cities | async)?.length > 0" (click)="changeOtherCity('0000');" value="0000">{{'OTHER' | translate}}</md-option>
-                    </md-select>
-                    
-                    <md-input-container *ngIf="_showOtherCity" style="width: 100%; margin-top: 15px">
-                        <input mdInput formControlName="otherCity" placeholder="{{'ADMIN_SIGNUP.WHICH_ONE' | translate}}" required></input>
-                    </md-input-container>
-                    <div *ngIf="_showOtherCity && _userForm.controls['otherCity'].hasError('required') && _userForm.controls['otherCity'].touched" class="error-message">{{'ADMIN_SIGNUP.REQUIRED_OTHER' | translate}}</div>
-                    <div *ngIf="_showOtherCity && _userForm.controls['otherCity'].hasError('maxlength') && _userForm.controls['otherCity'].touched" class="error-message">{{'ADMIN_SIGNUP.MAX_LENGTH_OTHER' | translate}}</div>
-                </div>
-
-                <div *ngIf="this._user.username">
-                    <md-select formControlName="language_code" required #inputLanguageCode placeholder="{{'SETTINGS.LANGUAGE' | translate}}" style="width: 100%; margin-top: 24px;">
-                        <md-option *ngFor="let lang of _languages | async" value="{{lang.language_code}}">{{lang.name}}</md-option>
-                    </md-select>
-                    
-                    <button align="end" md-raised-button class="primary-button" type="submit" [disabled]="!_userForm.valid" style="margin-top: 20px">{{'UPDATE' | translate}}</button>
-                </div>
-            </form>
+                <button align="end" md-raised-button class="primary-button" style="margin-top: 20px" [disabled]="!_disabled" (click)="editUserDetail(inputUserName, inputFirstName, inputLastName, inputLanguageCode)">{{'UPDATE' | translate}}</button>
+            </div>
         </div>
+
 
     </md-card-content>
 </md-card>

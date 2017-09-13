@@ -76,10 +76,10 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     private titleMsg                    : string;
     private btnAcceptLbl                : string;
 
-    _initialValue = 'all';
+    _initialValue = 'customer';
     private _showCustomerOrders         : boolean = true;
-    private _showOtherOrders            : boolean = true;
-    private _showAllOrders              : boolean = true;
+    private _showOtherOrders            : boolean = false;
+    private _showAllOrders              : boolean = false;
     private _orderCustomerIndex         : number = -1;
     private _orderOthersIndex           : number = -1;
 

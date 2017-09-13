@@ -29,7 +29,6 @@ export class ItemPayInfoComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit(){
-        this.removeSubscriptions();
         this._itemSubscription = MeteorObservable.subscribe('itemById', this.itemId).subscribe(()=>{
             this._items = Items.find({_id : this.itemId});
         });
@@ -50,14 +49,7 @@ export class ItemPayInfoComponent implements OnInit, OnDestroy {
      * ngOnDestroy implimentation
      */
     ngOnDestroy(){
-        this.removeSubscriptions();
-    }
-
-    /**
-     * Remove all subscriptions
-     */
-    removeSubscriptions():void{
-        if( this._itemSubscription ){ this._itemSubscription.unsubscribe(); }
-        if( this._imageThumbSubscription ){ this._imageThumbSubscription.unsubscribe(); }
+        this._itemSubscription.unsubscribe();
+        this._imageThumbSubscription.unsubscribe();
     }
 }

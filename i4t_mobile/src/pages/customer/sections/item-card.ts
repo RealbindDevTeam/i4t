@@ -37,7 +37,6 @@ export class ItemCardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-    this.removeSubscriptions();
     this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByRestaurant', this.resCode).subscribe(() => {
       this._imageThumbs = ItemImagesThumbs.find({});
     });
@@ -78,14 +77,7 @@ export class ItemCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.removeSubscriptions();
-  }
-
-  /**
-   * Remove all subscriptions
-   */
-  removeSubscriptions():void{
-    if( this._imageThumbSub ){ this._imageThumbSub.unsubscribe(); }
-    if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
+    this._imageThumbSub.unsubscribe();
+    this._currenciesSub.unsubscribe();
   }
 }

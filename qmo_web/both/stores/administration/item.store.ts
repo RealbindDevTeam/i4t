@@ -61,9 +61,9 @@ export const ItemImagesStore = new UploadFS.store.GridFS({
       const gm = require('gm');
    
       gm(from, file.name)
-        .resize(250, 250, "!")
+        .resize(500, 500, "!")
         .gravity('Center')
-        .extent(250, 250)
+        .extent(500, 500)
         .quality(75)
         .stream()
         .pipe(to);

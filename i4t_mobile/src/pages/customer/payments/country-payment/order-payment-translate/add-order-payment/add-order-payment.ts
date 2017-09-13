@@ -58,7 +58,6 @@ export class AddOrderPaymentPage implements OnInit, OnDestroy {
    */
   ngOnInit(){
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-    this.removeSubscriptions();
     this._ordersSubscription = MeteorObservable.subscribe( 'getOrdersByTableId', this._restaurantId, this._tableId,[ 'ORDER_STATUS.DELIVERED' ] ).subscribe( () => {
       this._ordersTable = Orders.find( { creation_user: { $not: Meteor.userId() }, status: 'ORDER_STATUS.DELIVERED', 'translateInfo.lastOrderOwner': '',
                                          'translateInfo.markedToTranslate': false, 'translateInfo.confirmedToTranslate': false, toPay : false } ).zone();
@@ -174,15 +173,8 @@ export class AddOrderPaymentPage implements OnInit, OnDestroy {
    * ngOnDestroy implementation
    */
   ngOnDestroy(){
-    this.removeSubscriptions();
-  }
-
-  /**
-   * Remove all subscriptions
-   */
-  removeSubscriptions():void{
-    if( this._ordersSubscription ){ this._ordersSubscription.unsubscribe(); }
-    if( this._itemsSubscription ){ this._itemsSubscription.unsubscribe(); }
-    if( this._itemImageThumbsSubscription ){ this._itemImageThumbsSubscription.unsubscribe(); }
+    this._ordersSubscription.unsubscribe();
+    this._itemsSubscription.unsubscribe();
+    this._itemImageThumbsSubscription.unsubscribe();
   }
 }

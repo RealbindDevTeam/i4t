@@ -35,7 +35,6 @@ export class IurestScheduleComponent implements OnInit, OnDestroy {
     private _activeFriday       : boolean;
     private _activeSaturday     : boolean;
     private _activeSunday       : boolean;
-    private _activeHoliday      : boolean;
 
     private schedule            : RestaurantSchedule;
 
@@ -60,7 +59,6 @@ export class IurestScheduleComponent implements OnInit, OnDestroy {
         this._activeFriday = false;
         this._activeSaturday = false;
         this._activeSunday = false;
-        this._activeHoliday = false;
     }
 
     /**
@@ -77,7 +75,6 @@ export class IurestScheduleComponent implements OnInit, OnDestroy {
             this._activeFriday = this.schedule.friday.isActive;
             this._activeSaturday = this.schedule.saturday.isActive;
             this._activeSunday = this.schedule.sunday.isActive;
-            this._activeHoliday = this.schedule.holiday.isActive;
         } else {
             this.schedule = {
                 monday: {
@@ -111,11 +108,6 @@ export class IurestScheduleComponent implements OnInit, OnDestroy {
                     closing_time: ''
                 },
                 sunday: {
-                    isActive: false,
-                    opening_time: '',
-                    closing_time: ''
-                },
-                holiday: {
                     isActive: false,
                     opening_time: '',
                     closing_time: ''
@@ -185,8 +177,6 @@ export class IurestScheduleComponent implements OnInit, OnDestroy {
             this._activeSaturday = !this._activeSaturday;
         } else if( _pWeekDay.value == "Sun" ){
             this._activeSunday = !this._activeSunday;
-        } else if( _pWeekDay.value == "Hol" ){
-            this._activeHoliday = !this._activeHoliday;
         }
     }
 
@@ -235,13 +225,6 @@ export class IurestScheduleComponent implements OnInit, OnDestroy {
             this.schedule.sunday.opening_time = this._selectedOpenTime;
             this.schedule.sunday.closing_time = this._selectedCloseTime;
         }
-
-        if( this._activeHoliday ){
-            this.schedule.holiday.isActive = true;
-            this.schedule.holiday.opening_time = this._selectedOpenTime;
-            this.schedule.holiday.closing_time = this._selectedCloseTime;
-        }
-
         this.finalSchedule.emit( this.schedule );
     }
 
@@ -285,13 +268,7 @@ export class IurestScheduleComponent implements OnInit, OnDestroy {
             this.schedule.sunday.opening_time = '';
             this.schedule.sunday.closing_time = '';
             this._activeSunday = false;
-        } else if( _pWeekDay === "Hol" ){
-            this.schedule.holiday.isActive = false;
-            this.schedule.holiday.opening_time = '';
-            this.schedule.holiday.closing_time = '';
-            this._activeHoliday = false;
         }
-        
         this.finalSchedule.emit( this.schedule );
     }
 

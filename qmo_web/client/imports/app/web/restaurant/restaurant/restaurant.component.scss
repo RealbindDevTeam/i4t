@@ -1,3 +1,15 @@
+.btn-position-create{
+    position: absolute;
+    top: -55px;
+    right: 10px;
+}
+
+.btn-position-today{
+    position: absolute;
+    top: -45px;
+    right: 80px;
+}
+
 .btn-position-location{
     position: absolute;
     top: -45px;
@@ -10,19 +22,15 @@
   bottom: 10px;
 }
 
-.card-footer-btn{
-    text-align: -webkit-center; 
-    color: #EF5350
+.list{
+    list-style-type:none;
+    margin-top: 10px;
+    padding-left: 25px;
 }
 
-.restaurant-inactive{
-    text-align: center;
-    color: #EF5350;
-    font-weight: 600;
-}
-
-.restaurant-active{
-    text-align: center;
-    color: green;
-    font-weight: 600;
+.cards{
+    display: inline-block; 
+    margin: 24px 0 12px 24px;
+    width: 330px; 
+    vertical-align: top;
 }

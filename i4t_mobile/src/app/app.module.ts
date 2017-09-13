@@ -7,6 +7,7 @@ import { MomentModule } from 'angular2-moment';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 import { MyApp } from './app.component';
@@ -57,11 +58,6 @@ import { AdditionPayInfoComponent } from '../pages/customer/payments/country-pay
 import { PaymentsHistoryPage } from '../pages/customer/options/payments-history/payments-history';
 import { PaymentsHistoryDetailPage } from '../pages/customer/options/payments-history/payments-history-detail/payments-history-detail';
 import { Menu } from '../pages/waiter/menu/menu';
-import { ChangeTablePage } from '../pages/customer/options/change-table/change-table';
-import { AlphanumericCodeChangePage } from '../pages/customer/options/change-table/alphanumeric-code-change/alphanumeric-code-change';
-
-import { BarcodeScanner } from '@ionic-native/barcode-scanner';
-import { Facebook } from '@ionic-native/facebook';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -115,9 +111,7 @@ export function createTranslateLoader(http: Http) {
     AdditionPayInfoComponent,
     PaymentsHistoryPage,
     PaymentsHistoryDetailPage,
-    Menu,
-    ChangeTablePage,
-    AlphanumericCodeChangePage
+    Menu
   ],
   imports: [
     BrowserModule,
@@ -193,17 +187,14 @@ export function createTranslateLoader(http: Http) {
     AdditionPayInfoComponent,
     PaymentsHistoryPage,
     PaymentsHistoryDetailPage,
-    Menu,
-    ChangeTablePage,
-    AlphanumericCodeChangePage
+    Menu
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: ErrorHandler, useClass: IonicErrorHandler },
-    UserLanguageService,
-    BarcodeScanner,
-    Facebook
+    Facebook,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    UserLanguageService
   ]
 })
-export class AppModule { }
+export class AppModule {}

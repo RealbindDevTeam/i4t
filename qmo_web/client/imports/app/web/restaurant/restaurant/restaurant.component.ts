@@ -18,9 +18,6 @@ import { Hour } from '../../../../../../both/models/general/hour.model';
 import { RestaurantScheduleComponent } from './restaurant-schedule/restaurant-schedule.component';
 import { RestaurantEditionComponent } from './restaurant-edition/restaurant-edition.component';
 import { RestaurantLocationComponent } from './restaurant-location/restaurant-location.component';
-import { RestaurantFacebookComponent } from './social-network/facebook/restaurant-facebook.component';
-import { RestaurantInstagramComponent } from './social-network/instagram/restaurant-instagram.component';
-import { RestaurantTwitterComponent } from './social-network/twitter/restaurant-twitter.component';
 
 import template from './restaurant.component.html';
 import style from './restaurant.component.scss';
@@ -177,51 +174,6 @@ export class RestaurantComponent implements OnInit, OnDestroy {
         if (_lCity) {
             return _lCity.name;
         }
-    }
-    
-    /**
-     * When user wants update restaurant facebook link
-     * @param {Restaurant} _restaurant
-     */
-    openFacebookLink(_restaurant: Restaurant) {
-        this._dialogRef = this._dialog.open(RestaurantFacebookComponent, {
-            disableClose: true,
-            width: '50%'
-        });
-        this._dialogRef.componentInstance._restaurant = _restaurant;
-        this._dialogRef.afterClosed().subscribe(result => {
-            this._dialogRef = null;
-        });
-    }
-
-    /**
-     * When user wants update restaurant twitter link
-     * @param {Restaurant} _restaurant
-     */
-    openTwitterLink(_restaurant: Restaurant) {
-        this._dialogRef = this._dialog.open(RestaurantTwitterComponent, {
-            disableClose: true,
-            width: '50%'
-        });
-        this._dialogRef.componentInstance._restaurant = _restaurant;
-        this._dialogRef.afterClosed().subscribe(result => {
-            this._dialogRef = null;
-        });
-    }
-
-    /**
-     * When user wants update restaurant instagram link
-     * @param {Restaurant} _restaurant
-     */
-    openInstagramLink(_restaurant: Restaurant) {
-        this._dialogRef = this._dialog.open(RestaurantInstagramComponent, {
-            disableClose: true,
-            width: '50%'
-        });
-        this._dialogRef.componentInstance._restaurant = _restaurant;
-        this._dialogRef.afterClosed().subscribe(result => {
-            this._dialogRef = null;
-        });
     }
 
     /**

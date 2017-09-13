@@ -27,7 +27,6 @@ export class AdditionPayInfoComponent implements OnInit, OnDestroy {
      * ngOnInit implementation
      */
     ngOnInit(){
-        this.removeSubscriptions();
         this._additionSubscription = MeteorObservable.subscribe('additionsById', this.additionId).subscribe(()=>{
             this._additions = Additions.find({_id : this.additionId});
         });
@@ -37,13 +36,6 @@ export class AdditionPayInfoComponent implements OnInit, OnDestroy {
      * ngOnDestroy implimentation
      */
     ngOnDestroy(){
-        this.removeSubscriptions();
-    }
-
-    /**
-     * Remove all subscriptions
-     */
-    removeSubscriptions():void{
-        if( this._additionSubscription ){ this._additionSubscription.unsubscribe(); }
+        this._additionSubscription.unsubscribe();
     }
 }

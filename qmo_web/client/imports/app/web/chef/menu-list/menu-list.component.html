@@ -20,87 +20,57 @@
                         <span *ngFor="let section of _sections | async" >
                             <span *ngFor="let item of _items | async">
                                 <ng-template [ngIf]="item.sectionId === section._id && item.categoryId === '' && item.subcategoryId === ''">
-                                        <md-card class="custom-cards">
-                                            <div class="header-card">
-                                                <img src="{{ getItemImage(item._id) }}">
-                                                <span class="mat-card-title">{{item.name}}</span>
-                                                <button md-tooltip="{{'ORDER_CREATE.VIEW_DETAIL' | translate}}" md-fab class="btn-position-edition" (click)="showItemInformation(item)">
-                                                    <md-icon style="color: white;" class="md-24">search</md-icon>
-                                                </button>
-                                            </div>
-                                            <md-card-content>
-                                                <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
-                                                <p *ngIf="item.description.length <= 50">{{item.description}}</p>
-                                                <ul class="list">
-                                                    <li *ngIf="!getItemAvailability(item._id)" class="available-button">
-                                                        <md-icon class="md-24" class="vertical-align-middle">clear</md-icon>
-                                                        <span>{{'ORDER_CREATE.UNAVAILABLE' | translate}}</span>
-                                                    </li>
-                                                    <li *ngIf="getItemAvailability(item._id)" class="price-button">
-                                                        <md-icon class="md-24" class="vertical-align-middle">done</md-icon>
-                                                        <span>{{ getItemPrice( item ) }} {{_currencyCode}}</span>
-                                                    </li>
-                                                </ul>
-                                            </md-card-content>
-                                        </md-card>
+                                    <md-card class="cards">
+                                        <md-card-header>
+                                            <md-card-title>{{item.name}}</md-card-title>
+                                        </md-card-header>
+                                        <div class="crop">
+                                            <img src="{{ getItemImage(item._id) }}">  
+                                        </div>
+                                        <md-card-actions>
+                                            <button md-button (click)="showItemInformation(item)">{{'ORDER_CREATE.VIEW_DETAIL' | translate}}</button>
+                                            <p *ngIf="!getItemAvailability(item._id)" class="button-action available-button">{{'ORDER_CREATE.UNAVAILABLE' | translate}}</p>
+                                            <p *ngIf="getItemAvailability(item._id)"  class="button-action price-button">{{'ORDER_CREATE.PRICE' | translate}}: {{ getItemPrice( item ) }} {{_currencyCode}}</p>
+                                        </md-card-actions>
+                                    </md-card>
                                 </ng-template>
                             </span>
                             <span *ngFor="let category of _categories | async">
                                 <ng-template [ngIf]="category.section === section._id">
                                     <span *ngFor="let item of _items | async">
                                         <ng-template [ngIf]="item.sectionId === section._id && item.categoryId === category._id && item.subcategoryId === ''">
-                                                <md-card class="custom-cards">
-                                                    <div class="header-card">
-                                                        <img src="{{ getItemImage(item._id) }}">
-                                                        <span class="mat-card-title">{{item.name}}</span>
-                                                        <button md-tooltip="{{'ORDER_CREATE.VIEW_DETAIL' | translate}}" md-fab class="btn-position-edition" (click)="showItemInformation(item)">
-                                                            <md-icon style="color: white;" class="md-24">search</md-icon>
-                                                        </button>
-                                                    </div>
-                                                    <md-card-content>
-                                                        <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
-                                                        <p *ngIf="item.description.length <= 50">{{item.description}}</p>
-                                                        <ul class="list">
-                                                            <li *ngIf="!getItemAvailability(item._id)" class="available-button">
-                                                                <md-icon class="md-24" class="vertical-align-middle">clear</md-icon>
-                                                                <span>{{'ORDER_CREATE.UNAVAILABLE' | translate}}</span>
-                                                            </li>
-                                                            <li *ngIf="getItemAvailability(item._id)" class="price-button">
-                                                                <md-icon class="md-24" class="vertical-align-middle">done</md-icon>
-                                                                <span>{{ getItemPrice( item ) }} {{_currencyCode}}</span>
-                                                            </li>
-                                                        </ul>
-                                                    </md-card-content>
-                                                </md-card>
+                                            <md-card class="cards">
+                                                <md-card-header>
+                                                    <md-card-title>{{item.name}}</md-card-title>
+                                                </md-card-header>
+                                                <div class="crop">
+                                                    <img src="{{ getItemImage(item._id) }}">
+                                                </div>
+                                                <md-card-actions>
+                                                    <button md-button (click)="showItemInformation(item)">{{'ORDER_CREATE.VIEW_DETAIL' | translate}}</button>
+                                                    <p *ngIf="!getItemAvailability(item._id)" class="button-action available-button">{{'ORDER_CREATE.UNAVAILABLE' | translate}}</p>
+                                                    <p *ngIf="getItemAvailability(item._id)"  class="button-action price-button">{{ getItemPrice( item ) }} {{_currencyCode}}</p>
+                                                </md-card-actions>
+                                            </md-card>
                                         </ng-template>
                                     </span>
                                     <span *ngFor="let subcategory of _subcategories | async">
                                         <ng-template [ngIf]="subcategory.category === category._id">
                                             <span *ngFor="let item of _items | async">
                                                 <ng-template [ngIf]="item.sectionId === section._id && item.categoryId === category._id && item.subcategoryId === subcategory._id">
-                                                        <md-card class="custom-cards">
-                                                            <div class="header-card">
-                                                                <img src="{{ getItemImage(item._id) }}">
-                                                                <span class="mat-card-title">{{item.name}}</span>
-                                                                <button md-tooltip="{{'ORDER_CREATE.VIEW_DETAIL' | translate}}" md-fab class="btn-position-edition" (click)="showItemInformation(item)">
-                                                                    <md-icon style="color: white;" class="md-24">search</md-icon>
-                                                                </button>
-                                                            </div>
-                                                            <md-card-content>
-                                                                <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
-                                                                <p *ngIf="item.description.length <= 50">{{item.description}}</p>
-                                                                <ul class="list">
-                                                                    <li *ngIf="!getItemAvailability(item._id)" class="available-button">
-                                                                        <md-icon class="md-24" class="vertical-align-middle">clear</md-icon>
-                                                                        <span>{{'ORDER_CREATE.UNAVAILABLE' | translate}}</span>
-                                                                    </li>
-                                                                    <li *ngIf="getItemAvailability(item._id)" class="price-button">
-                                                                        <md-icon class="md-24" class="vertical-align-middle">done</md-icon>
-                                                                        <span>{{ getItemPrice( item ) }} {{_currencyCode}}</span>
-                                                                    </li>
-                                                                </ul>
-                                                            </md-card-content>
-                                                        </md-card>
+                                                    <md-card id="card-main" class="cards">
+                                                        <md-card-header>
+                                                            <md-card-title>{{item.name}}</md-card-title>
+                                                        </md-card-header>
+                                                        <div class="crop">
+                                                            <img src="{{ getItemImage(item._id) }}">
+                                                        </div>
+                                                        <md-card-actions>
+                                                            <button md-button (click)="showItemInformation(item)">{{'ORDER_CREATE.VIEW_DETAIL' | translate}}</button>
+                                                            <p *ngIf="!getItemAvailability(item._id)" class="button-action available-button">{{'ORDER_CREATE.UNAVAILABLE' | translate}}</p>
+                                                            <p *ngIf="getItemAvailability(item._id)"  class="button-action price-button">{{ getItemPrice( item ) }} {{_currencyCode}}</p>
+                                                        </md-card-actions>
+                                                    </md-card>
                                                 </ng-template>
                                             </span>
                                         </ng-template>

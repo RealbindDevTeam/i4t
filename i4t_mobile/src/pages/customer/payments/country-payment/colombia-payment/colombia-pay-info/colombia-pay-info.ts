@@ -47,7 +47,6 @@ export class ColombiaPayInfoPage implements OnInit, OnDestroy {
    */
   ngOnInit(){
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-    this.removeSubscriptions();
     this._paymentsSubscription = MeteorObservable.subscribe( 'getUserPaymentsByRestaurantAndTable', Meteor.userId(), this._restaurantId, this._tableId, ['PAYMENT.NO_PAID', 'PAYMENT.PAID'] ).subscribe( () => {
         this._payments = Payments.find({});
     });
@@ -57,14 +56,7 @@ export class ColombiaPayInfoPage implements OnInit, OnDestroy {
    * ngOnDestroy implementation
    */
   ngOnDestroy(){
-   this.removeSubscriptions();
-  }
-
-  /**
-   * Remove all subscriptions
-   */
-  removeSubscriptions():void{
-    if( this._paymentsSubscription ){ this._paymentsSubscription.unsubscribe(); }
+   this._paymentsSubscription.unsubscribe();     
   }
 
 }

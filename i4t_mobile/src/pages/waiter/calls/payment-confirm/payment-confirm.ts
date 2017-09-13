@@ -62,7 +62,6 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
    */
   ngOnInit(){
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-    this.removeSubscriptions();
     this._usersDetailSubscription = MeteorObservable.subscribe('getUsers').subscribe();
     this._tablesSubscription = MeteorObservable.subscribe('getTablesByRestaurant', this._restauranId).subscribe();
     this._currencySubscription = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', [ this._restauranId ] ).subscribe();
@@ -251,18 +250,11 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
    * ngOnDestroy Implementation
    */
   ngOnDestroy(){
-    this.removeSubscriptions();
-  }
-
-  /**
-   * Remove all subscriptions
-   */
-  removeSubscriptions():void{
-    if( this._usersDetailSubscription ){ this._usersDetailSubscription.unsubscribe(); }
-    if( this._paymentsSubscription ){ this._paymentsSubscription.unsubscribe(); }
-    if( this._ordersSubscription ){ this._ordersSubscription.unsubscribe(); }
-    if( this._tablesSubscription ){ this._tablesSubscription.unsubscribe(); }
-    if( this._currencySubscription ){ this._currencySubscription.unsubscribe(); }
+    this._usersDetailSubscription.unsubscribe();
+    this._paymentsSubscription.unsubscribe();
+    this._ordersSubscription.unsubscribe();
+    this._tablesSubscription.unsubscribe();
+    this._currencySubscription.unsubscribe();
   }
 
 }
