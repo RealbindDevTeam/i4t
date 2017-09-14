@@ -7,8 +7,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
-import { Item, ItemImage, ItemPrice } from '../../../../../../both/models/administration/item.model';
-import { Items, ItemImages } from '../../../../../../both/collections/administration/item.collection';
+import { Item, ItemImageThumb, ItemPrice } from '../../../../../../both/models/administration/item.model';
+import { Items, ItemImagesThumbs } from '../../../../../../both/collections/administration/item.collection';
 import { ItemEditionComponent } from './items-edition/item-edition.component';
 import { Currency } from '../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../both/collections/general/currency.collection';
@@ -27,7 +27,7 @@ import style from './item.component.scss';
 export class ItemComponent implements OnInit, OnDestroy {
 
     private _itemsSub           : Subscription;
-    private _itemImagesSub      : Subscription;
+    private _itemImagesThumbSub : Subscription;
     private _currenciesSub      : Subscription;
     private _restaurantSub      : Subscription;
 
@@ -66,7 +66,7 @@ export class ItemComponent implements OnInit, OnDestroy {
         this.removeSubscriptions();
         this._items = Items.find( { } ).zone();
         this._itemsSub = MeteorObservable.subscribe( 'items', Meteor.userId() ).subscribe();
-        this._itemImagesSub = MeteorObservable.subscribe( 'itemImages', Meteor.userId() ).subscribe();
+        this._itemImagesThumbSub = MeteorObservable.subscribe( 'itemImageThumbs', Meteor.userId() ).subscribe();
         this._currenciesSub = MeteorObservable.subscribe( 'currencies' ).subscribe();
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', Meteor.userId() ).subscribe( () => {
             this._ngZone.run( () => {
@@ -80,7 +80,7 @@ export class ItemComponent implements OnInit, OnDestroy {
     */
    removeSubscriptions():void{
         if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
-        if( this._itemImagesSub ){ this._itemImagesSub.unsubscribe(); }
+        if( this._itemImagesThumbSub ){ this._itemImagesThumbSub.unsubscribe(); }
         if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
         if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
    }
@@ -173,9 +173,9 @@ export class ItemComponent implements OnInit, OnDestroy {
      * @param {string} _itemId
      */
     getItemImage( _itemId:string ):string{
-        let _lItemImage: ItemImage = ItemImages.findOne( { itemId: _itemId } );
-        if( _lItemImage ){
-            return _lItemImage.url;
+        let _lItemImageThumb: ItemImageThumb = ItemImagesThumbs.findOne( { itemId: _itemId } );
+        if( _lItemImageThumb ){
+            return _lItemImageThumb.url;
         } else{
             return '/images/default-plate.png';
         }
