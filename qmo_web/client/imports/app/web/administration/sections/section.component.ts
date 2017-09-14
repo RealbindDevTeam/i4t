@@ -78,6 +78,7 @@ export class SectionComponent implements OnInit, OnDestroy {
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
             this._ngZone.run(() => {
                 this._restaurants = Restaurants.find( { } ).zone();
+                this.countRestaurants();
                 this._restaurants.subscribe( () => { this.createRestaurantForm(); this.countRestaurants(); });
             });
         });
@@ -93,7 +94,7 @@ export class SectionComponent implements OnInit, OnDestroy {
      * Validate if restaurants exists
      */
     countRestaurants():void{
-        Restaurants.find( { } ).fetch().length > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
+        Restaurants.collection.find( { } ).count() > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
     }
 
     /**

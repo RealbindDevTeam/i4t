@@ -1,4 +1,4 @@
-<md-card *ngIf="(restaurants | async)?.length <= 0" md-cell="12" class="demo-card demo-basic">
+<md-card *ngIf="!_thereAreRestaurants" md-cell="12" class="demo-card demo-basic">
     <md-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
@@ -22,7 +22,7 @@
     </md-card-content>
 </md-card>
 
-<div class="global-div" *ngIf="(restaurants | async)?.length>0">
+<div class="global-div" *ngIf="_thereAreRestaurants">
     <div class="div-whitout-overflow">
         <div class="cards-div">
             <md-card *ngFor="let restaurant of restaurants | async" class="custom-cards">
@@ -78,5 +78,5 @@
             </md-card>
         </div>
     </div>
-    <button *ngIf="(restaurants | async)?.length>0" md-tooltip="{{'RESTAURANT.REGISTER_RESTAURANT' | translate}}" class="fixed-action-btn" md-fab (click)="openRestaurantRegister()"> <md-icon style="color: white;">add</md-icon></button>
+    <button *ngIf="_thereAreRestaurants" md-tooltip="{{'RESTAURANT.REGISTER_RESTAURANT' | translate}}" class="fixed-action-btn" md-fab (click)="openRestaurantRegister()"> <md-icon style="color: white;">add</md-icon></button>
 </div>

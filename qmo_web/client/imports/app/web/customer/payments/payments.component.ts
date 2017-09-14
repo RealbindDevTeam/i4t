@@ -24,9 +24,8 @@ export class PaymentsComponent implements OnInit, OnDestroy {
     private _userDetailsSub         : Subscription;
     private _restaurantSub          : Subscription;
 
-    private _currentRestaurant      : Restaurant;
-    private _currentTable           : string;
-    private _showPaymentInfo        : boolean = false;
+    private _userDetails            : Observable<UserDetail[]>;
+    private _restaurants            : Observable<Restaurant[]>;
 
     /**
      * PaymentsComponent Constructor
@@ -49,21 +48,14 @@ export class PaymentsComponent implements OnInit, OnDestroy {
         this.removeSubscriptions();
         this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByUser', this._user ).subscribe( () => {
             this._ngZone.run( () => {
-                let _lUserDetail: UserDetail = UserDetails.findOne( { user_id: this._user } );
-                if( _lUserDetail.current_restaurant !== "" && _lUserDetail.current_table !== "" ){
-                    this._restaurantSub = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', this._user ).subscribe( () => {
-                        this._ngZone.run( () => {
-                            let _lRestaurant: Restaurant = Restaurants.findOne( { _id: _lUserDetail.current_restaurant } );
-                            this._currentRestaurant = _lRestaurant;
-                            this._currentTable = _lUserDetail.current_table;
-                            this._showPaymentInfo = true;
-                        });
-                    });
-                } else {
-                    this._showPaymentInfo = false;
-                }
+                this._userDetails = UserDetails.find( { user_id: this._user } ).zone();
             });
         });
+        this._restaurantSub = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._restaurants = Restaurants.find( { } ).zone();
+            });
+        });;
     }
 
     /**

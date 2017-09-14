@@ -26,6 +26,7 @@ let jsPDF = require('jspdf');
 })
 export class TableComponent implements OnInit, OnDestroy {
 
+  private _user = Meteor.userId();
   private tableForm           : FormGroup;
   private restaurantSub       : Subscription;
   private tableSub            : Subscription;
@@ -45,6 +46,8 @@ export class TableComponent implements OnInit, OnDestroy {
   private tooltip_msg         : string = '';
   private show_cards          : boolean;
   finalImg: any;
+  private _thereAreRestaurants : boolean = true;
+  private _thereAreTables      : boolean = true;
 
   /**
    * TableComponent Constructor
@@ -76,15 +79,33 @@ export class TableComponent implements OnInit, OnDestroy {
       restaurant: new FormControl('', [Validators.required]),
       tables_number: new FormControl('', [Validators.required])
     });
-    this.restaurants = Restaurants.find({ creation_user: Meteor.userId() }).zone();
-    this.restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
+    this.restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe( () => {
+      this._ngZone.run( () => {
+        this.restaurants = Restaurants.find({ creation_user: this._user }).zone();
+        this.countRestaurants();
+        this.restaurants.subscribe( () => { this.countRestaurants(); });
+      });
+    });
 
-    this.tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe(() => {
+    this.tableSub = MeteorObservable.subscribe('tables', this._user).subscribe(() => {
       this._ngZone.run(() => {
-        this.tables = Tables.find({ creation_user: Meteor.userId() }).zone();
+        this.tables = Tables.find({ creation_user: this._user }).zone();
+        this.countTables();
+        this.tables.subscribe( () => { this.countTables(); } );
       });
     });
     this.tooltip_msg = this.itemNameTraduction('TABLES.MSG_TOOLTIP');
+  }
+
+  /**
+   * Verify if restaurants exists
+   */
+  countRestaurants():void{
+    Restaurants.collection.find( { creation_user: this._user } ).count() > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
+  }
+
+  countTables():void{
+    Tables.collection.find( { creation_user: this._user } ).count() > 0 ? this._thereAreTables = true : this._thereAreTables = false;
   }
 
   /**

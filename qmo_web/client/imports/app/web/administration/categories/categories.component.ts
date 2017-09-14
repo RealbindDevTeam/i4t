@@ -42,6 +42,7 @@ export class CategoryComponent implements OnInit, OnDestroy{
     private titleMsg            : string;
     private btnAcceptLbl        : string;
     public _dialogRef           : MdDialogRef<any>;
+    private _thereAreRestaurants : boolean = true;
     
     /**
      * CategoryComponent constructor
@@ -80,6 +81,8 @@ export class CategoryComponent implements OnInit, OnDestroy{
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
             this._ngZone.run( () => {
                 this._restaurants = Restaurants.find( { } ).zone();
+                this.countRestaurants();
+                this._restaurants.subscribe( () => { this.countRestaurants(); } );
             });
         });
         this._sectionsSub = MeteorObservable.subscribe( 'sections', this._user ).subscribe( () => {
@@ -92,6 +95,13 @@ export class CategoryComponent implements OnInit, OnDestroy{
                 this._categories = Categories.find( { } ).zone();
             });
         });
+    }
+
+    /**
+     * Validate if restaurants exists
+     */
+    countRestaurants():void{
+        Restaurants.collection.find().count() > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
     }
 
     /**
