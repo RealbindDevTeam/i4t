@@ -157,7 +157,7 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
   showComfirmPay() {
     let btn_no  = this.itemNameTraduction('MOBILE.ORDERS.NO_ANSWER'); 
     let btn_yes = this.itemNameTraduction('MOBILE.ORDERS.YES_ANSWER'); 
-    let title   = this.itemNameTraduction('MOBILE.WAITER_CALL.TITLE_PROMPT'); 
+    let title   = this.itemNameTraduction('MOBILE.SYSTEM_MSG'); 
     let content = this.itemNameTraduction('MOBILE.WAITER_CALL.CONTENT_PROMPT'); 
 
     let prompt = this._alertCtrl.create({

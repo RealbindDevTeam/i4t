@@ -30,12 +30,13 @@
         "UPDATE": "Actualizar",
         "MODIFY": "Modificar",
         "CHOOSE_FILE": "Seleccionar archivo",
-        "CLOSE": "Cerrar",
-        "VIEW": "Ver",
-        "OK": "Ok",
-        "LANGUAGE": {
-            "es": "Español",
-            "en": "Ingles"
+        "CLOSE" : "Cerrar",
+        "VIEW" : "Ver",
+        "OK" : "Ok",
+        "SYSTEM_MSG": "Mensaje del sistema",
+        "LANGUAGE" : {
+            "es" : "Español",
+            "en" : "Ingles"
         },
         "INITIAL": {
             "SIGNUP": "Registrarse",

@@ -1,15 +1,16 @@
 <div style="border-bottom: 0.55px solid #c8c7cc; width: 90%; margin: auto;"></div>
-<ion-item>
-    <ion-thumbnail item-left>
-        <img src="assets/img/my-orders.png">
-    </ion-thumbnail>
-    <div *ngIf="ordersConfirm">
-        <h2>{{'MOBILE.ORDERS.ORDER' | translate}}{{orderCon.code}}</h2> 
-        <p>{{'MOBILE.ORDERS.TOTAL' | translate}}{{orderCon.totalPayment}} {{_currency}}</p>
+
+<div class="item-block" style="margin: 16px 0">
+    <img class="img-cards" src="assets/img/my-orders.png" style="width: 50px; height: 50px;">
+    <div class="custom-header-title">
+        <div *ngIf="ordersConfirm" class="custom-label">
+            <h2>{{'MOBILE.ORDERS.ORDER' | translate}}{{orderCon.code}}</h2> 
+            <p>{{'MOBILE.ORDERS.TOTAL' | translate}}{{orderCon.totalPayment}} {{_currency}}</p>
+        </div>
+        <div *ngIf="!ordersConfirm" class="custom-label">
+            <h2>{{'MOBILE.ORDERS.ORDER' | translate}}{{orderCon.code}}</h2> 
+            <p>{{orderCon.status | translate}}</p>  
+        </div>
     </div>
-    <div *ngIf="!ordersConfirm">
-        <h2>{{'MOBILE.ORDERS.ORDER' | translate}}{{orderCon.code}}</h2> 
-        <p>{{orderCon.status | translate}}</p>
-    </div>
-    <button *ngIf="ordersConfirm" ion-button color="light" small item-right (click)="showConfirm(orderCon)">{{'MOBILE.ORDERS.CONFIRM' | translate}}</button>
-</ion-item>
+    <button *ngIf="ordersConfirm" ion-button small item-right outline (click)="showConfirm(orderCon)">{{'MOBILE.ORDERS.CONFIRM' | translate}}</button>
+</div>

@@ -7,8 +7,6 @@
 </ion-header>
 
 <ion-content>
-    <hr showWhen="android"/>
-
     <ion-card>
         <ion-card-content>
             <ion-item style="padding-left: 0;">
@@ -37,7 +35,7 @@
             <h4 *ngIf="(_ordersToConfirm | async)?.length <= 0">{{'MOBILE.ORDER_PAYMENT_TRANS.NO_ORDERS' | translate}}</h4>
     
             <div *ngFor="let orderCon of _ordersToConfirm | async">
-                <order-payment-detail [orderCon]="orderCon" [ordersConfirm]="true"></order-payment-detail>
+                <order-payment-detail [orderCon]="orderCon" [ordersConfirm]="true" [currency]="_currency"></order-payment-detail>
             </div>
         </ion-card-content>
     </ion-card>
@@ -56,7 +54,7 @@
 
             <div *ngFor="let orderPendingConfirmation of _ordersWithPendingConfirmation | async">
                 <div *ngIf="orderPendingConfirmation.creation_user != _currentUserId">
-                    <order-payment-detail [orderCon]="orderPendingConfirmation" [ordersConfirm]="false"></order-payment-detail>
+                    <order-payment-detail [orderCon]="orderPendingConfirmation" [ordersConfirm]="false" [currency]="_currency"></order-payment-detail>
                 </div>
             </div>
         </ion-card-content>

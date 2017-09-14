@@ -234,10 +234,10 @@ export class SigninComponent implements OnInit {
      * Function that allows show comfirm dialog
      * @param { any } _call 
      */
-    showComfirm(_pContent: string) {
-        let okBtn = this.itemNameTraduction('MOBILE.OK');
-        let title = this.itemNameTraduction('MOBILE.WAITER_CALL.TITLE_PROMPT');
-
+    showComfirm( _pContent : string ) {
+        let okBtn   = this.itemNameTraduction('MOBILE.OK'); 
+        let title   = this.itemNameTraduction('MOBILE.SYSTEM_MSG'); 
+      
         let prompt = this._alertCtrl.create({
             title: title,
             message: _pContent,

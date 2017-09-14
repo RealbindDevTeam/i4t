@@ -44,7 +44,7 @@
                                 <order-detail *ngIf="order" [order]="order" [isUser]="true" [currencyCode]="_currencyCode"></order-detail>
                             </button>
                         </ion-list>
-                        <div *ngIf="_orderIndex == i" style="margin: 0 -16px;">
+                        <div *ngIf="_orderIndex == i">
                             <ion-row *ngIf="order?.status === 'ORDER_STATUS.REGISTERED' && order?.items?.length > 0" no-padding>
                                 <ion-col>
                                     <button ion-button small clear block text-left style="color: #5090ff" (click)="cancelOrder(order)">{{'MOBILE.ORDERS.CANCEL' | translate}}</button>
@@ -84,47 +84,50 @@
             </div>
         </div>
         
-        <div *ngFor="let order of _orders | async; let i = index" style="padding: 0 16px;">
+        <div *ngFor="let order of _orders | async; let i = index">
             <div *ngIf="order.creation_user != _currentUserId">
-                <ion-card class="custom-padding-card">
-                    <ion-list>
-                        <button ion-item (click)="showDetail(i)">
-                            <order-detail [order]="order" [isUser]="false" [currencyCode]="_currencyCode" ></order-detail>
-                        </button>
-                        <div *ngIf="_orderIndex == i">
-                            <div *ngIf="order">
-                                <div *ngFor="let itemId of order?.items">
-                                    <order-item-detail [order]="order" [orderItem]="itemId" [resCode]="_res_code" (gotoedititem)="goToItemEdit($event, order)"></order-item-detail>
-                                </div>
-                                <div *ngIf="(order.additions.length > 0)">
-                                    <span *ngFor="let addition of _additions | async">
-                                        <span *ngFor="let ad of order.additions">
-                                            <template [ngIf]="addition._id === ad.additionId">
-                                                <div class="item-divider-custom"></div>
-                                                <ion-item >
-                                                    <ion-thumbnail item-left>
-                                                        <img src="assets/img/default-plate.png">
-                                                    </ion-thumbnail>
-                                                    <h2 style="white-space: normal;">{{addition.name}} {{'MOBILE.ORDERS.ADDITION' | translate}}</h2> 
-                                                    <p style="white-space: normal;">{{'MOBILE.PRICING' | translate}}: {{ad.paymentAddition}} {{_currencyCode}}</p>
-                                                    <p style="white-space: normal;">{{'MOBILE.SECTIONS.QUANTITY' | translate}} {{ad.quantity}}</p>
-                                                    <button *ngIf="order.creation_user === _currentUserId && order.status === 'ORDER_STATUS.REGISTERED'" (click)="showAdditionsDetail(ad, order)" ion-button icon-only clear item-right >
-                                                        <ion-icon name="create"></ion-icon>
-                                                    </button>
-                                                </ion-item>
-                                            </template>
+                <ion-card>
+                    <ion-card-content>
+                        <ion-list>
+                            <button ion-item (click)="showDetail(i)">
+                                <order-detail [order]="order" [isUser]="false" [currencyCode]="_currencyCode" ></order-detail>
+                            </button>
+                            <div *ngIf="_orderIndex == i">
+                                <div *ngIf="order">
+                                    <div *ngFor="let itemId of order?.items">
+                                        <order-item-detail [order]="order" [orderItem]="itemId" [resCode]="_res_code" (gotoedititem)="goToItemEdit($event, order)"></order-item-detail>
+                                    </div>
+                                    <div *ngIf="(order.additions.length > 0)">
+                                        <span *ngFor="let addition of _additions | async">
+                                            <span *ngFor="let ad of order.additions">
+                                                <template [ngIf]="addition._id === ad.additionId">
+                                                    <div class="item-divider-custom"></div>
+                                                    <ion-item>
+                                                        <ion-thumbnail item-left>
+                                                            <img src="assets/img/default-plate.png">
+                                                        </ion-thumbnail>
+                                                        <h2 style="white-space: normal;">{{addition.name}} {{'MOBILE.ORDERS.ADDITION' | translate}}</h2> 
+                                                        <p style="white-space: normal;">{{'MOBILE.PRICING' | translate}}: {{ad.paymentAddition}} {{_currencyCode}}</p>
+                                                        <p style="white-space: normal;">{{'MOBILE.SECTIONS.QUANTITY' | translate}} {{ad.quantity}}</p>
+                                                        <button *ngIf="order.creation_user === _currentUserId && order.status === 'ORDER_STATUS.REGISTERED'" (click)="showAdditionsDetail(ad, order)" ion-button icon-only clear item-right >
+                                                            <ion-icon name="create"></ion-icon>
+                                                        </button>
+                                                    </ion-item>
+                                                </template>
+                                            </span>
                                         </span>
-                                    </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </ion-list>
+                        </ion-list>
+                    </ion-card-content>
                 </ion-card>
             </div>
         </div>
+        <div style="height: 48px"></div>
     </div>
     
-    <div *ngIf="!_restaurants">
+    <div *ngIf="!_restaurants" pading>
         <div class="img">
             <img src="assets/img/platos-orden.png">
         </div>
@@ -133,7 +136,6 @@
             <p>{{'MOBILE.ORDERS.CONTENT' | translate}}</p>
         </div>
     </div>
-    <div style="height: 48px"></div>
 </ion-content>
 
 <ion-footer>

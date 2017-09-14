@@ -105,10 +105,10 @@ export class CodeTypeSelectPage {
    * Show message confirm
    * @param _pContent 
    */
-  showConfirmMessage(_pContent: any) {
-    let okBtn = this.itemNameTraduction('MOBILE.OK');
-    let title = this.itemNameTraduction('MOBILE.WAITER_CALL.TITLE_PROMPT');
-
+  showConfirmMessage( _pContent :any ){
+    let okBtn   = this.itemNameTraduction('MOBILE.OK'); 
+    let title   = this.itemNameTraduction('MOBILE.SYSTEM_MSG'); 
+  
     let prompt = this._alertCtrl.create({
       title: title,
       message: _pContent,

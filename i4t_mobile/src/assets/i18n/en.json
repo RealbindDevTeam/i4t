@@ -30,12 +30,13 @@
         "UPDATE": "Update",
         "MODIFY": "Modify",
         "CHOOSE_FILE": "Choose a file",
-        "CLOSE": "Close",
-        "VIEW": "View",
-        "OK": "Ok",
-        "LANGUAGE": {
-            "es": "Spanish",
-            "en": "English"
+        "CLOSE" : "Close",
+        "VIEW" : "View",
+        "OK" : "Ok",
+        "SYSTEM_MSG": "System message",
+        "LANGUAGE" : {
+            "es" : "Spanish",
+            "en" : "English"
         },
         "INITIAL": {
             "SIGNUP": "Sign Up",
