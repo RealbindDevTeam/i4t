@@ -9,8 +9,11 @@ import { PaymentsHistoryPage } from './payments-history/payments-history';
 import { InitialComponent } from '../../auth/initial/initial';
 import { UserProfileImage } from 'qmo_web/both/models/auth/user-profile.model';
 import { Users, UserImages } from 'qmo_web/both/collections/auth/user.collection';
+import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
+
 import { User } from 'qmo_web/both/models/auth/user.model';
 import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { ChangeTablePage } from './change-table/change-table';
 
 @Component({
   selector: 'page-options',
@@ -18,30 +21,31 @@ import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/
 })
 export class OptionsPage implements OnInit, OnDestroy {
 
-  private _userSubscription      : Subscription;
-  private _userImageSubscription : Subscription;
+  private _userSubscription: Subscription;
+  private _userImageSubscription: Subscription;
+  private _userDetailSubscription: Subscription;
   private _user: User;
   private _userName: string;
   private _imageProfile: string;
-   
-   /**
-    * OptionsPage constructor
-    * @param _navCtrl 
-    * @param _navParams 
-    * @param _app 
-    * @param _alertCtrl 
-    * @param _loadingCtrl 
-    * @param _translate 
-    * @param _userLanguageService 
-    */
-  constructor(public _navCtrl: NavController, 
-              public _navParams: NavParams, 
-              public _app : App,
-              public _alertCtrl: AlertController,
-              public _loadingCtrl: LoadingController,
-              private _ngZone : NgZone,
-              private _translate: TranslateService,
-              private _userLanguageService: UserLanguageService) {
+
+  /**
+   * OptionsPage constructor
+   * @param _navCtrl 
+   * @param _navParams 
+   * @param _app 
+   * @param _alertCtrl 
+   * @param _loadingCtrl 
+   * @param _translate 
+   * @param _userLanguageService 
+   */
+  constructor(public _navCtrl: NavController,
+    public _navParams: NavParams,
+    public _app: App,
+    public _alertCtrl: AlertController,
+    public _loadingCtrl: LoadingController,
+    private _ngZone: NgZone,
+    private _translate: TranslateService,
+    private _userLanguageService: UserLanguageService) {
     _translate.setDefaultLang('en');
   }
 
@@ -59,15 +63,16 @@ export class OptionsPage implements OnInit, OnDestroy {
     this.init();
   }
 
-  init(){
+  init() {
     this.removeSubscriptions();
-    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+    this._translate.use(this._userLanguageService.getLanguage(Meteor.user()));
 
     this._userImageSubscription = MeteorObservable.subscribe('getUserImages', Meteor.userId()).subscribe();
+    this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
 
-    this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() =>{
+    this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() => {
       this._ngZone.run(() => {
-        this._user = Users.findOne({_id: Meteor.userId()});
+        this._user = Users.findOne({ _id: Meteor.userId() });
       });
     });
   }
@@ -75,14 +80,14 @@ export class OptionsPage implements OnInit, OnDestroy {
   /**
    * Return user image
    */
-  getUsetImage():string{
-    if(this._user && this._user.services.facebook){
+  getUsetImage(): string {
+    if (this._user && this._user.services.facebook) {
       return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
     } else {
-      let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() });
-      if( _lUserImage ){
+      let _lUserImage: UserProfileImage = UserImages.findOne({ userId: Meteor.userId() });
+      if (_lUserImage) {
         return _lUserImage.url;
-      } 
+      }
       else {
         return 'assets/img/user_default_image.png';
       }
@@ -92,7 +97,7 @@ export class OptionsPage implements OnInit, OnDestroy {
   /**
    * This method is responsible for go to settings option
    */
-  goToSettings(){
+  goToSettings() {
     this._navCtrl = this._app.getRootNav();
     this._navCtrl.push(SettingsPage);
   }
@@ -100,20 +105,29 @@ export class OptionsPage implements OnInit, OnDestroy {
   /**
    * This method is responsible for go to payments history option
    */
-  goToPaymentsHistory(){
+  goToPaymentsHistory() {
     this._navCtrl = this._app.getRootNav();
     this._navCtrl.push(PaymentsHistoryPage);
+  }
+
+  /**
+   * This method go to change table 
+   */
+  goToChangeTable() {
+    //this._navCtrl = this._app.getRootNav();
+    let userDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+    this._navCtrl.push(ChangeTablePage, { res_id: userDetail.current_restaurant, table_id: userDetail.current_table });
   }
 
   /**
    * Function that allows show Signout comfirm dialog
    * @param { any } _call 
    */
-  showComfirmSignOut( _call : any) {
-    let btn_no  = this.itemNameTraduction('MOBILE.SIGN_OUT.NO_BTN'); 
-    let btn_yes = this.itemNameTraduction('MOBILE.SIGN_OUT.YES_BTN'); 
-    let title   = this.itemNameTraduction('MOBILE.SIGN_OUT.TITLE_CONFIRM'); 
-    let content = this.itemNameTraduction('MOBILE.SIGN_OUT.CONTENT_CONFIRM'); 
+  showComfirmSignOut(_call: any) {
+    let btn_no = this.itemNameTraduction('MOBILE.SIGN_OUT.NO_BTN');
+    let btn_yes = this.itemNameTraduction('MOBILE.SIGN_OUT.YES_BTN');
+    let title = this.itemNameTraduction('MOBILE.SIGN_OUT.TITLE_CONFIRM');
+    let content = this.itemNameTraduction('MOBILE.SIGN_OUT.CONTENT_CONFIRM');
 
     let prompt = this._alertCtrl.create({
       title: title,
@@ -138,9 +152,9 @@ export class OptionsPage implements OnInit, OnDestroy {
   /**
    * User account sign out
    */
-  signOut(){
-    let loading_msg = this.itemNameTraduction('MOBILE.SIGN_OUT.LOADING'); 
-    
+  signOut() {
+    let loading_msg = this.itemNameTraduction('MOBILE.SIGN_OUT.LOADING');
+
     let loading = this._loadingCtrl.create({
       content: loading_msg
     });
@@ -159,7 +173,7 @@ export class OptionsPage implements OnInit, OnDestroy {
   itemNameTraduction(_itemName: string): string {
     var wordTraduced: string;
     this._translate.get(_itemName).subscribe((res: string) => {
-        wordTraduced = res;
+      wordTraduced = res;
     });
     return wordTraduced;
   }
@@ -174,16 +188,17 @@ export class OptionsPage implements OnInit, OnDestroy {
   /**
    * ngOnDestroy Implementation
    */
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.removeSubscriptions();
   }
 
   /**
    * Remove all subscription
    */
-  removeSubscriptions(){
-    if( this._userSubscription ){ this._userSubscription.unsubscribe(); }
-    if( this._userImageSubscription ){ this._userImageSubscription.unsubscribe(); }
+  removeSubscriptions() {
+    if (this._userSubscription) { this._userSubscription.unsubscribe(); }
+    if (this._userImageSubscription) { this._userImageSubscription.unsubscribe(); }
+    if (this._userDetailSubscription) { this._userDetailSubscription.unsubscribe(); }
   }
 
 }
