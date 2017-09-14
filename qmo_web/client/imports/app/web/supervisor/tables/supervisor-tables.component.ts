@@ -44,6 +44,8 @@ export class SupervisorTableComponent implements OnInit, OnDestroy {
     private tooltip_msg         : string = '';
     private show_cards          : boolean;
     finalImg: any;
+    private _thereAreRestaurants  : boolean = true;
+    private _thereAreTables       : boolean = true;
   
     /**
      * TableComponent Constructor
@@ -77,6 +79,8 @@ export class SupervisorTableComponent implements OnInit, OnDestroy {
       this.restaurantSub = MeteorObservable.subscribe('getRestaurantByRestaurantWork', this._user ).subscribe( () => {
           this._ngZone.run( () => {
               this.restaurants = Restaurants.find( { } ).zone();
+              this.countRestaurants();
+              this.restaurants.subscribe( () => { this.countRestaurants(); });
               Restaurants.find().fetch().forEach( (res) => {
                   this.restaurant_name = res.name;
               });
@@ -90,9 +94,25 @@ export class SupervisorTableComponent implements OnInit, OnDestroy {
       this.tableSub = MeteorObservable.subscribe('getTablesByRestaurantWork', this._user ).subscribe(() => {
         this._ngZone.run(() => {
           this.tables = Tables.find( { } ).zone();
+          this.countTables();
+          this.tables.subscribe( () => { this.countTables(); });
         });
       });
       this.tooltip_msg = this.itemNameTraduction('TABLES.MSG_TOOLTIP');
+    }
+
+    /**
+     * Verify if restaurants exists
+     */
+    countRestaurants():void{
+      Restaurants.collection.find( { } ).count() > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
+    }
+
+    /**
+     * Verify if tables exists
+     */
+    countTables():void{
+      Tables.collection.find( { } ).count() > 0 ? this._thereAreTables = true : this._thereAreTables = false;
     }
   
     /**

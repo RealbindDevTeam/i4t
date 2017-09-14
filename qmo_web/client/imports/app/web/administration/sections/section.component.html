@@ -1,4 +1,4 @@
-<md-card md-cell="12" class="demo-card demo-basic" *ngIf="(_restaurants | async)?.length <= 0">
+<md-card md-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
     <md-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
@@ -22,7 +22,7 @@
     </md-card-content>
 </md-card>
 
-<md-card *ngIf="(_restaurants | async)?.length > 0">
+<md-card *ngIf="_thereAreRestaurants">
   <md-card-title>{{'SECTIONS.SECTION_CREATION' | translate}}</md-card-title>
   <md-card-subtitle>{{'SECTIONS.SECTION_TEXT' | translate}}</md-card-subtitle>
   <md-card-content>

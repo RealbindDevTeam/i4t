@@ -1,4 +1,4 @@
-<md-card md-cell="12" class="demo-card demo-basic" *ngIf="(_restaurants | async)?.length <= 0">
+<md-card md-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
     <md-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
@@ -22,7 +22,7 @@
     </md-card-content>
 </md-card>
 
-<md-card *ngIf="(_restaurants | async)?.length > 0 && (_items | async)?.length <= 0" md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
+<md-card *ngIf="_thereAreRestaurants && !_thereAreItems" md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
     <md-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
@@ -46,7 +46,7 @@
     </md-card-content>
 </md-card>
 
-<div class="main" *ngIf="(_restaurants | async)?.length > 0 &&  (_items | async)?.length > 0">
+<div class="main" *ngIf="_thereAreRestaurants && _thereAreItems">
     <div class="main-overflow">
         <md-card id="card-main" class="custom-cards" *ngFor="let item of _items | async">
                 <div class="header-card">

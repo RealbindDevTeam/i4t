@@ -20,11 +20,13 @@ import style from '../item.component.scss';
 })
 export class ItemEnableComponent implements OnInit, OnDestroy {
 
+    private _user = Meteor.userId();
     private _itemsSub           : Subscription;
     private _itemImagesThumbSub : Subscription;
 
     private _items              : Observable<Item[]>;
     private _mdDialogRef        : MdDialogRef<any>;
+    private _thereAreItems      : boolean = true;
 
     /**
      * ItemEnableComponent Constructor
@@ -45,12 +47,21 @@ export class ItemEnableComponent implements OnInit, OnDestroy {
      */
     ngOnInit() {
         this.removeSubscriptions();
-        this._itemsSub = MeteorObservable.subscribe('items', Meteor.userId()).subscribe(() => {
+        this._itemsSub = MeteorObservable.subscribe( 'items', this._user ).subscribe( () => {
             this._ngZone.run(() => {
                 this._items = Items.find({}).zone();
+                this.countItems();
+                this._items.subscribe( () => { this.countItems(); } );
             });
         });
-        this._itemImagesThumbSub = MeteorObservable.subscribe('itemImageThumbs', Meteor.userId()).subscribe();
+        this._itemImagesThumbSub = MeteorObservable.subscribe( 'itemImageThumbs', this._user ).subscribe();
+    }
+
+    /**
+     * Validate if items exists
+     */
+    countItems():void{
+        Items.collection.find( { } ).count() > 0 ? this._thereAreItems = true : this._thereAreItems = false;
     }
 
     /**

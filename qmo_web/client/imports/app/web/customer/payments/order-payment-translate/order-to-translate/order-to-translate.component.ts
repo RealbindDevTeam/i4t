@@ -178,6 +178,7 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
                 }else {
                     this.openDialog(this.titleMsg, '', _lMessageNoPay, '', this.btnAcceptLbl, false);
                 }
+                this.close();
             }
         });
     }

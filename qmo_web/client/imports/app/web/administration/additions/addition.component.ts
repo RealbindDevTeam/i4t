@@ -51,6 +51,7 @@ export class AdditionComponent implements OnInit, OnDestroy{
     private _showCurrencies         : boolean = false;
     private _restaurantTaxes        : string [] = [];
     private _showTaxes              : boolean = false;
+    private _thereAreRestaurants    : boolean = true;
 
     /**
      * AdditionComponent constructor
@@ -90,7 +91,8 @@ export class AdditionComponent implements OnInit, OnDestroy{
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
             this._ngZone.run( () => {
                 this._restaurants = Restaurants.find( { } ).zone();
-                this._restaurants.subscribe( () => { this.buildControls(); });
+                this.countRestaurants();
+                this._restaurants.subscribe( () => { this.buildControls(); this.countRestaurants(); });
             });
         });
 
@@ -99,6 +101,13 @@ export class AdditionComponent implements OnInit, OnDestroy{
                 this._additions = Additions.find( { } ).zone();
             });
         });
+    }
+
+    /**
+     * Validate if restaurants exists
+     */
+    countRestaurants():void{
+        Restaurants.collection.find( { } ).count() > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
     }
 
     /**

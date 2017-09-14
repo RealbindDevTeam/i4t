@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -17,7 +17,6 @@ import style from './monthly-config.component.scss';
     template,
     styles: [style]
 })
-
 export class MonthlyConfigComponent implements OnInit, OnDestroy {
 
     private _restaurants            : Observable<Restaurant[]>;
@@ -25,6 +24,7 @@ export class MonthlyConfigComponent implements OnInit, OnDestroy {
     private _showRestaurantList     : boolean = false;
     private _showEnableDisable      : boolean = false;
     private _restaurantId           : string = "";
+    private _thereAreRestaurants    : boolean = true;
 
     /**
      * MonthlyConfigComponent Constructor
@@ -34,19 +34,34 @@ export class MonthlyConfigComponent implements OnInit, OnDestroy {
      */
     constructor( private translate: TranslateService, 
                  private _router: Router, 
-                 private _userLanguageService: UserLanguageService ) {
+                 private _userLanguageService: UserLanguageService,
+                 private _ngZone: NgZone ) {
         translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         translate.setDefaultLang( 'en' );
     }
 
+    /**
+     * ngOnInit implementation
+     */
     ngOnInit() {
         this.removeSubscriptions();
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe(() => {
-            this._restaurants = Restaurants.find({}).zone();
-            if (this._restaurants) {
-                this._showRestaurantList = true;
-            }
+            this._ngZone.run( () => {
+                this._restaurants = Restaurants.find({}).zone();
+                this.countRestaurants();
+                this._restaurants.subscribe( () => { this.countRestaurants(); } );
+                if (this._restaurants) {
+                    this._showRestaurantList = true;
+                }
+            });
         });
+    }
+
+    /**
+     * Validate if restaurants exists
+     */
+    countRestaurants():void{
+        Restaurants.collection.find( { } ).count() > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
     }
 
     /**

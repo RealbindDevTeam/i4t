@@ -1,4 +1,4 @@
-<md-card md-cell="12" class="demo-card demo-basic" *ngIf="(_restaurants | async)?.length <= 0">
+<md-card md-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
     <md-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
@@ -22,7 +22,7 @@
     </md-card-content>
 </md-card>
     
-<div *ngIf="(_restaurants | async)?.length > 0" class="global-div">
+<div *ngIf="_thereAreRestaurants" class="global-div">
     <div class="div-whitout-overflow">
         <div class="cards-div">
             <md-card style="margin: 24px;">
@@ -52,7 +52,7 @@
                 </md-card-content>
             </md-card>
             
-            <md-card *ngIf="(_restaurants | async)?.length > 0 && (_userDetails | async)?.length <= 0" md-cell="12" class="demo-card demo-basic" style="margin: 24px;">
+            <md-card *ngIf="_thereAreRestaurants && (_userDetails | async)?.length <= 0" md-cell="12" class="demo-card demo-basic" style="margin: 24px;">
                 <md-card-content>
                     <div class="card_initial">
                         <div class="card_initial has-image">

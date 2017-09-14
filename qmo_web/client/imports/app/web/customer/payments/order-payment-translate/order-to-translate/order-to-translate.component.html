@@ -14,7 +14,7 @@
                     <span *ngFor="let it of or.items">
                         <ng-template [ngIf]="item._id === it.itemId">
                             <md-list-item>
-                                <img md-list-avatar class="item-image" src="{{ getItemImage(item._id) }}">
+                                <img md-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" src="{{ getItemImage(item._id) }}">
                                 <h4 md-line>{{item.name}}</h4>
                                 <h5 md-line>
                                     {{'ORDER_TRANS.PRICE' | translate}}: {{it.paymentItem}} {{_currencyCode}} - {{'ORDER_TRANS.QUANT' | translate}} {{it.quantity}}
@@ -32,7 +32,7 @@
                     <span *ngFor="let ad of or.additions">
                         <ng-template [ngIf]="addition._id === ad.additionId">
                             <md-list-item>
-                                <img md-list-avatar class="item-image" src="/images/default-plate.png">
+                                <img md-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" src="/images/default-plate.png">
                                 <h4 md-line>{{addition.name}} <div class="addition-message">({{'ORDER_TRANS.ADDITION' | translate}})</div></h4>
                                 <p md-line>{{'ORDER_TRANS.PRICE' | translate}}: {{ad.paymentAddition}} {{_currencyCode}} - {{'ORDER_TRANS.QUANT' | translate}} {{ad.quantity}}</p>
                             </md-list-item>

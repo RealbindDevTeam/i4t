@@ -1,5 +1,4 @@
-<div style="width: 80%; margin: 0 auto; max-width: 740px;" *ngIf="(_orders | async)?.length <= 0 && (_ordersTable | async)?.length <= 0">
-    <restaurant-info [restaurantId]="restaurantId" [tableQRCode]="tableQRCode"></restaurant-info>
+<div style="width: 80%; margin: 0 auto; max-width: 740px;" *ngIf="!_thereAreUserOrders && !_thereAreNotUserOrders">
     <md-card md-cell="12" class="demo-card demo-basic">
         <md-card-content>
             <div class="card_initial">
@@ -23,13 +22,12 @@
         </md-card-content>
     </md-card>
 </div>
-<div class="order-form-1" *ngIf="(_orders | async)?.length > 0 || (_ordersTable | async)?.length > 0">
+<div class="order-form-1" *ngIf="_thereAreUserOrders || _thereAreNotUserOrders">
     <div class="order-form-2">
         <div class="menu-items">
             <div class="menu-items-content">
                 <div class="items">
                     <div id="center" style="width: 80%; margin: 0 auto; max-width: 740px;">
-                        <restaurant-info [restaurantId]="restaurantId" [tableQRCode]="tableQRCode"></restaurant-info>
                         <md-select placeholder="{{'ORDER_LIST.TABLE_ORDERS' | translate}}" class="orders-bar" [(ngModel)]="_initialValue">
                             <md-option (click)="changeOrderFilter('all')" value="all">{{'ORDER_LIST.ALL_ORDERS' | translate}}</md-option>
                             <md-option (click)="changeOrderFilter('customer')" value="customer">{{'ORDER_LIST.MY_ORDERS' | translate}}</md-option>
