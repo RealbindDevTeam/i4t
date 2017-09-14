@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { App, AlertController, LoadingController, NavController, NavParams, ViewController } from 'ionic-angular';
-import { BarcodeScanner } from 'ionic-native';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
 import { Table } from 'qmo_web/both/models/restaurant/table.model';
 import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
-
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { AlphanumericCodePage } from '../alphanumeric-code/alphanumeric-code';
 import { SectionsPage } from '../sections/sections';
 
@@ -33,25 +32,26 @@ export class CodeTypeSelectPage {
    * @param _userLanguageService 
    */
   constructor(private _navCtrl: NavController,
-              private _viewCtrl: ViewController,
-              public _navParams: NavParams,
-              public _translate: TranslateService,
-              public _alertCtrl: AlertController,
-              public _loadingCtrl: LoadingController,
-              public _app: App,
-              private _userLanguageService: UserLanguageService ) {
+    private _viewCtrl: ViewController,
+    public _navParams: NavParams,
+    public _translate: TranslateService,
+    public _alertCtrl: AlertController,
+    public _loadingCtrl: LoadingController,
+    public _app: App,
+    private _userLanguageService: UserLanguageService,
+    private barcodeScanner: BarcodeScanner) {
     _translate.setDefaultLang('en');
   }
 
   /**
    * ngOnInit implementation
    */
-  ngOnInit(){
-    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+  ngOnInit() {
+    this._translate.use(this._userLanguageService.getLanguage(Meteor.user()));
   }
 
   goToScann() {
-    BarcodeScanner.scan().then((result) => {
+    this.barcodeScanner.scan().then((result) => {
       this.goToSections(result.text);
     }, (err) => {
       // An error occurred
@@ -66,7 +66,7 @@ export class CodeTypeSelectPage {
 
   goToSections(qr_code: string) {
     MeteorObservable.call('getIdTableByQr', qr_code).subscribe((table: Table) => {
-      if(table){
+      if (table) {
         if (table.is_active) {
           this._id_table = table._id;
           this.forwardToSections(qr_code);
@@ -92,15 +92,15 @@ export class CodeTypeSelectPage {
           alert('Invalid table');
         }
       }, (error) => {
-        if( error.error === '400' ){
+        if (error.error === '400') {
           this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.TABLE_NOT_EXISTS'));
-        } else if( error.error === '200' ){
+        } else if (error.error === '200') {
           this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.IUREST_NO_ACTIVE'));
         }
       });
     }
   }
-  
+
   /**
    * Show message confirm
    * @param _pContent 
