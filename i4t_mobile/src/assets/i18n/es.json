@@ -1,15 +1,15 @@
 {
-    "PAYMENT_METHODS.CASH" : "Efectivo",
-    "PAYMENT_METHODS.CREDIT_CARD" : "Tarjeta de Crédito",
-    "PAYMENT_METHODS.DEBIT_CARD" : "Tarjeta debito",
-    "PAYMENT_METHODS.ONLINE" : "Pago en Línea",
+    "PAYMENT_METHODS.CASH": "Efectivo",
+    "PAYMENT_METHODS.CREDIT_CARD": "Tarjeta de Crédito",
+    "PAYMENT_METHODS.DEBIT_CARD": "Tarjeta debito",
+    "PAYMENT_METHODS.ONLINE": "Pago en Línea",
     "ORDER_STATUS": {
         "REGISTERED": "Registrado",
         "IN_PROCESS": "En Proceso",
         "PREPARED": "Preparado",
         "CANCELED": "Cancelado",
         "DELIVERED": "Entregado",
-        "PENDING_CONFIRM" : "Confirmación pendiente para pago"
+        "PENDING_CONFIRM": "Confirmación pendiente para pago"
     },
     "MOBILE": {
         "CANCEL": "Cancelar",
@@ -30,12 +30,12 @@
         "UPDATE": "Actualizar",
         "MODIFY": "Modificar",
         "CHOOSE_FILE": "Seleccionar archivo",
-        "CLOSE" : "Cerrar",
-        "VIEW" : "Ver",
-        "OK" : "Ok",
-        "LANGUAGE" : {
-            "es" : "Español",
-            "en" : "Ingles"
+        "CLOSE": "Cerrar",
+        "VIEW": "Ver",
+        "OK": "Ok",
+        "LANGUAGE": {
+            "es": "Español",
+            "en": "Ingles"
         },
         "INITIAL": {
             "SIGNUP": "Registrarse",
@@ -59,7 +59,7 @@
             "CONFIRM_TITLE": "Usuario creado",
             "CONFIRM_SUBTITLE": "Ahora puedes disfrutar de iurest",
             "CONFIRM_BTN": "Aceptar",
-            "OR" : "ó",
+            "OR": "ó",
             "SYSTEM_MSG": "Mensaje del sistema",
             "USER_EMAIL_EXISTS": "El usuario y/o correo ya existe, por favor revisa los datos ingresados e intenta de nuevo",
             "ERROR": "Se ha presentado un error registrando el usuario",
@@ -118,8 +118,8 @@
                 "CONFIRM_BTN": "Ok",
                 "ERROR_TITLE": "Error"
             },
-            "SIGN_OUT":"Cerrar sesión",
-            "MSG_COMFIRM" : "Tus datos han sido actualizados"
+            "SIGN_OUT": "Cerrar sesión",
+            "MSG_COMFIRM": "Tus datos han sido actualizados"
         },
         "CODE_TYPE_SELECT": {
             "TITTLE": "Tipo de código",
@@ -155,19 +155,19 @@
             "TOTAL": "Total: ",
             "STATUS": "Estado: ",
             "ADD_ADDITIONS": "Selecciona las adiciones que desees agregar a la orden e indica su cantidad",
-            "ADD_ADDITION_ORDER" : "Agregar adición a la orden",
+            "ADD_ADDITION_ORDER": "Agregar adición a la orden",
             "ADDITON_AGGREGATED": "Adicion Agregada Correctamente",
-            "ADDITION" : "(Adición)",
+            "ADDITION": "(Adición)",
             "MODIFY_ADDITION_ORDER": "Modificar Adicion",
             "DELETE_ADDITION_ORDER": "Eliminar Adicion",
             "DELETE_ADDITION_CONFIRM": "Esta seguro de eliminar la adicion de la orden?",
             "ADDITION_DELETED": "Adicion Eliminada de la Orden",
             "ADDITION_EDITED": "Adicion Editada Correctamente",
-            "QUANT":"Cant.",
+            "QUANT": "Cant.",
             "TABLE_NOT_EXISTS": "La Mesa no Existe. Por favor verifique el codigo",
             "TABLE_NO_ACTIVE": "La mesa no tiene el servicio de Iurest activo. No es posible ingresar",
             "IUREST_NO_ACTIVE": "El Restaurante no tiene el servicio de Iurest activo. No es posible ingresar",
-            "TABLE" : "Mesa"
+            "TABLE": "Mesa"
         },
         "ORDER_TRANS": {
             "ORDERS": "Orden",
@@ -212,64 +212,64 @@
             "TOTAL_BILL": "Total cuenta",
             "TOTAL_PAY": "Total por pagar",
             "PAY_BTN": "Pagar",
-            "PAY_DETAIL_TITTLE":"Detalle de las ordenes",
-            "PAY_ORDER":"Orden",
-            "SUBTOTAL":"SubTotal",
-            "INC":"Inc",
-            "TOTAL":"Total",
-            "TIPS":"Propina sugerida",
-            "TOTAL_TO_PAY":"Total a pagar",
-            "TIPS_OTHER_VALUE" : "Otro valor",
-            "MODAL_TITLE" : "Opciones de pago",
-            "TITLE_SERVICES_INCLUDE" : "¿Deseas incluir el servicio?",
-            "CONTENT_SERVICES_INCLUDE_INIT" : "Ten en cuenta que la propina sugerida por el restaurante equivale al",
-            "CONTENT_SERVICES_INCLUDE_END" : "del total de tu cuenta, pero tu puedes modificarla",
-            "TIP" : "Propina",
-            "TIP_OTHER_VALUE" : "Otro valor",
-            "SELECT_PAYMENT_METHOD" : "Seleccionar medio de pago",
-            "CONFIRM_PAYMENT_METHOD" : "Debe seleccionar un medio de pago",
-            "ADD_ORDER_PAYMENT" : "Agregar orden a la cuenta",
-            "BTN_PAY" : "Pagar",
-            "CONFIRM_TO_ADD_ACCOUNT" : "¿Deseas realizar el pago de la orden",
-            "CONFIRM_OWNER_ORDER" : "El propietario de la orden debe confirmar la solicitud del pago",
-            "CONFIRM_ORDER_STATUS" : "La orden no ha sido entregada",
-            "CONFIRM_PAY_OTHER_USER" : "¿Deseas transferir el pago de la orden",
-            "SUCCESSFUL_PAY_OTHER_USER" : "Se ha transferido el pago de la orden",
-            "PAYMENTS_TO_BE_CONFIRM" : "Tienes ordenes en estado pendiente por confirmación",
-            "MOMENT_ANSWER" : "En un momento te atenderemos",
-            "MOMENT_PAY_ANSWER" : "En un momento recibiremos tu pago",
-            "PAY_CONFIRM_MODAL" : "No hay pagos recibidos",
-            "SELECT_ALL_PAYMENTS" : "Seleccionar todos los pagos",
-            "PAY_PENDING" : "Pago pendiente por recibir",
+            "PAY_DETAIL_TITTLE": "Detalle de las ordenes",
+            "PAY_ORDER": "Orden",
+            "SUBTOTAL": "SubTotal",
+            "INC": "Inc",
+            "TOTAL": "Total",
+            "TIPS": "Propina sugerida",
+            "TOTAL_TO_PAY": "Total a pagar",
+            "TIPS_OTHER_VALUE": "Otro valor",
+            "MODAL_TITLE": "Opciones de pago",
+            "TITLE_SERVICES_INCLUDE": "¿Deseas incluir el servicio?",
+            "CONTENT_SERVICES_INCLUDE_INIT": "Ten en cuenta que la propina sugerida por el restaurante equivale al",
+            "CONTENT_SERVICES_INCLUDE_END": "del total de tu cuenta, pero tu puedes modificarla",
+            "TIP": "Propina",
+            "TIP_OTHER_VALUE": "Otro valor",
+            "SELECT_PAYMENT_METHOD": "Seleccionar medio de pago",
+            "CONFIRM_PAYMENT_METHOD": "Debe seleccionar un medio de pago",
+            "ADD_ORDER_PAYMENT": "Agregar orden a la cuenta",
+            "BTN_PAY": "Pagar",
+            "CONFIRM_TO_ADD_ACCOUNT": "¿Deseas realizar el pago de la orden",
+            "CONFIRM_OWNER_ORDER": "El propietario de la orden debe confirmar la solicitud del pago",
+            "CONFIRM_ORDER_STATUS": "La orden no ha sido entregada",
+            "CONFIRM_PAY_OTHER_USER": "¿Deseas transferir el pago de la orden",
+            "SUCCESSFUL_PAY_OTHER_USER": "Se ha transferido el pago de la orden",
+            "PAYMENTS_TO_BE_CONFIRM": "Tienes ordenes en estado pendiente por confirmación",
+            "MOMENT_ANSWER": "En un momento te atenderemos",
+            "MOMENT_PAY_ANSWER": "En un momento recibiremos tu pago",
+            "PAY_CONFIRM_MODAL": "No hay pagos recibidos",
+            "SELECT_ALL_PAYMENTS": "Seleccionar todos los pagos",
+            "PAY_PENDING": "Pago pendiente por recibir",
             "PENDING_PAYMENT_MSG": "En un momento un mesero recibira tu(s) pago(s)",
             "RETURN_ORDER_USER": "¿Desea devolver la orden al usuario?",
-            "ORDER_RETURNED" : "Orden devuelta",
+            "ORDER_RETURNED": "Orden devuelta",
             "GARNISH_FOOD": "Guarnición",
             "ADDITION": "Adición",
-            "PAY_DETAIL" : "Detalle del Pago",
-            "NO_PAYED" : "No pagado",
-            "PAYED" : "Pagado"
+            "PAY_DETAIL": "Detalle del Pago",
+            "NO_PAYED": "No pagado",
+            "PAYED": "Pagado"
         },
         "WAITER_CALL": {
             "TITTLE": "Solicitar mesero",
             "CONTENT": "Oprime el botón para llamar al mesero",
-            "THERE_IS_NOT_CODE_REST" : "!Ups¡ No estas en ningún restaurante",
-            "THERE_IS_NOT_CODE_REST_INS" : "Ve a la opción de ordenes e ingresa el código para llamar al mesero",
-            "RECEIVE_CALL" : "Recibimos tu llamado!",
-            "ONE_MOMENT" : "En un momento te atenderemos",
-            "TITLE_PROMPT" : "Cerrar solicitud",
-            "CONTENT_PROMPT" : "¿Deseas cerrar la solicitud del cliente?",
-            "LOADING" : "Por favor espera...",
-            "MSG_COMFIRM" : "Solicitud cerrada",
-            "TURN" :"Turno",
-            "TABLE" :"Mesa",
-            "CALL_LABEL_SEND_ORDER" : "Entrega de orden",
-            "CALL_LABEL_CUSTOMER" : "Llamado de cliente",
-            "CALL_LABEL_CUSTOMER_PAYMENT" : "Pago de cliente",
-            "PAY_CONFIRM" : "Confirmación de pago",
-            "PAY_CLOSE" : "Cerrar pagos recibidos",
-            "NO_WAITERS" : "No hay meseros asignados en el restaurante",
-            "ALPHANUMERIC_CODE" : "Código"
+            "THERE_IS_NOT_CODE_REST": "!Ups¡ No estas en ningún restaurante",
+            "THERE_IS_NOT_CODE_REST_INS": "Ve a la opción de ordenes e ingresa el código para llamar al mesero",
+            "RECEIVE_CALL": "Recibimos tu llamado!",
+            "ONE_MOMENT": "En un momento te atenderemos",
+            "TITLE_PROMPT": "Cerrar solicitud",
+            "CONTENT_PROMPT": "¿Deseas cerrar la solicitud del cliente?",
+            "LOADING": "Por favor espera...",
+            "MSG_COMFIRM": "Solicitud cerrada",
+            "TURN": "Turno",
+            "TABLE": "Mesa",
+            "CALL_LABEL_SEND_ORDER": "Entrega de orden",
+            "CALL_LABEL_CUSTOMER": "Llamado de cliente",
+            "CALL_LABEL_CUSTOMER_PAYMENT": "Pago de cliente",
+            "PAY_CONFIRM": "Confirmación de pago",
+            "PAY_CLOSE": "Cerrar pagos recibidos",
+            "NO_WAITERS": "No hay meseros asignados en el restaurante",
+            "ALPHANUMERIC_CODE": "Código"
         },
         "SECTIONS": {
             "MENU": "Menú",
@@ -294,8 +294,8 @@
             "LOADING_MSG": "Agregando a la orden ...",
             "TOAST_MSG": "Item agregado exitosamente",
             "WAIT_QR": "Espera por favor  ...",
-            "TIME" : "Tiempo de cocción:",
-            "ADDITION" : "Adiciones"
+            "TIME": "Tiempo de cocción:",
+            "ADDITION": "Adiciones"
         },
         "ITEM_EDIT": {
             "MODIFY": "Modificar",
@@ -304,7 +304,7 @@
             "SURE_REMOVE": "Estas seguro que quieres remover el item?",
             "YES_ANSWER": "Si",
             "NO_ANSWER": "No",
-            "TOAST_MSG_EDIT":"Item modificado exitosamente",
+            "TOAST_MSG_EDIT": "Item modificado exitosamente",
             "TOAST_MSG_REMOVE": "Item removido exitosamente"
         },
         "SEND_ORDER": {
@@ -321,23 +321,39 @@
             "ORDER_DELIVERED": "Orden Entregada",
             "ORDER_DETAIL": "Orden Entregada"
         },
-        "PAYMENTS_HISTORY" : {
+        "PAYMENTS_HISTORY": {
             "TITLE": "Historial de pagos",
-            "TOTAL" : "Total",
-            "TIP" : "Propina",
-            "TOTAL_ORDERS" : "Total orden",
-            "NO_PAYMENTS" : "Aún no tiene pagos realizados"
+            "TOTAL": "Total",
+            "TIP": "Propina",
+            "TOTAL_ORDERS": "Total orden",
+            "NO_PAYMENTS": "Aún no tiene pagos realizados"
         },
-        "WAITER_OPTIONS" : {
-            "CALLS" : "Inicio",
-            "SETTINGS" : "Ajustes"
+        "CHANGE_TABLE": {
+            "TITLE": "Cambiar mesa",
+            "NO_RESTAURANT": "No estas en ningun restaurante todavia",
+            "CONTENT": "Selecciona el tipo de código para que puedas cambiar de mesa",
+            "DIALOG_ALERT": "Mensaje",
+            "CHANGE_TABLE_OK": "El cambio de mesa se ha realizado correctamente",
+            "TABLE_DESTINY_NOT_EXISTS": "El codigo de la nueva mesa no existe. Por favor intenta nuevamente.",
+            "TABLE_DESTINY_NO_ACTIVE": "La mesa ingresada no esta activa para el servicio de Iurest",
+            "TABLE_DESTINY_NO_RESTAURANT": "El codigo de la mesa ingresada no pertenece al restaurante en el que te encuentras en este momento. Por favor intenta nuevamente.",
+            "PENDING_ORDERS": "Tienes ordenes pendientes por confirmar que afectan tu pago. Por favor revisa e intenta nuevamente.",
+            "ORDERS_PAY_PROCESS": "Tienes ordenes en proceso de pago. No es posible realizar hacer el cambio de mesa.",
+            "WAITER_CALL_PENDING": "Se encuentran llamados al mesero pendientes por atender. Una vez se atienda el llamado puedes realizar el cambio de mesa.",
+            "TABLE_DESTINY_STATUS_ERROR": "Se ha producido un error validando el estado de la nueva mesa. Por favor intenta nuevamente.",
+            "GENERAL_ERROR": "Se ha producido un error cambiando la mesa. Por favor intenta nuevamente.",
+            "SAME_TABLE_ERROR": "No es posible realizar la operacion con el codigo de mesa actual. Por favor revisa e intenta nuevamente."
         },
-        "SIGN_OUT" : {
-            "TITLE_CONFIRM" : "Cerrar sesión",
-            "CONTENT_CONFIRM" : "¿Estas seguro de salir de la aplicación?",
-            "NO_BTN" : "No",
-            "YES_BTN" : "SI",
-            "LOADING" : "Por favor espera..."
+        "WAITER_OPTIONS": {
+            "CALLS": "Inicio",
+            "SETTINGS": "Ajustes"
+        },
+        "SIGN_OUT": {
+            "TITLE_CONFIRM": "Cerrar sesión",
+            "CONTENT_CONFIRM": "¿Estas seguro de salir de la aplicación?",
+            "NO_BTN": "No",
+            "YES_BTN": "SI",
+            "LOADING": "Por favor espera..."
         }
     },
     "CURRENCIES": {
