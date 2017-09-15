@@ -18,9 +18,9 @@ import style from '../item.component.scss';
     template,
     styles: [style]
 })
-
 export class ItemEnableSupComponent implements OnInit, OnDestroy {
 
+    private _user = Meteor.userId();
     private _itemsSub               : Subscription;
     private _itemImagesThumbSub     : Subscription;
     private _userDetailSub          : Subscription;
@@ -28,7 +28,15 @@ export class ItemEnableSupComponent implements OnInit, OnDestroy {
     private _items                  : Observable<Item[]>;
     private _itemsFilter            : Item[] = [];
     private _userDetail             : UserDetail;
+    private _thereAreItems          : boolean = true;
 
+    /**
+     * ItemEnableSupComponent Constructor
+     * @param {TranslateService} _translate 
+     * @param {NgZone} _ngZone 
+     * @param {UserLanguageService} _userLanguageService 
+     * @param {MdSnackBar} snackBar 
+     */
     constructor(private _translate: TranslateService,
         private _ngZone: NgZone,
         private _userLanguageService: UserLanguageService,
@@ -42,19 +50,28 @@ export class ItemEnableSupComponent implements OnInit, OnDestroy {
      */
     ngOnInit() {
         this.removeSubscriptions();
-        this._itemsSub = MeteorObservable.subscribe('getItemsByUserRestaurantWork', Meteor.userId()).subscribe(() => {
+        this._itemsSub = MeteorObservable.subscribe( 'getItemsByUserRestaurantWork', this._user ).subscribe(() => {
             this._ngZone.run(() => {
                 this._items = Items.find({}).zone();
                 this._itemsFilter = Items.collection.find({}).fetch();
+                this.countItems();
+                this._items.subscribe( () => { this.countItems(); } );
             });
         });
 
-        this._itemImagesThumbSub = MeteorObservable.subscribe('getItemImageThumbsByRestaurantWork', Meteor.userId()).subscribe();
-        this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe(() => {
+        this._itemImagesThumbSub = MeteorObservable.subscribe( 'getItemImageThumbsByRestaurantWork', this._user ).subscribe();
+        this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', this._user ).subscribe(() => {
             this._ngZone.run(() => {
-                this._userDetail = UserDetails.collection.findOne({ user_id: Meteor.userId() });
+                this._userDetail = UserDetails.collection.findOne({ user_id: this._user });
             });
         });
+    }
+
+    /**
+     * Validate if items exists
+     */
+    countItems():void{
+        Items.collection.find( { } ).count() > 0 ? this._thereAreItems = true : this._thereAreItems = false;
     }
 
     /**

@@ -65,6 +65,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
     private _mdDialogRef: MdDialogRef<any>;
     private titleMsg: string;
     private btnAcceptLbl: string;
+    private _thereArePaymentsHistory: boolean = true;
 
     private al: string;
     private ak: string;
@@ -116,6 +117,8 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         });
 
         this._historyPayments2 = PaymentsHistory.find({ creation_user: Meteor.userId() });
+        this.countPaymentsHistory();
+        this._historyPayments2.subscribe( () => { this.countPaymentsHistory(); });
 
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
         this._paymentTransactionSub = MeteorObservable.subscribe('getTransactionsByUser', Meteor.userId()).subscribe();
@@ -149,6 +152,13 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         { value: '04', viewValue: '04' }, { value: '05', viewValue: '05' }, { value: '06', viewValue: '06' },
         { value: '07', viewValue: '07' }, { value: '08', viewValue: '08' }, { value: '09', viewValue: '09' },
         { value: '10', viewValue: '10' }, { value: '11', viewValue: '11' }, { value: '12', viewValue: '12' }];
+    }
+
+    /**
+     * Validate if user payments history exists
+     */
+    countPaymentsHistory():void{
+        PaymentsHistory.collection.find( { creation_user: Meteor.userId() } ).count() > 0 ? this._thereArePaymentsHistory = true :  this._thereArePaymentsHistory = false;
     }
 
     /**

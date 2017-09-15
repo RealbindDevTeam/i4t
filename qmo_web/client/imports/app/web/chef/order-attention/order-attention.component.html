@@ -1,4 +1,4 @@
-<md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" *ngIf="(_ordersInProcess | async)?.length <= 0">
+<md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" *ngIf="!_thereAreOrders">
     <md-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
@@ -16,7 +16,7 @@
     </md-card-content>
 </md-card>
 
-<div class="order-content"  *ngIf="(_ordersInProcess | async)?.length > 0">
+<div class="order-content"  *ngIf="_thereAreOrders">
     <md-toolbar *ngFor="let order of _ordersInProcess | async;" class="order" (click)="showOrderInProcessDetail(order)">
         <i class="fa fa-list-alt" aria-hidden="true" style="margin-right: 1%;"></i>
         <span class="order-code">{{'ORDER_ATTENTION.ORDER' | translate}} # {{order.code}}</span>
@@ -28,7 +28,7 @@
         </span>
     </md-toolbar>
 </div>
-<div class="order-detail" *ngIf="(_ordersInProcess | async)?.length > 0">
+<div class="order-detail" *ngIf="_thereAreOrders">
     <md-card>
         <md-card-title *ngIf="!_showDetailsInProcess" class="message">{{'ORDER_ATTENTION.MESSAGE' | translate}}</md-card-title>
         <div *ngIf="_showDetailsInProcess">

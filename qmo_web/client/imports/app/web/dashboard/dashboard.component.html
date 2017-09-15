@@ -62,7 +62,7 @@
     </md-card-content>
 </md-card>
 
-<md-card md-cell="12" class="demo-card demo-basic" *ngIf="(_restaurants | async)?.length <= 0">
+<md-card md-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
     <md-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">

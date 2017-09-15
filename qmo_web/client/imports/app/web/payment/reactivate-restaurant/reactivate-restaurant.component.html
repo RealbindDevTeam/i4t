@@ -41,7 +41,7 @@
     </md-card-content>
 </md-card>
 
-<md-card *ngIf="(_restaurants | async)?.length <= 0" md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
+<md-card *ngIf="!_thereAreRestaurants" md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
     <md-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">

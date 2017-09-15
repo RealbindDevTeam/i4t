@@ -27,7 +27,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
     private _invoicesHistorySubscription : Subscription;
 
     private _invoices               : any;
-    private _showPayments           : boolean = false;
+    private _showPayments           : boolean = true;
     public _dialogRef               : MdDialogRef<any>;
     private titleMsg                : string;
     private btnAcceptLbl            : string;
@@ -56,17 +56,18 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         this.removeSubscriptions();
         this._invoicesHistorySubscription = MeteorObservable.subscribe('getInvoicesByUserId', Meteor.userId()).subscribe(()=> {
             this._ngZone.run( () => {
-                this._invoices = Invoices.find({});
-                this._invoices.subscribe(()=> {
-                    let _invoicesCount = Invoices.collection.find({}).count();
-                    if(_invoicesCount > 0){
-                        this._showPayments = true;
-                    } else {
-                        this._showPayments = false;
-                    }
-                });
+                this._invoices = Invoices.find( { } ).zone();
+                this.countInvoices();
+                this._invoices.subscribe( ()=> { this.countInvoices(); } );
             });
         });
+    }
+
+    /**
+     * Validate if Invoices exists
+     */
+    countInvoices():void{
+        Invoices.collection.find( { } ).count() > 0 ? this._showPayments = true : this._showPayments = false;
     }
 
     /**
