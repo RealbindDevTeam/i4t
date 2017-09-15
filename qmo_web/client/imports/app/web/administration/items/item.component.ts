@@ -70,6 +70,7 @@ export class ItemComponent implements OnInit, OnDestroy {
         this._itemsSub = MeteorObservable.subscribe( 'items',this._user ).subscribe( () => {
             this._ngZone.run( () => {
                 this._items = Items.find( { } ).zone();
+                this.countItems();
                 this._items.subscribe( () => { this.countItems(); } );
             });
         });

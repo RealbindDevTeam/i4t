@@ -53,6 +53,7 @@ import { SupervisorCollaboratorsComponent } from './web/supervisor/collaborators
 import { SupervisorCollaboratorsRegisterComponent } from './web/supervisor/collaborators/collaborators-register/supervisor-collaborators-register.component';
 import { SupervisorTableComponent } from './web/supervisor/tables/supervisor-tables.component';
 import { ChangeTableComponent } from './web/restaurant/tables/change-table/change-table.component';
+import { ExitTableComponent } from './web/restaurant/tables/exit-table/exit-table.component';
 
 export const routes: Route[] = [
     {
@@ -94,7 +95,8 @@ export const routes: Route[] = [
             { path: 'supervisor-collaborators', component: SupervisorCollaboratorsComponent, canActivate: [SupervisorGuard] },
             { path: 'supervisor-collaborators-register', component: SupervisorCollaboratorsRegisterComponent, canActivate: [SupervisorGuard] },
             { path: 'supervisor-tables', component: SupervisorTableComponent, canActivate: [SupervisorGuard] },
-            { path: 'change-table', component: ChangeTableComponent, canActivate: [CustomerGuard] }            
+            { path: 'change-table', component: ChangeTableComponent, canActivate: [CustomerGuard] },            
+            { path: 'exit-table', component: ExitTableComponent, canActivate: [CustomerGuard] }            
         ]
     },
     { path: '', component: LandingPageComponent },
