@@ -58,7 +58,7 @@
             "REQUIRED_CONFIRM": "Debes confirmar la contraseña",
             "PASSWORD_NOT_MATCH": "Las contraseñas no coinciden",
             "CONFIRM_TITLE": "Usuario creado",
-            "CONFIRM_SUBTITLE": "Ahora puedes disfrutar de iurest",
+            "CONFIRM_SUBTITLE": "Ahora puedes disfrutar de Iurest",
             "CONFIRM_BTN": "Aceptar",
             "OR": "ó",
             "SYSTEM_MSG": "Mensaje del sistema",
@@ -167,7 +167,7 @@
             "QUANT": "Cant.",
             "TABLE_NOT_EXISTS": "La mesa no existe. Por favor varifica el código",
             "TABLE_NO_ACTIVE": "La mesa no tiene el servicio de Iurest activo. No es posible ingresar",
-            "IUREST_NO_ACTIVE": "El Restaurante no tiene el servicio de Iurest activo. No es posible ingresar",
+            "Iurest_NO_ACTIVE": "El Restaurante no tiene el servicio de Iurest activo. No es posible ingresar",
             "TABLE": "Mesa"
         },
         "ORDER_TRANS": {
@@ -227,7 +227,7 @@
             "CONTENT_SERVICES_INCLUDE_END": "del total de tu cuenta, pero tu puedes modificarla",
             "TIP": "Propina",
             "TIP_OTHER_VALUE": "Otro valor",
-            "SELECT_PAYMENT_METHOD": "Seleccionar medio de pago",
+            "SELECT_PAYMENT_METHOD": "Selecciona medio de pago",
             "CONFIRM_PAYMENT_METHOD": "Debes seleccionar un medio de pago",
             "ADD_ORDER_PAYMENT": "Agregar orden a la cuenta",
             "BTN_PAY": "Pagar",
