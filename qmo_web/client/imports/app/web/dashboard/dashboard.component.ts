@@ -46,6 +46,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private _currentDay             : number = this._currentDate.getDate();
   private _currentMonth           : number = this._currentDate.getMonth();
   private _currentYear            : number = this._currentDate.getFullYear();
+  private _thereAreRestaurants    : boolean = true;
 
   /**
    * DashboardComponent Constructor
@@ -71,6 +72,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this._restaurantsSub = MeteorObservable.subscribe( 'getActiveRestaurants', this._user ).subscribe( () => {
       this._ngZone.run( () => {
         this._restaurants = Restaurants.find( { } ).zone();
+        this.countResturants();
+        this._restaurants.subscribe( () => { this.countResturants(); } );
         Restaurants.collection.find( { } ).fetch().forEach( ( restaurant:Restaurant ) => {
           _lRestaurantsId.push( restaurant._id );
         });
@@ -87,7 +90,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this._ngZone.run( () => {
           this._restaurantImages = RestaurantImages.find({}).zone();
       });
-  });
+    });
+  }
+
+  /**
+   * Validate if restaurants exists
+   */
+  countResturants():void{
+    Restaurants.collection.find( { } ).count() > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
   }
 
   /**

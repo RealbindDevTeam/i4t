@@ -47,6 +47,7 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     private titleMsg                        : string;
     private btnAcceptLbl                    : string;
     public _dialogRef                       : MdDialogRef<any>;
+    private _thereAreOrders                 : boolean = true;
 
     /**
      * OrderAttentionComponent Constructor
@@ -72,6 +73,8 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
         this._ordersSub = MeteorObservable.subscribe( 'getOrdersByRestaurantWork', this._user, [ 'ORDER_STATUS.IN_PROCESS' ] ).subscribe( () => {
             this._ngZone.run( () => {
                 this._ordersInProcess = Orders.find( { } ).zone();
+                this.countOrdersInProcess();
+                this._ordersInProcess.subscribe( () => { this.countOrdersInProcess(); } );
             });
         });
         this._itemsSub = MeteorObservable.subscribe( 'getItemsByRestaurantWork', this._user ).subscribe( () => {
@@ -94,6 +97,13 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
                 this._additions = Additions.find( { } ).zone();
             });
         });
+    }
+
+    /**
+     * Validate if restaurants exist
+     */
+    countOrdersInProcess():void{
+        Orders.collection.find( { } ).count() > 0 ? this._thereAreOrders = true : this._thereAreOrders = false;
     }
 
     /**

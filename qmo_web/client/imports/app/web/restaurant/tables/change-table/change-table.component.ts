@@ -29,11 +29,10 @@ export class ChangeTableComponent implements OnInit, OnDestroy {
     private _userDetailsSub             : Subscription;
     private _tableSub                   : Subscription;
 
-    private _showInfo                   : boolean = false;
-    private _mdDialogRef                : MdDialogRef<any>;
+    private _userDetails                : Observable<UserDetail[]>
+    private _tables                     : Observable<Table[]>;
 
-    private _currentRestaurant          : string = '';
-    private _currentQRCodeTable         : string = '';
+    private _mdDialogRef                : MdDialogRef<any>;
     private titleMsg                    : string;
     private btnAcceptLbl                : string;
 
@@ -66,19 +65,12 @@ export class ChangeTableComponent implements OnInit, OnDestroy {
         });
         this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByUser', this._user ).subscribe( () => {
             this._ngZone.run( () => {
-                let _lUserDetail: UserDetail = UserDetails.findOne( { user_id: this._user } );
-                if( _lUserDetail.current_restaurant !== '' && _lUserDetail.current_table !== '' ){
-                    this._tableSub = MeteorObservable.subscribe( 'getTableById', _lUserDetail.current_table ).subscribe( () => {
-                        this._ngZone.run( () => {
-                            let _lTable: Table = Tables.findOne( { _id: _lUserDetail.current_table } );
-                            this._currentRestaurant = _lUserDetail.current_restaurant;
-                            this._currentQRCodeTable = _lTable.QR_code
-                            this._showInfo = true;
-                        });
-                    });
-                } else {
-                    this._showInfo = false;
-                }
+                this._userDetails = UserDetails.find( { } ).zone();
+            });
+        });
+        this._tableSub = MeteorObservable.subscribe( 'getTableByCurrentTable', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._tables = Tables.find( { } ).zone();
             });
         });
     }
@@ -94,7 +86,7 @@ export class ChangeTableComponent implements OnInit, OnDestroy {
     /**
      * This function allow change user current table
      */
-    changeUserTable():void{
+    changeUserTable( _pCurrentRestaurant:string, _pCurrentQRCodeTable:string ):void{
         if( !Meteor.userId() ){
             var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
@@ -102,7 +94,7 @@ export class ChangeTableComponent implements OnInit, OnDestroy {
         }
 
         if( this._changeTableForm.valid ){
-            MeteorObservable.call( 'changeCurrentTable', this._user, this._currentRestaurant, this._currentQRCodeTable, this._changeTableForm.value.qrCodeDestiny ).subscribe( () => {
+            MeteorObservable.call( 'changeCurrentTable', this._user, _pCurrentRestaurant, _pCurrentQRCodeTable, this._changeTableForm.value.qrCodeDestiny ).subscribe( () => {
                 this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.CHANGE_TABLE_OK' ), '', this.btnAcceptLbl, false);
                 this._router.navigate(['/app/orders']);
             }, ( error ) => {

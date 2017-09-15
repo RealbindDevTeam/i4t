@@ -12,8 +12,8 @@ import { Category } from '../../../../../../both/models/administration/category.
 import { Categories } from '../../../../../../both/collections/administration/category.collection';
 import { Subcategory } from '../../../../../../both/models/administration/subcategory.model';
 import { Subcategories } from '../../../../../../both/collections/administration/subcategory.collection';
-import { Item, ItemImage } from '../../../../../../both/models/administration/item.model';
-import { Items, ItemImages } from '../../../../../../both/collections/administration/item.collection';
+import { Item, ItemImage, ItemImageThumb } from '../../../../../../both/models/administration/item.model';
+import { Items, ItemImages, ItemImagesThumbs } from '../../../../../../both/collections/administration/item.collection';
 import { OrderMenu } from '../../customer/orders/order-navigation/order-menu';
 import { OrderNavigationService } from '../../customer/orders/order-navigation/order-navigation.service';
 import { GarnishFood } from '../../../../../../both/models/administration/garnish-food.model';
@@ -53,6 +53,7 @@ export class MenuListComponent implements OnInit, OnDestroy {
     private _additionsSub: Subscription;
     private _ordersSub: Subscription;
     private _itemImagesSub: Subscription;
+    private _itemImageThumbsSub: Subscription;
     private _currenciesSub: Subscription;
     private _restaurantSub: Subscription;
 
@@ -121,6 +122,7 @@ export class MenuListComponent implements OnInit, OnDestroy {
             });
         });
         this._itemImagesSub = MeteorObservable.subscribe('getItemImageByRestaurantWork', Meteor.userId()).subscribe();
+        this._itemImageThumbsSub = MeteorObservable.subscribe('getItemImageThumbsByRestaurantWork', Meteor.userId()).subscribe();
         this._garnishFoodSub = MeteorObservable.subscribe('garnishFoodByRestaurantWork', Meteor.userId()).subscribe(() => {
             this._ngZone.run(() => {
                 this._garnishFoodCol = GarnishFoodCol.find({}).zone();
@@ -180,6 +182,7 @@ export class MenuListComponent implements OnInit, OnDestroy {
         if (this._itemImagesSub) { this._itemImagesSub.unsubscribe(); }
         if (this._currenciesSub) { this._currenciesSub.unsubscribe(); }
         if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
+        if( this._itemImageThumbsSub ){ this._itemImageThumbsSub.unsubscribe(); }
     }
 
     /**
@@ -302,6 +305,19 @@ export class MenuListComponent implements OnInit, OnDestroy {
         let _lItemImage: ItemImage = ItemImages.findOne({ itemId: _itemId });
         if (_lItemImage) {
             return _lItemImage.url;
+        } else {
+            return '/images/default-plate.png';
+        }
+    }
+
+    /**
+     * Return item image
+     * @param {string} _itemId
+     */
+    getItemImageThumb(_itemId: string): string {
+        let _lItemImageThumb: ItemImageThumb = ItemImagesThumbs.findOne({ itemId: _itemId });
+        if (_lItemImageThumb) {
+            return _lItemImageThumb.url;
         } else {
             return '/images/default-plate.png';
         }

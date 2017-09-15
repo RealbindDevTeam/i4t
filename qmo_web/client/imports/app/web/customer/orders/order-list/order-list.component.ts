@@ -82,6 +82,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     private _showAllOrders              : boolean = true;
     private _orderCustomerIndex         : number = -1;
     private _orderOthersIndex           : number = -1;
+    private _thereAreUserOrders         : boolean = true;
+    private _thereAreNotUserOrders      : boolean = true;
 
     /**
      * OrdersListComponent Constructor
@@ -108,8 +110,12 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         this.removeSubscriptions();
         this._ordersSub = MeteorObservable.subscribe('getOrders', this.restaurantId, this.tableQRCode, ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED']).subscribe(() => {
             this._ngZone.run(() => {
+                this.countUserOrders();
                 this._orders = Orders.find({ creation_user: this._user }).zone();
+                this._orders.subscribe( () => { this.countUserOrders(); } );
+                this.countNotUserOrders();
                 this._ordersTable = Orders.find({ creation_user: { $not: this._user } }).zone();
+                this._ordersTable.subscribe( () => { this.countNotUserOrders(); });
             });
         });
         this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this.restaurantId).subscribe(() => {
@@ -143,6 +149,20 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                 this._currencyCode = Currencies.findOne({ _id: this.restaurantCurrency }).code + ' ';
             });
         });
+    }
+
+    /**
+     * Validate if user orders exists
+     */
+    countUserOrders():void{
+        Orders.collection.find( { creation_user: this._user } ).count() > 0 ? this._thereAreUserOrders = true : this._thereAreUserOrders = false;
+    }
+
+    /**
+     * Validate if not user orders exists
+     */
+    countNotUserOrders():void{
+        Orders.collection.find( { creation_user: { $not: this._user } } ).count() > 0 ? this._thereAreNotUserOrders = true : this._thereAreNotUserOrders = false;
     }
 
     /**

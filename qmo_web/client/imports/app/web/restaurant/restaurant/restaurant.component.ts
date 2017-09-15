@@ -44,6 +44,7 @@ export class RestaurantComponent implements OnInit, OnDestroy {
     private _restaurantImagesSub    : Subscription;
 
     public _dialogRef               : MdDialogRef<any>;
+    private _thereAreRestaurants    : boolean = true;
 
     /**
      * RestaurantComponent Constructor
@@ -72,6 +73,8 @@ export class RestaurantComponent implements OnInit, OnDestroy {
         this.restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe( () => {
             this._ngZone.run( () => {
                 this.restaurants = Restaurants.find({ creation_user: this._user}).zone();
+                this.countRestaurants();
+                this.restaurants.subscribe( () => { this.countRestaurants(); });
             });
         });
         this.countriesSub = MeteorObservable.subscribe('countries').subscribe();
@@ -86,6 +89,13 @@ export class RestaurantComponent implements OnInit, OnDestroy {
                 this._restaurantImages = RestaurantImages.find({}).zone();
             });
         });
+    }
+
+    /**
+     * Validate if restaurants exists
+     */
+    countRestaurants():void{
+        Restaurants.collection.find({ creation_user: this._user}).count() > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
     }
 
     /**

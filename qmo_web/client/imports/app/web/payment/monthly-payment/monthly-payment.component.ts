@@ -19,7 +19,6 @@ import { Parameter } from '../../../../../../both/models/general/parameter.model
 import template from './monthly-payment.component.html';
 import style from './monthly-payment.component.scss';
 
-
 @Component({
     selector: 'monthly-payment',
     template,
