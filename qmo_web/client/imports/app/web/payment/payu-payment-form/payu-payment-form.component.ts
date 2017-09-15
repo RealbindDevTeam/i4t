@@ -474,7 +474,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         creditCard.securityCode = this._paymentForm.value.securityCode;
         creditCard.expirationDate = this._selectedCardYear + '/' + this._selectedCardMonth;
         //creditCard.name = this._paymentForm.value.fullName;
-        creditCard.name = 'APPROVED';
+        creditCard.name = 'PENDING';
 
         payer.fullName = this._paymentForm.value.fullName;
         payer.emailAddress = Meteor.user().emails[0].address;
@@ -513,6 +513,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 
         this._payuPaymentService.authorizeAndCapture(ccRequestColombia).subscribe(
             response => {
+
+                console.log(JSON.stringify(response));
                 if (response.code == 'ERROR') {
                     transactionMessage = 'PAYU_PAYMENT_FORM.AUTH_ERROR_MSG';
                     transactionIcon = 'trn_declined.png';
@@ -592,6 +594,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 $set: {
                     status: _response.transactionResponse.state,
                     responseCode: _response.transactionResponse.responseCode,
+                    responseMessage: _response.transactionResponse.responseMessage,
                     responseOrderId: _response.transactionResponse.orderId,
                     responsetransactionId: _response.transactionResponse.transactionId,
                     modification_date: new Date(),

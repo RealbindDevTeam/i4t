@@ -61,7 +61,7 @@ export class PayuPaymenteService {
      */
     getReportsPing(obj: any): Observable<any> {
         return this.http
-            .post(this.payuReportsApiURI,JSON.stringify(obj),{ headers: this.headers })
+            .post(this.payuReportsApiURI, JSON.stringify(obj), { headers: this.headers })
             .map(res => res.json())
             .catch(this.handleError);
     }
@@ -73,7 +73,7 @@ export class PayuPaymenteService {
      */
     getPaymentsPing(obj: any): Observable<any> {
         return this.http
-            .post(this.payuReportsApiURI,JSON.stringify(obj),{ headers: this.headers })
+            .post(this.payuReportsApiURI, JSON.stringify(obj), { headers: this.headers })
             .map(res => res.json())
             .catch(this.handleError);
     }
@@ -90,7 +90,7 @@ export class PayuPaymenteService {
     * This function get CusPayInfo
     */
     getCusPayInfo(url: string): Observable<CusPayInfo> {
-        return this.http.get(url, { headers: this.headers }).map(res => res.json() as CusPayInfo[]).catch(this.handleError);
+        return this.http.get(url).map(res => res.json() as CusPayInfo[]).catch(this.handleError);
     }
 
     /**
