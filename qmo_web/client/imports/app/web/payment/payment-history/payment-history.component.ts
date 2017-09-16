@@ -118,7 +118,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
 
         this._historyPayments2 = PaymentsHistory.find({ creation_user: Meteor.userId() });
         this.countPaymentsHistory();
-        this._historyPayments2.subscribe( () => { this.countPaymentsHistory(); });
+        this._historyPayments2.subscribe(() => { this.countPaymentsHistory(); });
 
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
         this._paymentTransactionSub = MeteorObservable.subscribe('getTransactionsByUser', Meteor.userId()).subscribe();
@@ -133,7 +133,8 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
                         this.ak = payInfo.ak;
                     },
                     error => {
-                        this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+
+                        this.openDialog(this.titleMsg, '', JSON.stringify(error), '', this.btnAcceptLbl, false);
                     }
                 );
             });
@@ -157,8 +158,8 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
     /**
      * Validate if user payments history exists
      */
-    countPaymentsHistory():void{
-        PaymentsHistory.collection.find( { creation_user: Meteor.userId() } ).count() > 0 ? this._thereArePaymentsHistory = true :  this._thereArePaymentsHistory = false;
+    countPaymentsHistory(): void {
+        PaymentsHistory.collection.find({ creation_user: Meteor.userId() }).count() > 0 ? this._thereArePaymentsHistory = true : this._thereArePaymentsHistory = false;
     }
 
     /**

@@ -8,7 +8,6 @@ import { Parameters } from '../../../../../../both/collections/general/parameter
 @Injectable()
 export class PayuPaymenteService {
 
-    private payuPaymentsApiURI: string;
     private payuReportsApiURI: string;
 
     private _parameterSub: Subscription;
@@ -25,7 +24,6 @@ export class PayuPaymenteService {
 
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe(() => {
             this._ngZone.run(() => {
-                this.payuPaymentsApiURI = Parameters.findOne({ name: 'payu_payments_url' }).value;
                 this.payuReportsApiURI = Parameters.findOne({ name: 'payu_reports_url' }).value;
             })
         });
@@ -36,9 +34,9 @@ export class PayuPaymenteService {
      * @param {CcRequestColombia} requestObject
      * @return {Observable}
      */
-    authorizeAndCapture(requestObject: CcRequestColombia): Observable<any> {
+    authorizeAndCapture(url: string, requestObject: CcRequestColombia): Observable<any> {
         return this.http
-            .post(this.payuPaymentsApiURI, JSON.stringify(requestObject), { headers: this.headers })
+            .post(url, JSON.stringify(requestObject), { headers: this.headers })
             .map(res => res.json())
             .catch(this.handleError);
     }
