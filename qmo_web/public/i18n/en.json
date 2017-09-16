@@ -1058,7 +1058,8 @@
         "AMOUNT_LBL": "Amount (no IVA)",
         "SUBTOTAL": "SubTotal: ",
         "IVA": "IVA: ",
-        "TOTAL": "Total: "
+        "TOTAL": "Total: ",
+        "UNAVAILABLE_REPORT": "Status query option is not available at this moment, please try later"
     },
     "TRANSACTION_STATUS": {
         "APPROVED": "Approved",

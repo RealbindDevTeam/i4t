@@ -1058,7 +1058,8 @@
         "AMOUNT_LBL": "Valor sin IVA",
         "SUBTOTAL": "SubTotal: ",
         "IVA": "IVA: ",
-        "TOTAL": "Total: "
+        "TOTAL": "Total: ",
+        "UNAVAILABLE_REPORT": "La opción de consulta de estado no está disponible en este momento, inténtalo más tarde"
     },
     "TRANSACTION_STATUS": {
         "APPROVED": "Aprobado",
@@ -1150,13 +1151,13 @@
         "LABEL_LEGAL_END": "aceptas los términos y condiciones."
     },
     "ADMIN_DASHBOARD": {
-        "TITLE" : "Te damos la bienvenida a Iurest",
-        "CARD_CONTENT" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "LINK" : {
-            "NEW_RESTAURANT" : "Restaurantes",
-            "NEW_COLLABORATOR" : "Colaboradores",
-            "ITEMS" : "Items",
-            "ENABLE-ITEMS" : "Habilitar items"
+        "TITLE": "Te damos la bienvenida a Iurest",
+        "CARD_CONTENT": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "LINK": {
+            "NEW_RESTAURANT": "Restaurantes",
+            "NEW_COLLABORATOR": "Colaboradores",
+            "ITEMS": "Items",
+            "ENABLE-ITEMS": "Habilitar items"
         },
         "SALES": "Ventas ",
         "USERS": "Usuarios activos",

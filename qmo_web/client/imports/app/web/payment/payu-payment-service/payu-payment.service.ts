@@ -22,11 +22,6 @@ export class PayuPaymenteService {
 
     constructor(private http: Http, private _ngZone: NgZone) {
 
-        this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe(() => {
-            this._ngZone.run(() => {
-                this.payuReportsApiURI = Parameters.findOne({ name: 'payu_reports_url' }).value;
-            })
-        });
     }
 
     /**
@@ -45,9 +40,9 @@ export class PayuPaymenteService {
      * This functions queries the given transaction report of PayU platform
      * @param {Object} requestObject
      */
-    getTransactionResponse(requestObject: any): Observable<any> {
+    getTransactionResponse(url: string, requestObject: any): Observable<any> {
         return this.http
-            .post(this.payuReportsApiURI, JSON.stringify(requestObject), { headers: this.headers })
+            .post(url, JSON.stringify(requestObject), { headers: this.headers })
             .map(res => res.json())
             .catch(this.handleError);
     }

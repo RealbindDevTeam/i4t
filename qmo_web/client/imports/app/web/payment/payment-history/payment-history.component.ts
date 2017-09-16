@@ -67,9 +67,6 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
     private btnAcceptLbl: string;
     private _thereArePaymentsHistory: boolean = true;
 
-    private al: string;
-    private ak: string;
-
     /**
      * PaymentHistoryComponent Constructor
      * @param {Router} _router 
@@ -106,39 +103,26 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         this._countrySub = MeteorObservable.subscribe('countries').subscribe();
         this._citySub = MeteorObservable.subscribe('cities').subscribe();
         this._historyPaymentSub = MeteorObservable.subscribe('getHistoryPaymentsByUser', Meteor.userId()).subscribe(() => {
-            this._historyPayments = PaymentsHistory.find({
-                creation_user: Meteor.userId(),
-                creation_date: {
-                    $gte: new Date(new Date().getFullYear(), 0, 1),
-                    $lte: new Date(new Date().getFullYear(), 11, 31)
-                }
-            },
-                { sort: { creation_date: -1 } }).zone();
+            this._ngZone.run(() => {
+                this._historyPayments2 = PaymentsHistory.find({ creation_user: Meteor.userId() }).zone();
+                this.countPaymentsHistory();
+                this._historyPayments2.subscribe(() => { this.countPaymentsHistory(); });
+                this._historyPayments = PaymentsHistory.find({
+                    creation_user: Meteor.userId(),
+                    creation_date: {
+                        $gte: new Date(new Date().getFullYear(), 0, 1),
+                        $lte: new Date(new Date().getFullYear(), 11, 31)
+                    }
+                },
+                    { sort: { creation_date: -1 } }).zone();
+            });
         });
 
-        this._historyPayments2 = PaymentsHistory.find({ creation_user: Meteor.userId() });
-        this.countPaymentsHistory();
-        this._historyPayments2.subscribe(() => { this.countPaymentsHistory(); });
 
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
         this._paymentTransactionSub = MeteorObservable.subscribe('getTransactionsByUser', Meteor.userId()).subscribe();
 
-        this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe(() => {
-            this._ngZone.run(() => {
-
-                let payInfoUrl = Parameters.findOne({ name: 'payu_pay_info_url' }).value;
-                this._payuPaymentService.getCusPayInfo(payInfoUrl).subscribe(
-                    payInfo => {
-                        this.al = payInfo.al;
-                        this.ak = payInfo.ak;
-                    },
-                    error => {
-
-                        this.openDialog(this.titleMsg, '', JSON.stringify(error), '', this.btnAcceptLbl, false);
-                    }
-                );
-            });
-        });
+        this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
 
         this._currentYear = this._currentDate.getFullYear();
         this._yearsArray = [];
@@ -254,10 +238,27 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * This function gets custPayInfo credentials
+     */
+    getPayInfo(_transactionId: string) {
+        let payInfoUrl = Parameters.findOne({ name: 'payu_pay_info_url' }).value;
+        this._payuPaymentService.getCusPayInfo(payInfoUrl).subscribe(
+            payInfo => {
+                this.checkTransactionStatus(payInfo.al, payInfo.ak, _transactionId);
+            },
+            error => {
+                let errorMsg = this.itemNameTraduction('RES_PAYMENT_HISTORY.UNAVAILABLE_REPORT');
+                this.openDialog(this.titleMsg, '', errorMsg, '', this.btnAcceptLbl, false);
+                this._loading = false;
+            }
+        );
+    }
+
+    /**
      * This function queries de transaction status
      * @param {string} _transactionId
      */
-    checkTransactionStatus(_transactionId: string) {
+    checkTransactionStatus(al: string, ak: string, _transactionId: string) {
         let responseQuery = new ResponseQuery();
         let merchant = new Merchant();
         let details = new Details();
@@ -269,8 +270,8 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         setTimeout(() => {
             responseQuery.language = Meteor.user().profile.language_code;
             responseQuery.command = 'TRANSACTION_RESPONSE_DETAIL';
-            merchant.apiLogin = this.al;
-            merchant.apiKey = this.ak;
+            merchant.apiLogin = al;
+            merchant.apiKey = ak;
             responseQuery.merchant = merchant;
             details.transactionId = paymentTransaction.responsetransactionId;
             responseQuery.details = details;
@@ -280,8 +281,11 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
             let responseMessage: string;
             let responseIcon: string;
 
-            this._payuPaymentService.getTransactionResponse(responseQuery).subscribe(
+            let payuReportsApiURI = Parameters.findOne({ name: 'payu_reports_url' }).value;
+
+            this._payuPaymentService.getTransactionResponse(payuReportsApiURI, responseQuery).subscribe(
                 response => {
+
                     if (response.code === 'ERROR') {
                         responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_ERROR'
                         responseIcon = 'trn_declined.png';
@@ -335,7 +339,9 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
                     });
                 },
                 error => {
-                    this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                    let errorMsg = this.itemNameTraduction('RES_PAYMENT_HISTORY.UNAVAILABLE_REPORT');
+                    this.openDialog(this.titleMsg, '', errorMsg, '', this.btnAcceptLbl, false);
+                    this._loading = false;
                 }
             );
             this._loading = false;
@@ -428,6 +434,12 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
 
         var myImage = new Image();
         myImage.src = '/images/logo_iurest.png';
+
+        // Nit encima de empresa
+        // Que diga resolución de la DIan y consecutivo
+        // Revisar mensajes de habeas data
+        // Esta factura es un titulo valor...
+        // Registrar la BD en la superintendencia financiera ***
 
         myImage.onload = function () {
             qr_pdf.addImage(myImage, 'png', 13, 13, 35, 10);
