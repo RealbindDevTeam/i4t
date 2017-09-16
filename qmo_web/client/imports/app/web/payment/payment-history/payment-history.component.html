@@ -1,7 +1,7 @@
-<div class="global-div">
+<div class="global-div" *ngIf="_thereArePaymentsHistory">
     <div class="div-whitout-overflow">
         <div class="cards-div">
-            <md-card *ngIf="_thereArePaymentsHistory" style="margin: 24px">
+            <md-card style="margin: 24px">
                 <md-card-title>{{'RES_PAYMENT_HISTORY.TITLE' | translate }}</md-card-title>
                 <md-card-subtitle>{{'RES_PAYMENT_HISTORY.SUBTITLE' | translate}}</md-card-subtitle>
                 <md-card-content style="background: #FFF">
@@ -40,7 +40,7 @@
                                         </div>
                                         <div style="display: inline-block; vertical-align: middle">
                                             <button md-button [ngClass]="{'link-color': historyPayment.status == 'TRANSACTION_STATUS.PENDING'}" *ngIf="historyPayment.status == 'TRANSACTION_STATUS.PENDING'"
-                                                (click)="checkTransactionStatus(historyPayment.transactionId)">{{historyPayment.status | translate}}</button>
+                                                (click)="getPayInfo(historyPayment.transactionId)">{{historyPayment.status | translate}}</button>
                                         </div>
                                     </div>
                                 </td>

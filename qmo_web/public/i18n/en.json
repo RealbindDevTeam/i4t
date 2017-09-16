@@ -1022,7 +1022,8 @@
         "PAY_ACCEPT": "Accept",
         "AUTH_ERROR_MSG": "the entered card data does not match, please check it",
         "FIRST_NAME": "Firstname",
-        "LAST_NAME": "Lastname"
+        "LAST_NAME": "Lastname",
+        "UNAVAILABLE_PAYMENT": "Payment option is not available at this moment, please try later"
     },
     "RES_PAYMENT_HISTORY": {
         "TITLE": "Payment history",
@@ -1057,7 +1058,8 @@
         "AMOUNT_LBL": "Amount (no IVA)",
         "SUBTOTAL": "SubTotal: ",
         "IVA": "IVA: ",
-        "TOTAL": "Total: "
+        "TOTAL": "Total: ",
+        "UNAVAILABLE_REPORT": "Status query option is not available at this moment, please try later"
     },
     "TRANSACTION_STATUS": {
         "APPROVED": "Approved",

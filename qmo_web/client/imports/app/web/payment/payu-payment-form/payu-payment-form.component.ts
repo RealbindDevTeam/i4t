@@ -86,7 +86,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _ccMethodPayment: string;
     private _session_id: string;
     private _timestamp: string;
-    private _ipAddress: string;
+    private _ipAddress: string = "";
     private _userAgent: string;
     private _sessionUserId: string;
     private _loading: boolean;
@@ -104,10 +104,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 
     private titleMsg: string;
     private btnAcceptLbl: string;
-    private al: string;
-    private ak: string;
-    private mi: string;
-    private ai: number;
 
     /**
      * PayuPaymentFormComponent Constructor
@@ -200,25 +196,32 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 this.scriptFourSanitized = this._domSanitizer.bypassSecurityTrustResourceUrl(_scriptFour + this._sessionUserId);
 
                 let ipPublicUrl = Parameters.findOne({ name: 'ip_public_service_url' }).value;
+                let ipPublicUrl2 = Parameters.findOne({ name: 'ip_public_service_url2' }).value;
+                let ipPublicUrl3 = Parameters.findOne({ name: 'ip_public_service_url3' }).value;
+
                 this._payuPaymentService.getPublicIp(ipPublicUrl).subscribe(
                     ipPublic => {
                         this._ipAddress = ipPublic.ip;
                     },
                     error => {
-                        this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
-                    }
-                );
-
-                let payInfoUrl = Parameters.findOne({ name: 'payu_pay_info_url' }).value;
-                this._payuPaymentService.getCusPayInfo(payInfoUrl).subscribe(
-                    payInfo => {
-                        this.al = payInfo.al;
-                        this.ak = payInfo.ak;
-                        this.ai = payInfo.ai;
-                        this.mi = payInfo.mi
-                    },
-                    error => {
-                        this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                        this._payuPaymentService.getPublicIp(ipPublicUrl2).subscribe(
+                            ipPublic2 => {
+                                this._ipAddress = ipPublic2.ip;
+                            },
+                            error => {
+                                this._payuPaymentService.getPublicIp(ipPublicUrl3).subscribe(
+                                    ipPublic3 => {
+                                        this._ipAddress = ipPublic3.ip;
+                                    },
+                                    error => {
+                                        let errorMsg = this.itemNameTraduction('PAYU_PAYMENT_FORM.UNAVAILABLE_PAYMENT');
+                                        this.openDialog(this.titleMsg, '', errorMsg, '', this.btnAcceptLbl, false);
+                                        this._loading = false;
+                                        this._router.navigate(['/app/monthly-payment']);
+                                    }
+                                );
+                            }
+                        );
                     }
                 );
             });
@@ -364,16 +367,35 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             if (result.success) {
                 this._loading = true;
                 setTimeout(() => {
-                    this.fillAuthorizationCaptureObject();
+                    this.getPayInfo();
                 }, 5000);
             }
         });
     }
 
     /**
+     * This function gets custPayInfo credentials
+     */
+    getPayInfo() {
+        let payInfoUrl = Parameters.findOne({ name: 'payu_pay_info_url' }).value;
+        this._payuPaymentService.getCusPayInfo(payInfoUrl).subscribe(
+            payInfo => {
+                this.fillAuthorizationCaptureObject(payInfo.al, payInfo.ak, payInfo.ai, payInfo.mi);
+            },
+            error => {
+                let errorMsg = this.itemNameTraduction('PAYU_PAYMENT_FORM.UNAVAILABLE_PAYMENT');
+                this.openDialog(this.titleMsg, '', errorMsg, '', this.btnAcceptLbl, false);
+                this._loading = false;
+                this._router.navigate(['/app/monthly-payment']);
+            }
+        );
+    }
+
+    /**
      * This function fills the request object and sends to PayU Rest service
      */
-    fillAuthorizationCaptureObject() {
+    fillAuthorizationCaptureObject(al: string, ak: string, ai: number, mi: string) {
+
         let paymentTransactionF: PaymentTransaction;
         let paymentTransaction: PaymentTransaction;
         let userDetail: UserDetail;
@@ -427,8 +449,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             });
         }
         paymentTransaction = PaymentTransactions.collection.findOne({}, { sort: { count: -1 } });
-        apilogin = this.al;
-        apikey = this.ak;
+        apilogin = al;
+        apikey = ak;
 
         ccRequestColombia.language = Meteor.user().profile.language_code;
         ccRequestColombia.command = 'SUBMIT_TRANSACTION';
@@ -436,11 +458,11 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         merchant.apiKey = apikey;
         ccRequestColombia.merchant = merchant;
 
-        order.accountId = Number(this.ai);
+        order.accountId = Number(ai);
         order.referenceCode = paymentTransaction.referenceCode;
         order.description = this.itemNameTraduction('PAYU_PAYMENT_FORM.ORDER_DESCRIPTION');
         order.language = Meteor.user().profile.language_code;
-        order.signature = this.generateOrderSignature(apikey, paymentTransaction.referenceCode);
+        order.signature = this.generateOrderSignature(apikey, paymentTransaction.referenceCode, mi);
 
         buyer.merchantBuyerId = Meteor.userId();
         buyer.fullName = Meteor.user().profile.first_name + ' ' + Meteor.user().profile.last_name;
@@ -474,7 +496,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         creditCard.securityCode = this._paymentForm.value.securityCode;
         creditCard.expirationDate = this._selectedCardYear + '/' + this._selectedCardMonth;
         //creditCard.name = this._paymentForm.value.fullName;
-        creditCard.name = 'APPROVED';
+        creditCard.name = 'PENDING';
 
         payer.fullName = this._paymentForm.value.fullName;
         payer.emailAddress = Meteor.user().emails[0].address;
@@ -511,7 +533,9 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         let transactionIcon: string;
         let showCancelBtn: boolean = false;
 
-        this._payuPaymentService.authorizeAndCapture(ccRequestColombia).subscribe(
+        let payuPaymentsApiURI = Parameters.findOne({ name: 'payu_payments_url' }).value;
+
+        this._payuPaymentService.authorizeAndCapture(payuPaymentsApiURI, ccRequestColombia).subscribe(
             response => {
                 if (response.code == 'ERROR') {
                     transactionMessage = 'PAYU_PAYMENT_FORM.AUTH_ERROR_MSG';
@@ -570,13 +594,10 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 });
             },
             error => {
-                //Response with status: 0  for URL: null
-                if (error.message) {
-                    this.openDialog(this.titleMsg, '', error.message, '', this.btnAcceptLbl, false);
-                } else {
-                    this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
-                }
+                let errorMsg = this.itemNameTraduction('PAYU_PAYMENT_FORM.UNAVAILABLE_PAYMENT');
+                this.openDialog(this.titleMsg, '', errorMsg, '', this.btnAcceptLbl, false);
                 this._loading = false;
+                this._router.navigate(['/app/monthly-payment']);
             }
         );
     }
@@ -592,6 +613,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 $set: {
                     status: _response.transactionResponse.state,
                     responseCode: _response.transactionResponse.responseCode,
+                    responseMessage: _response.transactionResponse.responseMessage,
                     responseOrderId: _response.transactionResponse.orderId,
                     responsetransactionId: _response.transactionResponse.transactionId,
                     modification_date: new Date(),
@@ -668,9 +690,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     * @param {string} _referenceCode
     * @return {string}
     */
-    generateOrderSignature(_apikey: string, _referenceCode): string {
-        let merchantId: string = this.mi;
-        let signatureEncoded: string = md5(_apikey + '~' + merchantId + '~' + _referenceCode + '~' + this._valueToPay + '~' + this._currency);
+    generateOrderSignature(_apikey: string, _referenceCode, mi: string): string {
+        let signatureEncoded: string = md5(_apikey + '~' + mi + '~' + _referenceCode + '~' + this._valueToPay + '~' + this._currency);
         return signatureEncoded;
     }
 
