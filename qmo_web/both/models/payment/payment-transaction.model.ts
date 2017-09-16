@@ -7,4 +7,5 @@ export interface PaymentTransaction extends CollectionObject {
     responseCode?: string;
     responseOrderId?: string;
     responsetransactionId?: string;
+    responseMessage?: string;
 }
