@@ -167,6 +167,46 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Function to validate if user order was processed to canceled
+     * @param {Order}_pOrder
+     */
+    orderMarkedToCancel( _pOrder:Order ):boolean{
+        if( _pOrder.markedToCancel !== undefined && _pOrder.markedToCancel !== null ){
+            if( _pOrder.markedToCancel === false ){
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Function to delete order from the chef screen
+     * @param {Order} _pOrder 
+     */
+    deleteOrder( _pOrder:Order ):void{
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+
+        this._loading = true;
+        setTimeout(() => {
+            Orders.update( { _id: _pOrder._id }, 
+                { $set: { status: 'ORDER_STATUS.CANCELED',
+                          modification_user: this._user, 
+                          modification_date: new Date() 
+                        } 
+                }
+              );
+            this._loading = false;
+        }, 1500);
+    }
+
+    /**
     * This function open de error dialog according to parameters 
     * @param {string} title
     * @param {string} subtitle

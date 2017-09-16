@@ -1,8 +1,9 @@
 <div *ngFor="let userDetail of _usersDetails | async">
     <p>Cliente: {{ getUserName(payment.userId) }}</p>
-    <div *ngFor="let order of _orders | async">
+    <div *ngFor="let order of _orders | async" class="order">
         <div *ngIf="order.creation_user === userDetail.userId && order.restaurantId === userDetail.current_restaurant && order.tableId === userDetail.current_table">
             <md-card>
+                <p class="order-cancel-error" *ngIf="_showError">Se ha producido un error cancelando la orden {{order.code}}. Por favor valida que la orden esta en estado preparada o en proceso.</p>
                 <md-card-title>Orden # {{order.code}} - {{order.status | translate}}</md-card-title>
                 <md-card-subtitle>Mesa {{_tableNumber}}</md-card-subtitle>
                 <md-card-content>
@@ -47,7 +48,11 @@
                         </span>
                     </span>
                 </md-card-content>
+                <button md-raised-button class="primary-button" (click)="cancelOrderToExitTable(order)">Cancelar Orden</button>
             </md-card>
         </div>
     </div>
+</div>
+<div class="loading" *ngIf="_loading">
+    <md-spinner></md-spinner>
 </div>

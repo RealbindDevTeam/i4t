@@ -50,6 +50,8 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
     private _usersDetails       : Observable<UserDetail[]>;
 
     private _tableNumber        : string;
+    private _loading            : boolean = false;
+    private _showError          : boolean = false;
 
     /**
      * ExitTableConfirmComponent constructor
@@ -111,6 +113,7 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
      */
     removeSubscriptions():void{
         if( this._userDetailsSub ){ this._userDetailsSub.unsubscribe(); }
+        if( this._usersSub ){ this._usersSub.unsubscribe(); }
         if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
         if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
         if( this._tablesSub ){ this._tablesSub.unsubscribe(); }
@@ -132,6 +135,32 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
                 return _user.profile.name;
             }
         }
+    }
+
+    /**
+     * Cancel order user when user wants exit table
+     * @param {Order} _pOrder 
+     */
+    cancelOrderToExitTable( _pOrder: Order ):void{
+        this._loading = true;
+        setTimeout(() => {
+            MeteorObservable.call( 'cancelOrderToExitTable', _pOrder ).subscribe( () => {
+                this._loading = false;
+            }, ( error ) => {
+                if( error.error === '200' ){
+                    this._showError = true;
+                } else {
+                    this._showError = true;                    
+                }
+            });
+        }, 1500);
+    }
+
+    /**
+     * Close ExitTable Dialog
+     */
+    close():void{
+        this._dialogRef.close();
     }
 
     /**

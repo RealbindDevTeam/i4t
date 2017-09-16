@@ -1,1 +1,65 @@
-<h1>test</h1>
+<md-card *ngIf="_showWaiterCard">
+    <md-list>
+        <md-list-item>
+            <img md-list-avatar class="image" src="/images/waiter.png">
+            <h2 md-line class="card-title">Mesero en Camino</h2>
+            <p md-line class="card-waiter-msg">Un mesero va para tu mesa a gestionar tus ordenes</p>            
+        </md-list-item>
+    </md-list>
+</md-card>
+<div *ngFor="let userDetail of _userDetails | async">
+    <div class="user-detail" *ngIf=" userDetail.current_restaurant !== '' && userDetail.current_table !== '' ">
+        <div *ngFor="let table of _tables | async">
+            <div *ngIf="table._id === userDetail.current_table">
+                <restaurant-info [restaurantId]="userDetail.current_restaurant" [tableQRCode]="table.QR_code"></restaurant-info>
+                <md-card md-cell="12" class="demo-card demo-basic">
+                    <md-card-content>
+                        <div class="card_initial">
+                            <div class="card_initial has-image">
+                                <div class="card_initial-image-container">
+                                    <img class="card_initial-image" 
+                                        src="/images/sections.png"/>
+                                </div>
+                                <div class="card_initial-copy">
+                                    <div class="card_initial-tagline">
+                                        Salida
+                                    </div>
+                                    <div class="card_initial-additional-links">
+                                        Esta opcion te permite salir del restaurante en el que te encuentras
+                                    </div>
+                                </div>
+                                <div class="card_initial-button">
+                                    <button md-raised-button (click)="exitRestaurantTable(userDetail.current_restaurant, userDetail.current_table)">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+        </div>
+    </div>
+    <div style="width: 90%; margin: 0 auto" *ngIf=" userDetail.current_restaurant === '' && userDetail.current_table === '' ">
+        <md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
+            <md-card-content>
+                <div class="card_initial">
+                    <div class="card_initial has-image">
+                        <div class="card_initial-image-container">
+                        <img class="card_initial-image" src="/images/platos.png"/>
+                        </div>
+                        <div class="card_initial-copy">
+                        <div class="card_initial-tagline">
+                            No estas es un restaurante
+                        </div>
+                        <div class="card_initial-additional-links">
+                            mensaje de no restaurante
+                        </div>
+                        </div>
+                        <div class="card_initial-button">
+                        <button md-raised-button (click)="goToOrders()">Ir a Ordenes</button>
+                        </div>
+                    </div>
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>

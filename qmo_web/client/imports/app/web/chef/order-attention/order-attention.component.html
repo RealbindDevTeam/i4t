@@ -34,7 +34,9 @@
         <div *ngIf="_showDetailsInProcess">
             <div *ngFor="let order of _ordersInProcessDetail | async;">
                 <md-card-title class="title">{{'ORDER_ATTENTION.TITLE' | translate}} # {{order.code}}</md-card-title>
-                <button md-raised-button class="primary-button prepared-button" (click)="setPreparedState(order)">{{'ORDER_ATTENTION.ORDER_PREPARED' | translate}}</button>
+                <button md-raised-button *ngIf="!orderMarkedToCancel(order)" class="primary-button prepared-button" (click)="setPreparedState(order)">{{'ORDER_ATTENTION.ORDER_PREPARED' | translate}}</button>
+                <button md-raised-button *ngIf="orderMarkedToCancel(order)" class="primary-button prepared-button" (click)="deleteOrder(order)">{{'ORDER_ATTENTION.DELETE_ORDER' | translate}}</button>
+                <p *ngIf="orderMarkedToCancel(order)" class="waiter-cancel-order-msg">{{'ORDER_ATTENTION.ORDER_CANCELED_MSG' | translate}}</p>
                 <md-card-content>
                     <md-divider></md-divider>
                     <span *ngFor="let item of _items | async">

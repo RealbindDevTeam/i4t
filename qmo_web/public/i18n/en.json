@@ -813,7 +813,8 @@
         "CALL_LABEL_CUSTOMER": "Customer's call",
         "CALL_LABEL_CUSTOMER_PAYMENT": "Customer's payment",
         "BTN_CALL_WAITER": "Request waiter",
-        "BTN_CANCEL_WAITER": "Cancel"
+        "BTN_CANCEL_WAITER": "Cancel",
+        "CALL_LABEL_EXIT_TABLE": "User Output"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Orders Confirmed",
@@ -828,7 +829,9 @@
         "NO_ADDITIONS": "No Additions",
         "ADDITIONS": "Additions",
         "ADDITION": "Addition(s)",
-        "NO_ORDERS": "No orders yet to be prepared"
+        "NO_ORDERS": "No orders yet to be prepared",
+        "DELETE_ORDER": "Delete Order",
+        "ORDER_CANCELED_MSG": "A waiter has canceled the customer order"
     },
     "FINANCIAL_INFO": {
         "COLOMBIA": {

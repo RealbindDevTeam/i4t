@@ -89,6 +89,7 @@ import { RestaurantTwitterComponent } from './restaurant/restaurant/social-netwo
 import { RecoverConfirmComponent } from './auth/recover-password/recover-confirm.component';
 import { ChangeTableComponent } from './restaurant/tables/change-table/change-table.component';
 import { ExitTableComponent } from './restaurant/tables/exit-table/exit-table.component';
+import { ExitTableConfirmComponent } from './waiter/calls/exit-table-confirm/exit-table-confirm.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -181,7 +182,8 @@ export const MODAL_DIALOG_DECLARATIONS = [
     RestaurantFacebookComponent,
     RestaurantInstagramComponent,
     RestaurantTwitterComponent,
-    RecoverConfirmComponent
+    RecoverConfirmComponent,
+    ExitTableConfirmComponent
 ];
 
 export const SERVICES_DECLARATIONS = [

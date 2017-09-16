@@ -118,6 +118,22 @@ if (Meteor.isServer) {
             } else {
                 throw new Meteor.Error('200');
             }
+        },
+
+        cancelOrderToExitTable: function( _pOrder: Order ){
+            if( _pOrder.status === 'ORDER_STATUS.PREPARED' && _pOrder.markedToCancel === true ){
+                Orders.update( { _id: _pOrder._id }, { $set: { status: 'ORDER_STATUS.CANCELED', modification_date: new Date(), markedToCancel: false } } );
+                let _lwaiterCallCount: number = WaiterCallDetails.collection.find( { restaurant_id: _pOrder.restaurantId, table_id: _pOrder.tableId,
+                                                                                     order_id: _pOrder._id, type: 'SEND_ORDER', status: 'completed' } ).count();
+                if( _lwaiterCallCount > 0 ){
+                    WaiterCallDetails.update( { restaurant_id: _pOrder.restaurantId, table_id: _pOrder.tableId, type: 'SEND_ORDER', status: 'completed', order_id: _pOrder._id },
+                                              { $set : { status : 'closed', modification_date : new Date() } } );
+                }
+            } else if( _pOrder.status === 'ORDER_STATUS.IN_PROCESS' && _pOrder.markedToCancel === true ){
+                Orders.update( { _id: _pOrder._id }, { $set: { modification_date: new Date(), markedToCancel: false } } );
+            } else {
+                throw new Meteor.Error( '200' );
+            }
         }
     });
 }

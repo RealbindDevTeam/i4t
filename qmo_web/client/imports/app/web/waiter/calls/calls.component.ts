@@ -16,6 +16,7 @@ import { UserDetails } from '../../../../../../both/collections/auth/user-detail
 import { CallCloseConfirmComponent } from './call-close-confirm/call-close-confirm.component';
 import { PaymentConfirmComponent } from './payment-confirm/payment-confirm.component';
 import { SendOrderConfirmComponent } from './send-order-confirm/send-order-confirm.component';
+import { ExitTableConfirmComponent } from './exit-table-confirm/exit-table-confirm.component';
 
 import template from './calls.component.html';
 import style from './calls.component.scss';
@@ -28,7 +29,6 @@ import style from './calls.component.scss';
 export class CallsComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-
     
     private _userDetailSubscription     : Subscription;
     private _userRestaurantSubscription : Subscription;
@@ -159,6 +159,18 @@ export class CallsComponent implements OnInit, OnDestroy {
      */
     showSendOrder( _call:WaiterCallDetail ):void{
         this._mdDialogRef = this._mdDialog.open( SendOrderConfirmComponent, {
+            disableClose : true,
+            width: '50%',
+            height: '90%'
+        });
+        this._mdDialogRef.componentInstance.call = _call;
+        this._mdDialogRef.afterClosed().subscribe( result => {
+            this._mdDialogRef = null;
+        });
+    }
+
+    showUserExitTable( _call:WaiterCallDetail ): void{
+        this._mdDialogRef = this._mdDialog.open( ExitTableConfirmComponent, {
             disableClose : true,
             width: '50%',
             height: '90%'

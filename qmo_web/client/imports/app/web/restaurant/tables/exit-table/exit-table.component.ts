@@ -3,6 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { MdSnackBar, MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { UserDetails } from '../../../../../../../both/collections/auth/user-detail.collection';
@@ -38,10 +39,13 @@ export class ExitTableComponent implements OnInit, OnDestroy {
     private _accountsSub            : Subscription;
 
     private _userDetails            : Observable<UserDetail[]>;
+    private _tables                 : Observable<Table[]>;
+    private _orders                 : Observable<Order[]>;
 
     private _dialogRef              : MdDialogRef<any>;
     private titleMsg                : string;
     private btnAcceptLbl            : string;
+    private _showWaiterCard         : boolean = false;
 
     /**
      * ExitTableComponent Constructor
@@ -50,12 +54,14 @@ export class ExitTableComponent implements OnInit, OnDestroy {
      * @param {UserLanguageService} _userLanguageService
      * @param {MdDialog} _mdDialog
      * @param {MdSnackBar} _snackBar
+     * @param {Router} _router
      */
     constructor( private _translate: TranslateService, 
                  private _ngZone: NgZone,
                  private _userLanguageService: UserLanguageService,
                  protected _mdDialog: MdDialog,
-                 public _snackBar: MdSnackBar ) {
+                 public _snackBar: MdSnackBar,
+                 private _router: Router ) {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
@@ -73,11 +79,28 @@ export class ExitTableComponent implements OnInit, OnDestroy {
             });
         });
         this._ordersSub = MeteorObservable.subscribe( 'getOrdersByUserId', this._user, ['ORDER_STATUS.REGISTERED','ORDER_STATUS.IN_PROCESS','ORDER_STATUS.PREPARED',
-                                                                                        'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM'] ).subscribe();
+                                                                                        'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM'] ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._orders = Orders.find( { } ).zone();
+                this._orders.subscribe( () => { this.validateOrdersMarkedToCancel(); } );
+            });
+        });
         this._paymentsSub = MeteorObservable.subscribe( 'getUserPayments', this._user ).subscribe();
         this._waiterCallDetSub = MeteorObservable.subscribe( 'countWaiterCallDetailByUsrId', this._user ).subscribe();
-        this._tablesSub = MeteorObservable.subscribe( 'getTableByCurrentTable', this._user ).subscribe();
+        this._tablesSub = MeteorObservable.subscribe( 'getTableByCurrentTable', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._tables = Tables.find( { } ).zone();
+            });
+        });
         this._accountsSub = MeteorObservable.subscribe( 'getAccountsByUserId', this._user ).subscribe();
+    }
+
+    /**
+     * Validate orders marked to cancel
+     */
+    validateOrdersMarkedToCancel():void{
+        let _lOrdersToCancelCount: number =  Orders.collection.find( { status: { $in: [ 'ORDER_STATUS.IN_PROCESS','ORDER_STATUS.PREPARED' ] }, markedToCancel: true } ).count();
+        _lOrdersToCancelCount > 0 ? this._showWaiterCard = true : this._showWaiterCard = false;
     }
 
     /**
@@ -125,6 +148,7 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                         Tables.update( { _id: _pCurrentTable }, { $set: { status: 'FREE' } } );
                         Accounts.update( { restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable }, { $set: { status: 'CLOSED' } } )
                     }     
+                    UserDetails.update( { user_id: this._user }, { $set: { current_restaurant: '', current_table: '' } } );
                     let _lMessage:string = 'Has salido del Restaurante. Hasta Pronto!'
                     this._snackBar.open( _lMessage, '',{ duration: 2500 } );              
                 }
@@ -171,6 +195,7 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                                 Tables.update( { _id: _pCurrentTable }, { $set: { status: 'FREE' } } );
                                 Accounts.update( { restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable }, { $set: { status: 'CLOSED' } } )
                             }
+                            UserDetails.update( { user_id: this._user }, { $set: { current_restaurant: '', current_table: '' } } );
                             let _lMessage:string = 'Has salido del Restaurante. Hasta Pronto!'
                             this._snackBar.open( _lMessage, '',{ duration: 2500 } );
                         }
@@ -250,6 +275,10 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                                 this._dialogRef.afterClosed().subscribe( result => {
                                     this._dialogRef = result;
                                     if ( result.success ){
+                                        Orders.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, 
+                                                       status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED' ] } } ).fetch().forEach( ( order ) => {
+                                                 Orders.update( { _id: order._id }, { $set: { markedToCancel: true, modification_date: new Date() } } );
+                                        });
                                         var data : any = {
                                             restaurants : _pCurrentRestaurant,
                                             tables : _pCurrentTable,
@@ -302,6 +331,13 @@ export class ExitTableComponent implements OnInit, OnDestroy {
             wordTraduced = res; 
         });
         return wordTraduced;
+    }
+
+    /**
+     * This function allow go to Orders
+     */
+    goToOrders(){
+        this._router.navigate(['/app/orders']);
     }
 
     /**
