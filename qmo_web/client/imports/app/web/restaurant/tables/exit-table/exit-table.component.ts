@@ -221,54 +221,70 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                                     }
                                 });
                         } else {
-                            this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
-                                disableClose: true,
-                                data: {
-                                    title: 'Operacion Invalida',
-                                    subtitle: '',
-                                    content: 'El estado de tus ordenes no te permite salir del restaurante. Deseas Llamar un mesero para gestionar tus ordenes?',
-                                    buttonCancel: this.itemNameTraduction( 'NO' ),
-                                    buttonAccept: this.itemNameTraduction( 'YES' ),
-                                    showCancel: true
-                                }
-                            });
-                            this._dialogRef.afterClosed().subscribe( result => {
-                                this._dialogRef = result;
-                                if ( result.success ){
-                                    var data : any = {
-                                        restaurants : _pCurrentRestaurant,
-                                        tables : _pCurrentTable,
-                                        user : this._user,
-                                        waiter_id : "",
-                                        status : "waiting",
-                                        type : 'USER_EXIT_TABLE',
+                            if( _lOrdersDeliveredStatus > 0 && _lOrdersRegisteredStatus === 0 && _lOrdersInProcessStatus === 0
+                                && _lOrdersPreparedStatus === 0 && _lOrdersToConfirm === 0 && _lOrdersWithPendingConfirmation === 0
+                                && _lUserWaiterCallsCount === 0 && _lUserPaymentsCount === 0 ){
+                                    this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
+                                        disableClose: true,
+                                        data: {
+                                            title: 'Tienes Ordenes Entregadas',
+                                            subtitle: '',
+                                            content: 'Paga las ordenes que se te han entregado y asi podras salir del restaurante',
+                                            buttonCancel: '',
+                                            buttonAccept: 'Aceptar',
+                                            showCancel: false
+                                        }
+                                    });
+                            } else {
+                                this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
+                                    disableClose: true,
+                                    data: {
+                                        title: 'Operacion Invalida',
+                                        subtitle: '',
+                                        content: 'El estado de tus ordenes no te permite salir del restaurante. Deseas Llamar un mesero para gestionar tus ordenes?',
+                                        buttonCancel: this.itemNameTraduction( 'NO' ),
+                                        buttonAccept: this.itemNameTraduction( 'YES' ),
+                                        showCancel: true
                                     }
-                                    let isWaiterCalls = WaiterCallDetails.collection.find( { restaurant_id : _pCurrentRestaurant, table_id : _pCurrentTable, 
-                                                        type : data.type, status: { $in : [ 'waiting', 'completed'] } } ).count();
-                                    if( isWaiterCalls === 0 ){            
-                                        setTimeout(() => {
-                                            MeteorObservable.call( 'findQueueByRestaurant', data ).subscribe( () => {
-                                                let _lMessage:string = 'Mesero llamado correctamente'
-                                                this._snackBar.open( _lMessage, '',{
-                                                    duration: 2500
+                                });
+                                this._dialogRef.afterClosed().subscribe( result => {
+                                    this._dialogRef = result;
+                                    if ( result.success ){
+                                        var data : any = {
+                                            restaurants : _pCurrentRestaurant,
+                                            tables : _pCurrentTable,
+                                            user : this._user,
+                                            waiter_id : "",
+                                            status : "waiting",
+                                            type : 'USER_EXIT_TABLE',
+                                        }
+                                        let isWaiterCalls = WaiterCallDetails.collection.find( { restaurant_id : _pCurrentRestaurant, table_id : _pCurrentTable, 
+                                                            type : data.type, status: { $in : [ 'waiting', 'completed'] } } ).count();
+                                        if( isWaiterCalls === 0 ){            
+                                            setTimeout(() => {
+                                                MeteorObservable.call( 'findQueueByRestaurant', data ).subscribe( () => {
+                                                    let _lMessage:string = 'Mesero llamado correctamente'
+                                                    this._snackBar.open( _lMessage, '',{
+                                                        duration: 2500
+                                                    });
                                                 });
+                                            }, 1500 );
+                                        } else {
+                                            this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
+                                                disableClose: true,
+                                                data: {
+                                                    title: 'Mesero En Camino',
+                                                    subtitle: '',
+                                                    content: 'Un mesero ya recibio tu solicitud y va para tu mesa',
+                                                    buttonCancel: '',
+                                                    buttonAccept: 'Aceptar',
+                                                    showCancel: false
+                                                }
                                             });
-                                        }, 1500 );
-                                    } else {
-                                        this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
-                                            disableClose: true,
-                                            data: {
-                                                title: 'Mesero En Camino',
-                                                subtitle: '',
-                                                content: 'Un mesero ya recibio tu solicitud y va para tu mesa',
-                                                buttonCancel: '',
-                                                buttonAccept: 'Aceptar',
-                                                showCancel: false
-                                            }
-                                        });
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
                         }
                     }
                 }
