@@ -121,14 +121,17 @@
         "NO_RESTAURANT": "No restaurant selected",
         "RESTAURANT_SECTION": "Select the restaurants where the section is available",
         "NO_RESTAURANT_CREATED": "There are no restaurants created on the platform",
-        "MODIFY": "Modificar",
+        "MODIFY": "Edit",
         "ACTIVATE": "Activate",
         "INACTIVATE": "Inactivate",
         "SECTION_CREATED": "Section Created Correctly",
         "SECTION_EDITED": "Edited Section Correctly",
         "THERE_NOT_RESTAURANTS": "No restaurants yet register",
         "RESTAURANT_REGISTER": "Restaurant register",
-        "MESSAGE": "Register one to enable this option"
+        "MESSAGE": "Register one to enable this option",
+        "WARNING": "Warning: You have ",
+        "WARNING_2": "active users in your restaurants",
+        "WARNING_3": "Edit a section's configuration could affect the experience of the users"
     },
     "CATEGORIES": {
         "CATEGORIES_CREATION": "Categories creation",
@@ -140,7 +143,10 @@
         "ACTIVATE": "Activate",
         "INACTIVATE": "Inactivate",
         "CATEGORY_CREATED": "Category Created Correctly",
-        "CATEGORY_EDITED": "Edited Category Correctly"
+        "CATEGORY_EDITED": "Edited Category Correctly",
+        "WARNING": "Warning: You have ",
+        "WARNING_2": "active users in your restaurants",
+        "WARNING_3": "Edit a category's configuration could affect the experience of the users"
     },
     "SUBCATEGORIES": {
         "SUBCATEGORY_CREATION": "Subcategories creation",
@@ -153,7 +159,10 @@
         "ACTIVATE": "Activate",
         "INACTIVATE": "Inactivate",
         "SUBCATEGORY_CREATED": "Subcategory Created Correctly",
-        "SUBCATEGORY_EDITED": "Edited Subcategory Correctly"
+        "SUBCATEGORY_EDITED": "Edited Subcategory Correctly",
+        "WARNING": "Warning: You have ",
+        "WARNING_2": "active users in your restaurants",
+        "WARNING_3": "Edit a subcategory's configuration could affect the experience of the users"
     },
     "ADDITIONS": {
         "ADDITION_CREATION": "Additions creation",
@@ -172,7 +181,10 @@
         "TAXES": "Taxes",
         "PRICES": "Prices",
         "ADDITION_CREATED": "Adition Created Correctly",
-        "ADDITION_EDITED": "Edited Adition Correctly"
+        "ADDITION_EDITED": "Edited Adition Correctly",
+        "WARNING": "Warning: You have ",
+        "WARNING_2": "active users in your restaurants",
+        "WARNING_3": "Edit an addition's configuration could affect the experience of the users"
     },
     "SETTINGS": {
         "TITTLE": "Settings",
@@ -261,7 +273,10 @@
         "TAXES": "Taxes",
         "PRICES": "Prices",
         "GARNISH_FOOD_CREATED": "Garnish Food Created Correctly",
-        "GARNISH_FOOD_EDITED": "Edited Garnish Food Correctly"
+        "GARNISH_FOOD_EDITED": "Edited Garnish Food Correctly",
+        "WARNING": "Warning: You have ",
+        "WARNING_2": "active users in your restaurants",
+        "WARNING_3": "Edit a garnishes configuration could affect the experience of the users"
     },
     "RESTAURANT_REGISTER": {
         "SELECT_COUNTRY": "Select Country",
@@ -574,7 +589,10 @@
         "SELECT_ALL_GARNISH_FOOD": "Select All Garnish Food",
         "SELECT_ALL_ADDITIONS": "Select All Additions",
         "ITEM_EDITED": "Item Edited Correctly",
-        "GARNISHFOOD_QUANTITY_MSG": "The number of garnish food must be different from 0"
+        "GARNISHFOOD_QUANTITY_MSG": "The number of garnish food must be different from 0",
+        "WARNING": "Warning: You have ",
+        "WARNING_2": "active users in your restaurants",
+        "WARNING_3": "Edit an item configuration could affect the experience of the users"
     },
     "ROLE": {
         "ADMINISTRATOR": "Administrator",

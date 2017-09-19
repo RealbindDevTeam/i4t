@@ -128,7 +128,10 @@
         "SECTION_EDITED": "Sección editada correctamente",
         "THERE_NOT_RESTAURANTS": "Aún no hay restaurantes registrados",
         "RESTAURANT_REGISTER": "Registrar restaurante",
-        "MESSAGE": "Registra uno para habilitar esta opción"
+        "MESSAGE": "Registra uno para habilitar esta opción",
+        "WARNING": "Advertencia: Tienes ",
+        "WARNING_2": "usuarios activos en tus restaurantes",
+        "WARNING_3": "Modificar la configuración de una sección podría afectar la experiencia de los usuarios"
     },
     "CATEGORIES": {
         "CATEGORIES_CREATION": "Creación de categorías",
@@ -140,7 +143,10 @@
         "ACTIVATE": "Activar",
         "INACTIVATE": "Inactivar",
         "CATEGORY_CREATED": "Categoría creada correctamente",
-        "CATEGORY_EDITED": "Categoría editada correctamente"
+        "CATEGORY_EDITED": "Categoría editada correctamente",
+        "WARNING": "Advertencia: Tienes ",
+        "WARNING_2": "usuarios activos en tus restaurantes",
+        "WARNING_3": "Modificar la configuración de una categoría podría afectar la experiencia de los usuarios"
     },
     "SUBCATEGORIES": {
         "SUBCATEGORY_CREATION": "Creación de subcategorías",
@@ -153,7 +159,10 @@
         "ACTIVATE": "Activar",
         "INACTIVATE": "Inactivar",
         "SUBCATEGORY_CREATED": "Subcategoría creada correctamente",
-        "SUBCATEGORY_EDITED": "Subcategoría editada correctamente"
+        "SUBCATEGORY_EDITED": "Subcategoría editada correctamente",
+        "WARNING": "Advertencia: Tienes ",
+        "WARNING_2": "usuarios activos en tus restaurantes",
+        "WARNING_3": "Modificar la configuración de una subcategoría podría afectar la experiencia de los usuarios"
     },
     "ADDITIONS": {
         "ADDITION_CREATION": "Creación de adiciones",
@@ -172,7 +181,10 @@
         "TAXES": "Impuestos",
         "PRICES": "Precios",
         "ADDITION_CREATED": "Adición creada correctamente",
-        "ADDITION_EDITED": "Adición editada correctamente"
+        "ADDITION_EDITED": "Adición editada correctamente",
+        "WARNING": "Advertencia: Tienes ",
+        "WARNING_2": "usuarios activos en tus restaurantes",
+        "WARNING_3": "Modificar la configuración de una adición podría afectar la experiencia de los usuarios"
     },
     "SETTINGS": {
         "TITTLE": "Ajustes",
@@ -261,7 +273,10 @@
         "TAXES": "Impuestos",
         "PRICES": "Precios",
         "GARNISH_FOOD_CREATED": "Guarnición creada correctamente",
-        "GARNISH_FOOD_EDITED": "Guarnición editada correctamente"
+        "GARNISH_FOOD_EDITED": "Guarnición editada correctamente",
+        "WARNING": "Advertencia: Tienes ",
+        "WARNING_2": "usuarios activos en tus restaurantes",
+        "WARNING_3": "Modificar la configuración de una guarnición podría afectar la experiencia de los usuarios"
     },
     "RESTAURANT_REGISTER": {
         "SELECT_COUNTRY": "Selecciona país",
@@ -574,7 +589,10 @@
         "SELECT_ALL_GARNISH_FOOD": "Seleccionar todas las guarniciones",
         "SELECT_ALL_ADDITIONS": "Seleccionar todas las adiciones",
         "ITEM_EDITED": "Item editado correctamente",
-        "GARNISHFOOD_QUANTITY_MSG": "La cantidad de guarniciones debe ser diferente a 0"
+        "GARNISHFOOD_QUANTITY_MSG": "La cantidad de guarniciones debe ser diferente a 0",
+        "WARNING": "Advertencia: Tienes ",
+        "WARNING_2": "usuarios activos en tus restaurantes",
+        "WARNING_3": "Modificar la configuración de un item podría afectar la experiencia de los usuarios"
     },
     "ROLE": {
         "ADMINISTRATOR": "Administrador",

@@ -1,10 +1,17 @@
+<md-card *ngIf="_thereAreUsers">
+    <md-card-header>
+        <div md-card-avatar class="example-header-image"></div>
+        <md-card-title>{{'ITEMS.WARNING' | translate}} {{_usersCount}} {{'ITEMS.WARNING_2' | translate}}</md-card-title>
+        <md-card-subtitle style="margin-bottom: 0px">{{'ITEMS.WARNING_3' | translate}}</md-card-subtitle>
+    </md-card-header>
+</md-card>
+
 <md-card md-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
     <md-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
                 <div class="card_initial-image-container">
-                    <img class="card_initial-image" 
-                        src="/images/items.png"/>
+                    <img class="card_initial-image" src="/images/items.png" />
                 </div>
                 <div class="card_initial-copy">
                     <div class="card_initial-tagline">
@@ -27,15 +34,14 @@
         <div class="card_initial">
             <div class="card_initial has-image">
                 <div class="card_initial-image-container">
-                    <img class="card_initial-image" 
-                        src="/images/platos.png"/>
+                    <img class="card_initial-image" src="/images/platos.png" />
                 </div>
                 <div class="card_initial-copy">
                     <div class="card_initial-tagline">
                         {{ 'ITEMS.MSG_INITIAL' | translate }}
                     </div>
                     <div class="card_initial-additional-links">
-                        
+
                     </div>
                 </div>
                 <div class="card_initial-button">
@@ -49,13 +55,13 @@
 <div class="main" *ngIf="_thereAreRestaurants && _thereAreItems">
     <div class="main-overflow">
         <md-card id="card-main" class="custom-cards" *ngFor="let item of _items | async">
-                <div class="header-card">
-                    <img src="{{ getItemImage(item._id) }}">
-                    <span class="mat-card-title">{{item.name}}</span>
-                    <button md-tooltip="{{'ITEMS.EDIT_ITEM' | translate}}" md-fab class="btn-position-edition" (click)="open(item)">
+            <div class="header-card">
+                <img src="{{ getItemImage(item._id) }}">
+                <span class="mat-card-title">{{item.name}}</span>
+                <button md-tooltip="{{'ITEMS.EDIT_ITEM' | translate}}" md-fab class="btn-position-edition" (click)="open(item)">
                         <md-icon style="color: white;" class="md-24">create</md-icon>
                     </button>
-                </div>
+            </div>
             <md-card-content>
                 <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
                 <p *ngIf="item.description.length <= 50">{{item.description}}</p>
@@ -68,7 +74,7 @@
             </md-card-actions>
         </md-card>
     </div>
-    
+
     <div class="fixed-action-btn">
         <button md-tooltip="{{'ITEMS.CREATE_NEW_ITEM' | translate}}" mdTooltipPosition="above" class="fixed-action-btn" md-fab (click)="openItemCreation()">
             <md-icon style="color: white;">

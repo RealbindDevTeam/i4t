@@ -1,3 +1,11 @@
+<md-card *ngIf="_thereAreUsers">
+  <md-card-header>
+    <div md-card-avatar class="example-header-image"></div>
+    <md-card-title>{{'ADDITIONS.WARNING' | translate}} {{_usersCount}} {{'ADDITIONS.WARNING_2' | translate}}</md-card-title>
+    <md-card-subtitle style="margin-bottom: 0px">{{'ADDITIONS.WARNING_3' | translate}}</md-card-subtitle>
+  </md-card-header>
+</md-card>
+
 <md-card md-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
     <md-card-content>
         <div class="card_initial">

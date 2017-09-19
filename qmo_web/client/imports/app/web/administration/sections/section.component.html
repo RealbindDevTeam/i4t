@@ -1,25 +1,32 @@
+<md-card *ngIf="_thereAreUsers">
+  <md-card-header>
+    <div md-card-avatar class="example-header-image"></div>
+    <md-card-title>{{'SECTIONS.WARNING' | translate}} {{_usersCount}} {{'SECTIONS.WARNING_2' | translate}}</md-card-title>
+    <md-card-subtitle style="margin-bottom: 0px">{{'SECTIONS.WARNING_3' | translate}}</md-card-subtitle>
+  </md-card-header>
+</md-card>
+
 <md-card md-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
-    <md-card-content>
-        <div class="card_initial">
-            <div class="card_initial has-image">
-                <div class="card_initial-image-container">
-                    <img class="card_initial-image" 
-                        src="/images/sections.png"/>
-                </div>
-                <div class="card_initial-copy">
-                    <div class="card_initial-tagline">
-                        {{'SECTIONS.THERE_NOT_RESTAURANTS' | translate}}
-                    </div>
-                    <div class="card_initial-additional-links">
-                      {{'SECTIONS.MESSAGE' | translate}}
-                    </div>
-                </div>
-                <div class="card_initial-button">
-                    <button md-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
-                </div>
-            </div>
+  <md-card-content>
+    <div class="card_initial">
+      <div class="card_initial has-image">
+        <div class="card_initial-image-container">
+          <img class="card_initial-image" src="/images/sections.png" />
         </div>
-    </md-card-content>
+        <div class="card_initial-copy">
+          <div class="card_initial-tagline">
+            {{'SECTIONS.THERE_NOT_RESTAURANTS' | translate}}
+          </div>
+          <div class="card_initial-additional-links">
+            {{'SECTIONS.MESSAGE' | translate}}
+          </div>
+        </div>
+        <div class="card_initial-button">
+          <button md-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
+        </div>
+      </div>
+    </div>
+  </md-card-content>
 </md-card>
 
 <md-card *ngIf="_thereAreRestaurants">
@@ -34,10 +41,11 @@
         </md-input-container>
       </div>
       <div>
-        <p>{{'SECTIONS.RESTAURANT_SECTION' | translate}}</p> 
+        <p>{{'SECTIONS.RESTAURANT_SECTION' | translate}}</p>
         <p><label *ngIf="!_showRestaurants" class="label-field-void">{{'SECTIONS.NO_RESTAURANT_CREATED' | translate}}</label></p>
         <div *ngIf="_showRestaurants" formGroupName="restaurants">
-          <md-checkbox *ngFor="let restaurant of _restaurants | async" [formControlName]="restaurant._id" [class.invalid]="!_sectionForm.controls.restaurants.valid" class="checkbox">{{restaurant.name}}</md-checkbox>
+          <md-checkbox *ngFor="let restaurant of _restaurants | async" [formControlName]="restaurant._id" [class.invalid]="!_sectionForm.controls.restaurants.valid"
+            class="checkbox">{{restaurant.name}}</md-checkbox>
           <label></label>
         </div>
       </div>
@@ -54,8 +62,9 @@
     <div *ngFor="let rst of _restaurants | async">
       <div *ngFor="let secRest of section.restaurants">
         <div *ngIf="rst._id == secRest">
-          <div><md-icon>store</md-icon> {{rst.name}}</div>
-        </div>              
+          <div>
+            <md-icon>store</md-icon> {{rst.name}}</div>
+        </div>
       </div>
     </div>
   </md-card-content>
