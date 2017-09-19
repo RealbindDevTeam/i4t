@@ -16,7 +16,7 @@ import { UserDetails } from '../../../../../../both/collections/auth/user-detail
 import { CallCloseConfirmComponent } from './call-close-confirm/call-close-confirm.component';
 import { PaymentConfirmComponent } from './payment-confirm/payment-confirm.component';
 import { SendOrderConfirmComponent } from './send-order-confirm/send-order-confirm.component';
-import { ExitTableConfirmComponent } from './exit-table-confirm/exit-table-confirm.component';
+import { RestaurantExitConfirmComponent } from './restaurant-exit-confirm/restaurant-exit-confirm.component';
 
 import template from './calls.component.html';
 import style from './calls.component.scss';
@@ -173,7 +173,7 @@ export class CallsComponent implements OnInit, OnDestroy {
      * This function show modal dialog with exit user information
      */
     showUserExitTable( _call:WaiterCallDetail ): void{
-        this._mdDialogRef = this._mdDialog.open( ExitTableConfirmComponent, {
+        this._mdDialogRef = this._mdDialog.open( RestaurantExitConfirmComponent, {
             disableClose : true,
             width: '50%',
             height: '90%'
