@@ -46,7 +46,7 @@ Meteor.publish('getOrdersByUserId', function (_userId: string, _status: string[]
     check(_userId, String);
     let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
     if( _lUserDetail ){
-        if(_lUserDetail.current_restaurant && _lUserDetail.current_table){
+        if(_lUserDetail.current_restaurant !== '' && _lUserDetail.current_table !== ''){
             let _lAccount: Account = Accounts.findOne({restaurantId: _lUserDetail.current_restaurant, 
                                                        tableId: _lUserDetail.current_table,
                                                        status: 'OPEN'});

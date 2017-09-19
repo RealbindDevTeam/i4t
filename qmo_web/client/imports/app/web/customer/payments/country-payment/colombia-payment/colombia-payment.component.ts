@@ -121,7 +121,8 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
         this._paymentsSub = MeteorObservable.subscribe( 'getUserPaymentsByRestaurantAndTable', this._user, this.restId, this.tabId, ['PAYMENT.NO_PAID'] ).subscribe( () => {
             this._ngZone.run( () => {
                 this._paymentsNoPaid = Payments.find( { status: 'PAYMENT.NO_PAID' } ).zone();
-                this._paymentsNoPaid.subscribe( () => { this.validateUserPayments() } );
+                this.validateUserPayments();
+                this._paymentsNoPaid.subscribe( () => { this.validateUserPayments(); } );
             });
         });
         this._ordersTransfSub = MeteorObservable.subscribe( 'getOrdersWithConfirmationPending', this.restId, this.tabId ).subscribe( () => {

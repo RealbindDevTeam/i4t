@@ -75,10 +75,11 @@ export class ItemComponent implements OnInit, OnDestroy {
     ngOnInit() {
         let _lRestaurantsId: string[] = [];
         this.removeSubscriptions();
-        this._itemsSub = MeteorObservable.subscribe('items', this._user).subscribe(() => {
-            this._ngZone.run(() => {
-                this._items = Items.find({}).zone();
-                this._items.subscribe(() => { this.countItems(); });
+        this._itemsSub = MeteorObservable.subscribe( 'items',this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._items = Items.find( { } ).zone();
+                this.countItems();
+                this._items.subscribe( () => { this.countItems(); } );
             });
         });
         this._itemImagesThumbSub = MeteorObservable.subscribe('itemImageThumbs', this._user).subscribe();

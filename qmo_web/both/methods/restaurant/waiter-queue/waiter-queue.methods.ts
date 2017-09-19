@@ -150,7 +150,7 @@ if (Meteor.isServer) {
           if( waiterDetail.type === "SEND_ORDER" && waiterDetail.order_id !== null ){
             Orders.update( { _id: waiterDetail.order_id }, 
               { $set: { status: 'ORDER_STATUS.DELIVERED',
-                        modification_user: this._user, 
+                        modification_user: _waiter_id, 
                         modification_date: new Date() 
                       } 
               }
@@ -163,7 +163,7 @@ if (Meteor.isServer) {
             }
           }
           
-          let usr_detail = UserDetails.collection.findOne({ user_id : _waiter_id });
+          let usr_detail = UserDetails.findOne({ user_id : _waiter_id });
           let jobs = usr_detail.jobs - 1;
           UserDetails.update({user_id : _waiter_id} , { $set : { "enabled" : true, "jobs" : jobs } });
         });

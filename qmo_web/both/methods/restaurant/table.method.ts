@@ -7,6 +7,7 @@ import { WaiterCallDetails } from '../../collections/restaurant/waiter-call-deta
 import { Account } from '../../models/restaurant/account.model';
 import { Accounts } from '../../collections/restaurant/account.collection';
 import { UserDetails } from '../../collections/auth/user-detail.collection';
+import { WaiterCallDetail } from '../../models/restaurant/waiter-call-detail.model';
 
 if (Meteor.isServer) {
     Meteor.methods({
@@ -117,6 +118,16 @@ if (Meteor.isServer) {
                 }
             } else {
                 throw new Meteor.Error('200');
+            }
+        },
+
+        cancelOrderToExitTable: function( _pOrder: Order, _pCall : WaiterCallDetail, _pWaiterId: string ){
+            if( _pOrder.status === 'ORDER_STATUS.PREPARED' && _pOrder.markedToCancel === true ){
+                Orders.update( { _id: _pOrder._id }, { $set: { status: 'ORDER_STATUS.CANCELED', modification_date: new Date(), markedToCancel: false } } );
+            } else if( _pOrder.status === 'ORDER_STATUS.IN_PROCESS' && _pOrder.markedToCancel === true ){
+                Orders.update( { _id: _pOrder._id }, { $set: { status: 'ORDER_STATUS.CANCELED', modification_date: new Date() } } );
+            } else {
+                throw new Meteor.Error( '200' );
             }
         }
     });

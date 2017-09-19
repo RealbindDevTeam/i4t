@@ -15,6 +15,7 @@ export interface Order extends CollectionObject{
     translateInfo: OrderTranslateInfo;
     toPay: boolean;
     additions: OrderAddition[];
+    markedToCancel?: boolean;
 }
 
 /**
