@@ -214,7 +214,7 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                                 subtitle: '',
                                 content: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_MUST_BE_ATTENDED' ),
                                 buttonCancel: '',
-                                buttonAccept: this.itemNameTraduction( 'SYSTEM_MSG.ACCEPT' ),
+                                buttonAccept: this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
                                 showCancel: false
                             }
                         });
@@ -229,7 +229,7 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                                     subtitle: '',
                                     content: this.itemNameTraduction( 'EXIT_TABLE.WAITER_CALLS_MSG' ),
                                     buttonCancel: '',
-                                    buttonAccept: this.itemNameTraduction( 'SYSTEM_MSG.ACCEPT' ),
+                                    buttonAccept: this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
                                     showCancel: false
                                 }
                             });
@@ -244,7 +244,7 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                                         subtitle: '',
                                         content: this.itemNameTraduction( 'EXIT_TABLE.PENDING_PAYMENTS_MSG' ),
                                         buttonCancel: '',
-                                        buttonAccept: this.itemNameTraduction( 'SYSTEM_MSG.ACCEPT' ),
+                                        buttonAccept: this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
                                         showCancel: false
                                     }
                                 });
@@ -259,7 +259,7 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                                             subtitle: '',
                                             content: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_DELIVERED_MSG' ),
                                             buttonCancel: '',
-                                            buttonAccept: this.itemNameTraduction( 'SYSTEM_MSG.ACCEPT' ),
+                                            buttonAccept: this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
                                             showCancel: false
                                         }
                                     });
@@ -311,7 +311,7 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                                                     subtitle: '',
                                                     content: this.itemNameTraduction( 'EXIT_TABLE.WAITER_ON_THE_WAY_CALL' ),
                                                     buttonCancel: '',
-                                                    buttonAccept: this.itemNameTraduction( 'SYSTEM_MSG.ACCEPT' ),
+                                                    buttonAccept: this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
                                                     showCancel: false
                                                 }
                                             });

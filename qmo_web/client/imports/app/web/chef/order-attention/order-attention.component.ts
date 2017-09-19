@@ -103,7 +103,7 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
      * Validate if restaurants exist
      */
     countOrdersInProcess():void{
-        Orders.collection.find( { } ).count() > 0 ? this._thereAreOrders = true : this._thereAreOrders = false;
+        Orders.collection.find( { status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.CANCELED' ] }, markedToCancel: { $in: [ undefined, true ] } } ).count() > 0 ? this._thereAreOrders = true : this._thereAreOrders = false;
     }
 
     /**
@@ -146,7 +146,7 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
           tables : table_id,
           user : this._user,
           waiter_id : "",
-          status : "PREPARED",
+          status : "waiting",
           type : "SEND_ORDER",
           order_id : _pOrder._id
         }

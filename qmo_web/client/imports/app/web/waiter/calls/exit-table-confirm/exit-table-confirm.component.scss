@@ -11,6 +11,13 @@
         display: inline-block;
         vertical-align: middle;
     }
+
+    .order-cancel-error{
+        font-family: Roboto,'Helvetica Neue',sans-serif;
+        margin: 0;
+        color: red;
+        font-weight: bold;
+    }
 }
 
 .order{
@@ -25,11 +32,6 @@
             display: inline-block;
             vertical-align: middle;
         }
-    }
-
-    .order-cancel-error{
-        color: red;
-        font-weight: bold;
     }
 
     .name{

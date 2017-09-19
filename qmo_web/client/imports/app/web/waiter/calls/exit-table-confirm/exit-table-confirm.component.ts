@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { MdDialogRef } from '@angular/material';
+import { MdSnackBar, MdDialogRef } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
@@ -62,11 +62,13 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
      * @param {MdDialogRef<any>} _dialogRef
      * @param {NgZone} _ngZone
      * @param {UserLanguageService} _userLanguageService
+     * @param {MdSnackBar} _snackBar
      */
     constructor( private _translate: TranslateService, 
         public _dialogRef: MdDialogRef<any>, 
         private _ngZone: NgZone,
-        private _userLanguageService: UserLanguageService ){
+        private _userLanguageService: UserLanguageService,
+        public _snackBar: MdSnackBar ){
             _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
             _translate.setDefaultLang( 'en' );
     }
@@ -83,7 +85,7 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
         });
         this._usersSub = MeteorObservable.subscribe('getUserByTableId', this.call.restaurant_id, this.call.table_id ).subscribe();
         this._ordersSub = MeteorObservable.subscribe( 'getOrdersByTableId', this.call.restaurant_id, this.call.table_id, 
-                                                     ['ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED', 'ORDER_STATUS.CANCELED'] ).subscribe( () => {
+                                                     ['ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED'] ).subscribe( () => {
             this._ngZone.run( () => {
                 this._orders = Orders.find( { } ).zone();
             });
@@ -149,12 +151,18 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
     cancelOrderToExitTable( _pOrder: Order ):void{
         setTimeout(() => {
             MeteorObservable.call( 'cancelOrderToExitTable', _pOrder, this.call, this._user ).subscribe( () => {
+                let _lMessage:string = this.itemNameTraduction( 'EXIT_TABLE_CONFIRM.ORDER_CANCELED' )
+                this._snackBar.open( _lMessage, '',{
+                    duration: 2500
+                });
                 let _lOrdersToCancel: number = Orders.collection.find( { restaurantId: this.call.restaurant_id, tableId: this.call.table_id, 
-                                               markedToCancel:true, status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED' ] } } ).count();
+                                               markedToCancel: { $in: [ true, false ] }, status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED' ] } } ).count();
                 if( _lOrdersToCancel === 0 ){
-                    this.close();
+                    MeteorObservable.call( 'closeCall', this.call, this._user ).subscribe( () => {
+                        this.close();
+                    });
                 }
-            }, ( error ) => {
+            }, ( error ) => {            
                 if( error.error === '200' ){
                     this._showError = true;
                 } else {
@@ -169,6 +177,18 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
      */
     close():void{
         this._dialogRef.close();
+    }
+
+    /**
+     * Return traduction
+     * @param {string} itemName 
+     */
+    itemNameTraduction(itemName: string): string{
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res; 
+        });
+        return wordTraduced;
     }
 
     /**

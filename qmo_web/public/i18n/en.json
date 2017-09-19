@@ -1259,7 +1259,8 @@
         "EXIT_MSG": "Exit",
         "THERE_IS_NOT_REST": "You are not in a restaurant",
         "THERE_IS_NOT_REST_MSG": "Go to the order option and enter the code",
-        "GO_TO_ORDERS": "Go to Orders"
+        "GO_TO_ORDERS": "Go to Orders",
+        "ACCEPT": "Accept"
     },
     "EXIT_TABLE_CONFIRM": {
         "CUSTOMER": "Customer",
@@ -1274,6 +1275,7 @@
         "GARNISH_FOOD": "Garnish Food",
         "NO_ADDITIONS": "No Additions",
         "ADDITIONS": "Additions",
-        "ADDITION": "Addition(s)"
+        "ADDITION": "Addition(s)",
+        "ORDER_CANCELED": "Order Canceled"
     }
 }

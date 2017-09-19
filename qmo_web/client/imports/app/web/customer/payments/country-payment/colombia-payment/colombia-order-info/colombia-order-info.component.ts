@@ -56,8 +56,8 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
     private _tableId            : string;
     private _currencyId         : string;
     private _currencyCode       : string;
-    private _showOrdersInfo     : boolean = false;
-    private _showOrderDetails   : boolean = false;
+    private _showOrdersInfo     : boolean = true;
+    private _showOrderDetails   : boolean = true;
 
     private _totalValue         : number = 0;
     private _ipoComBaseValue    : number = 0;

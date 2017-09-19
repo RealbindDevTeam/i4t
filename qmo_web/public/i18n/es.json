@@ -1259,7 +1259,8 @@
         "EXIT_MSG": "Salir",
         "THERE_IS_NOT_REST": "No te encuentras en un restaurante",
         "THERE_IS_NOT_REST_MSG": "Ve a la opción de ordenes e ingresa el código",
-        "GO_TO_ORDERS": "Ir a ordenes"
+        "GO_TO_ORDERS": "Ir a ordenes",
+        "ACCEPT": "Aceptar"
     },
     "EXIT_TABLE_CONFIRM": {
         "CUSTOMER": "Cliente",
@@ -1274,6 +1275,7 @@
         "GARNISH_FOOD": "Guarniciones",
         "NO_ADDITIONS": "Sin adiciones",
         "ADDITIONS": "Adiciones",
-        "ADDITION": "Adición(es)"
+        "ADDITION": "Adición(es)",
+        "ORDER_CANCELED": "Orden Cancelada"
     }
 }

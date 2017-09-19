@@ -129,11 +129,6 @@ if (Meteor.isServer) {
             } else {
                 throw new Meteor.Error( '200' );
             }
-            let _lOrdersToCancel: number = Orders.collection.find( { restaurantId: _pCall.restaurant_id, tableId: _pCall.table_id,
-                                           markedToCancel: true, status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED' ] } } ).count();
-            if( _lOrdersToCancel === 0 ){
-                Meteor.call( 'closeCall', _pCall, _pWaiterId );
-            }
         }
     });
 }
