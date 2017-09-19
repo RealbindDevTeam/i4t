@@ -41,7 +41,7 @@ export class RoutingClass {
                 <button md-icon-button id="menu-toggler" mdTooltip="{{'TOPNAV.TABLES' | translate}}" (click)="goToRoute('/app/change-table','TOPNAV.TABLES')">
                     <md-icon>compare_arrows</md-icon>
                 </button>
-                <button md-icon-button id="menu-toggler" mdTooltip="{{'TOPNAV.RESTAURANT_EXIT' | translate}}" (click)="goToRoute('/app/exit-table')">
+                <button md-icon-button id="menu-toggler" mdTooltip="{{'TOPNAV.RESTAURANT_EXIT' | translate}}" (click)="goToRoute('/app/exit-table','TOPNAV.RESTAURANT_EXIT')">
                     <md-icon>exit_to_app</md-icon>
                 </button>`
 })
