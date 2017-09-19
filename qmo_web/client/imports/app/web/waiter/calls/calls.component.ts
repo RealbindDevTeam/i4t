@@ -169,6 +169,9 @@ export class CallsComponent implements OnInit, OnDestroy {
         });
     }
 
+    /**
+     * This function show modal dialog with exit user information
+     */
     showUserExitTable( _call:WaiterCallDetail ): void{
         this._mdDialogRef = this._mdDialog.open( ExitTableConfirmComponent, {
             disableClose : true,

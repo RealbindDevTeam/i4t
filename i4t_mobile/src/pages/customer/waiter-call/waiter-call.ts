@@ -67,7 +67,7 @@ export class WaiterCallPage implements OnInit, OnDestroy {
     this._waiterCallDetailSubscription = MeteorObservable.subscribe('countWaiterCallDetailByUsrId', Meteor.userId()).subscribe( () => {
       MeteorObservable.autorun().subscribe(() => {
         if (this._userRestaurant && this._userDetail) {
-          this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).count();
+          this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), type: 'CALL_OF_CUSTOMER', restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).count();
           if ( this._countDetails > 0 ){
             this._validatedWaterCall = true;
           } else {
@@ -105,7 +105,7 @@ export class WaiterCallPage implements OnInit, OnDestroy {
     this._waiterCallDetailSubscription = MeteorObservable.subscribe('countWaiterCallDetailByUsrId', Meteor.userId()).subscribe( () => {
       MeteorObservable.autorun().subscribe(() => {
         if (this._userRestaurant && this._userDetail ) {
-          this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).count();
+          this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), type: 'CALL_OF_CUSTOMER', restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).count();
           if ( this._countDetails > 0 ){
             this._validatedWaterCall = true;
           } else {
@@ -161,7 +161,7 @@ export class WaiterCallPage implements OnInit, OnDestroy {
       });
       loading.present();
       setTimeout(() => {
-        let waiterCall = WaiterCallDetails.collection.find({ user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).fetch()[0];
+        let waiterCall = WaiterCallDetails.collection.find({ user_id : Meteor.userId(), type: 'CALL_OF_CUSTOMER', restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).fetch()[0];
         MeteorObservable.call('cancelCallClient', waiterCall, Meteor.userId()).subscribe(() => {
           loading.dismiss();
         });

@@ -69,6 +69,8 @@ export class AlphanumericCodePage {
       }, (error) => {
         if( error.error === '400' ){
           this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.TABLE_NOT_EXISTS'));
+        } else if( error.error === '300' ){
+          this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.RESTAURANT_NOT_EXISTS'));
         } else if( error.error === '200' ){
           this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.IUREST_NO_ACTIVE'));
         }

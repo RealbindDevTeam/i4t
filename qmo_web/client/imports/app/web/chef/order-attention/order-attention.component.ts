@@ -70,7 +70,7 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
      */
     ngOnInit(){
         this.removeSubscriptions();
-        this._ordersSub = MeteorObservable.subscribe( 'getOrdersByRestaurantWork', this._user, [ 'ORDER_STATUS.IN_PROCESS' ] ).subscribe( () => {
+        this._ordersSub = MeteorObservable.subscribe( 'getOrdersByRestaurantWork', this._user, [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.CANCELED' ] ).subscribe( () => {
             this._ngZone.run( () => {
                 this._ordersInProcess = Orders.find( { } ).zone();
                 this.countOrdersInProcess();
@@ -172,7 +172,7 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
      */
     orderMarkedToCancel( _pOrder:Order ):boolean{
         if( _pOrder.markedToCancel !== undefined && _pOrder.markedToCancel !== null ){
-            if( _pOrder.markedToCancel === false ){
+            if( _pOrder.markedToCancel === true && _pOrder.status === 'ORDER_STATUS.CANCELED' ){
                 return true;
             } else {
                 return false;
@@ -196,7 +196,7 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
         this._loading = true;
         setTimeout(() => {
             Orders.update( { _id: _pOrder._id }, 
-                { $set: { status: 'ORDER_STATUS.CANCELED',
+                { $set: { markedToCancel: false,
                           modification_user: this._user, 
                           modification_date: new Date() 
                         } 

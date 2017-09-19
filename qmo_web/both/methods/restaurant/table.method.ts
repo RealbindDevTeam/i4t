@@ -130,7 +130,7 @@ if (Meteor.isServer) {
                                               { $set : { status : 'closed', modification_date : new Date() } } );
                 }
             } else if( _pOrder.status === 'ORDER_STATUS.IN_PROCESS' && _pOrder.markedToCancel === true ){
-                Orders.update( { _id: _pOrder._id }, { $set: { modification_date: new Date(), markedToCancel: false } } );
+                Orders.update( { _id: _pOrder._id }, { $set: { status: 'ORDER_STATUS.CANCELED', modification_date: new Date() } } );
             } else {
                 throw new Meteor.Error( '200' );
             }

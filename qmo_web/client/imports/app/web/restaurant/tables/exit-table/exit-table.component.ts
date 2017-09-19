@@ -12,9 +12,7 @@ import { Table } from '../../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
 import { Order } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
-import { Payment } from '../../../../../../../both/models/restaurant/payment.model';
 import { Payments } from '../../../../../../../both/collections/restaurant/payment.collection';
-import { WaiterCallDetail } from '../../../../../../../both/models/restaurant/waiter-call-detail.model';
 import { WaiterCallDetails } from '../../../../../../../both/collections/restaurant/waiter-call-detail.collection';
 import { Account } from '../../../../../../../both/models/restaurant/account.model';
 import { Accounts } from '../../../../../../../both/collections/restaurant/account.collection'; 
@@ -118,15 +116,28 @@ export class ExitTableComponent implements OnInit, OnDestroy {
     /**
      * Allow user exit restaurant table
      */
-    exitRestaurantTable( _pCurrentRestaurant:string, _pCurrentTable:string ):void{
-        let _lUserOrdersCount: number = Orders.collection.find( { creation_user: this._user, 
-                                        restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable } ).count();
+    exitRestaurantTable( _pUserDetailId:string, _pCurrentRestaurant:string, _pCurrentTable:string ):void{
+
+        let _lOrdersRegisteredStatus: number = Orders.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, 
+                                               tableId: _pCurrentTable, status: 'ORDER_STATUS.REGISTERED' } ).count();
+        let _lOrdersInProcessStatus: number = Orders.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, 
+                                              tableId: _pCurrentTable, status: 'ORDER_STATUS.IN_PROCESS' } ).count();
+        let _lOrdersPreparedStatus: number = Orders.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, 
+                                             tableId: _pCurrentTable, status: 'ORDER_STATUS.PREPARED' } ).count();
+        let _lOrdersDeliveredStatus: number = Orders.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, 
+                                              tableId: _pCurrentTable, status: 'ORDER_STATUS.DELIVERED', toPay: false } ).count();
+        let _lOrdersToConfirm: number = Orders.collection.find( { restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, 'translateInfo.firstOrderOwner': this._user, 
+                                        'translateInfo.markedToTranslate': true, status: 'ORDER_STATUS.PENDING_CONFIRM', toPay : false } ).count();
+        let _lOrdersWithPendingConfirmation: number = Orders.collection.find( { restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, 'translateInfo.lastOrderOwner': this._user, 
+                                        'translateInfo.markedToTranslate': true, status: 'ORDER_STATUS.PENDING_CONFIRM', toPay : false } ).count();
         let _lUserWaiterCallsCount: number = WaiterCallDetails.collection.find( { restaurant_id: _pCurrentRestaurant, table_id: _pCurrentTable, 
                                              type: 'CALL_OF_CUSTOMER', user_id: this._user, status: 'completed' } ).count();
         let _lUserPaymentsCount: number = Payments.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, 
-                                          tableId: _pCurrentTable, status: 'PAYMENT.NO_PAID' } ).count();
+                                          tableId: _pCurrentTable, status: 'PAYMENT.NO_PAID', received: false } ).count();
 
-        if( _lUserOrdersCount === 0 && _lUserWaiterCallsCount === 0 && _lUserPaymentsCount === 0 ){
+        if( _lOrdersRegisteredStatus === 0 && _lOrdersInProcessStatus === 0 && _lOrdersPreparedStatus === 0 
+            && _lOrdersDeliveredStatus === 0 && _lOrdersToConfirm === 0 && _lOrdersWithPendingConfirmation === 0 
+            && _lUserWaiterCallsCount === 0 && _lUserPaymentsCount === 0 ){
             this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
                 disableClose: true,
                 data: {
@@ -146,27 +157,16 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                     let _lTableAux: Table = Tables.findOne( { _id: _pCurrentTable } ); 
                     if( _lTableAux.amount_people === 0 && _lTableAux.status === 'BUSY' ){
                         Tables.update( { _id: _pCurrentTable }, { $set: { status: 'FREE' } } );
-                        Accounts.update( { restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable }, { $set: { status: 'CLOSED' } } )
+                        let _lAccountAux: Account = Accounts.findOne( { restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, status: 'OPEN' } );
+                        Accounts.update( { _id: _lAccountAux._id }, { $set: { status: 'CLOSED' } } );
                     }     
-                    UserDetails.update( { user_id: this._user }, { $set: { current_restaurant: '', current_table: '' } } );
+                    UserDetails.update( { _id: _pUserDetailId }, { $set: { current_restaurant: '', current_table: '' } } );
+                    this.goToOrders();
                     let _lMessage:string = 'Has salido del Restaurante. Hasta Pronto!'
                     this._snackBar.open( _lMessage, '',{ duration: 2500 } );              
                 }
             });
         } else {
-            let _lOrdersRegisteredStatus: number = Orders.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, 
-                                                   tableId: _pCurrentTable, status: 'ORDER_STATUS.REGISTERED' } ).count();
-            let _lOrdersInProcessStatus: number = Orders.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, 
-                                                  tableId: _pCurrentTable, status: 'ORDER_STATUS.IN_PROCESS' } ).count();
-            let _lOrdersPreparedStatus: number = Orders.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, 
-                                                 tableId: _pCurrentTable, status: 'ORDER_STATUS.PREPARED' } ).count();
-            let _lOrdersDeliveredStatus: number = Orders.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, 
-                                                  tableId: _pCurrentTable, status: 'ORDER_STATUS.DELIVERED' } ).count();
-            let _lOrdersToConfirm: number = Orders.collection.find( { restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, 'translateInfo.firstOrderOwner': this._user, 
-                                            'translateInfo.markedToTranslate': true, status: 'ORDER_STATUS.PENDING_CONFIRM', toPay : false } ).count();
-            let _lOrdersWithPendingConfirmation: number = Orders.collection.find( { restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, 'translateInfo.lastOrderOwner': this._user, 
-                                            'translateInfo.markedToTranslate': true, status: 'ORDER_STATUS.PENDING_CONFIRM', toPay : false } ).count();
-            
             if( _lOrdersRegisteredStatus > 0 && _lOrdersInProcessStatus === 0 && _lOrdersPreparedStatus === 0 
                 && _lOrdersDeliveredStatus === 0 && _lOrdersToConfirm === 0 && _lOrdersWithPendingConfirmation === 0 
                 && _lUserWaiterCallsCount === 0 && _lUserPaymentsCount === 0 ){
@@ -193,9 +193,11 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                             let _lTableAux: Table = Tables.findOne( { _id: _pCurrentTable } ); 
                             if( _lTableAux.amount_people === 0 && _lTableAux.status === 'BUSY' ){
                                 Tables.update( { _id: _pCurrentTable }, { $set: { status: 'FREE' } } );
-                                Accounts.update( { restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable }, { $set: { status: 'CLOSED' } } )
+                                let _lAccountAux: Account = Accounts.findOne( { restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, status: 'OPEN' } );
+                                Accounts.update( { _id: _lAccountAux._id }, { $set: { status: 'CLOSED' } } );
                             }
-                            UserDetails.update( { user_id: this._user }, { $set: { current_restaurant: '', current_table: '' } } );
+                            UserDetails.update( { _id: _pUserDetailId }, { $set: { current_restaurant: '', current_table: '' } } );
+                            this.goToOrders();
                             let _lMessage:string = 'Has salido del Restaurante. Hasta Pronto!'
                             this._snackBar.open( _lMessage, '',{ duration: 2500 } );
                         }

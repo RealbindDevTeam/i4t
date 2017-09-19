@@ -1,4 +1,32 @@
+.main-info{
+    text-align: center;
+
+    .customer-info{
+        font-family: Roboto,'Helvetica Neue',sans-serif;
+        display: inline-block;
+        font-weight: bold;
+    }
+    .exit-button{
+        margin-left: 1rem;
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
 .order{
+    .order-info{
+        .order-status{
+            width: 70%;
+            display: inline-block;
+            text-align: center
+        }
+
+        .cancel-order-button{
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+
     .order-cancel-error{
         color: red;
         font-weight: bold;

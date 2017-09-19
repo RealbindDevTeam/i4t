@@ -20,6 +20,8 @@ import { UserDetails } from '../../../../../../../both/collections/auth/user-det
 import { UserDetail } from '../../../../../../../both/models/auth/user-detail.model';
 import { Users } from '../../../../../../../both/collections/auth/user.collection';
 import { User } from '../../../../../../../both/models/auth/user.model';
+import { Accounts } from '../../../../../../../both/collections/restaurant/account.collection';
+import { Account } from '../../../../../../../both/models/restaurant/account.model';
 
 import template from './exit-table-confirm.component.html';
 import style from './exit-table-confirm.component.scss';
@@ -42,6 +44,7 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
     private _tablesSub          : Subscription;
     private _additionsSub       : Subscription;
     private _garnishFoodSub     : Subscription;
+    private _accountsSub        : Subscription;
 
     private _orders             : Observable<Order[]>;
     private _items              : Observable<Item[]>;
@@ -52,6 +55,7 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
     private _tableNumber        : string;
     private _loading            : boolean = false;
     private _showError          : boolean = false;
+    private _enableCustomerExit : boolean = false;
 
     /**
      * ExitTableConfirmComponent constructor
@@ -75,14 +79,16 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
         this.removeSubscriptions();
         this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByCurrentTable', this.call.restaurant_id, this.call.table_id ).subscribe( () => {
             this._ngZone.run( () => {
-                this._usersDetails = UserDetails.find( { } ).zone();
+                this._usersDetails = UserDetails.find( { current_restaurant : this.call.restaurant_id, current_table : this.call.table_id } ).zone();
             });
         });
         this._usersSub = MeteorObservable.subscribe('getUserByTableId', this.call.restaurant_id, this.call.table_id ).subscribe();
         this._ordersSub = MeteorObservable.subscribe( 'getOrdersByTableId', this.call.restaurant_id, this.call.table_id, 
-                                                     ['ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED'] ).subscribe( () => {
+                                                     ['ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED', 'ORDER_STATUS.CANCELED'] ).subscribe( () => {
             this._ngZone.run( () => {
                 this._orders = Orders.find( { } ).zone();
+                this.validateAllOrdersCanceled();
+                this._orders.subscribe( () => { this.validateAllOrdersCanceled(); } );
             });
         });
         this._itemsSub = MeteorObservable.subscribe( 'itemsByRestaurant', this.call.restaurant_id ).subscribe( () => {
@@ -106,6 +112,7 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
                 this._garnishFood = GarnishFoodCol.find( { } ).zone();
             });
         });
+        this._accountsSub = MeteorObservable.subscribe( 'getAccountsByTableRestaurant', this.call.restaurant_id, 'OPEN' ).subscribe();
     }
 
     /**
@@ -119,6 +126,7 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
         if( this._tablesSub ){ this._tablesSub.unsubscribe(); }
         if( this._additionsSub ){ this._additionsSub.unsubscribe(); }
         if( this._garnishFoodSub ){ this._garnishFoodSub.unsubscribe(); }
+        if( this._accountsSub ){ this._accountsSub.unsubscribe(); }
     }
 
     /**
@@ -142,10 +150,9 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
      * @param {Order} _pOrder 
      */
     cancelOrderToExitTable( _pOrder: Order ):void{
-        this._loading = true;
         setTimeout(() => {
             MeteorObservable.call( 'cancelOrderToExitTable', _pOrder ).subscribe( () => {
-                this._loading = false;
+
             }, ( error ) => {
                 if( error.error === '200' ){
                     this._showError = true;
@@ -161,6 +168,34 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
      */
     close():void{
         this._dialogRef.close();
+    }
+
+    /**
+     * Verify all orders have been canceled
+     */
+    validateAllOrdersCanceled():void{
+        let _lOrdersInProcessOrPrepared: number = Orders.collection.find( { status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED' ] } } ).count();
+        _lOrdersInProcessOrPrepared <= 0 ? this._enableCustomerExit = true : this._enableCustomerExit = false; 
+    }
+
+    /**
+     * Allow user to exit table
+     * @param {UserDetail} _pUserDetail 
+     */
+    AllowUserExitTable( _pUserDetail: UserDetail ){
+        this._loading = true;
+        setTimeout(() => {
+            let _lTable: Table = Tables.findOne( { _id: _pUserDetail.current_table } );
+            Tables.update( { _id: _pUserDetail.current_table }, { $set: { amount_people: _lTable.amount_people - 1 } } );
+            let _lTableAux: Table = Tables.findOne( { _id: _pUserDetail.current_table } ); 
+            if( _lTableAux.amount_people === 0 && _lTableAux.status === 'BUSY' ){
+                Tables.update( { _id: _pUserDetail.current_table }, { $set: { status: 'FREE' } } );
+                let _lAccountAux: Account = Accounts.findOne( { estaurantId: _pUserDetail.current_restaurant, tableId: _pUserDetail.current_table, status: 'OPEN' } );
+                Accounts.update( { _id: _lAccountAux._id }, { $set: { status: 'CLOSED' } } );
+            }
+            UserDetails.update( { _id: _pUserDetail._id }, { $set: { current_restaurant: '', current_table: '' } } );
+            this._loading = false; 
+        }, 1500);
     }
 
     /**

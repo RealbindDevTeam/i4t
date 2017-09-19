@@ -40,6 +40,9 @@ export class RoutingClass {
                 </button>
                 <button md-icon-button id="menu-toggler" mdTooltip="{{'TOPNAV.TABLES' | translate}}" (click)="goToRoute('/app/change-table')">
                     <md-icon>compare_arrows</md-icon>
+                </button>
+                <button md-icon-button id="menu-toggler" mdTooltip="{{'TOPNAV.RESTAURANT_EXIT' | translate}}" (click)="goToRoute('/app/exit-table')">
+                    <md-icon>exit_to_app</md-icon>
                 </button>`
 })
 export class CustomerMenuComponent extends RoutingClass {

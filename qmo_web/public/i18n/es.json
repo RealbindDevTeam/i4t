@@ -857,7 +857,8 @@
         "ORDER": "Ordenar",
         "TABLE_NO_ACTIVE": "El restaurante no tiene la mesa activa para el servicio de Iurest",
         "TABLE_NOT_EXISTS": "La mesa no existe. Por favor verifíque el código.",
-        "Iurest_NO_ACTIVE": "El restaurante no tiene el servicio de Iurest activo. No es posible ingresar."
+        "IUREST_NO_ACTIVE": "El restaurante no tiene el servicio de Iurest activo. No es posible ingresar.",
+        "RESTAURANT_NOT_EXISTS": "El restaurante no existe. No es posible ingresar."
     },
     "MONTHLY_PAYMENT": {
         "TITLE": "Pago del servicio mensual de Iurest",
@@ -1193,7 +1194,8 @@
         "WAITER": "Mesero",
         "CALLS": "Llamados",
         "MENU": "Menu",
-        "TABLES": "Mesas"
+        "TABLES": "Mesas",
+        "RESTAURANT_EXIT": "Salir del Restaurante"
     },
     "CHANGE_TABLE": {
         "THERE_IS_NOT_REST": "No te encuentras en un restaurante",
