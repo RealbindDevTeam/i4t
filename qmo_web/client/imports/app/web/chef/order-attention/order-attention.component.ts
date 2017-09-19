@@ -72,7 +72,7 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
         this.removeSubscriptions();
         this._ordersSub = MeteorObservable.subscribe( 'getOrdersByRestaurantWork', this._user, [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.CANCELED' ] ).subscribe( () => {
             this._ngZone.run( () => {
-                this._ordersInProcess = Orders.find( { } ).zone();
+                this._ordersInProcess = Orders.find( { status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.CANCELED' ] }, markedToCancel: { $in: [ undefined, true ] } } ).zone();
                 this.countOrdersInProcess();
                 this._ordersInProcess.subscribe( () => { this.countOrdersInProcess(); } );
             });

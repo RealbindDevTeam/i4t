@@ -7,6 +7,7 @@ import { WaiterCallDetails } from '../../collections/restaurant/waiter-call-deta
 import { Account } from '../../models/restaurant/account.model';
 import { Accounts } from '../../collections/restaurant/account.collection';
 import { UserDetails } from '../../collections/auth/user-detail.collection';
+import { WaiterCallDetail } from '../../models/restaurant/waiter-call-detail.model';
 
 if (Meteor.isServer) {
     Meteor.methods({
@@ -120,19 +121,18 @@ if (Meteor.isServer) {
             }
         },
 
-        cancelOrderToExitTable: function( _pOrder: Order ){
+        cancelOrderToExitTable: function( _pOrder: Order, _pCall : WaiterCallDetail, _pWaiterId: string ){
             if( _pOrder.status === 'ORDER_STATUS.PREPARED' && _pOrder.markedToCancel === true ){
                 Orders.update( { _id: _pOrder._id }, { $set: { status: 'ORDER_STATUS.CANCELED', modification_date: new Date(), markedToCancel: false } } );
-                let _lwaiterCallCount: number = WaiterCallDetails.collection.find( { restaurant_id: _pOrder.restaurantId, table_id: _pOrder.tableId,
-                                                                                     order_id: _pOrder._id, type: 'SEND_ORDER', status: 'completed' } ).count();
-                if( _lwaiterCallCount > 0 ){
-                    WaiterCallDetails.update( { restaurant_id: _pOrder.restaurantId, table_id: _pOrder.tableId, type: 'SEND_ORDER', status: 'completed', order_id: _pOrder._id },
-                                              { $set : { status : 'closed', modification_date : new Date() } } );
-                }
             } else if( _pOrder.status === 'ORDER_STATUS.IN_PROCESS' && _pOrder.markedToCancel === true ){
                 Orders.update( { _id: _pOrder._id }, { $set: { status: 'ORDER_STATUS.CANCELED', modification_date: new Date() } } );
             } else {
                 throw new Meteor.Error( '200' );
+            }
+            let _lOrdersToCancel: number = Orders.collection.find( { restaurantId: _pCall.restaurant_id, tableId: _pCall.table_id,
+                                           markedToCancel: true, status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED' ] } } ).count();
+            if( _lOrdersToCancel === 0 ){
+                Meteor.call( 'closeCall', _pCall, _pWaiterId );
             }
         }
     });

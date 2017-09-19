@@ -44,6 +44,7 @@ export class ExitTableComponent implements OnInit, OnDestroy {
     private titleMsg                : string;
     private btnAcceptLbl            : string;
     private _showWaiterCard         : boolean = false;
+    private _loading                : boolean = false;
 
     /**
      * ExitTableComponent Constructor
@@ -141,9 +142,9 @@ export class ExitTableComponent implements OnInit, OnDestroy {
             this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
                 disableClose: true,
                 data: {
-                    title: 'Salida del Restaurante',
+                    title: this.itemNameTraduction( 'EXIT_TABLE.RESTAURANT_EXIT' ),
                     subtitle: '',
-                    content: 'Estas seguro de salir del restaurante?',
+                    content: this.itemNameTraduction( 'EXIT_TABLE.RESTAURANT_EXIT_CONFIRM' ),
                     buttonCancel: this.itemNameTraduction( 'NO' ),
                     buttonAccept: this.itemNameTraduction( 'YES' ),
                     showCancel: true
@@ -162,7 +163,7 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                     }     
                     UserDetails.update( { _id: _pUserDetailId }, { $set: { current_restaurant: '', current_table: '' } } );
                     this.goToOrders();
-                    let _lMessage:string = 'Has salido del Restaurante. Hasta Pronto!'
+                    let _lMessage:string = this.itemNameTraduction( 'EXIT_TABLE.LEAVE_RESTAURANT_MSG' );
                     this._snackBar.open( _lMessage, '',{ duration: 2500 } );              
                 }
             });
@@ -173,9 +174,9 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                     this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
                         disableClose: true,
                         data: {
-                            title: 'Tienes Ordenes Registradas!',
+                            title: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_REGISTERED' ),
                             subtitle: '',
-                            content: 'Si te vas del restaurante las ordenes se cancelaran. Estas seguro de salir?',
+                            content: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_CANCEL_CONFIRM' ),
                             buttonCancel: this.itemNameTraduction( 'NO' ),
                             buttonAccept: this.itemNameTraduction( 'YES' ),
                             showCancel: true
@@ -198,7 +199,7 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                             }
                             UserDetails.update( { _id: _pUserDetailId }, { $set: { current_restaurant: '', current_table: '' } } );
                             this.goToOrders();
-                            let _lMessage:string = 'Has salido del Restaurante. Hasta Pronto!'
+                            let _lMessage:string = this.itemNameTraduction( 'EXIT_TABLE.LEAVE_RESTAURANT_MSG' );
                             this._snackBar.open( _lMessage, '',{ duration: 2500 } );
                         }
                     });
@@ -209,11 +210,11 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                         this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
                             disableClose: true,
                             data: {
-                                title: 'Ordenes Pendientes por confirmar!',
+                                title: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_PENDING_CONFIRM' ),
                                 subtitle: '',
-                                content: 'Las ordenes deben ser atendidas para salir del restaurante',
+                                content: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_MUST_BE_ATTENDED' ),
                                 buttonCancel: '',
-                                buttonAccept: 'Aceptar',
+                                buttonAccept: this.itemNameTraduction( 'SYSTEM_MSG.ACCEPT' ),
                                 showCancel: false
                             }
                         });
@@ -224,11 +225,11 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                             this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
                                 disableClose: true,
                                 data: {
-                                    title: 'Llamados al Mesero Pendientes',
+                                    title: this.itemNameTraduction( 'EXIT_TABLE.PENDING_WAITER_CALL' ),
                                     subtitle: '',
-                                    content: 'Los llamados al mesero deben ser atendidos o los puedes cancelar para salir',
+                                    content: this.itemNameTraduction( 'EXIT_TABLE.WAITER_CALLS_MSG' ),
                                     buttonCancel: '',
-                                    buttonAccept: 'Aceptar',
+                                    buttonAccept: this.itemNameTraduction( 'SYSTEM_MSG.ACCEPT' ),
                                     showCancel: false
                                 }
                             });
@@ -239,11 +240,11 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                                 this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
                                     disableClose: true,
                                     data: {
-                                        title: 'Tienes Pagos Pendientes',
+                                        title: this.itemNameTraduction( 'EXIT_TABLE.PENDING_PAYMENTS' ),
                                         subtitle: '',
-                                        content: 'Un mesero ya se acercara a tu mesa para recibir tus pagos y asi poder salir',
+                                        content: this.itemNameTraduction( 'EXIT_TABLE.PENDING_PAYMENTS_MSG' ),
                                         buttonCancel: '',
-                                        buttonAccept: 'Aceptar',
+                                        buttonAccept: this.itemNameTraduction( 'SYSTEM_MSG.ACCEPT' ),
                                         showCancel: false
                                     }
                                 });
@@ -254,11 +255,11 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                                     this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
                                         disableClose: true,
                                         data: {
-                                            title: 'Tienes Ordenes Entregadas',
+                                            title: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_DELIVERED' ),
                                             subtitle: '',
-                                            content: 'Paga las ordenes que se te han entregado y asi podras salir del restaurante',
+                                            content: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_DELIVERED_MSG' ),
                                             buttonCancel: '',
-                                            buttonAccept: 'Aceptar',
+                                            buttonAccept: this.itemNameTraduction( 'SYSTEM_MSG.ACCEPT' ),
                                             showCancel: false
                                         }
                                     });
@@ -266,9 +267,9 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                                 this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
                                     disableClose: true,
                                     data: {
-                                        title: 'Operacion Invalida',
+                                        title: this.itemNameTraduction( 'EXIT_TABLE.INVALID_OPERATION' ),
                                         subtitle: '',
-                                        content: 'El estado de tus ordenes no te permite salir del restaurante. Deseas Llamar un mesero para gestionar tus ordenes?',
+                                        content: this.itemNameTraduction( 'EXIT_TABLE.CALL_WAITER_MSG' ),
                                         buttonCancel: this.itemNameTraduction( 'NO' ),
                                         buttonAccept: this.itemNameTraduction( 'YES' ),
                                         showCancel: true
@@ -293,8 +294,10 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                                                             type : data.type, status: { $in : [ 'waiting', 'completed'] } } ).count();
                                         if( isWaiterCalls === 0 ){            
                                             setTimeout(() => {
+                                                this._loading = true;
                                                 MeteorObservable.call( 'findQueueByRestaurant', data ).subscribe( () => {
-                                                    let _lMessage:string = 'Mesero llamado correctamente'
+                                                    this._loading = false;
+                                                    let _lMessage:string = this.itemNameTraduction( 'EXIT_TABLE.WAITER_HAS_BEEN_CALLED')
                                                     this._snackBar.open( _lMessage, '',{
                                                         duration: 2500
                                                     });
@@ -304,11 +307,11 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                                             this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
                                                 disableClose: true,
                                                 data: {
-                                                    title: 'Mesero En Camino',
+                                                    title: this.itemNameTraduction( 'EXIT_TABLE.WAITER_ON_THE_WAY' ),
                                                     subtitle: '',
-                                                    content: 'Un mesero ya recibio tu solicitud y va para tu mesa',
+                                                    content: this.itemNameTraduction( 'EXIT_TABLE.WAITER_ON_THE_WAY_CALL' ),
                                                     buttonCancel: '',
-                                                    buttonAccept: 'Aceptar',
+                                                    buttonAccept: this.itemNameTraduction( 'SYSTEM_MSG.ACCEPT' ),
                                                     showCancel: false
                                                 }
                                             });
@@ -340,6 +343,31 @@ export class ExitTableComponent implements OnInit, OnDestroy {
      */
     goToOrders(){
         this._router.navigate(['/app/orders']);
+    }
+
+    /**
+     * Function to cancel waiter call
+     * @param {string} _pCurrentRestaurant 
+     * @param {string} _pCurrentTable 
+     */
+    cancelWaiterCall( _pCurrentRestaurant:string, _pCurrentTable: string ):void{
+        this._loading = true;
+        Orders.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, 
+                    status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED' ] } } ).fetch().forEach( ( order ) => {
+                        Orders.update( { _id: order._id }, { $set: { markedToCancel: null, modification_date: new Date() } } );
+        });
+        setTimeout(() => {
+            let waiterCall = WaiterCallDetails.findOne( { user_id : this._user, type: 'USER_EXIT_TABLE', restaurant_id: _pCurrentRestaurant, table_id: _pCurrentTable, status : { $in : [ "waiting", "completed" ] } } );
+            if( waiterCall ){
+                MeteorObservable.call('cancelCallClient', waiterCall, Meteor.userId()).subscribe(() => {
+                    this._loading = false;
+                    let _lMessage:string = this.itemNameTraduction( 'EXIT_TABLE.CALLED_CANCELED' )
+                    this._snackBar.open( _lMessage, '',{
+                        duration: 2500
+                    });
+                });
+            }
+        }, 1500);
     }
 
     /**

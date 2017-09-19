@@ -55,7 +55,6 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
     private _tableNumber        : string;
     private _loading            : boolean = false;
     private _showError          : boolean = false;
-    private _enableCustomerExit : boolean = false;
 
     /**
      * ExitTableConfirmComponent constructor
@@ -87,8 +86,6 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
                                                      ['ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED', 'ORDER_STATUS.CANCELED'] ).subscribe( () => {
             this._ngZone.run( () => {
                 this._orders = Orders.find( { } ).zone();
-                this.validateAllOrdersCanceled();
-                this._orders.subscribe( () => { this.validateAllOrdersCanceled(); } );
             });
         });
         this._itemsSub = MeteorObservable.subscribe( 'itemsByRestaurant', this.call.restaurant_id ).subscribe( () => {
@@ -151,8 +148,12 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
      */
     cancelOrderToExitTable( _pOrder: Order ):void{
         setTimeout(() => {
-            MeteorObservable.call( 'cancelOrderToExitTable', _pOrder ).subscribe( () => {
-
+            MeteorObservable.call( 'cancelOrderToExitTable', _pOrder, this.call, this._user ).subscribe( () => {
+                let _lOrdersToCancel: number = Orders.collection.find( { restaurantId: this.call.restaurant_id, tableId: this.call.table_id, 
+                                               markedToCancel:true, status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED' ] } } ).count();
+                if( _lOrdersToCancel === 0 ){
+                    this.close();
+                }
             }, ( error ) => {
                 if( error.error === '200' ){
                     this._showError = true;
@@ -168,34 +169,6 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
      */
     close():void{
         this._dialogRef.close();
-    }
-
-    /**
-     * Verify all orders have been canceled
-     */
-    validateAllOrdersCanceled():void{
-        let _lOrdersInProcessOrPrepared: number = Orders.collection.find( { status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED' ] } } ).count();
-        _lOrdersInProcessOrPrepared <= 0 ? this._enableCustomerExit = true : this._enableCustomerExit = false; 
-    }
-
-    /**
-     * Allow user to exit table
-     * @param {UserDetail} _pUserDetail 
-     */
-    AllowUserExitTable( _pUserDetail: UserDetail ){
-        this._loading = true;
-        setTimeout(() => {
-            let _lTable: Table = Tables.findOne( { _id: _pUserDetail.current_table } );
-            Tables.update( { _id: _pUserDetail.current_table }, { $set: { amount_people: _lTable.amount_people - 1 } } );
-            let _lTableAux: Table = Tables.findOne( { _id: _pUserDetail.current_table } ); 
-            if( _lTableAux.amount_people === 0 && _lTableAux.status === 'BUSY' ){
-                Tables.update( { _id: _pUserDetail.current_table }, { $set: { status: 'FREE' } } );
-                let _lAccountAux: Account = Accounts.findOne( { estaurantId: _pUserDetail.current_restaurant, tableId: _pUserDetail.current_table, status: 'OPEN' } );
-                Accounts.update( { _id: _lAccountAux._id }, { $set: { status: 'CLOSED' } } );
-            }
-            UserDetails.update( { _id: _pUserDetail._id }, { $set: { current_restaurant: '', current_table: '' } } );
-            this._loading = false; 
-        }, 1500);
     }
 
     /**

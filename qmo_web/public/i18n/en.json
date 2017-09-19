@@ -830,7 +830,7 @@
         "ADDITIONS": "Additions",
         "ADDITION": "Addition(s)",
         "NO_ORDERS": "No orders yet to be prepared",
-        "DELETE_ORDER": "Delete Order",
+        "DELETE_ORDER": "DELETE ORDER",
         "ORDER_CANCELED_MSG": "A waiter has canceled the customer order"
     },
     "FINANCIAL_INFO": {
@@ -1214,5 +1214,48 @@
         "TABLE_DESTINY_STATUS_ERROR": "An error occurred while validating the status of the new table. Please try again.",
         "GENERAL_ERROR": "An error occurred while changing the table. Please try again.",
         "SAME_TABLE_ERROR": "It is not possible to perform the operation with the actual table code. Please check and try again."
+    },
+    "EXIT_TABLE": {
+        "RESTAURANT_EXIT": "Restaurant Exit",
+        "RESTAURANT_EXIT_CONFIRM": "Are you sure you want to leave the restaurant?",
+        "LEAVE_RESTAURANT_MSG": "You left the restaurant. See you soon!",
+        "ORDERS_REGISTERED": "You have Registered Orders!",
+        "ORDERS_CANCEL_CONFIRM": "If you leave the restaurant the orders are canceled. Are you sure to leave?",
+        "ORDERS_PENDING_CONFIRM": "Orders to be Confirmed!",
+        "ORDERS_MUST_BE_ATTENDED": "Orders must be served to leave the restaurant",
+        "PENDING_WAITER_CALL": "Call to the Waiter Waiter",
+        "WAITER_CALLS_MSG": "The calls to the waiter must be taken care of or you can cancel them to leave",
+        "PENDING_PAYMENTS": "Have pending payments",
+        "PENDING_PAYMENTS_MSG": "A waiter will come to your table to receive your payments and be able to go out",
+        "ORDERS_DELIVERED": "You have delivered orders",
+        "ORDERS_DELIVERED_MSG": "Pay the orders that have been given to you so that you can leave the restaurant",
+        "INVALID_OPERATION": "Invalid Operation",
+        "CALL_WAITER_MSG": "The status of your orders does not allow you to leave the restaurant. Do you want to call a server to manage your orders?",
+        "WAITER_HAS_BEEN_CALLED": "The waiter has been called",
+        "WAITER_ON_THE_WAY": "Waiter On The Way",
+        "WAITER_ON_THE_WAY_CALL": "A waiter already received the request and goes to your table",
+        "CALLED_CANCELED": "Called Canceled",
+        "CANCEL_ORDERS_MSG": "Cancel your orders Delivered or In Process",
+        "CANCEL_CALL": "Cancel Call",
+        "OPTION_LEAVE_RESTAURANT": "This option allows you to leave the restaurant where you are",
+        "EXIT_MSG": "Exit",
+        "THERE_IS_NOT_REST": "You are not in a restaurant",
+        "THERE_IS_NOT_REST_MSG": "Go to the order option and enter the code",
+        "GO_TO_ORDERS": "Go to Orders"
+    },
+    "EXIT_TABLE_CONFIRM": {
+        "CUSTOMER": "Customer",
+        "TABLE": "Table",
+        "CANCELING_ORDER_ERROR": "An error occurred canceling the order ",
+        "VALIDATE_ORDER_MSG": " Please validate that the order is in ready state or in process.",
+        "ORDER": "Order",
+        "STATUS": "Status",
+        "CANCEL_ORDER": "Cancel Order",
+        "OBSERVATIONS": "Observations",
+        "NO_GARNISH_FOOD": "No Garnish Food",
+        "GARNISH_FOOD": "Garnish Food",
+        "NO_ADDITIONS": "No Additions",
+        "ADDITIONS": "Additions",
+        "ADDITION": "Addition(s)"
     }
 }
