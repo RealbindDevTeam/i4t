@@ -46,6 +46,9 @@ export class TopnavComponent implements OnInit, OnDestroy {
   private _user: User;//Meteor.User;
   private _userName: string;
 
+  private showMenuName: boolean = true;
+  private menuName: string;
+
   /**
    * TopnavComponent Constructor
    * @param {NavigationService} _navigation 
@@ -156,22 +159,30 @@ export class TopnavComponent implements OnInit, OnDestroy {
       switch (role) {
         case '100': {
           this._showToggleSidenav = true;
+          this.showMenuName = false;
           break;
         }
         case '200': {
           this._itemsTopMenu = 'waiter';
+          this.showMenuName = true;
+          this.menuName = this.itemNameTraduction('TOPNAV.CALLS');
           break;
         }
         case '400': {
           this._itemsTopMenu = 'customer';
+          this.showMenuName = true;
+          this.menuName = this.itemNameTraduction('TOPNAV.ORDERS');
           break;
         }
         case '500': {
           this._itemsTopMenu = 'chef';
+          this.showMenuName = true;
+          this.menuName = this.itemNameTraduction('TOPNAV.ORDERS');
           break;
         }
         case '600': {
           this._showToggleSidenav = true;
+          this.showMenuName = false;
         }
       }
     }, (error) => {
@@ -180,21 +191,28 @@ export class TopnavComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Change menu name 
+   */
+  getMenuName(event) {
+    this.menuName = this.itemNameTraduction(event);
+  }
+
+  /**
    * Return user image
    */
-  getUsetImage():string{
-    if(this._user && this._user.services.facebook){
-        return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
+  getUsetImage(): string {
+    if (this._user && this._user.services.facebook) {
+      return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
     } else {
-        let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() });
-        if( _lUserImage ){
-            return _lUserImage.url;
-        } 
-        else {
-            return '/images/user_default_image.png';
-        }
+      let _lUserImage: UserProfileImage = UserImages.findOne({ userId: Meteor.userId() });
+      if (_lUserImage) {
+        return _lUserImage.url;
+      }
+      else {
+        return '/images/user_default_image.png';
+      }
     }
-}
+  }
 
   /**
    * Remove all subscriptions
@@ -258,6 +276,18 @@ export class TopnavComponent implements OnInit, OnDestroy {
         this._title.setTitle(this._navigation.getAutoBrowserTitle(this._pageTitle));
       }
     });
+  }
+
+  /**
+ * Return traduction
+ * @param {string} itemName 
+ */
+  itemNameTraduction(itemName: string): string {
+    var wordTraduced: string;
+    this._translate.get(itemName).subscribe((res: string) => {
+      wordTraduced = res;
+    });
+    return wordTraduced;
   }
 
   /**
