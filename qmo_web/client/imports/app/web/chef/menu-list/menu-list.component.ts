@@ -473,7 +473,7 @@ export class MenuListComponent implements OnInit, OnDestroy {
      * Function to get item avalaibility 
      */
     getItemAvailability(itemId: string): boolean {
-        let _itemRestaurant: Item = Items.collection.findOne({ _id: itemId }, { fields: { _id: 0, restaurants: 1 } });
+        let _itemRestaurant: Item = Items.collection.findOne({ _id: itemId }, { fields: { _id: 1, restaurants: 1 } });
         let aux = _itemRestaurant.restaurants.find(element => element.restaurantId === this.restaurantId);
         return aux.isAvailable;
     }
