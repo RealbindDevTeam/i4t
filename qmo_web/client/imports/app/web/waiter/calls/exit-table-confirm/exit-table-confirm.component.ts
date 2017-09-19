@@ -149,6 +149,7 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
      * @param {Order} _pOrder 
      */
     cancelOrderToExitTable( _pOrder: Order ):void{
+        this._loading = true;
         setTimeout(() => {
             MeteorObservable.call( 'cancelOrderToExitTable', _pOrder, this.call, this._user ).subscribe( () => {
                 let _lMessage:string = this.itemNameTraduction( 'EXIT_TABLE_CONFIRM.ORDER_CANCELED' )
@@ -157,12 +158,14 @@ export class ExitTableConfirmComponent implements OnInit, OnDestroy {
                 });
                 let _lOrdersToCancel: number = Orders.collection.find( { restaurantId: this.call.restaurant_id, tableId: this.call.table_id, 
                                                markedToCancel: { $in: [ true, false ] }, status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED' ] } } ).count();
+                this._loading = false;
                 if( _lOrdersToCancel === 0 ){
                     MeteorObservable.call( 'closeCall', this.call, this._user ).subscribe( () => {
                         this.close();
                     });
                 }
-            }, ( error ) => {            
+            }, ( error ) => {
+                this._loading = false;            
                 if( error.error === '200' ){
                     this._showError = true;
                 } else {

@@ -352,7 +352,7 @@ export class ExitTableComponent implements OnInit, OnDestroy {
      */
     cancelWaiterCall( _pCurrentRestaurant:string, _pCurrentTable: string ):void{
         this._loading = true;
-        Orders.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, 
+        Orders.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, markedToCancel: true,
                     status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED' ] } } ).fetch().forEach( ( order ) => {
                         Orders.update( { _id: order._id }, { $set: { markedToCancel: null, modification_date: new Date() } } );
         });
