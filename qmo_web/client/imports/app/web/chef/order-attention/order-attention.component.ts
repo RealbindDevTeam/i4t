@@ -70,9 +70,9 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
      */
     ngOnInit(){
         this.removeSubscriptions();
-        this._ordersSub = MeteorObservable.subscribe( 'getOrdersByRestaurantWork', this._user, [ 'ORDER_STATUS.IN_PROCESS' ] ).subscribe( () => {
+        this._ordersSub = MeteorObservable.subscribe( 'getOrdersByRestaurantWork', this._user, [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.CANCELED' ] ).subscribe( () => {
             this._ngZone.run( () => {
-                this._ordersInProcess = Orders.find( { } ).zone();
+                this._ordersInProcess = Orders.find( { status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.CANCELED' ] }, markedToCancel: { $in: [ undefined, true ] } } ).zone();
                 this.countOrdersInProcess();
                 this._ordersInProcess.subscribe( () => { this.countOrdersInProcess(); } );
             });
@@ -103,7 +103,7 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
      * Validate if restaurants exist
      */
     countOrdersInProcess():void{
-        Orders.collection.find( { } ).count() > 0 ? this._thereAreOrders = true : this._thereAreOrders = false;
+        Orders.collection.find( { status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.CANCELED' ] }, markedToCancel: { $in: [ undefined, true ] } } ).count() > 0 ? this._thereAreOrders = true : this._thereAreOrders = false;
     }
 
     /**
@@ -146,7 +146,7 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
           tables : table_id,
           user : this._user,
           waiter_id : "",
-          status : "PREPARED",
+          status : "waiting",
           type : "SEND_ORDER",
           order_id : _pOrder._id
         }
@@ -163,6 +163,46 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
                          );
             this._loading = false;
           });
+        }, 1500);
+    }
+
+    /**
+     * Function to validate if user order was processed to canceled
+     * @param {Order}_pOrder
+     */
+    orderMarkedToCancel( _pOrder:Order ):boolean{
+        if( _pOrder.markedToCancel !== undefined && _pOrder.markedToCancel !== null ){
+            if( _pOrder.markedToCancel === true && _pOrder.status === 'ORDER_STATUS.CANCELED' ){
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Function to delete order from the chef screen
+     * @param {Order} _pOrder 
+     */
+    deleteOrder( _pOrder:Order ):void{
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+
+        this._loading = true;
+        setTimeout(() => {
+            Orders.update( { _id: _pOrder._id }, 
+                { $set: { markedToCancel: false,
+                          modification_user: this._user, 
+                          modification_date: new Date() 
+                        } 
+                }
+              );
+            this._loading = false;
         }, 1500);
     }
 

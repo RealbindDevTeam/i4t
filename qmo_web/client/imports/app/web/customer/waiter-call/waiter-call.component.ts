@@ -66,7 +66,7 @@ export class WaiterCallComponent implements OnInit, OnDestroy {
           this._userRestaurant = true;
         }
         if ( this._userRestaurant ) {
-          this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).count();
+          this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), type: 'CALL_OF_CUSTOMER', restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).count();
           if ( this._countDetails > 0 ){
             this._validatedWaterCall = true;
           } else {
@@ -120,7 +120,7 @@ export class WaiterCallComponent implements OnInit, OnDestroy {
   cancelWaiterCall(){
     this._loading = true;
     setTimeout(() => {
-      let waiterCall = WaiterCallDetails.collection.find({ user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).fetch()[0];
+      let waiterCall = WaiterCallDetails.collection.find({ user_id : Meteor.userId(), type: 'CALL_OF_CUSTOMER', restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).fetch()[0];
       MeteorObservable.call('cancelCallClient', waiterCall, Meteor.userId()).subscribe(() => {
         this._loading = false;
       });
