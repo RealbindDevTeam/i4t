@@ -14,17 +14,18 @@
       <a *ngIf="breadcrumb.link !== null" [routerLink]="breadcrumb.link" class="breadcrumb-link">{{breadcrumb.title}}</a>
       <a *ngIf="breadcrumb.link === null" class="breadcrumb-link">{{breadcrumb.title}}</a>
     </span>
-    <span class="breadcrumb">{{_pageTitle}}</span>
+  <span class="breadcrumb" *ngIf="!showMenuName">{{_pageTitle}}</span>
+  <span class="breadcrumb" *ngIf="showMenuName">{{menuName}}</span>
   </span>
   <span *ngIf="_navigation.mediumScreenAndDown && (_breadcrumbs.length === 0 || _autoBreadcrumbs) && !_searchToggled">
     {{_pageTitle}}
   </span>
-  
+
   <span class="app-flex-filler"></span>
-  
-  <c-customer-menu *ngIf="!_showToggleSidenav && _itemsTopMenu === 'customer'"></c-customer-menu>
-  <c-chef-menu     *ngIf="!_showToggleSidenav && _itemsTopMenu === 'chef'"></c-chef-menu>
-  <c-waiter-menu   *ngIf="!_showToggleSidenav && _itemsTopMenu === 'waiter'"></c-waiter-menu>
+
+  <c-customer-menu *ngIf="!_showToggleSidenav && _itemsTopMenu === 'customer'" (menuname)="getMenuName($event)"></c-customer-menu>
+  <c-chef-menu *ngIf="!_showToggleSidenav && _itemsTopMenu === 'chef'" (menuname)="getMenuName($event)"></c-chef-menu>
+  <c-waiter-menu *ngIf="!_showToggleSidenav && _itemsTopMenu === 'waiter'" (menuname)="getMenuName($event)"></c-waiter-menu>
 
   <div class="buttom-profile">
     <button md-icon-button [md-menu-trigger-for]="menu" id="user-dropdown-toggler" style="padding: 0;">
@@ -54,7 +55,7 @@
         <a *ngIf="breadcrumb.link !== null" [routerLink]="breadcrumb.link" class="breadcrumb-link">{{breadcrumb.title}}</a>
         <a *ngIf="breadcrumb.link === null" class="breadcrumb-link">{{breadcrumb.title}}</a>
       </span>
-      <span class="breadcrumb">{{_pageTitle}}</span>
+    <span class="breadcrumb">{{_pageTitle}}</span>
     </span>
   </md-toolbar-row>
 </md-toolbar>
