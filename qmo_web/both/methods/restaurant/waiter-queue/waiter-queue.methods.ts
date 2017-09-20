@@ -208,6 +208,7 @@ if (Meteor.isServer) {
 
       let table = Tables.findOne({_id : _tableId});
       let waiterEnableds = UserDetails.collection.find({ restaurant_work : _restaurant, 
+                                                         is_active : true,
                                                          enabled : true, 
                                                          role_id : "200", 
                                                          jobs : {$lt : _maxJobs},
