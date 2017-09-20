@@ -197,6 +197,10 @@ export class TopnavComponent implements OnInit, OnDestroy {
     this.menuName = this.itemNameTraduction(event);
   }
 
+  setMenuName(name: string) {
+    this.menuName = this.itemNameTraduction(name);
+  }
+
   /**
    * Return user image
    */

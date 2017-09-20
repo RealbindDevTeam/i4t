@@ -13,7 +13,7 @@ import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collectio
 
 import { User } from 'qmo_web/both/models/auth/user.model';
 import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
-import { ChangeTablePage } from './change-table/change-table';
+import { ChangeTablePage } from './table-change/table-change';
 
 @Component({
   selector: 'page-options',
