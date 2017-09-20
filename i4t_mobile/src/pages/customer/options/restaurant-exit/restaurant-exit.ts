@@ -11,5 +11,22 @@ import { Subscription } from 'rxjs';
 
 export class RestaurantExitPage implements OnInit, OnDestroy {
 
+    ngOnInit() {
 
+    }
+
+    ionViewWillEnter() {
+
+    }
+
+
+    ngOnDestroy() {
+        
+    }
+
+    ionViewWillLeave() {
+        
+    }
 }
+
+
