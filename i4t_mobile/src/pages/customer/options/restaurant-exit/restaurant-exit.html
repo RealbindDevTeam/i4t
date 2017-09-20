@@ -1,14 +1,49 @@
 <ion-header>
     <ion-navbar>
-        <ion-title>{{'MOBILE.CHANGE_TABLE.TITLE' | translate}}</ion-title>
+        <ion-title>{{'MOBILE.RESTAURANT_EXIT.TITLE' | translate}}</ion-title>
     </ion-navbar>
 </ion-header>
 
-<ion-content padding align="center">
+<ion-content align="center">
+    <div *ngIf="_res_code === '' && _table_code === ''" style="padding: 0 16px;">
+        <div class="img">
+            <img src="assets/img/platos-orden.png">
+        </div>
+        <div class="content" style="text-align: center">
+            <h1>{{'MOBILE.RESTAURANT_EXIT.NO_RESTAURANT' | translate}}</h1>
+        </div>
+    </div>
 
-    <p>parrafo</p>
+    <div *ngIf="_res_code !== '' && _table_code !== ''">
+        <div *ngIf="_restaurant">
+            <ion-card>
+                <ion-card-content>
+                    <ion-item style="padding-left: 0">
+                        <ion-thumbnail item-left>
+                            <img src="{{getRestaurantThumb(_restaurant._id)}}">
+                        </ion-thumbnail>
+                        <h1 style="white-space:normal; font-size: 1.8rem">{{_restaurant.name}} </h1>
+                        <p *ngIf="_table">
+                            {{'MOBILE.ORDERS.TABLE' | translate}} {{_table._number}}
+                        </p>
+                    </ion-item>
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card>
+                <ion-card-content>
+                    <ion-item style="padding-left: 0">
+                        <ion-thumbnail item-left>
+                            <img src="assets/img/sections.png">
+                        </ion-thumbnail>
+                        <h1 style="white-space:normal; font-size: 1.8rem">{{'MOBILE.RESTAURANT_EXIT.OPTION_LEAVE_RESTAURANT' | translate}}</h1>
+                    </ion-item>
+                </ion-card-content>
+            </ion-card>
+        </div>
+    </div>
 </ion-content>
 
 <ion-footer padding>
-  
+    <button ion-button block outline (click)="exitRestaurant()">{{'MOBILE.RESTAURANT_EXIT.EXIT_MSG' | translate}}</button>
 </ion-footer>

@@ -30,13 +30,13 @@
         "UPDATE": "Actualizar",
         "MODIFY": "Modificar",
         "CHOOSE_FILE": "Seleccionar archivo",
-        "CLOSE" : "Cerrar",
-        "VIEW" : "Ver",
-        "OK" : "Ok",
+        "CLOSE": "Cerrar",
+        "VIEW": "Ver",
+        "OK": "Ok",
         "SYSTEM_MSG": "Mensaje del sistema",
-        "LANGUAGE" : {
-            "es" : "Español",
-            "en" : "Ingles"
+        "LANGUAGE": {
+            "es": "Español",
+            "en": "Ingles"
         },
         "INITIAL": {
             "SIGNUP": "Registrarse",
@@ -345,6 +345,12 @@
             "TABLE_DESTINY_STATUS_ERROR": "Se ha producido un error validando el estado de la nueva mesa. Por favor intenta nuevamente.",
             "GENERAL_ERROR": "Se ha producido un error cambiando la mesa. Por favor intenta nuevamente.",
             "SAME_TABLE_ERROR": "No es posible realizar la operación con el código de mesa actual. Por favor revisa e intenta nuevamente."
+        },
+        "RESTAURANT_EXIT": {
+            "TITLE": "Salir del restaurante",
+            "NO_RESTAURANT": "No estás en un restaurante",
+            "OPTION_LEAVE_RESTAURANT": "Esta opción te permite salir del restaurante en el que te encuentras",
+            "EXIT_MSG": "Salir"
         },
         "WAITER_OPTIONS": {
             "CALLS": "Inicio",

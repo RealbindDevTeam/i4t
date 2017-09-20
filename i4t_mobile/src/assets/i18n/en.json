@@ -30,13 +30,13 @@
         "UPDATE": "Update",
         "MODIFY": "Modify",
         "CHOOSE_FILE": "Choose a file",
-        "CLOSE" : "Close",
-        "VIEW" : "View",
-        "OK" : "Ok",
+        "CLOSE": "Close",
+        "VIEW": "View",
+        "OK": "Ok",
         "SYSTEM_MSG": "System message",
-        "LANGUAGE" : {
-            "es" : "Spanish",
-            "en" : "English"
+        "LANGUAGE": {
+            "es": "Spanish",
+            "en": "English"
         },
         "INITIAL": {
             "SIGNUP": "Sign Up",
@@ -345,6 +345,12 @@
             "TABLE_DESTINY_STATUS_ERROR": "An error occurred while validating the status of the new table. Please try again.",
             "GENERAL_ERROR": "An error occurred while changing the table. Please try again.",
             "SAME_TABLE_ERROR": "It is not possible to perform the operation with the actual table code. Please check and try again."
+        },
+        "RESTAURANT_EXIT": {
+            "TITLE": "Restaurant exit",
+            "NO_RESTAURANT": "You are not in a restaurant yet",
+            "OPTION_LEAVE_RESTAURANT": "This option allows you to leave the restaurant where you are",
+            "EXIT_MSG": "Exit"
         },
         "WAITER_OPTIONS": {
             "CALLS": "Home",

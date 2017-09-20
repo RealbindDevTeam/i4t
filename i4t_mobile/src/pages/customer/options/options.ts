@@ -14,6 +14,7 @@ import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collectio
 import { User } from 'qmo_web/both/models/auth/user.model';
 import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 import { ChangeTablePage } from './table-change/table-change';
+import { RestaurantExitPage } from './restaurant-exit/restaurant-exit';
 
 @Component({
   selector: 'page-options',
@@ -117,6 +118,14 @@ export class OptionsPage implements OnInit, OnDestroy {
     //this._navCtrl = this._app.getRootNav();
     let userDetail = UserDetails.findOne({ user_id: Meteor.userId() });
     this._navCtrl.push(ChangeTablePage, { res_id: userDetail.current_restaurant, table_id: userDetail.current_table });
+  }
+
+  /**
+  * This method go to restaurant exit
+  */
+  goToRestaurantExit() {
+    let userDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+    this._navCtrl.push(RestaurantExitPage, { res_id: userDetail.current_restaurant, table_id: userDetail.current_table });
   }
 
   /**
