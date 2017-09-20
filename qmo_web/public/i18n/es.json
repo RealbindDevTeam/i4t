@@ -849,7 +849,9 @@
         "ADDITION": "Adición(es)",
         "NO_ORDERS": "Aún no hay ordenes por preparar",
         "DELETE_ORDER": "ELIMINAR ORDEN",
-        "ORDER_CANCELED_MSG": "Un mesero ha cancelado la orden del cliente"
+        "ORDER_CANCELED_MSG": "Un mesero ha cancelado la orden del cliente",
+        "ORDER_PREPARED_MSG": "Orden Preparada",
+        "ORDER_DELETED": "Orden Eliminada"
     },
     "FINANCIAL_INFO": {
         "COLOMBIA": {

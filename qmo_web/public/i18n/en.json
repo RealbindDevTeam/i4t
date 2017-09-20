@@ -849,7 +849,9 @@
         "ADDITION": "Addition(s)",
         "NO_ORDERS": "No orders yet to be prepared",
         "DELETE_ORDER": "DELETE ORDER",
-        "ORDER_CANCELED_MSG": "A waiter has canceled the customer order"
+        "ORDER_CANCELED_MSG": "A waiter has canceled the customer order",
+        "ORDER_PREPARED_MSG": "Order Prepared",
+        "ORDER_DELETED": "Order Deleted"
     },
     "FINANCIAL_INFO": {
         "COLOMBIA": {

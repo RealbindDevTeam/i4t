@@ -85,7 +85,7 @@ $sidenav-width: 225px;
 
 .order-form-1 {
     position: absolute;
-    top: 195px;
+    //top: 195px;
     left: 0;
     width: 100%;
     
@@ -125,7 +125,7 @@ $sidenav-width: 225px;
                         display: -ms-flexbox;
                         display: -webkit-flex;
                         display: flex;
-                        height: calc( 100vh - 259px);
+                        height: calc( 100vh - 122px);
                         width: 100%;
                         -webkit-flex-direction: column;
                         flex-direction: column;

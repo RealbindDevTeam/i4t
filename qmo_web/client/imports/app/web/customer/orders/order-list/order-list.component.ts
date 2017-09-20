@@ -16,6 +16,9 @@ import { Addition } from '../../../../../../../both/models/administration/additi
 import { Additions } from '../../../../../../../both/collections/administration/addition.collection';
 import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
+import { Restaurant, RestaurantImageThumb } from '../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants, RestaurantImageThumbs } from '../../../../../../../both/collections/restaurant/restaurant.collection';
+import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
 
 import template from './order-list.component.html';
 import style from './order-list.component.scss';
@@ -40,6 +43,9 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     private _itemImagesSub              : Subscription;
     private _itemImageThumbsSub         : Subscription;
     private _currenciesSub              : Subscription;
+    private _restaurantSub              : Subscription;
+    private _restaurantThumbSub         : Subscription;
+    private _tablesSub                  : Subscription;
     private _mdDialogRef                : MdDialogRef<any>;
 
     private _orders                     : Observable<Order[]>;
@@ -49,6 +55,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     private _garnishFoodCol             : Observable<GarnishFood[]>;
     private _additions                  : Observable<Addition[]>;
     private _additionDetails            : Observable<Addition[]>;
+    private _restaurants                : Observable<Restaurant[]>;
 
     private _showOrderItemDetail        : boolean = false;
     private _currentOrder               : Order;
@@ -84,6 +91,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     private _orderOthersIndex           : number = -1;
     private _thereAreUserOrders         : boolean = true;
     private _thereAreNotUserOrders      : boolean = true;
+    private _tableNumber                : number;
 
     /**
      * OrdersListComponent Constructor
@@ -149,6 +157,17 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                 this._currencyCode = Currencies.findOne({ _id: this.restaurantCurrency }).code + ' ';
             });
         });
+        this._restaurantSub = MeteorObservable.subscribe( 'getRestaurantById', this.restaurantId ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._restaurants = Restaurants.find( { _id: this.restaurantId } ).zone();
+            });
+        });
+        this._restaurantThumbSub = MeteorObservable.subscribe( 'restaurantImageThumbsByRestaurantId', this.restaurantId ).subscribe();
+        this._tablesSub = MeteorObservable.subscribe( 'getTableByQRCode', this.tableQRCode ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._tableNumber = Tables.collection.findOne( { QR_code: this.tableQRCode } )._number;
+            });
+        });
     }
 
     /**
@@ -176,6 +195,9 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         if( this._itemImagesSub ){ this._itemImagesSub.unsubscribe(); }
         if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
         if( this._itemImageThumbsSub ){ this._itemImageThumbsSub.unsubscribe(); }
+        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        if( this._restaurantThumbSub ){ this._restaurantThumbSub.unsubscribe(); }
+        if( this._tablesSub ){ this._tablesSub.unsubscribe(); }
     }
 
     /**
@@ -198,6 +220,19 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         }
         this._showDetails = false;
         this.viewItemDetail(true);
+    }
+
+    /**
+     * Get Restaurant Image
+     * @param {string} _pRestaurantId
+     */
+    getRestaurantImage(_pRestaurantId: string): string {
+        let _lRestaurantImageThumb: RestaurantImageThumb = RestaurantImageThumbs.findOne({ restaurantId: _pRestaurantId });
+        if ( _lRestaurantImageThumb ) {
+            return _lRestaurantImageThumb.url
+        } else {
+            return '/images/default-restaurant.png';
+        }
     }
 
     /**
