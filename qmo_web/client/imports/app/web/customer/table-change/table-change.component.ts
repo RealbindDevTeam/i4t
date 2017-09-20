@@ -6,22 +6,22 @@ import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { UserDetails } from '../../../../../../../both/collections/auth/user-detail.collection';
-import { UserDetail } from '../../../../../../../both/models/auth/user-detail.model';
-import { Table } from '../../../../../../../both/models/restaurant/table.model';
-import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
-import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
+import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
+import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
+import { Table } from '../../../../../../both/models/restaurant/table.model';
+import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
+import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './change-table.component.html';
-import style from './change-table.component.scss';
+import template from './table-change.component.html';
+import style from './table-change.component.scss';
 
 @Component({
-    selector: 'change-table',
+    selector: 'table-change',
     template,
     styles: [ style ]
 })
-export class ChangeTableComponent implements OnInit, OnDestroy {
+export class TableChangeComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
     private _changeTableForm            : FormGroup;

@@ -5,28 +5,26 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { UserDetails } from '../../../../../../../both/collections/auth/user-detail.collection';
-import { UserDetail } from '../../../../../../../both/models/auth/user-detail.model';
-import { Table } from '../../../../../../../both/models/restaurant/table.model';
-import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
-import { Order } from '../../../../../../../both/models/restaurant/order.model';
-import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
-import { Payments } from '../../../../../../../both/collections/restaurant/payment.collection';
-import { WaiterCallDetails } from '../../../../../../../both/collections/restaurant/waiter-call-detail.collection';
-import { Account } from '../../../../../../../both/models/restaurant/account.model';
-import { Accounts } from '../../../../../../../both/collections/restaurant/account.collection'; 
-import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
+import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
+import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
+import { Table } from '../../../../../../both/models/restaurant/table.model';
+import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
+import { Order } from '../../../../../../both/models/restaurant/order.model';
+import { Orders } from '../../../../../../both/collections/restaurant/order.collection';
+import { Payments } from '../../../../../../both/collections/restaurant/payment.collection';
+import { WaiterCallDetails } from '../../../../../../both/collections/restaurant/waiter-call-detail.collection';
+import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './exit-table.component.html';
-import style from './exit-table.component.scss';
+import template from './restaurant-exit.component.html';
+import style from './restaurant-exit.component.scss';
 
 @Component({
-    selector: 'exit-table',
+    selector: 'restaurant-exit',
     template,
     styles: [ style ]
 })
-export class ExitTableComponent implements OnInit, OnDestroy {
+export class RestaurantExitComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
     private _userDetailsSub         : Subscription;
@@ -34,7 +32,6 @@ export class ExitTableComponent implements OnInit, OnDestroy {
     private _paymentsSub            : Subscription;
     private _waiterCallDetSub       : Subscription;
     private _tablesSub              : Subscription;
-    private _accountsSub            : Subscription;
 
     private _userDetails            : Observable<UserDetail[]>;
     private _tables                 : Observable<Table[]>;
@@ -47,7 +44,7 @@ export class ExitTableComponent implements OnInit, OnDestroy {
     private _loading                : boolean = false;
 
     /**
-     * ExitTableComponent Constructor
+     * ExitRestaurantComponent Constructor
      * @param {TranslateService} _translate 
      * @param {NgZone} _ngZone 
      * @param {UserLanguageService} _userLanguageService
@@ -91,14 +88,13 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                 this._tables = Tables.find( { } ).zone();
             });
         });
-        this._accountsSub = MeteorObservable.subscribe( 'getAccountsByUserId', this._user ).subscribe();
     }
 
     /**
      * Validate orders marked to cancel
      */
     validateOrdersMarkedToCancel():void{
-        let _lOrdersToCancelCount: number =  Orders.collection.find( { status: { $in: [ 'ORDER_STATUS.IN_PROCESS','ORDER_STATUS.PREPARED' ] }, markedToCancel: true } ).count();
+        let _lOrdersToCancelCount: number =  Orders.collection.find( { creation_user: this._user, status: { $in: [ 'ORDER_STATUS.IN_PROCESS','ORDER_STATUS.PREPARED' ] }, markedToCancel: true } ).count();
         _lOrdersToCancelCount > 0 ? this._showWaiterCard = true : this._showWaiterCard = false;
     }
 
@@ -111,7 +107,6 @@ export class ExitTableComponent implements OnInit, OnDestroy {
         if( this._paymentsSub ){ this._paymentsSub.unsubscribe(); }
         if( this._waiterCallDetSub ){ this._waiterCallDetSub.unsubscribe(); }
         if( this._tablesSub ){ this._tablesSub.unsubscribe(); }
-        if( this._accountsSub ){ this._accountsSub.unsubscribe(); }
     }
 
     /**
@@ -153,18 +148,15 @@ export class ExitTableComponent implements OnInit, OnDestroy {
             this._dialogRef.afterClosed().subscribe( result => {
                 this._dialogRef = result;
                 if ( result.success ){
-                    let _lTable: Table = Tables.findOne( { _id: _pCurrentTable } );
-                    Tables.update( { _id: _pCurrentTable }, { $set: { amount_people: _lTable.amount_people - 1 } } );
-                    let _lTableAux: Table = Tables.findOne( { _id: _pCurrentTable } ); 
-                    if( _lTableAux.amount_people === 0 && _lTableAux.status === 'BUSY' ){
-                        Tables.update( { _id: _pCurrentTable }, { $set: { status: 'FREE' } } );
-                        let _lAccountAux: Account = Accounts.findOne( { restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, status: 'OPEN' } );
-                        Accounts.update( { _id: _lAccountAux._id }, { $set: { status: 'CLOSED' } } );
-                    }     
-                    UserDetails.update( { _id: _pUserDetailId }, { $set: { current_restaurant: '', current_table: '' } } );
-                    this.goToOrders();
-                    let _lMessage:string = this.itemNameTraduction( 'EXIT_TABLE.LEAVE_RESTAURANT_MSG' );
-                    this._snackBar.open( _lMessage, '',{ duration: 2500 } );              
+                    this._loading = true;
+                    setTimeout(() => {
+                        MeteorObservable.call( 'restaurantExit', _pUserDetailId, _pCurrentRestaurant, _pCurrentTable ).subscribe( () => {
+                            this._loading = false;
+                            let _lMessage:string = this.itemNameTraduction( 'EXIT_TABLE.LEAVE_RESTAURANT_MSG' );
+                            this._snackBar.open( _lMessage, '',{ duration: 2500 } );
+                            this.goToOrders();
+                        });
+                    }, 1500 );
                 }
             });
         } else {
@@ -185,22 +177,15 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                     this._dialogRef.afterClosed().subscribe( result => {
                         this._dialogRef = result;
                         if ( result.success ){
-                            Orders.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, 
-                                           tableId: _pCurrentTable, status: 'ORDER_STATUS.REGISTERED' } ).fetch().forEach( ( order ) => {
-                                                Orders.update( { _id: order._id }, { $set: { status: 'ORDER_STATUS.CANCELED', modification_date: new Date() } } );
-                            });
-                            let _lTable: Table = Tables.findOne( { _id: _pCurrentTable } );
-                            Tables.update( { _id: _pCurrentTable }, { $set: { amount_people: _lTable.amount_people - 1 } } );
-                            let _lTableAux: Table = Tables.findOne( { _id: _pCurrentTable } ); 
-                            if( _lTableAux.amount_people === 0 && _lTableAux.status === 'BUSY' ){
-                                Tables.update( { _id: _pCurrentTable }, { $set: { status: 'FREE' } } );
-                                let _lAccountAux: Account = Accounts.findOne( { restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, status: 'OPEN' } );
-                                Accounts.update( { _id: _lAccountAux._id }, { $set: { status: 'CLOSED' } } );
-                            }
-                            UserDetails.update( { _id: _pUserDetailId }, { $set: { current_restaurant: '', current_table: '' } } );
-                            this.goToOrders();
-                            let _lMessage:string = this.itemNameTraduction( 'EXIT_TABLE.LEAVE_RESTAURANT_MSG' );
-                            this._snackBar.open( _lMessage, '',{ duration: 2500 } );
+                            this._loading = true;
+                            setTimeout(() => {
+                                MeteorObservable.call( 'restaurantExitWithRegisteredOrders', this._user, _pUserDetailId, _pCurrentRestaurant, _pCurrentTable ).subscribe( () => {
+                                    this._loading = false;
+                                    let _lMessage:string = this.itemNameTraduction( 'EXIT_TABLE.LEAVE_RESTAURANT_MSG' );
+                                    this._snackBar.open( _lMessage, '',{ duration: 2500 } );
+                                    this.goToOrders();
+                                });
+                            }, 1500 );
                         }
                     });
             } else {
@@ -278,44 +263,23 @@ export class ExitTableComponent implements OnInit, OnDestroy {
                                 this._dialogRef.afterClosed().subscribe( result => {
                                     this._dialogRef = result;
                                     if ( result.success ){
-                                        Orders.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, 
-                                                       status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED' ] } } ).fetch().forEach( ( order ) => {
-                                                 Orders.update( { _id: order._id }, { $set: { markedToCancel: true, modification_date: new Date() } } );
-                                        });
-                                        var data : any = {
-                                            restaurants : _pCurrentRestaurant,
-                                            tables : _pCurrentTable,
-                                            user : this._user,
-                                            waiter_id : "",
-                                            status : "waiting",
-                                            type : 'USER_EXIT_TABLE',
-                                        }
-                                        let isWaiterCalls = WaiterCallDetails.collection.find( { restaurant_id : _pCurrentRestaurant, table_id : _pCurrentTable, 
-                                                            type : data.type, status: { $in : [ 'waiting', 'completed'] } } ).count();
-                                        if( isWaiterCalls === 0 ){            
-                                            setTimeout(() => {
-                                                this._loading = true;
-                                                MeteorObservable.call( 'findQueueByRestaurant', data ).subscribe( () => {
-                                                    this._loading = false;
-                                                    let _lMessage:string = this.itemNameTraduction( 'EXIT_TABLE.WAITER_HAS_BEEN_CALLED')
-                                                    this._snackBar.open( _lMessage, '',{
-                                                        duration: 2500
-                                                    });
+                                        this._loading = true;
+                                        setTimeout(() => {
+                                            MeteorObservable.call( 'restaurantExitWithOrdersInInvalidStatus', this._user, _pCurrentRestaurant, _pCurrentTable ).subscribe( () => {
+                                                this._loading = false;
+                                                this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
+                                                    disableClose: true,
+                                                    data: {
+                                                        title: this.itemNameTraduction( 'EXIT_TABLE.WAITER_ON_THE_WAY' ),
+                                                        subtitle: '',
+                                                        content: this.itemNameTraduction( 'EXIT_TABLE.WAITER_ON_THE_WAY_CALL' ),
+                                                        buttonCancel: '',
+                                                        buttonAccept: this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
+                                                        showCancel: false
+                                                    }
                                                 });
-                                            }, 1500 );
-                                        } else {
-                                            this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
-                                                disableClose: true,
-                                                data: {
-                                                    title: this.itemNameTraduction( 'EXIT_TABLE.WAITER_ON_THE_WAY' ),
-                                                    subtitle: '',
-                                                    content: this.itemNameTraduction( 'EXIT_TABLE.WAITER_ON_THE_WAY_CALL' ),
-                                                    buttonCancel: '',
-                                                    buttonAccept: this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
-                                                    showCancel: false
-                                                }
                                             });
-                                        }
+                                        }, 1500 );
                                     }
                                 });
                             }

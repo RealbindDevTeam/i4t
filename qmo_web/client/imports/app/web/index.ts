@@ -87,9 +87,9 @@ import { RestaurantFacebookComponent } from './restaurant/restaurant/social-netw
 import { RestaurantInstagramComponent } from './restaurant/restaurant/social-network/instagram/restaurant-instagram.component';
 import { RestaurantTwitterComponent } from './restaurant/restaurant/social-network/twitter/restaurant-twitter.component';
 import { RecoverConfirmComponent } from './auth/recover-password/recover-confirm.component';
-import { ChangeTableComponent } from './restaurant/tables/change-table/change-table.component';
-import { ExitTableComponent } from './restaurant/tables/exit-table/exit-table.component';
-import { ExitTableConfirmComponent } from './waiter/calls/exit-table-confirm/exit-table-confirm.component';
+import { TableChangeComponent } from './customer/table-change/table-change.component';
+import { RestaurantExitComponent } from './customer/restaurant-exit/restaurant-exit.component';
+import { RestaurantExitConfirmComponent } from './waiter/calls/restaurant-exit-confirm/restaurant-exit-confirm.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -148,8 +148,8 @@ export const WEB_DECLARATIONS = [
     SupervisorCollaboratorsComponent,
     SupervisorCollaboratorsRegisterComponent,
     SupervisorTableComponent,
-    ChangeTableComponent,
-    ExitTableComponent
+    TableChangeComponent,
+    RestaurantExitComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [
@@ -183,7 +183,7 @@ export const MODAL_DIALOG_DECLARATIONS = [
     RestaurantInstagramComponent,
     RestaurantTwitterComponent,
     RecoverConfirmComponent,
-    ExitTableConfirmComponent
+    RestaurantExitConfirmComponent
 ];
 
 export const SERVICES_DECLARATIONS = [
