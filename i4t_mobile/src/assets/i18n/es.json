@@ -350,7 +350,9 @@
             "TITLE": "Salir del restaurante",
             "NO_RESTAURANT": "No estás en un restaurante",
             "OPTION_LEAVE_RESTAURANT": "Esta opción te permite salir del restaurante en el que te encuentras",
-            "EXIT_MSG": "Salir"
+            "EXIT_MSG": "Salir",
+            "WAITER_ON_THE_WAY": "Mesero En Camino",
+            "CANCEL_ORDERS_MSG": "Cancelar llamada"
         },
         "WAITER_OPTIONS": {
             "CALLS": "Inicio",

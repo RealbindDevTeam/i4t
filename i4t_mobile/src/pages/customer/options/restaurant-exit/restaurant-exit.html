@@ -16,28 +16,27 @@
 
     <div *ngIf="_res_code !== '' && _table_code !== ''">
         <div *ngIf="_restaurant">
+            <div id="res-logo">
+                <img src="{{getRestaurantImage(_restaurant._id)}}">
+            </div>
             <ion-card>
                 <ion-card-content>
-                    <ion-item style="padding-left: 0">
-                        <ion-thumbnail item-left>
-                            <img src="{{getRestaurantThumb(_restaurant._id)}}">
-                        </ion-thumbnail>
-                        <h1 style="white-space:normal; font-size: 1.8rem">{{_restaurant.name}} </h1>
-                        <p *ngIf="_table">
-                            {{'MOBILE.ORDERS.TABLE' | translate}} {{_table._number}}
-                        </p>
-                    </ion-item>
+                    <h1>{{_restaurant.name}}</h1>
+                    <h2>{{'MOBILE.ORDERS.TABLE' | translate}} {{_table?._number}}</h2>
                 </ion-card-content>
             </ion-card>
 
-            <ion-card>
+            <ion-card *ngIf="_showWaiterCard">
                 <ion-card-content>
-                    <ion-item style="padding-left: 0">
-                        <ion-thumbnail item-left>
-                            <img src="assets/img/sections.png">
-                        </ion-thumbnail>
-                        <h1 style="white-space:normal; font-size: 1.8rem">{{'MOBILE.RESTAURANT_EXIT.OPTION_LEAVE_RESTAURANT' | translate}}</h1>
-                    </ion-item>
+                    <ion-list no-lines text-wrap>
+                        <button ion-item style="padding-left: 0;" (click)="cancelWaiterCall()">
+                            <ion-avatar item-start>
+                                    <img src="assets/img/payment-pending.png">
+                                  </ion-avatar>
+                                  <h2>{{'MOBILE.RESTAURANT_EXIT.WAITER_ON_THE_WAY' | translate}}</h2>
+                                  <h3>{{'MOBILE.RESTAURANT_EXIT.CANCEL_ORDERS_MSG' | translate}}</h3>
+                        </button>
+                    </ion-list>
                 </ion-card-content>
             </ion-card>
         </div>
@@ -45,5 +44,5 @@
 </ion-content>
 
 <ion-footer padding>
-    <button ion-button block outline (click)="exitRestaurant()">{{'MOBILE.RESTAURANT_EXIT.EXIT_MSG' | translate}}</button>
+    <button *ngIf="_res_code !== '' && _table_code !== ''" ion-button block outline (click)="exitRestaurant()">{{'MOBILE.RESTAURANT_EXIT.EXIT_MSG' | translate}}</button>
 </ion-footer>

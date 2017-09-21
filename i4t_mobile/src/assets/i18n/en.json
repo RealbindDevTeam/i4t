@@ -350,7 +350,9 @@
             "TITLE": "Restaurant exit",
             "NO_RESTAURANT": "You are not in a restaurant yet",
             "OPTION_LEAVE_RESTAURANT": "This option allows you to leave the restaurant where you are",
-            "EXIT_MSG": "Exit"
+            "EXIT_MSG": "Exit",
+            "WAITER_ON_THE_WAY": "Waiter upcoming",
+            "CANCEL_ORDERS_MSG": "Cancel call"
         },
         "WAITER_OPTIONS": {
             "CALLS": "Home",
