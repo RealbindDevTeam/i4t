@@ -6,8 +6,8 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-    <ion-list *ngIf="_user" no-lines>
+<ion-content>
+    <ion-list *ngIf="_user" >
         <button ion-item (click)="goToSettings()">
             <ion-avatar item-left>
                 <img src="{{ getUsetImage() }}">
