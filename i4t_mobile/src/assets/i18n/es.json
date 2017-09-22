@@ -235,7 +235,7 @@
             "CONFIRM_TO_ADD_ACCOUNT": "Deseas realizar el pago de la orden?",
             "CONFIRM_OWNER_ORDER": "El propietario de la orden debe confirmar la solicitud del pago",
             "CONFIRM_ORDER_STATUS": "La orden no ha sido entregada",
-            "CONFIRM_PAY_OTHER_USER": "Deseas transferir el pago de la orden?",
+            "CONFIRM_PAY_OTHER_USER": "Deseas transferir el pago de la orden",
             "SUCCESSFUL_PAY_OTHER_USER": "Se ha transferido el pago de la orden",
             "PAYMENTS_TO_BE_CONFIRM": "Tienes ordenes en estado pendiente por confirmación",
             "MOMENT_ANSWER": "En un momento te atenderemos",
@@ -250,7 +250,9 @@
             "ADDITION": "Adición",
             "PAY_DETAIL": "Detalle del pago",
             "NO_PAYED": "No pagado",
-            "PAYED": "Pagado"
+            "PAYED": "Pagado",
+            "CANCEL_PAY_OTHER_USER": "Deseas cancelar la solicitud del pago de la orden",
+            "CANCELED_PAY_OTHER_USER": "Se ha cancelado la solicitud del pago de la orden"
         },
         "WAITER_CALL": {
             "TITTLE": "Solicitar mesero",

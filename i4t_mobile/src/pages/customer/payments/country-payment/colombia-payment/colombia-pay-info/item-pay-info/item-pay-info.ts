@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Currencies } from 'qmo_web/both/collections/general/currency.collection';
 import { Items } from 'qmo_web/both/collections/administration/item.collection';
 import { ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -17,6 +18,7 @@ export class ItemPayInfoComponent implements OnInit, OnDestroy {
     @Input() quantity   : number;
     private _itemSubscription       : Subscription;
     private _imageThumbSubscription : Subscription;
+    private _currencySubscription   : Subscription;
     private _items                  : any;
 
     /**
@@ -34,6 +36,8 @@ export class ItemPayInfoComponent implements OnInit, OnDestroy {
             this._items = Items.find({_id : this.itemId});
         });
         this._imageThumbSubscription = MeteorObservable.subscribe('itemImageThumbsByUserId', Meteor.userId()).subscribe();
+
+        this._currencySubscription = MeteorObservable.subscribe('getCurrenciesByCurrentUser', Meteor.userId()).subscribe(() => {});
     }
 
     getItemThumb(_itemId: string): string {
@@ -43,6 +47,15 @@ export class ItemPayInfoComponent implements OnInit, OnDestroy {
             return _imageThumb.url;
         } else {
             return 'assets/img/default-plate.png';
+        }
+    }
+
+    getIdCurrency(pCurrency) : string{
+        let _lCurrencyCode = Currencies.findOne({code : pCurrency });
+        if(_lCurrencyCode){
+            return _lCurrencyCode._id;
+        } else {
+            return "";
         }
     }
 
@@ -59,5 +72,6 @@ export class ItemPayInfoComponent implements OnInit, OnDestroy {
     removeSubscriptions():void{
         if( this._itemSubscription ){ this._itemSubscription.unsubscribe(); }
         if( this._imageThumbSubscription ){ this._imageThumbSubscription.unsubscribe(); }
+        if( this._currencySubscription ){ this._currencySubscription.unsubscribe(); }
     }
 }
