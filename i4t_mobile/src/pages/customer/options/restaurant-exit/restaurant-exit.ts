@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { AlertController, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { AlertController, LoadingController, NavController, NavParams, ToastController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -10,6 +10,7 @@ import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collectio
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { Payments } from 'qmo_web/both/collections/restaurant/payment.collection';
 import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-call-detail.collection';
+import { TabsPage } from '../../tabs/tabs';
 
 @Component({
     selector: 'restaurant-exit',
@@ -27,6 +28,7 @@ export class RestaurantExitPage implements OnInit, OnDestroy {
     private _restaurantImagesSub: Subscription;
     private _userDetailSub: Subscription;
     private _ordersSub: Subscription;
+    private _waiterCallDetSub: Subscription;
 
     private _restaurant: any;
     private _table: any;
@@ -38,6 +40,7 @@ export class RestaurantExitPage implements OnInit, OnDestroy {
         public _navParams: NavParams,
         public _alertCtrl: AlertController,
         public _loadingCtrl: LoadingController,
+        private _toastCtrl: ToastController,
         private _translate: TranslateService,
         private _userLanguageService: UserLanguageService,
         private _ngZone: NgZone) {
@@ -79,6 +82,7 @@ export class RestaurantExitPage implements OnInit, OnDestroy {
                         this._orders.subscribe(() => { this.validateOrdersMarkedToCancel(); });
                     });
                 });
+            this._waiterCallDetSub = MeteorObservable.subscribe('countWaiterCallDetailByUsrId', Meteor.userId()).subscribe();
         }
     }
 
@@ -93,8 +97,7 @@ export class RestaurantExitPage implements OnInit, OnDestroy {
     }
 
     exitRestaurant() {
-        let userDetail = UserDetails.findOne({ user_id: Meteor.userId() })._id;
-        console.log(userDetail);
+        let userDetailId = UserDetails.findOne({ user_id: Meteor.userId() })._id;
 
         let _lOrdersRegisteredStatus: number = Orders.collection.find({ creation_user: Meteor.userId(), restaurantId: this._res_code, tableId: this._table_code, status: 'ORDER_STATUS.REGISTERED' }).count();
         let _lOrdersInProcessStatus: number = Orders.collection.find({ creation_user: Meteor.userId(), restaurantId: this._res_code, tableId: this._table_code, status: 'ORDER_STATUS.IN_PROCESS' }).count();
@@ -110,32 +113,189 @@ export class RestaurantExitPage implements OnInit, OnDestroy {
             && _lUserWaiterCallsCount === 0 && _lUserPaymentsCount === 0) {
 
             let confirm = this._alertCtrl.create({
-                title: this.itemNameTraduction('EXIT_TABLE.RESTAURANT_EXIT'),
-                message: this.itemNameTraduction('EXIT_TABLE.RESTAURANT_EXIT_CONFIRM'),
+                title: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.RESTAURANT_EXIT'),
+                message: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.RESTAURANT_EXIT_CONFIRM'),
                 buttons: [
                     {
-                        text: this.itemNameTraduction('NO'),
+                        text: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.NO_CONFIRM'),
                         handler: () => {
-                            console.log('Disagree clicked');
                         }
-                    },
-                    {
-                        text: this.itemNameTraduction( 'YES' ),
+                    }, {
+                        text: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.YES_CONFIRM'),
                         handler: () => {
-                          console.log('Agree clicked');
+                            MeteorObservable.call('restaurantExit', userDetailId, this._res_code, this._table_code).subscribe(() => {
+                                let _lMessage: string = this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.LEAVE_RESTAURANT_MSG');
+                                let toast = this._toastCtrl.create({
+                                    message: _lMessage,
+                                    duration: 1500,
+                                    position: 'middle'
+                                });
+                                toast.onDidDismiss(() => {
+                                });
+                                toast.present();
+                                this._navCtrl.pop();
+                            });
                         }
                     }
                 ]
             });
             confirm.present();
-
         } else {
+            if (_lOrdersRegisteredStatus > 0 && _lOrdersInProcessStatus === 0 && _lOrdersPreparedStatus === 0
+                && _lOrdersDeliveredStatus === 0 && _lOrdersToConfirm === 0 && _lOrdersWithPendingConfirmation === 0
+                && _lUserWaiterCallsCount === 0 && _lUserPaymentsCount === 0) {
 
+                let confirm = this._alertCtrl.create({
+                    title: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.ORDERS_REGISTERED'),
+                    message: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.ORDERS_CANCEL_CONFIRM'),
+                    buttons: [
+                        {
+                            text: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.NO_CONFIRM'),
+                            handler: () => {
+                            }
+                        }, {
+                            text: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.YES_CONFIRM'),
+                            handler: () => {
+                                MeteorObservable.call('restaurantExitWithRegisteredOrders', Meteor.userId(), userDetailId, this._res_code, this._table_code).subscribe(() => {
+                                    let _lMessage: string = this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.LEAVE_RESTAURANT_MSG');
+                                    let toast = this._toastCtrl.create({
+                                        message: _lMessage,
+                                        duration: 1500,
+                                        position: 'middle'
+                                    });
+                                    toast.onDidDismiss(() => {
+                                    });
+                                    toast.present();
+                                    this._navCtrl.pop();
+                                });
+                            }
+                        }
+                    ]
+                });
+                confirm.present();
+            } else {
+                if ((_lOrdersToConfirm > 0 || _lOrdersWithPendingConfirmation > 0) && _lOrdersRegisteredStatus === 0 && _lOrdersInProcessStatus === 0
+                    && _lOrdersPreparedStatus === 0 && _lOrdersDeliveredStatus === 0 && _lUserWaiterCallsCount === 0
+                    && _lUserPaymentsCount === 0) {
+
+                    let confirm = this._alertCtrl.create({
+                        title: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.ORDERS_PENDING_CONFIRM'),
+                        message: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.ORDERS_MUST_BE_ATTENDED'),
+                        buttons: [
+                            {
+                                text: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.ACCEPT'),
+                            }
+                        ]
+                    });
+                    confirm.present();
+                } else {
+                    if (_lUserWaiterCallsCount > 0 && _lOrdersRegisteredStatus === 0 && _lOrdersInProcessStatus === 0
+                        && _lOrdersPreparedStatus === 0 && _lOrdersDeliveredStatus === 0 && _lOrdersToConfirm === 0
+                        && _lOrdersWithPendingConfirmation === 0 && _lUserPaymentsCount === 0) {
+
+                        let confirm = this._alertCtrl.create({
+                            title: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.PENDING_WAITER_CALL'),
+                            message: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.WAITER_CALLS_MSG'),
+                            buttons: [
+                                {
+                                    text: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.ACCEPT'),
+                                }
+                            ]
+                        });
+                        confirm.present();
+                    } else {
+                        if (_lUserPaymentsCount > 0 && _lOrdersRegisteredStatus === 0 && _lOrdersInProcessStatus === 0
+                            && _lOrdersPreparedStatus === 0 && _lOrdersDeliveredStatus === 0 && _lOrdersToConfirm === 0
+                            && _lOrdersWithPendingConfirmation === 0 && _lUserWaiterCallsCount === 0) {
+
+                            let confirm = this._alertCtrl.create({
+                                title: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.PENDING_PAYMENTS'),
+                                message: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.PENDING_PAYMENTS_MSG'),
+                                buttons: [
+                                    {
+                                        text: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.ACCEPT'),
+                                    }
+                                ]
+                            });
+                            confirm.present();
+                        } else {
+                            if (_lOrdersDeliveredStatus > 0 && _lOrdersRegisteredStatus === 0 && _lOrdersInProcessStatus === 0
+                                && _lOrdersPreparedStatus === 0 && _lOrdersToConfirm === 0 && _lOrdersWithPendingConfirmation === 0
+                                && _lUserWaiterCallsCount === 0 && _lUserPaymentsCount === 0) {
+
+                                let confirm = this._alertCtrl.create({
+                                    title: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.ORDERS_DELIVERED'),
+                                    message: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.ORDERS_DELIVERED_MSG'),
+                                    buttons: [
+                                        {
+                                            text: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.ACCEPT'),
+                                        }
+                                    ]
+                                });
+                                confirm.present();
+                            } else {
+                                let confirm = this._alertCtrl.create({
+                                    title: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.INVALID_OPERATION'),
+                                    message: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.CALL_WAITER_MSG'),
+                                    buttons: [
+                                        {
+                                            text: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.NO_CONFIRM'),
+                                            handler: () => {
+                                            }
+                                        }, {
+                                            text: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.YES_CONFIRM'),
+                                            handler: () => {
+                                                MeteorObservable.call('restaurantExitWithOrdersInInvalidStatus', Meteor.userId(), this._res_code, this._table_code).subscribe(() => {
+
+                                                    let confirm2 = this._alertCtrl.create({
+                                                        title: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.WAITER_ON_THE_WAY'),
+                                                        message: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.WAITER_ON_THE_WAY_CALL'),
+                                                        buttons: [
+                                                            {
+                                                                text: this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.ACCEPT'),
+                                                            }
+                                                        ]
+                                                    });
+                                                    confirm2.present();
+                                                });
+                                            }
+                                        }
+                                    ]
+                                });
+                                confirm.present();
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
     cancelWaiterCall() {
-        console.log('cancelWaiterCall');
+        Orders.find({
+            creation_user: Meteor.userId(), restaurantId: this._res_code, tableId: this._table_code, markedToCancel: true,
+            status: { $in: ['ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED'] }
+        }).fetch().forEach((order) => {
+            Orders.update({ _id: order._id }, { $set: { markedToCancel: null, modification_date: new Date() } });
+        });
+
+        let loader = this._loadingCtrl.create({
+            duration: 2000
+        });
+        loader.present();
+        setTimeout(() => {
+            let waiterCall = WaiterCallDetails.findOne({ user_id: Meteor.userId(), type: 'USER_EXIT_TABLE', restaurant_id: this._res_code, table_id: this._table_code, status: { $in: ["waiting", "completed"] } });
+            if (waiterCall) {
+                MeteorObservable.call('cancelCallClient', waiterCall, Meteor.userId()).subscribe(() => {
+                    let _lMessage: string = this.itemNameTraduction('MOBILE.RESTAURANT_EXIT.CALLED_CANCELED');
+                    let toast = this._toastCtrl.create({
+                        message: _lMessage,
+                        duration: 2500,
+                        position: 'middle'
+                    });
+                });
+            }
+        }, 1500);
     }
 
     itemNameTraduction(itemName: string): string {
@@ -172,6 +332,7 @@ export class RestaurantExitPage implements OnInit, OnDestroy {
         if (this._restaurantImagesSub) { this._restaurantImagesSub.unsubscribe(); }
         if (this._userDetailSub) { this._userDetailSub.unsubscribe(); }
         if (this._ordersSub) { this._ordersSub.unsubscribe(); }
+        if (this._waiterCallDetSub) { this._waiterCallDetSub.unsubscribe(); }
     }
 }
 
