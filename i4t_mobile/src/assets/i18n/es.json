@@ -30,13 +30,13 @@
         "UPDATE": "Actualizar",
         "MODIFY": "Modificar",
         "CHOOSE_FILE": "Seleccionar archivo",
-        "CLOSE" : "Cerrar",
-        "VIEW" : "Ver",
-        "OK" : "Ok",
+        "CLOSE": "Cerrar",
+        "VIEW": "Ver",
+        "OK": "Ok",
         "SYSTEM_MSG": "Mensaje del sistema",
-        "LANGUAGE" : {
-            "es" : "Español",
-            "en" : "Ingles"
+        "LANGUAGE": {
+            "es": "Español",
+            "en": "Ingles"
         },
         "INITIAL": {
             "SIGNUP": "Registrarse",
@@ -345,6 +345,34 @@
             "TABLE_DESTINY_STATUS_ERROR": "Se ha producido un error validando el estado de la nueva mesa. Por favor intenta nuevamente.",
             "GENERAL_ERROR": "Se ha producido un error cambiando la mesa. Por favor intenta nuevamente.",
             "SAME_TABLE_ERROR": "No es posible realizar la operación con el código de mesa actual. Por favor revisa e intenta nuevamente."
+        },
+        "RESTAURANT_EXIT": {
+            "TITLE": "Salir del restaurante",
+            "NO_RESTAURANT": "No estás en un restaurante",
+            "OPTION_LEAVE_RESTAURANT": "Esta opción te permite salir del restaurante en el que te encuentras",
+            "EXIT_MSG": "Salir",
+            "WAITER_ON_THE_WAY": "Mesero En Camino",
+            "CANCEL_ORDERS_MSG": "Cancelar llamada",
+            "RESTAURANT_EXIT": "Salida del Restaurante",
+            "RESTAURANT_EXIT_CONFIRM": "Seguro que deseas salir del restaurante?",
+            "YES_CONFIRM": "Si",
+            "NO_CONFIRM": "No",
+            "LEAVE_RESTAURANT_MSG": "Has salido del Restaurante. Hasta Pronto!",
+            "ORDERS_REGISTERED": "Tienes Ordenes Registradas!",
+            "ORDERS_CANCEL_CONFIRM": "Si te vas del restaurante las ordenes se cancelan. Estas seguro de salir?",
+            "ORDERS_PENDING_CONFIRM": "Ordenes Pendientes por Confirmar!",
+            "ORDERS_MUST_BE_ATTENDED": "Las ordenes deben ser atendidas para salir del restaurante",
+            "ACCEPT": "Aceptar",
+            "PENDING_WAITER_CALL": "Llamados al Mesero Pendientes",
+            "WAITER_CALLS_MSG": "Los llamados al mesero deben ser atendidos o los puedes cancelar para salir",
+            "PENDING_PAYMENTS": "Tienes Pagos Pendientes",
+            "PENDING_PAYMENTS_MSG": "Un mesero ya se acercará a tu mesa para recibir tus pagos y así poder salir",
+            "ORDERS_DELIVERED": "Tienes Ordenes Entregadas",
+            "ORDERS_DELIVERED_MSG": "Paga las órdenes que se te han entregado y así podrás salir del restaurante",
+            "INVALID_OPERATION": "Operación Inválida",
+            "CALL_WAITER_MSG": "El estado de tus ordenes no te permite salir del restaurante. Deseas Llamar a un mesero para gestionar tus ordenes?",
+            "WAITER_ON_THE_WAY_CALL": "Un mesero ya recibió la solicitud y va para tu mesa",
+            "CALLED_CANCELED": "Llamado Cancelado"
         },
         "WAITER_OPTIONS": {
             "CALLS": "Inicio",
