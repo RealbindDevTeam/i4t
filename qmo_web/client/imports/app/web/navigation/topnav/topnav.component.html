@@ -36,11 +36,11 @@
   </div>
 
   <md-menu #menu="mdMenu" x-position="before">
-    <button md-menu-item *ngIf="_itemsTopMenu === 'customer' " [routerLink]="['/app/customer-payments-history']">
+    <button md-menu-item *ngIf="_itemsTopMenu === 'customer' " [routerLink]="['/app/customer-payments-history']" (click)="setMenuName('PAYMENTS_HISTORY.TITLE')">
       <md-icon>payment</md-icon>
       <span>{{ 'PAYMENTS_HISTORY.TITLE' | translate }}</span>
     </button>
-    <button md-menu-item [routerLink]="['/app/settings']">
+    <button md-menu-item [routerLink]="['/app/settings']" (click)="setMenuName('SETTINGS.TITTLE')">
       <md-icon>settings</md-icon>
       <span>{{ 'SETTINGS.TITTLE' | translate }}</span>
     </button>

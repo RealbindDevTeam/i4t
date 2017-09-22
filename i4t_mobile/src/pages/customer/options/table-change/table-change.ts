@@ -11,8 +11,8 @@ import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/
 import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 
 @Component({
-    selector: 'change-table',
-    templateUrl: 'change-table.html'
+    selector: 'table-change',
+    templateUrl: 'table-change.html'
 })
 
 export class ChangeTablePage implements OnInit, OnDestroy {

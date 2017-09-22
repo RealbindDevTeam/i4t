@@ -6,7 +6,7 @@
         <div *ngIf="(item.garnishFood.length > 0)">
             <span *ngFor="let gar of item.garnishFood">
                 <span *ngFor="let garnish of _garnishFood | async">
-                    <template [ngIf]="gar === garnish._id">
+                    <ng-template [ngIf]="gar === garnish._id">
                         <div class="item-divider-custom"></div>
                         <ion-item>
                             <ion-thumbnail item-left>
@@ -17,14 +17,14 @@
                             <p style="white-space: normal;">{{'MOBILE.ORDERS.QUANT' | translate}} {{item.quantity}}</p>
                             <p style="white-space: normal;">{{'MOBILE.ORDERS.TOTAL' | translate}} {{ getGarnishFoodTotalPrice(garnish, item.quantity) }} {{currency}}</p>
                         </ion-item>
-                    </template>
+                    </ng-template>
                 </span>
             </span>
         </div>
         <div *ngIf="(item.additions.length > 0)">
             <div *ngFor="let ad of item.additions">
                 <div *ngFor="let addition of _additions | async">
-                    <template [ngIf]="ad === addition._id">
+                    <ng-template [ngIf]="ad === addition._id">
                         <div class="item-divider-custom"></div>
                         <ion-item>
                             <ion-thumbnail item-left>
@@ -35,7 +35,7 @@
                             <p style="white-space: normal;">{{'MOBILE.ORDERS.QUANT' | translate}} {{item.quantity}}</p>
                             <p style="white-space: normal;">{{'MOBILE.ORDERS.TOTAL' | translate}} {{ getAdditionTotalPrice(addition, item.quantity) }} {{currency}}</p>
                         </ion-item>
-                    </template>
+                    </ng-template>
                 </div>
             </div>
         </div>

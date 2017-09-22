@@ -57,8 +57,9 @@ import { AdditionPayInfoComponent } from '../pages/customer/payments/country-pay
 import { PaymentsHistoryPage } from '../pages/customer/options/payments-history/payments-history';
 import { PaymentsHistoryDetailPage } from '../pages/customer/options/payments-history/payments-history-detail/payments-history-detail';
 import { Menu } from '../pages/waiter/menu/menu';
-import { ChangeTablePage } from '../pages/customer/options/change-table/change-table';
-import { AlphanumericCodeChangePage } from '../pages/customer/options/change-table/alphanumeric-code-change/alphanumeric-code-change';
+import { ChangeTablePage } from '../pages/customer/options/table-change/table-change';
+import { AlphanumericCodeChangePage } from '../pages/customer/options/table-change/alphanumeric-code-change/alphanumeric-code-change';
+import { RestaurantExitPage } from '../pages/customer/options/restaurant-exit/restaurant-exit';
 
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Facebook } from '@ionic-native/facebook';
@@ -117,7 +118,8 @@ export function createTranslateLoader(http: Http) {
     PaymentsHistoryDetailPage,
     Menu,
     ChangeTablePage,
-    AlphanumericCodeChangePage
+    AlphanumericCodeChangePage,
+    RestaurantExitPage
   ],
   imports: [
     BrowserModule,
@@ -195,7 +197,8 @@ export function createTranslateLoader(http: Http) {
     PaymentsHistoryDetailPage,
     Menu,
     ChangeTablePage,
-    AlphanumericCodeChangePage
+    AlphanumericCodeChangePage,
+    RestaurantExitPage
   ],
   providers: [
     StatusBar,

@@ -60,7 +60,7 @@
                                 <div *ngIf="(order.additions.length > 0)">
                                     <span *ngFor="let addition of _additions | async">
                                         <span *ngFor="let ad of order.additions">
-                                            <template [ngIf]="addition._id === ad.additionId">
+                                            <ng-template [ngIf]="addition._id === ad.additionId">
                                                 <div class="item-divider-custom"></div>
                                                 <ion-item>
                                                     <ion-thumbnail item-left>
@@ -73,7 +73,7 @@
                                                         <ion-icon name="create"></ion-icon>
                                                     </button>
                                                 </ion-item>
-                                            </template>
+                                            </ng-template>
                                         </span>
                                     </span>
                                 </div>
@@ -100,7 +100,7 @@
                                     <div *ngIf="(order.additions.length > 0)">
                                         <span *ngFor="let addition of _additions | async">
                                             <span *ngFor="let ad of order.additions">
-                                                <template [ngIf]="addition._id === ad.additionId">
+                                                <ng-template [ngIf]="addition._id === ad.additionId">
                                                     <div class="item-divider-custom"></div>
                                                     <ion-item>
                                                         <ion-thumbnail item-left>
@@ -113,7 +113,7 @@
                                                             <ion-icon name="create"></ion-icon>
                                                         </button>
                                                     </ion-item>
-                                                </template>
+                                                </ng-template>
                                             </span>
                                         </span>
                                     </div>
