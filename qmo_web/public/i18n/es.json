@@ -217,7 +217,8 @@
             "RESTAURANTS": "Restaurantes",
             "TABLES": "Buscar mesas",
             "COLLABORATORS": "Colaboradores",
-            "MONTHLY_CONFIG": "Configuración mensual"
+            "MONTHLY_CONFIG": "Configuración mensual",
+            "TABLE_CONTROL": "Control de Mesas"
         },
         "PAYMENTS": {
             "PAYMENTS": "Pagos",

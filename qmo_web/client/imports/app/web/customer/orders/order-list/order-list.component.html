@@ -1,4 +1,20 @@
 <div style="width: 80%; margin: 0 auto; max-width: 740px;" *ngIf="!_thereAreUserOrders && !_thereAreNotUserOrders">
+    <md-card>
+        <md-list>
+            <md-list-item *ngFor="let _res of _restaurants | async">
+                <img md-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{ getRestaurantImage( _res._id ) }}">
+                <h2 md-line style="font-size: 1.3rem;"> {{_res.name}} </h2>
+                <p md-line style="font-size: 1rem;">
+                    <md-icon style="vertical-align: middle">location_on</md-icon>
+                    <span>{{_res.address}}</span>
+                </p>
+                <p md-line style="font-size: 1rem;font-weight: bold;">
+                    <md-icon style="vertical-align: middle">restaurant</md-icon>
+                    <span>{{'RESTAURANT_INFO_MASTER.TABLE_CODE' | translate}}: {{_tableNumber}}</span>
+                </p>
+            </md-list-item>
+        </md-list>
+    </md-card>
     <md-card md-cell="12" class="demo-card demo-basic">
         <md-card-content>
             <div class="card_initial">

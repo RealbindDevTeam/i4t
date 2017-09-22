@@ -48,17 +48,24 @@ export function loadMenus() {
                     }, {
                         _id: "1003",
                         is_active: true,
-                        name: "MENUS.ADMINISTRATION.COLLABORATORS",
-                        url: "/app/collaborators",
+                        name: "MENUS.ADMINISTRATION.TABLE_CONTROL",
+                        url: "/app/restaurant-table-control",
                         icon_name: "",
                         order: 1003
                     }, {
                         _id: "1004",
                         is_active: true,
+                        name: "MENUS.ADMINISTRATION.COLLABORATORS",
+                        url: "/app/collaborators",
+                        icon_name: "",
+                        order: 1004
+                    }, {
+                        _id: "1005",
+                        is_active: true,
                         name: "MENUS.ADMINISTRATION.MONTHLY_CONFIG",
                         url: "/app/monthly-config",
                         icon_name: "",
-                        order: 1004
+                        order: 1005
                     }
                 ]
             },

@@ -217,7 +217,8 @@
             "RESTAURANTS": "Restaurants",
             "TABLES": "Tables Search",
             "COLLABORATORS": "Collaborators",
-            "MONTHLY_CONFIG": "Monthly config"
+            "MONTHLY_CONFIG": "Monthly config",
+            "TABLE_CONTROL": "Tables Control"
         },
         "PAYMENTS": {
             "PAYMENTS": "Payments",
