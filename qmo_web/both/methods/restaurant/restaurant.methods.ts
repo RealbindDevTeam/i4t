@@ -22,9 +22,9 @@ import * as QRious from 'qrious';
  * @param {string} user
  * @return {Promise<any>} uploadRestaurantImage
  */
-export function uploadRestaurantImage( data: File, 
-                                       user: string,
-                                       restaurantId: string): Promise<any> {
+export function uploadRestaurantImage(data: File,
+    user: string,
+    restaurantId: string): Promise<any> {
     return new Promise((resolve, reject) => {
         const file = {
             name: data.name,
@@ -94,11 +94,11 @@ if (Meteor.isServer) {
         getRestaurantByQRCode: function (_qrcode: string, _userId: string) {
             let _table: Table = Tables.collection.findOne({ QR_code: _qrcode });
             let _restaurant: Restaurant;
-            
+
             if (_table) {
                 _restaurant = Restaurants.collection.findOne({ _id: _table.restaurantId });
-                if( _restaurant ){
-                    if(_restaurant.isActive){
+                if (_restaurant) {
+                    if (_restaurant.isActive) {
                         if (_table.status === 'BUSY') {
                             UserDetails.collection.update({ user_id: _userId },
                                 {
@@ -108,7 +108,7 @@ if (Meteor.isServer) {
                                     }
                                 });
                             Tables.collection.update({ QR_code: _qrcode }, { $set: { amount_people: (_table.amount_people + 1) } });
-                        } else if( _table.status === 'FREE' ) {
+                        } else if (_table.status === 'FREE') {
                             Tables.collection.update({ QR_code: _qrcode }, { $set: { status: 'BUSY', amount_people: 1 } });
                             Accounts.collection.insert({
                                 creation_date: new Date(),
@@ -152,77 +152,90 @@ if (Meteor.isServer) {
             }
         },
 
-        validateRestaurantIsActive : function (){
+        validateRestaurantIsActive: function () {
             let userDetail = UserDetails.collection.findOne({ user_id: this.userId });
-            if(userDetail){
-                let restaurant = Restaurants.collection.findOne({_id : userDetail.restaurant_work});
+            if (userDetail) {
+                let restaurant = Restaurants.collection.findOne({ _id: userDetail.restaurant_work });
                 return restaurant.isActive;
             } else {
                 return false;
             }
         },
 
-        restaurantExit: function( _pUserDetailId:string, _pCurrentRestaurant:string, _pCurrentTable:string ){
-            let _lTable: Table = Tables.findOne( { _id: _pCurrentTable } );
-            Tables.update( { _id: _pCurrentTable }, { $set: { amount_people: _lTable.amount_people - 1 } } );
-            let _lTableAux: Table = Tables.findOne( { _id: _pCurrentTable } ); 
-            if( _lTableAux.amount_people === 0 && _lTableAux.status === 'BUSY' ){
-                Tables.update( { _id: _pCurrentTable }, { $set: { status: 'FREE' } } );
-                let _lAccountAux: Account = Accounts.findOne( { restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, status: 'OPEN' } );
-                Accounts.update( { _id: _lAccountAux._id }, { $set: { status: 'CLOSED' } } );
-            }     
-            UserDetails.update( { _id: _pUserDetailId }, { $set: { current_restaurant: '', current_table: '' } } );
+        restaurantExit: function (_pUserDetailId: string, _pCurrentRestaurant: string, _pCurrentTable: string) {
+            let _lTableAmountPeople: number = Tables.findOne({ _id: _pCurrentTable }).amount_people;
+            let _tablesUpdated: number = Tables.collection.update({ _id: _pCurrentTable }, { $set: { amount_people: _lTableAmountPeople - 1 } });
+            if (_tablesUpdated === 1) {
+                let _lTableAux: Table = Tables.findOne({ _id: _pCurrentTable });
+                if (_lTableAux.amount_people === 0 && _lTableAux.status === 'BUSY') {
+                    Tables.update({ _id: _pCurrentTable }, { $set: { status: 'FREE' } });
+                    let _lAccountAux: Account = Accounts.findOne({ restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, status: 'OPEN' });
+                    Accounts.update({ _id: _lAccountAux._id }, { $set: { status: 'CLOSED' } });
+                }
+            }
+            UserDetails.update({ _id: _pUserDetailId }, { $set: { current_restaurant: '', current_table: '' } });
         },
 
-        restaurantExitWithRegisteredOrders: function( _pUserId:string, _pUserDetailId:string, _pCurrentRestaurant:string, _pCurrentTable:string ){
-            Orders.find( { creation_user: _pUserId, restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, 
-                           status: 'ORDER_STATUS.REGISTERED' } ).fetch().forEach( ( order ) => {
-                                Orders.update( { _id: order._id }, { $set: { status: 'ORDER_STATUS.CANCELED', modification_date: new Date() } } );
+
+        restaurantExitWithRegisteredOrders: function (_pUserId: string, _pUserDetailId: string, _pCurrentRestaurant: string, _pCurrentTable: string) {
+            Orders.find({
+                creation_user: _pUserId, restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable,
+                status: 'ORDER_STATUS.REGISTERED'
+            }).fetch().forEach((order) => {
+                Orders.update({ _id: order._id }, { $set: { status: 'ORDER_STATUS.CANCELED', modification_date: new Date() } });
             });
-            let _lTable: Table = Tables.findOne( { _id: _pCurrentTable } );
-            Tables.update( { _id: _pCurrentTable }, { $set: { amount_people: _lTable.amount_people - 1 } } );
-            let _lTableAux: Table = Tables.findOne( { _id: _pCurrentTable } ); 
-            if( _lTableAux.amount_people === 0 && _lTableAux.status === 'BUSY' ){
-                Tables.update( { _id: _pCurrentTable }, { $set: { status: 'FREE' } } );
-                let _lAccountAux: Account = Accounts.findOne( { restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, status: 'OPEN' } );
-                Accounts.update( { _id: _lAccountAux._id }, { $set: { status: 'CLOSED' } } );
+            let _lTableAmountPeople: number = Tables.findOne({ _id: _pCurrentTable }).amount_people;
+            let _tablesUpdated: number = Tables.collection.update({ _id: _pCurrentTable }, { $set: { amount_people: _lTableAmountPeople - 1 } });
+            if (_tablesUpdated === 1) {
+                let _lTableAux: Table = Tables.findOne({ _id: _pCurrentTable });
+                if (_lTableAux.amount_people === 0 && _lTableAux.status === 'BUSY') {
+                    Tables.update({ _id: _pCurrentTable }, { $set: { status: 'FREE' } });
+                    let _lAccountAux: Account = Accounts.findOne({ restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, status: 'OPEN' });
+                    Accounts.update({ _id: _lAccountAux._id }, { $set: { status: 'CLOSED' } });
+                }
             }
-            UserDetails.update( { _id: _pUserDetailId }, { $set: { current_restaurant: '', current_table: '' } } );
+            UserDetails.update({ _id: _pUserDetailId }, { $set: { current_restaurant: '', current_table: '' } });
         },
 
-        restaurantExitWithOrdersInInvalidStatus: function( _pUserId:string, _pCurrentRestaurant:string, _pCurrentTable:string ){
-            Orders.find( { creation_user: _pUserId, restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, 
-                           status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED' ] } } ).fetch().forEach( ( order ) => {
-                                Orders.update( { _id: order._id }, { $set: { markedToCancel: true, modification_date: new Date() } } );
+        restaurantExitWithOrdersInInvalidStatus: function (_pUserId: string, _pCurrentRestaurant: string, _pCurrentTable: string) {
+            Orders.find({
+                creation_user: _pUserId, restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable,
+                status: { $in: ['ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED'] }
+            }).fetch().forEach((order) => {
+                Orders.update({ _id: order._id }, { $set: { markedToCancel: true, modification_date: new Date() } });
             });
-            var data : any = {
-                restaurants : _pCurrentRestaurant,
-                tables : _pCurrentTable,
-                user : _pUserId,
-                waiter_id : "",
-                status : "waiting",
-                type : 'USER_EXIT_TABLE',
+            var data: any = {
+                restaurants: _pCurrentRestaurant,
+                tables: _pCurrentTable,
+                user: _pUserId,
+                waiter_id: "",
+                status: "waiting",
+                type: 'USER_EXIT_TABLE',
             }
-            let isWaiterCalls:number = WaiterCallDetails.find( { restaurant_id : _pCurrentRestaurant, table_id : _pCurrentTable, 
-                                       type : 'USER_EXIT_TABLE', status: { $in : [ 'waiting', 'completed'] } } ).fetch().length;
-            if( isWaiterCalls === 0 ){            
-                Meteor.call( 'findQueueByRestaurant', data );
+            let isWaiterCalls: number = WaiterCallDetails.find({
+                restaurant_id: _pCurrentRestaurant, table_id: _pCurrentTable,
+                type: 'USER_EXIT_TABLE', status: { $in: ['waiting', 'completed'] }
+            }).fetch().length;
+            if (isWaiterCalls === 0) {
+                Meteor.call('findQueueByRestaurant', data);
             }
         },
 
-        cancelOrderToRestaurantExit: function( _pOrder: Order, _pCall : WaiterCallDetail, _pWaiterId: string ){
-            if( _pOrder.status === 'ORDER_STATUS.PREPARED' && _pOrder.markedToCancel === true ){
-                Orders.update( { _id: _pOrder._id }, { $set: { status: 'ORDER_STATUS.CANCELED', modification_date: new Date(), markedToCancel: false } } );
-            } else if( _pOrder.status === 'ORDER_STATUS.IN_PROCESS' && _pOrder.markedToCancel === true ){
-                Orders.update( { _id: _pOrder._id }, { $set: { status: 'ORDER_STATUS.CANCELED', modification_date: new Date() } } );
+        cancelOrderToRestaurantExit: function (_pOrder: Order, _pCall: WaiterCallDetail, _pWaiterId: string) {
+            if (_pOrder.status === 'ORDER_STATUS.PREPARED' && _pOrder.markedToCancel === true) {
+                Orders.update({ _id: _pOrder._id }, { $set: { status: 'ORDER_STATUS.CANCELED', modification_date: new Date(), markedToCancel: false } });
+            } else if (_pOrder.status === 'ORDER_STATUS.IN_PROCESS' && _pOrder.markedToCancel === true) {
+                Orders.update({ _id: _pOrder._id }, { $set: { status: 'ORDER_STATUS.CANCELED', modification_date: new Date() } });
             } else {
-                throw new Meteor.Error( '200' );
+                throw new Meteor.Error('200');
             }
 
-            let _lOrdersToCancel: number = Orders.find( { restaurantId: _pCall.restaurant_id, tableId: _pCall.table_id, 
-                                           markedToCancel: { $in: [ true, false ] }, status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED' ] } } ).fetch().length;
-            if( _lOrdersToCancel === 0 ){
-                Meteor.call( 'closeCall', _pCall, _pWaiterId );
+            let _lOrdersToCancel: number = Orders.find({
+                restaurantId: _pCall.restaurant_id, tableId: _pCall.table_id,
+                markedToCancel: { $in: [true, false] }, status: { $in: ['ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED'] }
+            }).fetch().length;
+            if (_lOrdersToCancel === 0) {
+                Meteor.call('closeCall', _pCall, _pWaiterId);
             }
         }
     });
