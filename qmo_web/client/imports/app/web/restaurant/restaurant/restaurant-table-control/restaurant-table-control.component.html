@@ -30,7 +30,7 @@
         </md-select>
         <div *ngFor="let restaurant of _restaurants | async">
             <md-toolbar color="primary">
-                <span>{{restaurant.name}}</span>
+                <span>{{restaurant.name}} - {{getRestaurantUsers(restaurant._id)}} Usuarios</span>
             </md-toolbar>
             <table class="responsive-table centered striped" width="100%" style="border:0.5px solid; border-color: lightgrey; margin-bottom: 20px">
                 <tbody>

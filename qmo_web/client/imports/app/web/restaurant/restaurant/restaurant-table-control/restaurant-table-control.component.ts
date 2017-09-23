@@ -72,6 +72,7 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
                 this._tables = Tables.find( { status: 'BUSY' } ).zone();
             });
         });
+        this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByAdminUser', this._user ).subscribe();
         this._accountsSub = MeteorObservable.subscribe( 'getAccountsByAdminUser', this._user ).subscribe();
         this._ordersSub = MeteorObservable.subscribe( 'getOrdersByAdminUser', this._user, ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED', 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM'] ).subscribe();
         this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByUserId', this._user ).subscribe();
@@ -138,6 +139,14 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
      */
     getTableOrders( _pRestaurantId:string, _pTableId:string ):number{
         return Orders.collection.find( { restaurantId: _pRestaurantId, tableId: _pTableId } ).count();
+    }
+
+    /**
+     * Get Users in restaurant
+     * @param {string} _pRestaurantId
+     */
+    getRestaurantUsers( _pRestaurantId:string ):number{
+        return UserDetails.collection.find( { current_restaurant: _pRestaurantId } ).count();
     }
 
     /**
