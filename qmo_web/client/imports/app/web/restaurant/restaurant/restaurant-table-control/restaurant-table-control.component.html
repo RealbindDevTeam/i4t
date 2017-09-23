@@ -7,14 +7,14 @@
             </div>
             <div class="card_initial-copy">
             <div class="card_initial-tagline">
-                {{'SECTIONS.THERE_NOT_RESTAURANTS' | translate}}
+                No se encuentran restaurantes
             </div>
             <div class="card_initial-additional-links">
-                {{'SECTIONS.MESSAGE' | translate}}
+                Crea un restaurante
             </div>
             </div>
             <div class="card_initial-button">
-            <button md-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
+            <button md-raised-button (click)="goToAddRestaurant()">Crear Restaurante</button>
             </div>
         </div>
         </div>
@@ -25,8 +25,8 @@
     <md-card-subtitle>Consulta las mesas que se encuentran ocupadas en tus restaurantes y su estado</md-card-subtitle>
     <md-card-content>
         <md-select placeholder="Seleccione Restaurante" style="width: 95%; margin-bottom: 30px">
-            <md-option (click)="changeRestaurantFilter(All);" value="All">Todos los Restaurantes</md-option>
-            <md-option *ngFor="let rest of _restaurants | async" (click)="changeRestaurantFilter(rest._id);" value="{{rest._id}}">{{rest.name}}</md-option>
+            <md-option (click)="changeRestaurantFilter('All');" value="All">Todos los Restaurantes</md-option>
+            <md-option *ngFor="let rest of _restaurantsFilter | async" (click)="changeRestaurantFilter(rest._id);" value="{{rest._id}}">{{rest.name}}</md-option>
         </md-select>
         <div *ngFor="let restaurant of _restaurants | async">
             <md-toolbar color="primary">

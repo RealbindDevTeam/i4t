@@ -36,6 +36,7 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
     private _currenciesSub          : Subscription;
 
     private _restaurants            : Observable<Restaurant[]>;
+    private _restaurantsFilter      : Observable<Restaurant[]>;
     private _tables                 : Observable<Table[]>;
 
     private _thereAreRestaurants    : boolean = true;
@@ -62,6 +63,7 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
         this.removeSubscriptions();
         this._restaurantsSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
             this._ngZone.run( () => {
+                this._restaurantsFilter = Restaurants.find( { } ).zone();
                 this._restaurants = Restaurants.find( { } ).zone();
                 this.countRestaurants();
                 this._restaurants.subscribe( () => { this.countRestaurants(); });
@@ -106,7 +108,7 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
      * @param _pRestaurantId 
      */
     changeRestaurantFilter (_pRestaurantId:string ) {
-        if ( _pRestaurantId == 'All' ) {
+        if ( _pRestaurantId === 'All' ) {
             this._restaurants = Restaurants.find( { } ).zone();
         } else {
             this._restaurants = Restaurants.find( { _id: _pRestaurantId } ).zone();
@@ -147,6 +149,10 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
      */
     getRestaurantUsers( _pRestaurantId:string ):number{
         return UserDetails.collection.find( { current_restaurant: _pRestaurantId } ).count();
+    }
+
+    goToAddRestaurant():void{
+        this._router.navigate(['/app/restaurant-register']);
     }
 
     /**
