@@ -326,6 +326,7 @@
             "ORDER_DETAIL": "Orden entregada"
         },
         "PAYMENTS_HISTORY": {
+            "INFO" : "Para obtener los comprobantes de tus pagos, podrás hacerlo desde",
             "TITLE": "Historial de pagos",
             "TOTAL": "Total",
             "TIP": "Propina",

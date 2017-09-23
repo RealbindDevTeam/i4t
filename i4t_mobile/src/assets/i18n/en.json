@@ -326,6 +326,7 @@
             "ORDER_DETAIL": "Order detail"
         },
         "PAYMENTS_HISTORY": {
+            "INFO" : "To get proof of your payments, you can do it from",
             "TITLE": "Payments history",
             "TOTAL": "Total",
             "TIP": "Tip",
