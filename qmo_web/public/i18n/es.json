@@ -33,7 +33,7 @@
     "VALUE": "Valor",
     "SIGN_OUT": "Cerrar sesión",
     "CHOOSE_A_DATE": "Elige una fecha",
-    "UPLOAD_IMG_ERROR": "Error de carga de la imagen. Solo acepta .png, .jpg, .jpeg files.",
+    "UPLOAD_IMG_ERROR": "Error de carga de la imagen. Solo archivo .png, .jpg, .jpeg ",
     "LOGIN_SYSTEM_OPERATIONS_MSG": "Por favor inicia sesión para realizar operaciones en el sistema",
     "YES": "Sí",
     "NO": "No",
