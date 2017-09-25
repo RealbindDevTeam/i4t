@@ -250,7 +250,9 @@
             "ADDITION": "Addition",
             "PAY_DETAIL": "Payment Detail",
             "NO_PAYED": "No payed",
-            "PAYED": "Payed"
+            "PAYED": "Payed",
+            "CANCEL_PAY_OTHER_USER": "You want to cancel the order payment request",
+            "CANCELED_PAY_OTHER_USER": "Payment request of order has been canceled"
         },
         "WAITER_CALL": {
             "TITTLE": "Call waiter",
@@ -324,6 +326,7 @@
             "ORDER_DETAIL": "Order detail"
         },
         "PAYMENTS_HISTORY": {
+            "INFO" : "To get proof of your payments, you can do it from",
             "TITLE": "Payments history",
             "TOTAL": "Total",
             "TIP": "Tip",
