@@ -60,6 +60,8 @@ import { Menu } from '../pages/waiter/menu/menu';
 import { ChangeTablePage } from '../pages/customer/options/table-change/table-change';
 import { AlphanumericCodeChangePage } from '../pages/customer/options/table-change/alphanumeric-code-change/alphanumeric-code-change';
 import { RestaurantExitPage } from '../pages/customer/options/restaurant-exit/restaurant-exit';
+import { HomePage } from '../pages/customer/home/home';
+import { HomeMenu } from '../pages/customer/home-menu/home-menu';
 
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Facebook } from '@ionic-native/facebook';
@@ -119,7 +121,9 @@ export function createTranslateLoader(http: Http) {
     Menu,
     ChangeTablePage,
     AlphanumericCodeChangePage,
-    RestaurantExitPage
+    RestaurantExitPage,
+    HomePage,
+    HomeMenu
   ],
   imports: [
     BrowserModule,
@@ -130,7 +134,7 @@ export function createTranslateLoader(http: Http) {
           tabsHideOnSubPages: true
         },
         ios: {
-          tabsPlacement: 'bottom',
+          tabsPlacement: 'top',
           tabsHideOnSubPages: true,
           backButtonText: ''
         }
@@ -198,7 +202,9 @@ export function createTranslateLoader(http: Http) {
     Menu,
     ChangeTablePage,
     AlphanumericCodeChangePage,
-    RestaurantExitPage
+    RestaurantExitPage,
+    HomePage,
+    HomeMenu
   ],
   providers: [
     StatusBar,

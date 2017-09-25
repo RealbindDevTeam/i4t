@@ -384,6 +384,12 @@
             "NO_BTN": "No",
             "YES_BTN": "Yes",
             "LOADING": "Please wait..."
+        },
+        "HOME-MENU": {
+            "HOME": "Home",
+            "ORDER_RESTAURANT": "Ordering in a Restaurant",
+            "PAYMENTS_HISTORY": "Payments History",
+            "SETTINGS": "Settings"
         }
     },
     "CURRENCIES": {

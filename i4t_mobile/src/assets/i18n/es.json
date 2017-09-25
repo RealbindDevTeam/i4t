@@ -165,7 +165,7 @@
             "ADDITION_DELETED": "Adición eliminada de la orden",
             "ADDITION_EDITED": "Adición editada correctamente",
             "QUANT": "Cant.",
-            "TABLE_NOT_EXISTS": "La mesa no existe. Por favor varifica el código",
+            "TABLE_NOT_EXISTS": "La mesa no existe. Por favor verifica el código",
             "TABLE_NO_ACTIVE": "La mesa no tiene el servicio de Iurest activo. No es posible ingresar",
             "Iurest_NO_ACTIVE": "El Restaurante no tiene el servicio de Iurest activo. No es posible ingresar",
             "TABLE": "Mesa",
@@ -384,6 +384,12 @@
             "NO_BTN": "No",
             "YES_BTN": "Sí",
             "LOADING": "Por favor espera..."
+        },
+        "HOME-MENU": {
+            "HOME": "Inicio",
+            "ORDER_RESTAURANT": "Ordena en un Restaurante",
+            "PAYMENTS_HISTORY": "Historial de Pagos",
+            "SETTINGS": "Ajustes"
         }
     },
     "CURRENCIES": {

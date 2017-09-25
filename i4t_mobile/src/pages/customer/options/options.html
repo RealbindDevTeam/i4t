@@ -1,5 +1,8 @@
 <ion-header>
     <ion-navbar>
+        <button ion-button menuToggle icon-only>
+            <ion-icon name='menu'></ion-icon>
+        </button>
         <ion-title>
             <img class="nav-logo" src="assets/img/logo_iurest_1000_x_260.png">
         </ion-title>
@@ -8,21 +11,6 @@
 
 <ion-content padding>
     <ion-list *ngIf="_user" no-lines>
-        <button ion-item (click)="goToSettings()">
-            <ion-avatar item-left>
-                <img src="{{ getUsetImage() }}">
-            </ion-avatar>
-            <span *ngIf="_user.username">{{_user.username}}</span>
-            <span *ngIf="_user.profile.name">{{_user.profile.name}}</span>
-            <ion-icon showWhen="android" name="ios-arrow-forward" style="color: gray; float: right"></ion-icon>
-        </button>
-        <button ion-item (click)="goToPaymentsHistory()">
-            <ion-avatar item-left>
-                <img src="assets/img/payment-history.png">
-            </ion-avatar>
-            {{'MOBILE.PAYMENTS_HISTORY.TITLE' | translate}}
-            <ion-icon showWhen="android" name="ios-arrow-forward" style="color: gray; float: right"></ion-icon>
-        </button>
         <button ion-item (click)="goToChangeTable()">
             <ion-avatar item-left>
                 <img src="assets/img/change_table.png">
@@ -39,7 +27,3 @@
         </button> 
     </ion-list>
 </ion-content>
-
-<ion-footer padding>
-    <button ion-button block outline (click)="showComfirmSignOut()">{{'MOBILE.SETTINGS.SIGN_OUT' | translate}}</button>
-</ion-footer>
