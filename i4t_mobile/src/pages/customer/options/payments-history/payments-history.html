@@ -7,23 +7,33 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content text-wrap>
     <div *ngFor="let invoice of _invoices | async;">
+        <ion-card *ngIf="_ionicUrlParam">
+            <ion-card-content>
+                <p>{{'MOBILE.PAYMENTS_HISTORY.INFO' | translate}}
+                    <a href="{{_ionicUrlParam.value}}">iurest.com</a>
+                </p>
+            </ion-card-content>
+        </ion-card>
+
         <ion-card (click)="goToPaymentDetail(invoice)">
             <ion-card-content>
-                <div class="display-inline">
-                    <ion-avatar item-left>
-                        <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.CASH'" class="img-cards" src="assets/img/pago.png">
-                        <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.CREDIT_CARD'" class="img-cards" src="assets/img/pago_tarjeta_credito.png">
-                        <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.DEBIT_CARD'" class="img-cards" src="assets/img/pago_tarjeta_debito.png">
-                        <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.ONLINE'" class="img-cards" src="assets/img/payment-online.png">
-                    </ion-avatar>
-                    <h2 class="font-weight" style="width: 80%;">{{invoice.restaurant_name}}</h2>
-                </div>
-                <div class="display-inline card-content">
-                    <p>{{invoice.total_pay}} {{invoice.currency}}</p>
-                    <p class="date">{{invoice.creation_date | date: 'dd MMM yyyy HH:mm'}}</p>
-                </div>
+                <ion-list no-lines>
+                    <ion-item>
+                        <ion-avatar item-start>
+                            <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.CASH'" src="assets/img/pago.png">
+                            <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.CREDIT_CARD'" src="assets/img/pago_tarjeta_credito.png">
+                            <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.DEBIT_CARD'" src="assets/img/pago_tarjeta_debito.png">
+                            <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.ONLINE'" src="assets/img/payment-online.png">
+                        </ion-avatar>
+                        <h2>{{invoice.restaurant_name}}</h2>
+                    </ion-item>
+                    <ion-item>
+                        <p item-start>{{invoice.total_pay}} {{invoice.currency}}</p>
+                        <p item-end>{{invoice.creation_date | date: 'dd MMM yyyy HH:mm'}}</p>
+                    </ion-item>
+                </ion-list>
             </ion-card-content>
         </ion-card>
     </div>

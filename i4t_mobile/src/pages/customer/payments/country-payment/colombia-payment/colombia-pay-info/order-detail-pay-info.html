@@ -10,12 +10,12 @@
                         <div class="item-divider-custom"></div>
                         <ion-item>
                             <ion-thumbnail item-left>
-                                <img md-list-avatar src="assets/img/default-plate.png">
+                                <img src="assets/img/default-plate.png">
                             </ion-thumbnail>
-                            <h2 style="white-space: normal;">{{garnish.name}} ({{'MOBILE.PAYMENTS.GARNISH_FOOD' | translate }})</h2>
-                            <p style="white-space: normal;">{{'MOBILE.ORDER_TRANS.PRICE' | translate}}: {{getGarnisFoodUnitPrice(garnish)}} {{currency}}</p>
-                            <p style="white-space: normal;">{{'MOBILE.ORDERS.QUANT' | translate}} {{item.quantity}}</p>
-                            <p style="white-space: normal;">{{'MOBILE.ORDERS.TOTAL' | translate}} {{ getGarnishFoodTotalPrice(garnish, item.quantity) }} {{currency}}</p>
+                            <h2>{{garnish.name}} ({{'MOBILE.PAYMENTS.GARNISH_FOOD' | translate }})</h2>
+                            <p>{{'MOBILE.ORDER_TRANS.PRICE' | translate}}: {{getGarnisFoodUnitPrice(garnish)}} {{currency}}</p>
+                            <p>{{'MOBILE.ORDERS.QUANT' | translate}} {{item.quantity}}</p>
+                            <p>{{'MOBILE.ORDERS.TOTAL' | translate}} {{ getGarnishFoodTotalPrice(garnish, item.quantity) }} {{currency}}</p>
                         </ion-item>
                     </ng-template>
                 </span>
@@ -30,10 +30,10 @@
                             <ion-thumbnail item-left>
                                 <img src="assets/img/default-plate.png">
                             </ion-thumbnail>
-                            <h2 style="white-space: normal;">{{addition.name}} ({{'MOBILE.PAYMENTS.ADDITION' | translate }})</h2> 
-                            <p style="white-space: normal;">{{'MOBILE.ORDER_TRANS.PRICE' | translate}}: {{ getAdditionUnitPrice(addition) }} {{currency}}</p>
-                            <p style="white-space: normal;">{{'MOBILE.ORDERS.QUANT' | translate}} {{item.quantity}}</p>
-                            <p style="white-space: normal;">{{'MOBILE.ORDERS.TOTAL' | translate}} {{ getAdditionTotalPrice(addition, item.quantity) }} {{currency}}</p>
+                            <h2>{{addition.name}} ({{'MOBILE.PAYMENTS.ADDITION' | translate }})</h2> 
+                            <p>{{'MOBILE.ORDER_TRANS.PRICE' | translate}}: {{ getAdditionUnitPrice(addition) }} {{currency}}</p>
+                            <p>{{'MOBILE.ORDERS.QUANT' | translate}} {{item.quantity}}</p>
+                            <p>{{'MOBILE.ORDERS.TOTAL' | translate}} {{ getAdditionTotalPrice(addition, item.quantity) }} {{currency}}</p>
                         </ion-item>
                     </ng-template>
                 </div>

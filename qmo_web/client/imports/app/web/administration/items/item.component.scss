@@ -4,22 +4,13 @@
     right: 0;
 }
 
-.main {
-    position: absolute;
-    overflow: hidden;
-    top: 0;
-    bottom: 0;
-    height: 100%;
-    width: calc( 100% - 22px);
-    
-    .main-overflow {
-        position: relative;
-        top: 20px;
-        overflow: scroll;
-        height: calc( 100vh - 86px);
-    }
+.item-co-1 {
+    height: calc(100vh - 127px);
 }
 
+.custom-cards {
+    margin: 0 20px 20px 0 !important;
+}
 
 .cards{
     width: 240px;

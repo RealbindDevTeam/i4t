@@ -11,20 +11,18 @@
 
 <ion-content>
     <div *ngIf="_restaurants">
+        <ion-list style="margin: 0 auto; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);" text-wrap>
+            <ion-item style="background-image: url(assets/img/background_waiter.png);" class="img-header">
+                <ion-avatar item-left>
+                    <img src="{{ getRestaurantThumb( _restaurants._id ) }}">
+                </ion-avatar>
+                <h2>{{_restaurants.name}}</h2>
+                <p>{{_restaurants.address}} • {{_restaurants.phone}}</p>
+            </ion-item>
+        </ion-list>
         <ion-card>
             <ion-card-content>
-                <ion-item style="padding-left: 0">
-                    <ion-thumbnail item-left>
-                        <img src="{{getRestaurantThumb(_restaurants._id)}}">
-                    </ion-thumbnail>
-                    <h1 style="white-space:normal; font-size: 1.8rem">{{_restaurants.name}} </h1>
-                    <p *ngIf="_table">
-                        {{'MOBILE.ORDERS.TABLE' | translate}} {{_table._number}}
-                    </p>
-                </ion-item>
-
-                <ion-item-divider color="light" style="text-align: center; font-weight: bold">{{'MOBILE.ORDERS.TABLE_ORDERS' | translate}}</ion-item-divider>
-                <ion-list style="margin-bottom: 0px">
+                <ion-list style="margin-bottom: 0px" no-lines>
                     <ion-item>
                         <ion-label>{{'MOBILE.SECTIONS.SELECTION' | translate}}</ion-label>
                         <ion-select [(ngModel)]="selected" interface="action-sheet" (ionChange)="filterOrders(selected)" cancelText="{{'MOBILE.SECTIONS.CANCEL'| translate}}"

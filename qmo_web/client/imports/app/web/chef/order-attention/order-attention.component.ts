@@ -160,16 +160,12 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
         this._loading = true;
         setTimeout(() => {
           MeteorObservable.call('findQueueByRestaurant', data).subscribe(() => {
-            Orders.update( { _id: _pOrder._id }, 
-                           { $set: { status: 'ORDER_STATUS.PREPARED',
-                                     modification_user: this._user, 
-                                     modification_date: new Date() 
-                                   } 
-                           }
-                         );
+            Orders.update({ _id: _pOrder._id }, { $set: { status: 'ORDER_STATUS.PREPARED', modification_user: this._user, modification_date: new Date() } });
             this._loading = false;
             let _lMessage: string = this.itemNameTraduction( 'ORDER_ATTENTION.ORDER_PREPARED_MSG' );
             this.snackBar.open( _lMessage, '', { duration: 2500 } );
+          }, (error) => {
+            this.openDialog(this.titleMsg, '', error.reason, '', this.btnAcceptLbl, false);
           });
         }, 1500);
     }
