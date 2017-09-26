@@ -1,8 +1,8 @@
 {
     "PAYMENT_METHODS.CASH": "Efectivo",
-    "PAYMENT_METHODS.CREDIT_CARD": "Tarjeta de Crédito",
+    "PAYMENT_METHODS.CREDIT_CARD": "Tarjeta de crédito",
     "PAYMENT_METHODS.DEBIT_CARD": "Tarjeta débito",
-    "PAYMENT_METHODS.ONLINE": "Pago en Línea",
+    "PAYMENT_METHODS.ONLINE": "Pago en línea",
     "ORDER_STATUS": {
         "REGISTERED": "Registrado",
         "IN_PROCESS": "En proceso",
