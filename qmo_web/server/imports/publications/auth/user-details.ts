@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { UserDetails } from '../../../../both/collections/auth/user-detail.collection';
 import { UserDetail } from '../../../../both/models/auth/user-detail.model';
+import { Restaurants } from '../../../../both/collections/restaurant/restaurant.collection';
 
 Meteor.publish('getUsersDetails', function () {
     return UserDetails.find({});
@@ -22,4 +23,16 @@ Meteor.publish('getUserDetailsByCurrentTable', function(_restaurantId : string, 
  */
 Meteor.publish( 'getUsersByRestaurantsId', function( _pRestaurantsId: String[] ){
     return UserDetails.find( { current_restaurant: { $in: _pRestaurantsId } } );
+});
+
+/**
+ * Meteor publication return users details by admin user
+ */
+Meteor.publish( 'getUserDetailsByAdminUser', function( _userId:string ){
+    check( _userId, String );
+    let _lRestaurantsId:string[] = [];
+    Restaurants.collection.find( { creation_user: _userId } ).fetch().forEach( ( restaurant ) => {
+        _lRestaurantsId.push( restaurant._id );
+    });
+    return UserDetails.find( { current_restaurant: { $in: _lRestaurantsId } } );
 });

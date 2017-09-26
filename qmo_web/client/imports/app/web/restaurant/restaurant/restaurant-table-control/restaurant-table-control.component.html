@@ -1,0 +1,50 @@
+<md-card md-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
+    <md-card-content>
+        <div class="card_initial">
+        <div class="card_initial has-image">
+            <div class="card_initial-image-container">
+            <img class="card_initial-image" src="/images/sections.png" />
+            </div>
+            <div class="card_initial-copy">
+            <div class="card_initial-tagline">
+                No se encuentran restaurantes
+            </div>
+            <div class="card_initial-additional-links">
+                Crea un restaurante
+            </div>
+            </div>
+            <div class="card_initial-button">
+            <button md-raised-button (click)="goToAddRestaurant()">Crear Restaurante</button>
+            </div>
+        </div>
+        </div>
+    </md-card-content>
+</md-card>
+<md-card *ngIf="_thereAreRestaurants">
+    <md-card-title>Control de Mesas</md-card-title>
+    <md-card-subtitle>Consulta las mesas que se encuentran ocupadas en tus restaurantes y su estado</md-card-subtitle>
+    <md-card-content>
+        <md-select placeholder="Seleccione Restaurante" style="width: 95%; margin-bottom: 30px">
+            <md-option (click)="changeRestaurantFilter('All');" value="All">Todos los Restaurantes</md-option>
+            <md-option *ngFor="let rest of _restaurantsFilter | async" (click)="changeRestaurantFilter(rest._id);" value="{{rest._id}}">{{rest.name}}</md-option>
+        </md-select>
+        <div *ngFor="let restaurant of _restaurants | async">
+            <md-toolbar color="primary">
+                <span>{{restaurant.name}} - {{getRestaurantUsers(restaurant._id)}} Usuarios</span>
+            </md-toolbar>
+            <table class="responsive-table centered striped" width="100%" style="border:0.5px solid; border-color: lightgrey; margin-bottom: 20px">
+                <tbody>
+                    <tr *ngFor="let table of _tables | async">
+                        <td *ngIf="table.restaurantId === restaurant._id">Mesa # {{table._number}}</td>
+                        <td *ngIf="table.restaurantId === restaurant._id">{{ table.amount_people }} Usuarios</td>
+                        <td *ngIf="table.restaurantId === restaurant._id">{{ getTableOrders(restaurant._id,table._id) }} Ordenes</td>
+                        <td *ngIf="table.restaurantId === restaurant._id">{{ getPaymentAccount(restaurant._id,table._id) }} {{ getRestaurantCurrency(restaurant.currencyId) }} en la Cuenta</td>
+                        <td *ngIf="table.restaurantId === restaurant._id">
+                            <button md-raised-button class="primary-button">Ver Detalle</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </md-card-content>
+</md-card>

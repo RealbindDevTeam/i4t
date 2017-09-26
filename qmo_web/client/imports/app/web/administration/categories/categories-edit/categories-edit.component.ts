@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -22,7 +22,7 @@ import style from './categories-edit.component.scss';
     styles: [ style ],
     providers:[ UserLanguageService ]
 })
-export class CategoriesEditComponent implements OnInit, OnDestroy {
+export class CategoriesEditComponent implements OnInit {
 
     private _user = Meteor.userId();
     public _categoryToEdit          : Category;
@@ -32,8 +32,8 @@ export class CategoriesEditComponent implements OnInit, OnDestroy {
     private _categories             : Observable<Category[]>;
     private _sections               : Observable<Section[]>;
 
-    private _categoriesSub          : Subscription;    
-    private _sectionsSub            : Subscription;
+    //private _categoriesSub          : Subscription;    
+    //private _sectionsSub            : Subscription;
 
     private _categorySection        : string;
     private titleMsg                : string;
@@ -65,7 +65,7 @@ export class CategoriesEditComponent implements OnInit, OnDestroy {
      * Implements ngOnInit function
      */
     ngOnInit(){
-        this.removeSubscriptions();
+        //this.removeSubscriptions();
         this._editForm = this._formBuilder.group({
             editId: [ this._categoryToEdit._id ],
             editName: [ this._categoryToEdit.name, Validators.required ],
@@ -73,7 +73,9 @@ export class CategoriesEditComponent implements OnInit, OnDestroy {
             editSection: [ this._categoryToEdit.section ]
         });
         this._categorySection = this._categoryToEdit.section;
-        this._categoriesSub = MeteorObservable.subscribe( 'categories', this._user ).subscribe( () => {
+        this._categories = Categories.find( { } ).zone();
+        this._sections = Sections.find( { } ).zone();
+        /*this._categoriesSub = MeteorObservable.subscribe( 'categories', this._user ).subscribe( () => {
             this._ngZone.run( () => {
                 this._categories = Categories.find( { } ).zone();
             });
@@ -82,16 +84,16 @@ export class CategoriesEditComponent implements OnInit, OnDestroy {
             this._ngZone.run( () => {
                 this._sections = Sections.find( { } ).zone();
             });
-        });
+        });*/
     }
 
     /**
      * Remove all subscriptions
-     */
+     
     removeSubscriptions():void{
         if( this._categoriesSub ){ this._categoriesSub.unsubscribe(); }
         if( this._sectionsSub ){ this._sectionsSub.unsubscribe(); }
-    }
+    }*/
 
     /**
      * Function to edit Category
@@ -173,8 +175,8 @@ export class CategoriesEditComponent implements OnInit, OnDestroy {
 
     /**
      * Implements ngOnDestroy function
-     */
+     
     ngOnDestroy(){
         this.removeSubscriptions();
-    }
+    }*/
 }

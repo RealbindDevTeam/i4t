@@ -217,7 +217,8 @@
             "RESTAURANTS": "Restaurants",
             "TABLES": "Tables Search",
             "COLLABORATORS": "Collaborators",
-            "MONTHLY_CONFIG": "Monthly config"
+            "MONTHLY_CONFIG": "Monthly config",
+            "TABLE_CONTROL": "Tables Control"
         },
         "PAYMENTS": {
             "PAYMENTS": "Payments",
@@ -849,7 +850,9 @@
         "ADDITION": "Addition(s)",
         "NO_ORDERS": "No orders yet to be prepared",
         "DELETE_ORDER": "DELETE ORDER",
-        "ORDER_CANCELED_MSG": "A waiter has canceled the customer order"
+        "ORDER_CANCELED_MSG": "A waiter has canceled the customer order",
+        "ORDER_PREPARED_MSG": "Order Prepared",
+        "ORDER_DELETED": "Order Deleted"
     },
     "FINANCIAL_INFO": {
         "COLOMBIA": {
@@ -1174,7 +1177,7 @@
     },
     "ADMIN_DASHBOARD": {
         "TITLE": "Welcome to Iurest",
-        "CARD_CONTENT": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "CARD_CONTENT": "Your best investment. Enjoy a new experience with the tool that will grow your business.",
         "LINK": {
             "NEW_RESTAURANT": "Restaurants",
             "NEW_COLLABORATOR": "Collaborators",

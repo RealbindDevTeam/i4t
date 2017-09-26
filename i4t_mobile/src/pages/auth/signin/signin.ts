@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
 import { Meteor } from 'meteor/meteor';
-import { TabsPage } from '../../customer/tabs/tabs';
+import { HomeMenu } from '../../customer/home-menu/home-menu';
 import { Menu } from '../../waiter/menu/menu';
 
 import { Facebook } from '@ionic-native/facebook';
@@ -80,7 +80,7 @@ export class SigninComponent implements OnInit {
                                 if (role == "400") {
                                     //role 400 customer
                                     //this.addUserDevice();
-                                    this.navCtrl.push(TabsPage);
+                                    this.navCtrl.push(HomeMenu);
                                 } else if (role == "200") {
                                     MeteorObservable.call('validateRestaurantIsActive').subscribe((_restaruantActive) => {
                                         if (_restaruantActive) {
@@ -167,7 +167,7 @@ export class SigninComponent implements OnInit {
                         current_table: ''
                     });
                 }
-                this.navCtrl.push(TabsPage);
+                this.navCtrl.push(HomeMenu);
             }, (error) => {
                 this.error;
             });
