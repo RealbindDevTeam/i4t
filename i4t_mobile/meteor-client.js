@@ -3822,7 +3822,7 @@ __meteor_runtime_config__ = {
             install("callback-hook"); // 47
             install("reactive-var"); // 48
             install("base64"); // 49
-            install("ejson"); // 50
+            install("ejson", "meteor/ejson/ejson.js"); // 50
             install("check", "meteor/check/match.js"); // 51
             install("retry"); // 52
             install("id-map"); // 53
@@ -19073,778 +19073,982 @@ __meteor_runtime_config__ = {
   var Meteor = Package.meteor.Meteor;
   var global = Package.meteor.global;
   var meteorEnv = Package.meteor.meteorEnv;
-  var _ = Package.underscore._;
   var Base64 = Package.base64.Base64;
+  var meteorInstall = Package.modules.meteorInstall;
+  var meteorBabelHelpers = Package['babel-runtime'].meteorBabelHelpers;
+  var Promise = Package.promise.Promise;
+  var Symbol = Package['ecmascript-runtime-client'].Symbol;
+  var Map = Package['ecmascript-runtime-client'].Map;
+  var Set = Package['ecmascript-runtime-client'].Set;
 
   /* Package-scope variables */
-  var EJSON, EJSONTest;
+  var v, EJSON;
 
-  (function () {
+  var _require2 = meteorInstall({ "node_modules": { "meteor": { "ejson": { "ejson.js": ["babel-runtime/helpers/typeof", "./stringify", function (_require, _exports, _module) {
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                                                                                                   //
-    // packages/ejson/ejson.js                                                                                           //
-    //                                                                                                                   //
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //
-    /**                                                                                                                  // 1
-     * @namespace                                                                                                        // 2
-     * @summary Namespace for EJSON functions                                                                            // 3
-     */ // 4
-    EJSON = {}; // 5
-    EJSONTest = {}; // 6
-    // 7
-    // 8
-    // 9
-    // Custom type interface definition                                                                                  // 10
-    /**                                                                                                                  // 11
-     * @class CustomType                                                                                                 // 12
-     * @instanceName customType                                                                                          // 13
-     * @memberOf EJSON                                                                                                   // 14
-     * @summary The interface that a class must satisfy to be able to become an                                          // 15
-     * EJSON custom type via EJSON.addType.                                                                              // 16
-     */ // 17
-    // 18
-    /**                                                                                                                  // 19
-     * @function typeName                                                                                                // 20
-     * @memberOf EJSON.CustomType                                                                                        // 21
-     * @summary Return the tag used to identify this type.  This must match the tag used to register this type with [`EJSON.addType`](#ejson_add_type).
-     * @locus Anywhere                                                                                                   // 23
-     * @instance                                                                                                         // 24
-     */ // 25
-    // 26
-    /**                                                                                                                  // 27
-     * @function toJSONValue                                                                                             // 28
-     * @memberOf EJSON.CustomType                                                                                        // 29
-     * @summary Serialize this instance into a JSON-compatible value.                                                    // 30
-     * @locus Anywhere                                                                                                   // 31
-     * @instance                                                                                                         // 32
-     */ // 33
-    // 34
-    /**                                                                                                                  // 35
-     * @function clone                                                                                                   // 36
-     * @memberOf EJSON.CustomType                                                                                        // 37
-     * @summary Return a value `r` such that `this.equals(r)` is true, and modifications to `r` do not affect `this` and vice versa.
-     * @locus Anywhere                                                                                                   // 39
-     * @instance                                                                                                         // 40
-     */ // 41
-    // 42
-    /**                                                                                                                  // 43
-     * @function equals                                                                                                  // 44
-     * @memberOf EJSON.CustomType                                                                                        // 45
-     * @summary Return `true` if `other` has a value equal to `this`; `false` otherwise.                                 // 46
-     * @locus Anywhere                                                                                                   // 47
-     * @param {Object} other Another object to compare this to.                                                          // 48
-     * @instance                                                                                                         // 49
-     */ // 50
-    // 51
-    // 52
-    var customTypes = {}; // 53
-    // Add a custom type, using a method of your choice to get to and                                                    // 54
-    // from a basic JSON-able representation.  The factory argument                                                      // 55
-    // is a function of JSON-able --> your object                                                                        // 56
-    // The type you add must have:                                                                                       // 57
-    // - A toJSONValue() method, so that Meteor can serialize it                                                         // 58
-    // - a typeName() method, to show how to look it up in our type table.                                               // 59
-    // It is okay if these methods are monkey-patched on.                                                                // 60
-    // EJSON.clone will use toJSONValue and the given factory to produce                                                 // 61
-    // a clone, but you may specify a method clone() that will be                                                        // 62
-    // used instead.                                                                                                     // 63
-    // Similarly, EJSON.equals will use toJSONValue to make comparisons,                                                 // 64
-    // but you may provide a method equals() instead.                                                                    // 65
-    /**                                                                                                                  // 66
-     * @summary Add a custom datatype to EJSON.                                                                          // 67
-     * @locus Anywhere                                                                                                   // 68
-     * @param {String} name A tag for your custom type; must be unique among custom data types defined in your project, and must match the result of your type's `typeName` method.
-     * @param {Function} factory A function that deserializes a JSON-compatible value into an instance of your type.  This should match the serialization performed by your type's `toJSONValue` method.
-     */ // 71
-    EJSON.addType = function (name, factory) {
-      // 72
-      if (_.has(customTypes, name)) // 73
-        throw new Error("Type " + name + " already present"); // 74
-      customTypes[name] = factory; // 75
-    }; // 76
-    // 77
-    var isInfOrNan = function (obj) {
-      // 78
-      return _.isNaN(obj) || obj === Infinity || obj === -Infinity; // 79
-    }; // 80
-    // 81
-    var builtinConverters = [// 82
-    { // Date                                                                                                          // 83
-      matchJSONValue: function (obj) {
-        // 84
-        return _.has(obj, '$date') && _.size(obj) === 1; // 85
-      }, // 86
-      matchObject: function (obj) {
-        // 87
-        return obj instanceof Date; // 88
-      }, // 89
-      toJSONValue: function (obj) {
-        // 90
-        return { $date: obj.getTime() }; // 91
-      }, // 92
-      fromJSONValue: function (obj) {
-        // 93
-        return new Date(obj.$date); // 94
-      } // 95
-    }, // 96
-    { // NaN, Inf, -Inf. (These are the only objects with typeof !== 'object'                                          // 97
-      // which we match.)                                                                                              // 98
-      matchJSONValue: function (obj) {
-        // 99
-        return _.has(obj, '$InfNaN') && _.size(obj) === 1; // 100
-      }, // 101
-      matchObject: isInfOrNan, // 102
-      toJSONValue: function (obj) {
-        // 103
-        var sign; // 104
-        if (_.isNaN(obj)) // 105
-          sign = 0; // 106
-        else if (obj === Infinity) // 107
-            sign = 1; // 108
-          else // 109
-            sign = -1; // 110
-        return { $InfNaN: sign }; // 111
-      }, // 112
-      fromJSONValue: function (obj) {
-        // 113
-        return obj.$InfNaN / 0; // 114
-      } // 115
-    }, // 116
-    { // Binary                                                                                                        // 117
-      matchJSONValue: function (obj) {
-        // 118
-        return _.has(obj, '$binary') && _.size(obj) === 1; // 119
-      }, // 120
-      matchObject: function (obj) {
-        // 121
-        return typeof Uint8Array !== 'undefined' && obj instanceof Uint8Array // 122
-        || obj && _.has(obj, '$Uint8ArrayPolyfill'); // 123
-      }, // 124
-      toJSONValue: function (obj) {
-        // 125
-        return { $binary: Base64.encode(obj) }; // 126
-      }, // 127
-      fromJSONValue: function (obj) {
-        // 128
-        return Base64.decode(obj.$binary); // 129
-      } // 130
-    }, // 131
-    { // Escaping one level                                                                                            // 132
-      matchJSONValue: function (obj) {
-        // 133
-        return _.has(obj, '$escape') && _.size(obj) === 1; // 134
-      }, // 135
-      matchObject: function (obj) {
-        // 136
-        if (_.isEmpty(obj) || _.size(obj) > 2) {
-          // 137
-          return false; // 138
-        } // 139
-        return _.any(builtinConverters, function (converter) {
-          // 140
-          return converter.matchJSONValue(obj); // 141
-        }); // 142
-      }, // 143
-      toJSONValue: function (obj) {
-        // 144
-        var newObj = {}; // 145
-        _.each(obj, function (value, key) {
-          // 146
-          newObj[key] = EJSON.toJSONValue(value); // 147
-        }); // 148
-        return { $escape: newObj }; // 149
-      }, // 150
-      fromJSONValue: function (obj) {
-        // 151
-        var newObj = {}; // 152
-        _.each(obj.$escape, function (value, key) {
-          // 153
-          newObj[key] = EJSON.fromJSONValue(value); // 154
-        }); // 155
-        return newObj; // 156
-      } // 157
-    }, // 158
-    { // Custom                                                                                                        // 159
-      matchJSONValue: function (obj) {
-        // 160
-        return _.has(obj, '$type') && _.has(obj, '$value') && _.size(obj) === 2; // 161
-      }, // 162
-      matchObject: function (obj) {
-        // 163
-        return EJSON._isCustomType(obj); // 164
-      }, // 165
-      toJSONValue: function (obj) {
-        // 166
-        var jsonValue = Meteor._noYieldsAllowed(function () {
-          // 167
-          return obj.toJSONValue(); // 168
-        }); // 169
-        return { $type: obj.typeName(), $value: jsonValue }; // 170
-      }, // 171
-      fromJSONValue: function (obj) {
-        // 172
-        var typeName = obj.$type; // 173
-        if (!_.has(customTypes, typeName)) // 174
-          throw new Error("Custom EJSON type " + typeName + " is not defined"); // 175
-        var converter = customTypes[typeName]; // 176
-        return Meteor._noYieldsAllowed(function () {
-          // 177
-          return converter(obj.$value); // 178
-        }); // 179
-      } // 180
-      // 181
-    }]; // 182
-    // 183
-    EJSON._isCustomType = function (obj) {
-      // 184
-      return obj && // 185
-      typeof obj.toJSONValue === 'function' && // 186
-      typeof obj.typeName === 'function' && // 187
-      _.has(customTypes, obj.typeName()); // 188
-    }; // 189
-    // 190
-    EJSON._getTypes = function () {
-      // 191
-      return customTypes; // 192
-    }; // 193
-    // 194
-    EJSON._getConverters = function () {
-      // 195
-      return builtinConverters; // 196
-    }; // 197
-    // 198
-    // for both arrays and objects, in-place modification.                                                               // 199
-    var adjustTypesToJSONValue = // 200
-    EJSON._adjustTypesToJSONValue = function (obj) {
-      // 201
-      // Is it an atom that we need to adjust?                                                                           // 202
-      if (obj === null) // 203
-        return null; // 204
-      var maybeChanged = toJSONValueHelper(obj); // 205
-      if (maybeChanged !== undefined) // 206
-        return maybeChanged; // 207
-      // 208
-      // Other atoms are unchanged.                                                                                      // 209
-      if (typeof obj !== 'object') // 210
-        return obj; // 211
-      // 212
-      // Iterate over array or object structure.                                                                         // 213
-      _.each(obj, function (value, key) {
-        // 214
-        if (typeof value !== 'object' && value !== undefined && // 215
-        !isInfOrNan(value)) // 216
-          return; // continue                                                                                            // 217
-        // 218
-        var changed = toJSONValueHelper(value); // 219
-        if (changed) {
-          // 220
-          obj[key] = changed; // 221
-          return; // on to the next key                                                                                  // 222
-        } // 223
-        // if we get here, value is an object but not adjustable                                                         // 224
-        // at this level.  recurse.                                                                                      // 225
-        adjustTypesToJSONValue(value); // 226
-      }); // 227
-      return obj; // 228
-    }; // 229
-    // 230
-    // Either return the JSON-compatible version of the argument, or undefined (if                                       // 231
-    // the item isn't itself replaceable, but maybe some fields in it are)                                               // 232
-    var toJSONValueHelper = function (item) {
-      // 233
-      for (var i = 0; i < builtinConverters.length; i++) {
-        // 234
-        var converter = builtinConverters[i]; // 235
-        if (converter.matchObject(item)) {
-          // 236
-          return converter.toJSONValue(item); // 237
-        } // 238
-      } // 239
-      return undefined; // 240
-    }; // 241
-    // 242
-    /**                                                                                                                  // 243
-     * @summary Serialize an EJSON-compatible value into its plain JSON representation.                                  // 244
-     * @locus Anywhere                                                                                                   // 245
-     * @param {EJSON} val A value to serialize to plain JSON.                                                            // 246
-     */ // 247
-    EJSON.toJSONValue = function (item) {
-      // 248
-      var changed = toJSONValueHelper(item); // 249
-      if (changed !== undefined) // 250
-        return changed; // 251
-      if (typeof item === 'object') {
-        // 252
-        item = EJSON.clone(item); // 253
-        adjustTypesToJSONValue(item); // 254
-      } // 255
-      return item; // 256
-    }; // 257
-    // 258
-    // for both arrays and objects. Tries its best to just                                                               // 259
-    // use the object you hand it, but may return something                                                              // 260
-    // different if the object you hand it itself needs changing.                                                        // 261
-    //                                                                                                                   // 262
-    var adjustTypesFromJSONValue = // 263
-    EJSON._adjustTypesFromJSONValue = function (obj) {
-      // 264
-      if (obj === null) // 265
-        return null; // 266
-      var maybeChanged = fromJSONValueHelper(obj); // 267
-      if (maybeChanged !== obj) // 268
-        return maybeChanged; // 269
-      // 270
-      // Other atoms are unchanged.                                                                                      // 271
-      if (typeof obj !== 'object') // 272
-        return obj; // 273
-      // 274
-      _.each(obj, function (value, key) {
-        // 275
-        if (typeof value === 'object') {
-          // 276
-          var changed = fromJSONValueHelper(value); // 277
-          if (value !== changed) {
-            // 278
-            obj[key] = changed; // 279
-            return; // 280
-          } // 281
-          // if we get here, value is an object but not adjustable                                                       // 282
-          // at this level.  recurse.                                                                                    // 283
-          adjustTypesFromJSONValue(value); // 284
-        } // 285
-      }); // 286
-      return obj; // 287
-    }; // 288
-    // 289
-    // Either return the argument changed to have the non-json                                                           // 290
-    // rep of itself (the Object version) or the argument itself.                                                        // 291
-    // 292
-    // DOES NOT RECURSE.  For actually getting the fully-changed value, use                                              // 293
-    // EJSON.fromJSONValue                                                                                               // 294
-    var fromJSONValueHelper = function (value) {
-      // 295
-      if (typeof value === 'object' && value !== null) {
-        // 296
-        if (_.size(value) <= 2 // 297
-        && _.all(value, function (v, k) {
-          // 298
-          return typeof k === 'string' && k.substr(0, 1) === '$'; // 299
-        })) {
-          // 300
-          for (var i = 0; i < builtinConverters.length; i++) {
-            // 301
-            var converter = builtinConverters[i]; // 302
-            if (converter.matchJSONValue(value)) {
-              // 303
-              return converter.fromJSONValue(value); // 304
-            } // 305
-          } // 306
-        } // 307
-      } // 308
-      return value; // 309
-    }; // 310
-    // 311
-    /**                                                                                                                  // 312
-     * @summary Deserialize an EJSON value from its plain JSON representation.                                           // 313
-     * @locus Anywhere                                                                                                   // 314
-     * @param {JSONCompatible} val A value to deserialize into EJSON.                                                    // 315
-     */ // 316
-    EJSON.fromJSONValue = function (item) {
-      // 317
-      var changed = fromJSONValueHelper(item); // 318
-      if (changed === item && typeof item === 'object') {
-        // 319
-        item = EJSON.clone(item); // 320
-        adjustTypesFromJSONValue(item); // 321
-        return item; // 322
-      } else {
-        // 323
-        return changed; // 324
-      } // 325
-    }; // 326
-    // 327
-    /**                                                                                                                  // 328
-     * @summary Serialize a value to a string.                                                                           // 329
-                                                                                                                         // 330
-    For EJSON values, the serialization fully represents the value. For non-EJSON values, serializes the same way as `JSON.stringify`.
-     * @locus Anywhere                                                                                                   // 332
-     * @param {EJSON} val A value to stringify.                                                                          // 333
-     * @param {Object} [options]                                                                                         // 334
-     * @param {Boolean | Integer | String} options.indent Indents objects and arrays for easy readability.  When `true`, indents by 2 spaces; when an integer, indents by that number of spaces; and when a string, uses the string as the indentation pattern.
-     * @param {Boolean} options.canonical When `true`, stringifies keys in an object in sorted order.                    // 336
-     */ // 337
-    EJSON.stringify = function (item, options) {
-      // 338
-      var json = EJSON.toJSONValue(item); // 339
-      if (options && (options.canonical || options.indent)) {
-        // 340
-        return EJSON._canonicalStringify(json, options); // 341
-      } else {
-        // 342
-        return JSON.stringify(json); // 343
-      } // 344
-    }; // 345
-    // 346
-    /**                                                                                                                  // 347
-     * @summary Parse a string into an EJSON value. Throws an error if the string is not valid EJSON.                    // 348
-     * @locus Anywhere                                                                                                   // 349
-     * @param {String} str A string to parse into an EJSON value.                                                        // 350
-     */ // 351
-    EJSON.parse = function (item) {
-      // 352
-      if (typeof item !== 'string') // 353
-        throw new Error("EJSON.parse argument should be a string"); // 354
-      return EJSON.fromJSONValue(JSON.parse(item)); // 355
-    }; // 356
-    // 357
-    /**                                                                                                                  // 358
-     * @summary Returns true if `x` is a buffer of binary data, as returned from [`EJSON.newBinary`](#ejson_new_binary).
-     * @param {Object} x The variable to check.                                                                          // 360
-     * @locus Anywhere                                                                                                   // 361
-     */ // 362
-    EJSON.isBinary = function (obj) {
-      // 363
-      return !!(typeof Uint8Array !== 'undefined' && obj instanceof Uint8Array || // 364
-      obj && obj.$Uint8ArrayPolyfill); // 365
-    }; // 366
-    // 367
-    /**                                                                                                                  // 368
-     * @summary Return true if `a` and `b` are equal to each other.  Return false otherwise.  Uses the `equals` method on `a` if present, otherwise performs a deep comparison.
-     * @locus Anywhere                                                                                                   // 370
-     * @param {EJSON} a                                                                                                  // 371
-     * @param {EJSON} b                                                                                                  // 372
-     * @param {Object} [options]                                                                                         // 373
-     * @param {Boolean} options.keyOrderSensitive Compare in key sensitive order, if supported by the JavaScript implementation.  For example, `{a: 1, b: 2}` is equal to `{b: 2, a: 1}` only when `keyOrderSensitive` is `false`.  The default is `false`.
-     */ // 375
-    EJSON.equals = function (a, b, options) {
-      // 376
-      var i; // 377
-      var keyOrderSensitive = !!(options && options.keyOrderSensitive); // 378
-      if (a === b) // 379
-        return true; // 380
-      if (_.isNaN(a) && _.isNaN(b)) // 381
-        return true; // This differs from the IEEE spec for NaN equality, b/c we don't want                              // 382
-      // anything ever with a NaN to be poisoned from becoming equal to anything.                         // 383
-      if (!a || !b) // if either one is falsy, they'd have to be === to be equal                                         // 384
-        return false; // 385
-      if (!(typeof a === 'object' && typeof b === 'object')) // 386
-        return false; // 387
-      if (a instanceof Date && b instanceof Date) // 388
-        return a.valueOf() === b.valueOf(); // 389
-      if (EJSON.isBinary(a) && EJSON.isBinary(b)) {
-        // 390
-        if (a.length !== b.length) // 391
-          return false; // 392
-        for (i = 0; i < a.length; i++) {
-          // 393
-          if (a[i] !== b[i]) // 394
-            return false; // 395
-        } // 396
-        return true; // 397
-      } // 398
-      if (typeof a.equals === 'function') // 399
-        return a.equals(b, options); // 400
-      if (typeof b.equals === 'function') // 401
-        return b.equals(a, options); // 402
-      if (a instanceof Array) {
-        // 403
-        if (!(b instanceof Array)) // 404
-          return false; // 405
-        if (a.length !== b.length) // 406
-          return false; // 407
-        for (i = 0; i < a.length; i++) {
-          // 408
-          if (!EJSON.equals(a[i], b[i], options)) // 409
-            return false; // 410
-        } // 411
-        return true; // 412
-      } // 413
-      // fallback for custom types that don't implement their own equals                                                 // 414
-      switch (EJSON._isCustomType(a) + EJSON._isCustomType(b)) {// 415
-        case 1:
-          return false; // 416
-        case 2:
-          return EJSON.equals(EJSON.toJSONValue(a), EJSON.toJSONValue(b)); // 417
-      } // 418
-      // fall back to structural equality of objects                                                                     // 419
-      var ret; // 420
-      if (keyOrderSensitive) {
-        // 421
-        var bKeys = []; // 422
-        _.each(b, function (val, x) {
-          // 423
-          bKeys.push(x); // 424
-        }); // 425
-        i = 0; // 426
-        ret = _.all(a, function (val, x) {
-          // 427
-          if (i >= bKeys.length) {
-            // 428
-            return false; // 429
-          } // 430
-          if (x !== bKeys[i]) {
-            // 431
-            return false; // 432
-          } // 433
-          if (!EJSON.equals(val, b[bKeys[i]], options)) {
-            // 434
-            return false; // 435
-          } // 436
-          i++; // 437
-          return true; // 438
-        }); // 439
-        return ret && i === bKeys.length; // 440
-      } else {
-        // 441
-        i = 0; // 442
-        ret = _.all(a, function (val, key) {
-          // 443
-          if (!_.has(b, key)) {
-            // 444
-            return false; // 445
-          } // 446
-          if (!EJSON.equals(val, b[key], options)) {
-            // 447
-            return false; // 448
-          } // 449
-          i++; // 450
-          return true; // 451
-        }); // 452
-        return ret && _.size(b) === i; // 453
-      } // 454
-    }; // 455
-    // 456
-    /**                                                                                                                  // 457
-     * @summary Return a deep copy of `val`.                                                                             // 458
-     * @locus Anywhere                                                                                                   // 459
-     * @param {EJSON} val A value to copy.                                                                               // 460
-     */ // 461
-    EJSON.clone = function (v) {
-      // 462
-      var ret; // 463
-      if (typeof v !== "object") // 464
-        return v; // 465
-      if (v === null) // 466
-        return null; // null has typeof "object"                                                                         // 467
-      if (v instanceof Date) // 468
-        return new Date(v.getTime()); // 469
-      // RegExps are not really EJSON elements (eg we don't define a serialization                                       // 470
-      // for them), but they're immutable anyway, so we can support them in clone.                                       // 471
-      if (v instanceof RegExp) // 472
-        return v; // 473
-      if (EJSON.isBinary(v)) {
-        // 474
-        ret = EJSON.newBinary(v.length); // 475
-        for (var i = 0; i < v.length; i++) {
-          // 476
-          ret[i] = v[i]; // 477
-        } // 478
-        return ret; // 479
-      } // 480
-      // XXX: Use something better than underscore's isArray                                                             // 481
-      if (_.isArray(v) || _.isArguments(v)) {
-        // 482
-        // For some reason, _.map doesn't work in this context on Opera (weird test                                      // 483
-        // failures).                                                                                                    // 484
-        ret = []; // 485
-        for (i = 0; i < v.length; i++) // 486
-        ret[i] = EJSON.clone(v[i]); // 487
-        return ret; // 488
-      } // 489
-      // handle general user-defined typed Objects if they have a clone method                                           // 490
-      if (typeof v.clone === 'function') {
-        // 491
-        return v.clone(); // 492
-      } // 493
-      // handle other custom types                                                                                       // 494
-      if (EJSON._isCustomType(v)) {
-        // 495
-        return EJSON.fromJSONValue(EJSON.clone(EJSON.toJSONValue(v)), true); // 496
-      } // 497
-      // handle other objects                                                                                            // 498
-      ret = {}; // 499
-      _.each(v, function (value, key) {
-        // 500
-        ret[key] = EJSON.clone(value); // 501
-      }); // 502
-      return ret; // 503
-    }; // 504
-    // 505
-    /**                                                                                                                  // 506
-     * @summary Allocate a new buffer of binary data that EJSON can serialize.                                           // 507
-     * @locus Anywhere                                                                                                   // 508
-     * @param {Number} size The number of bytes of binary data to allocate.                                              // 509
-     */ // 510
-    // EJSON.newBinary is the public documented API for this functionality,                                              // 511
-    // but the implementation is in the 'base64' package to avoid                                                        // 512
-    // introducing a circular dependency. (If the implementation were here,                                              // 513
-    // then 'base64' would have to use EJSON.newBinary, and 'ejson' would                                                // 514
-    // also have to use 'base64'.)                                                                                       // 515
-    EJSON.newBinary = Base64.newBinary; // 516
-    // 517
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  }).call(this);
-
-  (function () {
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                                                                                                   //
-    // packages/ejson/stringify.js                                                                                       //
-    //                                                                                                                   //
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Based on json2.js from https://github.com/douglascrockford/JSON-js                                                // 1
-    //                                                                                                                   // 2
-    //    json2.js                                                                                                       // 3
-    //    2012-10-08                                                                                                     // 4
-    //                                                                                                                   // 5
-    //    Public Domain.                                                                                                 // 6
-    //                                                                                                                   // 7
-    //    NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.                                                        // 8
-    // 9
-    function quote(string) {
-      // 10
-      return JSON.stringify(string); // 11
-    } // 12
-    // 13
-    var str = function (key, holder, singleIndent, outerIndent, canonical) {
-      // 14
-      // 15
-      // Produce a string from holder[key].                                                                              // 16
-      // 17
-      var i; // The loop counter.                                                                               // 18
-      var k; // The member key.                                                                                 // 19
-      var v; // The member value.                                                                               // 20
-      var length; // 21
-      var innerIndent = outerIndent; // 22
-      var partial; // 23
-      var value = holder[key]; // 24
-      // 25
-      // What happens next depends on the value's type.                                                                  // 26
-      // 27
-      switch (typeof value) {// 28
-        case 'string':
-          // 29
-          return quote(value); // 30
-        case 'number':
-          // 31
-          // JSON numbers must be finite. Encode non-finite numbers as null.                                               // 32
-          return isFinite(value) ? String(value) : 'null'; // 33
-        case 'boolean':
-          // 34
-          return String(value); // 35
-        // If the type is 'object', we might be dealing with an object or an array or                                      // 36
-        // null.                                                                                                           // 37
-        case 'object':
-          // 38
-          // Due to a specification blunder in ECMAScript, typeof null is 'object',                                        // 39
-          // so watch out for that case.                                                                                   // 40
-          if (!value) {
-            // 41
-            return 'null'; // 42
-          } // 43
-          // Make an array to hold the partial results of stringifying this object value.                                  // 44
-          innerIndent = outerIndent + singleIndent; // 45
-          partial = []; // 46
-          // 47
-          // Is the value an array?                                                                                        // 48
-          if (_.isArray(value) || _.isArguments(value)) {
-            // 49
-            // 50
-            // The value is an array. Stringify every element. Use null as a placeholder                                   // 51
-            // for non-JSON values.                                                                                        // 52
-            // 53
-            length = value.length; // 54
-            for (i = 0; i < length; i += 1) {
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //                                                                                                                  //
+            // packages/ejson/ejson.js                                                                                          //
+            //                                                                                                                  //
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //
+            var _typeof2 = _require("babel-runtime/helpers/typeof"); //
+            //
+            var _typeof3 = _interopRequireDefault(_typeof2); //
+            //
+            function _interopRequireDefault(obj) {
+              return obj && obj.__esModule ? obj : { "default": obj };
+            } //
+            //
+            _module.export({ // 1
+              EJSON: function () {
+                // 1
+                return EJSON; // 1
+              } // 1
+            }); // 1
+            /**                                                                                                                 // 1
+             * @namespace                                                                                                       //
+             * @summary Namespace for EJSON functions                                                                           //
+             */var EJSON = {}; // Custom type interface definition                                                              //
+            /**                                                                                                                 // 8
+             * @class CustomType                                                                                                //
+             * @instanceName customType                                                                                         //
+             * @memberOf EJSON                                                                                                  //
+             * @summary The interface that a class must satisfy to be able to become an                                         //
+             * EJSON custom type via EJSON.addType.                                                                             //
+             */ /**                                                                                                             //
+                 * @function typeName                                                                                           //
+                 * @memberOf EJSON.CustomType                                                                                   //
+                 * @summary Return the tag used to identify this type.  This must match the                                     //
+                 *          tag used to register this type with                                                                 //
+                 *          [`EJSON.addType`](#ejson_add_type).                                                                 //
+                 * @locus Anywhere                                                                                              //
+                 * @instance                                                                                                    //
+                 */ /**                                                                                                         //
+                     * @function toJSONValue                                                                                    //
+                     * @memberOf EJSON.CustomType                                                                               //
+                     * @summary Serialize this instance into a JSON-compatible value.                                           //
+                     * @locus Anywhere                                                                                          //
+                     * @instance                                                                                                //
+                     */ /**                                                                                                     //
+                         * @function clone                                                                                      //
+                         * @memberOf EJSON.CustomType                                                                           //
+                         * @summary Return a value `r` such that `this.equals(r)` is true, and                                  //
+                         *          modifications to `r` do not affect `this` and vice versa.                                   //
+                         * @locus Anywhere                                                                                      //
+                         * @instance                                                                                            //
+                         */ /**                                                                                                 //
+                             * @function equals                                                                                 //
+                             * @memberOf EJSON.CustomType                                                                       //
+                             * @summary Return `true` if `other` has a value equal to `this`; `false`                           //
+                             *          otherwise.                                                                              //
+                             * @locus Anywhere                                                                                  //
+                             * @param {Object} other Another object to compare this to.                                         //
+                             * @instance                                                                                        //
+                             */ //
+            var customTypes = {}; // 53
+            //
+            var hasOwn = function (obj, prop) {
               // 55
-              partial[i] = str(i, value, singleIndent, innerIndent, canonical) || 'null'; // 56
-            } // 57
-            // 58
-            // Join all of the elements together, separated with commas, and wrap them in                                  // 59
-            // brackets.                                                                                                   // 60
-            // 61
-            if (partial.length === 0) {
-              // 62
-              v = '[]'; // 63
-            } else if (innerIndent) {
-              // 64
-              v = '[\n' + innerIndent + partial.join(',\n' + innerIndent) + '\n' + outerIndent + ']'; // 65
-            } else {
-              // 66
-              v = '[' + partial.join(',') + ']'; // 67
-            } // 68
-            return v; // 69
-          } // 70
-          // 71
-          // 72
-          // Iterate through all of the keys in the object.                                                                // 73
-          var keys = _.keys(value); // 74
-          if (canonical) // 75
-            keys = keys.sort(); // 76
-          _.each(keys, function (k) {
-            // 77
-            v = str(k, value, singleIndent, innerIndent, canonical); // 78
-            if (v) {
-              // 79
-              partial.push(quote(k) + (innerIndent ? ': ' : ':') + v); // 80
-            } // 81
-          }); // 82
-          // 83
-          // 84
-          // Join all of the member texts together, separated with commas,                                                 // 85
-          // and wrap them in braces.                                                                                      // 86
-          // 87
-          if (partial.length === 0) {
-            // 88
-            v = '{}'; // 89
-          } else if (innerIndent) {
-            // 90
-            v = '{\n' + innerIndent + partial.join(',\n' + innerIndent) + '\n' + outerIndent + '}'; // 91
-          } else {
-            // 92
-            v = '{' + partial.join(',') + '}'; // 93
-          } // 94
-          return v; // 95
-      } // 96
-    }; // 97
-    // 98
-    // If the JSON object does not yet have a stringify method, give it one.                                             // 99
-    // 100
-    EJSON._canonicalStringify = function (value, options) {
-      // 101
-      // Make a fake root object containing our value under the key of ''.                                               // 102
-      // Return the result of stringifying the value.                                                                    // 103
-      options = _.extend({ // 104
-        indent: "", // 105
-        canonical: false // 106
-      }, options); // 107
-      if (options.indent === true) {
-        // 108
-        options.indent = "  "; // 109
-      } else if (typeof options.indent === 'number') {
-        // 110
-        var newIndent = ""; // 111
-        for (var i = 0; i < options.indent; i++) {
-          // 112
-          newIndent += ' '; // 113
-        } // 114
-        options.indent = newIndent; // 115
-      } // 116
-      return str('', { '': value }, options.indent, "", options.canonical); // 117
-    }; // 118
-    // 119
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  }).call(this);
+              return {}.hasOwnProperty.call(obj, prop); // 55
+            }; // 55
+            //
+            var isArguments = function (obj) {
+              // 57
+              return obj != null && hasOwn(obj, 'callee'); // 57
+            }; // 57
+            //
+            var isInfOrNan = function (obj) {
+              // 59
+              return Number.isNaN(obj) || obj === Infinity || obj === -Infinity; // 60
+            }; // Add a custom type, using a method of your choice to get to and                                                // 60
+            // from a basic JSON-able representation.  The factory argument                                                     // 63
+            // is a function of JSON-able --> your object                                                                       // 64
+            // The type you add must have:                                                                                      // 65
+            // - A toJSONValue() method, so that Meteor can serialize it                                                        // 66
+            // - a typeName() method, to show how to look it up in our type table.                                              // 67
+            // It is okay if these methods are monkey-patched on.                                                               // 68
+            // EJSON.clone will use toJSONValue and the given factory to produce                                                // 69
+            // a clone, but you may specify a method clone() that will be                                                       // 70
+            // used instead.                                                                                                    // 71
+            // Similarly, EJSON.equals will use toJSONValue to make comparisons,                                                // 72
+            // but you may provide a method equals() instead.                                                                   // 73
+            /**                                                                                                                 // 74
+             * @summary Add a custom datatype to EJSON.                                                                         //
+             * @locus Anywhere                                                                                                  //
+             * @param {String} name A tag for your custom type; must be unique among                                            //
+             *                      custom data types defined in your project, and must                                         //
+             *                      match the result of your type's `typeName` method.                                          //
+             * @param {Function} factory A function that deserializes a JSON-compatible                                         //
+             *                           value into an instance of your type.  This should                                      //
+             *                           match the serialization performed by your                                              //
+             *                           type's `toJSONValue` method.                                                           //
+             */ //
+            //
+            EJSON.addType = function (name, factory) {
+              // 85
+              if (hasOwn(customTypes, name)) {
+                // 86
+                throw new Error("Type " + name + " already present"); // 87
+              } // 88
+              //
+              customTypes[name] = factory; // 89
+            }; // 90
+            //
+            var builtinConverters = [{ // 92
+              // Date                                                                                                           // 93
+              matchJSONValue: function (obj) {
+                // 94
+                return hasOwn(obj, '$date') && Object.keys(obj).length === 1; // 95
+              }, // 96
+              matchObject: function (obj) {
+                // 97
+                return obj instanceof Date; // 98
+              }, // 99
+              toJSONValue: function (obj) {
+                // 100
+                return { // 101
+                  $date: obj.getTime() // 101
+                }; // 101
+              }, // 102
+              fromJSONValue: function (obj) {
+                // 103
+                return new Date(obj.$date); // 104
+              } // 105
+            }, { // 93
+              // RegExp                                                                                                         // 107
+              matchJSONValue: function (obj) {
+                // 108
+                return hasOwn(obj, '$regexp') && hasOwn(obj, '$flags') && Object.keys(obj).length === 2; // 109
+              }, // 112
+              matchObject: function (obj) {
+                // 113
+                return obj instanceof RegExp; // 114
+              }, // 115
+              toJSONValue: function (regexp) {
+                // 116
+                return { // 117
+                  $regexp: regexp.source, // 118
+                  $flags: regexp.flags // 119
+                }; // 117
+              }, // 121
+              fromJSONValue: function (obj) {
+                // 122
+                // Replaces duplicate / invalid flags.                                                                          // 123
+                return new RegExp(obj.$regexp, obj.$flags // Cut off flags at 50 chars to avoid abusing RegExp for DOS.         // 124
+                .slice(0, 50).replace(/[^gimuy]/g, '').replace(/(.)(?=.*\1)/g, '')); // 126
+              } // 132
+            }, { // 107
+              // NaN, Inf, -Inf. (These are the only objects with typeof !== 'object'                                           // 134
+              // which we match.)                                                                                               // 135
+              matchJSONValue: function (obj) {
+                // 136
+                return hasOwn(obj, '$InfNaN') && Object.keys(obj).length === 1; // 137
+              }, // 138
+              matchObject: isInfOrNan, // 139
+              toJSONValue: function (obj) {
+                // 140
+                var sign = void 0; // 141
+                //
+                if (Number.isNaN(obj)) {
+                  // 142
+                  sign = 0; // 143
+                } else if (obj === Infinity) {
+                  // 144
+                  sign = 1; // 145
+                } else {
+                  // 146
+                  sign = -1; // 147
+                } // 148
+                //
+                return { // 149
+                  $InfNaN: sign // 149
+                }; // 149
+              }, // 150
+              fromJSONValue: function (obj) {
+                // 151
+                return obj.$InfNaN / 0; // 152
+              } // 153
+            }, { // 134
+              // Binary                                                                                                         // 155
+              matchJSONValue: function (obj) {
+                // 156
+                return hasOwn(obj, '$binary') && Object.keys(obj).length === 1; // 157
+              }, // 158
+              matchObject: function (obj) {
+                // 159
+                return typeof Uint8Array !== 'undefined' && obj instanceof Uint8Array || obj && hasOwn(obj, '$Uint8ArrayPolyfill');
+              }, // 162
+              toJSONValue: function (obj) {
+                // 163
+                return { // 164
+                  $binary: Base64.encode(obj) // 164
+                }; // 164
+              }, // 165
+              fromJSONValue: function (obj) {
+                // 166
+                return Base64.decode(obj.$binary); // 167
+              } // 168
+            }, { // 155
+              // Escaping one level                                                                                             // 170
+              matchJSONValue: function (obj) {
+                // 171
+                return hasOwn(obj, '$escape') && Object.keys(obj).length === 1; // 172
+              }, // 173
+              matchObject: function (obj) {
+                // 174
+                var match = false; // 175
+                //
+                if (obj) {
+                  // 176
+                  var keyCount = Object.keys(obj).length; // 177
+                  //
+                  if (keyCount === 1 || keyCount === 2) {
+                    // 178
+                    match = builtinConverters.some(function (converter) {
+                      // 179
+                      return converter.matchJSONValue(obj); // 180
+                    }); // 180
+                  } // 181
+                } // 182
+                //
+                return match; // 183
+              }, // 184
+              toJSONValue: function (obj) {
+                // 185
+                var newObj = {}; // 186
+                Object.keys(obj).forEach(function (key) {
+                  // 187
+                  newObj[key] = EJSON.toJSONValue(obj[key]); // 188
+                }); // 189
+                return { // 190
+                  $escape: newObj // 190
+                }; // 190
+              }, // 191
+              fromJSONValue: function (obj) {
+                // 192
+                var newObj = {}; // 193
+                Object.keys(obj.$escape).forEach(function (key) {
+                  // 194
+                  newObj[key] = EJSON.fromJSONValue(obj.$escape[key]); // 195
+                }); // 196
+                return newObj; // 197
+              } // 198
+            }, { // 170
+              // Custom                                                                                                         // 200
+              matchJSONValue: function (obj) {
+                // 201
+                return hasOwn(obj, '$type') && hasOwn(obj, '$value') && Object.keys(obj).length === 2; // 202
+              }, // 204
+              matchObject: function (obj) {
+                // 205
+                return EJSON._isCustomType(obj); // 206
+              }, // 207
+              toJSONValue: function (obj) {
+                // 208
+                var jsonValue = Meteor._noYieldsAllowed(function () {
+                  // 209
+                  return obj.toJSONValue(); // 209
+                }); // 209
+                //
+                return { // 210
+                  $type: obj.typeName(), // 210
+                  $value: jsonValue // 210
+                }; // 210
+              }, // 211
+              fromJSONValue: function (obj) {
+                // 212
+                var typeName = obj.$type; // 213
+                //
+                if (!hasOwn(customTypes, typeName)) {
+                  // 214
+                  throw new Error("Custom EJSON type " + typeName + " is not defined"); // 215
+                } // 216
+                //
+                var converter = customTypes[typeName]; // 217
+                return Meteor._noYieldsAllowed(function () {
+                  // 218
+                  return converter(obj.$value); // 218
+                }); // 218
+              } // 219
+            }]; // 200
+            //
+            EJSON._isCustomType = function (obj) {
+              // 223
+              return obj && typeof obj.toJSONValue === 'function' && typeof obj.typeName === 'function' && hasOwn(customTypes, obj.typeName());
+            }; // 223
+            //
+            EJSON._getTypes = function () {
+              // 230
+              return customTypes; // 230
+            }; // 230
+            //
+            EJSON._getConverters = function () {
+              // 232
+              return builtinConverters; // 232
+            }; // Either return the JSON-compatible version of the argument, or undefined (if                                   // 232
+            // the item isn't itself replaceable, but maybe some fields in it are)                                              // 235
+            //
+            //
+            var toJSONValueHelper = function (item) {
+              // 236
+              for (var i = 0; i < builtinConverters.length; i++) {
+                // 237
+                var converter = builtinConverters[i]; // 238
+                //
+                if (converter.matchObject(item)) {
+                  // 239
+                  return converter.toJSONValue(item); // 240
+                } // 241
+              } // 242
+              //
+              return undefined; // 243
+            }; // for both arrays and objects, in-place modification.                                                           // 244
+            //
+            //
+            var adjustTypesToJSONValue = function (obj) {
+              // 247
+              // Is it an atom that we need to adjust?                                                                          // 248
+              if (obj === null) {
+                // 249
+                return null; // 250
+              } // 251
+              //
+              var maybeChanged = toJSONValueHelper(obj); // 253
+              //
+              if (maybeChanged !== undefined) {
+                // 254
+                return maybeChanged; // 255
+              } // Other atoms are unchanged.                                                                                   // 256
+              //
+              //
+              if ((typeof obj === "undefined" ? "undefined" : (0, _typeof3.default)(obj)) !== 'object') {
+                // 259
+                return obj; // 260
+              } // Iterate over array or object structure.                                                                      // 261
+              //
+              //
+              Object.keys(obj).forEach(function (key) {
+                // 264
+                var value = obj[key]; // 265
+                //
+                if ((typeof value === "undefined" ? "undefined" : (0, _typeof3.default)(value)) !== 'object' && value !== undefined && !isInfOrNan(value)) {
+                  return; // continue                                                                                           // 268
+                } // 269
+                //
+                var changed = toJSONValueHelper(value); // 271
+                //
+                if (changed) {
+                  // 272
+                  obj[key] = changed; // 273
+                  return; // on to the next key                                                                                 // 274
+                } // if we get here, value is an object but not adjustable                                                      // 275
+                // at this level.  recurse.                                                                                     // 277
+                //
+                //
+                adjustTypesToJSONValue(value); // 278
+              }); // 279
+              return obj; // 280
+            }; // 281
+            //
+            EJSON._adjustTypesToJSONValue = adjustTypesToJSONValue; /**                                                         // 283
+                                                                     * @summary Serialize an EJSON-compatible value into its plain JSON
+                                                                     *          representation.                                 //
+                                                                     * @locus Anywhere                                          //
+                                                                     * @param {EJSON} val A value to serialize to plain JSON.   //
+                                                                     */ //
+            //
+            EJSON.toJSONValue = function (item) {
+              // 291
+              var changed = toJSONValueHelper(item); // 292
+              //
+              if (changed !== undefined) {
+                // 293
+                return changed; // 294
+              } // 295
+              //
+              var newItem = item; // 297
+              //
+              if ((typeof item === "undefined" ? "undefined" : (0, _typeof3.default)(item)) === 'object') {
+                // 298
+                newItem = EJSON.clone(item); // 299
+                adjustTypesToJSONValue(newItem); // 300
+              } // 301
+              //
+              return newItem; // 302
+            }; // Either return the argument changed to have the non-json                                                       // 303
+            // rep of itself (the Object version) or the argument itself.                                                       // 306
+            // DOES NOT RECURSE.  For actually getting the fully-changed value, use                                             // 307
+            // EJSON.fromJSONValue                                                                                              // 308
+            //
+            //
+            var fromJSONValueHelper = function (value) {
+              // 309
+              if ((typeof value === "undefined" ? "undefined" : (0, _typeof3.default)(value)) === 'object' && value !== null) {
+                var keys = Object.keys(value); // 311
+                //
+                if (keys.length <= 2 && keys.every(function (k) {
+                  // 312
+                  return typeof k === 'string' && k.substr(0, 1) === '$'; // 313
+                })) {
+                  // 313
+                  for (var i = 0; i < builtinConverters.length; i++) {
+                    // 314
+                    var converter = builtinConverters[i]; // 315
+                    //
+                    if (converter.matchJSONValue(value)) {
+                      // 316
+                      return converter.fromJSONValue(value); // 317
+                    } // 318
+                  } // 319
+                } // 320
+              } // 321
+              //
+              return value; // 322
+            }; // for both arrays and objects. Tries its best to just                                                           // 323
+            // use the object you hand it, but may return something                                                             // 326
+            // different if the object you hand it itself needs changing.                                                       // 327
+            //
+            //
+            var adjustTypesFromJSONValue = function (obj) {
+              // 328
+              if (obj === null) {
+                // 329
+                return null; // 330
+              } // 331
+              //
+              var maybeChanged = fromJSONValueHelper(obj); // 333
+              //
+              if (maybeChanged !== obj) {
+                // 334
+                return maybeChanged; // 335
+              } // Other atoms are unchanged.                                                                                   // 336
+              //
+              //
+              if ((typeof obj === "undefined" ? "undefined" : (0, _typeof3.default)(obj)) !== 'object') {
+                // 339
+                return obj; // 340
+              } // 341
+              //
+              Object.keys(obj).forEach(function (key) {
+                // 343
+                var value = obj[key]; // 344
+                //
+                if ((typeof value === "undefined" ? "undefined" : (0, _typeof3.default)(value)) === 'object') {
+                  // 345
+                  var changed = fromJSONValueHelper(value); // 346
+                  //
+                  if (value !== changed) {
+                    // 347
+                    obj[key] = changed; // 348
+                    return; // 349
+                  } // if we get here, value is an object but not adjustable                                                    // 350
+                  // at this level.  recurse.                                                                                   // 352
+                  //
+                  //
+                  adjustTypesFromJSONValue(value); // 353
+                } // 354
+              }); // 355
+              return obj; // 356
+            }; // 357
+            //
+            EJSON._adjustTypesFromJSONValue = adjustTypesFromJSONValue; /**                                                     // 359
+                                                                         * @summary Deserialize an EJSON value from its plain JSON representation.
+                                                                         * @locus Anywhere                                      //
+                                                                         * @param {JSONCompatible} val A value to deserialize into EJSON.
+                                                                         */ //
+            //
+            EJSON.fromJSONValue = function (item) {
+              // 366
+              var changed = fromJSONValueHelper(item); // 367
+              //
+              if (changed === item && (typeof item === "undefined" ? "undefined" : (0, _typeof3.default)(item)) === 'object') {
+                changed = EJSON.clone(item); // 369
+                adjustTypesFromJSONValue(changed); // 370
+              } // 371
+              //
+              return changed; // 372
+            }; /**                                                                                                              // 373
+                * @summary Serialize a value to a string. For EJSON values, the serialization                                   //
+                *          fully represents the value. For non-EJSON values, serializes the                                     //
+                *          same way as `JSON.stringify`.                                                                        //
+                * @locus Anywhere                                                                                               //
+                * @param {EJSON} val A value to stringify.                                                                      //
+                * @param {Object} [options]                                                                                     //
+                * @param {Boolean | Integer | String} options.indent Indents objects and                                        //
+                * arrays for easy readability.  When `true`, indents by 2 spaces; when an                                       //
+                * integer, indents by that number of spaces; and when a string, uses the                                        //
+                * string as the indentation pattern.                                                                            //
+                * @param {Boolean} options.canonical When `true`, stringifies keys in an                                        //
+                *                                    object in sorted order.                                                    //
+                */ //
+            //
+            EJSON.stringify = function (item, options) {
+              // 389
+              var serialized = void 0; // 390
+              var json = EJSON.toJSONValue(item); // 391
+              //
+              if (options && (options.canonical || options.indent)) {
+                // 392
+                var canonicalStringify = void 0; // 1
+                _module.watch(_require("./stringify"), { // 1
+                  "default": function (v) {
+                    // 1
+                    canonicalStringify = v; // 1
+                  } // 1
+                }, 0); // 1
+                serialized = canonicalStringify(json, options); // 394
+              } else {
+                // 395
+                serialized = JSON.stringify(json); // 396
+              } // 397
+              //
+              return serialized; // 398
+            }; /**                                                                                                              // 399
+                * @summary Parse a string into an EJSON value. Throws an error if the string                                    //
+                *          is not valid EJSON.                                                                                  //
+                * @locus Anywhere                                                                                               //
+                * @param {String} str A string to parse into an EJSON value.                                                    //
+                */ //
+            //
+            EJSON.parse = function (item) {
+              // 407
+              if (typeof item !== 'string') {
+                // 408
+                throw new Error('EJSON.parse argument should be a string'); // 409
+              } // 410
+              //
+              return EJSON.fromJSONValue(JSON.parse(item)); // 411
+            }; /**                                                                                                              // 412
+                * @summary Returns true if `x` is a buffer of binary data, as returned from                                     //
+                *          [`EJSON.newBinary`](#ejson_new_binary).                                                              //
+                * @param {Object} x The variable to check.                                                                      //
+                * @locus Anywhere                                                                                               //
+                */ //
+            //
+            EJSON.isBinary = function (obj) {
+              // 420
+              return !!(typeof Uint8Array !== 'undefined' && obj instanceof Uint8Array || obj && obj.$Uint8ArrayPolyfill); // 421
+            }; /**                                                                                                              // 423
+                * @summary Return true if `a` and `b` are equal to each other.  Return false                                    //
+                *          otherwise.  Uses the `equals` method on `a` if present, otherwise                                    //
+                *          performs a deep comparison.                                                                          //
+                * @locus Anywhere                                                                                               //
+                * @param {EJSON} a                                                                                              //
+                * @param {EJSON} b                                                                                              //
+                * @param {Object} [options]                                                                                     //
+                * @param {Boolean} options.keyOrderSensitive Compare in key sensitive order,                                    //
+                * if supported by the JavaScript implementation.  For example, `{a: 1, b: 2}`                                   //
+                * is equal to `{b: 2, a: 1}` only when `keyOrderSensitive` is `false`.  The                                     //
+                * default is `false`.                                                                                           //
+                */ //
+            //
+            EJSON.equals = function (a, b, options) {
+              // 438
+              var i = void 0; // 439
+              var keyOrderSensitive = !!(options && options.keyOrderSensitive); // 440
+              //
+              if (a === b) {
+                // 441
+                return true; // 442
+              } // This differs from the IEEE spec for NaN equality, b/c we don't want                                          // 443
+              // anything ever with a NaN to be poisoned from becoming equal to anything.                                       // 446
+              //
+              //
+              if (Number.isNaN(a) && Number.isNaN(b)) {
+                // 447
+                return true; // 448
+              } // if either one is falsy, they'd have to be === to be equal                                                    // 449
+              //
+              //
+              if (!a || !b) {
+                // 452
+                return false; // 453
+              } // 454
+              //
+              if (!((typeof a === "undefined" ? "undefined" : (0, _typeof3.default)(a)) === 'object' && (typeof b === "undefined" ? "undefined" : (0, _typeof3.default)(b)) === 'object')) {
+                return false; // 457
+              } // 458
+              //
+              if (a instanceof Date && b instanceof Date) {
+                // 460
+                return a.valueOf() === b.valueOf(); // 461
+              } // 462
+              //
+              if (EJSON.isBinary(a) && EJSON.isBinary(b)) {
+                // 464
+                if (a.length !== b.length) {
+                  // 465
+                  return false; // 466
+                } // 467
+                //
+                for (i = 0; i < a.length; i++) {
+                  // 468
+                  if (a[i] !== b[i]) {
+                    // 469
+                    return false; // 470
+                  } // 471
+                } // 472
+                //
+                return true; // 473
+              } // 474
+              //
+              if (typeof a.equals === 'function') {
+                // 476
+                return a.equals(b, options); // 477
+              } // 478
+              //
+              if (typeof b.equals === 'function') {
+                // 480
+                return b.equals(a, options); // 481
+              } // 482
+              //
+              if (a instanceof Array) {
+                // 484
+                if (!(b instanceof Array)) {
+                  // 485
+                  return false; // 486
+                } // 487
+                //
+                if (a.length !== b.length) {
+                  // 488
+                  return false; // 489
+                } // 490
+                //
+                for (i = 0; i < a.length; i++) {
+                  // 491
+                  if (!EJSON.equals(a[i], b[i], options)) {
+                    // 492
+                    return false; // 493
+                  } // 494
+                } // 495
+                //
+                return true; // 496
+              } // fallback for custom types that don't implement their own equals                                              // 497
+              //
+              //
+              switch (EJSON._isCustomType(a) + EJSON._isCustomType(b)) {// 500
+                case 1:
+                  // 501
+                  return false; // 501
+                //
+                case 2:
+                  // 502
+                  return EJSON.equals(EJSON.toJSONValue(a), EJSON.toJSONValue(b)); // 502
+                //
+                default: // Do nothing                                                                                          // 503
+              } // fall back to structural equality of objects                                                                  // 500
+              //
+              //
+              var ret = void 0; // 507
+              var aKeys = Object.keys(a); // 508
+              var bKeys = Object.keys(b); // 509
+              //
+              if (keyOrderSensitive) {
+                // 510
+                i = 0; // 511
+                ret = aKeys.every(function (key) {
+                  // 512
+                  if (i >= bKeys.length) {
+                    // 513
+                    return false; // 514
+                  } // 515
+                  //
+                  if (key !== bKeys[i]) {
+                    // 516
+                    return false; // 517
+                  } // 518
+                  //
+                  if (!EJSON.equals(a[key], b[bKeys[i]], options)) {
+                    // 519
+                    return false; // 520
+                  } // 521
+                  //
+                  i++; // 522
+                  return true; // 523
+                }); // 524
+              } else {
+                // 525
+                i = 0; // 526
+                ret = aKeys.every(function (key) {
+                  // 527
+                  if (!hasOwn(b, key)) {
+                    // 528
+                    return false; // 529
+                  } // 530
+                  //
+                  if (!EJSON.equals(a[key], b[key], options)) {
+                    // 531
+                    return false; // 532
+                  } // 533
+                  //
+                  i++; // 534
+                  return true; // 535
+                }); // 536
+              } // 537
+              //
+              return ret && i === bKeys.length; // 538
+            }; /**                                                                                                              // 539
+                * @summary Return a deep copy of `val`.                                                                         //
+                * @locus Anywhere                                                                                               //
+                * @param {EJSON} val A value to copy.                                                                           //
+                */ //
+            //
+            EJSON.clone = function (v) {
+              // 546
+              var ret = void 0; // 547
+              //
+              if ((typeof v === "undefined" ? "undefined" : (0, _typeof3.default)(v)) !== 'object') {
+                // 548
+                return v; // 549
+              } // 550
+              //
+              if (v === null) {
+                // 552
+                return null; // null has typeof "object"                                                                        // 553
+              } // 554
+              //
+              if (v instanceof Date) {
+                // 556
+                return new Date(v.getTime()); // 557
+              } // RegExps are not really EJSON elements (eg we don't define a serialization                                    // 558
+              // for them), but they're immutable anyway, so we can support them in clone.                                      // 561
+              //
+              //
+              if (v instanceof RegExp) {
+                // 562
+                return v; // 563
+              } // 564
+              //
+              if (EJSON.isBinary(v)) {
+                // 566
+                ret = EJSON.newBinary(v.length); // 567
+                //
+                for (var i = 0; i < v.length; i++) {
+                  // 568
+                  ret[i] = v[i]; // 569
+                } // 570
+                //
+                return ret; // 571
+              } // 572
+              //
+              if (Array.isArray(v)) {
+                // 574
+                return v.map(function (value) {
+                  // 575
+                  return EJSON.clone(value); // 575
+                }); // 575
+              } // 576
+              //
+              if (isArguments(v)) {
+                // 578
+                return Array.from(v).map(function (value) {
+                  // 579
+                  return EJSON.clone(value); // 579
+                }); // 579
+              } // handle general user-defined typed Objects if they have a clone method                                        // 580
+              //
+              //
+              if (typeof v.clone === 'function') {
+                // 583
+                return v.clone(); // 584
+              } // handle other custom types                                                                                    // 585
+              //
+              //
+              if (EJSON._isCustomType(v)) {
+                // 588
+                return EJSON.fromJSONValue(EJSON.clone(EJSON.toJSONValue(v)), true); // 589
+              } // handle other objects                                                                                         // 590
+              //
+              //
+              ret = {}; // 593
+              Object.keys(v).forEach(function (key) {
+                // 594
+                ret[key] = EJSON.clone(v[key]); // 595
+              }); // 596
+              return ret; // 597
+            }; /**                                                                                                              // 598
+                * @summary Allocate a new buffer of binary data that EJSON can serialize.                                       //
+                * @locus Anywhere                                                                                               //
+                * @param {Number} size The number of bytes of binary data to allocate.                                          //
+                */ // EJSON.newBinary is the public documented API for this functionality,                                      //
+            // but the implementation is in the 'base64' package to avoid                                                       // 606
+            // introducing a circular dependency. (If the implementation were here,                                             // 607
+            // then 'base64' would have to use EJSON.newBinary, and 'ejson' would                                               // 608
+            // also have to use 'base64'.)                                                                                      // 609
+            //
+            //
+            EJSON.newBinary = Base64.newBinary; // 610
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+          }], "stringify.js": ["babel-runtime/helpers/typeof", function (_require3, _exports3, _module2) {
+
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //                                                                                                                  //
+            // packages/ejson/stringify.js                                                                                      //
+            //                                                                                                                  //
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //
+            var _typeof2 = _require3("babel-runtime/helpers/typeof"); //
+            //
+            var _typeof3 = _interopRequireDefault(_typeof2); //
+            //
+            function _interopRequireDefault(obj) {
+              return obj && obj.__esModule ? obj : { "default": obj };
+            } //
+            //
+            // Based on json2.js from https://github.com/douglascrockford/JSON-js                                               // 1
+            //                                                                                                                  // 2
+            //    json2.js                                                                                                      // 3
+            //    2012-10-08                                                                                                    // 4
+            //                                                                                                                  // 5
+            //    Public Domain.                                                                                                // 6
+            //                                                                                                                  // 7
+            //    NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.                                                       // 8
+            function quote(string) {
+              // 10
+              return JSON.stringify(string); // 11
+            } // 12
+            //
+            var str = function (key, holder, singleIndent, outerIndent, canonical) {
+              // 14
+              var value = holder[key]; // What happens next depends on the value's type.                                        // 15
+              //
+              switch (typeof value === "undefined" ? "undefined" : (0, _typeof3.default)(value)) {// 18
+                case 'string':
+                  // 19
+                  return quote(value); // 20
+                //
+                case 'number':
+                  // 21
+                  // JSON numbers must be finite. Encode non-finite numbers as null.                                            // 22
+                  return isFinite(value) ? String(value) : 'null'; // 23
+                //
+                case 'boolean':
+                  // 24
+                  return String(value); // 25
+                // If the type is 'object', we might be dealing with an object or an array or                                   // 26
+                // null.                                                                                                        // 27
+                //
+                case 'object':
+                  // 28
+                  // Due to a specification blunder in ECMAScript, typeof null is 'object',                                     // 29
+                  // so watch out for that case.                                                                                // 30
+                  if (!value) {
+                    // 31
+                    return 'null'; // 32
+                  } // Make an array to hold the partial results of stringifying this object                                    // 33
+                  // value.                                                                                                     // 35
+                  //
+                  //
+                  var innerIndent = outerIndent + singleIndent; // 36
+                  var partial = []; // Is the value an array?                                                                   // 37
+                  //
+                  if (Array.isArray(value) || {}.hasOwnProperty.call(value, 'callee')) {
+                    // 40
+                    // The value is an array. Stringify every element. Use null as a                                            // 41
+                    // placeholder for non-JSON values.                                                                         // 42
+                    var length = value.length; // 43
+                    //
+                    for (var i = 0; i < length; i += 1) {
+                      // 44
+                      partial[i] = str(i, value, singleIndent, innerIndent, canonical) || 'null'; // 45
+                    } // Join all of the elements together, separated with commas, and wrap                                     // 47
+                    // them in brackets.                                                                                        // 50
+                    //
+                    //
+                    var _v = void 0; // 51
+                    //
+                    if (partial.length === 0) {
+                      // 52
+                      _v = '[]'; // 53
+                    } else if (innerIndent) {
+                      // 54
+                      _v = '[\n' + innerIndent + partial.join(',\n' + innerIndent) + '\n' + outerIndent + ']'; // 55
+                    } else {
+                      // 62
+                      _v = '[' + partial.join(',') + ']'; // 63
+                    } // 64
+                    //
+                    return _v; // 65
+                  } // Iterate through all of the keys in the object.                                                           // 66
+                  //
+                  //
+                  var keys = Object.keys(value); // 69
+                  //
+                  if (canonical) {
+                    // 70
+                    keys = keys.sort(); // 71
+                  } // 72
+                  //
+                  keys.forEach(function (k) {
+                    // 73
+                    v = str(k, value, singleIndent, innerIndent, canonical); // 74
+                    //
+                    if (v) {
+                      // 75
+                      partial.push(quote(k) + (innerIndent ? ': ' : ':') + v); // 76
+                    } // 77
+                  }); // Join all of the member texts together, separated with commas,                                          // 78
+                  // and wrap them in braces.                                                                                   // 81
+                  //
+                  if (partial.length === 0) {
+                    // 82
+                    v = '{}'; // 83
+                  } else if (innerIndent) {
+                    // 84
+                    v = '{\n' + innerIndent + partial.join(',\n' + innerIndent) + '\n' + outerIndent + '}'; // 85
+                  } else {
+                    // 92
+                    v = '{' + partial.join(',') + '}'; // 93
+                  } // 94
+                  //
+                  return v; // 95
+                //
+                default: // Do nothing                                                                                          // 97
+              } // 18
+            }; // If the JSON object does not yet have a stringify method, give it one.                                         // 99
+            //
+            //
+            var canonicalStringify = function (value, options) {
+              // 102
+              // Make a fake root object containing our value under the key of ''.                                              // 103
+              // Return the result of stringifying the value.                                                                   // 104
+              var allOptions = Object.assign({ // 105
+                indent: '', // 106
+                canonical: false // 107
+              }, options); // 105
+              //
+              if (allOptions.indent === true) {
+                // 109
+                allOptions.indent = '  '; // 110
+              } else if (typeof allOptions.indent === 'number') {
+                // 111
+                var newIndent = ''; // 112
+                //
+                for (var i = 0; i < allOptions.indent; i++) {
+                  // 113
+                  newIndent += ' '; // 114
+                } // 115
+                //
+                allOptions.indent = newIndent; // 116
+              } // 117
+              //
+              return str('', { // 118
+                '': value // 118
+              }, allOptions.indent, '', allOptions.canonical); // 118
+            }; // 119
+            //
+            _module2.exportDefault(canonicalStringify); // 1
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+          }] } } } }, { "extensions": [".js", ".json"] });
+  var _exports2 = _require2("./node_modules/meteor/ejson/ejson.js");
 
   /* Exports */
   if (typeof Package === 'undefined') Package = {};
   (function (pkg, symbols) {
     for (var s in symbols) s in pkg || (pkg[s] = symbols[s]);
-  })(Package.ejson = {}, {
-    EJSON: EJSON,
-    EJSONTest: EJSONTest
+  })(Package.ejson = _exports2, {
+    EJSON: EJSON
   });
 })();//////////////////////////////////////////////////////////////////////////
 //                                                                      //
@@ -33236,7 +33440,6 @@ __meteor_runtime_config__ = {
   var Meteor = Package.meteor.Meteor;
   var global = Package.meteor.global;
   var meteorEnv = Package.meteor.meteorEnv;
-  var _ = Package.underscore._;
   var LocalCollection = Package.minimongo.LocalCollection;
   var Minimongo = Package.minimongo.Minimongo;
   var check = Package.check.check;
@@ -33255,576 +33458,588 @@ __meteor_runtime_config__ = {
 
   var _require = meteorInstall({ "node_modules": { "meteor": { "allow-deny": { "allow-deny.js": function () {
 
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //                                                                                                               //
-            // packages/allow-deny/allow-deny.js                                                                             //
-            //                                                                                                               //
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //                                                                                                                    //
+            // packages/allow-deny/allow-deny.js                                                                                  //
+            //                                                                                                                    //
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //
-            ///                                                                                                              // 1
-            /// Remote methods and access control.                                                                           // 2
-            ///                                                                                                              // 3
-            // Restrict default mutators on collection. allow() and deny() take the                                          // 5
-            // same options:                                                                                                 // 6
-            //                                                                                                               // 7
-            // options.insert {Function(userId, doc)}                                                                        // 8
-            //   return true to allow/deny adding this document                                                              // 9
-            //                                                                                                               // 10
-            // options.update {Function(userId, docs, fields, modifier)}                                                     // 11
-            //   return true to allow/deny updating these documents.                                                         // 12
-            //   `fields` is passed as an array of fields that are to be modified                                            // 13
-            //                                                                                                               // 14
-            // options.remove {Function(userId, docs)}                                                                       // 15
-            //   return true to allow/deny removing these documents                                                          // 16
-            //                                                                                                               // 17
-            // options.fetch {Array}                                                                                         // 18
-            //   Fields to fetch for these validators. If any call to allow or deny                                          // 19
-            //   does not have this option then all fields are loaded.                                                       // 20
-            //                                                                                                               // 21
-            // allow and deny can be called multiple times. The validators are                                               // 22
-            // evaluated as follows:                                                                                         // 23
-            // - If neither deny() nor allow() has been called on the collection,                                            // 24
-            //   then the request is allowed if and only if the "insecure" smart                                             // 25
-            //   package is in use.                                                                                          // 26
-            // - Otherwise, if any deny() function returns true, the request is denied.                                      // 27
-            // - Otherwise, if any allow() function returns true, the request is allowed.                                    // 28
-            // - Otherwise, the request is denied.                                                                           // 29
-            //                                                                                                               // 30
-            // Meteor may call your deny() and allow() functions in any order, and may not                                   // 31
-            // call all of them if it is able to make a decision without calling them all                                    // 32
-            // (so don't include side effects).                                                                              // 33
-            AllowDeny = { // 35
-              CollectionPrototype: {} // 36
-            }; // In the `mongo` package, we will extend Mongo.Collection.prototype with these                               // 35
-            // methods                                                                                                       // 40
+            ///                                                                                                                   // 1
+            /// Remote methods and access control.                                                                                // 2
+            ///                                                                                                                   // 3
+            var hasOwn = Object.prototype.hasOwnProperty; // Restrict default mutators on collection. allow() and deny() take the
+            // same options:                                                                                                      // 8
+            //                                                                                                                    // 9
+            // options.insert {Function(userId, doc)}                                                                             // 10
+            //   return true to allow/deny adding this document                                                                   // 11
+            //                                                                                                                    // 12
+            // options.update {Function(userId, docs, fields, modifier)}                                                          // 13
+            //   return true to allow/deny updating these documents.                                                              // 14
+            //   `fields` is passed as an array of fields that are to be modified                                                 // 15
+            //                                                                                                                    // 16
+            // options.remove {Function(userId, docs)}                                                                            // 17
+            //   return true to allow/deny removing these documents                                                               // 18
+            //                                                                                                                    // 19
+            // options.fetch {Array}                                                                                              // 20
+            //   Fields to fetch for these validators. If any call to allow or deny                                               // 21
+            //   does not have this option then all fields are loaded.                                                            // 22
+            //                                                                                                                    // 23
+            // allow and deny can be called multiple times. The validators are                                                    // 24
+            // evaluated as follows:                                                                                              // 25
+            // - If neither deny() nor allow() has been called on the collection,                                                 // 26
+            //   then the request is allowed if and only if the "insecure" smart                                                  // 27
+            //   package is in use.                                                                                               // 28
+            // - Otherwise, if any deny() function returns true, the request is denied.                                           // 29
+            // - Otherwise, if any allow() function returns true, the request is allowed.                                         // 30
+            // - Otherwise, the request is denied.                                                                                // 31
+            //                                                                                                                    // 32
+            // Meteor may call your deny() and allow() functions in any order, and may not                                        // 33
+            // call all of them if it is able to make a decision without calling them all                                         // 34
+            // (so don't include side effects).                                                                                   // 35
             //
-            var CollectionPrototype = AllowDeny.CollectionPrototype; /**                                                     // 41
+            AllowDeny = { // 37
+              CollectionPrototype: {} // 38
+            }; // In the `mongo` package, we will extend Mongo.Collection.prototype with these                                    // 37
+            // methods                                                                                                            // 42
+            //
+            var CollectionPrototype = AllowDeny.CollectionPrototype; /**                                                          // 43
                                                                       * @summary Allow users to write directly to this collection from client code, subject to limitations you define.
-                                                                      * @locus Server                                        //
-                                                                      * @method allow                                        //
-                                                                      * @memberOf Mongo.Collection                           //
-                                                                      * @instance                                            //
-                                                                      * @param {Object} options                              //
+                                                                      * @locus Server                                             //
+                                                                      * @method allow                                             //
+                                                                      * @memberOf Mongo.Collection                                //
+                                                                      * @instance                                                 //
+                                                                      * @param {Object} options                                   //
                                                                       * @param {Function} options.insert,update,remove Functions that look at a proposed modification to the database and return true if it should be allowed.
                                                                       * @param {String[]} options.fetch Optional performance enhancement. Limits the fields that will be fetched from the database for inspection by your `update` and `remove` functions.
                                                                       * @param {Function} options.transform Overrides `transform` on the  [`Collection`](#collections).  Pass `null` to disable transformation.
                                                                       */ //
             //
             CollectionPrototype.allow = function (options) {
-              // 54
-              addValidator(this, 'allow', options); // 55
-            }; /**                                                                                                           // 56
-                * @summary Override `allow` rules.                                                                           //
-                * @locus Server                                                                                              //
-                * @method deny                                                                                               //
-                * @memberOf Mongo.Collection                                                                                 //
-                * @instance                                                                                                  //
-                * @param {Object} options                                                                                    //
+              // 56
+              addValidator(this, 'allow', options); // 57
+            }; /**                                                                                                                // 58
+                * @summary Override `allow` rules.                                                                                //
+                * @locus Server                                                                                                   //
+                * @method deny                                                                                                    //
+                * @memberOf Mongo.Collection                                                                                      //
+                * @instance                                                                                                       //
+                * @param {Object} options                                                                                         //
                 * @param {Function} options.insert,update,remove Functions that look at a proposed modification to the database and return true if it should be denied, even if an [allow](#allow) rule says otherwise.
                 * @param {String[]} options.fetch Optional performance enhancement. Limits the fields that will be fetched from the database for inspection by your `update` and `remove` functions.
                 * @param {Function} options.transform Overrides `transform` on the  [`Collection`](#collections).  Pass `null` to disable transformation.
                 */ //
             //
             CollectionPrototype.deny = function (options) {
-              // 69
-              addValidator(this, 'deny', options); // 70
-            }; // 71
+              // 71
+              addValidator(this, 'deny', options); // 72
+            }; // 73
             //
             CollectionPrototype._defineMutationMethods = function (options) {
-              // 73
-              var self = this; // 74
-              options = options || {}; // set to true once we call any allow or deny methods. If true, use                   // 75
-              // allow/deny semantics. If false, use insecure mode semantics.                                                // 78
+              // 75
+              var self = this; // 76
+              options = options || {}; // set to true once we call any allow or deny methods. If true, use                        // 77
+              // allow/deny semantics. If false, use insecure mode semantics.                                                     // 80
               //
-              self._restricted = false; // Insecure mode (default to allowing writes). Defaults to 'undefined' which         // 79
-              // means insecure iff the insecure package is loaded. This property can be                                     // 82
-              // overriden by tests or packages wishing to change insecure mode behavior of                                  // 83
-              // their collections.                                                                                          // 84
+              self._restricted = false; // Insecure mode (default to allowing writes). Defaults to 'undefined' which              // 81
+              // means insecure iff the insecure package is loaded. This property can be                                          // 84
+              // overriden by tests or packages wishing to change insecure mode behavior of                                       // 85
+              // their collections.                                                                                               // 86
               //
-              self._insecure = undefined; // 85
-              self._validators = { // 87
-                insert: { // 88
-                  allow: [], // 88
-                  deny: [] // 88
-                }, // 88
-                update: { // 89
-                  allow: [], // 89
-                  deny: [] // 89
-                }, // 89
-                remove: { // 90
+              self._insecure = undefined; // 87
+              self._validators = { // 89
+                insert: { // 90
                   allow: [], // 90
                   deny: [] // 90
                 }, // 90
-                upsert: { // 91
+                update: { // 91
                   allow: [], // 91
                   deny: [] // 91
                 }, // 91
-                // dummy arrays; can't set these!                                                                            // 91
-                fetch: [], // 92
-                fetchAllFields: false // 93
-              }; // 87
-              if (!self._name) return; // anonymous collection                                                               // 96
-              // XXX Think about method namespacing. Maybe methods should be                                                 // 99
-              // "Meteor:Mongo:insert/NAME"?                                                                                 // 100
+                remove: { // 92
+                  allow: [], // 92
+                  deny: [] // 92
+                }, // 92
+                upsert: { // 93
+                  allow: [], // 93
+                  deny: [] // 93
+                }, // 93
+                // dummy arrays; can't set these!                                                                                 // 93
+                fetch: [], // 94
+                fetchAllFields: false // 95
+              }; // 89
+              if (!self._name) return; // anonymous collection                                                                    // 98
+              // XXX Think about method namespacing. Maybe methods should be                                                      // 101
+              // "Meteor:Mongo:insert/NAME"?                                                                                      // 102
               //
-              self._prefix = '/' + self._name + '/'; // Mutation Methods                                                     // 101
-              // Minimongo on the server gets no stubs; instead, by default                                                  // 104
-              // it wait()s until its result is ready, yielding.                                                             // 105
-              // This matches the behavior of macromongo on the server better.                                               // 106
-              // XXX see #MeteorServerNull                                                                                   // 107
+              self._prefix = '/' + self._name + '/'; // Mutation Methods                                                          // 103
+              // Minimongo on the server gets no stubs; instead, by default                                                       // 106
+              // it wait()s until its result is ready, yielding.                                                                  // 107
+              // This matches the behavior of macromongo on the server better.                                                    // 108
+              // XXX see #MeteorServerNull                                                                                        // 109
               //
               if (self._connection && (self._connection === Meteor.server || Meteor.isClient)) {
-                // 108
-                var m = {}; // 109
-                //
-                _.each(['insert', 'update', 'remove'], function (method) {
-                  // 111
-                  var methodName = self._prefix + method; // 112
+                // 110
+                var m = {}; // 111
+                ['insert', 'update', 'remove'].forEach(function (method) {
+                  // 113
+                  var methodName = self._prefix + method; // 114
                   //
                   if (options.useExisting) {
-                    // 114
+                    // 116
                     var handlerPropName = Meteor.isClient ? '_methodHandlers' : 'method_handlers'; // Do not try to create additional methods if this has already been called.
-                    // (Otherwise the .methods() call below will throw an error.)                                            // 117
+                    // (Otherwise the .methods() call below will throw an error.)                                                 // 119
                     //
                     if (self._connection[handlerPropName] && typeof self._connection[handlerPropName][methodName] === 'function') return;
-                  } // 120
+                  } // 122
                   //
                   m[methodName] = function () /* ... */{
-                    // 122
-                    // All the methods do their own validation, instead of using check().                                    // 123
-                    check(arguments, [Match.Any]); // 124
-                    //
-                    var args = _.toArray(arguments); // 125
+                    // 124
+                    // All the methods do their own validation, instead of using check().                                         // 125
+                    check(arguments, [Match.Any]); // 126
+                    var args = Array.from(arguments); // 127
                     //
                     try {
-                      // 126
-                      // For an insert, if the client didn't specify an _id, generate one                                    // 127
-                      // now; because this uses DDP.randomStream, it will be consistent with                                 // 128
-                      // what the client generated. We generate it now rather than later so                                  // 129
-                      // that if (eg) an allow/deny rule does an insert to the same                                          // 130
-                      // collection (not that it really should), the generated _id will                                      // 131
-                      // still be the first use of the stream and will be consistent.                                        // 132
-                      //                                                                                                     // 133
-                      // However, we don't actually stick the _id onto the document yet,                                     // 134
-                      // because we want allow/deny rules to be able to differentiate                                        // 135
-                      // between arbitrary client-specified _id fields and merely                                            // 136
-                      // client-controlled-via-randomSeed fields.                                                            // 137
-                      var generatedId = null; // 138
+                      // 128
+                      // For an insert, if the client didn't specify an _id, generate one                                         // 129
+                      // now; because this uses DDP.randomStream, it will be consistent with                                      // 130
+                      // what the client generated. We generate it now rather than later so                                       // 131
+                      // that if (eg) an allow/deny rule does an insert to the same                                               // 132
+                      // collection (not that it really should), the generated _id will                                           // 133
+                      // still be the first use of the stream and will be consistent.                                             // 134
+                      //                                                                                                          // 135
+                      // However, we don't actually stick the _id onto the document yet,                                          // 136
+                      // because we want allow/deny rules to be able to differentiate                                             // 137
+                      // between arbitrary client-specified _id fields and merely                                                 // 138
+                      // client-controlled-via-randomSeed fields.                                                                 // 139
+                      var generatedId = null; // 140
                       //
-                      if (method === "insert" && !_.has(args[0], '_id')) {
-                        // 139
-                        generatedId = self._makeNewID(); // 140
-                      } // 141
+                      if (method === "insert" && !hasOwn.call(args[0], '_id')) {
+                        // 141
+                        generatedId = self._makeNewID(); // 142
+                      } // 143
                       //
                       if (this.isSimulation) {
-                        // 143
-                        // In a client simulation, you can do any mutation (even with a                                      // 144
-                        // complex selector).                                                                                // 145
-                        if (generatedId !== null) args[0]._id = generatedId; // 146
-                        return self._collection[method].apply(self._collection, args); // 148
-                      } // This is the server receiving a method call from the client.                                       // 150
-                      // We don't allow arbitrary selectors in mutations from the client: only                               // 154
-                      // single-ID selectors.                                                                                // 155
+                        // 145
+                        // In a client simulation, you can do any mutation (even with a                                           // 146
+                        // complex selector).                                                                                     // 147
+                        if (generatedId !== null) args[0]._id = generatedId; // 148
+                        return self._collection[method].apply(self._collection, args); // 150
+                      } // This is the server receiving a method call from the client.                                            // 152
+                      // We don't allow arbitrary selectors in mutations from the client: only                                    // 156
+                      // single-ID selectors.                                                                                     // 157
                       //
                       //
-                      if (method !== 'insert') throwIfSelectorIsNotId(args[0], method); // 156
+                      if (method !== 'insert') throwIfSelectorIsNotId(args[0], method); // 158
                       //
                       if (self._restricted) {
-                        // 159
-                        // short circuit if there is no way it will pass.                                                    // 160
+                        // 161
+                        // short circuit if there is no way it will pass.                                                         // 162
                         if (self._validators[method].allow.length === 0) {
-                          // 161
+                          // 163
                           throw new Meteor.Error(403, "Access denied. No allow validators set on restricted " + "collection for method '" + method + "'.");
-                        } // 165
+                        } // 167
                         //
-                        var validatedMethodName = '_validated' + method.charAt(0).toUpperCase() + method.slice(1); // 167
-                        args.unshift(this.userId); // 169
-                        method === 'insert' && args.push(generatedId); // 170
-                        return self[validatedMethodName].apply(self, args); // 171
+                        var validatedMethodName = '_validated' + method.charAt(0).toUpperCase() + method.slice(1); // 169
+                        args.unshift(this.userId); // 171
+                        method === 'insert' && args.push(generatedId); // 172
+                        return self[validatedMethodName].apply(self, args); // 173
                       } else if (self._isInsecure()) {
-                        // 172
+                        // 174
                         if (generatedId !== null) args[0]._id = generatedId; // In insecure mode, allow any mutation (with a simple selector).
-                        // XXX This is kind of bogus.  Instead of blindly passing whatever                                   // 176
-                        //     we get from the network to this function, we should actually                                  // 177
-                        //     know the correct arguments for the function and pass just                                     // 178
-                        //     them.  For example, if you have an extraneous extra null                                      // 179
-                        //     argument and this is Mongo on the server, the .wrapAsync'd                                    // 180
-                        //     functions like update will get confused and pass the                                          // 181
-                        //     "fut.resolver()" in the wrong slot, where _update will never                                  // 182
-                        //     invoke it. Bam, broken DDP connection.  Probably should just                                  // 183
-                        //     take this whole method and write it three times, invoking                                     // 184
-                        //     helpers for the common code.                                                                  // 185
+                        // XXX This is kind of bogus.  Instead of blindly passing whatever                                        // 178
+                        //     we get from the network to this function, we should actually                                       // 179
+                        //     know the correct arguments for the function and pass just                                          // 180
+                        //     them.  For example, if you have an extraneous extra null                                           // 181
+                        //     argument and this is Mongo on the server, the .wrapAsync'd                                         // 182
+                        //     functions like update will get confused and pass the                                               // 183
+                        //     "fut.resolver()" in the wrong slot, where _update will never                                       // 184
+                        //     invoke it. Bam, broken DDP connection.  Probably should just                                       // 185
+                        //     take this whole method and write it three times, invoking                                          // 186
+                        //     helpers for the common code.                                                                       // 187
                         //
-                        return self._collection[method].apply(self._collection, args); // 186
+                        return self._collection[method].apply(self._collection, args); // 188
                       } else {
-                        // 187
-                        // In secure mode, if we haven't called allow or deny, then nothing                                  // 188
-                        // is permitted.                                                                                     // 189
-                        throw new Meteor.Error(403, "Access denied"); // 190
-                      } // 191
+                        // 189
+                        // In secure mode, if we haven't called allow or deny, then nothing                                       // 190
+                        // is permitted.                                                                                          // 191
+                        throw new Meteor.Error(403, "Access denied"); // 192
+                      } // 193
                     } catch (e) {
-                      // 192
+                      // 194
                       if (e.name === 'MongoError' || e.name === 'MinimongoError') {
-                        // 193
-                        throw new Meteor.Error(409, e.toString()); // 194
-                      } else {
                         // 195
-                        throw e; // 196
-                      } // 197
-                    } // 198
-                  }; // 199
-                }); // 200
+                        throw new Meteor.Error(409, e.toString()); // 196
+                      } else {
+                        // 197
+                        throw e; // 198
+                      } // 199
+                    } // 200
+                  }; // 201
+                }); // 202
                 //
-                self._connection.methods(m); // 202
-              } // 203
-            }; // 204
+                self._connection.methods(m); // 204
+              } // 205
+            }; // 206
             //
             CollectionPrototype._updateFetch = function (fields) {
-              // 206
-              var self = this; // 207
+              // 208
+              var self = this; // 209
               //
               if (!self._validators.fetchAllFields) {
-                // 209
+                // 211
                 if (fields) {
-                  // 210
-                  self._validators.fetch = _.union(self._validators.fetch, fields); // 211
-                } else {
                   // 212
-                  self._validators.fetchAllFields = true; // clear fetch just to make sure we don't accidentally read it     // 213
+                  var union = Object.create(null); // 213
                   //
-                  self._validators.fetch = null; // 215
-                } // 216
-              } // 217
-            }; // 218
+                  var add = function (names) {
+                    // 214
+                    return names && names.forEach(function (name) {
+                      // 214
+                      return union[name] = 1; // 214
+                    }); // 214
+                  }; // 214
+                  //
+                  add(self._validators.fetch); // 215
+                  add(fields); // 216
+                  self._validators.fetch = Object.keys(union); // 217
+                } else {
+                  // 218
+                  self._validators.fetchAllFields = true; // clear fetch just to make sure we don't accidentally read it          // 219
+                  //
+                  self._validators.fetch = null; // 221
+                } // 222
+              } // 223
+            }; // 224
             //
             CollectionPrototype._isInsecure = function () {
-              // 220
-              var self = this; // 221
-              if (self._insecure === undefined) return !!Package.insecure; // 222
-              return self._insecure; // 224
-            }; // 225
+              // 226
+              var self = this; // 227
+              if (self._insecure === undefined) return !!Package.insecure; // 228
+              return self._insecure; // 230
+            }; // 231
             //
             CollectionPrototype._validatedInsert = function (userId, doc, generatedId) {
-              // 227
-              var self = this; // call user validators.                                                                      // 229
-              // Any deny returns true means denied.                                                                         // 232
+              // 233
+              var self = this; // call user validators.                                                                           // 235
+              // Any deny returns true means denied.                                                                              // 238
               //
-              if (_.any(self._validators.insert.deny, function (validator) {
-                // 233
-                return validator(userId, docToValidate(validator, doc, generatedId)); // 234
-              })) {
-                // 235
-                throw new Meteor.Error(403, "Access denied"); // 236
-              } // Any allow returns true means proceed. Throw error if they all fail.                                       // 237
-              //
-              //
-              if (_.all(self._validators.insert.allow, function (validator) {
+              if (self._validators.insert.deny.some(function (validator) {
                 // 239
-                return !validator(userId, docToValidate(validator, doc, generatedId)); // 240
+                return validator(userId, docToValidate(validator, doc, generatedId)); // 240
               })) {
                 // 241
                 throw new Meteor.Error(403, "Access denied"); // 242
-              } // If we generated an ID above, insert it now: after the validation, but                                     // 243
-              // before actually inserting.                                                                                  // 246
+              } // Any allow returns true means proceed. Throw error if they all fail.                                            // 243
               //
               //
-              if (generatedId !== null) doc._id = generatedId; // 247
+              if (self._validators.insert.allow.every(function (validator) {
+                // 245
+                return !validator(userId, docToValidate(validator, doc, generatedId)); // 246
+              })) {
+                // 247
+                throw new Meteor.Error(403, "Access denied"); // 248
+              } // If we generated an ID above, insert it now: after the validation, but                                          // 249
+              // before actually inserting.                                                                                       // 252
               //
-              self._collection.insert.call(self._collection, doc); // 250
-            }; // Simulate a mongo `update` operation while validating that the access                                       // 251
-            // control rules set by calls to `allow/deny` are satisfied. If all                                              // 254
-            // pass, rewrite the mongo operation to use $in to set the list of                                               // 255
-            // document ids to change ##ValidatedChange                                                                      // 256
+              //
+              if (generatedId !== null) doc._id = generatedId; // 253
+              //
+              self._collection.insert.call(self._collection, doc); // 256
+            }; // Simulate a mongo `update` operation while validating that the access                                            // 257
+            // control rules set by calls to `allow/deny` are satisfied. If all                                                   // 260
+            // pass, rewrite the mongo operation to use $in to set the list of                                                    // 261
+            // document ids to change ##ValidatedChange                                                                           // 262
             //
             //
             CollectionPrototype._validatedUpdate = function (userId, selector, mutator, options) {
-              // 257
-              var self = this; // 259
-              check(mutator, Object); // 261
-              options = _.clone(options) || {}; // 263
+              // 263
+              var self = this; // 265
+              check(mutator, Object); // 267
+              options = Object.assign(Object.create(null), options); // 269
               if (!LocalCollection._selectorIsIdPerhapsAsObject(selector)) throw new Error("validated update should be of a single ID"); // We don't support upserts because they don't fit nicely into allow/deny
-              // rules.                                                                                                      // 269
+              // rules.                                                                                                           // 275
               //
               if (options.upsert) throw new Meteor.Error(403, "Access denied. Upserts not " + "allowed in a restricted collection.");
-              var noReplaceError = "Access denied. In a restricted collection you can only" + " update documents, not replace them. Use a Mongo update operator, such " + "as '$set'."; // compute modified fields
+              var noReplaceError = "Access denied. In a restricted collection you can only" + " update documents, not replace them. Use a Mongo update operator, such " + "as '$set'.";
+              var mutatorKeys = Object.keys(mutator); // compute modified fields                                                  // 284
               //
-              var fields = []; // 279
+              var modifiedFields = {}; // 287
               //
-              if (_.isEmpty(mutator)) {
-                // 280
-                throw new Meteor.Error(403, noReplaceError); // 281
-              } // 282
+              if (mutatorKeys.length === 0) {
+                // 289
+                throw new Meteor.Error(403, noReplaceError); // 290
+              } // 291
               //
-              _.each(mutator, function (params, op) {
-                // 283
+              mutatorKeys.forEach(function (op) {
+                // 292
+                var params = mutator[op]; // 293
+                //
                 if (op.charAt(0) !== '$') {
-                  // 284
-                  throw new Meteor.Error(403, noReplaceError); // 285
-                } else if (!_.has(ALLOWED_UPDATE_OPERATIONS, op)) {
-                  // 286
-                  throw new Meteor.Error(403, "Access denied. Operator " + op + " not allowed in a restricted collection.");
+                  // 294
+                  throw new Meteor.Error(403, noReplaceError); // 295
+                } else if (!hasOwn.call(ALLOWED_UPDATE_OPERATIONS, op)) {
+                  // 296
+                  throw new Meteor.Error(403, "Access denied. Operator " + op + " not allowed in a restricted collection."); // 297
                 } else {
-                  // 289
-                  _.each(_.keys(params), function (field) {
-                    // 290
-                    // treat dotted fields as if they are replacing their                                                    // 291
-                    // top-level part                                                                                        // 292
+                  // 299
+                  Object.keys(params).forEach(function (field) {
+                    // 300
+                    // treat dotted fields as if they are replacing their                                                         // 301
+                    // top-level part                                                                                             // 302
                     if (field.indexOf('.') !== -1) field = field.substring(0, field.indexOf('.')); // record the field we are trying to change
                     //
-                    if (!_.contains(fields, field)) fields.push(field); // 297
-                  }); // 299
-                } // 300
-              }); // 301
-              //
-              var findOptions = { // 303
-                transform: null // 303
-              }; // 303
+                    modifiedFields[field] = true; // 307
+                  }); // 308
+                } // 309
+              }); // 310
+              var fields = Object.keys(modifiedFields); // 312
+              var findOptions = { // 314
+                transform: null // 314
+              }; // 314
               //
               if (!self._validators.fetchAllFields) {
-                // 304
-                findOptions.fields = {}; // 305
+                // 315
+                findOptions.fields = {}; // 316
                 //
-                _.each(self._validators.fetch, function (fieldName) {
-                  // 306
-                  findOptions.fields[fieldName] = 1; // 307
-                }); // 308
-              } // 309
+                self._validators.fetch.forEach(function (fieldName) {
+                  // 317
+                  findOptions.fields[fieldName] = 1; // 318
+                }); // 319
+              } // 320
               //
-              var doc = self._collection.findOne(selector, findOptions); // 311
+              var doc = self._collection.findOne(selector, findOptions); // 322
               //
-              if (!doc) // none satisfied!                                                                                   // 312
-                return 0; // call user validators.                                                                           // 313
-              // Any deny returns true means denied.                                                                         // 316
+              if (!doc) // none satisfied!                                                                                        // 323
+                return 0; // call user validators.                                                                                // 324
+              // Any deny returns true means denied.                                                                              // 327
               //
-              if (_.any(self._validators.update.deny, function (validator) {
-                // 317
-                var factoriedDoc = transformDoc(validator, doc); // 318
-                return validator(userId, factoriedDoc, fields, mutator); // 319
+              if (self._validators.update.deny.some(function (validator) {
+                // 328
+                var factoriedDoc = transformDoc(validator, doc); // 329
+                return validator(userId, factoriedDoc, fields, mutator); // 330
               })) {
-                // 323
-                throw new Meteor.Error(403, "Access denied"); // 324
-              } // Any allow returns true means proceed. Throw error if they all fail.                                       // 325
+                // 334
+                throw new Meteor.Error(403, "Access denied"); // 335
+              } // Any allow returns true means proceed. Throw error if they all fail.                                            // 336
               //
               //
-              if (_.all(self._validators.update.allow, function (validator) {
-                // 327
-                var factoriedDoc = transformDoc(validator, doc); // 328
-                return !validator(userId, factoriedDoc, fields, mutator); // 329
+              if (self._validators.update.allow.every(function (validator) {
+                // 338
+                var factoriedDoc = transformDoc(validator, doc); // 339
+                return !validator(userId, factoriedDoc, fields, mutator); // 340
               })) {
-                // 333
-                throw new Meteor.Error(403, "Access denied"); // 334
-              } // 335
+                // 344
+                throw new Meteor.Error(403, "Access denied"); // 345
+              } // 346
               //
-              options._forbidReplace = true; // Back when we supported arbitrary client-provided selectors, we actually      // 337
-              // rewrote the selector to include an _id clause before passing to Mongo to                                    // 340
-              // avoid races, but since selector is guaranteed to already just be an ID, we                                  // 341
-              // don't have to any more.                                                                                     // 342
+              options._forbidReplace = true; // Back when we supported arbitrary client-provided selectors, we actually           // 348
+              // rewrote the selector to include an _id clause before passing to Mongo to                                         // 351
+              // avoid races, but since selector is guaranteed to already just be an ID, we                                       // 352
+              // don't have to any more.                                                                                          // 353
               //
-              return self._collection.update.call(self._collection, selector, mutator, options); // 344
-            }; // Only allow these operations in validated updates. Specifically                                             // 346
-            // whitelist operations, rather than blacklist, so new complex                                                   // 349
-            // operations that are added aren't automatically allowed. A complex                                             // 350
-            // operation is one that does more than just modify its target                                                   // 351
-            // field. For now this contains all update operations except '$rename'.                                          // 352
-            // http://docs.mongodb.org/manual/reference/operators/#update                                                    // 353
+              return self._collection.update.call(self._collection, selector, mutator, options); // 355
+            }; // Only allow these operations in validated updates. Specifically                                                  // 357
+            // whitelist operations, rather than blacklist, so new complex                                                        // 360
+            // operations that are added aren't automatically allowed. A complex                                                  // 361
+            // operation is one that does more than just modify its target                                                        // 362
+            // field. For now this contains all update operations except '$rename'.                                               // 363
+            // http://docs.mongodb.org/manual/reference/operators/#update                                                         // 364
             //
             //
-            var ALLOWED_UPDATE_OPERATIONS = { // 354
-              $inc: 1, // 355
-              $set: 1, // 355
-              $unset: 1, // 355
-              $addToSet: 1, // 355
-              $pop: 1, // 355
-              $pullAll: 1, // 355
-              $pull: 1, // 355
-              $pushAll: 1, // 356
-              $push: 1, // 356
-              $bit: 1 // 356
-            }; // Simulate a mongo `remove` operation while validating access control                                        // 354
-            // rules. See #ValidatedChange                                                                                   // 360
+            var ALLOWED_UPDATE_OPERATIONS = { // 365
+              $inc: 1, // 366
+              $set: 1, // 366
+              $unset: 1, // 366
+              $addToSet: 1, // 366
+              $pop: 1, // 366
+              $pullAll: 1, // 366
+              $pull: 1, // 366
+              $pushAll: 1, // 367
+              $push: 1, // 367
+              $bit: 1 // 367
+            }; // Simulate a mongo `remove` operation while validating access control                                             // 365
+            // rules. See #ValidatedChange                                                                                        // 371
             //
             CollectionPrototype._validatedRemove = function (userId, selector) {
-              // 361
-              var self = this; // 362
-              var findOptions = { // 364
-                transform: null // 364
-              }; // 364
+              // 372
+              var self = this; // 373
+              var findOptions = { // 375
+                transform: null // 375
+              }; // 375
               //
               if (!self._validators.fetchAllFields) {
-                // 365
-                findOptions.fields = {}; // 366
+                // 376
+                findOptions.fields = {}; // 377
                 //
-                _.each(self._validators.fetch, function (fieldName) {
-                  // 367
-                  findOptions.fields[fieldName] = 1; // 368
-                }); // 369
-              } // 370
+                self._validators.fetch.forEach(function (fieldName) {
+                  // 378
+                  findOptions.fields[fieldName] = 1; // 379
+                }); // 380
+              } // 381
               //
-              var doc = self._collection.findOne(selector, findOptions); // 372
+              var doc = self._collection.findOne(selector, findOptions); // 383
               //
-              if (!doc) return 0; // call user validators.                                                                   // 373
-              // Any deny returns true means denied.                                                                         // 377
+              if (!doc) return 0; // call user validators.                                                                        // 384
+              // Any deny returns true means denied.                                                                              // 388
               //
-              if (_.any(self._validators.remove.deny, function (validator) {
-                // 378
-                return validator(userId, transformDoc(validator, doc)); // 379
+              if (self._validators.remove.deny.some(function (validator) {
+                // 389
+                return validator(userId, transformDoc(validator, doc)); // 390
               })) {
-                // 380
-                throw new Meteor.Error(403, "Access denied"); // 381
-              } // Any allow returns true means proceed. Throw error if they all fail.                                       // 382
+                // 391
+                throw new Meteor.Error(403, "Access denied"); // 392
+              } // Any allow returns true means proceed. Throw error if they all fail.                                            // 393
               //
               //
-              if (_.all(self._validators.remove.allow, function (validator) {
-                // 384
-                return !validator(userId, transformDoc(validator, doc)); // 385
+              if (self._validators.remove.allow.every(function (validator) {
+                // 395
+                return !validator(userId, transformDoc(validator, doc)); // 396
               })) {
-                // 386
-                throw new Meteor.Error(403, "Access denied"); // 387
-              } // Back when we supported arbitrary client-provided selectors, we actually                                   // 388
-              // rewrote the selector to {_id: {$in: [ids that we found]}} before passing to                                 // 391
-              // Mongo to avoid races, but since selector is guaranteed to already just be                                   // 392
-              // an ID, we don't have to any more.                                                                           // 393
+                // 397
+                throw new Meteor.Error(403, "Access denied"); // 398
+              } // Back when we supported arbitrary client-provided selectors, we actually                                        // 399
+              // rewrote the selector to {_id: {$in: [ids that we found]}} before passing to                                      // 402
+              // Mongo to avoid races, but since selector is guaranteed to already just be                                        // 403
+              // an ID, we don't have to any more.                                                                                // 404
               //
               //
-              return self._collection.remove.call(self._collection, selector); // 395
-            }; // 396
+              return self._collection.remove.call(self._collection, selector); // 406
+            }; // 407
             //
             CollectionPrototype._callMutatorMethod = function () {
-              // 398
+              // 409
               function _callMutatorMethod(name, args, callback) {
-                // 398
+                // 409
                 if (Meteor.isClient && !callback && !alreadyInSimulation()) {
-                  // 399
-                  // Client can't block, so it can't report errors by exception,                                             // 400
-                  // only by callback. If they forget the callback, give them a                                              // 401
-                  // default one that logs the error, so they aren't totally                                                 // 402
-                  // baffled if their writes don't work because their database is                                            // 403
-                  // down.                                                                                                   // 404
-                  // Don't give a default callback in simulation, because inside stubs we                                    // 405
-                  // want to return the results from the local collection immediately and                                    // 406
-                  // not force a callback.                                                                                   // 407
+                  // 410
+                  // Client can't block, so it can't report errors by exception,                                                  // 411
+                  // only by callback. If they forget the callback, give them a                                                   // 412
+                  // default one that logs the error, so they aren't totally                                                      // 413
+                  // baffled if their writes don't work because their database is                                                 // 414
+                  // down.                                                                                                        // 415
+                  // Don't give a default callback in simulation, because inside stubs we                                         // 416
+                  // want to return the results from the local collection immediately and                                         // 417
+                  // not force a callback.                                                                                        // 418
                   callback = function (err) {
-                    // 408
-                    if (err) Meteor._debug(name + " failed: " + (err.reason || err.stack)); // 409
-                  }; // 411
-                } // For two out of three mutator methods, the first argument is a selector                                  // 412
+                    // 419
+                    if (err) Meteor._debug(name + " failed: " + (err.reason || err.stack)); // 420
+                  }; // 422
+                } // For two out of three mutator methods, the first argument is a selector                                       // 423
                 //
                 //
-                var firstArgIsSelector = name === "update" || name === "remove"; // 415
+                var firstArgIsSelector = name === "update" || name === "remove"; // 426
                 //
                 if (firstArgIsSelector && !alreadyInSimulation()) {
-                  // 416
-                  // If we're about to actually send an RPC, we should throw an error if                                     // 417
-                  // this is a non-ID selector, because the mutation methods only allow                                      // 418
-                  // single-ID selectors. (If we don't throw here, we'll see flicker.)                                       // 419
-                  throwIfSelectorIsNotId(args[0], name); // 420
-                } // 421
+                  // 427
+                  // If we're about to actually send an RPC, we should throw an error if                                          // 428
+                  // this is a non-ID selector, because the mutation methods only allow                                           // 429
+                  // single-ID selectors. (If we don't throw here, we'll see flicker.)                                            // 430
+                  throwIfSelectorIsNotId(args[0], name); // 431
+                } // 432
                 //
-                var mutatorMethodName = this._prefix + name; // 423
-                return this._connection.apply(mutatorMethodName, args, { // 424
-                  returnStubValue: true // 425
-                }, callback); // 425
-              } // 426
+                var mutatorMethodName = this._prefix + name; // 434
+                return this._connection.apply(mutatorMethodName, args, { // 435
+                  returnStubValue: true // 436
+                }, callback); // 436
+              } // 437
               //
-              return _callMutatorMethod; // 398
-            }(); // 398
+              return _callMutatorMethod; // 409
+            }(); // 409
             //
             function transformDoc(validator, doc) {
-              // 428
-              if (validator.transform) return validator.transform(doc); // 429
-              return doc; // 431
-            } // 432
+              // 439
+              if (validator.transform) return validator.transform(doc); // 440
+              return doc; // 442
+            } // 443
             //
             function docToValidate(validator, doc, generatedId) {
-              // 434
-              var ret = doc; // 435
+              // 445
+              var ret = doc; // 446
               //
               if (validator.transform) {
-                // 436
-                ret = EJSON.clone(doc); // If you set a server-side transform on your collection, then you don't get         // 437
-                // to tell the difference between "client specified the ID" and "server                                      // 439
-                // generated the ID", because transforms expect to get _id.  If you want to                                  // 440
-                // do that check, you can do it with a specific                                                              // 441
-                // `C.allow({insert: f, transform: null})` validator.                                                        // 442
+                // 447
+                ret = EJSON.clone(doc); // If you set a server-side transform on your collection, then you don't get              // 448
+                // to tell the difference between "client specified the ID" and "server                                           // 450
+                // generated the ID", because transforms expect to get _id.  If you want to                                       // 451
+                // do that check, you can do it with a specific                                                                   // 452
+                // `C.allow({insert: f, transform: null})` validator.                                                             // 453
                 //
                 if (generatedId !== null) {
-                  // 443
-                  ret._id = generatedId; // 444
-                } // 445
+                  // 454
+                  ret._id = generatedId; // 455
+                } // 456
                 //
-                ret = validator.transform(ret); // 446
-              } // 447
+                ret = validator.transform(ret); // 457
+              } // 458
               //
-              return ret; // 448
-            } // 449
+              return ret; // 459
+            } // 460
             //
             function addValidator(collection, allowOrDeny, options) {
-              // 451
-              // validate keys                                                                                               // 452
-              var VALID_KEYS = ['insert', 'update', 'remove', 'fetch', 'transform']; // 453
-              //
-              _.each(_.keys(options), function (key) {
-                // 454
-                if (!_.contains(VALID_KEYS, key)) throw new Error(allowOrDeny + ": Invalid key: " + key); // 455
-              }); // 457
-              //
-              collection._restricted = true; // 459
-              //
-              _.each(['insert', 'update', 'remove'], function (name) {
-                // 461
-                if (options.hasOwnProperty(name)) {
-                  // 462
+              // 462
+              // validate keys                                                                                                    // 463
+              var validKeysRegEx = /^(?:insert|update|remove|fetch|transform)$/; // 464
+              Object.keys(options).forEach(function (key) {
+                // 465
+                if (!validKeysRegEx.test(key)) throw new Error(allowOrDeny + ": Invalid key: " + key); // 466
+              }); // 468
+              collection._restricted = true; // 470
+              ['insert', 'update', 'remove'].forEach(function (name) {
+                // 472
+                if (hasOwn.call(options, name)) {
+                  // 473
                   if (!(options[name] instanceof Function)) {
-                    // 463
-                    throw new Error(allowOrDeny + ": Value for `" + name + "` must be a function"); // 464
-                  } // If the transform is specified at all (including as 'null') in this                                    // 465
-                  // call, then take that; otherwise, take the transform from the                                            // 468
-                  // collection.                                                                                             // 469
+                    // 474
+                    throw new Error(allowOrDeny + ": Value for `" + name + "` must be a function"); // 475
+                  } // If the transform is specified at all (including as 'null') in this                                         // 476
+                  // call, then take that; otherwise, take the transform from the                                                 // 479
+                  // collection.                                                                                                  // 480
                   //
                   //
                   if (options.transform === undefined) {
-                    // 470
-                    options[name].transform = collection._transform; // already wrapped                                      // 471
+                    // 481
+                    options[name].transform = collection._transform; // already wrapped                                           // 482
                   } else {
-                    // 472
-                    options[name].transform = LocalCollection.wrapTransform(options.transform); // 473
-                  } // 475
+                    // 483
+                    options[name].transform = LocalCollection.wrapTransform(options.transform); // 484
+                  } // 486
                   //
-                  collection._validators[name][allowOrDeny].push(options[name]); // 477
-                } // 478
-              }); // Only update the fetch fields if we're passed things that affect                                         // 479
-              // fetching. This way allow({}) and allow({insert: f}) don't result in                                         // 482
-              // setting fetchAllFields                                                                                      // 483
-              //
+                  collection._validators[name][allowOrDeny].push(options[name]); // 488
+                } // 489
+              }); // Only update the fetch fields if we're passed things that affect                                              // 490
+              // fetching. This way allow({}) and allow({insert: f}) don't result in                                              // 493
+              // setting fetchAllFields                                                                                           // 494
               //
               if (options.update || options.remove || options.fetch) {
-                // 484
+                // 495
                 if (options.fetch && !(options.fetch instanceof Array)) {
-                  // 485
-                  throw new Error(allowOrDeny + ": Value for `fetch` must be an array"); // 486
-                } // 487
+                  // 496
+                  throw new Error(allowOrDeny + ": Value for `fetch` must be an array"); // 497
+                } // 498
                 //
-                collection._updateFetch(options.fetch); // 488
-              } // 489
-            } // 490
+                collection._updateFetch(options.fetch); // 499
+              } // 500
+            } // 501
             //
             function throwIfSelectorIsNotId(selector, methodName) {
-              // 492
+              // 503
               if (!LocalCollection._selectorIsIdPerhapsAsObject(selector)) {
-                // 493
-                throw new Meteor.Error(403, "Not permitted. Untrusted code may only " + methodName + " documents by ID."); // 494
-              } // 497
-            } // 498
+                // 504
+                throw new Meteor.Error(403, "Not permitted. Untrusted code may only " + methodName + " documents by ID."); // 505
+              } // 508
+            } // 509
             //
-            ; // Determine if we are in a DDP method simulation                                                              // 498
+            ; // Determine if we are in a DDP method simulation                                                                   // 509
             //
             function alreadyInSimulation() {
-              // 501
-              var enclosing = DDP._CurrentInvocation.get(); // 502
-              //
-              return enclosing && enclosing.isSimulation; // 503
-            } // 504
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+              // 512
+              var CurrentInvocation = DDP._CurrentMethodInvocation || // For backwards compatibility, as explained in this issue:
+              // https://github.com/meteor/meteor/issues/8947                                                                     // 516
+              DDP._CurrentInvocation; // 517
+              var enclosing = CurrentInvocation.get(); // 519
+              return enclosing && enclosing.isSimulation; // 520
+            } // 521
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
           } } } } }, { "extensions": [".js", ".json"] });
   _require("./node_modules/meteor/allow-deny/allow-deny.js");
 

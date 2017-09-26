@@ -109,26 +109,28 @@ export class ItemEditPage implements OnInit, OnDestroy {
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
     this.removeSubscriptions();
     this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this._res_code).subscribe(() => {
-      MeteorObservable.autorun().subscribe(() => {
-        this._items = Items.find({ _id: this._item_code }).zone();
-        this._item = Items.collection.find({ _id: this._item_code }).fetch();
-        for (let item of this._item) {
-          this._unitPrice = this.getItemPrice(item);
-          this._showFooter = true;
-          let aux = item.restaurants.find(element => element.restaurantId === this._res_code);
-          if (aux.isAvailable) {
-            this._showActionsBtn = true;
-            this._showCancelBtn = true;
-          } else {
-            this._showActionsBtn = false;
-            this._showCancelBtn = false;
+      this._ngZone.run(() => {
+        MeteorObservable.autorun().subscribe(() => {
+          this._items = Items.find({ _id: this._item_code }).zone();
+          this._item = Items.collection.find({ _id: this._item_code }).fetch();
+          for (let item of this._item) {
+            this._unitPrice = this.getItemPrice(item);
+            this._showFooter = true;
+            let aux = item.restaurants.find(element => element.restaurantId === this._res_code);
+            if (aux.isAvailable) {
+              this._showActionsBtn = true;
+              this._showCancelBtn = true;
+            } else {
+              this._showActionsBtn = false;
+              this._showCancelBtn = false;
+            }
           }
-        }
-        this._showGarnishFoodError = false;
-        this._maxGarnishFoodElements = 0;
-        this._disabledAddBtn = false;
-        this._additionsFormGroup.reset();
-        this._garnishFormGroup.reset();
+          this._showGarnishFoodError = false;
+          this._maxGarnishFoodElements = 0;
+          this._disabledAddBtn = false;
+          this._additionsFormGroup.reset();
+          this._garnishFormGroup.reset();
+        });
       });
     });
 
