@@ -16,84 +16,102 @@ import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/
 })
 export class AdditionEditPage implements OnInit, OnDestroy {
 
-    private _additionsSub               : Subscription;
-    private _additionsDetailFormGroup   : FormGroup = new FormGroup({});
-    private _orderAddition              : OrderAddition;
-    private _currentOrder               : Order;
-    private _restaurantId               : string;
-    private _additionDetails            : any;
-     
-     /**
-      * AdditionEditPage constructor
-      * @param _alertCtrl 
-      * @param _loadingCtrl 
-      * @param _navCtrl 
-      * @param _navParams 
-      * @param _formBuilder 
-      * @param _translate 
-      * @param _toastCtrl 
-      * @param _userLanguageService 
-      */
+    private _additionsSub: Subscription;
+    private _additionsDetailFormGroup: FormGroup = new FormGroup({});
+    private _orderAddition: OrderAddition;
+    private _currentOrder: Order;
+    private _restaurantId: string;
+    private _additionDetails: any;
+
+    private _isUserAndCorrect: boolean;
+
+    /**
+     * AdditionEditPage constructor
+     * @param _alertCtrl 
+     * @param _loadingCtrl 
+     * @param _navCtrl 
+     * @param _navParams 
+     * @param _formBuilder 
+     * @param _translate 
+     * @param _toastCtrl 
+     * @param _userLanguageService 
+     */
     constructor(public _alertCtrl: AlertController,
-                public _loadingCtrl: LoadingController,
-                public _navCtrl : NavController,
-                public _navParams: NavParams,
-                private _formBuilder: FormBuilder,
-                private _translate: TranslateService,
-                private _toastCtrl: ToastController,
-                private _userLanguageService: UserLanguageService){
+        public _loadingCtrl: LoadingController,
+        public _navCtrl: NavController,
+        public _navParams: NavParams,
+        private _formBuilder: FormBuilder,
+        private _translate: TranslateService,
+        private _toastCtrl: ToastController,
+        private _userLanguageService: UserLanguageService) {
         _translate.setDefaultLang('en');
         this._orderAddition = this._navParams.get("order_addition");
-        this._currentOrder  = this._navParams.get("order");
-        this._restaurantId  = this._navParams.get("restaurant");
+        this._currentOrder = this._navParams.get("order");
+        this._restaurantId = this._navParams.get("restaurant");
     }
 
     /**
      * ngOnInit implementation
      */
-    ngOnInit(){
-        this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+    ngOnInit() {
+        this._translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         this.removeSubscriptions();
-        this._additionsSub = MeteorObservable.subscribe( 'additionsByCurrentRestaurant', Meteor.userId() ).subscribe( () => {
-            this._additionDetails = Additions.find( { _id: this._orderAddition.additionId } ).zone();
+        this._additionsSub = MeteorObservable.subscribe('additionsByCurrentRestaurant', Meteor.userId()).subscribe(() => {
+            this._additionDetails = Additions.find({ _id: this._orderAddition.additionId }).zone();
         });
 
         this._additionsDetailFormGroup = this._formBuilder.group({
-            control : new FormControl( this._orderAddition.quantity, [ Validators.minLength(1), Validators.maxLength(2) ] )
+            control: new FormControl(this._orderAddition.quantity, [Validators.minLength(1), Validators.maxLength(2)])
         });
+
+        if (this._currentOrder.creation_user === Meteor.userId()) {
+            if (this._currentOrder.status === "ORDER_STATUS.REGISTERED") {
+                this._isUserAndCorrect = true;
+                let inputControl = this._additionsDetailFormGroup.get('control');
+                inputControl.enable();
+            } else {
+                this._isUserAndCorrect = false;
+                let inputControl = this._additionsDetailFormGroup.get('control');
+                inputControl.disable();
+            }
+        } else {
+            this._isUserAndCorrect = false;
+            let inputControl = this._additionsDetailFormGroup.get('control');
+            inputControl.disable();
+        }
     }
 
     /**
      * Return addition information
      * @param {Addition} _pAddition
      */
-    getAdditionInformation( _pAddition : Addition ):string {
-        return _pAddition.name + ' - ' + _pAddition.restaurants.filter( r => r.restaurantId === this._restaurantId )[0].price + ' ';
+    getAdditionInformation(_pAddition: Addition): string {
+        return _pAddition.name + ' - ' + _pAddition.restaurants.filter(r => r.restaurantId === this._restaurantId)[0].price + ' ';
     }
 
     /**
     * Function that allows show comfirm dialog
     */
     showComfirmClose() {
-        let btn_no  = this.itemNameTraduction('MOBILE.ORDERS.NO_ANSWER'); 
-        let btn_yes = this.itemNameTraduction('MOBILE.ORDERS.YES_ANSWER'); 
-        let content = this.itemNameTraduction('MOBILE.ORDERS.DELETE_ADDITION_CONFIRM'); 
+        let btn_no = this.itemNameTraduction('MOBILE.ORDERS.NO_ANSWER');
+        let btn_yes = this.itemNameTraduction('MOBILE.ORDERS.YES_ANSWER');
+        let content = this.itemNameTraduction('MOBILE.ORDERS.DELETE_ADDITION_CONFIRM');
 
         let prompt = this._alertCtrl.create({
-        message: content,
-        buttons: [
-            {
-            text: btn_no,
-            handler: data => {
-            }
-            },
-            {
-            text: btn_yes,
-            handler: data => {
-                this.deleteOrderAddition();
-            }
-            }
-        ]
+            message: content,
+            buttons: [
+                {
+                    text: btn_no,
+                    handler: data => {
+                    }
+                },
+                {
+                    text: btn_yes,
+                    handler: data => {
+                        this.deleteOrderAddition();
+                    }
+                }
+            ]
         });
         prompt.present();
     }
@@ -101,28 +119,30 @@ export class AdditionEditPage implements OnInit, OnDestroy {
     /**
      * Delete OrderAddition in order
      */
-    deleteOrderAddition():void{
-        let loading_msg = this.itemNameTraduction('MOBILE.WAITER_CALL.LOADING'); 
+    deleteOrderAddition(): void {
+        let loading_msg = this.itemNameTraduction('MOBILE.WAITER_CALL.LOADING');
         let loading = this._loadingCtrl.create({
             content: loading_msg
         });
         loading.present();
         setTimeout(() => {
-            let _lOrderAdditionToremove:OrderAddition = this._currentOrder.additions.filter( ad => ad.additionId === this._orderAddition.additionId )[0];
-            let _lNewTotalPayment:number = this._currentOrder.totalPayment - _lOrderAdditionToremove.paymentAddition;
+            let _lOrderAdditionToremove: OrderAddition = this._currentOrder.additions.filter(ad => ad.additionId === this._orderAddition.additionId)[0];
+            let _lNewTotalPayment: number = this._currentOrder.totalPayment - _lOrderAdditionToremove.paymentAddition;
 
-            Orders.update( { _id: this._currentOrder._id },{ $pull: { additions:{ additionId: this._orderAddition.additionId } } } );
-            Orders.update( { _id: this._currentOrder._id }, 
-                            { $set: { totalPayment: _lNewTotalPayment, 
-                                      modification_user: Meteor.userId(), 
-                                      modification_date: new Date() 
-                                    } 
-                            } 
-                        );
-            this._currentOrder = Orders.findOne( { _id: this._currentOrder._id } );
+            Orders.update({ _id: this._currentOrder._id }, { $pull: { additions: { additionId: this._orderAddition.additionId } } });
+            Orders.update({ _id: this._currentOrder._id },
+                {
+                    $set: {
+                        totalPayment: _lNewTotalPayment,
+                        modification_user: Meteor.userId(),
+                        modification_date: new Date()
+                    }
+                }
+            );
+            this._currentOrder = Orders.findOne({ _id: this._currentOrder._id });
             this._navCtrl.pop();
             loading.dismiss();
-            let msg = this.itemNameTraduction('MOBILE.ORDERS.ADDITION_DELETED'); 
+            let msg = this.itemNameTraduction('MOBILE.ORDERS.ADDITION_DELETED');
             this.presentToast(msg);
         }, 1000);
     }
@@ -130,7 +150,7 @@ export class AdditionEditPage implements OnInit, OnDestroy {
     /**
     * Function that allow show a toast confirmation
     */
-    presentToast( _pMsg : string ) {
+    presentToast(_pMsg: string) {
         let toast = this._toastCtrl.create({
             message: _pMsg,
             duration: 1500,
@@ -139,54 +159,56 @@ export class AdditionEditPage implements OnInit, OnDestroy {
         toast.onDidDismiss(() => {
         });
         toast.present();
-  }
+    }
 
     /**
      * Modify addition in order
      */
-    editOrderAddition():void{
-        let arrAdd:any[] = Object.keys( this._additionsDetailFormGroup.value );
-        let _lOrderAddition:OrderAddition;
+    editOrderAddition(): void {
+        let arrAdd: any[] = Object.keys(this._additionsDetailFormGroup.value);
+        let _lOrderAddition: OrderAddition;
 
-        arrAdd.forEach( ( add ) => {
-            if( this._additionsDetailFormGroup.value[ add ] ){
-                let _lAddition : Addition = Additions.findOne( { _id: this._orderAddition.additionId } );
+        arrAdd.forEach((add) => {
+            if (this._additionsDetailFormGroup.value[add]) {
+                let _lAddition: Addition = Additions.findOne({ _id: this._orderAddition.additionId });
                 _lOrderAddition = {
                     additionId: this._orderAddition.additionId,
-                    quantity: this._additionsDetailFormGroup.value[ add ],
-                    paymentAddition: ( this.getAdditionPrice( _lAddition ) * ( this._additionsDetailFormGroup.value[ add ] ) )
+                    quantity: this._additionsDetailFormGroup.value[add],
+                    paymentAddition: (this.getAdditionPrice(_lAddition) * (this._additionsDetailFormGroup.value[add]))
                 };
             }
         });
-        let _lOrderAdditionToremove : OrderAddition = this._currentOrder.additions.filter( ad => ad.additionId === _lOrderAddition.additionId )[0];
-        let _lNewTotalPayment : number = this._currentOrder.totalPayment - _lOrderAdditionToremove.paymentAddition;
+        let _lOrderAdditionToremove: OrderAddition = this._currentOrder.additions.filter(ad => ad.additionId === _lOrderAddition.additionId)[0];
+        let _lNewTotalPayment: number = this._currentOrder.totalPayment - _lOrderAdditionToremove.paymentAddition;
 
-        Orders.update( { _id: this._currentOrder._id },{ $pull: { additions:{ additionId: _lOrderAdditionToremove.additionId } } } );
-        Orders.update( { _id: this._currentOrder._id }, 
-                        { $set: { totalPayment: _lNewTotalPayment, 
-                                  modification_user: Meteor.userId(), 
-                                  modification_date: new Date() 
-                                } 
-                        } 
-                     );
-        let _lOrder = Orders.findOne( { _id: this._currentOrder._id } );
+        Orders.update({ _id: this._currentOrder._id }, { $pull: { additions: { additionId: _lOrderAdditionToremove.additionId } } });
+        Orders.update({ _id: this._currentOrder._id },
+            {
+                $set: {
+                    totalPayment: _lNewTotalPayment,
+                    modification_user: Meteor.userId(),
+                    modification_date: new Date()
+                }
+            }
+        );
+        let _lOrder = Orders.findOne({ _id: this._currentOrder._id });
         let _lTotalPaymentAux: number = Number.parseInt(_lOrder.totalPayment.toString()) + Number.parseInt(_lOrderAddition.paymentAddition.toString());
 
-        Orders.update( { _id: _lOrder._id },
-                       { $push: { additions: _lOrderAddition } }
-                     );
         Orders.update({ _id: _lOrder._id },
-                      {
-                        $set: {
-                                modification_user: Meteor.userId(),
-                                modification_date: new Date(),
-                                totalPayment: _lTotalPaymentAux
-                              }
-                      }
-                     );
-        this._currentOrder = Orders.findOne( { _id: this._currentOrder._id } );
+            { $push: { additions: _lOrderAddition } }
+        );
+        Orders.update({ _id: _lOrder._id },
+            {
+                $set: {
+                    modification_user: Meteor.userId(),
+                    modification_date: new Date(),
+                    totalPayment: _lTotalPaymentAux
+                }
+            }
+        );
+        this._currentOrder = Orders.findOne({ _id: this._currentOrder._id });
         this._navCtrl.pop();
-        let msg = this.itemNameTraduction('MOBILE.ORDERS.ADDITION_EDITED'); 
+        let msg = this.itemNameTraduction('MOBILE.ORDERS.ADDITION_EDITED');
         this.presentToast(msg);
     }
 
@@ -194,18 +216,18 @@ export class AdditionEditPage implements OnInit, OnDestroy {
      * Return Addition price
      * @param {Addition} _pAddition 
      */
-    getAdditionPrice( _pAddition: Addition ):number{
-        return _pAddition.restaurants.filter( r => r.restaurantId === this._restaurantId )[0].price;
+    getAdditionPrice(_pAddition: Addition): number {
+        return _pAddition.restaurants.filter(r => r.restaurantId === this._restaurantId)[0].price;
     }
 
     /**
      * Return traduction
      * @param {string} itemName 
      */
-    itemNameTraduction(itemName: string): string{
+    itemNameTraduction(itemName: string): string {
         var wordTraduced: string;
         this._translate.get(itemName).subscribe((res: string) => {
-            wordTraduced = res; 
+            wordTraduced = res;
         });
         return wordTraduced;
     }
@@ -213,14 +235,14 @@ export class AdditionEditPage implements OnInit, OnDestroy {
     /**
      * ngOnDestroy implementation
      */
-    ngOnDestroy(){
+    ngOnDestroy() {
         this.removeSubscriptions();
     }
 
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._additionsSub ){ this._additionsSub.unsubscribe(); }
+    removeSubscriptions(): void {
+        if (this._additionsSub) { this._additionsSub.unsubscribe(); }
     }
 }
