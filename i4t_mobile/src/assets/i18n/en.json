@@ -252,7 +252,8 @@
             "NO_PAYED": "No payed",
             "PAYED": "Payed",
             "CANCEL_PAY_OTHER_USER": "You want to cancel the order payment request",
-            "CANCELED_PAY_OTHER_USER": "Payment request of order has been canceled"
+            "CANCELED_PAY_OTHER_USER": "Payment request of order has been canceled",
+            "NO_ORDERS" : "You have no orders yet"
         },
         "WAITER_CALL": {
             "TITTLE": "Call waiter",

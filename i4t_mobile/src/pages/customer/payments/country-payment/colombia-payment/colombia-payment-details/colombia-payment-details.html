@@ -7,6 +7,15 @@
 </ion-header>
 
 <ion-content>
+    <div *ngIf="(_orders | async)?.length <= 0" style="padding: 0 16px;">
+        <div class="img">
+            <img src="assets/img/orders-detail.png">
+        </div>
+        <div class="content" style="text-align: center">
+            <h1>{{'MOBILE.PAYMENTS.NO_ORDERS' | translate}}</h1>
+        </div>
+    </div>
+
     <ion-card *ngFor="let order of _orders | async">
         <ion-card-content>
             <ion-item text-wrap>
@@ -26,7 +35,7 @@
     </ion-card>
 </ion-content>
 
-<ion-footer class="ion-footer-custom" padding style="background: white;">
+<ion-footer *ngIf="(_invoices | async)?.length > 0" class="ion-footer-custom" padding style="background: white;">
     <ion-item>
         <h2>{{ 'MOBILE.PAYMENTS.SUBTOTAL' | translate }}</h2>
         <h2>{{ 'MOBILE.PAYMENTS.INC' | translate }} (8%):</h2>

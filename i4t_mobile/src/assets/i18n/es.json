@@ -252,7 +252,8 @@
             "NO_PAYED": "No pagado",
             "PAYED": "Pagado",
             "CANCEL_PAY_OTHER_USER": "Deseas cancelar la solicitud del pago de la orden",
-            "CANCELED_PAY_OTHER_USER": "Se ha cancelado la solicitud del pago de la orden"
+            "CANCELED_PAY_OTHER_USER": "Se ha cancelado la solicitud del pago de la orden",
+            "NO_ORDERS" : "Aún no tienes ordenes realizadas"
         },
         "WAITER_CALL": {
             "TITTLE": "Solicitar mesero",

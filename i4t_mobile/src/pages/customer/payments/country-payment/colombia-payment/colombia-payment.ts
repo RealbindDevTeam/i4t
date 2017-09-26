@@ -202,9 +202,9 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
    * Allow navegate to ColombiaPaymentDetailsPage
    */
   goToPaymentDetails() {
-    if (this._ordersValidate) {
+    //if (this._ordersValidate) {
       this._navCtrl.push(ColombiaPaymentDetailsPage, { currency: this._currencyCode });
-    }
+    //}
   }
 
   /**
