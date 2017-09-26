@@ -334,7 +334,7 @@
             "NO_PAYMENTS": "Aún no tienes pagos realizados"
         },
         "CHANGE_TABLE": {
-            "TITLE": "Cambiar mesa",
+            "TITLE": "Cambiar de mesa",
             "NO_RESTAURANT": "No estás en un restaurante",
             "CONTENT": "Selecciona el tipo de código para que puedas cambiar de mesa",
             "DIALOG_ALERT": "Mensaje",

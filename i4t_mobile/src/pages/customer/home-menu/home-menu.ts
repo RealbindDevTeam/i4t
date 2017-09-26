@@ -139,6 +139,9 @@ export class HomeMenu implements OnInit, OnDestroy {
         this.nav.setRoot( page.component );
     }
 
+    /**
+     * Open Settings page
+     */
     openSettings():void{
         let _lSettings  = this.itemNameTraduction('MOBILE.HOME-MENU.SETTINGS');         
         let _lPage: any = { icon: 'assets/img/settings.png', title: _lSettings, component: SettingsPage };

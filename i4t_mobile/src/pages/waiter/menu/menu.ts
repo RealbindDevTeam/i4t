@@ -4,12 +4,13 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MeteorObservable } from 'meteor-rxjs';
+import { Subscription } from 'rxjs';
 import { InitialComponent } from '../../auth/initial/initial';
 import { CallsPage } from '../calls/calls';
 import { SettingsPage } from '../../customer/options/settings/settings';
 import { UserProfileImage } from 'qmo_web/both/models/auth/user-profile.model';
-import { UserImages } from 'qmo_web/both/collections/auth/user.collection';
-import { Subscription } from 'rxjs';
+import { Users, UserImages } from 'qmo_web/both/collections/auth/user.collection';
+import { User } from 'qmo_web/both/models/auth/user.model';
 
 @Component({
   templateUrl: 'menu.html'
@@ -17,6 +18,7 @@ import { Subscription } from 'rxjs';
 export class Menu {
   @ViewChild(Nav) nav: Nav;
   private _userImageSubscription : Subscription;
+  private _userSubscription: Subscription;
   private _user : any;
 
   rootPage: any = CallsPage;
@@ -45,14 +47,14 @@ export class Menu {
     this._user = Meteor.user();
 
     this.pages = [
-      { icon: 'assets/img/restaurant-pay-detail.png', title: 'MOBILE.WAITER_OPTIONS.CALLS', component: CallsPage },
-      { icon: 'assets/img/settings.png',title: 'MOBILE.WAITER_OPTIONS.SETTINGS', component: SettingsPage }
+      { icon: 'home', title: 'MOBILE.WAITER_OPTIONS.CALLS', component: CallsPage }
     ];
 
   }
 
   ngOnInit(){
     this._userImageSubscription = MeteorObservable.subscribe('getUserImages', Meteor.userId()).subscribe();
+    this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe();
   }
 
   /**
@@ -122,9 +124,22 @@ export class Menu {
   }
 
   /**
+   * Return user name
+   */
+  gerUserName():string{
+    let _lUser: User = Users.findOne({ _id: Meteor.userId() });
+    if ( _lUser ) {
+        return _lUser.username;
+    }
+    else {
+        return 'Iurest';
+    }
+  }
+
+  /**
    * Return user image
    */
-  getUsetImage():string{
+  getUserImage():string{
       let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() });
       if( _lUserImage ){
         return _lUserImage.url;
@@ -132,6 +147,15 @@ export class Menu {
       else {
         return 'assets/img/user_default_image.png';
       }
+  }
+
+  /**
+   * Open Settings Page
+   */
+  openSettings():void{
+    let _lSettings  = this.itemNameTraduction('MOBILE.WAITER_OPTIONS.SETTINGS');         
+    let _lPage: any = { icon: 'assets/img/settings.png', title: _lSettings, component: SettingsPage };
+    this.openPage( _lPage );
   }
 
   /**
@@ -151,6 +175,7 @@ export class Menu {
    */
   removeSubscriptions(){
     if( this._userImageSubscription ){ this._userImageSubscription.unsubscribe(); }
+    if( this._userSubscription ){ this._userSubscription.unsubscribe(); }
   }
 
   ngOnDestroy(){
