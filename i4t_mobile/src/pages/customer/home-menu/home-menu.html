@@ -3,17 +3,15 @@
         <ion-list>
             <button menuClose ion-item text-wrap (click)="openSettings()">
                 <ion-avatar item-left>
-                    <img src="{{getUsetImage()}}">
+                    <img src="{{getUserImage()}}">
                 </ion-avatar>
-                <span>{{_user.username}}</span>
+                {{gerUserName()}}
             </button>
         </ion-list>
         <ion-list>
             <button menuClose ion-item text-wrap *ngFor="let p of pages" (click)="openPage(p)">
-                <ion-avatar item-left>
-                    <img src="{{p.icon}}">
-                </ion-avatar>
-                <span>{{p.title}}</span>
+                <ion-icon item-start [name]="p.icon"></ion-icon>
+                {{p.title}}
             </button>
         </ion-list>
     </ion-content>

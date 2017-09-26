@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { App, AlertController, LoadingController, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
@@ -11,18 +11,20 @@ import { SettingsPage } from '../options/settings/settings';
 import { PaymentsHistoryPage } from '../options/payments-history/payments-history';
 import { TabsPage } from '../tabs/tabs';
 import { UserProfileImage } from 'qmo_web/both/models/auth/user-profile.model';
-import { UserImages } from 'qmo_web/both/collections/auth/user.collection';
+import { Users, UserImages } from 'qmo_web/both/collections/auth/user.collection';
+import { User } from 'qmo_web/both/models/auth/user.model';
 
 @Component({
     templateUrl: 'home-menu.html'
 })
 export class HomeMenu implements OnInit, OnDestroy {
+    
     @ViewChild(Nav) nav: Nav;
+    private _userSubscription: Subscription;
     private _userImageSubscription : Subscription;
-    private _user : any = Meteor.user();
+    private _user: User;
   
     rootPage: any = HomePage;
-  
     pages: Array<{icon: string, title: string, component: any}>;
 
     /**
@@ -41,15 +43,16 @@ export class HomeMenu implements OnInit, OnDestroy {
                public splashScreen: SplashScreen,
                public _alertCtrl: AlertController,
                public _loadingCtrl: LoadingController,
-               private _translate: TranslateService ){
+               private _translate: TranslateService,
+               private _ngZone: NgZone ){
         this.initializeApp();
         let _lHome  = this.itemNameTraduction('MOBILE.HOME-MENU.HOME'); 
         let _lOrder  = this.itemNameTraduction('MOBILE.HOME-MENU.ORDER_RESTAURANT'); 
         let _lHistory  = this.itemNameTraduction('MOBILE.HOME-MENU.PAYMENTS_HISTORY'); 
         this.pages = [
-            { icon: 'assets/img/restaurant-pay-detail.png', title: _lHome, component: HomePage },
-            { icon: 'assets/img/chef.png', title: _lOrder, component: TabsPage },
-            { icon: 'assets/img/payment-history.png', title: _lHistory, component: PaymentsHistoryPage }
+            { icon: 'home', title: _lHome, component: HomePage },
+            { icon: 'restaurant', title: _lOrder, component: TabsPage },
+            { icon: 'card', title: _lHistory, component: PaymentsHistoryPage }
         ];
     }
 
@@ -58,6 +61,11 @@ export class HomeMenu implements OnInit, OnDestroy {
      */
     ngOnInit(){
         this._userImageSubscription = MeteorObservable.subscribe( 'getUserImages', Meteor.userId() ).subscribe();
+        this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() => {
+            this._ngZone.run(() => {
+                this._user = Users.findOne( { _id: Meteor.userId() } );
+            });
+        });
     }
 
     /**
@@ -65,6 +73,7 @@ export class HomeMenu implements OnInit, OnDestroy {
      */
     removeSubscriptions(){
         if( this._userImageSubscription ){ this._userImageSubscription.unsubscribe(); }
+        if( this._userSubscription ){ this._userSubscription.unsubscribe(); }
     }
 
     /**
@@ -137,15 +146,36 @@ export class HomeMenu implements OnInit, OnDestroy {
     }
 
     /**
+     * Return user name
+     */
+    gerUserName():string{
+        if ( this._user && this._user.services.facebook ) {
+            return this._user.services.facebook.name;
+        } else {
+            let _lUser: User = Users.findOne({ _id: Meteor.userId() });
+            if ( _lUser ) {
+                return _lUser.username;
+            }
+            else {
+                return 'Iurest';
+            }
+        }
+    }
+
+    /**
      * Return user image
      */
-    getUsetImage():string{
-        let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() });
-        if( _lUserImage ){
-            return _lUserImage.url;
-        } 
-        else {
-            return 'assets/img/user_default_image.png';
+    getUserImage():string{
+        if ( this._user && this._user.services.facebook ) {
+            return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
+        } else {
+            let _lUserImage: UserProfileImage = UserImages.findOne({ userId: Meteor.userId() });
+            if (_lUserImage) {
+                return _lUserImage.url;
+            }
+            else {
+                return 'assets/img/user_default_image.png';
+            }
         }
     }
 
