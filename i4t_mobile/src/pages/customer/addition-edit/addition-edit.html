@@ -23,7 +23,7 @@
     </ion-card>
 </ion-content>
 
-<ion-footer padding>
+<ion-footer padding *ngIf="_isUserAndCorrect">
     <button ion-button block outline (click)="showComfirmClose()" style="width: 48%; display: inline-block">
         {{'MOBILE.ORDERS.DELETE_ADDITION_ORDER' | translate}}
     </button>

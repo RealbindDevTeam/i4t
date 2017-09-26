@@ -159,8 +159,8 @@
             "ADD_ADDITION_ORDER": "Agregar adición a la orden",
             "ADDITON_AGGREGATED": "Adición agregada correctamente",
             "ADDITION": "(Adición)",
-            "MODIFY_ADDITION_ORDER": "Modificar adición",
-            "DELETE_ADDITION_ORDER": "Eliminar adición",
+            "MODIFY_ADDITION_ORDER": "Modificar",
+            "DELETE_ADDITION_ORDER": "Remover",
             "DELETE_ADDITION_CONFIRM": "Estas seguro de eliminar la adición de la orden?",
             "ADDITION_DELETED": "Adición eliminada de la orden",
             "ADDITION_EDITED": "Adición editada correctamente",
@@ -326,7 +326,7 @@
             "ORDER_DETAIL": "Orden entregada"
         },
         "PAYMENTS_HISTORY": {
-            "INFO" : "Para obtener los comprobantes de tus pagos, podrás hacerlo desde",
+            "INFO": "Para obtener los comprobantes de tus pagos, podrás hacerlo desde",
             "TITLE": "Historial de pagos",
             "TOTAL": "Total",
             "TIP": "Propina",
