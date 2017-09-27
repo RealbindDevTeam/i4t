@@ -169,7 +169,8 @@
             "TABLE_NO_ACTIVE": "The table does not have the Iurest service active. It is not possible to enter",
             "IUREST_NO_ACTIVE": "The restaurant does not have the Iurest service active. It is not possible to enter",
             "TABLE": "Table",
-            "RESTAURANT_NOT_EXISTS": "The restaurant does not exist. It is not possible to enter."
+            "RESTAURANT_NOT_EXISTS": "The restaurant does not exist. It is not possible to enter.",
+            "LOADING_MENU": "Loading menu"
         },
         "ORDER_PAYMENT_TRANS": {
             "ORDER_TO_CONFIRM": "Confirm those orders that other users wish to pay for you.",

@@ -6,7 +6,7 @@
                     <img src="assets/img/payment-pending.png">
                 </ion-avatar>
                 {{'MOBILE.PAYMENTS.PENDING_PAYMENT_MSG' | translate}}
-                <ion-icon showWhen="android" name="ios-arrow-forward" item-end></ion-icon>
+                <ion-icon showWhen="android" name="ios-arrow-forward" item-end style="color: rgba(60, 60, 60, 0.7)"></ion-icon>
             </button>  
         </ion-list>
     </ion-card-content>
@@ -20,7 +20,7 @@
                     <img src="assets/img/view-detail.png">
                 </ion-avatar>
                 {{'MOBILE.PAYMENTS.VIEW_DETAIL' | translate}}
-                <ion-icon showWhen="android" name="ios-arrow-forward" item-end></ion-icon>
+                <ion-icon showWhen="android" name="ios-arrow-forward" item-end style="color: rgba(60, 60, 60, 0.7)"></ion-icon>
             </button>  
         </ion-list>
     </ion-card-content>
@@ -36,7 +36,7 @@
                 {{'MOBILE.PAYMENTS.ADD_ORDER' | translate}}
                 <ion-icon *ngIf="_showAlertToConfirm" style="color: #Ef5350; margin-left: 1rem" name="information-circle"></ion-icon>
                 <ion-icon *ngIf="_showAlertWithPendingConf" style="color: #EBC785; margin-left: 1rem" name="information-circle"></ion-icon>
-                <ion-icon showWhen="android" name="ios-arrow-forward" item-end></ion-icon>
+                <ion-icon showWhen="android" name="ios-arrow-forward" item-end style="color: rgba(60, 60, 60, 0.7)"></ion-icon>
             </button>  
         </ion-list>
     </ion-card-content>
@@ -57,7 +57,7 @@
                 <h2>{{'MOBILE.PAYMENTS.MODAL_TITLE' | translate}}</h2>
                 <h3>{{_paymentMethod | translate}}</h3>
                 <h3>{{'MOBILE.PAYMENTS.TIP' | translate}}&nbsp;{{_tipTotal}} {{_currencyCode}}</h3>
-                <ion-icon showWhen="android" name="ios-arrow-forward" item-end></ion-icon>
+                <ion-icon showWhen="android" name="ios-arrow-forward" item-end style="color: rgba(60, 60, 60, 0.7)"></ion-icon>
             </button>  
         </ion-list>
     </ion-card-content>
