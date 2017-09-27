@@ -117,6 +117,13 @@ export class OrdersPage implements OnInit, OnDestroy {
     }
 
     goToNewOrder() {
+        let dialogMsg = this.itemNameTraduction('MOBILE.ORDERS.LOADING_MENU');
+        let loading = this._loadingCtrl.create({
+            content: dialogMsg
+        });
+
+        loading.present();
+
         this._userDetail = UserDetails.collection.findOne({ user_id: Meteor.userId() });
 
         if (this._userDetail.current_table == "") {
@@ -127,7 +134,10 @@ export class OrdersPage implements OnInit, OnDestroy {
                     this._navCtrl.push(CodeTypeSelectPage);
 
                 } else {
-                    this._navCtrl.push(SectionsPage, { res_id: restaurant._id, table_id: this._userDetail.current_table });
+                    setTimeout(() => {
+                        this._navCtrl.push(SectionsPage, { res_id: restaurant._id, table_id: this._userDetail.current_table });
+                        loading.dismiss();
+                    }, 1000);
                 }
             }, (error) => {
                 alert(`Failed to get table ${error}`);
@@ -271,8 +281,6 @@ export class OrdersPage implements OnInit, OnDestroy {
             duration: 300
         });
         loader.present();
-        //let objaux: any[] = [];
-        //objaux = event;
         let _lUserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
 
         if (_lUserDetail.current_restaurant && _lUserDetail.current_table) {
