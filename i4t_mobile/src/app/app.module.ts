@@ -65,6 +65,7 @@ import { HomeMenu } from '../pages/customer/home-menu/home-menu';
 
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Facebook } from '@ionic-native/facebook';
+import { Device } from '@ionic-native/device';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -212,7 +213,8 @@ export function createTranslateLoader(http: Http) {
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     UserLanguageService,
     BarcodeScanner,
-    Facebook
+    Facebook,
+    Device
   ]
 })
 export class AppModule { }

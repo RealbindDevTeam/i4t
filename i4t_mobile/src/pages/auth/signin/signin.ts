@@ -4,10 +4,12 @@ import { App, ViewController, NavController, AlertController, Platform, LoadingC
 //import { OneSignal } from 'ionic-native';
 import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from 'meteor-rxjs';
+import { Device } from '@ionic-native/device';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
 import { Meteor } from 'meteor/meteor';
 import { HomeMenu } from '../../customer/home-menu/home-menu';
 import { Menu } from '../../waiter/menu/menu';
+import { UserLogin } from 'qmo_web/both/models/auth/user-login.model';
 
 import { Facebook } from '@ionic-native/facebook';
 
@@ -36,8 +38,8 @@ export class SigninComponent implements OnInit {
         public _alertCtrl: AlertController,
         public viewCtrl: ViewController,
         public _loadingCtrl: LoadingController,
-        public _platform: Platform) {
-
+        public _platform: Platform,
+        private _device: Device) {
         this.userLang = navigator.language.split('-')[0];
         translate.setDefaultLang('en');
         translate.use(this.userLang);
@@ -80,12 +82,14 @@ export class SigninComponent implements OnInit {
                                 if (role == "400") {
                                     //role 400 customer
                                     //this.addUserDevice();
+                                    this.insertUserInfo();
                                     this.navCtrl.push(HomeMenu);
                                 } else if (role == "200") {
                                     MeteorObservable.call('validateRestaurantIsActive').subscribe((_restaruantActive) => {
                                         if (_restaruantActive) {
                                             MeteorObservable.call('validateUserIsActive').subscribe((active) => {
                                                 if (active) {
+                                                    this.insertUserInfo();
                                                     this._app.getRootNav().setRoot(Menu);
                                                 } else {
                                                     let contentMessage = this.itemNameTraduction("MOBILE.SIGNIN.USER_NO_ACTIVE");
@@ -250,6 +254,26 @@ export class SigninComponent implements OnInit {
             ]
         });
         prompt.present();
+    }
+
+    /**
+     * Insert User Info
+     */
+    insertUserInfo():void{
+        let _lUserLogin:UserLogin = new UserLogin();
+        _lUserLogin.user_id = Meteor.userId();
+        _lUserLogin.login_date = new Date();
+        _lUserLogin.app_code_name = navigator.appCodeName;
+        _lUserLogin.app_name = navigator.appName;
+        _lUserLogin.app_version = navigator.appVersion;
+        _lUserLogin.cookie_enabled = navigator.cookieEnabled;
+        _lUserLogin.language = navigator.language;
+        _lUserLogin.platform = navigator.platform;
+        _lUserLogin.cordova_version = this._device.cordova;
+        _lUserLogin.model = this._device.model;
+        _lUserLogin.platform_device = this._device.platform;
+        _lUserLogin.version = this._device.version;
+        MeteorObservable.call( 'insertUserLoginInfo', _lUserLogin ).subscribe();
     }
 
     itemNameTraduction(itemName: string): string {
