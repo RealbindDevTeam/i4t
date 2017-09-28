@@ -169,7 +169,9 @@
             "TABLE_NO_ACTIVE": "The table does not have the Iurest service active. It is not possible to enter",
             "IUREST_NO_ACTIVE": "The restaurant does not have the Iurest service active. It is not possible to enter",
             "TABLE": "Table",
-            "RESTAURANT_NOT_EXISTS": "The restaurant does not exist. It is not possible to enter."
+            "RESTAURANT_NOT_EXISTS": "The restaurant does not exist. It is not possible to enter.",
+            "MSG_1": "You can sort what you want",
+            "NO_ORDERS": "You do not have any orders yet, you can create a new order"
         },
         "ORDER_PAYMENT_TRANS": {
             "ORDER_TO_CONFIRM": "Confirm those orders that other users wish to pay for you.",
@@ -388,6 +390,12 @@
             "NO_BTN": "No",
             "YES_BTN": "Yes",
             "LOADING": "Please wait..."
+        },
+        "HOME-MENU": {
+            "HOME": "Home",
+            "ORDER_RESTAURANT": "Ordering in a Restaurant",
+            "PAYMENTS_HISTORY": "Payments History",
+            "SETTINGS": "Settings"
         }
     },
     "CURRENCIES": {

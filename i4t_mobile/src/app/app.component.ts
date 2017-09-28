@@ -5,7 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { InitialComponent } from '../pages/auth/initial/initial';
-import { TabsPage } from '../pages/customer/tabs/tabs';
+import { HomeMenu } from '../pages/customer/home-menu/home-menu';
 import { Menu } from '../pages/waiter/menu/menu';
 
 @Component({
@@ -29,7 +29,7 @@ export class MyApp {
     if(this._userId){
       MeteorObservable.call('getRole').subscribe((role) => {
         if (role == "400") {
-          this.rootPage = TabsPage;
+          this.rootPage = HomeMenu;
         } else if ( role == "200") {
             MeteorObservable.call('validateRestaurantIsActive').subscribe((_restaruantActive) => {
                 if(_restaruantActive){

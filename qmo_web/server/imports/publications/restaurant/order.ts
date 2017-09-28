@@ -7,6 +7,7 @@ import { UserDetails } from '../../../../both/collections/auth/user-detail.colle
 import { UserDetail } from '../../../../both/models/auth/user-detail.model';
 import { Account } from '../../../../both/models/restaurant/account.model';
 import { Accounts } from '../../../../both/collections/restaurant/account.collection';
+import { Restaurants } from '../../../../both/collections/restaurant/restaurant.collection';
 
 /**
  * Meteor publication orders with restaurantId and status conditions
@@ -134,4 +135,21 @@ Meteor.publish( 'getOrderById', function( _orderId : string ){
 */
 Meteor.publish('getOrdersByRestaurantIds', function ( _pRestaurantIds: string [], _status: string[]) {
     return Orders.collection.find({ restaurantId: { $in: _pRestaurantIds }, status: { $in: _status } });
+});
+
+/**
+ * Meteor publication return orders by user admin restaurants
+ * @param {string} _userId
+ */
+Meteor.publish( 'getOrdersByAdminUser', function( _userId: string, _status: string[] ){
+    check( _userId, String );
+    let _lRestaurantsId: string[] = [];
+    let _lAccountsId: string[] = [];
+    Restaurants.collection.find( { creation_user: _userId } ).fetch().forEach( ( restaurant ) => {
+        _lRestaurantsId.push( restaurant._id );
+    });
+    Accounts.collection.find( { restaurantId: { $in: _lRestaurantsId }, status: 'OPEN' } ).fetch().forEach( ( account ) => {
+        _lAccountsId.push( account._id );
+    });
+    return Orders.collection.find( { accountId: { $in: _lAccountsId }, status: { $in: _status } } );
 });

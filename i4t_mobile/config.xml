@@ -85,7 +85,7 @@
     <engine name="ios" spec="^4.4.0" />
     <plugin name="cordova-plugin-console" spec="^1.0.7" />
     <plugin name="cordova-plugin-device" spec="^1.1.6" />
-    <plugin name="cordova-plugin-facebook4" spec="^1.9.1">
+    <plugin name="cordova-plugin-facebook4" spec="^1.7.4">
         <variable name="APP_ID" value="314288159042610" />
         <variable name="APP_NAME" value="Iurest" />
     </plugin>

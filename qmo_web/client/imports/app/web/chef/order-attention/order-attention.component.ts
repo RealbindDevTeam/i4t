@@ -3,7 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MdDialogRef, MdDialog, MdDialogConfig, MdSnackBar } from '@angular/material';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Order, OrderItem } from '../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../both/collections/restaurant/order.collection';
@@ -36,6 +36,7 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
 
     private _ordersInProcess                : Observable<Order[]>;    
     private _ordersInProcessDetail          : Observable<Order[]>;
+    private _ordersCanceled                 : Observable<Order[]>;
     private _items                          : Observable<Item[]>;
     private _tables                         : Observable<Table[]>;
     private _garnishFoodCol                 : Observable<GarnishFood[]>;
@@ -58,7 +59,8 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     constructor( private _translate: TranslateService, 
                  private _ngZone: NgZone,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog ) {
+                 protected _mdDialog: MdDialog,
+                 public snackBar: MdSnackBar ) {
                     _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
                     _translate.setDefaultLang( 'en' );
                     this.titleMsg = 'SIGNUP.SYSTEM_MSG';
@@ -72,9 +74,11 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
         this.removeSubscriptions();
         this._ordersSub = MeteorObservable.subscribe( 'getOrdersByRestaurantWork', this._user, [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.CANCELED' ] ).subscribe( () => {
             this._ngZone.run( () => {
-                this._ordersInProcess = Orders.find( { status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.CANCELED' ] }, markedToCancel: { $in: [ undefined, true ] } } ).zone();
-                this.countOrdersInProcess();
-                this._ordersInProcess.subscribe( () => { this.countOrdersInProcess(); } );
+                this._ordersInProcess = Orders.find( { status: 'ORDER_STATUS.IN_PROCESS' } ).zone();
+                this._ordersCanceled = Orders.find( { status: 'ORDER_STATUS.CANCELED', markedToCancel: true } ).zone();;
+                this.countOrders();
+                this._ordersInProcess.subscribe( () => { this.countOrders(); } );
+                this._ordersCanceled.subscribe( () => { this.countOrders(); } );
             });
         });
         this._itemsSub = MeteorObservable.subscribe( 'getItemsByRestaurantWork', this._user ).subscribe( () => {
@@ -102,8 +106,10 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     /**
      * Validate if restaurants exist
      */
-    countOrdersInProcess():void{
-        Orders.collection.find( { status: { $in: [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.CANCELED' ] }, markedToCancel: { $in: [ undefined, true ] } } ).count() > 0 ? this._thereAreOrders = true : this._thereAreOrders = false;
+    countOrders():void{
+        let _lOrdersInProcess: number = Orders.collection.find( { status: 'ORDER_STATUS.IN_PROCESS' } ).count();
+        let _lOrdersCanceled: number = Orders.collection.find( { status: 'ORDER_STATUS.CANCELED', markedToCancel: true } ).count();
+        ( _lOrdersInProcess > 0 || _lOrdersCanceled > 0 ) ? this._thereAreOrders = true : this._thereAreOrders = false;
     }
 
     /**
@@ -156,10 +162,24 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
           MeteorObservable.call('findQueueByRestaurant', data).subscribe(() => {
             Orders.update({ _id: _pOrder._id }, { $set: { status: 'ORDER_STATUS.PREPARED', modification_user: this._user, modification_date: new Date() } });
             this._loading = false;
+            let _lMessage: string = this.itemNameTraduction( 'ORDER_ATTENTION.ORDER_PREPARED_MSG' );
+            this.snackBar.open( _lMessage, '', { duration: 2500 } );
           }, (error) => {
-            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            this.openDialog(this.titleMsg, '', error.reason, '', this.btnAcceptLbl, false);
           });
         }, 1500);
+    }
+
+    /**
+     * Return traduction
+     * @param {string} itemName 
+     */
+    itemNameTraduction(itemName: string): string {
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res;
+        });
+        return wordTraduced;
     }
 
     /**
@@ -199,6 +219,8 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
                 }
               );
             this._loading = false;
+            let _lMessage: string = this.itemNameTraduction( 'ORDER_ATTENTION.ORDER_DELETED' );
+            this.snackBar.open( _lMessage, '', { duration: 2500 } );
         }, 1500);
     }
 

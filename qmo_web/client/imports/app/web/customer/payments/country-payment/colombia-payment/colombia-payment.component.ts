@@ -113,7 +113,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                 this._currencyCode = _lCurrency.code;
             });
         });
-        this._paymentMethodsSub = MeteorObservable.subscribe( 'paymentMethods' ).subscribe( () => {
+        this._paymentMethodsSub = MeteorObservable.subscribe( 'getPaymentMethodsByrestaurantId', this.restId ).subscribe( () => {
             this._ngZone.run( () => {
                 this._paymentMethods = PaymentMethods.find( { } ).zone();
             });

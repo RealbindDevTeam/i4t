@@ -217,7 +217,8 @@
             "RESTAURANTS": "Restaurantes",
             "TABLES": "Buscar mesas",
             "COLLABORATORS": "Colaboradores",
-            "MONTHLY_CONFIG": "Configuración mensual"
+            "MONTHLY_CONFIG": "Configuración mensual",
+            "TABLE_CONTROL": "Control de Mesas"
         },
         "PAYMENTS": {
             "PAYMENTS": "Pagos",
@@ -849,7 +850,9 @@
         "ADDITION": "Adición(es)",
         "NO_ORDERS": "Aún no hay ordenes por preparar",
         "DELETE_ORDER": "ELIMINAR ORDEN",
-        "ORDER_CANCELED_MSG": "Un mesero ha cancelado la orden del cliente"
+        "ORDER_CANCELED_MSG": "Un mesero ha cancelado la orden del cliente",
+        "ORDER_PREPARED_MSG": "Orden Preparada",
+        "ORDER_DELETED": "Orden Eliminada"
     },
     "FINANCIAL_INFO": {
         "COLOMBIA": {
@@ -1174,7 +1177,7 @@
     },
     "ADMIN_DASHBOARD": {
         "TITLE": "Te damos la bienvenida a Iurest",
-        "CARD_CONTENT": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "CARD_CONTENT": "Tu mejor inversión. Disfruta una nueva experiencia con la herramienta que hará crecer tu negocio.",
         "LINK": {
             "NEW_RESTAURANT": "Restaurantes",
             "NEW_COLLABORATOR": "Colaboradores",
