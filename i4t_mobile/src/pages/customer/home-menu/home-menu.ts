@@ -9,7 +9,7 @@ import { InitialComponent } from '../../auth/initial/initial';
 import { HomePage } from '../home/home';
 import { SettingsPage } from '../options/settings/settings';
 import { PaymentsHistoryPage } from '../options/payments-history/payments-history';
-import { TabsPage } from '../tabs/tabs';
+import { TabsPage } from '../tabs/tabs';
 import { UserProfileImage } from 'qmo_web/both/models/auth/user-profile.model';
 import { Users, UserImages } from 'qmo_web/both/collections/auth/user.collection';
 import { User } from 'qmo_web/both/models/auth/user.model';
@@ -18,14 +18,14 @@ import { User } from 'qmo_web/both/models/auth/user.model';
     templateUrl: 'home-menu.html'
 })
 export class HomeMenu implements OnInit, OnDestroy {
-    
+
     @ViewChild(Nav) nav: Nav;
     private _userSubscription: Subscription;
-    private _userImageSubscription : Subscription;
+    private _userImageSubscription: Subscription;
     private _user: User;
-  
+
     rootPage: any = HomePage;
-    pages: Array<{icon: string, title: string, component: any}>;
+    pages: Array<{ icon: string, title: string, component: any }>;
 
     /**
     * Menu constructor
@@ -37,18 +37,18 @@ export class HomeMenu implements OnInit, OnDestroy {
     * @param _loadingCtrl 
     * @param _translate 
     */
-  constructor( public _app : App,
-               public platform: Platform, 
-               public statusBar: StatusBar, 
-               public splashScreen: SplashScreen,
-               public _alertCtrl: AlertController,
-               public _loadingCtrl: LoadingController,
-               private _translate: TranslateService,
-               private _ngZone: NgZone ){
+    constructor(public _app: App,
+        public platform: Platform,
+        public statusBar: StatusBar,
+        public splashScreen: SplashScreen,
+        public _alertCtrl: AlertController,
+        public _loadingCtrl: LoadingController,
+        private _translate: TranslateService,
+        private _ngZone: NgZone) {
         this.initializeApp();
-        let _lHome  = this.itemNameTraduction('MOBILE.HOME-MENU.HOME'); 
-        let _lOrder  = this.itemNameTraduction('MOBILE.HOME-MENU.ORDER_RESTAURANT'); 
-        let _lHistory  = this.itemNameTraduction('MOBILE.HOME-MENU.PAYMENTS_HISTORY'); 
+        let _lHome = this.itemNameTraduction('MOBILE.HOME-MENU.HOME');
+        let _lOrder = this.itemNameTraduction('MOBILE.HOME-MENU.ORDER_RESTAURANT');
+        let _lHistory = this.itemNameTraduction('MOBILE.HOME-MENU.PAYMENTS_HISTORY');
         this.pages = [
             { icon: 'home', title: _lHome, component: HomePage },
             { icon: 'restaurant', title: _lOrder, component: TabsPage },
@@ -59,11 +59,11 @@ export class HomeMenu implements OnInit, OnDestroy {
     /**
      * ngOnInit Implementation
      */
-    ngOnInit(){
-        this._userImageSubscription = MeteorObservable.subscribe( 'getUserImages', Meteor.userId() ).subscribe();
+    ngOnInit() {
+        this._userImageSubscription = MeteorObservable.subscribe('getUserImages', Meteor.userId()).subscribe();
         this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() => {
             this._ngZone.run(() => {
-                this._user = Users.findOne( { _id: Meteor.userId() } );
+                this._user = Users.findOne({ _id: Meteor.userId() });
             });
         });
     }
@@ -71,9 +71,9 @@ export class HomeMenu implements OnInit, OnDestroy {
     /**
      * Remove all subscription
      */
-    removeSubscriptions(){
-        if( this._userImageSubscription ){ this._userImageSubscription.unsubscribe(); }
-        if( this._userSubscription ){ this._userSubscription.unsubscribe(); }
+    removeSubscriptions() {
+        if (this._userImageSubscription) { this._userImageSubscription.unsubscribe(); }
+        if (this._userSubscription) { this._userSubscription.unsubscribe(); }
     }
 
     /**
@@ -89,28 +89,28 @@ export class HomeMenu implements OnInit, OnDestroy {
      * Function that allows show Signout comfirm dialog
      * @param { any } _call 
      */
-    showComfirmSignOut( _call : any) {
-        let btn_no  = this.itemNameTraduction('MOBILE.SIGN_OUT.NO_BTN'); 
-        let btn_yes = this.itemNameTraduction('MOBILE.SIGN_OUT.YES_BTN'); 
-        let title   = this.itemNameTraduction('MOBILE.SIGN_OUT.TITLE_CONFIRM'); 
-        let content = this.itemNameTraduction('MOBILE.SIGN_OUT.CONTENT_CONFIRM'); 
+    showComfirmSignOut(_call: any) {
+        let btn_no = this.itemNameTraduction('MOBILE.SIGN_OUT.NO_BTN');
+        let btn_yes = this.itemNameTraduction('MOBILE.SIGN_OUT.YES_BTN');
+        let title = this.itemNameTraduction('MOBILE.SIGN_OUT.TITLE_CONFIRM');
+        let content = this.itemNameTraduction('MOBILE.SIGN_OUT.CONTENT_CONFIRM');
 
         let prompt = this._alertCtrl.create({
-        title: title,
-        message: content,
-        buttons: [
-            {
-            text: btn_no,
-            handler: data => {
-            }
-            },
-            {
-            text: btn_yes,
-            handler: data => {
-                this.signOut();
-            }
-            }
-        ]
+            title: title,
+            message: content,
+            buttons: [
+                {
+                    text: btn_no,
+                    handler: data => {
+                    }
+                },
+                {
+                    text: btn_yes,
+                    handler: data => {
+                        this.signOut();
+                    }
+                }
+            ]
         });
         prompt.present();
     }
@@ -118,14 +118,14 @@ export class HomeMenu implements OnInit, OnDestroy {
     /**
      * User account sign out
      */
-    signOut(){
-        let loading_msg = this.itemNameTraduction('MOBILE.SIGN_OUT.LOADING'); 
-        
-        let loading = this._loadingCtrl.create( { content: loading_msg } );
+    signOut() {
+        let loading_msg = this.itemNameTraduction('MOBILE.SIGN_OUT.LOADING');
+
+        let loading = this._loadingCtrl.create({ content: loading_msg });
         loading.present();
-        setTimeout( () => {
+        setTimeout(() => {
             loading.dismiss();
-            this._app.getRootNav().setRoot(InitialComponent);
+            this._app.getRootNavs()[0].setRoot(InitialComponent);
             Meteor.logout();
         }, 1500);
     }
@@ -135,28 +135,28 @@ export class HomeMenu implements OnInit, OnDestroy {
      * we wouldn't want the back button to show in this scenario
      * @param page 
      */
-    openPage( page ) {
-        this.nav.setRoot( page.component );
+    openPage(page) {
+        this.nav.setRoot(page.component);
     }
 
     /**
      * Open Settings page
      */
-    openSettings():void{
-        let _lSettings  = this.itemNameTraduction('MOBILE.HOME-MENU.SETTINGS');         
+    openSettings(): void {
+        let _lSettings = this.itemNameTraduction('MOBILE.HOME-MENU.SETTINGS');
         let _lPage: any = { icon: 'assets/img/settings.png', title: _lSettings, component: SettingsPage };
-        this.openPage( _lPage );
+        this.openPage(_lPage);
     }
 
     /**
      * Return user name
      */
-    gerUserName():string{
-        if ( this._user && this._user.services.facebook ) {
+    gerUserName(): string {
+        if (this._user && this._user.services.facebook) {
             return this._user.services.facebook.name;
         } else {
             let _lUser: User = Users.findOne({ _id: Meteor.userId() });
-            if ( _lUser ) {
+            if (_lUser) {
                 return _lUser.username;
             }
             else {
@@ -168,8 +168,8 @@ export class HomeMenu implements OnInit, OnDestroy {
     /**
      * Return user image
      */
-    getUserImage():string{
-        if ( this._user && this._user.services.facebook ) {
+    getUserImage(): string {
+        if (this._user && this._user.services.facebook) {
             return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
         } else {
             let _lUserImage: UserProfileImage = UserImages.findOne({ userId: Meteor.userId() });
@@ -197,7 +197,7 @@ export class HomeMenu implements OnInit, OnDestroy {
     /**
      * ngOnDestroy Implementation
      */
-    ngOnDestroy(){
+    ngOnDestroy() {
         this.removeSubscriptions();
     }
 }

@@ -171,7 +171,8 @@
             "TABLE": "Mesa",
             "RESTAURANT_NOT_EXISTS": "El restaurante no existe. No es posible ingresar.",
             "MSG_1": "Puedes ordenar lo que deseas",
-            "NO_ORDERS": "Aún no tienes ordenes, puedes crear una orden nueva"
+            "NO_ORDERS": "Aún no tienes ordenes, puedes crear una orden nueva",
+            "LOADING_MENU": "Cargando menú"
         },
         "ORDER_TRANS": {
             "ORDERS": "Orden",
