@@ -17,32 +17,32 @@ import { User } from 'qmo_web/both/models/auth/user.model';
 })
 export class Menu {
   @ViewChild(Nav) nav: Nav;
-  private _userImageSubscription : Subscription;
+  private _userImageSubscription: Subscription;
   private _userSubscription: Subscription;
-  private _user : any;
+  private _user: any;
 
   rootPage: any = CallsPage;
 
-  pages: Array<{icon: string, title: string, component: any}>;
+  pages: Array<{ icon: string, title: string, component: any }>;
 
 
-   /**
-    * Menu constructor
-    * @param _app 
-    * @param platform 
-    * @param statusBar 
-    * @param splashScreen 
-    * @param _alertCtrl 
-    * @param _loadingCtrl 
-    * @param _translate 
-    */
-  constructor( public _app : App,
-               public platform: Platform, 
-               public statusBar: StatusBar, 
-               public splashScreen: SplashScreen,
-               public _alertCtrl: AlertController,
-               public _loadingCtrl: LoadingController,
-               private _translate: TranslateService) {
+  /**
+   * Menu constructor
+   * @param _app 
+   * @param platform 
+   * @param statusBar 
+   * @param splashScreen 
+   * @param _alertCtrl 
+   * @param _loadingCtrl 
+   * @param _translate 
+   */
+  constructor(public _app: App,
+    public platform: Platform,
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen,
+    public _alertCtrl: AlertController,
+    public _loadingCtrl: LoadingController,
+    private _translate: TranslateService) {
     this.initializeApp();
     this._user = Meteor.user();
 
@@ -52,7 +52,7 @@ export class Menu {
 
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this._userImageSubscription = MeteorObservable.subscribe('getUserImages', Meteor.userId()).subscribe();
     this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe();
   }
@@ -62,19 +62,19 @@ export class Menu {
    * Here you can do any higher level native things you might need.
    */
   initializeApp() {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
+    this.statusBar.styleDefault();
+    this.splashScreen.hide();
   }
 
   /**
    * Function that allows show Signout comfirm dialog
    * @param { any } _call 
    */
-  showComfirmSignOut( _call : any) {
-    let btn_no  = this.itemNameTraduction('MOBILE.SIGN_OUT.NO_BTN'); 
-    let btn_yes = this.itemNameTraduction('MOBILE.SIGN_OUT.YES_BTN'); 
-    let title   = this.itemNameTraduction('MOBILE.SIGN_OUT.TITLE_CONFIRM'); 
-    let content = this.itemNameTraduction('MOBILE.SIGN_OUT.CONTENT_CONFIRM'); 
+  showComfirmSignOut(_call: any) {
+    let btn_no = this.itemNameTraduction('MOBILE.SIGN_OUT.NO_BTN');
+    let btn_yes = this.itemNameTraduction('MOBILE.SIGN_OUT.YES_BTN');
+    let title = this.itemNameTraduction('MOBILE.SIGN_OUT.TITLE_CONFIRM');
+    let content = this.itemNameTraduction('MOBILE.SIGN_OUT.CONTENT_CONFIRM');
 
     let prompt = this._alertCtrl.create({
       title: title,
@@ -99,16 +99,16 @@ export class Menu {
   /**
    * User account sign out
    */
-  signOut(){
-    let loading_msg = this.itemNameTraduction('MOBILE.SIGN_OUT.LOADING'); 
-    
+  signOut() {
+    let loading_msg = this.itemNameTraduction('MOBILE.SIGN_OUT.LOADING');
+
     let loading = this._loadingCtrl.create({
       content: loading_msg
     });
     loading.present();
     setTimeout(() => {
       loading.dismiss();
-      this._app.getRootNav().setRoot(InitialComponent);
+      this._app.getRootNavs()[0].setRoot(InitialComponent);
       Meteor.logout();
     }, 1500);
   }
@@ -126,36 +126,36 @@ export class Menu {
   /**
    * Return user name
    */
-  gerUserName():string{
+  gerUserName(): string {
     let _lUser: User = Users.findOne({ _id: Meteor.userId() });
-    if ( _lUser ) {
-        return _lUser.username;
+    if (_lUser) {
+      return _lUser.username;
     }
     else {
-        return 'Iurest';
+      return 'Iurest';
     }
   }
 
   /**
    * Return user image
    */
-  getUserImage():string{
-      let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() });
-      if( _lUserImage ){
-        return _lUserImage.url;
-      } 
-      else {
-        return 'assets/img/user_default_image.png';
-      }
+  getUserImage(): string {
+    let _lUserImage: UserProfileImage = UserImages.findOne({ userId: Meteor.userId() });
+    if (_lUserImage) {
+      return _lUserImage.url;
+    }
+    else {
+      return 'assets/img/user_default_image.png';
+    }
   }
 
   /**
    * Open Settings Page
    */
-  openSettings():void{
-    let _lSettings  = this.itemNameTraduction('MOBILE.WAITER_OPTIONS.SETTINGS');         
+  openSettings(): void {
+    let _lSettings = this.itemNameTraduction('MOBILE.WAITER_OPTIONS.SETTINGS');
     let _lPage: any = { icon: 'assets/img/settings.png', title: _lSettings, component: SettingsPage };
-    this.openPage( _lPage );
+    this.openPage(_lPage);
   }
 
   /**
@@ -165,7 +165,7 @@ export class Menu {
   itemNameTraduction(_itemName: string): string {
     var wordTraduced: string;
     this._translate.get(_itemName).subscribe((res: string) => {
-        wordTraduced = res;
+      wordTraduced = res;
     });
     return wordTraduced;
   }
@@ -173,12 +173,12 @@ export class Menu {
   /**
    * Remove all subscription
    */
-  removeSubscriptions(){
-    if( this._userImageSubscription ){ this._userImageSubscription.unsubscribe(); }
-    if( this._userSubscription ){ this._userSubscription.unsubscribe(); }
+  removeSubscriptions() {
+    if (this._userImageSubscription) { this._userImageSubscription.unsubscribe(); }
+    if (this._userSubscription) { this._userSubscription.unsubscribe(); }
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.removeSubscriptions();
   }
 }

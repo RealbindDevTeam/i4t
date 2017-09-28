@@ -169,7 +169,8 @@
             "TABLE_NO_ACTIVE": "La mesa no tiene el servicio de Iurest activo. No es posible ingresar",
             "Iurest_NO_ACTIVE": "El Restaurante no tiene el servicio de Iurest activo. No es posible ingresar",
             "TABLE": "Mesa",
-            "RESTAURANT_NOT_EXISTS": "El restaurante no existe. No es posible ingresar."
+            "RESTAURANT_NOT_EXISTS": "El restaurante no existe. No es posible ingresar.",
+            "LOADING_MENU": "Cargando menú"
         },
         "ORDER_TRANS": {
             "ORDERS": "Orden",

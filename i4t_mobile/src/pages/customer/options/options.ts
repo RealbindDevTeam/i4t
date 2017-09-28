@@ -89,7 +89,7 @@ export class OptionsPage implements OnInit, OnDestroy {
    * This method is responsible for go to payments history option
    */
   goToWaiterCall() {
-    this._navCtrl = this._app.getRootNav();
+    //this._navCtrl = this._app.getRootNav();
     this._navCtrl.push(WaiterCallPage);
   }
 

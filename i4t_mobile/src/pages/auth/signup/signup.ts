@@ -84,9 +84,11 @@ export class SignupComponent implements OnInit {
                                 current_restaurant: '',
                                 current_table: ''
                             });
+                            confirmMsg = 'MOBILE.SIGNUP.SUCCESS';
                             this.showComfirm(this.itemNameTraduction(confirmMsg));
                             Meteor.logout();
-                            this.navCtrl.setRoot(InitialComponent);
+                            //this.navCtrl.setRoot(InitialComponent);
+                            this.navCtrl.pop();
                         }
                     });
                 });
@@ -97,7 +99,7 @@ export class SignupComponent implements OnInit {
         }
     }
 
-    
+
     loginWithFacebook() {
         Meteor.loginWithFacebook({ requestPermissions: ['public_profile', 'email'], loginStyle: 'popup' }, (err) => {
 
@@ -110,7 +112,7 @@ export class SignupComponent implements OnInit {
             });
         });
     }
-    
+
 
     loginWithTwitter() {
         Meteor.loginWithTwitter({ requestPermissions: [] }, (err) => {
@@ -164,10 +166,10 @@ export class SignupComponent implements OnInit {
      * Function that allows show comfirm dialog
      * @param { any } _call 
      */
-    showComfirm( _pContent : string ) {
-        let okBtn   = this.itemNameTraduction('MOBILE.OK'); 
-        let title   = this.itemNameTraduction('MOBILE.SYSTEM_MSG'); 
-      
+    showComfirm(_pContent: string) {
+        let okBtn = this.itemNameTraduction('MOBILE.OK');
+        let title = this.itemNameTraduction('MOBILE.SYSTEM_MSG');
+
         let prompt = this._alertCtrl.create({
             title: title,
             message: _pContent,

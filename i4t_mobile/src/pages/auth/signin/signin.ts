@@ -90,7 +90,7 @@ export class SigninComponent implements OnInit {
                                             MeteorObservable.call('validateUserIsActive').subscribe((active) => {
                                                 if (active) {
                                                     this.insertUserInfo();
-                                                    this._app.getRootNav().setRoot(Menu);
+                                                    this.navCtrl.push(Menu);
                                                 } else {
                                                     let contentMessage = this.itemNameTraduction("MOBILE.SIGNIN.USER_NO_ACTIVE");
                                                     this.showComfirm(contentMessage);
@@ -113,7 +113,7 @@ export class SigninComponent implements OnInit {
         }
     }
 
-    
+
     loginWithFacebook() {
         Meteor.loginWithFacebook({ requestPermissions: ['public_profile', 'email'] }, (err) => {
             this.zone.run(() => {
@@ -125,7 +125,7 @@ export class SigninComponent implements OnInit {
             });
         });
     }
-    
+
 
     loginWithTwitter() {
         Meteor.loginWithTwitter({ requestPermissions: [] }, (err) => {
@@ -238,10 +238,10 @@ export class SigninComponent implements OnInit {
      * Function that allows show comfirm dialog
      * @param { any } _call 
      */
-    showComfirm( _pContent : string ) {
-        let okBtn   = this.itemNameTraduction('MOBILE.OK'); 
-        let title   = this.itemNameTraduction('MOBILE.SYSTEM_MSG'); 
-      
+    showComfirm(_pContent: string) {
+        let okBtn = this.itemNameTraduction('MOBILE.OK');
+        let title = this.itemNameTraduction('MOBILE.SYSTEM_MSG');
+
         let prompt = this._alertCtrl.create({
             title: title,
             message: _pContent,
