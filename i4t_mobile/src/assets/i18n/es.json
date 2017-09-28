@@ -380,7 +380,8 @@
         },
         "WAITER_OPTIONS": {
             "CALLS": "Inicio",
-            "SETTINGS": "Ajustes"
+            "SETTINGS": "Ajustes",
+            "MENU": "Menú"
         },
         "SIGN_OUT": {
             "TITLE_CONFIRM": "Cerrar sesión",

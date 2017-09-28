@@ -7,6 +7,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
 import { InitialComponent } from '../../auth/initial/initial';
 import { CallsPage } from '../calls/calls';
+import { RestaurantMenuPage } from '../restaurant-menu/restaurant-menu';
 import { SettingsPage } from '../../customer/options/settings/settings';
 import { UserProfileImage } from 'qmo_web/both/models/auth/user-profile.model';
 import { Users, UserImages } from 'qmo_web/both/collections/auth/user.collection';
@@ -47,7 +48,8 @@ export class Menu {
     this._user = Meteor.user();
 
     this.pages = [
-      { icon: 'home', title: 'MOBILE.WAITER_OPTIONS.CALLS', component: CallsPage }
+      { icon: 'home', title: 'MOBILE.WAITER_OPTIONS.CALLS', component: CallsPage },
+      { icon: 'list-box', title: 'MOBILE.WAITER_OPTIONS.MENU', component: RestaurantMenuPage }
     ];
 
   }

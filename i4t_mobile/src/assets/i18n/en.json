@@ -380,7 +380,8 @@
         },
         "WAITER_OPTIONS": {
             "CALLS": "Home",
-            "SETTINGS": "Settings"
+            "SETTINGS": "Settings",
+            "MENU": "Menu"
         },
         "SIGN_OUT": {
             "TITLE_CONFIRM": "SIGNOUT",
