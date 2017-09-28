@@ -91,16 +91,18 @@ export class OrdersPage implements OnInit, OnDestroy {
                             this._tablesSub = MeteorObservable.subscribe('getTableById', this._userDetail.current_table).subscribe();
                             this._restaurants = Restaurants.findOne({ _id: this._userDetail.current_restaurant });
                             this._table = Tables.findOne({ _id: this._userDetail.current_table });
+                            this._ordersSub = MeteorObservable.subscribe('getOrdersByUserId', Meteor.userId(), this._statusArray).subscribe(() => {
+                                this._ngZone.run( () => {
+                                    this._orders = Orders.find({ restaurantId: this._userDetail.current_restaurant, tableId: this._userDetail.current_table, status: { $in: this._statusArray } });
+                                    this._allOrders = Orders.find({ restaurantId: this._userDetail.current_restaurant, tableId: this._userDetail.current_table, status: { $in: this._statusArray } });
+                                });
+                            });
                         });
                     });
                 }
             });
         });
 
-        this._ordersSub = MeteorObservable.subscribe('getOrdersByUserId', Meteor.userId(), this._statusArray).subscribe(() => {
-            this._orders = Orders.find({ status: { $in: this._statusArray } });
-            this._allOrders = Orders.find({ status: { $in: this._statusArray } });
-        });
         this._itemsSub = MeteorObservable.subscribe('itemsByUser', Meteor.userId()).subscribe();
         this._additionsSub = MeteorObservable.subscribe('additionsByCurrentRestaurant', Meteor.userId()).subscribe();
 
@@ -118,11 +120,6 @@ export class OrdersPage implements OnInit, OnDestroy {
 
     goToNewOrder() {
         let dialogMsg = this.itemNameTraduction('MOBILE.ORDERS.LOADING_MENU');
-        let loading = this._loadingCtrl.create({
-            content: dialogMsg
-        });
-
-        loading.present();
 
         this._userDetail = UserDetails.collection.findOne({ user_id: Meteor.userId() });
 
@@ -134,10 +131,15 @@ export class OrdersPage implements OnInit, OnDestroy {
                     this._navCtrl.push(CodeTypeSelectPage);
 
                 } else {
+                    let loading = this._loadingCtrl.create({
+                        content: dialogMsg
+                    });
+            
+                    loading.present();
                     setTimeout(() => {
                         this._navCtrl.push(SectionsPage, { res_id: restaurant._id, table_id: this._userDetail.current_table });
                         loading.dismiss();
-                    }, 1000);
+                    }, 1500);
                 }
             }, (error) => {
                 alert(`Failed to get table ${error}`);
@@ -158,14 +160,14 @@ export class OrdersPage implements OnInit, OnDestroy {
 
     filterOrders(orders_selected) {
         if (orders_selected == 'all') {
-            this._orders = Orders.find({ status: { $in: this._statusArray } });
+            this._orders = Orders.find({ restaurantId: this._userDetail.current_restaurant, tableId: this._userDetail.current_table, status: { $in: this._statusArray } });
             this._orderIndex = -1;
         } else if (orders_selected == 'me') {
-            this._orders = Orders.find({ creation_user: this._currentUserId, status: { $in: this._statusArray } });
+            this._orders = Orders.find({ creation_user: this._currentUserId, restaurantId: this._userDetail.current_restaurant, tableId: this._userDetail.current_table, status: { $in: this._statusArray } });
             this._orderIndex = -1;
         } else if (orders_selected == 'other') {
             this._orderIndex = -1;
-            this._orders = Orders.find({ creation_user: { $nin: [this._currentUserId] } });
+            this._orders = Orders.find({ creation_user: { $nin: [this._currentUserId] }, restaurantId: this._userDetail.current_restaurant, tableId: this._userDetail.current_table, status: { $in: this._statusArray } });
         }
     }
 
