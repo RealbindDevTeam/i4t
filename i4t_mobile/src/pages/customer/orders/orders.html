@@ -17,7 +17,8 @@
                     <img src="{{ getRestaurantThumb( _restaurants._id ) }}">
                 </ion-thumbnail>
                 <h2>{{_restaurants.name}}</h2>
-                <h2>{{'MOBILE.ORDERS.TABLE' | translate}}: {{_table?._number}}</h2>
+                <h2 *ngIf="_table">{{'MOBILE.ORDERS.TABLE' | translate}}: {{_table._number}}</h2>
+                <p>{{_restaurants.address}}</p>
             </ion-item>
         </ion-list>
         <ion-card>
@@ -39,13 +40,13 @@
         <ion-card *ngIf="(_orders | async)?.length <= 0" text-wrap>
             <ion-card-content>
                 <ion-list no-lines>
-                    <button ion-item>
+                    <ion-item>
                         <ion-thumbnail item-start>
                             <img src="assets/img/items.png">
                         </ion-thumbnail>
                         <h2>{{'MOBILE.ORDERS.MSG_1' | translate}}</h2>
                         <p>{{'MOBILE.ORDERS.NO_ORDERS' | translate}}</p>
-                    </button>  
+                    </ion-item>
                 </ion-list>
             </ion-card-content>
         </ion-card>
