@@ -64,20 +64,22 @@ export class ModalColombiaPayment implements OnInit, OnDestroy {
   ngOnInit(){
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
     this.removeSubscriptions();
-    this._paymentMethodsSubscription = MeteorObservable.subscribe('paymentMethods').subscribe(() => {
-      this._ngZone.run( () => {
-        this._paymentMethods = PaymentMethods.find({}).zone();
-      });
-    });
-
     this._restaurantsSubscription = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', Meteor.userId() ).subscribe(()=>{
       this._ngZone.run( () => {
-        this.shearchTipPorcentage();
-        this._tip = this._tipValue;
+        let _lRestaurant = Restaurants.find({}).zone();
+        _lRestaurant.subscribe(()=>{
+          if( this._paymentMethodsSubscription ){ this._paymentMethodsSubscription.unsubscribe(); }
+          this._paymentMethodsSubscription = MeteorObservable.subscribe('getPaymentMethodsByUserCurrentRestaurant', Meteor.userId()).subscribe(()=>{
+            this._paymentMethods = PaymentMethods.find({}).zone();
+          });
+          this.shearchTipPorcentage();
+          this._tip = this._tipValue;
+        });
       });
     });
     
   }
+
   /**
    * This method calculate the tip suggested
    * @param _param 

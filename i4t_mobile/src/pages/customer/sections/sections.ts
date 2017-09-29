@@ -13,6 +13,7 @@ import { Subcategories } from 'qmo_web/both/collections/administration/subcatego
 import { Items, ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
 import { ItemDetailPage } from '../item-detail/item-detail';
 import { AdditionsPage } from './additions/additions';
+import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 import { Storage } from '@ionic/storage';
 import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
@@ -44,6 +45,8 @@ export class SectionsPage implements OnInit, OnDestroy {
   private _restaurantThumbSub: Subscription;
   private _additions;
   private _additionsSub: Subscription;
+  private _table;
+  private _tablesSub: Subscription;
 
   private _res_code: string = '';
   private _table_code: string = '';
@@ -100,6 +103,10 @@ export class SectionsPage implements OnInit, OnDestroy {
           let _lAdditions: number = Additions.collection.find( { } ).count();
           _lAdditions > 0 ? this._additionsShow = true : this._additionsShow = false;
         });
+    });
+
+    this._tablesSub = MeteorObservable.subscribe('getTableById', this._table_code).subscribe(()=>{
+      this._table = Tables.findOne({ _id: this._table_code });
     });
   }
 
@@ -163,5 +170,6 @@ export class SectionsPage implements OnInit, OnDestroy {
     if(this._restaurantThumbSub){this._restaurantThumbSub.unsubscribe();}
     if(this._additionsSub){this._additionsSub.unsubscribe();}
     if(this._imageThumbSub){this._imageThumbSub.unsubscribe();}
+    if(this._tablesSub){this._tablesSub.unsubscribe();}
     }
 }

@@ -93,7 +93,12 @@ $text-input-highlight-color-valid: #E0E0E0;
     margin: auto;
 }
 
-.card{
+.ios .card{
+    margin: 12px 0 !important;
+    width: 100% !important;
+}
+
+.md .card{
     margin: 10px 0 !important;
     width: 100% !important;
 }

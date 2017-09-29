@@ -1,8 +1,8 @@
 {
     "PAYMENT_METHODS.CASH": "Efectivo",
-    "PAYMENT_METHODS.CREDIT_CARD": "Tarjeta de Crédito",
+    "PAYMENT_METHODS.CREDIT_CARD": "Tarjeta de crédito",
     "PAYMENT_METHODS.DEBIT_CARD": "Tarjeta débito",
-    "PAYMENT_METHODS.ONLINE": "Pago en Línea",
+    "PAYMENT_METHODS.ONLINE": "Pago en línea",
     "ORDER_STATUS": {
         "REGISTERED": "Registrado",
         "IN_PROCESS": "En proceso",
@@ -170,6 +170,8 @@
             "Iurest_NO_ACTIVE": "El Restaurante no tiene el servicio de Iurest activo. No es posible ingresar",
             "TABLE": "Mesa",
             "RESTAURANT_NOT_EXISTS": "El restaurante no existe. No es posible ingresar.",
+            "MSG_1": "Puedes ordenar lo que deseas",
+            "NO_ORDERS": "Aún no tienes ordenes, puedes crear una orden nueva",
             "LOADING_MENU": "Cargando menú"
         },
         "ORDER_TRANS": {
@@ -253,7 +255,8 @@
             "NO_PAYED": "No pagado",
             "PAYED": "Pagado",
             "CANCEL_PAY_OTHER_USER": "Deseas cancelar la solicitud del pago de la orden",
-            "CANCELED_PAY_OTHER_USER": "Se ha cancelado la solicitud del pago de la orden"
+            "CANCELED_PAY_OTHER_USER": "Se ha cancelado la solicitud del pago de la orden",
+            "NO_ORDERS" : "Aún no tienes ordenes realizadas"
         },
         "WAITER_CALL": {
             "TITTLE": "Solicitar mesero",
