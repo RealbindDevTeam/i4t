@@ -32,7 +32,7 @@ export class ItemDetailWaiterPage implements OnInit, OnDestroy {
   private _itemSub: Subscription;
   private _item_code: string = '';
   private _res_code: string = '';
-  private _table_code: string = '';
+  //private _table_code: string = '';
   private _finalPrice: number;
   private _unitPrice: number;
   private _observations: string = '';
@@ -64,14 +64,14 @@ export class ItemDetailWaiterPage implements OnInit, OnDestroy {
   private _garnishFormGroup: FormGroup = new FormGroup({});
   private _additionsFormGroup: FormGroup = new FormGroup({});
 
-  constructor(public _navCtrl: NavController, 
-              public _navParams: NavParams, 
-              public _modalCtrl: ModalController,
-              public _translate: TranslateService, 
-              public _zone: NgZone, 
-              public _loadingCtrl: LoadingController, 
-              private toastCtrl: ToastController,
-              private _userLanguageService: UserLanguageService) {
+  constructor(public _navCtrl: NavController,
+    public _navParams: NavParams,
+    public _modalCtrl: ModalController,
+    public _translate: TranslateService,
+    public _zone: NgZone,
+    public _loadingCtrl: LoadingController,
+    private toastCtrl: ToastController,
+    private _userLanguageService: UserLanguageService) {
     _translate.setDefaultLang('en');
     this._currentUserId = Meteor.userId();
     this._statusArray = ['ORDER_STATUS.REGISTERED'];
@@ -80,11 +80,10 @@ export class ItemDetailWaiterPage implements OnInit, OnDestroy {
   ionViewDidLoad() { }
 
   ngOnInit() {
-    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+    this._translate.use(this._userLanguageService.getLanguage(Meteor.user()));
     this.removeSubscriptions();
     this._item_code = this._navParams.get("item_id");
     this._res_code = this._navParams.get("res_id");
-    this._table_code = this._navParams.get("table_id");
 
     this._itemSub = MeteorObservable.subscribe('itemsByRestaurant', this._res_code).subscribe(() => {
 
@@ -143,16 +142,6 @@ export class ItemDetailWaiterPage implements OnInit, OnDestroy {
     this._currenciesSub = MeteorObservable.subscribe('getCurrenciesByRestaurantsId', [this._res_code]).subscribe(() => {
       this._currencyCode = Currencies.collection.find({}).fetch()[0].code + ' ';
     });
-  }
-
-  presentModal() {
-    let modal = this._modalCtrl.create(ModalObservations, { obs: this._observations });
-    modal.onDidDismiss(data => {
-      if (typeof data != "undefined" || data != null) {
-        this._observations = data;
-      }
-    });
-    modal.present();
   }
 
   addCount() {
@@ -228,88 +217,6 @@ export class ItemDetailWaiterPage implements OnInit, OnDestroy {
     this._maxGarnishFoodElements = _pGarnishFoodQuantity;
   }
 
-  addItemToOrder() {
-    let _lOrderItemIndex: number = 0;
-    let _lOrder = Orders.collection.find({
-      creation_user: this._currentUserId,
-      restaurantId: this._res_code,
-      tableId: this._table_code,
-      status: 'ORDER_STATUS.REGISTERED'
-    }).fetch()[0];
-
-    if (_lOrder) {
-      _lOrderItemIndex = _lOrder.orderItemCount + 1;
-    } else {
-      _lOrderItemIndex = 1;
-    }
-
-    let arr: any[] = Object.keys(this._newOrderForm.value.garnishFood);
-    let _lGarnishFoodToInsert: string[] = [];
-
-    arr.forEach((gar) => {
-      if (this._newOrderForm.value.garnishFood[gar]) {
-        let _lGarnishF: GarnishFood = GarnishFoodCol.findOne({ name: gar });
-        _lGarnishFoodToInsert.push(_lGarnishF._id);
-      }
-    });
-
-    let arrAdd: any[] = Object.keys(this._newOrderForm.value.additions);
-    let _lAdditionsToInsert: string[] = [];
-
-    arrAdd.forEach((add) => {
-      if (this._newOrderForm.value.additions[add]) {
-        let _lAddition: Addition = Additions.findOne({ name: add });
-        _lAdditionsToInsert.push(_lAddition._id);
-      }
-    });
-
-    let _lOrderItem = {
-      index: _lOrderItemIndex,
-      itemId: this._item_code,
-      quantity: this._quantityCount,
-      observations: this._observations,
-      garnishFood: _lGarnishFoodToInsert,
-      additions: _lAdditionsToInsert,
-      paymentItem: this._finalPrice
-    };
-
-    this._loadingMsg = this.itemNameTraduction('MOBILE.SECTIONS.LOADING_MSG');
-    this._toastMsg = this.itemNameTraduction('MOBILE.SECTIONS.TOAST_MSG');
-
-    let loading = this._loadingCtrl.create({
-      content: this._loadingMsg
-    });
-
-    loading.present();
-
-    setTimeout(() => {
-      MeteorObservable.call('AddItemToOrder2', _lOrderItem, this._res_code, this._table_code, this._finalPrice).subscribe(() => {
-        loading.dismiss();
-        this._navCtrl.pop();
-        this.presentToast();
-      }, (error) => {
-        alert(`Error: ${error}`);
-      });
-    }, 1500);
-  }
-
-  presentToast() {
-    let toast = this.toastCtrl.create({
-      message: this._toastMsg,
-      duration: 1500,
-      position: 'middle'
-    });
-
-    toast.onDidDismiss(() => {
-    });
-
-    toast.present();
-  }
-
-  setObservations() {
-
-  }
-
   itemNameTraduction(itemName: string): string {
     var wordTraduced: string;
     this._translate.get(itemName).subscribe((res: string) => {
@@ -380,11 +287,11 @@ export class ItemDetailWaiterPage implements OnInit, OnDestroy {
   /**
    * Remove all subscriptions
    */
-  removeSubscriptions():void{
-    if( this._itemSub ){ this._itemSub.unsubscribe(); }
-    if( this._additionSub ){ this._additionSub.unsubscribe(); }
-    if( this._garnishSub ){ this._garnishSub.unsubscribe(); }
-    if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
-    if( this._itemImageSub ){ this._itemImageSub.unsubscribe(); }
+  removeSubscriptions(): void {
+    if (this._itemSub) { this._itemSub.unsubscribe(); }
+    if (this._additionSub) { this._additionSub.unsubscribe(); }
+    if (this._garnishSub) { this._garnishSub.unsubscribe(); }
+    if (this._currenciesSub) { this._currenciesSub.unsubscribe(); }
+    if (this._itemImageSub) { this._itemImageSub.unsubscribe(); }
   }
 }

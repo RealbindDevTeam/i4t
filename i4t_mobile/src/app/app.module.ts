@@ -128,7 +128,8 @@ export function createTranslateLoader(http: Http) {
     HomePage,
     HomeMenu,
     RestaurantMenuPage,
-    ItemCardWaiterComponent
+    ItemCardWaiterComponent,
+    ItemDetailWaiterPage
   ],
   imports: [
     BrowserModule,
@@ -211,7 +212,8 @@ export function createTranslateLoader(http: Http) {
     HomePage,
     HomeMenu,
     RestaurantMenuPage,
-    ItemCardWaiterComponent
+    ItemCardWaiterComponent,
+    ItemDetailWaiterPage
   ],
   providers: [
     StatusBar,

@@ -13,7 +13,7 @@ import { Items, ItemImagesThumbs } from 'qmo_web/both/collections/administration
 import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
 import { RestaurantImageThumb } from 'qmo_web/both/models/restaurant/restaurant.model';
 import { ItemCardWaiterComponent } from './item-card-waiter';
-
+import { ItemDetailWaiterPage } from '../item-detail-waiter/item-detail-waiter';
 
 @Component({
     selector: 'restaurant-menu-page',
@@ -120,8 +120,8 @@ export class RestaurantMenuPage implements OnInit, OnDestroy {
     }
 
     goToDetail(_itemId) {
-        //this._navCtrl.push(ItemCardWaiterComponent, { item_id: _itemId, res_id: this._res_code, table_id: this._table_code });
-      }
+        this._navCtrl.push(ItemDetailWaiterPage, { item_id: _itemId, res_id: this._userDetail.restaurant_work });
+    }
 
     goToAddAdditions() {
         //this._navCtrl.push(AdditionsPage, { res_id: this._res_code, table_id: this._table_code });
