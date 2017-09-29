@@ -382,8 +382,9 @@
             "CALLED_CANCELED": "Called Canceled"
         },
         "WAITER_OPTIONS": {
-            "CALLS": "Home",
-            "SETTINGS": "Settings"
+            "CALLS": "Calls",
+            "SETTINGS": "Settings",
+            "MENU": "Menu"
         },
         "SIGN_OUT": {
             "TITLE_CONFIRM": "SIGNOUT",

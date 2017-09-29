@@ -382,8 +382,9 @@
             "CALLED_CANCELED": "Llamado Cancelado"
         },
         "WAITER_OPTIONS": {
-            "CALLS": "Inicio",
-            "SETTINGS": "Ajustes"
+            "CALLS": "Llamadas",
+            "SETTINGS": "Ajustes",
+            "MENU": "Menú"
         },
         "SIGN_OUT": {
             "TITLE_CONFIRM": "Cerrar sesión",

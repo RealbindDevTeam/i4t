@@ -243,12 +243,6 @@ export class OrdersPage implements OnInit, OnDestroy {
                         if (_order.status === 'ORDER_STATUS.REGISTERED') {
                             let _Items = _order.items;
                             _Items.forEach((item) => {
-                                /*
-                                let _lItem = Items.findOne({ _id: item.itemId });
-                                if (_lItem.isAvailable === false) {
-                                    _lItemsIsAvailable = false;
-                                }
-                                */
                                 let _lItem = Items.findOne({ _id: item.itemId });
                                 let aux = _lItem.restaurants.find(element => element.restaurantId === userDetailTmp.current_restaurant);
                                 if (aux.isAvailable === false) {

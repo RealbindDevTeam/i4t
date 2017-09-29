@@ -62,6 +62,10 @@ import { AlphanumericCodeChangePage } from '../pages/customer/options/table-chan
 import { RestaurantExitPage } from '../pages/customer/options/restaurant-exit/restaurant-exit';
 import { HomePage } from '../pages/customer/home/home';
 import { HomeMenu } from '../pages/customer/home-menu/home-menu';
+import { RestaurantMenuPage } from '../pages/waiter/restaurant-menu/restaurant-menu';
+import { ItemCardWaiterComponent } from '../pages/waiter/restaurant-menu/item-card-waiter';
+import { ItemDetailWaiterPage } from '../pages/waiter/item-detail-waiter/item-detail-waiter';
+import { AdditionsWaiterPage } from '../pages/waiter/restaurant-menu/additions-waiter/additions-waiter';
 
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Facebook } from '@ionic-native/facebook';
@@ -123,7 +127,11 @@ export function createTranslateLoader(http: Http) {
     AlphanumericCodeChangePage,
     RestaurantExitPage,
     HomePage,
-    HomeMenu
+    HomeMenu,
+    RestaurantMenuPage,
+    ItemCardWaiterComponent,
+    ItemDetailWaiterPage,
+    AdditionsWaiterPage
   ],
   imports: [
     BrowserModule,
@@ -204,7 +212,11 @@ export function createTranslateLoader(http: Http) {
     AlphanumericCodeChangePage,
     RestaurantExitPage,
     HomePage,
-    HomeMenu
+    HomeMenu,
+    RestaurantMenuPage,
+    ItemCardWaiterComponent,
+    ItemDetailWaiterPage,
+    AdditionsWaiterPage
   ],
   providers: [
     StatusBar,
