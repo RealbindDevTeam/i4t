@@ -48,7 +48,7 @@ export class Menu {
     this._user = Meteor.user();
 
     this.pages = [
-      { icon: 'home', title: 'MOBILE.WAITER_OPTIONS.CALLS', component: CallsPage },
+      { icon: 'hand', title: 'MOBILE.WAITER_OPTIONS.CALLS', component: CallsPage },
       { icon: 'list-box', title: 'MOBILE.WAITER_OPTIONS.MENU', component: RestaurantMenuPage }
     ];
 

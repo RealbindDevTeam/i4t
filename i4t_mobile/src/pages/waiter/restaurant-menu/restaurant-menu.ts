@@ -14,6 +14,7 @@ import { Additions } from 'qmo_web/both/collections/administration/addition.coll
 import { RestaurantImageThumb } from 'qmo_web/both/models/restaurant/restaurant.model';
 import { ItemCardWaiterComponent } from './item-card-waiter';
 import { ItemDetailWaiterPage } from '../item-detail-waiter/item-detail-waiter';
+import { AdditionsWaiterPage } from './additions-waiter/additions-waiter';
 
 @Component({
     selector: 'restaurant-menu-page',
@@ -124,7 +125,7 @@ export class RestaurantMenuPage implements OnInit, OnDestroy {
     }
 
     goToAddAdditions() {
-        //this._navCtrl.push(AdditionsPage, { res_id: this._res_code, table_id: this._table_code });
+        this._navCtrl.push(AdditionsWaiterPage, { res_id: this._userDetail.restaurant_work });
     }
 
     ngOnDestroy() {
