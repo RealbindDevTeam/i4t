@@ -11,7 +11,8 @@
               <img src="{{ getRestaurantThumb( _restaurants._id ) }}">
           </ion-thumbnail>
           <h2>{{_restaurants.name}}</h2>
-          <p>{{_restaurants.address}} • {{_restaurants.phone}}</p>
+          <h2 *ngIf="_table">{{'MOBILE.ORDERS.TABLE' | translate}}: {{_table._number}}</h2>
+          <p>{{_restaurants.address}}</p>
       </ion-item>
   </ion-list>
   <ion-card>

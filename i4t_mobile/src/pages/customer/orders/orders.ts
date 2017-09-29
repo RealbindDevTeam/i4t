@@ -88,9 +88,10 @@ export class OrdersPage implements OnInit, OnDestroy {
                 if (this._userDetail) {
                     this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
                         this._ngZone.run(() => {
-                            this._tablesSub = MeteorObservable.subscribe('getTableById', this._userDetail.current_table).subscribe();
+                            this._tablesSub = MeteorObservable.subscribe('getTableById', this._userDetail.current_table).subscribe(()=>{
+                                this._table = Tables.findOne({ _id: this._userDetail.current_table });
+                            });
                             this._restaurants = Restaurants.findOne({ _id: this._userDetail.current_restaurant });
-                            this._table = Tables.findOne({ _id: this._userDetail.current_table });
                         });
                     });
                 }
