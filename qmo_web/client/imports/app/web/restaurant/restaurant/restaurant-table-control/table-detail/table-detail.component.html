@@ -1,0 +1,27 @@
+<md-card>
+    <md-card-title>Detalle Mesa # {{_tableNumber}}</md-card-title>
+    <md-card-subtitle>Consulta las mesas que se encuentran ocupadas en tus restaurantes y su estado</md-card-subtitle>
+    <md-card-content>
+        <table class="responsive-table centered striped">
+            <tbody>
+                <tr *ngFor="let userDetail of _userDetails | async">
+                    <div *ngFor="let user of _users | async">
+                        <div *ngIf="userDetail.user_id === user._id">
+                            <div *ngIf="user.services.facebook">
+                                <td><img style="width: 40px;height: 40px" src="{{getUserImage(user)}}"></td>
+                                <td>{{user.services.facebook.name}}</td>
+                                <td>{{user.services.facebook.email}}</td>
+                            </div>
+                            <div *ngIf="user.username">
+                                <td><img style="width: 40px;height: 40px" src="{{getUserImage(user)}}"></td>
+                                <td>{{user.username}}</td>
+                                <td>{{user.emails[0].address}}</td>
+                            </div>
+                        </div>
+                    </div>
+                </tr>
+            </tbody>
+        </table>
+        <button md-raised-button class="primary-button" (click)="close()">Cerrar</button>
+    </md-card-content>
+</md-card>
