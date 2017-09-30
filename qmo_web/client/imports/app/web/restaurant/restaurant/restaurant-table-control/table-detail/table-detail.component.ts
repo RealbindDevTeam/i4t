@@ -3,7 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UserLanguageService } from '../../../../../shared/services/user-language.service';
 import { User } from '../../../../../../../../both/models/auth/user.model';
 import { UserProfileImage } from '../../../../../../../../both/models/auth/user-profile.model';
@@ -21,8 +21,7 @@ import style from './table-detail.component.scss';
 @Component({
     selector: 'table-detail',
     template,
-    styles: [ style ],
-    providers:[ UserLanguageService ]
+    styles: [ style ]
 })
 export class TableDetailComponent implements OnInit, OnDestroy {
 
@@ -31,33 +30,77 @@ export class TableDetailComponent implements OnInit, OnDestroy {
     private _tableId                : string;
     private _tableNumber            : string;
     private _currencyId             : string;
+    private _currencyCode           : string;
+
+    private _usersSub               : Subscription;
+    private _userImagesSub          : Subscription;
+    private _userDetailsSub         : Subscription;
+    private _ordersSub              : Subscription;
+    private _currenciesSub          : Subscription;
+
     private _userDetails            : Observable<UserDetail[]>;
     private _users                  : Observable<User[]>;
-    private _currencyCode           : string;
 
     /**
      * TableDetailComponent Constructor
      * @param {TranslateService} _translate 
      * @param {NgZone} _ngZone 
      * @param {UserLanguageService} _userLanguageService 
-     * @param {MdDialogRef<any>} _dialogRef
+     * @param {ActivatedRoute} _route
+     * @param {Router} _router
      */
     constructor( private _translate: TranslateService,
                  private _ngZone: NgZone,
                  private _userLanguageService: UserLanguageService,
-                 public _dialogRef: MdDialogRef<any> ){
+                 private _route: ActivatedRoute,
+                 private _router: Router ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
+        this._route.params.forEach( ( params: Params ) => {
+            this._restaurantId = params['param1'];
+            this._tableId = params['param2'];
+            this._tableNumber = params['param3'];
+            this._currencyId = params['param4'];
+        });
     }
 
     /**
      * ngOnInit Implementation
      */
     ngOnInit(){
-        this._userDetails = UserDetails.find( { current_restaurant: this._restaurantId, current_table: this._tableId } ).zone();
-        this._users = Users.find( { } ).zone();
-        let _lCurrency:Currency = Currencies.findOne( { _id: this._currencyId } );
-        this._currencyCode = _lCurrency.code;
+        this.removesubscriptions();
+        this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByCurrentTable', this._restaurantId, this._tableId ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._userDetails = UserDetails.find( { current_restaurant: this._restaurantId, current_table: this._tableId } ).zone();
+            });
+        });
+        this._usersSub = MeteorObservable.subscribe( 'getUserByTableId', this._restaurantId, this._tableId ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._users = Users.find( { } ).zone();
+            });
+        });
+        this._userImagesSub = MeteorObservable.subscribe( 'getUserImagesByTableId', this._restaurantId, this._tableId ).subscribe();
+        this._ordersSub = MeteorObservable.subscribe( 'getOrdersByTableId', this._restaurantId, this._tableId, 
+                                                                            [ 'ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 
+                                                                              'ORDER_STATUS.PREPARED', 'ORDER_STATUS.DELIVERED',
+                                                                              'ORDER_STATUS.PENDING_CONFIRM' ] ).subscribe();
+        this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', [ this._restaurantId ] ).subscribe( () => {
+            this._ngZone.run( () => {
+                let _lCurrency:Currency = Currencies.findOne( { _id: this._currencyId } );
+                this._currencyCode = _lCurrency.code;
+            });
+        });
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removesubscriptions():void{
+        if( this._userDetailsSub ){ this._userDetailsSub.unsubscribe(); }
+        if( this._usersSub ){ this._usersSub.unsubscribe(); }
+        if( this._userImagesSub ){ this._userImagesSub.unsubscribe(); }
+        if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
+        if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
     }
 
     /**
@@ -131,16 +174,16 @@ export class TableDetailComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Close Dialog
+     * Return to Table Control
      */
-    close():void{
-        this._dialogRef.close();
+    returnTableControl():void{
+        this._router.navigate(['app/restaurant-table-control']);
     }
 
     /**
      * ngOnDestroy Implementation
      */
     ngOnDestroy(){
-
+        this.removesubscriptions();
     }
 }

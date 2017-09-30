@@ -4,7 +4,6 @@ import { Router } from "@angular/router";
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
@@ -16,8 +15,8 @@ import { Account } from '../../../../../../../both/models/restaurant/account.mod
 import { Accounts } from '../../../../../../../both/collections/restaurant/account.collection';
 import { Currency } from '../../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
-import { Users, UserImages } from '../../../../../../../both/collections/auth/user.collection';
-import { UserProfileImage } from '../../../../../../../both/models/auth/user-profile.model';
+import { Users} from '../../../../../../../both/collections/auth/user.collection';
+//import { UserProfileImage } from '../../../../../../../both/models/auth/user-profile.model';
 import { TableDetailComponent } from './table-detail/table-detail.component';
 
 import template from './restaurant-table-control.component.html';
@@ -38,15 +37,14 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
     private _accountsSub            : Subscription;
     private _ordersSub              : Subscription;
     private _currenciesSub          : Subscription;
-    private _usersSub               : Subscription;
-    private _userImagesSub          : Subscription;
+    //private _usersSub               : Subscription;
+    //private _userImagesSub          : Subscription;
 
     private _restaurants            : Observable<Restaurant[]>;
     private _restaurantsFilter      : Observable<Restaurant[]>;
     private _tables                 : Observable<Table[]>;
 
     private _thereAreRestaurants    : boolean = true;
-    public _dialogRef               : MdDialogRef<any>;
 
     /**
      * RestaurantTableControlComponent Constructor
@@ -58,8 +56,7 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
     constructor( private _router: Router,
                  private _translate: TranslateService,
                  private _ngZone: NgZone,
-                 private _userLanguageService: UserLanguageService,
-                 public _dialog: MdDialog ){
+                 private _userLanguageService: UserLanguageService ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
     }
@@ -82,14 +79,15 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
                 this._tables = Tables.find( { status: 'BUSY' } ).zone();
             });
         });
-        this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByAdminUser', this._user ).subscribe();
-        this._accountsSub = MeteorObservable.subscribe( 'getAccountsByAdminUser', this._user ).subscribe();
         this._ordersSub = MeteorObservable.subscribe( 'getOrdersByAdminUser', this._user, ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 
                                                                                            'ORDER_STATUS.PREPARED', 'ORDER_STATUS.DELIVERED',
                                                                                            'ORDER_STATUS.PENDING_CONFIRM'] ).subscribe();
+        this._accountsSub = MeteorObservable.subscribe( 'getAccountsByAdminUser', this._user ).subscribe();
         this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByUserId', this._user ).subscribe();
+        this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByAdminUser', this._user ).subscribe();
+        /*
         this._usersSub = MeteorObservable.subscribe( 'getUsersByAdminUser', this._user ).subscribe();
-        this._userImagesSub = MeteorObservable.subscribe( 'getUserImagesByAdminUser', this._user ).subscribe();
+        this._userImagesSub = MeteorObservable.subscribe( 'getUserImagesByAdminUser', this._user ).subscribe();*/
     }
 
     /**
@@ -102,8 +100,8 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
         if( this._accountsSub ){ this._accountsSub.unsubscribe(); }
         if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
         if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
-        if( this._usersSub ){ this._usersSub.unsubscribe(); }
-        if( this._userImagesSub ){ this._userImagesSub.unsubscribe(); }
+        //if( this._usersSub ){ this._usersSub.unsubscribe(); }
+        //if( this._userImagesSub ){ this._userImagesSub.unsubscribe(); }
     }
 
     /**
@@ -118,8 +116,8 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * 
-     * @param _pRestaurantId 
+     * Change Restaurant Filter
+     * @param {string} _pRestaurantId 
      */
     changeRestaurantFilter (_pRestaurantId:string ) {
         if ( _pRestaurantId === 'All' ) {
@@ -165,6 +163,9 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
         return UserDetails.collection.find( { current_restaurant: _pRestaurantId } ).count();
     }
 
+    /**
+     * Go To Add Restaurant Component
+     */
     goToAddRestaurant():void{
         this._router.navigate(['/app/restaurant-register']);
     }
@@ -173,19 +174,11 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
      * Open Table Detail Dialog
      * @param {string} _pRestaurantId
      * @param {string} _pTableId
+     * @param {string} _pTableNumber
+     * @param {string} _pCurrencyId
      */
     openTableDetail( _pRestaurantId:string, _pTableId:string, _pTableNumber:string, _pCurrencyId:string ) {
-        this._dialogRef = this._dialog.open( TableDetailComponent, {
-            disableClose: true,
-            width: '60%'
-        });
-        this._dialogRef.componentInstance._restaurantId = _pRestaurantId;
-        this._dialogRef.componentInstance._tableId = _pTableId;
-        this._dialogRef.componentInstance._tableNumber = _pTableNumber;
-        this._dialogRef.componentInstance._currencyId = _pCurrencyId;
-        this._dialogRef.afterClosed().subscribe(result => {
-            this._dialogRef = null;
-        });
+        this._router.navigate( [ 'app/table-detail', _pRestaurantId, _pTableId, _pTableNumber, _pCurrencyId ], { skipLocationChange: true } );
     }
 
     /**

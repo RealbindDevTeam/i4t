@@ -152,7 +152,8 @@ export const WEB_DECLARATIONS = [
     SupervisorTableComponent,
     TableChangeComponent,
     RestaurantExitComponent,
-    RestaurantTableControlComponent
+    RestaurantTableControlComponent,
+    TableDetailComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [
@@ -186,8 +187,7 @@ export const MODAL_DIALOG_DECLARATIONS = [
     RestaurantInstagramComponent,
     RestaurantTwitterComponent,
     RecoverConfirmComponent,
-    RestaurantExitConfirmComponent,
-    TableDetailComponent
+    RestaurantExitConfirmComponent
 ];
 
 export const SERVICES_DECLARATIONS = [

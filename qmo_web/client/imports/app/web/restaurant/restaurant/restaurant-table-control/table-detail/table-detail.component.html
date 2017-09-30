@@ -1,7 +1,14 @@
-<md-card>
-    <md-card-title>Detalle Mesa # {{_tableNumber}}</md-card-title>
-    <md-card-subtitle>Te presentamos los usuarios que se encuentran actualmente en la Mesa</md-card-subtitle>
-    <md-card-content>
+<div class="main">
+    <div class="detail-info">
+        <md-card class="card-info">
+            <md-list>
+                <md-list-item>
+                    <img md-list-avatar class="image" src="/images/platos-orden.png">
+                    <h2 md-line class="card-title">Detalle Mesa # {{_tableNumber}}</h2>
+                    <p md-line class="card-subtitle">Te presentamos los usuarios que se encuentran actualmente en la Mesa</p>
+                </md-list-item>
+            </md-list>
+        </md-card>
         <div *ngFor="let userDetail of _userDetails | async">
             <div *ngFor="let user of _users | async">
                 <div *ngIf="userDetail.user_id === user._id">
@@ -9,36 +16,39 @@
                         <md-card>
                             <md-list>
                                 <md-list-item>
-                                    <img md-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{getUserImage(user)}}">
-                                    <h2 md-line style="font-size: 1.5rem;color: #114b5f; font-weight: 500;">{{user.services.facebook.name}}</h2>
-                                    <p md-line style="font-size: 1rem;">{{user.services.facebook.email}}</p>
-                                    <p md-line style="font-size: 1rem; margin-top: 0.3rem; color: green; font-weight: bold;">Total Consumido: {{getTotalConsumption(user._id)}} {{_currencyCode}}</p>
-                                    <button md-raised-button class="primary-button card-button" style="min-width: 100px;">Penalizar</button>
-                                    <button md-raised-button class="primary-button card-button" style="margin-left: 0.5rem;">Retirar</button>
+                                    <img md-list-avatar class="image" src="{{getUserImage(user)}}">
+                                    <h2 md-line class="card-title">{{user.services.facebook.name}}</h2>
+                                    <p md-line class="card-subtitle">{{user.services.facebook.email}}</p>
+                                    <p md-line class="customer-consumption">Total Consumido: {{getTotalConsumption(user._id)}} {{_currencyCode}}</p>
+                                    <button md-raised-button class="primary-button card-button penalize-button">Penalizar</button>
+                                    <button md-raised-button class="primary-button card-button remove-button">Retirar</button>
                                 </md-list-item>
                             </md-list>
-                            <p style="margin-top: 1.2rem;color: darkgoldenrod;font-weight: bold;">Ordenes Registradas: {{getOrdersRegisteredStatus(user._id)}} - En Proceso: {{getOrdersInProcessStatus(user._id)}} - Preparadas: {{getOrdersInPreparedStatus(user._id)}} - Entregadas: {{getOrdersDeliveredStatus(user._id)}} - En Traslado: {{getOrdersPendingConfirmStatus(user._id)}}</p>                            
+                            <p class="orders-info">Ordenes Registradas: {{getOrdersRegisteredStatus(user._id)}} - En Proceso: {{getOrdersInProcessStatus(user._id)}} - Preparadas: {{getOrdersInPreparedStatus(user._id)}} - Entregadas: {{getOrdersDeliveredStatus(user._id)}} - En Traslado: {{getOrdersPendingConfirmStatus(user._id)}}</p>                            
                         </md-card>
                     </div>
                     <div *ngIf="user.username">
                         <md-card>
                             <md-list>
                                 <md-list-item>
-                                    <img md-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{getUserImage(user)}}">
-                                    <h2 md-line style="font-size: 1.5rem;color: #114b5f; font-weight: 500;">{{user.username}}</h2>
-                                    <p md-line style="font-size: 1rem;">{{user.emails[0].address}}</p>
-                                    <p md-line style="font-size: 1rem; margin-top: 0.3rem; color: green; font-weight: bold;">Total Consumido: {{getTotalConsumption(user._id)}} {{_currencyCode}}</p>
-                                    <button md-raised-button class="primary-button card-button" style="min-width: 100px;">Penalizar</button>
-                                    <button md-raised-button class="primary-button card-button" style="margin-left: 0.5rem;">Retirar</button>
+                                    <img md-list-avatar class="image" src="{{getUserImage(user)}}">
+                                    <h2 md-line class="card-title">{{user.username}}</h2>
+                                    <p md-line class="card-subtitle">{{user.emails[0].address}}</p>
+                                    <p md-line class="customer-consumption">Total Consumido: {{getTotalConsumption(user._id)}} {{_currencyCode}}</p>
+                                    <button md-raised-button class="primary-button card-button penalize-button">Penalizar</button>
+                                    <button md-raised-button class="primary-button card-button remove-button">Retirar</button>
                                 </md-list-item>
                             </md-list>
-                            <p style="margin-top: 1.2rem;color: darkgoldenrod;font-weight: bold;">Ordenes Registradas: {{getOrdersRegisteredStatus(user._id)}} - En Proceso: {{getOrdersInProcessStatus(user._id)}} - Preparadas: {{getOrdersInPreparedStatus(user._id)}} - Entregadas: {{getOrdersDeliveredStatus(user._id)}} - En Traslado: {{getOrdersPendingConfirmStatus(user._id)}}</p>
+                            <p class="orders-info">Ordenes Registradas: {{getOrdersRegisteredStatus(user._id)}} - En Proceso: {{getOrdersInProcessStatus(user._id)}} - Preparadas: {{getOrdersInPreparedStatus(user._id)}} - Entregadas: {{getOrdersDeliveredStatus(user._id)}} - En Traslado: {{getOrdersPendingConfirmStatus(user._id)}}</p>
                         </md-card>
                     </div>
                 </div>
             </div>
         </div>
-        <br/>
-        <button md-raised-button class="primary-button" (click)="close()">Cerrar</button>
-    </md-card-content>
-</md-card>
+    </div>
+    <div class="fixed-action-btn">
+        <button id="fb" md-fab (click)="returnTableControl()">
+            <md-icon class="color-button-icon">keyboard_arrow_left</md-icon>
+        </button>
+    </div>
+</div>

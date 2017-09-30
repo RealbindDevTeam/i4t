@@ -79,3 +79,18 @@ Meteor.publish( 'getUserImagesByAdminUser', function( _pUserId: string ) {
     });
     return UserImages.find( { userId: { $in: _lUsers } });
 });
+
+/**
+ * Meteor publication return users images with restaurant and table Id conditions
+ * @param {string} _pRestaurantId
+ * @param {string} _pTableId
+ */
+Meteor.publish( 'getUserImagesByTableId', function( _pRestaurantId: string, _pTableId ){
+    check( _pRestaurantId, String );
+    check( _pTableId, String );
+    let _lUsers: string[] = [];
+    UserDetails.find( { current_restaurant: _pRestaurantId, current_table: _pTableId } ).fetch().forEach( (user) => {
+        _lUsers.push( user.user_id );
+    });
+    return UserImages.find( { userId: { $in: _lUsers } });
+});

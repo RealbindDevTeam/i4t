@@ -24,7 +24,7 @@
     <md-card-title>Control de Mesas</md-card-title>
     <md-card-subtitle>Consulta las mesas que se encuentran ocupadas en tus restaurantes y su estado</md-card-subtitle>
     <md-card-content>
-        <md-select placeholder="Seleccione Restaurante" style="width: 95%; margin-bottom: 30px">
+        <md-select placeholder="Seleccione Restaurante" class="select">
             <md-option (click)="changeRestaurantFilter('All');" value="All">Todos los Restaurantes</md-option>
             <md-option *ngFor="let rest of _restaurantsFilter | async" (click)="changeRestaurantFilter(rest._id);" value="{{rest._id}}">{{rest.name}}</md-option>
         </md-select>
@@ -32,7 +32,7 @@
             <md-toolbar color="primary">
                 <span>{{restaurant.name}} - {{getRestaurantUsers(restaurant._id)}} Usuarios</span>
             </md-toolbar>
-            <table class="responsive-table centered striped" width="100%" style="border:0.5px solid; border-color: lightgrey; margin-bottom: 20px">
+            <table class="responsive-table centered striped table-control" width="100%">
                 <tbody>
                     <tr *ngFor="let table of _tables | async">
                         <td *ngIf="table.restaurantId === restaurant._id">Mesa # {{table._number}}</td>
