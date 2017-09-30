@@ -174,7 +174,7 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
      * @param {string} _pRestaurantId
      * @param {string} _pTableId
      */
-    openTableDetail( _pRestaurantId:string, _pTableId:string, _pTableNumber:string ) {
+    openTableDetail( _pRestaurantId:string, _pTableId:string, _pTableNumber:string, _pCurrencyId:string ) {
         this._dialogRef = this._dialog.open( TableDetailComponent, {
             disableClose: true,
             width: '60%'
@@ -182,6 +182,7 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
         this._dialogRef.componentInstance._restaurantId = _pRestaurantId;
         this._dialogRef.componentInstance._tableId = _pTableId;
         this._dialogRef.componentInstance._tableNumber = _pTableNumber;
+        this._dialogRef.componentInstance._currencyId = _pCurrencyId;
         this._dialogRef.afterClosed().subscribe(result => {
             this._dialogRef = null;
         });

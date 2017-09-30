@@ -12,8 +12,8 @@ import { UserDetail } from '../../../../../../../../both/models/auth/user-detail
 import { UserDetails } from '../../../../../../../../both/collections/auth/user-detail.collection';
 import { Order } from '../../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../../both/collections/restaurant/order.collection';
-import { Account } from '../../../../../../../../both/models/restaurant/account.model';
-import { Accounts } from '../../../../../../../../both/collections/restaurant/account.collection';
+import { Currency } from '../../../../../../../../both/models/general/currency.model';
+import { Currencies } from '../../../../../../../../both/collections/general/currency.collection';
 
 import template from './table-detail.component.html';
 import style from './table-detail.component.scss';
@@ -30,8 +30,10 @@ export class TableDetailComponent implements OnInit, OnDestroy {
     private _restaurantId           : string;
     private _tableId                : string;
     private _tableNumber            : string;
+    private _currencyId             : string;
     private _userDetails            : Observable<UserDetail[]>;
     private _users                  : Observable<User[]>;
+    private _currencyCode           : string;
 
     /**
      * TableDetailComponent Constructor
@@ -54,6 +56,8 @@ export class TableDetailComponent implements OnInit, OnDestroy {
     ngOnInit(){
         this._userDetails = UserDetails.find( { current_restaurant: this._restaurantId, current_table: this._tableId } ).zone();
         this._users = Users.find( { } ).zone();
+        let _lCurrency:Currency = Currencies.findOne( { _id: this._currencyId } );
+        this._currencyCode = _lCurrency.code;
     }
 
     /**
@@ -72,6 +76,58 @@ export class TableDetailComponent implements OnInit, OnDestroy {
                 return '/images/user_default_image.png';
             }
         }
+    }
+
+    /**
+     * Return orders in registered status
+     * @param {string} _pUserId 
+     */
+    getOrdersRegisteredStatus( _pUserId:string ):number{
+        return Orders.collection.find( { creation_user: _pUserId, status: 'ORDER_STATUS.REGISTERED', restaurantId: this._restaurantId, tableId: this._tableId } ).count();
+    }
+
+    /**
+     * Return orders in process status
+     * @param {status} _pUserId 
+     */
+    getOrdersInProcessStatus( _pUserId:string ):number{
+        return Orders.collection.find( { creation_user: _pUserId, status: 'ORDER_STATUS.IN_PROCESS', restaurantId: this._restaurantId, tableId: this._tableId } ).count();        
+    }
+
+    /**
+     * Return orders in prepared status
+     * @param {status} _pUserId 
+     */
+    getOrdersInPreparedStatus( _pUserId:string ):number{
+        return Orders.collection.find( { creation_user: _pUserId, status: 'ORDER_STATUS.PREPARED', restaurantId: this._restaurantId, tableId: this._tableId } ).count();        
+    }
+
+    /**
+     * Return orders in delivered status
+     * @param {status} _pUserId 
+     */
+    getOrdersDeliveredStatus( _pUserId:string ):number{
+        return Orders.collection.find( { creation_user: _pUserId, status: 'ORDER_STATUS.DELIVERED', restaurantId: this._restaurantId, tableId: this._tableId } ).count();        
+    }
+
+    /**
+     * Return orders in pending confirm status
+     * @param {status} _pUserId 
+     */
+    getOrdersPendingConfirmStatus( _pUserId:string ):number{
+        return Orders.collection.find( { creation_user: _pUserId, status: 'ORDER_STATUS.PENDING_CONFIRM', restaurantId: this._restaurantId, tableId: this._tableId } ).count();        
+    }
+
+    /**
+     * Return Total Consumption
+     * @param {string} _pUserId 
+     */
+    getTotalConsumption( _pUserId:string ):number{
+        let _lConsumption: number = 0;
+        Orders.collection.find( { creation_user: _pUserId, status: { $in: [ 'ORDER_STATUS.DELIVERED', 'ORDER_STATUS.PENDING_CONFIRM' ] }, restaurantId: this._restaurantId, tableId: this._tableId } ).fetch().forEach( ( order ) => {
+            _lConsumption += order.totalPayment;
+        });
+        return _lConsumption;
     }
 
     /**

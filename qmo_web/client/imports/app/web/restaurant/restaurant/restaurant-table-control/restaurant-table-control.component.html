@@ -40,7 +40,7 @@
                         <td *ngIf="table.restaurantId === restaurant._id">{{ getTableOrders(restaurant._id,table._id) }} Ordenes</td>
                         <td *ngIf="table.restaurantId === restaurant._id">{{ getPaymentAccount(restaurant._id,table._id) }} {{ getRestaurantCurrency(restaurant.currencyId) }} en la Cuenta</td>
                         <td *ngIf="table.restaurantId === restaurant._id">
-                            <button md-raised-button class="primary-button" (click)="openTableDetail(restaurant._id, table._id, table._number)">Ver Detalle</button>
+                            <button md-raised-button class="primary-button" (click)="openTableDetail(restaurant._id, table._id, table._number, restaurant.currencyId)">Ver Detalle</button>
                         </td>
                     </tr>
                 </tbody>
