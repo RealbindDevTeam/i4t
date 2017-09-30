@@ -1,8 +1,8 @@
 {
     "PAYMENT_METHODS.CASH": "Efectivo",
-    "PAYMENT_METHODS.CREDIT_CARD": "Tarjeta de Crédito",
+    "PAYMENT_METHODS.CREDIT_CARD": "Tarjeta de crédito",
     "PAYMENT_METHODS.DEBIT_CARD": "Tarjeta débito",
-    "PAYMENT_METHODS.ONLINE": "Pago en Línea",
+    "PAYMENT_METHODS.ONLINE": "Pago en línea",
     "ORDER_STATUS": {
         "REGISTERED": "Registrado",
         "IN_PROCESS": "En proceso",
@@ -159,17 +159,20 @@
             "ADD_ADDITION_ORDER": "Agregar adición a la orden",
             "ADDITON_AGGREGATED": "Adición agregada correctamente",
             "ADDITION": "(Adición)",
-            "MODIFY_ADDITION_ORDER": "Modificar adición",
-            "DELETE_ADDITION_ORDER": "Eliminar adición",
+            "MODIFY_ADDITION_ORDER": "Modificar",
+            "DELETE_ADDITION_ORDER": "Remover",
             "DELETE_ADDITION_CONFIRM": "Estas seguro de eliminar la adición de la orden?",
             "ADDITION_DELETED": "Adición eliminada de la orden",
             "ADDITION_EDITED": "Adición editada correctamente",
             "QUANT": "Cant.",
-            "TABLE_NOT_EXISTS": "La mesa no existe. Por favor varifica el código",
+            "TABLE_NOT_EXISTS": "La mesa no existe. Por favor verifica el código",
             "TABLE_NO_ACTIVE": "La mesa no tiene el servicio de Iurest activo. No es posible ingresar",
             "Iurest_NO_ACTIVE": "El Restaurante no tiene el servicio de Iurest activo. No es posible ingresar",
             "TABLE": "Mesa",
-            "RESTAURANT_NOT_EXISTS": "El restaurante no existe. No es posible ingresar."
+            "RESTAURANT_NOT_EXISTS": "El restaurante no existe. No es posible ingresar.",
+            "MSG_1": "Puedes ordenar lo que deseas",
+            "NO_ORDERS": "Aún no tienes ordenes, puedes crear una orden nueva",
+            "LOADING_MENU": "Cargando menú"
         },
         "ORDER_TRANS": {
             "ORDERS": "Orden",
@@ -235,7 +238,7 @@
             "CONFIRM_TO_ADD_ACCOUNT": "Deseas realizar el pago de la orden?",
             "CONFIRM_OWNER_ORDER": "El propietario de la orden debe confirmar la solicitud del pago",
             "CONFIRM_ORDER_STATUS": "La orden no ha sido entregada",
-            "CONFIRM_PAY_OTHER_USER": "Deseas transferir el pago de la orden?",
+            "CONFIRM_PAY_OTHER_USER": "Deseas transferir el pago de la orden",
             "SUCCESSFUL_PAY_OTHER_USER": "Se ha transferido el pago de la orden",
             "PAYMENTS_TO_BE_CONFIRM": "Tienes ordenes en estado pendiente por confirmación",
             "MOMENT_ANSWER": "En un momento te atenderemos",
@@ -250,7 +253,10 @@
             "ADDITION": "Adición",
             "PAY_DETAIL": "Detalle del pago",
             "NO_PAYED": "No pagado",
-            "PAYED": "Pagado"
+            "PAYED": "Pagado",
+            "CANCEL_PAY_OTHER_USER": "Deseas cancelar la solicitud del pago de la orden",
+            "CANCELED_PAY_OTHER_USER": "Se ha cancelado la solicitud del pago de la orden",
+            "NO_ORDERS" : "Aún no tienes ordenes realizadas"
         },
         "WAITER_CALL": {
             "TITTLE": "Solicitar mesero",
@@ -324,6 +330,7 @@
             "ORDER_DETAIL": "Orden entregada"
         },
         "PAYMENTS_HISTORY": {
+            "INFO": "Para obtener los comprobantes de tus pagos, podrás hacerlo desde",
             "TITLE": "Historial de pagos",
             "TOTAL": "Total",
             "TIP": "Propina",
@@ -331,7 +338,7 @@
             "NO_PAYMENTS": "Aún no tienes pagos realizados"
         },
         "CHANGE_TABLE": {
-            "TITLE": "Cambiar mesa",
+            "TITLE": "Cambiar de mesa",
             "NO_RESTAURANT": "No estás en un restaurante",
             "CONTENT": "Selecciona el tipo de código para que puedas cambiar de mesa",
             "DIALOG_ALERT": "Mensaje",
@@ -375,8 +382,9 @@
             "CALLED_CANCELED": "Llamado Cancelado"
         },
         "WAITER_OPTIONS": {
-            "CALLS": "Inicio",
-            "SETTINGS": "Ajustes"
+            "CALLS": "Llamadas",
+            "SETTINGS": "Ajustes",
+            "MENU": "Menú"
         },
         "SIGN_OUT": {
             "TITLE_CONFIRM": "Cerrar sesión",
@@ -384,6 +392,12 @@
             "NO_BTN": "No",
             "YES_BTN": "Sí",
             "LOADING": "Por favor espera..."
+        },
+        "HOME-MENU": {
+            "HOME": "Inicio",
+            "ORDER_RESTAURANT": "Ordena en un Restaurante",
+            "PAYMENTS_HISTORY": "Historial de Pagos",
+            "SETTINGS": "Ajustes"
         }
     },
     "CURRENCIES": {

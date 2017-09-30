@@ -60,6 +60,12 @@ import { Menu } from '../pages/waiter/menu/menu';
 import { ChangeTablePage } from '../pages/customer/options/table-change/table-change';
 import { AlphanumericCodeChangePage } from '../pages/customer/options/table-change/alphanumeric-code-change/alphanumeric-code-change';
 import { RestaurantExitPage } from '../pages/customer/options/restaurant-exit/restaurant-exit';
+import { HomePage } from '../pages/customer/home/home';
+import { HomeMenu } from '../pages/customer/home-menu/home-menu';
+import { RestaurantMenuPage } from '../pages/waiter/restaurant-menu/restaurant-menu';
+import { ItemCardWaiterComponent } from '../pages/waiter/restaurant-menu/item-card-waiter';
+import { ItemDetailWaiterPage } from '../pages/waiter/item-detail-waiter/item-detail-waiter';
+import { AdditionsWaiterPage } from '../pages/waiter/restaurant-menu/additions-waiter/additions-waiter';
 
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Facebook } from '@ionic-native/facebook';
@@ -119,7 +125,13 @@ export function createTranslateLoader(http: Http) {
     Menu,
     ChangeTablePage,
     AlphanumericCodeChangePage,
-    RestaurantExitPage
+    RestaurantExitPage,
+    HomePage,
+    HomeMenu,
+    RestaurantMenuPage,
+    ItemCardWaiterComponent,
+    ItemDetailWaiterPage,
+    AdditionsWaiterPage
   ],
   imports: [
     BrowserModule,
@@ -130,7 +142,7 @@ export function createTranslateLoader(http: Http) {
           tabsHideOnSubPages: true
         },
         ios: {
-          tabsPlacement: 'bottom',
+          tabsPlacement: 'top',
           tabsHideOnSubPages: true,
           backButtonText: ''
         }
@@ -198,7 +210,13 @@ export function createTranslateLoader(http: Http) {
     Menu,
     ChangeTablePage,
     AlphanumericCodeChangePage,
-    RestaurantExitPage
+    RestaurantExitPage,
+    HomePage,
+    HomeMenu,
+    RestaurantMenuPage,
+    ItemCardWaiterComponent,
+    ItemDetailWaiterPage,
+    AdditionsWaiterPage
   ],
   providers: [
     StatusBar,

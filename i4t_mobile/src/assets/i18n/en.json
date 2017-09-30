@@ -159,8 +159,8 @@
             "ADD_ADDITION_ORDER": "Add addition to the order",
             "ADDITON_AGGREGATED": "Correct Aggregate Addition",
             "ADDITION": "(Addition)",
-            "MODIFY_ADDITION_ORDER": "Modify Addition",
-            "DELETE_ADDITION_ORDER": "Delete Addition",
+            "MODIFY_ADDITION_ORDER": "Modify",
+            "DELETE_ADDITION_ORDER": "Remove",
             "DELETE_ADDITION_CONFIRM": "Are you sure to delete the addition from the order?",
             "ADDITION_DELETED": "Addition Deleted from Order",
             "ADDITION_EDITED": "Edited Adition Correctly",
@@ -169,7 +169,10 @@
             "TABLE_NO_ACTIVE": "The table does not have the Iurest service active. It is not possible to enter",
             "IUREST_NO_ACTIVE": "The restaurant does not have the Iurest service active. It is not possible to enter",
             "TABLE": "Table",
-            "RESTAURANT_NOT_EXISTS": "The restaurant does not exist. It is not possible to enter."
+            "RESTAURANT_NOT_EXISTS": "The restaurant does not exist. It is not possible to enter.",
+            "MSG_1": "You can sort what you want",
+            "NO_ORDERS": "You do not have any orders yet, you can create a new order",
+            "LOADING_MENU": "Loading menu"
         },
         "ORDER_PAYMENT_TRANS": {
             "ORDER_TO_CONFIRM": "Confirm those orders that other users wish to pay for you.",
@@ -250,7 +253,10 @@
             "ADDITION": "Addition",
             "PAY_DETAIL": "Payment Detail",
             "NO_PAYED": "No payed",
-            "PAYED": "Payed"
+            "PAYED": "Payed",
+            "CANCEL_PAY_OTHER_USER": "You want to cancel the order payment request",
+            "CANCELED_PAY_OTHER_USER": "Payment request of order has been canceled",
+            "NO_ORDERS" : "You have no orders yet"
         },
         "WAITER_CALL": {
             "TITTLE": "Call waiter",
@@ -324,6 +330,7 @@
             "ORDER_DETAIL": "Order detail"
         },
         "PAYMENTS_HISTORY": {
+            "INFO" : "To get proof of your payments, you can do it from",
             "TITLE": "Payments history",
             "TOTAL": "Total",
             "TIP": "Tip",
@@ -375,8 +382,9 @@
             "CALLED_CANCELED": "Called Canceled"
         },
         "WAITER_OPTIONS": {
-            "CALLS": "Home",
-            "SETTINGS": "Settings"
+            "CALLS": "Calls",
+            "SETTINGS": "Settings",
+            "MENU": "Menu"
         },
         "SIGN_OUT": {
             "TITLE_CONFIRM": "SIGNOUT",
@@ -384,6 +392,12 @@
             "NO_BTN": "No",
             "YES_BTN": "Yes",
             "LOADING": "Please wait..."
+        },
+        "HOME-MENU": {
+            "HOME": "Home",
+            "ORDER_RESTAURANT": "Ordering in a Restaurant",
+            "PAYMENTS_HISTORY": "Payments History",
+            "SETTINGS": "Settings"
         }
     },
     "CURRENCIES": {

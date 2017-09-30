@@ -3,6 +3,10 @@ page-item-edit {
     //    background: rgba(255, 255, 255, 0) !important;
     //}
 
+    .card {
+        margin: 0 !important;
+    }
+
     .scroll-content {
         //margin-top: 0 !important;
         //margin-bottom: 100px !important;
@@ -56,6 +60,7 @@ page-item-edit {
     .ion-footer-custom{
         box-shadow: 0 -2px 2px -2px #666 !important;
         background: whitesmoke;
+        //min-height: 110px;
     }
 
     .item-md .item-button{

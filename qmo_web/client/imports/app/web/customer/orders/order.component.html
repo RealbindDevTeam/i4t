@@ -35,9 +35,6 @@
     </md-card-content>
 </md-card>
 <order-create *ngIf="_showOrderCreation" [restaurantId]="_currentRestaurant._id" [restaurantCurrency]="_currentRestaurant.currencyId" [tableQRCode]="_currentQRCode" (finishOrdenCreation)="validateFinishOrderCreation($event)"></order-create>
-<div *ngIf="_showOrderList" style="width: 80%; margin: 0 auto; max-width: 740px;">
-    <restaurant-info [restaurantId]="_currentRestaurant._id" [tableQRCode]="_currentQRCode"></restaurant-info>
-</div>
 <order-list *ngIf="_showOrderList" [restaurantId]="_currentRestaurant._id" [restaurantCurrency]="_currentRestaurant.currencyId" [tableQRCode]="_currentQRCode" (createNewOrder)="createNewOrder($event)"></order-list>
 
 <div class="fixed-action-btn" *ngIf="!_showOrderList">

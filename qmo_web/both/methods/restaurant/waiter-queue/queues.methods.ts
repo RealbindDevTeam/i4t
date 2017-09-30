@@ -17,7 +17,7 @@ if (Meteor.isServer) {
    */
   Meteor.startup(function () {
 
-    let queues : Queue = Queues.collection.findOne({});
+    let queues : Queue = Queues.findOne({});
     if(queues){
         queues.queues.forEach(element => {
             Meteor.call('initProcessJobs', element);
@@ -32,7 +32,7 @@ if (Meteor.isServer) {
      * @param { any } _data
      */
     findQueueByRestaurant : function ( _data : any ) {
-        let restaurant = Restaurants.collection.findOne({ _id : _data.restaurants });
+        let restaurant = Restaurants.findOne({ _id : _data.restaurants });
         let queue = restaurant.queue;
         let valEmpty : boolean = Number.isInteger(restaurant.queue.length);
         let queueName : string = "";
@@ -43,7 +43,6 @@ if (Meteor.isServer) {
                 queueName = "queue" + position;
                 Meteor.call("queueValidate", queueName, function(err, result){
                     if(err){
-                        console.log('Error : ' + err);
                         throw new Error("Error on Queue validating");
                     } else {
                         Meteor.call('waiterCall', queueName, false, _data);
@@ -59,9 +58,9 @@ if (Meteor.isServer) {
      */
     queueValidate : function ( _queue : string ) {
         let queueNew        : QueueName = { name : _queue };;
-        let queues          : Queue = Queues.collection.findOne({});
+        let queues          : Queue = Queues.findOne({});
         if(queues){
-            let doc = Queues.collection.findOne({ queues : { $elemMatch: { name : _queue } } });
+            let doc = Queues.findOne({ queues : { $elemMatch: { name : _queue } } });
             if(!doc){
                 Queues.update({ _id : queues._id }, 
                     { $addToSet : { queues :  queueNew }

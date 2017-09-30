@@ -62,10 +62,7 @@
         <ion-item style="padding-left: 0px">
             <ion-label>{{'MOBILE.PAYMENTS.PAYMENT_METHOD' | translate}}</ion-label>
             <ion-select [(ngModel)]="_paymentMethod">
-                <ion-option value="PAYMENT_METHODS.CASH">{{'PAYMENT_METHODS.CASH' | translate}}</ion-option>
-                <ion-option value="PAYMENT_METHODS.CREDIT_CARD">{{'PAYMENT_METHODS.CREDIT_CARD' | translate}}</ion-option>
-                <ion-option value="PAYMENT_METHODS.DEBIT_CARD">{{'PAYMENT_METHODS.DEBIT_CARD' | translate}}</ion-option>
-                <ion-option value="PAYMENT_METHODS.ONLINE">{{'PAYMENT_METHODS.ONLINE' | translate}}</ion-option>
+              <ion-option *ngFor="let pay of _paymentMethods | async" [value]="pay.name">{{ pay.name | translate}}</ion-option>
             </ion-select>
         </ion-item>
       </ion-list>

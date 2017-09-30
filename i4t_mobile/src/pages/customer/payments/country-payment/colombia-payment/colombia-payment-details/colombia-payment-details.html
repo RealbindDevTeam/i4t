@@ -7,14 +7,27 @@
 </ion-header>
 
 <ion-content>
+    <div *ngIf="(_orders | async)?.length <= 0" style="padding: 0 16px;">
+        <div class="img">
+            <img src="assets/img/orders-detail.png">
+        </div>
+        <div class="content" style="text-align: center">
+            <h1>{{'MOBILE.PAYMENTS.NO_ORDERS' | translate}}</h1>
+        </div>
+    </div>
+
     <ion-card *ngFor="let order of _orders | async">
         <ion-card-content>
-            <ion-item style="padding-left: 0;">
+            <ion-item text-wrap>
                 <ion-thumbnail item-left>
                     <img md-list-avatar src="assets/img/my-orders.png">
                 </ion-thumbnail>
-                <h2 style="white-space: normal;">{{ 'MOBILE.PAYMENTS.PAY_ORDER' | translate }} # {{order.code}}</h2>
-                <p style="white-space: normal;">{{order.totalPayment}} {{_currency}}</p>
+                <h2>{{ 'MOBILE.PAYMENTS.PAY_ORDER' | translate }} # {{order.code}}</h2>
+                <p>{{order.totalPayment}} {{_currency}}</p>
+
+                <button *ngIf="isAvailableToReturn(order)" ion-button icon-only item-right style="color: #EF5350; background-color: transparent; margin: 0 8px;" (click)="showComfirmClose(order)">
+                    <ion-icon name="repeat"></ion-icon>
+                </button>
             </ion-item>
 
             <order-detail-pay-info [orderId]="order._id" [restaurantId]="order.restaurantId" [currency]="_currency"></order-detail-pay-info>
@@ -22,7 +35,7 @@
     </ion-card>
 </ion-content>
 
-<ion-footer class="ion-footer-custom" padding style="background: white;">
+<ion-footer *ngIf="(_invoices | async)?.length > 0" class="ion-footer-custom" padding style="background: white;">
     <ion-item>
         <h2>{{ 'MOBILE.PAYMENTS.SUBTOTAL' | translate }}</h2>
         <h2>{{ 'MOBILE.PAYMENTS.INC' | translate }} (8%):</h2>
