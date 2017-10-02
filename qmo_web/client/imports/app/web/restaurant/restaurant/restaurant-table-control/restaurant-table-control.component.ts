@@ -16,7 +16,6 @@ import { Accounts } from '../../../../../../../both/collections/restaurant/accou
 import { Currency } from '../../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
 import { Users} from '../../../../../../../both/collections/auth/user.collection';
-//import { UserProfileImage } from '../../../../../../../both/models/auth/user-profile.model';
 import { TableDetailComponent } from './table-detail/table-detail.component';
 
 import template from './restaurant-table-control.component.html';
@@ -37,8 +36,6 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
     private _accountsSub            : Subscription;
     private _ordersSub              : Subscription;
     private _currenciesSub          : Subscription;
-    //private _usersSub               : Subscription;
-    //private _userImagesSub          : Subscription;
 
     private _restaurants            : Observable<Restaurant[]>;
     private _restaurantsFilter      : Observable<Restaurant[]>;
@@ -85,9 +82,6 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
         this._accountsSub = MeteorObservable.subscribe( 'getAccountsByAdminUser', this._user ).subscribe();
         this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByUserId', this._user ).subscribe();
         this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByAdminUser', this._user ).subscribe();
-        /*
-        this._usersSub = MeteorObservable.subscribe( 'getUsersByAdminUser', this._user ).subscribe();
-        this._userImagesSub = MeteorObservable.subscribe( 'getUserImagesByAdminUser', this._user ).subscribe();*/
     }
 
     /**
@@ -100,8 +94,6 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
         if( this._accountsSub ){ this._accountsSub.unsubscribe(); }
         if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
         if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
-        //if( this._usersSub ){ this._usersSub.unsubscribe(); }
-        //if( this._userImagesSub ){ this._userImagesSub.unsubscribe(); }
     }
 
     /**

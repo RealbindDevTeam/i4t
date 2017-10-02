@@ -4,6 +4,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { UserLanguageService } from '../../../../../shared/services/user-language.service';
 import { User } from '../../../../../../../../both/models/auth/user.model';
 import { UserProfileImage } from '../../../../../../../../both/models/auth/user-profile.model';
@@ -14,6 +15,7 @@ import { Order } from '../../../../../../../../both/models/restaurant/order.mode
 import { Orders } from '../../../../../../../../both/collections/restaurant/order.collection';
 import { Currency } from '../../../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../../../both/collections/general/currency.collection';
+import { PenalizeCustomerComponent } from './penalize-customer/penalize-customer.component';
 
 import template from './table-detail.component.html';
 import style from './table-detail.component.scss';
@@ -40,6 +42,7 @@ export class TableDetailComponent implements OnInit, OnDestroy {
 
     private _userDetails            : Observable<UserDetail[]>;
     private _users                  : Observable<User[]>;
+    public _dialogRef               : MdDialogRef<any>;
 
     /**
      * TableDetailComponent Constructor
@@ -53,7 +56,8 @@ export class TableDetailComponent implements OnInit, OnDestroy {
                  private _ngZone: NgZone,
                  private _userLanguageService: UserLanguageService,
                  private _route: ActivatedRoute,
-                 private _router: Router ){
+                 private _router: Router,
+                 public _dialog: MdDialog ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
         this._route.params.forEach( ( params: Params ) => {
@@ -122,46 +126,6 @@ export class TableDetailComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Return orders in registered status
-     * @param {string} _pUserId 
-     */
-    getOrdersRegisteredStatus( _pUserId:string ):number{
-        return Orders.collection.find( { creation_user: _pUserId, status: 'ORDER_STATUS.REGISTERED', restaurantId: this._restaurantId, tableId: this._tableId } ).count();
-    }
-
-    /**
-     * Return orders in process status
-     * @param {status} _pUserId 
-     */
-    getOrdersInProcessStatus( _pUserId:string ):number{
-        return Orders.collection.find( { creation_user: _pUserId, status: 'ORDER_STATUS.IN_PROCESS', restaurantId: this._restaurantId, tableId: this._tableId } ).count();        
-    }
-
-    /**
-     * Return orders in prepared status
-     * @param {status} _pUserId 
-     */
-    getOrdersInPreparedStatus( _pUserId:string ):number{
-        return Orders.collection.find( { creation_user: _pUserId, status: 'ORDER_STATUS.PREPARED', restaurantId: this._restaurantId, tableId: this._tableId } ).count();        
-    }
-
-    /**
-     * Return orders in delivered status
-     * @param {status} _pUserId 
-     */
-    getOrdersDeliveredStatus( _pUserId:string ):number{
-        return Orders.collection.find( { creation_user: _pUserId, status: 'ORDER_STATUS.DELIVERED', restaurantId: this._restaurantId, tableId: this._tableId } ).count();        
-    }
-
-    /**
-     * Return orders in pending confirm status
-     * @param {status} _pUserId 
-     */
-    getOrdersPendingConfirmStatus( _pUserId:string ):number{
-        return Orders.collection.find( { creation_user: _pUserId, status: 'ORDER_STATUS.PENDING_CONFIRM', restaurantId: this._restaurantId, tableId: this._tableId } ).count();        
-    }
-
-    /**
      * Return Total Consumption
      * @param {string} _pUserId 
      */
@@ -178,6 +142,25 @@ export class TableDetailComponent implements OnInit, OnDestroy {
      */
     returnTableControl():void{
         this._router.navigate(['app/restaurant-table-control']);
+    }
+
+    /**
+     * When user wants penalize customer
+     * @param {User} _pUser
+     */
+    openCustomerPenalize( _pUser: User) {
+        this._dialogRef = this._dialog.open( PenalizeCustomerComponent, {
+            disableClose: true,
+            width: '60%'
+        });
+        this._dialogRef.componentInstance._user = _pUser;
+        this._dialogRef.componentInstance._restaurantId = this._restaurantId;
+        this._dialogRef.componentInstance._tableId = this._tableId;
+        this._dialogRef.componentInstance._urlImage = this.getUserImage( _pUser );
+        this._dialogRef.componentInstance._tableNumber = this._tableNumber;
+        this._dialogRef.afterClosed().subscribe(result => {
+            this._dialogRef = null;
+        });
     }
 
     /**

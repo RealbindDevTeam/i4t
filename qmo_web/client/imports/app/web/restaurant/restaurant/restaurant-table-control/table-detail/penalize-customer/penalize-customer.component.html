@@ -1,0 +1,74 @@
+<div class="main">
+    <md-card *ngIf="_user.services.facebook">
+        <md-card-content>
+            <md-list>
+                <md-list-item>
+                    <img md-list-avatar class="image" src="{{_urlImage}}">
+                    <h2 md-line class="card-title">{{_user.services.facebook.name}}</h2>
+                    <p md-line class="card-subtitle">{{_user.services.facebook.email}}</p>
+                </md-list-item>
+            </md-list>
+            <p class="status-message">A Continuacion te presentamos el estado de las ordenes del usuario <span class="username">{{_user.services.facebook.name}}</span>: </p>
+            <table class="centered striped">
+                <thead>
+                    <tr>
+                        <th data-field="order-registered">Registradas</th>
+                        <th data-field="order-in-process">En Proceso</th>
+                        <th data-field="order-prepared">Preparadas</th>
+                        <th data-field="order-delivered">Entregadas</th>
+                        <th data-field="order-in-translate">En Traslado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="order-info">{{ getOrdersRegisteredStatus() }}</td>
+                        <td class="order-info">{{ getOrdersInProcessStatus() }}</td>
+                        <td class="order-info">{{ getOrdersInPreparedStatus() }}</td>
+                        <td class="order-info">{{ getOrdersDeliveredStatus() }}</td>
+                        <td class="order-info">{{ getOrdersPendingConfirmStatus() }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Al crear una penalizacion, este usuario quedara marcado para que Iurest lo tenga presente al momento de entrar en un restaurante y le notifique a sus administradores.</p>
+            <p>La penalizacion retirara al usuario de la mesa <span class="table-number"># {{_tableNumber}}</span> y cancelara todas sus ordenes. Deseas continuar creando la penalizacion?</p>
+            <button md-raised-button class="primary-button card-button" (click)="close()">No</button>
+            <button md-raised-button class="primary-button card-button" (click)="PenalizeCustomerComponent()">Si</button>        
+        </md-card-content>
+    </md-card>
+    <md-card *ngIf="_user.username">
+        <md-card-content>
+            <md-list>
+                <md-list-item>
+                    <img md-list-avatar class="image" src="{{_urlImage}}">
+                    <h2 md-line class="card-title">{{_user.username}}</h2>
+                    <p md-line class="card-subtitle">{{_user.emails[0].address}}</p>
+                </md-list-item>
+            </md-list>
+            <p class="status-message">A Continuacion te presentamos el estado de las ordenes del usuario <span class="username">{{_user.username}}</span>: </p>        
+            <table class="centered striped">
+                <thead>
+                    <tr>
+                        <th data-field="order-registered">Registradas</th>
+                        <th data-field="order-in-process">En Proceso</th>
+                        <th data-field="order-prepared">Preparadas</th>
+                        <th data-field="order-delivered">Entregadas</th>
+                        <th data-field="order-in-translate">En Traslado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="order-info">{{ getOrdersRegisteredStatus() }}</td>
+                        <td class="order-info">{{ getOrdersInProcessStatus() }}</td>
+                        <td class="order-info">{{ getOrdersInPreparedStatus() }}</td>
+                        <td class="order-info">{{ getOrdersDeliveredStatus() }}</td>
+                        <td class="order-info">{{ getOrdersPendingConfirmStatus() }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Al crear una penalizacion, este usuario quedara marcado para que Iurest lo tenga presente al momento de entrar en un restaurante y le notifique a sus administradores.</p>
+            <p>La penalizacion retirara al usuario de la mesa <span class="table-number"># {{_tableNumber}}</span> y cancelara todas sus ordenes. Deseas continuar creando la penalizacion?</p>        
+            <button md-raised-button class="primary-button card-button" (click)="close()">No</button>
+            <button md-raised-button class="primary-button card-button" (click)="PenalizeCustomerComponent()">Si</button>     
+        </md-card-content>
+    </md-card>
+</div>
