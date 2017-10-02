@@ -16,7 +16,7 @@ export function loadParameters() {
             { _id: '1000', name: 'payu_payments_url', value: 'https://sandbox.api.payulatam.com/payments-api/4.0/service.cgi', description: 'url for connect payu payments API' },
             { _id: '2000', name: 'payu_reports_url', value: 'https://sandbox.api.payulatam.com/reports-api/4.0/service.cgi', description: 'url for connect payu reports API' },
             { _id: '3000', name: 'ip_public_service_url', value: 'https://api.ipify.org?format=json', description: 'url for retrieve the client public ip' },
-            { _id: '4000', name: 'payu_pay_info_url', value: 'http://192.168.0.10:9000/api/getCusPayInfo', description: 'url for retrieve credentials for payu payment' },
+            { _id: '4000', name: 'payu_pay_info_url', value: 'http://192.168.0.3:9000/api/getCusPayInfo', description: 'url for retrieve credentials for payu payment' },
             { _id: '1100', name: 'company_name', value: 'Realbind S.A.S', description: 'Realbind company name for invoice' },
             { _id: '1200', name: 'company_address', value: 'Cra 6 # 58-43 Of 201', description: 'Realbind company address' },
             { _id: '1300', name: 'company_country', value: 'Colombia', description: 'Realbind country location' },
@@ -28,7 +28,9 @@ export function loadParameters() {
             { _id: '1900', name: 'instagram_link', value: 'https://www.instagram.com', description: 'instagram link for iurest' },
             { _id: '1610', name: 'iurest_img_url', value: 'https://www.iurest.com/images/', description: 'iurest images url' },
             { _id: '3100', name: 'ip_public_service_url2', value: 'https://ipinfo.io/json', description: 'url for retrieve the client public ip #2' },
-            { _id: '3200', name: 'ip_public_service_url3', value: 'https://ifconfig.co/json', description: 'url for retrieve the client public ip #3' }
+            { _id: '3200', name: 'ip_public_service_url3', value: 'https://ifconfig.co/json', description: 'url for retrieve the client public ip #3' },
+            { _id: '9000', name: 'payu_is_prod', value: 'false', description: 'Flag to enable to prod payu payment' },
+            { _id: '9100', name: 'payu_test_state', value: 'APPROVED', description: 'Test state for payu payment transaction' }
         ];
 
         parameters.forEach((parameter: Parameter) => Parameters.insert(parameter));
