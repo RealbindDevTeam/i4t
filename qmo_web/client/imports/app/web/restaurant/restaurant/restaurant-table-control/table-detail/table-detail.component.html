@@ -4,8 +4,8 @@
             <md-list>
                 <md-list-item>
                     <img md-list-avatar class="image" src="/images/platos-orden.png">
-                    <h2 md-line class="card-title">Detalle Mesa # {{_tableNumber}}</h2>
-                    <p md-line class="card-subtitle">Te presentamos los usuarios que se encuentran actualmente en la Mesa</p>
+                    <h2 md-line class="card-title">{{ 'TABLE_DETAIL.TABLE_DETAIL_TITLE' | translate }} # {{_tableNumber}}</h2>
+                    <p md-line class="card-subtitle">{{ 'TABLE_DETAIL.TABLE_DETAIL_SUBTITLE' | translate }}</p>
                 </md-list-item>
             </md-list>
         </md-card>
@@ -19,8 +19,8 @@
                                     <img md-list-avatar class="image" src="{{getUserImage(user)}}">
                                     <a href="{{user.services.facebook.id}}" target="_blank"><h2 md-line class="card-title">{{user.services.facebook.name}}</h2></a>
                                     <p md-line class="card-subtitle">{{user.services.facebook.email}}</p>
-                                    <p md-line class="customer-consumption">Total Consumido: {{getTotalConsumption(user._id)}} {{_currencyCode}}</p>
-                                    <button md-raised-button class="primary-button card-button penalize-button" (click)="openCustomerPenalize(user)">Penalizar</button>
+                                    <p md-line class="customer-consumption">{{ 'TABLE_DETAIL.TOTAL_CONSUMPTION' | translate }}: {{getTotalConsumption(user._id)}} {{_currencyCode}}</p>
+                                    <button md-raised-button class="primary-button card-button penalize-button" (click)="openCustomerPenalize(user)">{{ 'TABLE_DETAIL.PENALIZE' | translate }}</button>
                                 </md-list-item>
                             </md-list>
                         </md-card>
@@ -32,8 +32,8 @@
                                     <img md-list-avatar class="image" src="{{getUserImage(user)}}">
                                     <h2 md-line class="card-title">{{user.username}}</h2>
                                     <p md-line class="card-subtitle">{{user.emails[0].address}}</p>
-                                    <p md-line class="customer-consumption">Total Consumido: {{getTotalConsumption(user._id)}} {{_currencyCode}}</p>
-                                    <button md-raised-button class="primary-button card-button penalize-button" (click)="openCustomerPenalize(user)">Penalizar</button>
+                                    <p md-line class="customer-consumption">{{ 'TABLE_DETAIL.TOTAL_CONSUMPTION' | translate }}: {{getTotalConsumption(user._id)}} {{_currencyCode}}</p>
+                                    <button md-raised-button class="primary-button card-button penalize-button" (click)="openCustomerPenalize(user)">{{ 'TABLE_DETAIL.PENALIZE' | translate }}</button>
                                 </md-list-item>
                             </md-list>
                         </md-card>

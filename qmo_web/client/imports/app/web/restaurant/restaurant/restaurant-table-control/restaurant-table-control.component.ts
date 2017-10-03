@@ -73,7 +73,7 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
         });
         this._tablesSub = MeteorObservable.subscribe( 'tables', this._user ).subscribe( () => {
             this._ngZone.run( () => {
-                this._tables = Tables.find( { status: 'BUSY' } ).zone();
+                this._tables = Tables.find( { } ).zone();
             });
         });
         this._ordersSub = MeteorObservable.subscribe( 'getOrdersByAdminUser', this._user, ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 

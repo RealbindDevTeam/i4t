@@ -25,6 +25,9 @@ export class PenalizeCustomerComponent implements OnInit, OnDestroy {
     private _tableId            : string;
     private _urlImage           : string;
     private _tableNumber        : string;
+    private _showAccountError   : boolean = false;
+    private _showGeneralError   : boolean = false;
+
 
     /**
      * PenalizeCustomerComponent Constructor
@@ -48,8 +51,17 @@ export class PenalizeCustomerComponent implements OnInit, OnDestroy {
     /**
      * Create customer penalization
      */
-    PenalizeCustomerComponent():void{
-
+    penalizeCustomerComponent():void{
+        MeteorObservable.call( 'penalizeCustomer', this._user ).subscribe( () => {
+            this._showAccountError = false;   
+            this._showGeneralError = false;         
+        }, ( error ) => {
+            if( error.error === '200' ){
+                this._showAccountError = true;
+            } else{
+                this._showGeneralError = true;
+            }
+        });
     }
 
     /**

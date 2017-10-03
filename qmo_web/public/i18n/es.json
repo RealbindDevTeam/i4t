@@ -1280,5 +1280,27 @@
         "ADDITIONS": "Adiciones",
         "ADDITION": "Adición(es)",
         "ORDER_CANCELED": "Orden Cancelada"
+    },
+    "RESTAURANT_TABLE_CONTROL": {
+        "THERE_NOT_RESTAURANTS": "Aún no hay restaurantes registrados",
+        "MESSAGE": "Registra uno para habilitar esta opción",
+        "RESTAURANT_REGISTER": "Registrar restaurante",
+        "TABLE_CONTROL": "Control de Mesas",
+        "TABLE_CONTROL_MSG": "Consulta las mesas que se encuentran ocupadas en tus restaurantes y su estado",
+        "SELECT_RESTAURANT": "Selecciona restaurante",
+        "ALL_RESTAURANTS": "Todos los Restaurantes",
+        "USERS": "Usuarios",
+        "TABLE":"Mesa",
+        "FREE_TABLE": "Mesa Libre",
+        "ORDERS":"Ordenes",
+        "IN_THE_ACCOUNT": "en la cuenta",
+        "VIEW_DETAIL": "Ver detalle",
+        "DETAIL_NOT_AVAILABLE": "Detalle No Disponible"
+    },
+    "TABLE_DETAIL": {
+        "TABLE_DETAIL_TITLE": "Detalle Mesa",
+        "TABLE_DETAIL_SUBTITLE": "Te presentamos los usuarios que se encuentran actualmente en la Mesa",
+        "TOTAL_CONSUMPTION": "Total Consumido",
+        "PENALIZE": "Penalizar"
     }
 }

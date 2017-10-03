@@ -32,7 +32,7 @@
             <p>Al crear una penalizacion, este usuario quedara marcado para que Iurest lo tenga presente al momento de entrar en un restaurante y le notifique a sus administradores.</p>
             <p>La penalizacion retirara al usuario de la mesa <span class="table-number"># {{_tableNumber}}</span> y cancelara todas sus ordenes. Deseas continuar creando la penalizacion?</p>
             <button md-raised-button class="primary-button card-button" (click)="close()">No</button>
-            <button md-raised-button class="primary-button card-button" (click)="PenalizeCustomerComponent()">Si</button>        
+            <button md-raised-button class="primary-button card-button" (click)="penalizeCustomerComponent()">Si</button>        
         </md-card-content>
     </md-card>
     <md-card *ngIf="_user.username">
@@ -68,7 +68,9 @@
             <p>Al crear una penalizacion, este usuario quedara marcado para que Iurest lo tenga presente al momento de entrar en un restaurante y le notifique a sus administradores.</p>
             <p>La penalizacion retirara al usuario de la mesa <span class="table-number"># {{_tableNumber}}</span> y cancelara todas sus ordenes. Deseas continuar creando la penalizacion?</p>        
             <button md-raised-button class="primary-button card-button" (click)="close()">No</button>
-            <button md-raised-button class="primary-button card-button" (click)="PenalizeCustomerComponent()">Si</button>     
+            <button md-raised-button class="primary-button card-button" (click)="PenalizeCustomerComponent()">Si</button>
+            <p class="error-msg" *ngIf="_showAccountError">Se ha producido un error con la cuenta del usuario. Por favor verifique si el usuario aun se encuentra en la mesa con la opcion ADMINISTRACION -> CONTROL DE MESAS</p>     
+            <p class="error-msg" *ngIf="_showGeneralError">Se ha producido un error penalizando al usuario. Por favor intente mas tarde.</p>     
         </md-card-content>
     </md-card>
 </div>
