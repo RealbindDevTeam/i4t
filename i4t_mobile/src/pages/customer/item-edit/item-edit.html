@@ -9,7 +9,7 @@
     <div class="crop">
       <img src="{{getItemImage(item._id)}}" style="display:inline-block">
     </div>
-    <ion-card class="ion-card-custom">
+    <ion-card class="ion-card-custom" style="margin: 0px !important">
       <ion-card-content>
         <ion-card-title>{{item.name}}</ion-card-title>
         <p class="item-paragraph-custom" style="margin-bottom: 10px">
@@ -104,8 +104,7 @@
   </div>
   <div>
     <button style="float:left; width: 45%" ion-button outline (click)="deleteOrderItem()">{{'MOBILE.ITEM_EDIT.REMOVE' | translate}}</button>
-    <button *ngIf="_showCancelBtn" [disabled]="_disabledAddBtn" style="float: right; width: 45%" ion-button
-      outline (click)="editOrderItem()">{{'MOBILE.ITEM_EDIT.MODIFY' | translate}}</button>
+    <button *ngIf="_showCancelBtn" [disabled]="_disabledAddBtn" style="float: right; width: 45%" ion-button outline (click)="editOrderItem()">{{'MOBILE.ITEM_EDIT.MODIFY' | translate}}</button>
   </div>
 </ion-footer>
 
