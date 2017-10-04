@@ -850,7 +850,7 @@
         "ADDITION": "Adición(es)",
         "NO_ORDERS": "Aún no hay ordenes por preparar",
         "DELETE_ORDER": "ELIMINAR ORDEN",
-        "ORDER_CANCELED_MSG": "Un mesero ha cancelado la orden del cliente",
+        "ORDER_CANCELED_MSG": "Se ha cancelado la orden del cliente",
         "ORDER_PREPARED_MSG": "Orden Preparada",
         "ORDER_DELETED": "Orden Eliminada"
     },
@@ -1286,7 +1286,7 @@
         "MESSAGE": "Registra uno para habilitar esta opción",
         "RESTAURANT_REGISTER": "Registrar restaurante",
         "TABLE_CONTROL": "Control de Mesas",
-        "TABLE_CONTROL_MSG": "Consulta las mesas que se encuentran ocupadas en tus restaurantes y su estado",
+        "TABLE_CONTROL_MSG": "Consulta el estado de las mesas",
         "SELECT_RESTAURANT": "Selecciona restaurante",
         "ALL_RESTAURANTS": "Todos los Restaurantes",
         "USERS": "Usuarios",
@@ -1302,5 +1302,19 @@
         "TABLE_DETAIL_SUBTITLE": "Te presentamos los usuarios que se encuentran actualmente en la Mesa",
         "TOTAL_CONSUMPTION": "Total Consumido",
         "PENALIZE": "Penalizar"
+    },
+    "PENALIZE_CUSTOMER": {
+        "STATUS_MSG": "A Continuación te presentamos el estado de las ordenes del usuario",
+        "ORDER_REGISTERED": "Registradas",
+        "ORDER_IN_PROCESS": "En Proceso",
+        "ORDER_PREPARED": "Preparadas",
+        "ORDER_DELIVERED": "Entregadas",
+        "ORDER_TRANSLATE": "En Traslado",
+        "PENALIZE_MSG": "Al crear una penalización, este usuario quedara marcado para que Iurest lo tenga presente al momento de entrar en un restaurante y le notifique a sus administradores.",
+        "PENALIZE_TABLE": "La penalización retirara al usuario de la mesa",
+        "PENALIZE_CONFIRM_MSG": "y cancelara todas sus ordenes. Deseas continuar creando la penalización?",
+        "ACCOUNT_ERROR": "Se ha producido un error con la cuenta del usuario. Por favor verifique si el usuario aún se encuentra en la mesa con la opción ADMINISTRACION -> CONTROL DE MESAS",
+        "GENERAL_ERROR": "Se ha producido un error penalizando al usuario. Por favor intente mas tarde.",
+        "PENALTY_CREATED": "Penalización Creada"
     }
 }

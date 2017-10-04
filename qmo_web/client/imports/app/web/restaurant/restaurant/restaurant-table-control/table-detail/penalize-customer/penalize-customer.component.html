@@ -8,15 +8,15 @@
                     <p md-line class="card-subtitle">{{_user.services.facebook.email}}</p>
                 </md-list-item>
             </md-list>
-            <p class="status-message">A Continuacion te presentamos el estado de las ordenes del usuario <span class="username">{{_user.services.facebook.name}}</span>: </p>
+            <p class="status-message">{{ 'PENALIZE_CUSTOMER.STATUS_MSG' | translate }} <span class="username">{{_user.services.facebook.name}}</span>: </p>
             <table class="centered striped">
                 <thead>
                     <tr>
-                        <th data-field="order-registered">Registradas</th>
-                        <th data-field="order-in-process">En Proceso</th>
-                        <th data-field="order-prepared">Preparadas</th>
-                        <th data-field="order-delivered">Entregadas</th>
-                        <th data-field="order-in-translate">En Traslado</th>
+                        <th data-field="order-registered">{{ 'PENALIZE_CUSTOMER.ORDER_REGISTERED' | translate }}</th>
+                        <th data-field="order-in-process">{{ 'PENALIZE_CUSTOMER.ORDER_IN_PROCESS' | translate }}</th>
+                        <th data-field="order-prepared">{{ 'PENALIZE_CUSTOMER.ORDER_PREPARED' | translate }}</th>
+                        <th data-field="order-delivered">{{ 'PENALIZE_CUSTOMER.ORDER_DELIVERED' | translate }}</th>
+                        <th data-field="order-in-translate">{{ 'PENALIZE_CUSTOMER.ORDER_TRANSLATE' | translate }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -29,10 +29,10 @@
                     </tr>
                 </tbody>
             </table>
-            <p>Al crear una penalizacion, este usuario quedara marcado para que Iurest lo tenga presente al momento de entrar en un restaurante y le notifique a sus administradores.</p>
-            <p>La penalizacion retirara al usuario de la mesa <span class="table-number"># {{_tableNumber}}</span> y cancelara todas sus ordenes. Deseas continuar creando la penalizacion?</p>
-            <button md-raised-button class="primary-button card-button" (click)="close()">No</button>
-            <button md-raised-button class="primary-button card-button" (click)="penalizeCustomerComponent()">Si</button>        
+            <p>{{ 'PENALIZE_CUSTOMER.PENALIZE_MSG' | translate }}</p>
+            <p>{{ 'PENALIZE_CUSTOMER.PENALIZE_TABLE' | translate }} <span class="table-number"># {{_tableNumber}}</span> {{ 'PENALIZE_CUSTOMER.PENALIZE_CONFIRM_MSG' | translate }}</p>
+            <button md-raised-button class="primary-button card-button" (click)="close()">{{ 'NO' | translate }}</button>
+            <button md-raised-button class="primary-button card-button" (click)="penalizeCustomer()">{{ 'YES' | translate }}</button>        
         </md-card-content>
     </md-card>
     <md-card *ngIf="_user.username">
@@ -44,15 +44,15 @@
                     <p md-line class="card-subtitle">{{_user.emails[0].address}}</p>
                 </md-list-item>
             </md-list>
-            <p class="status-message">A Continuacion te presentamos el estado de las ordenes del usuario <span class="username">{{_user.username}}</span>: </p>        
+            <p class="status-message">{{ 'PENALIZE_CUSTOMER.STATUS_MSG' | translate }} <span class="username">{{_user.username}}</span>: </p>        
             <table class="centered striped">
                 <thead>
                     <tr>
-                        <th data-field="order-registered">Registradas</th>
-                        <th data-field="order-in-process">En Proceso</th>
-                        <th data-field="order-prepared">Preparadas</th>
-                        <th data-field="order-delivered">Entregadas</th>
-                        <th data-field="order-in-translate">En Traslado</th>
+                        <th data-field="order-registered">{{ 'PENALIZE_CUSTOMER.ORDER_REGISTERED' | translate }}</th>
+                        <th data-field="order-in-process">{{ 'PENALIZE_CUSTOMER.ORDER_IN_PROCESS' | translate }}</th>
+                        <th data-field="order-prepared">{{ 'PENALIZE_CUSTOMER.ORDER_PREPARED' | translate }}</th>
+                        <th data-field="order-delivered">{{ 'PENALIZE_CUSTOMER.ORDER_DELIVERED' | translate }}</th>
+                        <th data-field="order-in-translate">{{ 'PENALIZE_CUSTOMER.ORDER_TRANSLATE' | translate }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,12 +65,15 @@
                     </tr>
                 </tbody>
             </table>
-            <p>Al crear una penalizacion, este usuario quedara marcado para que Iurest lo tenga presente al momento de entrar en un restaurante y le notifique a sus administradores.</p>
-            <p>La penalizacion retirara al usuario de la mesa <span class="table-number"># {{_tableNumber}}</span> y cancelara todas sus ordenes. Deseas continuar creando la penalizacion?</p>        
-            <button md-raised-button class="primary-button card-button" (click)="close()">No</button>
-            <button md-raised-button class="primary-button card-button" (click)="PenalizeCustomerComponent()">Si</button>
-            <p class="error-msg" *ngIf="_showAccountError">Se ha producido un error con la cuenta del usuario. Por favor verifique si el usuario aun se encuentra en la mesa con la opcion ADMINISTRACION -> CONTROL DE MESAS</p>     
-            <p class="error-msg" *ngIf="_showGeneralError">Se ha producido un error penalizando al usuario. Por favor intente mas tarde.</p>     
+            <p>{{ 'PENALIZE_CUSTOMER.PENALIZE_MSG' | translate }}</p>
+            <p>{{ 'PENALIZE_CUSTOMER.PENALIZE_TABLE' | translate }} <span class="table-number"># {{_tableNumber}}</span> {{ 'PENALIZE_CUSTOMER.PENALIZE_CONFIRM_MSG' | translate }}</p>        
+            <button md-raised-button class="primary-button card-button" (click)="close()">{{ 'NO' | translate }}</button>
+            <button md-raised-button class="primary-button card-button" (click)="penalizeCustomer()">{{ 'YES' | translate }}</button>
+            <p class="error-msg" *ngIf="_showAccountError">{{ 'PENALIZE_CUSTOMER.ACCOUNT_ERROR' | translate }}</p>     
+            <p class="error-msg" *ngIf="_showGeneralError">{{ 'PENALIZE_CUSTOMER.GENERAL_ERROR' | translate }}</p>     
         </md-card-content>
     </md-card>
+</div>
+<div class="loading" *ngIf="_loading">
+    <md-spinner></md-spinner>
 </div>

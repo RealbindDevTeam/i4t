@@ -20,9 +20,24 @@ if( Meteor.isServer ){
             let _lCustomerAccount: Account = Accounts.findOne( { restaurantId: _lCustomerRestaurant, tableId: _lCustomerTable, status: 'OPEN' } );
 
             if( _lCustomerAccount ){
+                let _lUserOrders: string [] = [];
+                Orders.find( { creation_user: _pCustomerUser._id, restaurantId: _lCustomerRestaurant, tableId: _lCustomerTable, accountId: _lCustomerAccount._id } ).fetch().forEach( ( order ) => {
+                    _lUserOrders.push( order._id );
+                });
                 Orders.find( { creation_user: _pCustomerUser._id, restaurantId: _lCustomerRestaurant, tableId: _lCustomerTable, accountId: _lCustomerAccount._id,
-                status: { $in: [ 'ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED', 'ORDER_STATUS.DELIVERED' ] } } ).fetch().forEach( ( order ) => {
+                status: { $in: [ 'ORDER_STATUS.REGISTERED', 'ORDER_STATUS.PREPARED' ] } } ).fetch().forEach( ( order ) => {
                     Orders.update( { _id: order._id }, { $set: { status: 'ORDER_STATUS.CANCELED', modification_date : new Date(), canceled_by_penalization: true } } );
+                });
+
+                Orders.find( { creation_user: _pCustomerUser._id, restaurantId: _lCustomerRestaurant, tableId: _lCustomerTable, accountId: _lCustomerAccount._id,
+                status: { $in: [ 'ORDER_STATUS.IN_PROCESS' ] } } ).fetch().forEach( ( order ) => {
+                    Orders.update( { _id: order._id }, { $set: { status: 'ORDER_STATUS.CANCELED', modification_date : new Date(), canceled_by_penalization: false } } );
+                });
+
+                Orders.find( { creation_user: _pCustomerUser._id, restaurantId: _lCustomerRestaurant, tableId: _lCustomerTable, accountId: _lCustomerAccount._id,
+                status: { $in: [ 'ORDER_STATUS.DELIVERED' ] } } ).fetch().forEach( ( order ) => {
+                    Orders.update( { _id: order._id }, { $set: { status: 'ORDER_STATUS.CANCELED', modification_date : new Date(), canceled_by_penalization: true } } );
+                    Accounts.update( { _id: _lCustomerAccount._id }, { $set: { total_payment: _lCustomerAccount.total_payment - order.totalPayment } } );
                 });
 
                 Orders.find( { restaurantId: _lCustomerRestaurant, tableId: _lCustomerTable, accountId: _lCustomerAccount._id, 'translateInfo.firstOrderOwner': _pCustomerUser._id, 
@@ -39,14 +54,20 @@ if( Meteor.isServer ){
                     Orders.update( { _id: order._id }, { $set: { status: 'ORDER_STATUS.CANCELED', modification_date : new Date(), translateInfo: _lOrderTranslate, canceled_by_penalization: true } } );
                 });
 
-                WaiterCallDetails.find( { restaurant_id: _lCustomerRestaurant, table_id: _lCustomerTable, user_id: _pCustomerUser._id, 
+                WaiterCallDetails.find( { restaurant_id: _lCustomerRestaurant, table_id: _lCustomerTable, order_id: { $in: _lUserOrders }, type: 'SEND_ORDER',
                 status: { $in: [ 'waiting', 'completed' ] } } ).fetch().forEach( ( call ) => {
-                    WaiterCallDetails.update( { _id: call._id}, { $set: { status: 'closed', modification_date : new Date() } } );
+                    WaiterCallDetails.update( { _id: call._id }, { $set: { status: 'cancel', modification_date : new Date() } } );
                 });
 
-                Payments.find( { creation_user: _pCustomerUser._id, restaurantId: _lCustomerRestaurant, accountId: _pCustomerUser._id,
+                WaiterCallDetails.find( { restaurant_id: _lCustomerRestaurant, table_id: _lCustomerTable, user_id: _pCustomerUser._id, type: { $in : [ 'CALL_OF_CUSTOMER', 'USER_EXIT_TABLE', 'PAYMENT' ] },
+                status: { $in: [ 'waiting', 'completed' ] } } ).fetch().forEach( ( call ) => {
+                    WaiterCallDetails.update( { _id: call._id }, { $set: { status: 'cancel', modification_date : new Date() } } );
+                });
+
+                Payments.find( { creation_user: _pCustomerUser._id, restaurantId: _lCustomerRestaurant, accountId: _lCustomerAccount._id,
                 tableId: _lCustomerTable, status: 'PAYMENT.NO_PAID', received: false } ).fetch().forEach( ( pay ) => {
                     Payments.update( { _id: pay._id }, { $set: { status: 'CANCELED', canceled_by_penalization: true } } );
+                    Accounts.update( { _id: _lCustomerAccount._id }, { $set: { total_payment: _lCustomerAccount.total_payment - pay.totalOrdersPrice } } );
                 });
 
                 let _lTableAmountPeople: number = Tables.findOne( { _id: _lCustomerTable } ).amount_people;
