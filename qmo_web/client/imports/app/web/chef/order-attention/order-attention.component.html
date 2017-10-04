@@ -39,6 +39,17 @@
         </span>
         <md-icon>keyboard_arrow_right</md-icon>
     </md-toolbar>
+    <md-toolbar *ngFor="let order of _ordersCanceledByAdmin | async;" class="order" (click)="showOrderInProcessDetail(order)">
+        <img style="width: 3rem;" src="/images/others-orders.png">
+        <span class="order-code">{{'ORDER_ATTENTION.ORDER' | translate}} # {{order.code}} <span style="color:red" *ngIf="order.status === 'ORDER_STATUS.CANCELED'">- {{order.status | translate}}</span></span>
+        <span class="app-flex-filler"></span>
+        <span *ngFor="let table of _tables | async">
+            <ng-template [ngIf]="table._id === order.tableId">
+                <span class="order-table">{{'ORDER_ATTENTION.TABLE' | translate}} {{table._number}}</span>
+            </ng-template>
+        </span>
+        <md-icon>keyboard_arrow_right</md-icon>
+    </md-toolbar>
 </div>
 <div class="order-detail" *ngIf="_thereAreOrders">
     <md-card>

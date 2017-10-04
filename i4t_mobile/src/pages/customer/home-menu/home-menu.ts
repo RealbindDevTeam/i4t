@@ -13,6 +13,7 @@ import { TabsPage } from '../tabs/tabs';
 import { UserProfileImage } from 'qmo_web/both/models/auth/user-profile.model';
 import { Users, UserImages } from 'qmo_web/both/collections/auth/user.collection';
 import { User } from 'qmo_web/both/models/auth/user.model';
+import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 @Component({
     templateUrl: 'home-menu.html'
@@ -37,14 +38,16 @@ export class HomeMenu implements OnInit, OnDestroy {
     * @param _loadingCtrl 
     * @param _translate 
     */
-    constructor(public _app: App,
-        public platform: Platform,
-        public statusBar: StatusBar,
-        public splashScreen: SplashScreen,
-        public _alertCtrl: AlertController,
-        public _loadingCtrl: LoadingController,
-        private _translate: TranslateService,
-        private _ngZone: NgZone) {
+  constructor( public _app : App,
+               public platform: Platform, 
+               public statusBar: StatusBar, 
+               public splashScreen: SplashScreen,
+               public _alertCtrl: AlertController,
+               public _loadingCtrl: LoadingController,
+               private _translate: TranslateService,
+               private _ngZone: NgZone,
+               private _userLanguageService: UserLanguageService ){
+        _translate.setDefaultLang('en');
         this.initializeApp();
         let _lHome = this.itemNameTraduction('MOBILE.HOME-MENU.HOME');
         let _lOrder = this.itemNameTraduction('MOBILE.HOME-MENU.ORDER_RESTAURANT');
@@ -59,8 +62,9 @@ export class HomeMenu implements OnInit, OnDestroy {
     /**
      * ngOnInit Implementation
      */
-    ngOnInit() {
-        this._userImageSubscription = MeteorObservable.subscribe('getUserImages', Meteor.userId()).subscribe();
+    ngOnInit(){
+        this._translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        this._userImageSubscription = MeteorObservable.subscribe( 'getUserImages', Meteor.userId() ).subscribe();
         this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() => {
             this._ngZone.run(() => {
                 this._user = Users.findOne({ _id: Meteor.userId() });

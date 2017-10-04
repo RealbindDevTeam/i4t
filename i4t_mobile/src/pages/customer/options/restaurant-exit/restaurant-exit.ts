@@ -105,7 +105,7 @@ export class RestaurantExitPage implements OnInit, OnDestroy {
         let _lOrdersDeliveredStatus: number = Orders.collection.find({ creation_user: Meteor.userId(), restaurantId: this._res_code, tableId: this._table_code, status: 'ORDER_STATUS.DELIVERED', toPay: false }).count();
         let _lOrdersToConfirm: number = Orders.collection.find({ restaurantId: this._res_code, tableId: this._table_code, 'translateInfo.firstOrderOwner': Meteor.userId(), 'translateInfo.markedToTranslate': true, status: 'ORDER_STATUS.PENDING_CONFIRM', toPay: false }).count();
         let _lOrdersWithPendingConfirmation: number = Orders.collection.find({ restaurantId: this._res_code, tableId: this._table_code, 'translateInfo.lastOrderOwner': Meteor.userId(), 'translateInfo.markedToTranslate': true, status: 'ORDER_STATUS.PENDING_CONFIRM', toPay: false }).count();
-        let _lUserWaiterCallsCount: number = WaiterCallDetails.collection.find({ restaurant_id: this._res_code, table_id: this._table_code, type: 'CALL_OF_CUSTOMER', user_id: Meteor.userId(), status: 'completed' }).count();
+        let _lUserWaiterCallsCount: number = WaiterCallDetails.collection.find({ restaurant_id: this._res_code, table_id: this._table_code, type: 'CALL_OF_CUSTOMER', user_id: Meteor.userId(), status: { $in: ['waiting', 'completed'] } }).count();
         let _lUserPaymentsCount: number = Payments.collection.find({ creation_user: Meteor.userId(), restaurantId: this._res_code, tableId: this._table_code, status: 'PAYMENT.NO_PAID', received: false }).count();
 
         if (_lOrdersRegisteredStatus === 0 && _lOrdersInProcessStatus === 0 && _lOrdersPreparedStatus === 0

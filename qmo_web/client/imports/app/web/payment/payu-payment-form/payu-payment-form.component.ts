@@ -102,6 +102,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private scriptThreeSanitized: any;
     private scriptFourSanitized: any;
 
+    private is_prod_flag: string;
+
     private titleMsg: string;
     private btnAcceptLbl: string;
 
@@ -189,6 +191,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 _scriptTwo = Parameters.findOne({ name: 'payu_script_img_tag' }).value;
                 _scriptThree = Parameters.findOne({ name: 'payu_script_script_tag' }).value;
                 _scriptFour = Parameters.findOne({ name: 'payu_script_object_tag' }).value;
+                this.is_prod_flag = Parameters.findOne({ name: 'payu_is_prod' }).value;
 
                 this.scriptOneSanitized = this._domSanitizer.bypassSecurityTrustStyle(_scriptOne + this._sessionUserId + ')');
                 this.scriptTwoSanitized = this._domSanitizer.bypassSecurityTrustUrl(_scriptTwo + this._sessionUserId);
@@ -420,6 +423,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         let apikey: string;
         let credentialArray: string[] = [];
 
+        let isProd: boolean = (this.is_prod_flag == 'true');
+
         userDetail = UserDetails.findOne({ user_id: Meteor.userId() });
 
         if (userDetail.city_id !== '') {
@@ -495,8 +500,13 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         creditCard.number = this._paymentForm.value.cardNumber;
         creditCard.securityCode = this._paymentForm.value.securityCode;
         creditCard.expirationDate = this._selectedCardYear + '/' + this._selectedCardMonth;
-        //creditCard.name = this._paymentForm.value.fullName;
-        creditCard.name = 'PENDING';
+
+        if (isProd) {
+            creditCard.name = this._paymentForm.value.fullName;
+        } else {
+            let testState: string = Parameters.findOne({ name: 'payu_test_state' }).value;
+            creditCard.name = testState;
+        }
 
         payer.fullName = this._paymentForm.value.fullName;
         payer.emailAddress = Meteor.user().emails[0].address;
@@ -526,8 +536,11 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 
         ccRequestColombia.transaction = transaction;
 
-        //ccRequestColombia.test = false;
-        ccRequestColombia.test = true;
+        if (isProd) {
+            ccRequestColombia.test = false;
+        } else {
+            ccRequestColombia.test = true;
+        }
 
         let transactionMessage: string;
         let transactionIcon: string;

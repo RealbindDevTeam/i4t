@@ -850,7 +850,7 @@
         "ADDITION": "Addition(s)",
         "NO_ORDERS": "No orders yet to be prepared",
         "DELETE_ORDER": "DELETE ORDER",
-        "ORDER_CANCELED_MSG": "A waiter has canceled the customer order",
+        "ORDER_CANCELED_MSG": "Customer order canceled",
         "ORDER_PREPARED_MSG": "Order Prepared",
         "ORDER_DELETED": "Order Deleted"
     },
@@ -1280,5 +1280,41 @@
         "ADDITIONS": "Additions",
         "ADDITION": "Addition(s)",
         "ORDER_CANCELED": "Order Canceled"
+    },
+    "RESTAURANT_TABLE_CONTROL": {
+        "THERE_NOT_RESTAURANTS": "There are not restaurants register yet",
+        "MESSAGE": "Register at least one restaurant to enable this option",
+        "RESTAURANT_REGISTER": "Register Restaurant",
+        "TABLE_CONTROL": "Tables Control",
+        "TABLE_CONTROL_MSG": "Check tables status",
+        "SELECT_RESTAURANT": "Select restaurant",
+        "ALL_RESTAURANTS": "All Restaurants",
+        "USERS": "Users",
+        "TABLE":"Table",
+        "FREE_TABLE": "Free Table",
+        "ORDERS": "Orders",
+        "IN_THE_ACCOUNT": "in the account",
+        "VIEW_DETAIL": "View Detail",
+        "DETAIL_NOT_AVAILABLE": "Detail Not Available"
+    },
+    "TABLE_DETAIL": {
+        "TABLE_DETAIL_TITLE": "Table Detail",
+        "TABLE_DETAIL_SUBTITLE": "We present the users who are currently on the table",
+        "TOTAL_CONSUMPTION": "Spent total",
+        "PENALIZE": "Penalize"
+    },
+    "PENALIZE_CUSTOMER": {
+        "STATUS_MSG": "Here we present the orders status of the user",
+        "ORDER_REGISTERED": "Registered",
+        "ORDER_IN_PROCESS": "In Process",
+        "ORDER_PREPARED": "Prepared",
+        "ORDER_DELIVERED": "Delivered",
+        "ORDER_TRANSLATE": "In Transfer",
+        "PENALIZE_MSG": "When creating a penalty, this user has marked for Iurest to keep it in mind when entering a restaurant and notifying their administrators.",
+        "PENALIZE_TABLE": "The penalty will remove the user from the table",
+        "PENALIZE_CONFIRM_MSG": "and cancel all your orders. Do you want to continue creating the penalty?",
+        "ACCOUNT_ERROR": "An error has occurred with the user account. Please check if the user is still at the table with the option ADMINISTRATION -> TABLES CONTROL",
+        "GENERAL_ERROR": "An error occurred while penalizing the user. Please try again later.",
+        "PENALTY_CREATED": "Penalty Created"
     }
 }
