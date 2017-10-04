@@ -91,6 +91,8 @@ import { TableChangeComponent } from './customer/table-change/table-change.compo
 import { RestaurantExitComponent } from './customer/restaurant-exit/restaurant-exit.component';
 import { RestaurantExitConfirmComponent } from './waiter/calls/restaurant-exit-confirm/restaurant-exit-confirm.component';
 import { RestaurantTableControlComponent } from './restaurant/restaurant/restaurant-table-control/restaurant-table-control.component';
+import { TableDetailComponent } from './restaurant/restaurant/restaurant-table-control/table-detail/table-detail.component';
+import { PenalizeCustomerComponent } from './restaurant/restaurant/restaurant-table-control/table-detail/penalize-customer/penalize-customer.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -151,7 +153,8 @@ export const WEB_DECLARATIONS = [
     SupervisorTableComponent,
     TableChangeComponent,
     RestaurantExitComponent,
-    RestaurantTableControlComponent
+    RestaurantTableControlComponent,
+    TableDetailComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [
@@ -185,7 +188,8 @@ export const MODAL_DIALOG_DECLARATIONS = [
     RestaurantInstagramComponent,
     RestaurantTwitterComponent,
     RecoverConfirmComponent,
-    RestaurantExitConfirmComponent
+    RestaurantExitConfirmComponent,
+    PenalizeCustomerComponent
 ];
 
 export const SERVICES_DECLARATIONS = [

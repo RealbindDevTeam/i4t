@@ -37,6 +37,7 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     private _ordersInProcess                : Observable<Order[]>;    
     private _ordersInProcessDetail          : Observable<Order[]>;
     private _ordersCanceled                 : Observable<Order[]>;
+    private _ordersCanceledByAdmin          : Observable<Order[]>;
     private _items                          : Observable<Item[]>;
     private _tables                         : Observable<Table[]>;
     private _garnishFoodCol                 : Observable<GarnishFood[]>;
@@ -75,10 +76,12 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
         this._ordersSub = MeteorObservable.subscribe( 'getOrdersByRestaurantWork', this._user, [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.CANCELED' ] ).subscribe( () => {
             this._ngZone.run( () => {
                 this._ordersInProcess = Orders.find( { status: 'ORDER_STATUS.IN_PROCESS' } ).zone();
-                this._ordersCanceled = Orders.find( { status: 'ORDER_STATUS.CANCELED', markedToCancel: true } ).zone();;
+                this._ordersCanceled = Orders.find( { status: 'ORDER_STATUS.CANCELED', markedToCancel: true } ).zone();
+                this._ordersCanceledByAdmin = Orders.find( { status: 'ORDER_STATUS.CANCELED', canceled_by_penalization: false } ).zone();
                 this.countOrders();
                 this._ordersInProcess.subscribe( () => { this.countOrders(); } );
                 this._ordersCanceled.subscribe( () => { this.countOrders(); } );
+                this._ordersCanceledByAdmin.subscribe( () => { this.countOrders(); } );
             });
         });
         this._itemsSub = MeteorObservable.subscribe( 'getItemsByRestaurantWork', this._user ).subscribe( () => {
@@ -109,7 +112,8 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     countOrders():void{
         let _lOrdersInProcess: number = Orders.collection.find( { status: 'ORDER_STATUS.IN_PROCESS' } ).count();
         let _lOrdersCanceled: number = Orders.collection.find( { status: 'ORDER_STATUS.CANCELED', markedToCancel: true } ).count();
-        ( _lOrdersInProcess > 0 || _lOrdersCanceled > 0 ) ? this._thereAreOrders = true : this._thereAreOrders = false;
+        let _lOrdersCanceledByAdmin: number = Orders.collection.find( { status: 'ORDER_STATUS.CANCELED', canceled_by_penalization: false } ).count();
+        ( _lOrdersInProcess > 0 || _lOrdersCanceled > 0 || _lOrdersCanceledByAdmin > 0 ) ? this._thereAreOrders = true : this._thereAreOrders = false;
     }
 
     /**
@@ -193,6 +197,12 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
             } else {
                 return false;
             }
+        } else if( _pOrder.canceled_by_penalization !== undefined && _pOrder.canceled_by_penalization !== null ){
+            if( _pOrder.canceled_by_penalization === false && _pOrder.status === 'ORDER_STATUS.CANCELED' ){
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -211,13 +221,25 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
 
         this._loading = true;
         setTimeout(() => {
-            Orders.update( { _id: _pOrder._id }, 
-                { $set: { markedToCancel: false,
-                          modification_user: this._user, 
-                          modification_date: new Date() 
+            if( _pOrder.markedToCancel !== undefined && _pOrder.markedToCancel !== null ){
+                if( _pOrder.markedToCancel === true && _pOrder.status === 'ORDER_STATUS.CANCELED' ){
+                    Orders.update( { _id: _pOrder._id }, 
+                        { $set: { markedToCancel: false,
+                            modification_user: this._user, 
+                            modification_date: new Date() 
                         } 
+                    });
                 }
-              );
+            } else if( _pOrder.canceled_by_penalization !== undefined && _pOrder.canceled_by_penalization !== null ){
+                if( _pOrder.canceled_by_penalization === false && _pOrder.status === 'ORDER_STATUS.CANCELED' ){
+                    Orders.update( { _id: _pOrder._id }, 
+                        { $set: { canceled_by_penalization: true,
+                            modification_user: this._user, 
+                            modification_date: new Date() 
+                        } 
+                    });
+                }
+            }
             this._loading = false;
             let _lMessage: string = this.itemNameTraduction( 'ORDER_ATTENTION.ORDER_DELETED' );
             this.snackBar.open( _lMessage, '', { duration: 2500 } );
