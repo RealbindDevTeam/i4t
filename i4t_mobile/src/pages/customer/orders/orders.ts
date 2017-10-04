@@ -310,9 +310,9 @@ export class OrdersPage implements OnInit, OnDestroy {
 
 
     getItemThumb(_itemId: string): string {
-        let _imageThumb = ItemImagesThumbs.findOne({ itemId: _itemId }).url;
+        let _imageThumb = ItemImagesThumbs.findOne({ itemId: _itemId });
         if (_imageThumb) {
-            return _imageThumb;
+            return _imageThumb.url;
         } else {
             return 'assets/img/default-plate.png';
         }
