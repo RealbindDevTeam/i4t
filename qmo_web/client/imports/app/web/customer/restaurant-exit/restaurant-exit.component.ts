@@ -127,7 +127,7 @@ export class RestaurantExitComponent implements OnInit, OnDestroy {
         let _lOrdersWithPendingConfirmation: number = Orders.collection.find( { restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, 'translateInfo.lastOrderOwner': this._user, 
                                         'translateInfo.markedToTranslate': true, status: 'ORDER_STATUS.PENDING_CONFIRM', toPay : false } ).count();
         let _lUserWaiterCallsCount: number = WaiterCallDetails.collection.find( { restaurant_id: _pCurrentRestaurant, table_id: _pCurrentTable, 
-                                             type: 'CALL_OF_CUSTOMER', user_id: this._user, status: 'completed' } ).count();
+                                             type: 'CALL_OF_CUSTOMER', user_id: this._user, status: { $in: ['waiting', 'completed'] } } ).count();
         let _lUserPaymentsCount: number = Payments.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, 
                                           tableId: _pCurrentTable, status: 'PAYMENT.NO_PAID', received: false } ).count();
 

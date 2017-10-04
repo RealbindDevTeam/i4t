@@ -26,8 +26,7 @@ export interface UserDetail extends CollectionObject{
     table_assignment_end? : number;
 }
 
-export interface UserDetailPenalty extends CollectionObject{
-    is_active: boolean;
-    penalty_count: number;
-    cause: string;
+export interface UserDetailPenalty{
+    restaurant_id: string;
+    date: Date;
 }
