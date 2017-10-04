@@ -88,7 +88,9 @@ export class OrdersPage implements OnInit, OnDestroy {
                 if (this._userDetail) {
                     this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
                         this._ngZone.run(() => {
-                            this._tablesSub = MeteorObservable.subscribe('getTableById', this._userDetail.current_table).subscribe();
+                            this._tablesSub = MeteorObservable.subscribe('getTableById', this._userDetail.current_table).subscribe(()=>{
+                                this._table = Tables.findOne({ _id: this._userDetail.current_table });
+                            });
                             this._restaurants = Restaurants.findOne({ _id: this._userDetail.current_restaurant });
                             this._table = Tables.findOne({ _id: this._userDetail.current_table });
                             this._ordersSub = MeteorObservable.subscribe('getOrdersByUserId', Meteor.userId(), this._statusArray).subscribe(() => {
@@ -244,12 +246,6 @@ export class OrdersPage implements OnInit, OnDestroy {
                         if (_order.status === 'ORDER_STATUS.REGISTERED') {
                             let _Items = _order.items;
                             _Items.forEach((item) => {
-                                /*
-                                let _lItem = Items.findOne({ _id: item.itemId });
-                                if (_lItem.isAvailable === false) {
-                                    _lItemsIsAvailable = false;
-                                }
-                                */
                                 let _lItem = Items.findOne({ _id: item.itemId });
                                 let aux = _lItem.restaurants.find(element => element.restaurantId === userDetailTmp.current_restaurant);
                                 if (aux.isAvailable === false) {

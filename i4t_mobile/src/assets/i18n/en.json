@@ -170,6 +170,8 @@
             "IUREST_NO_ACTIVE": "The restaurant does not have the Iurest service active. It is not possible to enter",
             "TABLE": "Table",
             "RESTAURANT_NOT_EXISTS": "The restaurant does not exist. It is not possible to enter.",
+            "MSG_1": "You can sort what you want",
+            "NO_ORDERS": "You do not have any orders yet, you can create a new order",
             "LOADING_MENU": "Loading menu"
         },
         "ORDER_PAYMENT_TRANS": {
@@ -253,7 +255,8 @@
             "NO_PAYED": "No payed",
             "PAYED": "Payed",
             "CANCEL_PAY_OTHER_USER": "You want to cancel the order payment request",
-            "CANCELED_PAY_OTHER_USER": "Payment request of order has been canceled"
+            "CANCELED_PAY_OTHER_USER": "Payment request of order has been canceled",
+            "NO_ORDERS" : "You have no orders yet"
         },
         "WAITER_CALL": {
             "TITTLE": "Call waiter",
@@ -379,8 +382,9 @@
             "CALLED_CANCELED": "Called Canceled"
         },
         "WAITER_OPTIONS": {
-            "CALLS": "Home",
-            "SETTINGS": "Settings"
+            "CALLS": "Calls",
+            "SETTINGS": "Settings",
+            "MENU": "Menu"
         },
         "SIGN_OUT": {
             "TITLE_CONFIRM": "SIGNOUT",
