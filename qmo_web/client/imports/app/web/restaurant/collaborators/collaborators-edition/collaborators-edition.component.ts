@@ -28,9 +28,9 @@ import template from './collaborators-edition.component.html';
 })
 export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
 
-    private _roleSub                  : Subscription;
+    //private _roleSub                  : Subscription;
     private _tableSub                 : Subscription;
-    private _restaurantSub            : Subscription;
+    //private _restaurantSub            : Subscription;
     private _collaboratorEditionForm  : FormGroup;
     private _mdDialogRef              : MdDialogRef<any>;
 
@@ -103,9 +103,7 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
         this._tableInit = this.selectUserDetail.table_assignment_init;
         this._tableEnd  = this.selectUserDetail.table_assignment_end;
         this._restaurants = Restaurants.find({}).zone();
-        this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
         this._roles = Roles.find({}).zone();
-        this._roleSub = MeteorObservable.subscribe('getRoleCollaborators').subscribe();
         this._tableSub = MeteorObservable.subscribe('getTablesByRestaurantWork', this.selectUser._id).subscribe();
     }
 
@@ -113,8 +111,6 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
      * Remove all subscriptions
      */
     removeSubscriptions():void{
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
-        if( this._roleSub ){ this._roleSub.unsubscribe(); }
         if( this._tableSub ){ this._tableSub.unsubscribe(); }
     }
     

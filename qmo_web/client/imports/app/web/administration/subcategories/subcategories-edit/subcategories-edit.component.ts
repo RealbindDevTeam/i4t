@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -22,7 +22,7 @@ import style from './subcategories-edit.component.scss';
     styles: [ style ],
     providers:[ UserLanguageService ]
 })
-export class SubcategoryEditComponent implements OnInit, OnDestroy {
+export class SubcategoryEditComponent implements OnInit {
 
     private _user = Meteor.userId();
     public _subcategoryToEdit       : Subcategory;
@@ -31,9 +31,6 @@ export class SubcategoryEditComponent implements OnInit, OnDestroy {
 
     private _subcategories          : Observable<Subcategory[]>;
     private _categories             : Observable<Category[]>;
-
-    private _subcategorySub         : Subscription;    
-    private _categoriesSub          : Subscription;
 
     private _subcategoryCategory    : string;
     private titleMsg                : string;
@@ -72,16 +69,8 @@ export class SubcategoryEditComponent implements OnInit, OnDestroy {
             editCategory: [ this._subcategoryToEdit.category ]
         });
         this._subcategoryCategory = this._subcategoryToEdit.category;
-        this._categoriesSub = MeteorObservable.subscribe( 'categories', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._categories = Categories.find( { } ).zone();
-            });
-        });
-        this._subcategorySub = MeteorObservable.subscribe( 'subcategories', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._subcategories = Subcategories.find( { } ).zone();
-            });
-        });
+        this._categories = Categories.find( { } ).zone();
+        this._subcategories = Subcategories.find( { } ).zone();
     }
 
     /**
@@ -161,13 +150,5 @@ export class SubcategoryEditComponent implements OnInit, OnDestroy {
 
             }
         });
-    }
-
-    /**
-     * Implements ngOnDestroy function
-     */
-    ngOnDestroy(){
-        this._categoriesSub.unsubscribe();
-        this._subcategorySub.unsubscribe();
     }
 }
