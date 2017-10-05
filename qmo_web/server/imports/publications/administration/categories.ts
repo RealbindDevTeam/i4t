@@ -35,8 +35,12 @@ Meteor.publish('getCategoriesByRestaurantWork', function (_userId: string) {
     check(_userId, String);
     let _sections: string[] = [];
     let user_detail = UserDetails.findOne({ user_id: _userId });
-    Sections.collection.find({ restaurants: { $in: [user_detail.restaurant_work] } }).fetch().forEach((s) => {
-        _sections.push(s._id);
-    });
-    return Categories.collection.find({ section: { $in: _sections }, is_active: true });
+    if( user_detail ){
+        Sections.collection.find({ restaurants: { $in: [user_detail.restaurant_work] } }).fetch().forEach((s) => {
+            _sections.push(s._id);
+        });
+        return Categories.collection.find({ section: { $in: _sections }, is_active: true });
+    } else {
+        return;
+    }
 });
