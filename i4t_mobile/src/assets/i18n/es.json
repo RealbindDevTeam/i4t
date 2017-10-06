@@ -393,6 +393,17 @@
             "YES_BTN": "Sí",
             "LOADING": "Por favor espera..."
         },
+        "HOME" : {
+            "SLIDE-1" : {
+                "WELCOME" : "Bienvenido a Iurest",
+                "TEXT" : "Ordena en tu restaurante favorito de una manera fácil y rápida"
+            },
+            "SLIDE-2" : {
+                "1" : "1. Ordena lo que deseas",
+                "2" : "2. Revisa lo que cuesta tu pedido",
+                "3" : "3. Puedes llamar a un mesero"
+            }
+        },
         "HOME-MENU": {
             "HOME": "Inicio",
             "ORDER_RESTAURANT": "Ordena en un Restaurante",
