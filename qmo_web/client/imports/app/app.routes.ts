@@ -56,6 +56,7 @@ import { TableChangeComponent } from './web/customer/table-change/table-change.c
 import { RestaurantExitComponent } from './web/customer/restaurant-exit/restaurant-exit.component';
 import { RestaurantTableControlComponent } from './web/restaurant/restaurant/restaurant-table-control/restaurant-table-control.component';
 import { TableDetailComponent } from './web/restaurant/restaurant/restaurant-table-control/table-detail/table-detail.component';
+import { SupervisorRestaurantTableControlComponent } from './web/supervisor/restaurant-table-control/supervisor-restaurant-table-control.component';
 
 export const routes: Route[] = [
     {
@@ -100,7 +101,8 @@ export const routes: Route[] = [
             { path: 'table-change', component: TableChangeComponent, canActivate: [CustomerGuard] },            
             { path: 'restaurant-exit', component: RestaurantExitComponent, canActivate: [CustomerGuard] },
             { path: 'restaurant-table-control', component: RestaurantTableControlComponent, canActivate: [AdminGuard] },
-            { path: 'table-detail/:param1/:param2/:param3/:param4', component: TableDetailComponent, canActivate: [AdminGuard] },            
+            { path: 'table-detail/:param1/:param2/:param3/:param4/:param5', component: TableDetailComponent, canActivate: [SupervisorGuard] }, 
+            { path: 'supervisor-restaurant-table-control', component: SupervisorRestaurantTableControlComponent, canActivate: [SupervisorGuard] }            
         ]
     },
     { path: '', component: LandingPageComponent },
