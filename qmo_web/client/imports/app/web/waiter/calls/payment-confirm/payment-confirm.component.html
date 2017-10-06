@@ -13,8 +13,8 @@
                     <h3 class="user-name">{{ getUserName(payment.userId) }}</h3>
                     <h3 class="total-payment">{{ 'PAYMENT_CONFIRM.TOTAL' | translate }} {{payment.totalToPayment}} {{ getPaymentCurrency(payment.currencyId)}}</h3>
                     <div class="received-button">
-                        <button md-raised-button *ngIf="payment.received" class="active-button" (click)="updateReceivedStatus(payment)"><md-icon class="md-24">check</md-icon>{{ 'PAYMENT_CONFIRM.RECEIVED' | translate }}</button>
-                        <button md-raised-button *ngIf="!payment.received" class="inactive-button" (click)="updateReceivedStatus(payment)">{{ 'PAYMENT_CONFIRM.NO_RECEIVED' | translate }}</button>
+                        <button md-raised-button *ngIf="!payment.received" class="active-button" (click)="updateReceivedStatus(payment)"><md-icon class="md-24">check</md-icon>{{ 'PAYMENT_CONFIRM.RECEIVED' | translate }}</button>
+                        <button md-raised-button *ngIf="payment.received" class="inactive-button" (click)="updateReceivedStatus(payment)">{{ 'PAYMENT_CONFIRM.NO_RECEIVED' | translate }}</button>
                     </div>
                 </div>
                 <div>

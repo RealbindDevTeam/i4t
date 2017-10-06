@@ -88,13 +88,9 @@ export class AdditionEditComponent implements OnInit {
      * Function to build form controls
      */
     buildControls():void{
-        //let _lRestaurantsId: string[] = [];
         this._restaurantCurrencies = [];
         this._restaurantTaxes = [];
         
-        /*Restaurants.collection.find({}).fetch().forEach( ( res ) =>{
-            _lRestaurantsId.push( res._id );
-        });*/
         if( this._additionToEdit.prices.length > 0 ){
             this._showCurrencies = true;
             this._additionToEdit.prices.forEach( (p) => {
