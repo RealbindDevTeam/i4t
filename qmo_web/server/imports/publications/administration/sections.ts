@@ -32,5 +32,9 @@ Meteor.publish('getSections', function () {
 Meteor.publish('getSectionsByRestaurantWork', function (_userId: string) {
     check(_userId, String);
     let user_detail = UserDetails.findOne({ user_id: _userId });
-    return Sections.collection.find({ restaurants: { $in: [user_detail.restaurant_work] }, is_active: true });
+    if( user_detail ){
+        return Sections.collection.find({ restaurants: { $in: [user_detail.restaurant_work] }, is_active: true });
+    } else {
+        return;
+    }
 });

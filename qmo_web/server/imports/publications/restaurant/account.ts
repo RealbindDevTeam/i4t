@@ -56,3 +56,17 @@ Meteor.publish( 'getAccountsByAdminUser', function( _userId : string ){
     });
     return Accounts.collection.find( { restaurantId: { $in: _lRestaurantsId }, status: 'OPEN' } );
 });
+
+/**
+ * Meteor publication return accounts by restaurant work
+ * @param {string} _userId
+ */
+Meteor.publish('getAccountsByRestaurantWork', function ( _userId: string ) {
+    check(_userId, String);
+    let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
+    if( _lUserDetail ){
+        return Accounts.collection.find({ restaurantId: _lUserDetail.restaurant_work, status: 'OPEN' });
+    } else {
+        return;
+    }
+});

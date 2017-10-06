@@ -42,11 +42,15 @@ Meteor.publish('getSubcategoriesByRestaurantWork', function (_userId: string) {
     let _sections: string[] = [];
     let _categories: string[] = [];
     let user_detail = UserDetails.findOne({ user_id: _userId });
-    Sections.collection.find({ restaurants: { $in: [user_detail.restaurant_work] } }).fetch().forEach((s) => {
-        _sections.push(s._id);
-    });
-    Categories.collection.find({ section: { $in: _sections } }).fetch().forEach((c) => {
-        _categories.push(c._id);
-    });
-    return Subcategories.collection.find({ category: { $in: _categories }, is_active: true });
+    if( user_detail ){
+        Sections.collection.find({ restaurants: { $in: [user_detail.restaurant_work] } }).fetch().forEach((s) => {
+            _sections.push(s._id);
+        });
+        Categories.collection.find({ section: { $in: _sections } }).fetch().forEach((c) => {
+            _categories.push(c._id);
+        });
+        return Subcategories.collection.find({ category: { $in: _categories }, is_active: true });
+    } else {
+        return;
+    }
 });

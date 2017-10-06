@@ -54,13 +54,11 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
     private _subcategories                      : Observable<Subcategory[]>;
     private _currencies                         : Observable<Currency[]>;
 
-    private _itemsSub                           : Subscription;
     private _itemImagesSub                      : Subscription;
     private _itemImageThumbsSub                 : Subscription;
     private _sectionsSub                        : Subscription;
     private _categorySub                        : Subscription;
     private _subcategorySub                     : Subscription;
-    private _restaurantSub                      : Subscription;
     private _garnishFoodSub                     : Subscription;
     private _additionSub                        : Subscription;
     private _currenciesSub                      : Subscription;
@@ -157,7 +155,6 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
             editGarnishFoodQuantity: [this._itemToEdit.garnishFoodQuantity],
             editGarnishFood: this._garnishFormGroup,
             editAdditions: this._additionsFormGroup,
-            //editIsAvailable: [this._itemToEdit.isAvailable]
         });
 
         this._itemSection = this._itemToEdit.sectionId;
@@ -176,7 +173,6 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         this._restaurantsSelectedCount = this._itemToEdit.restaurants.length;
         if (this._itemToEdit.restaurants.length > 0) { this._showRestaurants = true }
 
-        this._itemsSub = MeteorObservable.subscribe('items', this._user).subscribe();
         this._itemImagesSub = MeteorObservable.subscribe('itemImages', this._user).subscribe();
         this._itemImageThumbsSub = MeteorObservable.subscribe('itemImageThumbs', this._user).subscribe(() => {
             this._ngZone.run(() => {
@@ -203,44 +199,40 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                 this._subcategories = Subcategories.find({ category: this._itemCategory }).zone();
             });
         });
-        this._restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe(() => {
+        Restaurants.collection.find({}).fetch().forEach((rest) => {
+            _restaurantsId.push(rest._id);
+            _currenciesId.push(rest.currencyId);
+            let find = this._itemRestaurants.filter(r => r.restaurantId === rest._id);
+
+            if (find.length > 0) {
+                let control: FormControl = new FormControl(true);
+                this._restaurantsFormGroup.addControl(rest._id, control);
+                this._restaurantList.push(rest);
+            } else {
+                let control: FormControl = new FormControl(false);
+                this._restaurantsFormGroup.addControl(rest._id, control);
+                this._restaurantList.push(rest);
+            }
+        });
+        this._countriesSub = MeteorObservable.subscribe('getCountriesByRestaurantsId', _restaurantsId).subscribe();
+        this._currenciesSub = MeteorObservable.subscribe('getCurrenciesByRestaurantsId', _restaurantsId).subscribe(() => {
             this._ngZone.run(() => {
-                Restaurants.collection.find({}).fetch().forEach((rest) => {
-                    _restaurantsId.push(rest._id);
-                    _currenciesId.push(rest.currencyId);
-                    let find = this._itemRestaurants.filter(r => r.restaurantId === rest._id);
+                if (this._itemToEdit.prices.length > 0) {
+                    this._showCurrencies = true;
+                    this._itemToEdit.prices.forEach((p) => {
+                        let control: FormControl = new FormControl(p.price, [Validators.required]);
+                        this._currenciesFormGroup.addControl(p.currencyId, control);
+                        this._restaurantCurrencies.push(p.currencyId);
 
-                    if (find.length > 0) {
-                        let control: FormControl = new FormControl(true);
-                        this._restaurantsFormGroup.addControl(rest._id, control);
-                        this._restaurantList.push(rest);
-                    } else {
-                        let control: FormControl = new FormControl(false);
-                        this._restaurantsFormGroup.addControl(rest._id, control);
-                        this._restaurantList.push(rest);
-                    }
-                });
-                this._countriesSub = MeteorObservable.subscribe('getCountriesByRestaurantsId', _restaurantsId).subscribe();
-                this._currenciesSub = MeteorObservable.subscribe('getCurrenciesByRestaurantsId', _restaurantsId).subscribe(() => {
-                    this._ngZone.run(() => {
-                        if (this._itemToEdit.prices.length > 0) {
-                            this._showCurrencies = true;
-                            this._itemToEdit.prices.forEach((p) => {
-                                let control: FormControl = new FormControl(p.price, [Validators.required]);
-                                this._currenciesFormGroup.addControl(p.currencyId, control);
-                                this._restaurantCurrencies.push(p.currencyId);
-
-                                if (p.itemTax !== undefined) {
-                                    this._showTaxes = true;
-                                    let controlTax: FormControl = new FormControl(p.itemTax, [Validators.required]);
-                                    this._taxesFormGroup.addControl(p.currencyId, controlTax);
-                                    this._restaurantTaxes.push(p.currencyId);
-                                }
-                            });
+                        if (p.itemTax !== undefined) {
+                            this._showTaxes = true;
+                            let controlTax: FormControl = new FormControl(p.itemTax, [Validators.required]);
+                            this._taxesFormGroup.addControl(p.currencyId, controlTax);
+                            this._restaurantTaxes.push(p.currencyId);
                         }
-                        this._currencies = Currencies.find({ _id: { $in: _currenciesId } }).zone();
                     });
-                });
+                }
+                this._currencies = Currencies.find({ _id: { $in: _currenciesId } }).zone();
             });
         });
         this._garnishFoodSub = MeteorObservable.subscribe('garnishFood', this._user).subscribe(() => {
@@ -289,13 +281,11 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
      * Remove all subscriptions
      */
     removeSubscriptions():void{
-        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
         if( this._itemImagesSub ){ this._itemImagesSub.unsubscribe(); }
         if( this._itemImageThumbsSub ){ this._itemImageThumbsSub.unsubscribe(); }
         if( this._sectionsSub ){ this._sectionsSub.unsubscribe(); }
         if( this._categorySub ){ this._categorySub.unsubscribe(); }
         if( this._subcategorySub ){ this._subcategorySub.unsubscribe(); }
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
         if( this._garnishFoodSub ){ this._garnishFoodSub.unsubscribe(); }
         if( this._additionSub ) { this._additionSub.unsubscribe(); }
         if( this._currenciesSub ) { this._currenciesSub.unsubscribe(); }
@@ -474,7 +464,6 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                 let find: Restaurant[] = this._restaurantList.filter(r => r.currencyId === cur);
                 for (let res of find) {
                     if (this._itemEditionForm.value.editRestaurants[res._id]) {
-                        //let _lItemRestaurant: ItemRestaurant = { restaurantId: '', price: 0 };
                         let _lItemRestaurant: ItemRestaurant = { restaurantId: '', price: 0, isAvailable: true };
                         _lItemRestaurant.restaurantId = res._id;
                         _lItemRestaurant.price = this._itemEditionForm.value.editCurrencies[cur];

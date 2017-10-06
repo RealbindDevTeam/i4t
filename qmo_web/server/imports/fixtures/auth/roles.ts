@@ -43,7 +43,7 @@ export function loadRoles() {
             is_active: true,
             name: "ROLE.SUPERVISOR",
             description: "restaurant supervisor",
-            menus: ["910","1100","3100", "1200"],
+            menus: ["910","1100","3100", "1200", "1300"],
             user_prefix: 'sp'            
         }];
 

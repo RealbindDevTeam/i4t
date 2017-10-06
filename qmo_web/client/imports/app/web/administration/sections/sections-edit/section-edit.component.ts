@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -22,7 +22,7 @@ import style from './section-edit.component.scss';
     styles: [ style ],
     providers:[ UserLanguageService ]
 })
-export class SectionEditComponent implements OnInit, OnDestroy {
+export class SectionEditComponent implements OnInit {
 
     private _user = Meteor.userId();
     public _sectionToEdit           : Section;
@@ -32,9 +32,6 @@ export class SectionEditComponent implements OnInit, OnDestroy {
 
     private _sections               : Observable<Section[]>;
     private _restaurants            : Observable<Restaurant[]>;
-
-    private _sectionsSub            : Subscription;
-    private _restaurantSub          : Subscription;
 
     private _sectionRestaurants     : string[];
     private titleMsg                : string;
@@ -67,7 +64,6 @@ export class SectionEditComponent implements OnInit, OnDestroy {
      * Implements ngOnInit function
      */
     ngOnInit(){
-        this.removeSubscriptions();
         this._editForm = this._formBuilder.group({
             editId: [ this._sectionToEdit._id ],
             editName: [ this._sectionToEdit.name, Validators.required ],
@@ -75,26 +71,9 @@ export class SectionEditComponent implements OnInit, OnDestroy {
             editRestaurants: this._restaurantsFormGroup
         });
         this._sectionRestaurants = this._sectionToEdit.restaurants;
-        this._sectionsSub = MeteorObservable.subscribe( 'sections', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._sections = Sections.find( { } ).zone();
-            });
-        });
-
-        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._restaurants = Restaurants.find( { } ).zone();
-                this._restaurants.subscribe( () => { this.createRestaurantForm(); });
-            });
-        });
-    }
-
-    /**
-     * Remove all subscriptions
-     */
-    removeSubscriptions():void{
-        if( this._sectionsSub ){ this._sectionsSub.unsubscribe(); }
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+        this._sections = Sections.find( { } ).zone();
+        this._restaurants = Restaurants.find( { } ).zone();
+        this._restaurants.subscribe( () => { this.createRestaurantForm(); });
     }
 
     /**
@@ -191,12 +170,5 @@ export class SectionEditComponent implements OnInit, OnDestroy {
 
             }
         });
-    }
-
-    /**
-     * Implements ngOnDestroy function
-     */
-    ngOnDestroy(){
-        this.removeSubscriptions();   
     }
 }

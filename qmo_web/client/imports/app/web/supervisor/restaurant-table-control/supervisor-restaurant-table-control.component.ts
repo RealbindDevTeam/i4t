@@ -4,29 +4,28 @@ import { Router } from "@angular/router";
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
-import { Table } from '../../../../../../../both/models/restaurant/table.model';
-import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
-import { UserDetails } from '../../../../../../../both/collections/auth/user-detail.collection';
-import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
-import { Account } from '../../../../../../../both/models/restaurant/account.model';
-import { Accounts } from '../../../../../../../both/collections/restaurant/account.collection';
-import { Currency } from '../../../../../../../both/models/general/currency.model';
-import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
-import { Users} from '../../../../../../../both/collections/auth/user.collection';
-import { TableDetailComponent } from './table-detail/table-detail.component';
+import { UserLanguageService } from '../../../shared/services/user-language.service';
+import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
+import { Table } from '../../../../../../both/models/restaurant/table.model';
+import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
+import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
+import { Orders } from '../../../../../../both/collections/restaurant/order.collection';
+import { Account } from '../../../../../../both/models/restaurant/account.model';
+import { Accounts } from '../../../../../../both/collections/restaurant/account.collection';
+import { Currency } from '../../../../../../both/models/general/currency.model';
+import { Currencies } from '../../../../../../both/collections/general/currency.collection';
+import { Users} from '../../../../../../both/collections/auth/user.collection';
 
-import template from './restaurant-table-control.component.html';
-import style from './restaurant-table-control.component.scss';
+import template from './supervisor-restaurant-table-control.component.html';
+import style from './supervisor-restaurant-table-control.component.scss';
 
 @Component({
-    selector: 'restaurant-table-control',
+    selector: 'supervisor-restaurant-table-control',
     template,
     styles: [ style ]
 })
-export class RestaurantTableControlComponent implements OnInit, OnDestroy {
+export class SupervisorRestaurantTableControlComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
 
@@ -38,7 +37,6 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
     private _currenciesSub          : Subscription;
 
     private _restaurants            : Observable<Restaurant[]>;
-    private _restaurantsFilter      : Observable<Restaurant[]>;
     private _tables                 : Observable<Table[]>;
 
     private _thereAreRestaurants    : boolean = true;
@@ -63,25 +61,24 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
      */
     ngOnInit(){
         this.removeSubscriptions();
-        this._restaurantsSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
+        this._restaurantsSub = MeteorObservable.subscribe( 'getRestaurantByRestaurantWork', this._user ).subscribe( () => {
             this._ngZone.run( () => {
-                this._restaurantsFilter = Restaurants.find( { } ).zone();
                 this._restaurants = Restaurants.find( { } ).zone();
                 this.countRestaurants();
                 this._restaurants.subscribe( () => { this.countRestaurants(); });
             });
         });
-        this._tablesSub = MeteorObservable.subscribe( 'tables', this._user ).subscribe( () => {
+        this._tablesSub = MeteorObservable.subscribe( 'getTablesByRestaurantWork', this._user ).subscribe( () => {
             this._ngZone.run( () => {
                 this._tables = Tables.find( { } ).zone();
             });
         });
-        this._ordersSub = MeteorObservable.subscribe( 'getOrdersByAdminUser', this._user, ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 
-                                                                                           'ORDER_STATUS.PREPARED', 'ORDER_STATUS.DELIVERED',
-                                                                                           'ORDER_STATUS.PENDING_CONFIRM'] ).subscribe();
-        this._accountsSub = MeteorObservable.subscribe( 'getAccountsByAdminUser', this._user ).subscribe();
-        this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByUserId', this._user ).subscribe();
-        this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByAdminUser', this._user ).subscribe();
+        this._ordersSub = MeteorObservable.subscribe( 'getOrdersByRestaurantWork', this._user, ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 
+                                                                                                'ORDER_STATUS.PREPARED', 'ORDER_STATUS.DELIVERED',
+                                                                                                'ORDER_STATUS.PENDING_CONFIRM'] ).subscribe();
+        this._accountsSub = MeteorObservable.subscribe( 'getAccountsByRestaurantWork', this._user ).subscribe();
+        this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantWork', this._user ).subscribe();
+        this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByRestaurantWork', this._user ).subscribe();
     }
 
     /**
@@ -106,18 +103,6 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
             return _lCurrency.code;
         }
     }
-
-    /**
-     * Change Restaurant Filter
-     * @param {string} _pRestaurantId 
-     */
-    changeRestaurantFilter (_pRestaurantId:string ) {
-        if ( _pRestaurantId === 'All' ) {
-            this._restaurants = Restaurants.find( { } ).zone();
-        } else {
-            this._restaurants = Restaurants.find( { _id: _pRestaurantId } ).zone();
-        }
-      }
 
     /**
      * Validate if restaurants exists
@@ -156,13 +141,6 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Go To Add Restaurant Component
-     */
-    goToAddRestaurant():void{
-        this._router.navigate(['/app/restaurant-register']);
-    }
-
-    /**
      * Open Table Detail Dialog
      * @param {string} _pRestaurantId
      * @param {string} _pTableId
@@ -170,7 +148,7 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
      * @param {string} _pCurrencyId
      */
     openTableDetail( _pRestaurantId:string, _pTableId:string, _pTableNumber:string, _pCurrencyId:string ) {
-        this._router.navigate( [ 'app/table-detail', _pRestaurantId, _pTableId, _pTableNumber, _pCurrencyId, '100' ], { skipLocationChange: true } );
+        this._router.navigate( [ 'app/table-detail', _pRestaurantId, _pTableId, _pTableNumber, _pCurrencyId, '600' ], { skipLocationChange: true } );
     }
 
     /**

@@ -36,3 +36,13 @@ Meteor.publish( 'getUserDetailsByAdminUser', function( _userId:string ){
     });
     return UserDetails.find( { current_restaurant: { $in: _lRestaurantsId } } );
 });
+
+Meteor.publish('getUserDetailsByRestaurantWork', function (_userId: string ) {
+    check(_userId, String);
+    let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
+    if( _lUserDetail ){
+        return UserDetails.find( { current_restaurant: _lUserDetail.restaurant_work } );
+    } else {
+        return;
+    }
+});

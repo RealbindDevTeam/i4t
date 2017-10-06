@@ -33,6 +33,7 @@ export class TableDetailComponent implements OnInit, OnDestroy {
     private _tableNumber            : string;
     private _currencyId             : string;
     private _currencyCode           : string;
+    private _role                   : string;
 
     private _usersSub               : Subscription;
     private _userImagesSub          : Subscription;
@@ -65,6 +66,7 @@ export class TableDetailComponent implements OnInit, OnDestroy {
             this._tableId = params['param2'];
             this._tableNumber = params['param3'];
             this._currencyId = params['param4'];
+            this._role = params['param5'];
         });
     }
 
@@ -141,7 +143,8 @@ export class TableDetailComponent implements OnInit, OnDestroy {
      * Return to Table Control
      */
     returnTableControl():void{
-        this._router.navigate(['app/restaurant-table-control']);
+        if( this._role === '100' ){ this._router.navigate(['app/restaurant-table-control']); }
+        if( this._role === '600' ){ this._router.navigate(['app/supervisor-restaurant-table-control']); }
     }
 
     /**
