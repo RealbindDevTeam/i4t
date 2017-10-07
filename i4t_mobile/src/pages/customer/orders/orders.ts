@@ -88,13 +88,13 @@ export class OrdersPage implements OnInit, OnDestroy {
                 if (this._userDetail) {
                     this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
                         this._ngZone.run(() => {
-                            this._tablesSub = MeteorObservable.subscribe('getTableById', this._userDetail.current_table).subscribe(()=>{
+                            this._tablesSub = MeteorObservable.subscribe('getTableById', this._userDetail.current_table).subscribe(() => {
                                 this._table = Tables.findOne({ _id: this._userDetail.current_table });
                             });
                             this._restaurants = Restaurants.findOne({ _id: this._userDetail.current_restaurant });
                             this._table = Tables.findOne({ _id: this._userDetail.current_table });
                             this._ordersSub = MeteorObservable.subscribe('getOrdersByUserId', Meteor.userId(), this._statusArray).subscribe(() => {
-                                this._ngZone.run( () => {
+                                this._ngZone.run(() => {
                                     this._orders = Orders.find({ restaurantId: this._userDetail.current_restaurant, tableId: this._userDetail.current_table, status: { $in: this._statusArray } });
                                     this._allOrders = Orders.find({ restaurantId: this._userDetail.current_restaurant, tableId: this._userDetail.current_table, status: { $in: this._statusArray } });
                                 });
@@ -136,7 +136,7 @@ export class OrdersPage implements OnInit, OnDestroy {
                     let loading = this._loadingCtrl.create({
                         content: dialogMsg
                     });
-            
+
                     loading.present();
                     setTimeout(() => {
                         this._navCtrl.push(SectionsPage, { res_id: restaurant._id, table_id: this._userDetail.current_table });
@@ -304,8 +304,9 @@ export class OrdersPage implements OnInit, OnDestroy {
         let _lUserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
         if (_lUserDetail.current_restaurant && _lUserDetail.current_table) {
             this._res_code = _lUserDetail.current_restaurant;
+            this._table_code = _lUserDetail.current_table;
         }
-        this._navCtrl.push(AdditionEditPage, { order_addition: _pAdition, order: _pOrder, restaurant: this._res_code });
+        this._navCtrl.push(AdditionEditPage, { order_addition: _pAdition, order: _pOrder, restaurant: this._res_code, table: this._table_code });
     }
 
 

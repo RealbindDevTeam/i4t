@@ -62,7 +62,7 @@
                             </button>
                         </ion-list>
                         <div *ngIf="_orderIndex == i">
-                            <ion-row *ngIf="order?.status === 'ORDER_STATUS.REGISTERED' && order?.items?.length > 0" no-padding>
+                            <ion-row *ngIf="order?.status === 'ORDER_STATUS.REGISTERED' && (order?.items?.length > 0 || order?.additions?.length > 0)" no-padding>
                                 <ion-col>
                                     <button ion-button small clear block text-left style="color: #5090ff" (click)="cancelOrder(order)">{{'MOBILE.ORDERS.CANCEL' | translate}}</button>
                                 </ion-col>
@@ -92,7 +92,7 @@
                                     </button>
                                 </div>
 
-                                <div *ngIf="(order.additions.length > 0)">
+                                <div *ngIf="order.additions.length > 0">
                                     <div *ngFor="let addition of order.additions">
                                         <div class="item-divider-custom"></div>
                                         <button ion-item style="padding-left: 0" (click)="showAdditionsDetail(addition, order)">
