@@ -331,6 +331,14 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                 );
                 this._showOrderItemDetail = false;
                 this._currentOrder = Orders.findOne({ _id: this._currentOrder._id });
+                if( this._currentOrder.items.length === 0 && this._currentOrder.additions.length === 0 ){
+                    Orders.update({ _id: this._currentOrder._id }, {
+                        $set: {
+                            status: 'ORDER_STATUS.CANCELED', modification_user: this._user,
+                            modification_date: new Date()
+                        }
+                    });
+                }
                 this.viewItemDetail(true);
                 let _lMessage: string = this.itemNameTraduction('ORDER_LIST.ITEM_DELETED');
                 this.snackBar.open(_lMessage, '', {
@@ -379,6 +387,14 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                     }
                 );
                 this._currentOrder = Orders.findOne({ _id: this._currentOrder._id });
+                if( this._currentOrder.additions.length === 0 && this._currentOrder.items.length === 0 ){
+                    Orders.update({ _id: this._currentOrder._id }, {
+                        $set: {
+                            status: 'ORDER_STATUS.CANCELED', modification_user: this._user,
+                            modification_date: new Date()
+                        }
+                    });
+                }
                 this.viewAdditionDetail(true);
                 let _lMessage: string = this.itemNameTraduction('ORDER_LIST.ADDITION_DELETED');
                 this.snackBar.open(_lMessage, '', {
