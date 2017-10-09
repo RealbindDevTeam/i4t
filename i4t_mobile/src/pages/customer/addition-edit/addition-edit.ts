@@ -17,13 +17,17 @@ import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/
 export class AdditionEditPage implements OnInit, OnDestroy {
 
     private _additionsSub: Subscription;
+    private _ordersSub: Subscription;
     private _additionsDetailFormGroup: FormGroup = new FormGroup({});
     private _orderAddition: OrderAddition;
     private _currentOrder: Order;
     private _restaurantId: string;
+    private _tableId: string;
     private _additionDetails: any;
 
     private _isUserAndCorrect: boolean;
+
+    private _statusArray: string[];
 
     /**
      * AdditionEditPage constructor
@@ -48,6 +52,9 @@ export class AdditionEditPage implements OnInit, OnDestroy {
         this._orderAddition = this._navParams.get("order_addition");
         this._currentOrder = this._navParams.get("order");
         this._restaurantId = this._navParams.get("restaurant");
+        this._tableId = this._navParams.get("table");
+
+        this._statusArray = ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED', 'ORDER_STATUS.DELIVERED'];
     }
 
     /**
@@ -60,6 +67,7 @@ export class AdditionEditPage implements OnInit, OnDestroy {
             this._additionDetails = Additions.find({ _id: this._orderAddition.additionId }).zone();
         });
 
+        this._ordersSub = MeteorObservable.subscribe('getOrdersByTableId', this._restaurantId, this._tableId, this._statusArray).subscribe();
         this._additionsDetailFormGroup = this._formBuilder.group({
             control: new FormControl(this._orderAddition.quantity, [Validators.minLength(1), Validators.maxLength(2)])
         });
@@ -139,7 +147,22 @@ export class AdditionEditPage implements OnInit, OnDestroy {
                     }
                 }
             );
+
+            //this._currentOrder = Orders.findOne({ _id: this._currentOrder._id });
+
             this._currentOrder = Orders.findOne({ _id: this._currentOrder._id });
+
+            if ((this._currentOrder.items.length == 0) &&
+                (this._currentOrder.additions.length == 0) &&
+                (this._currentOrder.status === 'ORDER_STATUS.REGISTERED')) {
+                Orders.update({ _id: this._currentOrder._id }, {
+                    $set: {
+                        status: 'ORDER_STATUS.CANCELED',
+                        modification_user: Meteor.userId(),
+                        modification_date: new Date()
+                    }
+                });
+            }
             this._navCtrl.pop();
             loading.dismiss();
             let msg = this.itemNameTraduction('MOBILE.ORDERS.ADDITION_DELETED');
@@ -244,5 +267,6 @@ export class AdditionEditPage implements OnInit, OnDestroy {
      */
     removeSubscriptions(): void {
         if (this._additionsSub) { this._additionsSub.unsubscribe(); }
+        if (this._ordersSub) { this._ordersSub.unsubscribe(); }
     }
 }

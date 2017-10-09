@@ -468,8 +468,21 @@ export class ItemEditPage implements OnInit, OnDestroy {
               }
             );
 
-            let _toastMsg = this.itemNameTraduction('MOBILE.ITEM_EDIT.TOAST_MSG_REMOVE');
+            let _lOrder2 = Orders.findOne({ _id: this._order_code });
+
+            if ((_lOrder2.items.length == 0) &&
+              (_lOrder2.additions.length == 0) &&
+              (_lOrder2.status === 'ORDER_STATUS.REGISTERED')) {
+              Orders.update({ _id: _lOrder2._id }, {
+                $set: {
+                  status: 'ORDER_STATUS.CANCELED',
+                  modification_user: Meteor.userId(),
+                  modification_date: new Date()
+                }
+              });
+            }
             this._navCtrl.pop();
+            let _toastMsg = this.itemNameTraduction('MOBILE.ITEM_EDIT.TOAST_MSG_REMOVE');
             this.presentToast(_toastMsg);
           }
         }
