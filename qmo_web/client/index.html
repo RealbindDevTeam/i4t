@@ -6,6 +6,7 @@
   <meta charset="utf-8">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="../css/font-awesome.min.css" rel="stylesheet">
+  <link href="../css/animate.css" rel="stylesheet">
   <link rel="shortcut icon" type="image/png" href="../images/favicon.png"/>
 
   <title>Iurest</title>
@@ -116,30 +117,64 @@
 
 <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
 
+<script src="https://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.7.2.js"></script>
+
 <script>
 
-    $(document).ready(function () {
-        $(document).on("scroll", onScroll);
-    });
+  window.onload = function() {
+    revealOnLoad();
+  };
 
-    function onScroll(event){
-        var scrollPos = $(document).scrollTop();
-        $('md-toolbar ul li a').each(function () {
-            var currLink = $(this);
-            var refElement = $(currLink.attr('data-target'));
-            
-            if (refElement.position()){
-              var top = refElement.position().top - 64;
-              if (top <= scrollPos && top + refElement.height() > scrollPos) {
-                  $('md-toolbar ul a').removeClass("active");
-                  currLink.addClass("active");
-              }
-              else{
-                  currLink.removeClass("active");
-              }
-            }
-        });
-    }
+  $(document).ready(function () {
+    $(document).on("scroll", onScroll, revealOnScroll);
+  });
+
+  function onScroll(event){
+    var scrollPos = $(document).scrollTop();
+    $('md-toolbar ul li a').each(function () {
+      var currLink = $(this);
+      var refElement = $(currLink.attr('data-target'));
+      
+      if (refElement.position()){
+      var top = refElement.position().top - 64;
+      if (top <= scrollPos && top + refElement.height() > scrollPos) {
+        $('md-toolbar ul a').removeClass("active");
+          currLink.addClass("active");
+        }
+        else{
+          currLink.removeClass("active");
+        }
+      }
+    });
+  }
+
+  function revealOnLoad() {
+    $(".revealOnLoad:not(.animated)").each(function () {
+      var $this     = $(this);
+
+      if ($this.data('timeout')) {
+        window.setTimeout(function(){
+          $this.addClass('animated ' + $this.data('animation'));
+        }, parseInt($this.data('timeout'),10));
+      } else {
+        $this.addClass('animated ' + $this.data('animation'));
+      }
+    });
+  }
+
+  function revealOnScroll() {
+    $(".revealOnScroll:not(.animated)").each(function () {
+      var $this     = $(this);
+
+      if ($this.data('timeout')) {
+        window.setTimeout(function(){
+          $this.addClass('animated ' + $this.data('animation'));
+        }, parseInt($this.data('timeout'),10));
+      } else {
+        $this.addClass('animated ' + $this.data('animation'));
+      }
+    });
+  }
 
 </script>
 

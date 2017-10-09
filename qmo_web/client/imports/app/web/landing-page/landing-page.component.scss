@@ -184,8 +184,14 @@ md-toolbar .button-collapse i {
 
 .dw {
   box-sizing: border-box;
-  padding: 170px 0;
+  padding: 117px 0;
   position: relative; 
+}
+
+@media only screen and (max-width: 769px) {
+  .dw {
+    padding: 113px 0;
+  }
 }
 
 .dwt {
@@ -198,6 +204,13 @@ md-toolbar .button-collapse i {
   line-height: 48px; 
   max-width: 50%;
   -webkit-font-smoothing: antialiased;
+}
+
+@media only screen and (max-width: 321px) {
+  .dwt-1 {
+    font-size: 2rem;
+    max-width: 270px;
+  }
 }
 
 .dwt-2 {
@@ -223,14 +236,21 @@ md-toolbar .button-collapse i {
 }
 
 .dwtl > a > img {
-  height: 51px;
+  height: auto;
   width: 171px;
+}
+
+@media only screen and (max-width: 321px) {
+  .dwtl > a > img {
+    width: 150px;
+  }  
 }
 
 .dwi {
   display: none; 
   position: absolute;
   box-sizing: border-box;
+  animation: opacityShow .9s ease-in both;
 
   .dwimg {
     background-repeat: no-repeat;
@@ -238,23 +258,21 @@ md-toolbar .button-collapse i {
     position: relative;
     box-sizing: border-box;
     display: block;
-
   }
   
   .dwimg > img {
-    width: 80%;
+    width: 90%;
   }
 }
 
 @media only screen and (min-width: 768px) {
-//@media only screen and (min-width: 992px) {
   .dwi {
     display: block;
-    bottom: 10px; 
+    bottom: 0;
     left: 50%;
     
     .dwimg > img {
-      width: 90%;
+      width: 100%;
     }
   }
 }
@@ -266,6 +284,29 @@ md-toolbar .button-collapse i {
   
 }
 
+/*******************
+  Benefits section Classes
+*******************/
+
+.br {
+  display: flex;
+  margin: 65px 0;
+}
+
+.bc {
+  margin: 26px 0;
+}
+
+@media only screen and (max-width : 768px){
+  .br {
+    display: block;
+  }
+}
+
+
+.bi {
+  color: $primary-color;
+}
 
 /*******************
   Utility Classes
@@ -273,6 +314,10 @@ md-toolbar .button-collapse i {
 
 .box-sizing {
   box-sizing: border-box;
+}
+
+.opacity {
+  opacity: 0;
 }
 
 .hide {
