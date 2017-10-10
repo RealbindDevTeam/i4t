@@ -10,15 +10,15 @@
 </ion-header>
 
 <ion-content>
-    <div *ngIf="_restaurants">
-        <ion-list style="margin: 0 auto; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);" text-wrap>
+    <div *ngIf="_thereIsRestaurant">
+        <ion-list style="margin: 0 auto; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);" text-wrap *ngFor="let restaurant of _restaurants | async;">
             <ion-item style="background-image: url(assets/img/background_waiter.png);" class="img-header">
                 <ion-thumbnail item-left>
-                    <img src="{{ getRestaurantThumb( _restaurants._id ) }}">
+                    <img src="{{ getRestaurantThumb(restaurant._id ) }}">
                 </ion-thumbnail>
-                <h2>{{_restaurants.name}}</h2>
+                <h2>{{restaurant.name}}</h2>
                 <h2 *ngIf="_table">{{'MOBILE.ORDERS.TABLE' | translate}}: {{_table._number}}</h2>
-                <p>{{_restaurants.address}}</p>
+                <p>{{restaurant.address}}</p>
             </ion-item>
         </ion-list>
         <ion-card>
@@ -37,7 +37,7 @@
             </ion-card-content>
         </ion-card>
 
-        <ion-card *ngIf="(_orders | async)?.length <= 0" text-wrap>
+        <ion-card *ngIf="!_thereAreOrders" text-wrap>
             <ion-card-content>
                 <ion-list no-lines>
                     <ion-item>
@@ -183,7 +183,7 @@
         <div style="height: 48px"></div>
     </div>
 
-    <div *ngIf="!_restaurants" pading>
+    <div *ngIf="!_thereIsRestaurant" pading>
         <div class="img">
             <img src="assets/img/platos-orden.png">
         </div>
