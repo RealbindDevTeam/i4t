@@ -10,6 +10,9 @@ import { Payments } from '../../collections/restaurant/payment.collection';
 import { WaiterCallDetails } from '../../collections/restaurant/waiter-call-detail.collection';
 import { Table } from '../../models/restaurant/table.model';
 import { Tables } from '../../collections/restaurant/table.collection';
+import { UserPenalties } from '../../collections/auth/user-penalty.collection';
+import { Parameters } from '../../collections/general/parameter.collection';
+import { Parameter } from '../../models/general/parameter.model';
 
 if( Meteor.isServer ){
     Meteor.methods({
@@ -82,7 +85,21 @@ if( Meteor.isServer ){
                 }
                 let _lUserDetailPenalty: UserDetailPenalty = { restaurant_id: _lCustomerRestaurant, date: new Date() };
                 UserDetails.update( { _id: _lUserDetail._id }, { $push: { penalties: _lUserDetailPenalty } } );
-                UserDetails.update( { _id: _lUserDetail._id }, { $set: { current_restaurant: '', current_table: '' } } );
+                let _lUsersUpdated : number = UserDetails.collection.update( { _id: _lUserDetail._id }, { $set: { current_restaurant: '', current_table: '' } } );
+                if( _lUsersUpdated === 1 ){
+                    let _lUserDetailAux: UserDetail = UserDetails.findOne( { _id: _lUserDetail._id } );
+                    let _lMaxUserPenalties: Parameter = Parameters.findOne( { name: 'max_user_penalties' } );
+                    if( _lUserDetailAux.penalties.length >= Number( _lMaxUserPenalties.value ) ){
+                        let _lLast_date: Date = new Date( Math.max.apply( null, _lUserDetailAux.penalties.map( function( p ){ return new Date( p.date ); } ) ) );
+                        UserPenalties.insert({
+                            user_id: _pCustomerUser._id,
+                            is_active: true,
+                            last_date: _lLast_date,
+                            penalties: _lUserDetailAux.penalties
+                        });
+                        UserDetails.update( { _id: _lUserDetail._id }, { $set: { penalties: [] } } );
+                    }
+                }
             } else {
                 throw new Meteor.Error( '200' );
             }

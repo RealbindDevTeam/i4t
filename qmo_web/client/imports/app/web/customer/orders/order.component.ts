@@ -126,9 +126,11 @@ export class OrdersComponent implements OnInit, OnDestroy {
                         if( error.error === '400' ){
                             this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.TABLE_NOT_EXISTS' ), '', this.btnAcceptLbl, false);
                         } else if( error.error === '300' ){
-                            this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.IUREST_NO_ACTIVE' ), '', this.btnAcceptLbl, false);                            
+                            this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.RESTAURANT_NOT_EXISTS' ), '', this.btnAcceptLbl, false);                            
                         } else if( error.error === '200' ){
                             this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.IUREST_NO_ACTIVE' ), '', this.btnAcceptLbl, false);                            
+                        } else if( error.error === '500' ){
+                            this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.PENALTY' ) + error.reason, '', this.btnAcceptLbl, false);                            
                         }
                     });
                 } else {

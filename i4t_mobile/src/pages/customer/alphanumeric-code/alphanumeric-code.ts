@@ -73,6 +73,8 @@ export class AlphanumericCodePage {
           this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.RESTAURANT_NOT_EXISTS'));
         } else if( error.error === '200' ){
           this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.IUREST_NO_ACTIVE'));
+        } else if( error.error === '500' ){
+          this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.PENALTY') + error.reason);
         }
       });
     }
