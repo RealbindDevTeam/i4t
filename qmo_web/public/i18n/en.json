@@ -879,7 +879,8 @@
         "TABLE_NO_ACTIVE": "The restaurant does not have this table active for the service of Iurest",
         "TABLE_NOT_EXISTS": "The table does not exist. Please check the code.",
         "IUREST_NO_ACTIVE": "The restaurant does not have the Iurest service active. It is not possible to enter.",
-        "RESTAURANT_NOT_EXISTS": "The restaurant does not exist. It is not possible to enter."
+        "RESTAURANT_NOT_EXISTS": "The restaurant does not exist. It is not possible to enter.",
+        "PENALTY": "At the moment you do not have available the option to create orders. Try again after "
     },
     "MONTHLY_PAYMENT": {
         "TITLE": "Iurest service invoicing",
@@ -1263,7 +1264,8 @@
         "THERE_IS_NOT_REST": "You are not in a restaurant",
         "THERE_IS_NOT_REST_MSG": "Go to the order option and enter the code",
         "GO_TO_ORDERS": "Go to Orders",
-        "ACCEPT": "Accept"
+        "ACCEPT": "Accept",
+        "GENERAL_ERROR": "An error has occurred. Try again."
     },
     "EXIT_TABLE_CONFIRM": {
         "CUSTOMER": "Customer",

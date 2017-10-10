@@ -30,7 +30,9 @@ export function loadParameters() {
             { _id: '3100', name: 'ip_public_service_url2', value: 'https://ipinfo.io/json', description: 'url for retrieve the client public ip #2' },
             { _id: '3200', name: 'ip_public_service_url3', value: 'https://ifconfig.co/json', description: 'url for retrieve the client public ip #3' },
             { _id: '9000', name: 'payu_is_prod', value: 'false', description: 'Flag to enable to prod payu payment' },
-            { _id: '9100', name: 'payu_test_state', value: 'APPROVED', description: 'Test state for payu payment transaction' }
+            { _id: '9100', name: 'payu_test_state', value: 'APPROVED', description: 'Test state for payu payment transaction' },
+            { _id: '2100', name: 'max_user_penalties', value: '3', description: 'Max number of user penalties' },      
+            { _id: '2200', name: 'penalty_days', value: '30', description: 'User penalty days' }
         ];
 
         parameters.forEach((parameter: Parameter) => Parameters.insert(parameter));
