@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ElementRef, ViewChild } from '@angular/core';
 import { AlertController, LoadingController, ModalController, NavController, NavParams } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -31,6 +31,12 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
   @Input() currId: string;
   @Input() tabId: string;
 
+  @ViewChild('customContent')
+  private customContent : ElementRef;
+  
+  @ViewChild('customFooter')
+  private customFooter  : ElementRef;
+
   private _accountSubscription: Subscription;
   private _ordersSubscription: Subscription;
   private _ordersTransSubscription: Subscription;
@@ -53,9 +59,8 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
   private _userLang: string;
   private _currencyCode: string;
   private _type: string = "PAYMENT";
-  private _paymentMethod: string = "PAYMENT_METHODS.CASH";
+  private _paymentMethod: string = "MOBILE.PAYMENTS.SELECT_PAYMENT_METHOD";
   private _paymentCreated: boolean = false;
-  private _ordersValidate: boolean = false;
   private _showAlertToConfirm: boolean = false;
   private _showAlertWithPendingConf: boolean = false;
   private _outstandingBalance: boolean = true;
@@ -81,16 +86,31 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
   }
 
   /**
-   * ngOnInit Implementation. Calculated the total to payment
+   * ngOnInit Implementation.
    */
   ngOnInit() {
+    this.init();
+  }
+
+  /**
+   * ionViewWillEnter Implementation.
+   */
+  ionViewWillEnter() {
+    this.init();  
+  }
+  
+  /**
+   * init Implementation. Calculated the total to payment
+   */
+  init(){
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+    this.removeSubscriptions();
     this._accountSubscription = MeteorObservable.subscribe('getAccountsByUserId', Meteor.userId()).subscribe(() => {
       this._account = Accounts.collection.find({}).fetch()[0];
     });
-
+  
     this._restaurantsSubscription = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe();
-
+  
     this._ordersSubscription = MeteorObservable.subscribe('getOrdersByAccount', Meteor.userId()).subscribe(() => {
       this._orders = Orders.find({ creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay: { $ne: true } }).zone();
       this._orders.subscribe(() => {
@@ -101,28 +121,22 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
         });
         this._totalToPayment = this._totalValue;
         this._totalToPayment > 0 ? this._outstandingBalance = false : this._outstandingBalance = true;
-
-        if (_lOrders.count() <= 0) {
-          this._ordersValidate = false;
-        } else {
-          this._ordersValidate = true;
-        }
       });
     });
-
+  
     this._currencySubscription = MeteorObservable.subscribe('getCurrenciesByRestaurantsId', [this.restId]).subscribe(() => {
       let _lCurrency = Currencies.findOne({ _id: this.currId });
       this._currencyCode = _lCurrency.code;
     });
-
+  
     this._waiterCallsPaySubscription = MeteorObservable.subscribe('WaiterCallDetailForPayment', this.restId, this.tabId, this._type).subscribe();
-
+  
     this._paymentSubscription = MeteorObservable.subscribe('getUserPaymentsByRestaurantAndTable', Meteor.userId(), this.restId, this.tabId, ['PAYMENT.NO_PAID', 'PAYMENT.PAID']).subscribe(() => {
       this._payments = Payments.find({ status: 'PAYMENT.NO_PAID' });
       this._payments.subscribe(() => { this.validateUserPayments() });
       this._paymentsPaid = Payments.find({ status: 'PAYMENT.PAID' });
     });
-
+  
     this._ordersTransSubscription = MeteorObservable.subscribe('getOrdersWithConfirmationPending', this.restId, this.tabId).subscribe(() => {
       this._ordersToConfirm = Orders.find({
         status: 'ORDER_STATUS.PENDING_CONFIRM',
@@ -139,70 +153,18 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
   }
 
   /**
-   * ionViewWillEnter Implementation. Calculated the total to payment
-   */
-  ionViewWillEnter() {
-    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-    this._accountSubscription = MeteorObservable.subscribe('getAccountsByUserId', Meteor.userId()).subscribe(() => {
-      this._account = Accounts.collection.find({}).fetch()[0];
-    });
-
-    this._restaurantsSubscription = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe();
-
-    this._ordersSubscription = MeteorObservable.subscribe('getOrdersByAccount', Meteor.userId()).subscribe(() => {
-      this._orders = Orders.find({ creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay: { $ne: true } }).zone();
-      this._orders.subscribe(() => {
-        this._totalValue = 0;
-        let _lOrders = Orders.collection.find({ creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay: { $ne: true } });
-        _lOrders.fetch().forEach((order) => {
-          this._totalValue += order.totalPayment;
-        });
-        this._totalToPayment = this._totalValue;
-        this._totalToPayment > 0 ? this._outstandingBalance = false : this._outstandingBalance = true;
-
-        if (_lOrders.count() <= 0) {
-          this._ordersValidate = false;
-        } else {
-          this._ordersValidate = true;
-        }
-      });
-    });
-
-    this._currencySubscription = MeteorObservable.subscribe('getCurrenciesByRestaurantsId', [this.restId]).subscribe(() => {
-      let _lCurrency = Currencies.findOne({ _id: this.currId });
-      this._currencyCode = _lCurrency.code;
-    });
-
-    this._waiterCallsPaySubscription = MeteorObservable.subscribe('WaiterCallDetailForPayment', this.restId, this.tabId, this._type).subscribe();
-
-    this._paymentSubscription = MeteorObservable.subscribe('getUserPaymentsByRestaurantAndTable', Meteor.userId(), this.restId, this.tabId, ['PAYMENT.NO_PAID', 'PAYMENT.PAID']).subscribe(() => {
-      this._payments = Payments.find({ status: 'PAYMENT.NO_PAID' });
-      this._payments.subscribe(() => { this.validateUserPayments() });
-      this._paymentsPaid = Payments.find({ status: 'PAYMENT.PAID' });
-    });
-
-    this._ordersTransSubscription = MeteorObservable.subscribe('getOrdersWithConfirmationPending', this.restId, this.tabId).subscribe(() => {
-      this._ordersToConfirm = Orders.find({
-        status: 'ORDER_STATUS.PENDING_CONFIRM',
-        'translateInfo.firstOrderOwner': Meteor.userId(),
-        'translateInfo.lastOrderOwner': { $not: '' }
-      }).zone();
-      this._ordersToConfirm.subscribe(() => { this.showAlertOrdersToConfirm(); });
-      this._ordersWithPendingConfirmation = Orders.find({
-        status: 'ORDER_STATUS.PENDING_CONFIRM',
-        'translateInfo.lastOrderOwner': Meteor.userId()
-      }).zone();
-      this._ordersWithPendingConfirmation.subscribe(() => { this.showAlertOrdersWithPendingConfirm(); });
-    });
+   * ngAfterViewChecked. Calculated the content bootom style
+   */  
+  ngAfterViewChecked(){
+    let bootom = this.customFooter.nativeElement.offsetHeight;
+    this.customContent.nativeElement.style.bottom = bootom + 'px';
   }
 
   /**
    * Allow navegate to ColombiaPaymentDetailsPage
    */
   goToPaymentDetails() {
-    if (this._ordersValidate) {
-      this._navCtrl.push(ColombiaPaymentDetailsPage, { currency: this._currencyCode });
-    }
+    this._navCtrl.push(ColombiaPaymentDetailsPage, { currency: this._currencyCode });
   }
 
   /**
@@ -429,24 +391,26 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
    * ionViewWillLeave Implementation. Subscription unsubscribe
    */
   ionViewWillLeave() {
-    this._accountSubscription.unsubscribe();
-    this._ordersSubscription.unsubscribe();
-    this._currencySubscription.unsubscribe();
-    this._restaurantsSubscription.unsubscribe();
-    this._waiterCallsPaySubscription.unsubscribe();
-    this._ordersTransSubscription.unsubscribe();
+    this.removeSubscriptions();
   }
 
   /**
    * ngOnDestroy Implementation. Subscription unsubscribe
    */
   ngOnDestroy() {
-    this._accountSubscription.unsubscribe();
-    this._ordersSubscription.unsubscribe();
-    this._currencySubscription.unsubscribe();
-    this._restaurantsSubscription.unsubscribe();
-    this._waiterCallsPaySubscription.unsubscribe();
-    this._ordersTransSubscription.unsubscribe();
+    this.removeSubscriptions();
+  }
+
+  /**
+   * Remove all subscriptions
+   */
+  removeSubscriptions():void{
+    if( this._accountSubscription ){ this._accountSubscription.unsubscribe(); }
+    if( this._ordersSubscription ){ this._ordersSubscription.unsubscribe(); }
+    if( this._currencySubscription ){ this._currencySubscription.unsubscribe(); }
+    if( this._restaurantsSubscription ){ this._restaurantsSubscription.unsubscribe(); }
+    if( this._waiterCallsPaySubscription ){ this._waiterCallsPaySubscription.unsubscribe(); }
+    if( this._ordersTransSubscription ){ this._ordersTransSubscription.unsubscribe(); }
   }
 
 }

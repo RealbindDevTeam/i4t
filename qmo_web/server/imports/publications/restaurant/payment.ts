@@ -43,7 +43,11 @@ Meteor.publish( 'getUserPaymentsByRestaurantAndTable', function( _userId: string
         let _lAccount: Account = Accounts.findOne({restaurantId: _lUserDetail.current_restaurant, 
                                                     tableId: _lUserDetail.current_table,
                                                     status: 'OPEN'});
-        return Payments.collection.find( { creation_user: _userId, restaurantId: _restaurantId, tableId: _tableId, accountId: _lAccount._id, status: { $in: _status } } );
+        if( _lAccount ){
+            return Payments.collection.find( { creation_user: _userId, restaurantId: _restaurantId, tableId: _tableId, accountId: _lAccount._id, status: { $in: _status } } );
+        } else {
+            return;
+        }
     } else {
         return;
     }

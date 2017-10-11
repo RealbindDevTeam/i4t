@@ -47,7 +47,7 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
     private _currencyCode                       : string;
     private _tableId                            : string;
     private _currencyId                         : string;
-    private _showPaymentInfo                    : boolean = false;
+    private _showPaymentInfo                    : boolean = true;
     private titleMsg                            : string;
     private btnAcceptLbl                        : string;
 

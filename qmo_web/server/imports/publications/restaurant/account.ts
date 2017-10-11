@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from '../../../../both/collections/restaurant/account.collection';
 import { UserDetail } from '../../../../both/models/auth/user-detail.model';
 import { UserDetails } from '../../../../both/collections/auth/user-detail.collection';
+import { Restaurants } from '../../../../both/collections/restaurant/restaurant.collection';
 import { check } from 'meteor/check';
 
 /**
@@ -33,7 +34,7 @@ Meteor.publish( 'getAccountsByUserId', function( _userId : string ){
     let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
     if( _lUserDetail ){
         if(_lUserDetail.current_restaurant !== "" && _lUserDetail.current_table !== ""){
-            return Accounts.collection.find( { restaurantId : _lUserDetail.current_restaurant, tableId : _lUserDetail.current_table } );
+            return Accounts.collection.find( { restaurantId : _lUserDetail.current_restaurant, tableId : _lUserDetail.current_table, status: 'OPEN' } );
         } else {
             return;
         }
@@ -41,4 +42,31 @@ Meteor.publish( 'getAccountsByUserId', function( _userId : string ){
         return;
     }
 
+});
+
+/**
+ * Meteor publication return accounts by admin user restaurants
+ * @param {string} _userId
+ */
+Meteor.publish( 'getAccountsByAdminUser', function( _userId : string ){
+    check( _userId, String );
+    let _lRestaurantsId: string[] = [];
+    Restaurants.collection.find( { creation_user: _userId } ).fetch().forEach( ( restaurant ) => {
+        _lRestaurantsId.push( restaurant._id );
+    });
+    return Accounts.collection.find( { restaurantId: { $in: _lRestaurantsId }, status: 'OPEN' } );
+});
+
+/**
+ * Meteor publication return accounts by restaurant work
+ * @param {string} _userId
+ */
+Meteor.publish('getAccountsByRestaurantWork', function ( _userId: string ) {
+    check(_userId, String);
+    let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
+    if( _lUserDetail ){
+        return Accounts.collection.find({ restaurantId: _lUserDetail.restaurant_work, status: 'OPEN' });
+    } else {
+        return;
+    }
 });

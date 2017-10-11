@@ -1,28 +1,35 @@
-<md-card md-cell="12" class="demo-card demo-basic" *ngIf="(_restaurants | async)?.length <= 0">
-    <md-card-content>
-        <div class="card_initial">
-            <div class="card_initial has-image">
-                <div class="card_initial-image-container">
-                    <img class="card_initial-image" 
-                        src="/images/subcategories.png"/>
-                </div>
-                <div class="card_initial-copy">
-                    <div class="card_initial-tagline">
-                        {{'SECTIONS.THERE_NOT_RESTAURANTS' | translate}}
-                    </div>
-                    <div class="card_initial-additional-links">
-                      {{'SECTIONS.MESSAGE' | translate}}
-                    </div>
-                </div>
-                <div class="card_initial-button">
-                    <button md-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
-                </div>
-            </div>
-        </div>
-    </md-card-content>
+<md-card *ngIf="_thereAreUsers">
+  <md-card-header>
+    <div md-card-avatar class="example-header-image"></div>
+    <md-card-title>{{'SUBCATEGORIES.WARNING' | translate}} {{_usersCount}} {{'SUBCATEGORIES.WARNING_2' | translate}}</md-card-title>
+    <md-card-subtitle style="margin-bottom: 0px">{{'SUBCATEGORIES.WARNING_3' | translate}}</md-card-subtitle>
+  </md-card-header>
 </md-card>
 
-<md-card *ngIf="(_restaurants | async)?.length > 0">
+<md-card md-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
+  <md-card-content>
+    <div class="card_initial">
+      <div class="card_initial has-image">
+        <div class="card_initial-image-container">
+          <img class="card_initial-image" src="/images/subcategories.png" />
+        </div>
+        <div class="card_initial-copy">
+          <div class="card_initial-tagline">
+            {{'SECTIONS.THERE_NOT_RESTAURANTS' | translate}}
+          </div>
+          <div class="card_initial-additional-links">
+            {{'SECTIONS.MESSAGE' | translate}}
+          </div>
+        </div>
+        <div class="card_initial-button">
+          <button md-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
+        </div>
+      </div>
+    </div>
+  </md-card-content>
+</md-card>
+
+<md-card *ngIf="_thereAreRestaurants">
   <md-card-title>{{'SUBCATEGORIES.SUBCATEGORY_CREATION' | translate}}</md-card-title>
   <md-card-subtitle>{{'SUBCATEGORIES.SUBCATEGORY_TEXT' | translate}}</md-card-subtitle>
   <md-card-content>
@@ -32,8 +39,9 @@
           <input mdInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #inputName>
           <md-hint align="end">{{inputName.value.length}} / 50</md-hint>
         </md-input-container>
-        <md-select class="select" formControlName="category" required id="categorySelect" placeholder="{{'SUBCATEGORIES.CATEGORY_SELECTION' | translate}}" [(ngModel)]="_selectedValue">
-            <md-option *ngFor="let category of _categories | async" value="{{category._id}}" (click)="changeCategory(category._id);">{{category.name}}</md-option>
+        <md-select class="select" formControlName="category" required id="categorySelect" placeholder="{{'SUBCATEGORIES.CATEGORY_SELECTION' | translate}}"
+          [(ngModel)]="_selectedValue">
+          <md-option *ngFor="let category of _categories | async" value="{{category._id}}" (click)="changeCategory(category._id);">{{category.name}}</md-option>
         </md-select>
       </div>
       <br/>
@@ -46,7 +54,7 @@
 <md-card *ngFor="let subcategory of _subcategories | async" class="subcategory">
   <md-card-title>{{subcategory.name}}</md-card-title>
   <md-card-content>
-    <span *ngFor="let cat of _categories | async" >
+    <span *ngFor="let cat of _categories | async">
       <ng-template [ngIf]="cat._id == subcategory.category">                
         <p *ngIf="cat.is_active" class="category-active">{{'SUBCATEGORIES.CATEGORY' | translate}}: {{cat.name}}</p>
         <p *ngIf="!cat.is_active" class="category-inactive">{{'SUBCATEGORIES.CATEGORY' | translate}}: {{cat.name}}</p>

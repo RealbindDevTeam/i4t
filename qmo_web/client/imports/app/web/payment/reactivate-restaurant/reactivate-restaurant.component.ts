@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -26,20 +26,22 @@ import style from './reactivate-restaurant.component.scss';
 })
 export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
 
-    private _currencySub            : Subscription;
-    private _countrySub             : Subscription;
-    private _restaurantSub          : Subscription;
-    private _parameterSub           : Subscription;
-    private _tableSub               : Subscription;
+    private _user = Meteor.userId();
+    private _currencySub: Subscription;
+    private _countrySub: Subscription;
+    private _restaurantSub: Subscription;
+    private _parameterSub: Subscription;
+    private _tableSub: Subscription;
 
-    private _currencies             : Observable<Currency[]>;
-    private _restaurants            : Observable<Restaurant[]>;
-    private _tables                 : Observable<Table[]>;
+    private _currencies: Observable<Currency[]>;
+    private _restaurants: Observable<Restaurant[]>;
+    private _tables: Observable<Table[]>;
 
-    private _currentDate            : Date;
-    private _firstMonthDay          : Date;
-    private _lastMonthDay           : Date;
-    private _firstNextMonthDay      : Date;
+    private _currentDate: Date;
+    private _firstMonthDay: Date;
+    private _lastMonthDay: Date;
+    private _firstNextMonthDay: Date;
+    private _thereAreRestaurants: boolean = true;
 
     /**
      * ReactivateRestaurantComponent Constructor
@@ -48,12 +50,13 @@ export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate 
      * @param {UserLanguageService} _userLanguageService 
      */
-    constructor( private _router: Router,
-                 private _formBuilder: FormBuilder,
-                 private _translate: TranslateService,
-                 private _userLanguageService: UserLanguageService ) {
-        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        _translate.setDefaultLang( 'en' );
+    constructor(private _router: Router,
+        private _formBuilder: FormBuilder,
+        private _translate: TranslateService,
+        private _userLanguageService: UserLanguageService,
+        private _ngZone: NgZone ) {
+        _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        _translate.setDefaultLang('en');
     }
 
     /**
@@ -61,29 +64,44 @@ export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
      */
     ngOnInit() {
         this.removeSubscriptions();
-        this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
-        this._restaurants = Restaurants.find({ creation_user: Meteor.userId(), isActive: false }).zone();
-        this._currencySub = MeteorObservable.subscribe('getCurrenciesByUserId').subscribe();
-        this._currencies = Currencies.find({}).zone();
+        this._restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe( () => {
+            this._ngZone.run( () => {
+                this._restaurants = Restaurants.find({ creation_user: this._user, isActive: false }).zone();
+                this.countRestaurants();
+                this._restaurants.subscribe( () => { this.countRestaurants(); });
+            });
+        });
+        this._currencySub = MeteorObservable.subscribe('getCurrenciesByUserId').subscribe( () => {
+            this._ngZone.run( () => {
+                this._currencies = Currencies.find({}).zone();
+            });
+        });
         this._countrySub = MeteorObservable.subscribe('countries').subscribe();
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
-        this._tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe();
+        this._tableSub = MeteorObservable.subscribe('tables', this._user).subscribe();
 
-        this._currentDate = new Date(2017, 6, 6);
+        this._currentDate = new Date();
         this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
         this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
         this._firstNextMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 1);
     }
 
     /**
+     * Validate if restaurants exists
+     */
+    countRestaurants():void{
+        Restaurants.collection.find( { creation_user: this._user, isActive: false } ).count() > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
+    }
+
+    /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._currencySub ){ this._currencySub.unsubscribe(); }
-        if( this._countrySub ){ this._countrySub.unsubscribe(); }
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
-        if( this._parameterSub ){ this._parameterSub.unsubscribe(); }
-        if( this._tableSub ){ this._tableSub.unsubscribe(); }
+    removeSubscriptions(): void {
+        if (this._currencySub) { this._currencySub.unsubscribe(); }
+        if (this._countrySub) { this._countrySub.unsubscribe(); }
+        if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
+        if (this._parameterSub) { this._parameterSub.unsubscribe(); }
+        if (this._tableSub) { this._tableSub.unsubscribe(); }
     }
 
     /**
@@ -224,6 +242,6 @@ export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
      * ngOnDestroy Implementation
      */
     ngOnDestroy() {
-        this.removeSubscriptions();   
+        this.removeSubscriptions();
     }
 }

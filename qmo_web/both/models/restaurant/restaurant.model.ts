@@ -25,7 +25,8 @@ export interface Restaurant extends CollectionObject {
     queue: string[];
     isActive: boolean;
     firstPay: boolean;
-    freeDays: boolean
+    freeDays: boolean;
+    social_network?: RestaurantSocialNetwork;
 }
 
 /**
@@ -102,6 +103,11 @@ export interface RestaurantSchedule {
         isActive: boolean,
         opening_time: string,
         closing_time: string
+    },
+    holiday?: {
+        isActive: boolean,
+        opening_time: string,
+        closing_time: string
     }
 };
 
@@ -128,4 +134,13 @@ export interface RestaurantFinancialElement {
     minValue?: number;
     maxValue?: number;
     stepValue?: number;
+}
+
+/**
+ * RestaurantSocialNetwork Model
+ */
+export interface RestaurantSocialNetwork {
+    facebook?: string;
+    twitter?: string;
+    instagram?: string;
 }

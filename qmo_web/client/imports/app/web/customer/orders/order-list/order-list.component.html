@@ -1,32 +1,65 @@
-<md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" *ngIf="(_orders | async)?.length <= 0">
-    <md-card-content>
-        <div class="card_initial">
-            <div class="card_initial has-image">
-                <div class="card_initial-image-container">
-                    <img class="card_initial-image" src="/images/items.png" />
-                </div>
-                <div class="card_initial-copy">
-                    <div class="card_initial-tagline">
-                        {{'ORDERS.MSG_1' | translate}}
+<div style="width: 80%; margin: 0 auto; max-width: 740px;" *ngIf="!_thereAreUserOrders && !_thereAreNotUserOrders">
+    <md-card>
+        <md-list>
+            <md-list-item *ngFor="let _res of _restaurants | async">
+                <img md-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{ getRestaurantImage( _res._id ) }}">
+                <h2 md-line style="font-size: 1.3rem;"> {{_res.name}} </h2>
+                <p md-line style="font-size: 1rem;">
+                    <md-icon style="vertical-align: middle">location_on</md-icon>
+                    <span>{{_res.address}}</span>
+                </p>
+                <p md-line style="font-size: 1rem;font-weight: bold;">
+                    <md-icon style="vertical-align: middle">restaurant</md-icon>
+                    <span>{{'RESTAURANT_INFO_MASTER.TABLE_CODE' | translate}}: {{_tableNumber}}</span>
+                </p>
+            </md-list-item>
+        </md-list>
+    </md-card>
+    <md-card md-cell="12" class="demo-card demo-basic">
+        <md-card-content>
+            <div class="card_initial">
+                <div class="card_initial has-image" style="margin: auto;">
+                    <div class="card_initial-image-container">
+                        <img class="card_initial-image" src="/images/items.png" />
                     </div>
-                    <div class="card_initial-additional-links">
-                        {{'ORDERS.NO_ORDERS' | translate}}
+                    <div class="card_initial-copy">
+                        <div class="card_initial-tagline">
+                            {{'ORDERS.MSG_1' | translate}}
+                        </div>
+                        <div class="card_initial-additional-links">
+                            {{'ORDERS.NO_ORDERS' | translate}}
+                        </div>
                     </div>
-                </div>
-                <div class="card_initial-button">
-                    <button md-raised-button (click)="createNewOrderEvent()">{{'ORDERS.ORDER' | translate}}</button>
+                    <div class="card_initial-button">
+                        <button md-raised-button (click)="createNewOrderEvent()">{{'ORDERS.ORDER' | translate}}</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </md-card-content>
-</md-card>
-
-<div class="order-form-1" *ngIf="(_orders | async)?.length > 0">
+        </md-card-content>
+    </md-card>
+</div>
+<div class="order-form-1" *ngIf="_thereAreUserOrders || _thereAreNotUserOrders">
     <div class="order-form-2">
         <div class="menu-items">
             <div class="menu-items-content">
                 <div class="items">
-                    <div id="center" style="width: 80%; margin: 0 auto">
+                    <div id="center" style="width: 80%; margin: 0 auto; max-width: 740px;">
+                        <md-card>
+                            <md-list>
+                                <md-list-item *ngFor="let _res of _restaurants | async">
+                                    <img md-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{ getRestaurantImage( _res._id ) }}">
+                                    <h2 md-line style="font-size: 1.3rem;"> {{_res.name}} </h2>
+                                    <p md-line style="font-size: 1rem;">
+                                        <md-icon style="vertical-align: middle">location_on</md-icon>
+                                        <span>{{_res.address}}</span>
+                                    </p>
+                                    <p md-line style="font-size: 1rem;font-weight: bold;">
+                                        <md-icon style="vertical-align: middle">restaurant</md-icon>
+                                        <span>{{'RESTAURANT_INFO_MASTER.TABLE_CODE' | translate}}: {{_tableNumber}}</span>
+                                    </p>
+                                </md-list-item>
+                            </md-list>
+                        </md-card>
                         <md-select placeholder="{{'ORDER_LIST.TABLE_ORDERS' | translate}}" class="orders-bar" [(ngModel)]="_initialValue">
                             <md-option (click)="changeOrderFilter('all')" value="all">{{'ORDER_LIST.ALL_ORDERS' | translate}}</md-option>
                             <md-option (click)="changeOrderFilter('customer')" value="customer">{{'ORDER_LIST.MY_ORDERS' | translate}}</md-option>
@@ -40,15 +73,16 @@
                                     <span>{{'ORDER_LIST.TOTAL' | translate}}: {{or.totalPayment}} {{_currencyCode}}</span>
                                     <span class="app-flex-filler"></span>
                                     <span class="order-status">{{'ORDER_LIST.STATUS' | translate}}: {{or.status | translate}}</span>
+                                    <md-icon>keyboard_arrow_right</md-icon>
                                 </md-toolbar>
                                 <md-card *ngIf="_orderCustomerIndex == i">
-                                    <md-card-content>
+                                    <md-card-content style="margin-top: -1rem;">
                                         <md-list *ngIf="(or.items.length > 0)">
                                             <span *ngFor="let item of _items | async">
                                                 <span *ngFor="let it of or.items">
                                                     <ng-template [ngIf]="item._id === it.itemId">
                                                         <md-list-item>
-                                                            <img md-list-avatar class="item-image" src="{{ getItemImage(item._id) }}">
+                                                            <img md-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" src="{{ getItemImage(item._id) }}">
                                                             <h4 md-line>{{item.name}}</h4>
                                                             <h5 md-line>
                                                                 {{'ORDER_LIST.PRICE' | translate}}: {{it.paymentItem}} {{_currencyCode}} - {{'ORDER_LIST.QUANT' | translate}} {{it.quantity}}
@@ -73,7 +107,7 @@
                                                 <span *ngFor="let ad of or.additions">
                                                     <ng-template [ngIf]="addition._id === ad.additionId">
                                                         <md-list-item>
-                                                            <img md-list-avatar class="item-image" src="/images/default-plate.png">
+                                                            <img md-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" src="/images/default-plate.png">
                                                             <h4 md-line>{{addition.name}} <div style="display: inline-block;font-size: smaller;">({{'ORDER_LIST.ADDITION' | translate}})</div></h4>
                                                             <p md-line>{{'ORDER_LIST.PRICE' | translate}}: {{ad.paymentAddition}} {{_currencyCode}} - {{'ORDER_LIST.QUANT' | translate}} {{ad.quantity}}</p>
                                                             <button md-icon-button *ngIf="or.status === 'ORDER_STATUS.REGISTERED'" (click)="showAdditionsDetail(ad)">
@@ -95,21 +129,22 @@
                         </div>
                         <div *ngIf="_showOtherOrders || _showAllOrders">
                             <div *ngFor="let or of _ordersTable | async; let in = index">
-                                <md-toolbar class="other-order" (click)="showOthersOrderDetail(or,in)">
+                                <md-toolbar class="customer-order" (click)="showOthersOrderDetail(or,in)">
                                     <img style="width: 3rem;" src="/images/others-orders.png">
                                     <span class="order-code">{{'ORDER_LIST.ORDERS' | translate}} # {{or.code}}</span>
                                     <span>{{'ORDER_LIST.TOTAL' | translate}}: {{or.totalPayment}} {{_currencyCode}}</span>
                                     <span class="app-flex-filler"></span>
                                     <span class="order-status">{{'ORDER_LIST.STATUS' | translate}}: {{or.status | translate}}</span>
+                                    <md-icon>keyboard_arrow_right</md-icon>
                                 </md-toolbar>
                                 <md-card *ngIf="_orderOthersIndex == in">
-                                    <md-card-content>
+                                    <md-card-content style="margin-top: -1rem;">
                                         <md-list *ngIf="(or.items.length > 0)">
                                             <span *ngFor="let item of _items | async">
                                                 <span *ngFor="let it of or.items">
                                                     <ng-template [ngIf]="item._id === it.itemId">
                                                         <md-list-item>
-                                                            <img md-list-avatar class="item-image" src="{{ getItemImage(item._id) }}">
+                                                            <img md-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" src="{{ getItemImage(item._id) }}">
                                                             <h4 md-line>{{item.name}}</h4>
                                                             <h5 md-line>
                                                                 {{'ORDER_LIST.PRICE' | translate}}: {{it.paymentItem}} {{_currencyCode}} - {{'ORDER_LIST.QUANT' | translate}} {{it.quantity}}
@@ -131,7 +166,7 @@
                                                 <span *ngFor="let ad of or.additions">
                                                     <ng-template [ngIf]="addition._id === ad.additionId">
                                                         <md-list-item>
-                                                            <img md-list-avatar class="item-image" src="/images/default-plate.png">
+                                                            <img md-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" src="/images/default-plate.png">
                                                             <h4 md-line>{{addition.name}} <div class="addition-message">({{'ORDER_LIST.ADDITION' | translate}})</div></h4>
                                                             <p md-line>{{'ORDER_LIST.PRICE' | translate}}: {{ad.paymentAddition}} {{_currencyCode}} - {{'ORDER_LIST.QUANT' | translate}} {{ad.quantity}}</p>
                                                         </md-list-item>
@@ -172,7 +207,7 @@
                                             <md-card-subtitle class="description">{{item.description}}</md-card-subtitle>
                                             <div>{{setMaxGarnishFoodElements(item.garnishFoodQuantity)}}</div>
                                             <div>{{setUnitPrice(item)}}</div>
-                                            <md-card-subtitle class="price">{{'ORDER_LIST.PRICE' | translate}}: {{ getItemPrice( item ) }} {{_currencyCode}}</md-card-subtitle>
+                                            <md-card-subtitle class="price">{{'ORDER_LIST.UNIT_PRICE' | translate}}: {{ getItemPrice( item ) }} {{_currencyCode}}</md-card-subtitle>
                                             <md-card-subtitle>{{'ORDER_LIST.COOKING_TIME' | translate}}: {{item.time}}</md-card-subtitle>
                                             <p *ngIf="!getItemAvailability(item._id)" class="item-unavailable">{{'ORDER_LIST.ITEM_UNAVAILABLE' | translate}}</p>
                                             <div *ngIf="getItemAvailability(item._id)">

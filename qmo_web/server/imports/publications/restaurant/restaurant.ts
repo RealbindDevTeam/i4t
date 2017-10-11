@@ -119,6 +119,24 @@ Meteor.publish('restaurantImageThumbsByUserId', function (_userId: string) {
 });
 
 /**
+ * Meteor publication restaurantImageThumbs with user Id condition
+ * @param {string} _restaurantId 
+ */
+Meteor.publish('restaurantImageByUserId', function (_userId: string) {
+    check(_userId, String);
+    let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
+    if (_lUserDetail) {
+        if (_lUserDetail.current_restaurant) {
+            return RestaurantImages.collection.find({ restaurantId: _lUserDetail.current_restaurant });
+        } else {
+            return;
+        }
+    } else {
+        return;
+    }
+});
+
+/**
  * Meteor publication to find current restaurants with no pay
  * @param {string} _userId
  */

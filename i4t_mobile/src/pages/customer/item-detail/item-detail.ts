@@ -81,7 +81,7 @@ export class ItemDetailPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-    
+    this.removeSubscriptions();
     this._item_code = this._navParams.get("item_id");
     this._res_code = this._navParams.get("res_id");
     this._table_code = this._navParams.get("table_id");
@@ -374,10 +374,17 @@ export class ItemDetailPage implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
-    this._itemSub.unsubscribe();
-    this._additionSub.unsubscribe();
-    this._garnishSub.unsubscribe();
-    this._currenciesSub.unsubscribe();
-    this._itemImageSub.unsubscribe();
+    this.removeSubscriptions();
+  }
+
+  /**
+   * Remove all subscriptions
+   */
+  removeSubscriptions():void{
+    if( this._itemSub ){ this._itemSub.unsubscribe(); }
+    if( this._additionSub ){ this._additionSub.unsubscribe(); }
+    if( this._garnishSub ){ this._garnishSub.unsubscribe(); }
+    if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
+    if( this._itemImageSub ){ this._itemImageSub.unsubscribe(); }
   }
 }

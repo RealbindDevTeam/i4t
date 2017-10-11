@@ -1,0 +1,61 @@
+ .main{
+    width: 100%;
+    height: calc( 100vh - 67px );
+    margin: 0 auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    .detail-info{
+        overflow-y: scroll;
+        width: 72%;
+        margin: 0 auto;
+        padding: 24px;
+
+        .card-info{
+            margin-top: 13px;
+        }
+
+        .image{
+            border-radius: 50%; 
+            width: 100px; 
+            height: 100px;
+        }
+
+        .card-title{
+            font-size: 1.5rem;
+            color: #114b5f; 
+            font-weight: 500;
+        }
+
+        .card-subtitle{
+            font-size: 1rem;
+        }
+
+        .customer-consumption{
+            font-size: 1rem; 
+            margin-top: 0.3rem; 
+            color: green; 
+            font-weight: bold;
+        }
+
+        .penalize-button{
+            min-width: 100px;
+        }
+    }
+
+    .fixed-action-btn {		
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+    
+        button {
+            width: 56px;
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+        }
+     }
+ }

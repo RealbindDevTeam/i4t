@@ -60,9 +60,9 @@ export const RestaurantImagesStore = new UploadFS.store.GridFS({
       const gm = require('gm');
    
       gm(from, file.name)
-        .resize(500, 500, "!")
+        .resize(250, 250, "!")
         .gravity('Center')
-        .extent(500, 500)
+        .extent(250, 250)
         .quality(75)
         .stream()
         .pipe(to);

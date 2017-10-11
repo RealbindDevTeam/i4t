@@ -20,14 +20,14 @@ export const ItemImageThumbsStore = new UploadFS.store.GridFS({
       remove: loggedIn
     }),
     transformWrite(from, to, fileId, file) {
-      // Resize to 100x100
+      // Resize to 160x160
       //var require: any;
       const gm = require('gm');
    
       gm(from, file.name)
-        .resize(100, 100, "!")
+        .resize(160, 160, "!")
         .gravity('Center')
-        .extent(100, 100)
+        .extent(160, 160)
         .quality(75)
         .stream()
         .pipe(to);
@@ -61,9 +61,9 @@ export const ItemImagesStore = new UploadFS.store.GridFS({
       const gm = require('gm');
    
       gm(from, file.name)
-        .resize(500, 500, "!")
+        .resize(250, 250, "!")
         .gravity('Center')
-        .extent(500, 500)
+        .extent(250, 250)
         .quality(75)
         .stream()
         .pipe(to);

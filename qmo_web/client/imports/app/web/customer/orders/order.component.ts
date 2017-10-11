@@ -39,7 +39,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
     private _showError                  : boolean = false;
     private _showAlphanumericCodeCard   : boolean = false;
-    private _showRestaurantInformation  : boolean = false;
     private _showNewOrderButton         : boolean = false;
     private _showOrderCreation          : boolean = false;
     private _showOrderList              : boolean = false;
@@ -80,14 +79,12 @@ export class OrdersComponent implements OnInit, OnDestroy {
                             this._currentRestaurant = _lRestaurant;
                             this._currentQRCode = _lTable.QR_code;
                             this._showAlphanumericCodeCard = false;
-                            this._showRestaurantInformation = true;
                             this._showOrderList = true;
                             this._showNewOrderButton = true;
                         });
                     });
                 } else {
                     this._showAlphanumericCodeCard = true;
-                    this._showRestaurantInformation = false;
                     this._showOrderList = false;
                     this._showNewOrderButton = false;
                 }
@@ -123,14 +120,17 @@ export class OrdersComponent implements OnInit, OnDestroy {
                         this._currentRestaurant = _result;
                         this._currentQRCode = _lTable.QR_code;
                         this._showAlphanumericCodeCard = false;
-                        this._showRestaurantInformation = true;
                         this._showOrderList = true;
                         this._showNewOrderButton = true;
                     }, ( error ) => {
                         if( error.error === '400' ){
                             this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.TABLE_NOT_EXISTS' ), '', this.btnAcceptLbl, false);
+                        } else if( error.error === '300' ){
+                            this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.RESTAURANT_NOT_EXISTS' ), '', this.btnAcceptLbl, false);                            
                         } else if( error.error === '200' ){
                             this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.IUREST_NO_ACTIVE' ), '', this.btnAcceptLbl, false);                            
+                        } else if( error.error === '500' ){
+                            this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.PENALTY' ) + error.reason, '', this.btnAcceptLbl, false);                            
                         }
                     });
                 } else {
@@ -139,7 +139,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
             } else {
                 this._showError = true;
                 this._showAlphanumericCodeCard = true;
-                this._showRestaurantInformation = false;
                 this._showOrderList = false;
                 this._showNewOrderButton = false;
             }
@@ -151,7 +150,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
      */
     createNewOrder( _event?:any ):void{
         this._showOrderCreation = true;
-        this._showRestaurantInformation = false;
         this._showOrderList = false;
         this._showNewOrderButton = false;
     }
@@ -159,12 +157,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
     validateFinishOrderCreation( _event:any ):void{
         if( _event ){
             this._showOrderCreation = false;
-            this._showRestaurantInformation = true;
             this._showOrderList = true;
             this._showNewOrderButton = true;
         } else {
             this._showOrderCreation = true;
-            this._showRestaurantInformation = false;
             this._showOrderList = false;
             this._showNewOrderButton = false;
         }

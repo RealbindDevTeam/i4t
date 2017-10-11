@@ -20,7 +20,7 @@
                     <h2 style="font-weight: bold;">{{ 'MOBILE.PAYMENTS.TOTAL_TO_PAY' | translate }}: {{pay.totalToPayment}} {{_currency}}</h2>
                     <p> {{ 'MOBILE.PAYMENTS.TOTAL' | translate }}: {{pay.totalOrdersPrice}} {{_currency}}</p>
                     <p> {{ 'MOBILE.PAYMENTS.TIP' | translate }}: {{pay.totalTip}} {{_currency}}</p>
-                    <h3 *ngIf="pay.status === 'PAYMENT.NO_PAID'" style="font-weight: bold; color: red;">{{'MOBILE.PAYMENTS.NO_PAYED' | translate}}</h3>
+                    <h3 *ngIf="pay.status === 'PAYMENT.NO_PAID'" style="font-weight: bold; color: #ef5350;">{{'MOBILE.PAYMENTS.NO_PAYED' | translate}}</h3>
                     <h3 *ngIf="pay.status === 'PAYMENT.PAID'"    style="font-weight: bold; color: green;">{{'MOBILE.PAYMENTS.PAYED' | translate}}</h3>
                 </ion-item-divider>
                 

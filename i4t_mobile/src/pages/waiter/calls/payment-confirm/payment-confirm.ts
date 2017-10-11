@@ -62,6 +62,7 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
    */
   ngOnInit(){
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+    this.removeSubscriptions();
     this._usersDetailSubscription = MeteorObservable.subscribe('getUsers').subscribe();
     this._tablesSubscription = MeteorObservable.subscribe('getTablesByRestaurant', this._restauranId).subscribe();
     this._currencySubscription = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', [ this._restauranId ] ).subscribe();
@@ -156,7 +157,7 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
   showComfirmPay() {
     let btn_no  = this.itemNameTraduction('MOBILE.ORDERS.NO_ANSWER'); 
     let btn_yes = this.itemNameTraduction('MOBILE.ORDERS.YES_ANSWER'); 
-    let title   = this.itemNameTraduction('MOBILE.WAITER_CALL.TITLE_PROMPT'); 
+    let title   = this.itemNameTraduction('MOBILE.SYSTEM_MSG'); 
     let content = this.itemNameTraduction('MOBILE.WAITER_CALL.CONTENT_PROMPT'); 
 
     let prompt = this._alertCtrl.create({
@@ -250,11 +251,18 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
    * ngOnDestroy Implementation
    */
   ngOnDestroy(){
-    this._usersDetailSubscription.unsubscribe();
-    this._paymentsSubscription.unsubscribe();
-    this._ordersSubscription.unsubscribe();
-    this._tablesSubscription.unsubscribe();
-    this._currencySubscription.unsubscribe();
+    this.removeSubscriptions();
+  }
+
+  /**
+   * Remove all subscriptions
+   */
+  removeSubscriptions():void{
+    if( this._usersDetailSubscription ){ this._usersDetailSubscription.unsubscribe(); }
+    if( this._paymentsSubscription ){ this._paymentsSubscription.unsubscribe(); }
+    if( this._ordersSubscription ){ this._ordersSubscription.unsubscribe(); }
+    if( this._tablesSubscription ){ this._tablesSubscription.unsubscribe(); }
+    if( this._currencySubscription ){ this._currencySubscription.unsubscribe(); }
   }
 
 }

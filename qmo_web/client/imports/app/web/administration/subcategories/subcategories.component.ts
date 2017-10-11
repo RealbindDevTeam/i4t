@@ -15,6 +15,8 @@ import { SubcategoryEditComponent } from './subcategories-edit/subcategories-edi
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
+import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
+import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 
 import template from './subcategories.component.html';
 import style from './subcategories.component.scss';
@@ -22,26 +24,33 @@ import style from './subcategories.component.scss';
 @Component({
     selector: 'subcategory',
     template,
-    styles: [ style ]
+    styles: [style]
 })
-export class SubcategoryComponent implements OnInit, OnDestroy{
+export class SubcategoryComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    private _subcategoryForm        : FormGroup;
-    private _mdDialogRef            : MdDialogRef<any>;
+    private _subcategoryForm: FormGroup;
+    private _mdDialogRef: MdDialogRef<any>;
 
-    private _subcategories          : Observable<Subcategory[]>;
-    private _categories             : Observable<Category[]>;
-    private _restaurants            : Observable<Restaurant[]>;
+    private _subcategories: Observable<Subcategory[]>;
+    private _categories: Observable<Category[]>;
+    private _restaurants: Observable<Restaurant[]>;
+    private _userDetails: Observable<UserDetail[]>;
 
-    private _subcategorySub         : Subscription;    
-    private _categoriesSub          : Subscription;
-    private _restaurantSub          : Subscription;
+    private _subcategorySub: Subscription;
+    private _categoriesSub: Subscription;
+    private _restaurantSub: Subscription;
+    private _userDetailsSub: Subscription;
 
-    _selectedValue                  : string;
-    private titleMsg                : string;
-    private btnAcceptLbl            : string;
-    _dialogRef                      : MdDialogRef<any>;
+    _selectedValue: string;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
+    _dialogRef: MdDialogRef<any>;
+    private _thereAreRestaurants: boolean = true;
+
+    private _thereAreUsers: boolean = true;
+    private _usersCount: number;
+
 
     /**
      * SubcategoryComponent constructor
@@ -53,16 +62,16 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
      * @param {NgZone} _ngZone
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor( public _dialog: MdDialog, 
-                 public snackBar: MdSnackBar,
-                 private _formBuilder: FormBuilder, 
-                 private _translate: TranslateService, 
-                 private _router: Router,
-                 private _ngZone: NgZone,
-                 private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog ){
-        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        _translate.setDefaultLang( 'en' );
+    constructor(public _dialog: MdDialog,
+        public snackBar: MdSnackBar,
+        private _formBuilder: FormBuilder,
+        private _translate: TranslateService,
+        private _router: Router,
+        private _ngZone: NgZone,
+        private _userLanguageService: UserLanguageService,
+        protected _mdDialog: MdDialog) {
+        _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        _translate.setDefaultLang('en');
         this._selectedValue = "";
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';
@@ -71,49 +80,84 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
     /**
      * Implements ngOnInit function
      */
-    ngOnInit(){
+    ngOnInit() {
+        let _lRestaurantsId: string[] = [];
         this.removeSubscriptions();
         this._subcategoryForm = new FormGroup({
-            name: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 50 ) ] ),
-            category: new FormControl( '' )  
+            name: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]),
+            category: new FormControl('')
         });
-        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._restaurants = Restaurants.find( { } ).zone();
+        this._restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe(() => {
+            this._ngZone.run(() => {
+                this._restaurants = Restaurants.find({}).zone();
+                Restaurants.collection.find({}).fetch().forEach((restaurant: Restaurant) => {
+                    _lRestaurantsId.push(restaurant._id);
+                });
+                this._userDetailsSub = MeteorObservable.subscribe('getUsersByRestaurantsId', _lRestaurantsId).subscribe(() => {
+                    this._userDetails = UserDetails.find({}).zone();
+                    this.countRestaurantsUsers();
+                    this._userDetails.subscribe(() => { this.countRestaurantsUsers(); });
+                });
+                this.countRestaurants();
+                this._restaurants.subscribe(() => { this.countRestaurants(); });
             });
         });
-        this._categoriesSub = MeteorObservable.subscribe( 'categories', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._categories = Categories.find( { } ).zone();
+        this._categoriesSub = MeteorObservable.subscribe('categories', this._user).subscribe(() => {
+            this._ngZone.run(() => {
+                this._categories = Categories.find({}).zone();
             });
         });
-        this._subcategorySub = MeteorObservable.subscribe( 'subcategories', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._subcategories = Subcategories.find( { } ).zone();
+        this._subcategorySub = MeteorObservable.subscribe('subcategories', this._user).subscribe(() => {
+            this._ngZone.run(() => {
+                this._subcategories = Subcategories.find({}).zone();
             });
         });
+    }
+
+    /**
+     * Validate if restaurants exists
+     */
+    countRestaurants(): void {
+        Restaurants.collection.find({}).count() > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
+    }
+
+    /**
+     * Validate if restaurants exists
+     */
+    countRestaurantsUsers(): void {
+        let auxUserCount: number;
+        auxUserCount = UserDetails.collection.find({}).count();
+
+        if (auxUserCount > 0) {
+            this._thereAreUsers = true
+            this._usersCount = auxUserCount;
+        } else {
+            this._thereAreUsers = false;
+            this._usersCount = 0;
+        }
     }
 
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._categoriesSub ){ this._categoriesSub.unsubscribe(); }
-        if( this._subcategorySub ){ this._subcategorySub.unsubscribe(); }
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+    removeSubscriptions(): void {
+        if (this._categoriesSub) { this._categoriesSub.unsubscribe(); }
+        if (this._subcategorySub) { this._subcategorySub.unsubscribe(); }
+        if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
+        if (this._userDetailsSub) { this._userDetailsSub.unsubscribe(); }
     }
 
     /**
      * Function to add subcategory
      */
-    addSubcategory():void{
-        if( !Meteor.userId() ){
-            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+    addSubcategory(): void {
+        if (!Meteor.userId()) {
+            var error: string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
 
-        if( this._subcategoryForm.valid ){
+        if (this._subcategoryForm.valid) {
             let _lNewSubcategory = Subcategories.collection.insert({
                 creation_user: this._user,
                 creation_date: new Date(),
@@ -124,9 +168,9 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
                 category: this._subcategoryForm.value.category
             });
 
-            if( _lNewSubcategory ){
-                let _lMessage:string = this.itemNameTraduction( 'SUBCATEGORIES.SUBCATEGORY_CREATED' );
-                this.snackBar.open( _lMessage, '',{
+            if (_lNewSubcategory) {
+                let _lMessage: string = this.itemNameTraduction('SUBCATEGORIES.SUBCATEGORY_CREATED');
+                this.snackBar.open(_lMessage, '', {
                     duration: 2500
                 });
             }
@@ -139,14 +183,14 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
     /**
      * This function set category value in the form when the value select change
      */
-    changeCategory( _pCategory ):void{
-        this._subcategoryForm.controls['category'].setValue( _pCategory );
+    changeCategory(_pCategory): void {
+        this._subcategoryForm.controls['category'].setValue(_pCategory);
     }
 
     /**
      * Function to cancel add Subcategory
      */
-    cancel():void{
+    cancel(): void {
         this._subcategoryForm.controls['name'].reset();
         this._selectedValue = "";
     }
@@ -155,14 +199,14 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
      * Function to update Subcategory status
      * @param {Subcategory} _subcategory
      */
-    updateStatus( _subcategory:Subcategory ):void{
-        if( !Meteor.userId() ){
-            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+    updateStatus(_subcategory: Subcategory): void {
+        if (!Meteor.userId()) {
+            var error: string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
-        
-        Subcategories.update( _subcategory._id,{
+
+        Subcategories.update(_subcategory._id, {
             $set: {
                 is_active: !_subcategory.is_active,
                 modification_date: new Date(),
@@ -175,9 +219,9 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
      * When useer wants edit Subcategory, this function open dialog with Subcategory information
      * @param {Subcategory} _subcategory
      */
-    open( _subcategory: Subcategory ){
-        this._dialogRef = this._dialog.open( SubcategoryEditComponent, {
-            disableClose : true,
+    open(_subcategory: Subcategory) {
+        this._dialogRef = this._dialog.open(SubcategoryEditComponent, {
+            disableClose: true,
             width: '60%'
         });
         this._dialogRef.componentInstance._subcategoryToEdit = _subcategory;
@@ -190,10 +234,10 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
      * Return traduction
      * @param {string} itemName 
      */
-    itemNameTraduction(itemName: string): string{
+    itemNameTraduction(itemName: string): string {
         var wordTraduced: string;
         this._translate.get(itemName).subscribe((res: string) => {
-            wordTraduced = res; 
+            wordTraduced = res;
         });
         return wordTraduced;
     }
@@ -201,7 +245,7 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
     /**
      * Go to add new Restaurant
      */
-    goToAddRestaurant(){
+    goToAddRestaurant() {
         this._router.navigate(['/app/restaurant-register']);
     }
 
@@ -215,7 +259,7 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
     * @param {boolean} showBtnCancel
     */
     openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
-        
+
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
@@ -238,7 +282,7 @@ export class SubcategoryComponent implements OnInit, OnDestroy{
     /**
      * Implements ngOnDestroy function
      */
-    ngOnDestroy(){
+    ngOnDestroy() {
         this.removeSubscriptions();
     }
 }

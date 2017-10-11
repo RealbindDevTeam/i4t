@@ -45,7 +45,9 @@ export class TopnavComponent implements OnInit, OnDestroy {
   private _pageTitleInterval: number;
   private _user: User;//Meteor.User;
   private _userName: string;
-  private _imageProfile: string = '/images/user_default_image.png';
+
+  private showMenuName: boolean = true;
+  private menuName: string;
 
   /**
    * TopnavComponent Constructor
@@ -147,12 +149,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
         else if (this._user.profile.name) {
           this._userName = this._user.profile.name;
         }
-        this._userImageSub = MeteorObservable.subscribe('getUserImages', Meteor.userId()).subscribe(() => {
-          this._ngZone.run(() => {
-            this._userImages = UserImages.find({}).zone();
-            this._userImages.subscribe(() => { this.setUserImage(this._user) });
-          });
-        });
+        this._userImageSub = MeteorObservable.subscribe('getUserImages', Meteor.userId()).subscribe();
       });
     });
 
@@ -162,22 +159,30 @@ export class TopnavComponent implements OnInit, OnDestroy {
       switch (role) {
         case '100': {
           this._showToggleSidenav = true;
+          this.showMenuName = false;
           break;
         }
         case '200': {
           this._itemsTopMenu = 'waiter';
+          this.showMenuName = true;
+          this.menuName = this.itemNameTraduction('TOPNAV.CALLS');
           break;
         }
         case '400': {
           this._itemsTopMenu = 'customer';
+          this.showMenuName = true;
+          this.menuName = this.itemNameTraduction('TOPNAV.ORDERS');
           break;
         }
         case '500': {
           this._itemsTopMenu = 'chef';
+          this.showMenuName = true;
+          this.menuName = this.itemNameTraduction('TOPNAV.ORDERS');
           break;
         }
         case '600': {
           this._showToggleSidenav = true;
+          this.showMenuName = false;
         }
       }
     }, (error) => {
@@ -186,23 +191,29 @@ export class TopnavComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Set user image
+   * Change menu name 
    */
-  setUserImage(_pUser: User): void {
-    let _lUserImage: UserProfileImage = UserImages.findOne({ userId: Meteor.userId() });
-    if (_lUserImage) {
-      this._imageProfile = _lUserImage.url;
+  getMenuName(event) {
+    this.menuName = this.itemNameTraduction(event);
+  }
+
+  setMenuName(name: string) {
+    this.menuName = this.itemNameTraduction(name);
+  }
+
+  /**
+   * Return user image
+   */
+  getUsetImage(): string {
+    if (this._user && this._user.services.facebook) {
+      return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
     } else {
-      if (_pUser.services.facebook) {
-        this._imageProfile = "http://graph.facebook.com/" + _pUser.services.facebook.id + "/picture/?type=large";
+      let _lUserImage: UserProfileImage = UserImages.findOne({ userId: Meteor.userId() });
+      if (_lUserImage) {
+        return _lUserImage.url;
       }
-      else if (_pUser.services.twitter) {
-        this._imageProfile = _pUser.services.twitter.profile_image_url;
-      }
-      else if (_pUser.services.google) {
-        this._imageProfile = _pUser.services.google.picture;
-      } else {
-        this._imageProfile = '/images/user_default_image.png';
+      else {
+        return '/images/user_default_image.png';
       }
     }
   }
@@ -269,6 +280,18 @@ export class TopnavComponent implements OnInit, OnDestroy {
         this._title.setTitle(this._navigation.getAutoBrowserTitle(this._pageTitle));
       }
     });
+  }
+
+  /**
+ * Return traduction
+ * @param {string} itemName 
+ */
+  itemNameTraduction(itemName: string): string {
+    var wordTraduced: string;
+    this._translate.get(itemName).subscribe((res: string) => {
+      wordTraduced = res;
+    });
+    return wordTraduced;
   }
 
   /**

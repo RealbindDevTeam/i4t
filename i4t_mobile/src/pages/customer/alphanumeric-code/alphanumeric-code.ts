@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { AlertController, NavController, NavParams, ViewController } from 'ionic-angular';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
+import { Table } from 'qmo_web/both/models/restaurant/table.model';
 import { SectionsPage } from '../sections/sections';
 import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
@@ -19,6 +20,7 @@ export class AlphanumericCodePage {
   private _error_msg: string;
 
   constructor(public _navCtrl: NavController, 
+              public _alertCtrl: AlertController,
               private _viewCtrl: ViewController, 
               public _navParams: NavParams, 
               public _translate: TranslateService,
@@ -37,12 +39,16 @@ export class AlphanumericCodePage {
   * This function validate if QR Code exists
   */
   validateQRCodeExists() {
-    MeteorObservable.call('getIdTableByQr', this._ordersForm.value.qrCode.toString().toUpperCase()).subscribe((table_id: string) => {
-      if (table_id) {
-        this._id_table = table_id;
-        this.forwardToSections();
+    MeteorObservable.call('getIdTableByQr', this._ordersForm.value.qrCode.toString().toUpperCase()).subscribe((table: Table) => {
+      if(table){
+        if (table.is_active) {
+          this._id_table = table._id;
+          this.forwardToSections();
+        } else {
+          this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.TABLE_NO_ACTIVE'));
+        }
       } else {
-        this._error_msg = 'Invalid code';
+        this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.TABLE_NOT_EXISTS'));
       }
     });
   }
@@ -61,8 +67,46 @@ export class AlphanumericCodePage {
           alert('Invalid table');
         }
       }, (error) => {
-        alert(`Failed to get Restaurant: ${error}`);
+        if( error.error === '400' ){
+          this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.TABLE_NOT_EXISTS'));
+        } else if( error.error === '300' ){
+          this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.RESTAURANT_NOT_EXISTS'));
+        } else if( error.error === '200' ){
+          this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.IUREST_NO_ACTIVE'));
+        } else if( error.error === '500' ){
+          this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.PENALTY') + error.reason);
+        }
       });
     }
+  }
+
+  /**
+   * Show message confirm
+   * @param _pContent 
+   */
+  showConfirmMessage( _pContent :any ){
+    let okBtn   = this.itemNameTraduction('MOBILE.OK'); 
+    let title   = this.itemNameTraduction('MOBILE.SYSTEM_MSG'); 
+  
+    let prompt = this._alertCtrl.create({
+      title: title,
+      message: _pContent,
+      buttons: [
+        {
+          text: okBtn,
+          handler: data => {
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+  
+  itemNameTraduction(itemName: string): string {
+    var wordTraduced: string;
+    this._translate.get(itemName).subscribe((res: string) => {
+      wordTraduced = res;
+    });
+    return wordTraduced;
   }
 }

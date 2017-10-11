@@ -45,7 +45,7 @@ export class WaiterCallPage implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-
+    this.removeSubscriptions();
     this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe( () => {
       MeteorObservable.autorun().subscribe(() => {
         this._userDetails = UserDetails.find({ user_id: Meteor.userId() });
@@ -67,7 +67,7 @@ export class WaiterCallPage implements OnInit, OnDestroy {
     this._waiterCallDetailSubscription = MeteorObservable.subscribe('countWaiterCallDetailByUsrId', Meteor.userId()).subscribe( () => {
       MeteorObservable.autorun().subscribe(() => {
         if (this._userRestaurant && this._userDetail) {
-          this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).count();
+          this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), type: 'CALL_OF_CUSTOMER', restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).count();
           if ( this._countDetails > 0 ){
             this._validatedWaterCall = true;
           } else {
@@ -83,7 +83,7 @@ export class WaiterCallPage implements OnInit, OnDestroy {
    */
   ionViewWillEnter() {
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-
+    this.removeSubscriptions();
     this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe( () => {
       MeteorObservable.autorun().subscribe(() => {
         this._userDetails = UserDetails.find({ user_id: Meteor.userId() });
@@ -105,7 +105,7 @@ export class WaiterCallPage implements OnInit, OnDestroy {
     this._waiterCallDetailSubscription = MeteorObservable.subscribe('countWaiterCallDetailByUsrId', Meteor.userId()).subscribe( () => {
       MeteorObservable.autorun().subscribe(() => {
         if (this._userRestaurant && this._userDetail ) {
-          this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).count();
+          this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), type: 'CALL_OF_CUSTOMER', restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).count();
           if ( this._countDetails > 0 ){
             this._validatedWaterCall = true;
           } else {
@@ -161,7 +161,7 @@ export class WaiterCallPage implements OnInit, OnDestroy {
       });
       loading.present();
       setTimeout(() => {
-        let waiterCall = WaiterCallDetails.collection.find({ user_id : Meteor.userId(), restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).fetch()[0];
+        let waiterCall = WaiterCallDetails.collection.find({ user_id : Meteor.userId(), type: 'CALL_OF_CUSTOMER', restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).fetch()[0];
         MeteorObservable.call('cancelCallClient', waiterCall, Meteor.userId()).subscribe(() => {
           loading.dismiss();
         });
@@ -186,15 +186,20 @@ export class WaiterCallPage implements OnInit, OnDestroy {
    * ionViewWillLeave implementation
    */
   ionViewWillLeave() {
-    if( this._waiterCallDetailSubscription ){ this._waiterCallDetailSubscription.unsubscribe(); }
-    if( this._userDetailSubscription ){ this._userDetailSubscription.unsubscribe(); }
-    if( this._waitersSubscription ){ this._waitersSubscription.unsubscribe(); }
+    this.removeSubscriptions();
   }
 
   /**
    * ngOnDestroy implementation
    */
   ngOnDestroy(){
+    this.removeSubscriptions();
+  }
+  
+  /**
+   * Remove all subscriptions
+   */
+  removeSubscriptions():void{
     if( this._waiterCallDetailSubscription ){ this._waiterCallDetailSubscription.unsubscribe(); }
     if( this._userDetailSubscription ){ this._userDetailSubscription.unsubscribe(); }
     if( this._waitersSubscription ){ this._waitersSubscription.unsubscribe(); }

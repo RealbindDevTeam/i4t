@@ -9,7 +9,7 @@
     <div class="crop">
       <img src="{{getItemImage(item._id)}}" style="display:inline-block">
     </div>
-    <ion-card class="ion-card-custom">
+    <ion-card class="ion-card-custom" style="margin: 0px !important">
       <ion-card-content>
         <ion-card-title>{{item.name}}</ion-card-title>
         <p class="item-paragraph-custom" style="margin-bottom: 10px">
@@ -61,7 +61,7 @@
                 </div>
               </div>
             </div>
-            <p *ngIf="_showGarnishFoodError" style="color: red; margin-bottom: 5px">{{'MOBILE.SECTIONS.SELECT_MAX_VALID' | translate}} {{item.garnishFoodQuantity}} {{'MOBILE.SECTIONS.GARNISHES'
+            <p *ngIf="_showGarnishFoodError" style="color: #ef5350; margin-bottom: 5px">{{'MOBILE.SECTIONS.SELECT_MAX_VALID' | translate}} {{item.garnishFoodQuantity}} {{'MOBILE.SECTIONS.GARNISHES'
               | translate}}</p>
           </div>
           <br/>

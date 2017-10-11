@@ -3,7 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MdDialogRef, MdDialog, MdDialogConfig, MdSnackBar } from '@angular/material';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Order, OrderItem } from '../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../both/collections/restaurant/order.collection';
@@ -36,6 +36,8 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
 
     private _ordersInProcess                : Observable<Order[]>;    
     private _ordersInProcessDetail          : Observable<Order[]>;
+    private _ordersCanceled                 : Observable<Order[]>;
+    private _ordersCanceledByAdmin          : Observable<Order[]>;
     private _items                          : Observable<Item[]>;
     private _tables                         : Observable<Table[]>;
     private _garnishFoodCol                 : Observable<GarnishFood[]>;
@@ -47,6 +49,7 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     private titleMsg                        : string;
     private btnAcceptLbl                    : string;
     public _dialogRef                       : MdDialogRef<any>;
+    private _thereAreOrders                 : boolean = true;
 
     /**
      * OrderAttentionComponent Constructor
@@ -57,7 +60,8 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     constructor( private _translate: TranslateService, 
                  private _ngZone: NgZone,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog ) {
+                 protected _mdDialog: MdDialog,
+                 public snackBar: MdSnackBar ) {
                     _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
                     _translate.setDefaultLang( 'en' );
                     this.titleMsg = 'SIGNUP.SYSTEM_MSG';
@@ -69,9 +73,15 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
      */
     ngOnInit(){
         this.removeSubscriptions();
-        this._ordersSub = MeteorObservable.subscribe( 'getOrdersByRestaurantWork', this._user, [ 'ORDER_STATUS.IN_PROCESS' ] ).subscribe( () => {
+        this._ordersSub = MeteorObservable.subscribe( 'getOrdersByRestaurantWork', this._user, [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.CANCELED' ] ).subscribe( () => {
             this._ngZone.run( () => {
-                this._ordersInProcess = Orders.find( { } ).zone();
+                this._ordersInProcess = Orders.find( { status: 'ORDER_STATUS.IN_PROCESS' } ).zone();
+                this._ordersCanceled = Orders.find( { status: 'ORDER_STATUS.CANCELED', markedToCancel: true } ).zone();
+                this._ordersCanceledByAdmin = Orders.find( { status: 'ORDER_STATUS.CANCELED', canceled_by_penalization: false } ).zone();
+                this.countOrders();
+                this._ordersInProcess.subscribe( () => { this.countOrders(); } );
+                this._ordersCanceled.subscribe( () => { this.countOrders(); } );
+                this._ordersCanceledByAdmin.subscribe( () => { this.countOrders(); } );
             });
         });
         this._itemsSub = MeteorObservable.subscribe( 'getItemsByRestaurantWork', this._user ).subscribe( () => {
@@ -94,6 +104,16 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
                 this._additions = Additions.find( { } ).zone();
             });
         });
+    }
+
+    /**
+     * Validate if restaurants exist
+     */
+    countOrders():void{
+        let _lOrdersInProcess: number = Orders.collection.find( { status: 'ORDER_STATUS.IN_PROCESS' } ).count();
+        let _lOrdersCanceled: number = Orders.collection.find( { status: 'ORDER_STATUS.CANCELED', markedToCancel: true } ).count();
+        let _lOrdersCanceledByAdmin: number = Orders.collection.find( { status: 'ORDER_STATUS.CANCELED', canceled_by_penalization: false } ).count();
+        ( _lOrdersInProcess > 0 || _lOrdersCanceled > 0 || _lOrdersCanceledByAdmin > 0 ) ? this._thereAreOrders = true : this._thereAreOrders = false;
     }
 
     /**
@@ -136,7 +156,7 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
           tables : table_id,
           user : this._user,
           waiter_id : "",
-          status : "PREPARED",
+          status : "waiting",
           type : "SEND_ORDER",
           order_id : _pOrder._id
         }
@@ -144,15 +164,85 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
         this._loading = true;
         setTimeout(() => {
           MeteorObservable.call('findQueueByRestaurant', data).subscribe(() => {
-            Orders.update( { _id: _pOrder._id }, 
-                           { $set: { status: 'ORDER_STATUS.PREPARED',
-                                     modification_user: this._user, 
-                                     modification_date: new Date() 
-                                   } 
-                           }
-                         );
+            Orders.update({ _id: _pOrder._id }, { $set: { status: 'ORDER_STATUS.PREPARED', modification_user: this._user, modification_date: new Date() } });
             this._loading = false;
+            let _lMessage: string = this.itemNameTraduction( 'ORDER_ATTENTION.ORDER_PREPARED_MSG' );
+            this.snackBar.open( _lMessage, '', { duration: 2500 } );
+          }, (error) => {
+            this.openDialog(this.titleMsg, '', error.reason, '', this.btnAcceptLbl, false);
           });
+        }, 1500);
+    }
+
+    /**
+     * Return traduction
+     * @param {string} itemName 
+     */
+    itemNameTraduction(itemName: string): string {
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res;
+        });
+        return wordTraduced;
+    }
+
+    /**
+     * Function to validate if user order was processed to canceled
+     * @param {Order}_pOrder
+     */
+    orderMarkedToCancel( _pOrder:Order ):boolean{
+        if( _pOrder.markedToCancel !== undefined && _pOrder.markedToCancel !== null ){
+            if( _pOrder.markedToCancel === true && _pOrder.status === 'ORDER_STATUS.CANCELED' ){
+                return true;
+            } else {
+                return false;
+            }
+        } else if( _pOrder.canceled_by_penalization !== undefined && _pOrder.canceled_by_penalization !== null ){
+            if( _pOrder.canceled_by_penalization === false && _pOrder.status === 'ORDER_STATUS.CANCELED' ){
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Function to delete order from the chef screen
+     * @param {Order} _pOrder 
+     */
+    deleteOrder( _pOrder:Order ):void{
+        if( !Meteor.userId() ){
+            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+            return;
+        }
+
+        this._loading = true;
+        setTimeout(() => {
+            if( _pOrder.markedToCancel !== undefined && _pOrder.markedToCancel !== null ){
+                if( _pOrder.markedToCancel === true && _pOrder.status === 'ORDER_STATUS.CANCELED' ){
+                    Orders.update( { _id: _pOrder._id }, 
+                        { $set: { markedToCancel: false,
+                            modification_user: this._user, 
+                            modification_date: new Date() 
+                        } 
+                    });
+                }
+            } else if( _pOrder.canceled_by_penalization !== undefined && _pOrder.canceled_by_penalization !== null ){
+                if( _pOrder.canceled_by_penalization === false && _pOrder.status === 'ORDER_STATUS.CANCELED' ){
+                    Orders.update( { _id: _pOrder._id }, 
+                        { $set: { canceled_by_penalization: true,
+                            modification_user: this._user, 
+                            modification_date: new Date() 
+                        } 
+                    });
+                }
+            }
+            this._loading = false;
+            let _lMessage: string = this.itemNameTraduction( 'ORDER_ATTENTION.ORDER_DELETED' );
+            this.snackBar.open( _lMessage, '', { duration: 2500 } );
         }, 1500);
     }
 

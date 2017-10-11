@@ -1,15 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { App, AlertController, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 
-import { SettingsPage } from './settings/settings';
-import { PaymentsHistoryPage } from './payments-history/payments-history';
-import { InitialComponent } from '../../auth/initial/initial';
-import { Users } from 'qmo_web/both/collections/auth/user.collection';
-import { User } from 'qmo_web/both/models/auth/user.model';
+import { WaiterCallPage } from '../waiter-call/waiter-call';
+import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
+import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-call-detail.collection';
+
 import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { ChangeTablePage } from './table-change/table-change';
+import { RestaurantExitPage } from './restaurant-exit/restaurant-exit';
 
 @Component({
   selector: 'page-options',
@@ -17,29 +18,31 @@ import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/
 })
 export class OptionsPage implements OnInit, OnDestroy {
 
-  private _userSubscription: Subscription;
-  private _user: User;
+  private _userDetailSubscription: Subscription;
+  private _waiterCallDetailSubscription: Subscription;
   private _userName: string;
-  private _imageProfile: string;
-  private _userObservable;
-   
-   /**
-    * OptionsPage constructor
-    * @param _navCtrl 
-    * @param _navParams 
-    * @param _app 
-    * @param _alertCtrl 
-    * @param _loadingCtrl 
-    * @param _translate 
-    * @param _userLanguageService 
-    */
-  constructor(public _navCtrl: NavController, 
-              public _navParams: NavParams, 
-              public _app : App,
-              public _alertCtrl: AlertController,
-              public _loadingCtrl: LoadingController,
-              private _translate: TranslateService,
-              private _userLanguageService: UserLanguageService) {
+  private _userDetail: any;
+  private _waiterCallsDetails: any;
+  private _showWaiterAlert: boolean = false;
+
+  /**
+   * OptionsPage constructor
+   * @param _navCtrl 
+   * @param _navParams 
+   * @param _app 
+   * @param _alertCtrl 
+   * @param _loadingCtrl 
+   * @param _translate 
+   * @param _userLanguageService 
+   */
+  constructor( public _navCtrl: NavController,
+               public _navParams: NavParams,
+               public _app: App,
+               public _alertCtrl: AlertController,
+               public _loadingCtrl: LoadingController,
+               private _ngZone: NgZone,
+               private _translate: TranslateService,
+               private _userLanguageService: UserLanguageService ) {
     _translate.setDefaultLang('en');
   }
 
@@ -47,124 +50,63 @@ export class OptionsPage implements OnInit, OnDestroy {
    * ngOnInit implementation
    */
   ngOnInit() {
-    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-
-    this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() =>{
-        this._user = Users.collection.findOne({_id: Meteor.userId()});
-        if(this._user.username){
-          this._userName = this._user.username;
-        }
-        else if(this._user.profile.name) {
-          this._userName = this._user.profile.name;
-        }
-        if(this._user.services.facebook){
-          this._imageProfile = "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
-        }
-        else if(this._user.services.twitter){
-          this._imageProfile = this._user.services.twitter.profile_image_url;
-        }
-        else if(this._user.services.google){
-          this._imageProfile = this._user.services.google.picture;
-        } else {
-          this._imageProfile = "assets/img/user_default_image.png";
-        }
-        this._userObservable = Users.find({}).zone();
-        
-    });
-
+    this.init();
   }
 
   /**
    * ionViewWillEnter implementation
    */
   ionViewWillEnter() {
-    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+    this.init();
+  }
 
-    this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() =>{
-        this._user = Users.collection.findOne({_id: Meteor.userId()});
-        if(this._user.username){
-          this._userName = this._user.username;
-        }
-        else if(this._user.profile.name) {
-          this._userName = this._user.profile.name;
-        }
-        if(this._user.services.facebook){
-          this._imageProfile = "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
-        }
-        else if(this._user.services.twitter){
-          this._imageProfile = this._user.services.twitter.profile_image_url;
-        }
-        else if(this._user.services.google){
-          this._imageProfile = this._user.services.google.picture;
-        } else {
-          this._imageProfile = "assets/img/user_default_image.png";
-        }
-        this._userObservable = Users.find({}).zone();
-        
+  init() {
+    this.removeSubscriptions();
+    this._translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+    this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe( () => {
+      this._ngZone.run( () => {
+        this._userDetail = UserDetails.findOne( { user_id: Meteor.userId() } );
+      });
+    });
+    this._waiterCallDetailSubscription = MeteorObservable.subscribe('countWaiterCallDetailByUsrId', Meteor.userId()).subscribe( () => {
+      this._ngZone.run( () => {
+        this._waiterCallsDetails = WaiterCallDetails.find( { user_id : Meteor.userId(), type: 'CALL_OF_CUSTOMER', restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] } } ).zone();
+        this.countWaiterCalls(); 
+        this._waiterCallsDetails.subscribe( () => { this.countWaiterCalls(); } );
+      });
     });
   }
 
   /**
-   * This method is responsible for go to settings option
+   * Count Waiter Calls
    */
-  goToSettings(){
-    this._navCtrl = this._app.getRootNav();
-    this._navCtrl.push(SettingsPage);
+  countWaiterCalls():void{
+    let _lWaiterCalls:number = WaiterCallDetails.collection.find( { user_id : Meteor.userId(), type: 'CALL_OF_CUSTOMER', restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] } } ).count();    
+    _lWaiterCalls > 0 ? this._showWaiterAlert = true : this._showWaiterAlert = false;
   }
 
   /**
    * This method is responsible for go to payments history option
    */
-  goToPaymentsHistory(){
-    this._navCtrl = this._app.getRootNav();
-    this._navCtrl.push(PaymentsHistoryPage);
+  goToWaiterCall() {
+    //this._navCtrl = this._app.getRootNav();
+    this._navCtrl.push(WaiterCallPage);
   }
 
   /**
-   * Function that allows show Signout comfirm dialog
-   * @param { any } _call 
+   * This method go to change table 
    */
-  showComfirmSignOut( _call : any) {
-    let btn_no  = this.itemNameTraduction('MOBILE.SIGN_OUT.NO_BTN'); 
-    let btn_yes = this.itemNameTraduction('MOBILE.SIGN_OUT.YES_BTN'); 
-    let title   = this.itemNameTraduction('MOBILE.SIGN_OUT.TITLE_CONFIRM'); 
-    let content = this.itemNameTraduction('MOBILE.SIGN_OUT.CONTENT_CONFIRM'); 
-
-    let prompt = this._alertCtrl.create({
-      title: title,
-      message: content,
-      buttons: [
-        {
-          text: btn_no,
-          handler: data => {
-          }
-        },
-        {
-          text: btn_yes,
-          handler: data => {
-            this.signOut();
-          }
-        }
-      ]
-    });
-    prompt.present();
+  goToChangeTable() {
+    //let userDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+    this._navCtrl.push(ChangeTablePage, { res_id: this._userDetail.current_restaurant, table_id: this._userDetail.current_table });
   }
 
   /**
-   * User account sign out
-   */
-  signOut(){
-    let loading_msg = this.itemNameTraduction('MOBILE.SIGN_OUT.LOADING'); 
-    
-    let loading = this._loadingCtrl.create({
-      content: loading_msg
-    });
-    loading.present();
-    setTimeout(() => {
-      loading.dismiss();
-      this._app.getRootNav().setRoot(InitialComponent);
-      Meteor.logout();
-    }, 1500);
+  * This method go to restaurant exit
+  */
+  goToRestaurantExit() {
+    //let userDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+    this._navCtrl.push(RestaurantExitPage, { res_id: this._userDetail.current_restaurant, table_id: this._userDetail.current_table });
   }
 
   /**
@@ -174,7 +116,7 @@ export class OptionsPage implements OnInit, OnDestroy {
   itemNameTraduction(_itemName: string): string {
     var wordTraduced: string;
     this._translate.get(_itemName).subscribe((res: string) => {
-        wordTraduced = res;
+      wordTraduced = res;
     });
     return wordTraduced;
   }
@@ -183,14 +125,22 @@ export class OptionsPage implements OnInit, OnDestroy {
    * ionViewWillLeave implementation
    */
   ionViewWillLeave() {
-    this._userSubscription.unsubscribe();
+    this.removeSubscriptions();
   }
 
   /**
    * ngOnDestroy Implementation
    */
-  ngOnDestroy(){
-    this._userSubscription.unsubscribe();
+  ngOnDestroy() {
+    this.removeSubscriptions();
+  }
+
+  /**
+   * Remove all subscription
+   */
+  removeSubscriptions() {
+    if( this._userDetailSubscription ){ this._userDetailSubscription.unsubscribe(); }
+    if( this._waiterCallDetailSubscription ){ this._waiterCallDetailSubscription.unsubscribe(); }
   }
 
 }

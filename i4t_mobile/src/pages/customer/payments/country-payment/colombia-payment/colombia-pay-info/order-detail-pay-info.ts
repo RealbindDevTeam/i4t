@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs'
 import { Subscription } from 'rxjs';
 import { Addition } from 'qmo_web/both/models/administration/addition.model';
@@ -29,16 +29,19 @@ export class OrderDetailPayInfoPage implements OnInit, OnDestroy {
   private _garnishFoodSubscription : Subscription;
   private _restaurantSubscription  : Subscription;
   private _currencyId  : string;
-  private _orders      : any;
+  private _order      : any;
   private _additions   : any;
   private _garnishFood : any;
 
-  constructor(){
+  constructor(private _ngZone : NgZone){
   }
 
   ngOnInit(){
+    //this.removeSubscriptions();
     this._ordersSubscription = MeteorObservable.subscribe( 'getOrderById', this.orderId ).subscribe(()=>{
-      this._orders = Orders.find({_id : this.orderId});
+      this._ngZone.run(()=>{
+        this._order = Orders.findOne({_id : this.orderId});
+      });
     });
     this._additionsSubscription = MeteorObservable.subscribe( 'additionsByRestaurant', this.restaurantId ).subscribe( () => {
       this._additions = Additions.find({});
@@ -92,10 +95,17 @@ export class OrderDetailPayInfoPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    this._ordersSubscription.unsubscribe();
-    this._additionsSubscription.unsubscribe();
-    this._garnishFoodSubscription.unsubscribe();
-    this._restaurantSubscription.unsubscribe();
+    this.removeSubscriptions();
+  }
+
+  /**
+   * Remove all subscriptions
+   */
+  removeSubscriptions():void{
+    if( this._ordersSubscription ){ this._ordersSubscription.unsubscribe(); }
+    if( this._additionsSubscription ){ this._additionsSubscription.unsubscribe(); }
+    if( this._garnishFoodSubscription ){ this._garnishFoodSubscription.unsubscribe(); }
+    if( this._restaurantSubscription ){ this._restaurantSubscription.unsubscribe(); }
   }
 
 }

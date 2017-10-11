@@ -1,4 +1,4 @@
-<md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" *ngIf="(_ordersInProcess | async)?.length <= 0">
+<md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" *ngIf="!_thereAreOrders">
     <md-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
@@ -16,9 +16,9 @@
     </md-card-content>
 </md-card>
 
-<div class="order-content"  *ngIf="(_ordersInProcess | async)?.length > 0">
+<div class="order-content"  *ngIf="_thereAreOrders">
     <md-toolbar *ngFor="let order of _ordersInProcess | async;" class="order" (click)="showOrderInProcessDetail(order)">
-        <i class="fa fa-list-alt" aria-hidden="true" style="margin-right: 1%;"></i>
+        <img style="width: 3rem;" src="/images/my-orders.png">
         <span class="order-code">{{'ORDER_ATTENTION.ORDER' | translate}} # {{order.code}}</span>
         <span class="app-flex-filler"></span>
         <span *ngFor="let table of _tables | async">
@@ -26,15 +26,40 @@
                 <span class="order-table">{{'ORDER_ATTENTION.TABLE' | translate}} {{table._number}}</span>
             </ng-template>
         </span>
+        <md-icon>keyboard_arrow_right</md-icon>
+    </md-toolbar>
+    <md-toolbar *ngFor="let order of _ordersCanceled | async;" class="order" (click)="showOrderInProcessDetail(order)">
+        <img style="width: 3rem;" src="/images/others-orders.png">
+        <span class="order-code">{{'ORDER_ATTENTION.ORDER' | translate}} # {{order.code}} <span style="color:red" *ngIf="order.status === 'ORDER_STATUS.CANCELED'">- {{order.status | translate}}</span></span>
+        <span class="app-flex-filler"></span>
+        <span *ngFor="let table of _tables | async">
+            <ng-template [ngIf]="table._id === order.tableId">
+                <span class="order-table">{{'ORDER_ATTENTION.TABLE' | translate}} {{table._number}}</span>
+            </ng-template>
+        </span>
+        <md-icon>keyboard_arrow_right</md-icon>
+    </md-toolbar>
+    <md-toolbar *ngFor="let order of _ordersCanceledByAdmin | async;" class="order" (click)="showOrderInProcessDetail(order)">
+        <img style="width: 3rem;" src="/images/others-orders.png">
+        <span class="order-code">{{'ORDER_ATTENTION.ORDER' | translate}} # {{order.code}} <span style="color:red" *ngIf="order.status === 'ORDER_STATUS.CANCELED'">- {{order.status | translate}}</span></span>
+        <span class="app-flex-filler"></span>
+        <span *ngFor="let table of _tables | async">
+            <ng-template [ngIf]="table._id === order.tableId">
+                <span class="order-table">{{'ORDER_ATTENTION.TABLE' | translate}} {{table._number}}</span>
+            </ng-template>
+        </span>
+        <md-icon>keyboard_arrow_right</md-icon>
     </md-toolbar>
 </div>
-<div class="order-detail" *ngIf="(_ordersInProcess | async)?.length > 0">
+<div class="order-detail" *ngIf="_thereAreOrders">
     <md-card>
         <md-card-title *ngIf="!_showDetailsInProcess" class="message">{{'ORDER_ATTENTION.MESSAGE' | translate}}</md-card-title>
         <div *ngIf="_showDetailsInProcess">
             <div *ngFor="let order of _ordersInProcessDetail | async;">
                 <md-card-title class="title">{{'ORDER_ATTENTION.TITLE' | translate}} # {{order.code}}</md-card-title>
-                <button md-raised-button class="primary-button prepared-button" (click)="setPreparedState(order)">{{'ORDER_ATTENTION.ORDER_PREPARED' | translate}}</button>
+                <button md-raised-button *ngIf="!orderMarkedToCancel(order)" class="primary-button prepared-button" (click)="setPreparedState(order)">{{'ORDER_ATTENTION.ORDER_PREPARED' | translate}}</button>
+                <button md-raised-button *ngIf="orderMarkedToCancel(order)" class="primary-button prepared-button" (click)="deleteOrder(order)">{{'ORDER_ATTENTION.DELETE_ORDER' | translate}}</button>
+                <p *ngIf="orderMarkedToCancel(order)" class="waiter-cancel-order-msg">{{'ORDER_ATTENTION.ORDER_CANCELED_MSG' | translate}}</p>
                 <md-card-content>
                     <md-divider></md-divider>
                     <span *ngFor="let item of _items | async">

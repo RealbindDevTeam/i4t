@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MdDialogRef, MdDialog } from '@angular/material';
@@ -27,6 +27,7 @@ import style from './collaborators.component.scss';
 })
 export class CollaboratorsComponent implements OnInit, OnDestroy{
 
+    private _user = Meteor.userId();
     private _restaurants            : Observable<Restaurant[]>;
     private _userDetails            : Observable<UserDetail[]>;
     private _users                  : Observable<User[]>;
@@ -42,6 +43,7 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
     private _mdDialogRef            : MdDialogRef<any>;
     private titleMsg                : string;
     private btnAcceptLbl            : string;
+    private _thereAreRestaurants    : boolean = true;
 
     /**
      * CollaboratorsComponent Constructor
@@ -56,7 +58,8 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
                  private _translate: TranslateService, 
                  public _dialog: MdDialog,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog )
+                 protected _mdDialog: MdDialog,
+                 private _ngZone: NgZone )
     {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
@@ -72,10 +75,25 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
         this._form = new FormGroup({
             restaurant: new FormControl('', [Validators.required]),
         });
-        this._restaurants = Restaurants.find({}).zone();
-        this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
-        this._roles = Roles.find({}).zone();
-        this._roleSub = MeteorObservable.subscribe('getRoleCollaborators').subscribe();
+        this._restaurantSub = MeteorObservable.subscribe('restaurants', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._restaurants = Restaurants.find({}).zone();
+                this.countRestaurants();
+                this._restaurants.subscribe( () => { this.countRestaurants(); } );
+            });
+        });
+        this._roleSub = MeteorObservable.subscribe('getRoleCollaborators').subscribe( () => {
+            this._ngZone.run( () => {
+                this._roles = Roles.find({}).zone();
+            });
+        });
+    }
+
+    /**
+     * Validate if restaurants exists
+     */
+    countRestaurants():void{
+        Restaurants.collection.find( { } ).count() > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
     }
 
     /**

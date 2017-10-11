@@ -4,18 +4,18 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-    <ion-card style="margin: 0; width: 100%;">
+<ion-content  text-wrap>
+    <ion-card>
         <ion-card-content>
-            <div class="display-inline">
-                <ion-avatar item-left>
-                    <img class="img-cards" src="assets/img/restaurante.png">
-                </ion-avatar>
-                <div style="display: block">
-                    <h2 style="width: 80%;">{{_invoice.restaurant_name}}</h2>
+            <ion-list no-lines>
+                <ion-item>
+                    <ion-avatar item-start>
+                        <img src="assets/img/restaurant-pay-detail.png">
+                    </ion-avatar>
+                    <h2>{{_invoice.restaurant_name}}</h2>
                     <p>{{_invoice.creation_date | date: 'dd MMM yyyy HH:mm'}}</p>
-                </div>
-            </div>
+                </ion-item>
+            </ion-list>
     
             <ion-item-group *ngFor="let item of _invoice.items">
                 <ion-item>

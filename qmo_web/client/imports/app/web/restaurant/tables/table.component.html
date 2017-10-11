@@ -1,5 +1,5 @@
 <!--md-card *ngIf="(tables | async)?.length <= 0" md-cell="12" class="demo-card demo-basic"-->
-<md-card *ngIf="(restaurants | async)?.length <= 0" md-cell="12" class="demo-card demo-basic">
+<md-card *ngIf="!_thereAreRestaurants" md-cell="12" class="demo-card demo-basic">
     <md-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
@@ -23,7 +23,7 @@
     </md-card-content>
 </md-card>
 
-<div *ngIf="(tables | async)?.length > 0" style="width: 100%">
+<div *ngIf="_thereAreTables" style="width: 100%">
     <md-card>
         <md-card-title>{{'TABLES.TABLES_SEARCH' | translate}}</md-card-title>
         <md-card-subtitle>{{'TABLES.SEARCH_TABLES' | translate}}</md-card-subtitle>

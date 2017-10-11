@@ -1,15 +1,17 @@
-<div style="border-bottom: 0.55px solid #c8c7cc; width: 90%; margin: auto;"></div>
-<ion-item>
-    <ion-thumbnail item-left>
-        <img src="assets/img/my-orders.png">
-    </ion-thumbnail>
-    <div *ngIf="ordersConfirm">
-        <h2>{{'MOBILE.ORDERS.ORDER' | translate}}{{orderCon.code}}</h2> 
-        <p>{{'MOBILE.ORDERS.TOTAL' | translate}}{{orderCon.totalPayment}} {{_currency}}</p>
-    </div>
-    <div *ngIf="!ordersConfirm">
-        <h2>{{'MOBILE.ORDERS.ORDER' | translate}}{{orderCon.code}}</h2> 
-        <p>{{orderCon.status | translate}}</p>
-    </div>
-    <button *ngIf="ordersConfirm" ion-button color="light" small item-right (click)="showConfirm(orderCon)">{{'MOBILE.ORDERS.CONFIRM' | translate}}</button>
-</ion-item>
+<ion-list>
+    <button ion-item>
+        <ion-thumbnail item-start>
+            <img src="assets/img/my-orders.png" style="width: 50px; height: 50px;">
+        </ion-thumbnail>
+
+        <h2 *ngIf="ordersConfirm">{{'MOBILE.ORDERS.ORDER' | translate}}{{orderCon.code}}</h2> 
+        <p *ngIf="ordersConfirm">{{'MOBILE.ORDERS.TOTAL' | translate}}{{orderCon.totalPayment}} {{_currency}}</p>
+
+        <h2 *ngIf="!ordersConfirm">{{'MOBILE.ORDERS.ORDER' | translate}}{{orderCon.code}}</h2> 
+        <p *ngIf="!ordersConfirm">{{orderCon.status | translate}}</p>
+
+        <ion-icon showWhen="android" name="ios-arrow-forward" style="color: gray;" item-end></ion-icon>
+    </button>
+</ion-list>
+
+   

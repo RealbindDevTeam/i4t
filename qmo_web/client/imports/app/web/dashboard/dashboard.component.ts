@@ -5,8 +5,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../shared/services/user-language.service';
-import { Restaurant, RestaurantImageThumb } from '../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants, RestaurantImageThumbs } from '../../../../../both/collections/restaurant/restaurant.collection';
+import { Restaurant, RestaurantImage, RestaurantImageThumb } from '../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants, RestaurantImages, RestaurantImageThumbs } from '../../../../../both/collections/restaurant/restaurant.collection';
 import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
 import { Tables } from '../../../../../both/collections/restaurant/table.collection';
 import { Items } from '../../../../../both/collections/administration/item.collection';
@@ -30,6 +30,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private _user = Meteor.userId();
 
   private _restaurants            : Observable<Restaurant[]>;
+  private _restaurantImages       : Observable<RestaurantImage[]>;
 
   private _restaurantsSub         : Subscription;
   private _restaurantImgThumbSub  : Subscription;
@@ -39,11 +40,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private _paymentsSub            : Subscription;
   private _ordersSub              : Subscription;
   private _currenciesSub          : Subscription;
+  private _restaurantImagesSub    : Subscription;
 
   private _currentDate            : Date = new Date();
   private _currentDay             : number = this._currentDate.getDate();
   private _currentMonth           : number = this._currentDate.getMonth();
   private _currentYear            : number = this._currentDate.getFullYear();
+  private _thereAreRestaurants    : boolean = true;
 
   /**
    * DashboardComponent Constructor
@@ -69,6 +72,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this._restaurantsSub = MeteorObservable.subscribe( 'getActiveRestaurants', this._user ).subscribe( () => {
       this._ngZone.run( () => {
         this._restaurants = Restaurants.find( { } ).zone();
+        this.countResturants();
+        this._restaurants.subscribe( () => { this.countResturants(); } );
         Restaurants.collection.find( { } ).fetch().forEach( ( restaurant:Restaurant ) => {
           _lRestaurantsId.push( restaurant._id );
         });
@@ -81,6 +86,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
     });
     this._tablesSub = MeteorObservable.subscribe( 'tables', this._user ).subscribe();
+    this._restaurantImagesSub = MeteorObservable.subscribe('restaurantImages', this._user).subscribe( () => {
+      this._ngZone.run( () => {
+          this._restaurantImages = RestaurantImages.find({}).zone();
+      });
+    });
+  }
+
+  /**
+   * Validate if restaurants exists
+   */
+  countResturants():void{
+    Restaurants.collection.find( { } ).count() > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
   }
 
   /**
@@ -95,6 +112,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if( this._paymentsSub ){ this._paymentsSub.unsubscribe(); }
     if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
     if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
+    if( this._restaurantImagesSub ){ this._restaurantImagesSub.unsubscribe(); }
   }
 
   /**
@@ -220,6 +238,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
     });
     return _lAdditions;
+  }
+
+  /**
+     * Get Restaurant Image
+     * @param {string} _pRestaurantId
+     */
+    getRestaurantImage(_pRestaurantId: string): string {
+      let _lRestaurantImage: RestaurantImage = RestaurantImages.findOne({ restaurantId: _pRestaurantId });
+      if (_lRestaurantImage) {
+          return _lRestaurantImage.url
+      } else {
+          return '/images/default-restaurant.png';
+      }
   }
 
   /**

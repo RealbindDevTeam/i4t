@@ -30,6 +30,7 @@ import style from './send-order-confirm.component.scss';
 })
 export class SendOrderConfirmComponent implements OnInit, OnDestroy{
 
+    private _user = Meteor.userId();
     public call                 : WaiterCallDetail;
 
     private _ordersSub          : Subscription;
@@ -144,7 +145,7 @@ export class SendOrderConfirmComponent implements OnInit, OnDestroy{
     closeCall():void{
         this._loading = true;
         setTimeout(() => {
-            MeteorObservable.call( 'closeCall', this.call, Meteor.userId() ).subscribe(() => {
+            MeteorObservable.call( 'closeCall', this.call, this._user ).subscribe(() => {
                 this._loading = false;
                 this.close();
             });

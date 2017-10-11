@@ -32,8 +32,8 @@
     "OTHER": "Other...",
     "SIGN_OUT": "Sign Out",
     "VALUE": "Value",
-    "CHOOSE_A_DATE" : "Choose a date",
-    "UPLOAD_IMG_ERROR" : "Upload image error. Only accept .png, .jpg, .jpeg files.",
+    "CHOOSE_A_DATE": "Choose a date",
+    "UPLOAD_IMG_ERROR": "Upload image error. Only accept .png, .jpg, .jpeg files.",
     "LOGIN_SYSTEM_OPERATIONS_MSG": "Please log in to perform system operations",
     "YES": "Yes",
     "NO": "No",
@@ -101,7 +101,10 @@
         "SYSTEM_MSG": "System message",
         "USER_PASS_INCORRECT": "Username and/or password are incorrect, please check the entered info and try again",
         "ERROR": "An error has occurred starting session",
-        "ACCEPT": "Accept"
+        "ACCEPT": "Accept",
+        "USER_NO_ACTIVE": "You user is not activated. Please you contact the admin",
+        "RESTAURANT_NO_ACTIVE": "The restaurant is not activated. Please you contact the admin",
+        "DONT_ACCOUNT": "No account?"
     },
     "RESET_PASWORD": {
         "TITLE": "Reset password",
@@ -118,14 +121,17 @@
         "NO_RESTAURANT": "No restaurant selected",
         "RESTAURANT_SECTION": "Select the restaurants where the section is available",
         "NO_RESTAURANT_CREATED": "There are no restaurants created on the platform",
-        "MODIFY": "Modificar",
+        "MODIFY": "Edit",
         "ACTIVATE": "Activate",
         "INACTIVATE": "Inactivate",
         "SECTION_CREATED": "Section Created Correctly",
         "SECTION_EDITED": "Edited Section Correctly",
         "THERE_NOT_RESTAURANTS": "No restaurants yet register",
         "RESTAURANT_REGISTER": "Restaurant register",
-        "MESSAGE": "Register one to enable this option"
+        "MESSAGE": "Register one to enable this option",
+        "WARNING": "Warning: You have ",
+        "WARNING_2": "active users in your restaurants",
+        "WARNING_3": "Edit a section's configuration could affect the experience of the users"
     },
     "CATEGORIES": {
         "CATEGORIES_CREATION": "Categories creation",
@@ -137,7 +143,10 @@
         "ACTIVATE": "Activate",
         "INACTIVATE": "Inactivate",
         "CATEGORY_CREATED": "Category Created Correctly",
-        "CATEGORY_EDITED": "Edited Category Correctly"
+        "CATEGORY_EDITED": "Edited Category Correctly",
+        "WARNING": "Warning: You have ",
+        "WARNING_2": "active users in your restaurants",
+        "WARNING_3": "Edit a category's configuration could affect the experience of the users"
     },
     "SUBCATEGORIES": {
         "SUBCATEGORY_CREATION": "Subcategories creation",
@@ -150,7 +159,10 @@
         "ACTIVATE": "Activate",
         "INACTIVATE": "Inactivate",
         "SUBCATEGORY_CREATED": "Subcategory Created Correctly",
-        "SUBCATEGORY_EDITED": "Edited Subcategory Correctly"
+        "SUBCATEGORY_EDITED": "Edited Subcategory Correctly",
+        "WARNING": "Warning: You have ",
+        "WARNING_2": "active users in your restaurants",
+        "WARNING_3": "Edit a subcategory's configuration could affect the experience of the users"
     },
     "ADDITIONS": {
         "ADDITION_CREATION": "Additions creation",
@@ -169,7 +181,10 @@
         "TAXES": "Taxes",
         "PRICES": "Prices",
         "ADDITION_CREATED": "Adition Created Correctly",
-        "ADDITION_EDITED": "Edited Adition Correctly"
+        "ADDITION_EDITED": "Edited Adition Correctly",
+        "WARNING": "Warning: You have ",
+        "WARNING_2": "active users in your restaurants",
+        "WARNING_3": "Edit an addition's configuration could affect the experience of the users"
     },
     "SETTINGS": {
         "TITTLE": "Settings",
@@ -202,7 +217,8 @@
             "RESTAURANTS": "Restaurants",
             "TABLES": "Tables Search",
             "COLLABORATORS": "Collaborators",
-            "MONTHLY_CONFIG": "Monthly config"
+            "MONTHLY_CONFIG": "Monthly config",
+            "TABLE_CONTROL": "Tables Control"
         },
         "PAYMENTS": {
             "PAYMENTS": "Payments",
@@ -258,7 +274,10 @@
         "TAXES": "Taxes",
         "PRICES": "Prices",
         "GARNISH_FOOD_CREATED": "Garnish Food Created Correctly",
-        "GARNISH_FOOD_EDITED": "Edited Garnish Food Correctly"
+        "GARNISH_FOOD_EDITED": "Edited Garnish Food Correctly",
+        "WARNING": "Warning: You have ",
+        "WARNING_2": "active users in your restaurants",
+        "WARNING_3": "Edit a garnishes configuration could affect the experience of the users"
     },
     "RESTAURANT_REGISTER": {
         "SELECT_COUNTRY": "Select Country",
@@ -310,7 +329,8 @@
         "THURSDAY": "Thursday",
         "FRIDAY": "Friday",
         "SATURDAY": "Saturday",
-        "SUNDAY": "Sunday"
+        "SUNDAY": "Sunday",
+        "HOLIDAY": "Holiday"
     },
     "PAYMENT_METHODS": {
         "CASH": "Cash",
@@ -457,7 +477,18 @@
         "EMAIL": "Email",
         "MSG_INITIAL": "Manage your restaurant information",
         "CITY_OTHER": "If the city of your restaurant is not in the cities option, you can specify it in the next field",
-        "WHICH_ONE": "Which one?"
+        "WHICH_ONE": "Which one?",
+        "INSTAGRAM_LINK_UPDATED": "Instagram Link Updated",
+        "TWITTER_LINK_UPDATED": "Twitter Link Updated",
+        "FACEBOOK_LINK_UPDATED": "Facebook Link Updated",
+        "ADD_INSTAGRAM_LINK": "Add the link of your page to Instagram so your customers can see it",
+        "INSTAGRAM_LINK": "Link to your page on Instagram",
+        "ADD_TWITTER_LINK": "Add the link of your page to Twitter so your customers can see it",
+        "TWITTER_LINK": "Link to your page on Twitter",
+        "ADD_FACEBOOK_LINK": "Add the link of your page to Facebook so your customers can see it",
+        "FACEBOOK_LINK": "Link to your page on Facebook",
+        "RESTAURANT_INACTIVE": "Inactive Restaurant",
+        "RESTAURANT_ACTIVE": "Active Restaurant"
     },
     "TABLES": {
         "TABLES_CREATION": "Creating tables",
@@ -509,7 +540,11 @@
         "MESSAGE_NOT_LOGIN": "Please log in to add a restaurant",
         "SELECT_RANGE_VALID_TABLES": "Select a valid range of the tables",
         "TABLES_ASSIGNMENT": "Assignment of tables",
-        "MESSAGE_COLLABORATOR_EDIT": "Collaborator updated successfully"
+        "MESSAGE_COLLABORATOR_EDIT": "Collaborator updated successfully",
+        "USER_EXISTS": "The user is already in use. Please enter another username.",
+        "USERS_ROL": "Users with the role ",
+        "PREFIX": " must have the prefix ",
+        "USER_NAME_WILL_BE": "The username will be "
     },
     "ITEMS": {
         "ITEMS_MANAGEMENT": "Item management",
@@ -555,7 +590,10 @@
         "SELECT_ALL_GARNISH_FOOD": "Select All Garnish Food",
         "SELECT_ALL_ADDITIONS": "Select All Additions",
         "ITEM_EDITED": "Item Edited Correctly",
-        "GARNISHFOOD_QUANTITY_MSG": "The number of garnish food must be different from 0"
+        "GARNISHFOOD_QUANTITY_MSG": "The number of garnish food must be different from 0",
+        "WARNING": "Warning: You have ",
+        "WARNING_2": "active users in your restaurants",
+        "WARNING_3": "Edit an item configuration could affect the experience of the users"
     },
     "ROLE": {
         "ADMINISTRATOR": "Administrator",
@@ -576,6 +614,7 @@
         "FRIDAY": "Friday",
         "SATURDAY": "Saturday",
         "SUNDAY": "Sunday",
+        "HOLIDAY": "Holiday",
         "MONDAY_LETTER": "Mo",
         "TUESDAY_LETTER": "Tu",
         "WEDNESDAY_LETTER": "We",
@@ -583,6 +622,7 @@
         "FRIDAY_LETTER": "Fr",
         "SATURDAY_LETTER": "Sa",
         "SUNDAY_LETTER": "Su",
+        "HOLIDAY_LETTER": "Ho",
         "ADD_SCHEDULE": "Add to Schedule",
         "WEEKDAY": "Weekday",
         "OPENING_HOUR": "Opening Hour",
@@ -636,10 +676,10 @@
         "TEXT": "Enter the location of the establishment so that customers can locate you better",
         "UPDATE_POSITION": "Update Position",
         "CLOSE": "Close",
-        "MSG_UPDATE_POSITION" : "The position of the restaurant has been updated"
+        "MSG_UPDATE_POSITION": "The position of the restaurant has been updated"
     },
     "RESTAURANT_INFO_MASTER": {
-        "TABLE_CODE": "Table Code",
+        "TABLE_CODE": "Table Number",
         "INFORMATION": "Information",
         "SCHEDULE": "Schedule",
         "LOCATION": "Location"
@@ -650,7 +690,7 @@
         "MESSAGE": "We are sorry. This establishment has not yet entered its current location"
     },
     "ORDER_CREATE": {
-        "PRICE": "Price",
+        "PRICE": "Unit Price",
         "VIEW_DETAIL": "See detail",
         "UNAVAILABLE": "Unavailable",
         "SELECT_ITEM": "Select an item to see detail",
@@ -664,7 +704,7 @@
         "ADDITIONS": "Additions",
         "SELECT_ADDITIONS": "Please select the desired additions",
         "TOTAL_PRICE": "Total Price",
-        "ADD_ITEM": "Add Item to Order",
+        "ADD_ITEM": "Add to Order",
         "SHOW_ALL": "Show All",
         "COOKING_TIME": "Cooking Time",
         "ADD_ADDITIONS": "Select the additions you wish to add to the order and indicate the quantity",
@@ -681,9 +721,10 @@
         "TOTAL": "Total",
         "STATUS": "Status",
         "PRICE": "Price",
+        "UNIT_PRICE": "Unit Price",
         "UNAVAILABLE": "Unavailable",
-        "CANCEL_ORDER": "Cancel Orden",
-        "CONFIRM_ORDER": "Confirm Orden",
+        "CANCEL_ORDER": "Cancel",
+        "CONFIRM_ORDER": "Confirm",
         "SELECT_ITEM": "Select an item to detail, edit or remove from the order",
         "QUANTITY": "Quantity",
         "ITEM_UNAVAILABLE": "At this time the item is not available to add to the order",
@@ -695,8 +736,8 @@
         "ADDITIONS": "Additions",
         "SELECT_ADDITIONS": "Please select the desired additions",
         "TOTAL_PRICE": "Total Price",
-        "MODIFY_ITEM": "Modify Item",
-        "DELETE_ITEM": "Delete Item",
+        "MODIFY_ITEM": "Modify",
+        "DELETE_ITEM": "Remove",
         "DELETE_ORDER": "Are you sure to delete the item from the order?",
         "CANCEL_ORDER_CONFIRM": "Are you sure to cancel the order?",
         "ORDER_CANT_CANCEL": "The order Can not be canceled.",
@@ -727,7 +768,7 @@
         "COLOMBIA": {
             "GARNISH_FOOD": "Garnish Food",
             "ADDITION": "Addition",
-            "ORDER_DETAILS": "View Order Details",
+            "ORDER_DETAILS": "Order Details",
             "PAY_ORDER": "Order",
             "SUBTOTAL": "SubTotal",
             "INC": "Inc",
@@ -791,7 +832,8 @@
         "CALL_LABEL_CUSTOMER": "Customer's call",
         "CALL_LABEL_CUSTOMER_PAYMENT": "Customer's payment",
         "BTN_CALL_WAITER": "Request waiter",
-        "BTN_CANCEL_WAITER": "Cancel"
+        "BTN_CANCEL_WAITER": "Cancel",
+        "CALL_LABEL_EXIT_TABLE": "User Output"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Orders Confirmed",
@@ -806,7 +848,11 @@
         "NO_ADDITIONS": "No Additions",
         "ADDITIONS": "Additions",
         "ADDITION": "Addition(s)",
-        "NO_ORDERS": "No orders yet to be prepared"
+        "NO_ORDERS": "No orders yet to be prepared",
+        "DELETE_ORDER": "DELETE ORDER",
+        "ORDER_CANCELED_MSG": "Customer order canceled",
+        "ORDER_PREPARED_MSG": "Order Prepared",
+        "ORDER_DELETED": "Order Deleted"
     },
     "FINANCIAL_INFO": {
         "COLOMBIA": {
@@ -832,7 +878,9 @@
         "ORDER": "Order",
         "TABLE_NO_ACTIVE": "The restaurant does not have this table active for the service of Iurest",
         "TABLE_NOT_EXISTS": "The table does not exist. Please check the code.",
-        "IUREST_NO_ACTIVE": "The restaurant does not have the Iurest service active. It is not possible to enter."
+        "IUREST_NO_ACTIVE": "The restaurant does not have the Iurest service active. It is not possible to enter.",
+        "RESTAURANT_NOT_EXISTS": "The restaurant does not exist. It is not possible to enter.",
+        "PENALTY": "At the moment you do not have available the option to create orders. Try again after "
     },
     "MONTHLY_PAYMENT": {
         "TITLE": "Iurest service invoicing",
@@ -861,7 +909,7 @@
         "TOTAL": "Total",
         "CONFIRM": "Confirm",
         "PENDING_ORDERS": "Look at the orders that are pending to be confirmed to add to your payment.",
-        "CONSULT_TABLE_ORDERS": "Consult Orders",
+        "CONSULT_TABLE_ORDERS": "Add Order",
         "CONSULT_TABLE_ORDERS_TITLE": "Table Orders",
         "CONSULT_TABLE_ORDERS_SUBTITLE_1": "Check the orders of your companions",
         "CONSULT_TABLE_ORDERS_SUBTITLE_2": "and select the ones you want to pay",
@@ -949,7 +997,7 @@
         "TITLE": "Payment method",
         "SUBTITLE": "Please, fill all the fields to do the payment ",
         "SELECT_METHOD": "Payment method *",
-        "CARD_NUMBER": "Card number *",
+        "CARD_NUMBER": "Card number (No spaces, no dashes)*",
         "EXPIRATION_YEAR": "Expiration year *",
         "EXPIRATION_MONTH": "Expiration month *",
         "SECURITY_CODE": "Security code *",
@@ -963,7 +1011,7 @@
         "SECURITY_CODE_REQUIRED": "- The code number cannot be empty",
         "BILLING_INFORMATION": "Billing information",
         "PAYER_EMAIL": "Email *",
-        "PAYER_FULLNAME": "First and last name *",
+        "PAYER_FULLNAME": "Name on card",
         "EMAIL_INVALID": "- Invalid email format",
         "EMAIL_MIN": "- The email must be at least 6 characters long",
         "EMAIL_MAX": "- The email cannot exceed 255 characters long",
@@ -998,15 +1046,19 @@
         "TRANSACTION_ERROR": "Error processing the transaction",
         "TRANSACTION_MSG": "You can go to the menu Payments > Payments History, to check the status of your payments",
         "PAY_ACCEPT": "Accept",
-        "AUTH_ERROR_MSG": "the entered card data does not match, please check it"
+        "AUTH_ERROR_MSG": "the entered card data does not match, please check it",
+        "FIRST_NAME": "Firstname",
+        "LAST_NAME": "Lastname",
+        "UNAVAILABLE_PAYMENT": "Payment option is not available at this moment, please try later"
     },
-    "PAYMENT_HISTORY": {
+    "RES_PAYMENT_HISTORY": {
         "TITLE": "Payment history",
         "SUBTITLE": "Check your payments and their status",
         "DATE": "Date",
         "AMOUNT": "Amount",
         "ITEMS": "Items",
         "STATUS": "Status",
+        "INVOICE": "Invoice",
         "DATE_FILTER": "Filter by year and month:",
         "YEAR_FILTER": "Year",
         "MONTH_FILTER": "Month",
@@ -1020,7 +1072,20 @@
         "VERIFY_ACCEPT": "Accept",
         "VERIFY_MSG": "You can check the status again in 15 min",
         "MSG_INITIAL": "You have not payments made yet",
-        "ALL_FILTER": "All"
+        "ALL_FILTER": "All",
+        "GENERATE_INVOICE": "Generate",
+        "INVOICE_LBL": "Invoice",
+        "NUMBER_LBL": "Number: ",
+        "DATE_LBL": "Date: ",
+        "CUSTOMER_LBL": "Customer",
+        "DESCRIPTION_LBL": "Description",
+        "DESCRIPTION": "Monthly Iurest Service",
+        "PERIOD_LBL": "Period",
+        "AMOUNT_LBL": "Amount (no IVA)",
+        "SUBTOTAL": "SubTotal: ",
+        "IVA": "IVA: ",
+        "TOTAL": "Total: ",
+        "UNAVAILABLE_REPORT": "Status query option is not available at this moment, please try later"
     },
     "TRANSACTION_STATUS": {
         "APPROVED": "Approved",
@@ -1112,18 +1177,25 @@
         "LABEL_LEGAL_END": "you accept the terms and conditions."
     },
     "ADMIN_DASHBOARD": {
+        "TITLE": "Welcome to Iurest",
+        "CARD_CONTENT": "Your best investment. Enjoy a new experience with the tool that will grow your business.",
+        "LINK": {
+            "NEW_RESTAURANT": "Restaurants",
+            "NEW_COLLABORATOR": "Collaborators",
+            "ITEMS": "Items",
+            "ENABLE-ITEMS": "Enable items"
+        },
         "SALES": "Sales ",
-        "USERS": "Users",
-        "ACTIVES": "Actives",
-        "ITEMS": "Items",
+        "USERS": "Active users",
+        "ITEMS": "Items sold",
         "SOLD": "Sold",
         "ADDITIONS": "Additions",
         "GARNISHFOOD": "Garnish Food",
         "AVAILABLE": "Available",
         "UNAVAILABLE": "Unavailable",
         "TABLES": "Tables",
-        "FREE": "Free",
-        "BUSY": "Busy",
+        "FREE": "Free tables",
+        "BUSY": "Busy tables",
         "THERE_NOT_RESTAURANTS": "No restaurants yet register",
         "RESTAURANT_REGISTER": "Restaurant register",
         "MESSAGE": "Register one to enable this option"
@@ -1137,5 +1209,114 @@
     "NOT_FOUND": {
         "PAGE_NOT_FOUND": "PAGE NOT FOUND",
         "BACK": "Back to"
+    },
+    "TOPNAV": {
+        "ORDERS": "Orders",
+        "PAYMENTS": "Payments",
+        "WAITER": "Waiter",
+        "CALLS": "Calls",
+        "MENU": "Menu",
+        "TABLES": "Tables",
+        "RESTAURANT_EXIT": "Leave the Restaurant"
+    },
+    "CHANGE_TABLE": {
+        "THERE_IS_NOT_REST": "You are not in a restaurant",
+        "THERE_IS_NOT_REST_MSG": "Go to the order option and enter the code",
+        "GO_TO_ORDERS": "Go to Orders",
+        "MSG_INITIAL": "Enter the Table Code to which you want to change",
+        "CANCEL": "Cancel",
+        "ENTER": "Enter Code",
+        "CHANGE_TABLE_OK": "The table change was successful",
+        "TABLE_DESTINY_NOT_EXISTS": "The code for the new table does not exist. Please try again.",
+        "TABLE_DESTINY_NO_ACTIVE": "The table entered is not active for the Iurest service",
+        "TABLE_DESTINY_NO_RESTAURANT": "The code of the table entered does not belong to the restaurant where you are at the moment. Please try again.",
+        "PENDING_ORDERS": "You have pending orders to confirm affecting your payment. Please check and try again.",
+        "ORDERS_PAY_PROCESS": "You have orders in process of payment. It is not possible to make the change of table.",
+        "WAITER_CALL_PENDING": "They are called to the waiter waiting to be served. Once the call is answered you can change the table.",
+        "TABLE_DESTINY_STATUS_ERROR": "An error occurred while validating the status of the new table. Please try again.",
+        "GENERAL_ERROR": "An error occurred while changing the table. Please try again.",
+        "SAME_TABLE_ERROR": "It is not possible to perform the operation with the actual table code. Please check and try again."
+    },
+    "EXIT_TABLE": {
+        "RESTAURANT_EXIT": "Restaurant Exit",
+        "RESTAURANT_EXIT_CONFIRM": "Are you sure you want to leave the restaurant?",
+        "LEAVE_RESTAURANT_MSG": "You left the restaurant. See you soon!",
+        "ORDERS_REGISTERED": "You have Registered Orders!",
+        "ORDERS_CANCEL_CONFIRM": "If you leave the restaurant the orders are canceled. Are you sure to leave?",
+        "ORDERS_PENDING_CONFIRM": "Orders to be Confirmed!",
+        "ORDERS_MUST_BE_ATTENDED": "Orders must be served to leave the restaurant",
+        "PENDING_WAITER_CALL": "Call to the Waiter Waiter",
+        "WAITER_CALLS_MSG": "The calls to the waiter must be taken care of or you can cancel them to leave",
+        "PENDING_PAYMENTS": "Have pending payments",
+        "PENDING_PAYMENTS_MSG": "A waiter will come to your table to receive your payments and be able to go out",
+        "ORDERS_DELIVERED": "You have delivered orders",
+        "ORDERS_DELIVERED_MSG": "Pay the orders that have been given to you so that you can leave the restaurant",
+        "INVALID_OPERATION": "Invalid Operation",
+        "CALL_WAITER_MSG": "The status of your orders does not allow you to leave the restaurant. Do you want to call a server to manage your orders?",
+        "WAITER_HAS_BEEN_CALLED": "The waiter has been called",
+        "WAITER_ON_THE_WAY": "Waiter On The Way",
+        "WAITER_ON_THE_WAY_CALL": "A waiter already received the request and goes to your table",
+        "CALLED_CANCELED": "Called Canceled",
+        "CANCEL_ORDERS_MSG": "Cancel your orders Delivered or In Process",
+        "CANCEL_CALL": "Cancel Call",
+        "OPTION_LEAVE_RESTAURANT": "This option allows you to leave the restaurant where you are",
+        "EXIT_MSG": "Exit",
+        "THERE_IS_NOT_REST": "You are not in a restaurant",
+        "THERE_IS_NOT_REST_MSG": "Go to the order option and enter the code",
+        "GO_TO_ORDERS": "Go to Orders",
+        "ACCEPT": "Accept",
+        "GENERAL_ERROR": "An error has occurred. Try again."
+    },
+    "EXIT_TABLE_CONFIRM": {
+        "CUSTOMER": "Customer",
+        "TABLE": "Table",
+        "CANCELING_ORDER_ERROR": "An error occurred canceling the order ",
+        "VALIDATE_ORDER_MSG": " Please validate that the order is in ready state or in process.",
+        "ORDER": "Order",
+        "STATUS": "Status",
+        "CANCEL_ORDER": "Cancel Order",
+        "OBSERVATIONS": "Observations",
+        "NO_GARNISH_FOOD": "No Garnish Food",
+        "GARNISH_FOOD": "Garnish Food",
+        "NO_ADDITIONS": "No Additions",
+        "ADDITIONS": "Additions",
+        "ADDITION": "Addition(s)",
+        "ORDER_CANCELED": "Order Canceled"
+    },
+    "RESTAURANT_TABLE_CONTROL": {
+        "THERE_NOT_RESTAURANTS": "There are not restaurants register yet",
+        "MESSAGE": "Register at least one restaurant to enable this option",
+        "RESTAURANT_REGISTER": "Register Restaurant",
+        "TABLE_CONTROL": "Tables Control",
+        "TABLE_CONTROL_MSG": "Check tables status",
+        "SELECT_RESTAURANT": "Select restaurant",
+        "ALL_RESTAURANTS": "All Restaurants",
+        "USERS": "Users",
+        "TABLE":"Table",
+        "FREE_TABLE": "Free Table",
+        "ORDERS": "Orders",
+        "IN_THE_ACCOUNT": "in the account",
+        "VIEW_DETAIL": "View Detail",
+        "DETAIL_NOT_AVAILABLE": "Detail Not Available"
+    },
+    "TABLE_DETAIL": {
+        "TABLE_DETAIL_TITLE": "Table Detail",
+        "TABLE_DETAIL_SUBTITLE": "We present the users who are currently on the table",
+        "TOTAL_CONSUMPTION": "Spent total",
+        "PENALIZE": "Penalize"
+    },
+    "PENALIZE_CUSTOMER": {
+        "STATUS_MSG": "Here we present the orders status of the user",
+        "ORDER_REGISTERED": "Registered",
+        "ORDER_IN_PROCESS": "In Process",
+        "ORDER_PREPARED": "Prepared",
+        "ORDER_DELIVERED": "Delivered",
+        "ORDER_TRANSLATE": "In Transfer",
+        "PENALIZE_MSG": "When creating a penalty, this user has marked for Iurest to keep it in mind when entering a restaurant and notifying their administrators.",
+        "PENALIZE_TABLE": "The penalty will remove the user from the table",
+        "PENALIZE_CONFIRM_MSG": "and cancel all your orders. Do you want to continue creating the penalty?",
+        "ACCOUNT_ERROR": "An error has occurred with the user account. Please check if the user is still at the table with the option ADMINISTRATION -> TABLES CONTROL",
+        "GENERAL_ERROR": "An error occurred while penalizing the user. Please try again later.",
+        "PENALTY_CREATED": "Penalty Created"
     }
 }

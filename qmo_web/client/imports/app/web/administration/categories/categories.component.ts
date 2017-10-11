@@ -16,6 +16,8 @@ import { CategoriesEditComponent } from './categories-edit/categories-edit.compo
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
+import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
+import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 
 import template from './categories.component.html';
 import style from './categories.component.scss';
@@ -23,26 +25,32 @@ import style from './categories.component.scss';
 @Component({
     selector: 'category',
     template,
-    styles: [ style ]
+    styles: [style]
 })
-export class CategoryComponent implements OnInit, OnDestroy{
+export class CategoryComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    private _categoryForm       : FormGroup;
-    private _categories         : Observable<Category[]>;
-    private _sections           : Observable<Section[]>;
-    private _restaurants        : Observable<Restaurant[]>;
-    private _mdDialogRef        : MdDialogRef<any>;
+    private _categoryForm: FormGroup;
+    private _categories: Observable<Category[]>;
+    private _sections: Observable<Section[]>;
+    private _restaurants: Observable<Restaurant[]>;
+    private _mdDialogRef: MdDialogRef<any>;
+    private _userDetails: Observable<UserDetail[]>;
 
-    private _categoriesSub      : Subscription;
-    private _sectionsSub        : Subscription;
-    private _restaurantSub      : Subscription;
+    private _categoriesSub: Subscription;
+    private _sectionsSub: Subscription;
+    private _restaurantSub: Subscription;
+    private _userDetailsSub: Subscription;
 
-    private _selectedValue      : string;
-    private titleMsg            : string;
-    private btnAcceptLbl        : string;
-    public _dialogRef           : MdDialogRef<any>;
-    
+    private _selectedValue: string;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
+    public _dialogRef: MdDialogRef<any>;
+    private _thereAreRestaurants: boolean = true;
+
+    private _thereAreUsers: boolean = true;
+    private _usersCount: number;
+
     /**
      * CategoryComponent constructor
      * @param {MdSnackBar} snackBar
@@ -53,16 +61,16 @@ export class CategoryComponent implements OnInit, OnDestroy{
      * @param {NgZone} _ngZone
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor( public snackBar: MdSnackBar,
-                 public _dialog: MdDialog, 
-                 private _formBuilder: FormBuilder, 
-                 private _translate: TranslateService, 
-                 private _router: Router,
-                 private _ngZone: NgZone,
-                 private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog ){
-        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        _translate.setDefaultLang( 'en' );         
+    constructor(public snackBar: MdSnackBar,
+        public _dialog: MdDialog,
+        private _formBuilder: FormBuilder,
+        private _translate: TranslateService,
+        private _router: Router,
+        private _ngZone: NgZone,
+        private _userLanguageService: UserLanguageService,
+        protected _mdDialog: MdDialog) {
+        _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        _translate.setDefaultLang('en');
         this._selectedValue = "";
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';
@@ -71,49 +79,84 @@ export class CategoryComponent implements OnInit, OnDestroy{
     /**
      * Implements ngOnInit function
      */
-    ngOnInit(){
+    ngOnInit() {
+        let _lRestaurantsId: string[] = [];
         this.removeSubscriptions();
         this._categoryForm = new FormGroup({
-            name: new FormControl( '', [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 50 ) ] ),
-            section: new FormControl( '' )  
-        });    
-        this._restaurantSub = MeteorObservable.subscribe( 'restaurants', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._restaurants = Restaurants.find( { } ).zone();
+            name: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]),
+            section: new FormControl('')
+        });
+        this._restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe(() => {
+            this._ngZone.run(() => {
+                this._restaurants = Restaurants.find({}).zone();
+                Restaurants.collection.find({}).fetch().forEach((restaurant: Restaurant) => {
+                    _lRestaurantsId.push(restaurant._id);
+                });
+                this._userDetailsSub = MeteorObservable.subscribe('getUsersByRestaurantsId', _lRestaurantsId).subscribe(() => {
+                    this._userDetails = UserDetails.find({}).zone();
+                    this.countRestaurantsUsers();
+                    this._userDetails.subscribe(() => { this.countRestaurantsUsers(); });
+                });
+                this.countRestaurants();
+                this._restaurants.subscribe(() => { this.countRestaurants(); });
             });
         });
-        this._sectionsSub = MeteorObservable.subscribe( 'sections', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._sections = Sections.find( { } ).zone();
+        this._sectionsSub = MeteorObservable.subscribe('sections', this._user).subscribe(() => {
+            this._ngZone.run(() => {
+                this._sections = Sections.find({}).zone();
             });
         });
-        this._categoriesSub = MeteorObservable.subscribe( 'categories', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._categories = Categories.find( { } ).zone();
+        this._categoriesSub = MeteorObservable.subscribe('categories', this._user).subscribe(() => {
+            this._ngZone.run(() => {
+                this._categories = Categories.find({}).zone();
             });
         });
+    }
+
+    /**
+     * Validate if restaurants exists
+     */
+    countRestaurants(): void {
+        Restaurants.collection.find().count() > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
+    }
+
+    /**
+     * Validate if restaurants exists
+     */
+    countRestaurantsUsers(): void {
+        let auxUserCount: number;
+        auxUserCount = UserDetails.collection.find({}).count();
+
+        if (auxUserCount > 0) {
+            this._thereAreUsers = true
+            this._usersCount = auxUserCount;
+        } else {
+            this._thereAreUsers = false;
+            this._usersCount = 0;
+        }
     }
 
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._categoriesSub ){ this._categoriesSub.unsubscribe(); }
-        if( this._sectionsSub ){ this._sectionsSub.unsubscribe(); }
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+    removeSubscriptions(): void {
+        if (this._categoriesSub) { this._categoriesSub.unsubscribe(); }
+        if (this._sectionsSub) { this._sectionsSub.unsubscribe(); }
+        if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
+        if (this._userDetailsSub) { this._userDetailsSub.unsubscribe(); }
     }
 
     /**
      * Function to add Category
      */
-    addCategory():void{
-        if( !Meteor.userId() ){
-            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+    addCategory(): void {
+        if (!Meteor.userId()) {
+            var error: string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
 
-        if( this._categoryForm.valid ){
+        if (this._categoryForm.valid) {
             let _lNewCategory = Categories.collection.insert({
                 creation_user: this._user,
                 creation_date: new Date(),
@@ -124,9 +167,9 @@ export class CategoryComponent implements OnInit, OnDestroy{
                 section: this._categoryForm.value.section
             });
 
-            if( _lNewCategory ){
-                let _lMessage:string = this.itemNameTraduction( 'CATEGORIES.CATEGORY_CREATED' );
-                this.snackBar.open( _lMessage, '',{
+            if (_lNewCategory) {
+                let _lMessage: string = this.itemNameTraduction('CATEGORIES.CATEGORY_CREATED');
+                this.snackBar.open(_lMessage, '', {
                     duration: 2500
                 });
             }
@@ -139,7 +182,7 @@ export class CategoryComponent implements OnInit, OnDestroy{
     /**
      * Function to cancel add Category
      */
-    cancel():void{
+    cancel(): void {
         this._categoryForm.controls['name'].reset();
         this._selectedValue = "";
     }
@@ -148,13 +191,13 @@ export class CategoryComponent implements OnInit, OnDestroy{
      * When user wants edit Category, this function open dialog with Category information
      * @param {Category} _category 
      */
-    open( _category: Category ){
-        this._dialogRef = this._dialog.open( CategoriesEditComponent, {
-            disableClose : true,
+    open(_category: Category) {
+        this._dialogRef = this._dialog.open(CategoriesEditComponent, {
+            disableClose: true,
             width: '60%'
         });
         this._dialogRef.componentInstance._categoryToEdit = _category;
-        this._dialogRef.afterClosed().subscribe( result => {
+        this._dialogRef.afterClosed().subscribe(result => {
             this._dialogRef = null;
         });
     }
@@ -162,22 +205,22 @@ export class CategoryComponent implements OnInit, OnDestroy{
     /**
      * This function set section value in the form when the value select change
      */
-    changeSection( _section ):void {
-        this._categoryForm.controls['section'].setValue( _section );        
+    changeSection(_section): void {
+        this._categoryForm.controls['section'].setValue(_section);
     }
 
     /**
      * Function to update Category status
      * @param {Category} _category
      */
-    updateStatus( _category:Category ):void{
-        if( !Meteor.userId() ){
-            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+    updateStatus(_category: Category): void {
+        if (!Meteor.userId()) {
+            var error: string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
-        
-        Categories.update( _category._id,{
+
+        Categories.update(_category._id, {
             $set: {
                 is_active: !_category.is_active,
                 modification_date: new Date(),
@@ -190,10 +233,10 @@ export class CategoryComponent implements OnInit, OnDestroy{
      * Return traduction
      * @param {string} itemName 
      */
-    itemNameTraduction(itemName: string): string{
+    itemNameTraduction(itemName: string): string {
         var wordTraduced: string;
         this._translate.get(itemName).subscribe((res: string) => {
-            wordTraduced = res; 
+            wordTraduced = res;
         });
         return wordTraduced;
     }
@@ -201,7 +244,7 @@ export class CategoryComponent implements OnInit, OnDestroy{
     /**
      * Go to add new Restaurant
      */
-    goToAddRestaurant(){
+    goToAddRestaurant() {
         this._router.navigate(['/app/restaurant-register']);
     }
 
@@ -215,7 +258,7 @@ export class CategoryComponent implements OnInit, OnDestroy{
     * @param {boolean} showBtnCancel
     */
     openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
-        
+
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
@@ -238,7 +281,7 @@ export class CategoryComponent implements OnInit, OnDestroy{
     /**
      * Implements ngOnDestroy function
      */
-    ngOnDestroy(){
+    ngOnDestroy() {
         this.removeSubscriptions();
     }
 }
