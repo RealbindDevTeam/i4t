@@ -51,15 +51,33 @@
         "YEAR_FORMAT": "Formato del año incorrecto"
     },
     "LANDING": {
-        "PRICING": "Precio",
-        "DOWNLOAD": "Descarga",
-        "FAQ": "FAQ",
+        "HOME": "Inicio",
+        "ABOUT": "Acerca de iurest",
+        "OWNER": "Propietario de restaurante",
         "CONTACT": "Contácto",
         "SIGNIN": "Iniciar sesión",
         "SIGNUP": "Registrarse",
         "LANGUAGE": "Idioma",
         "LANGUAGE_SELECT": "Selecciona tu idioma",
-        "ADMIN_SIGNUP": "Registro de aliado"
+        "ADMIN_SIGNUP": "Registro de aliado",
+        "HOME_CONTENT" : {
+            "TITLE" : "Prueba Prueba Prueba",
+            "TEXT1" : "Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba",
+            "TEXT2" : "Prueba Prueba Prueba"
+        },
+        "ABOUT_CONTENT" : {
+            "TITLE1" : "Prueba Prueba Prueba",
+            "TEXT1" : "Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba",
+            "TITLE2" : "Prueba Prueba Prueba",
+            "TEXT2" : "Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba",
+            "TITLE3" : "Prueba Prueba Prueba",
+            "TEXT3" : "Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba"
+        },
+        "OWNER_CONTENT" : {
+            "TITLE1" : "Prueba Prueba Prueba",
+            "TEXT1" : "Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba",
+            "TEXT2" : "Prueba Prueba Prueba"
+        }
     },
     "SIGNUP": {
         "WITH_EMAIL": "Registrarse con correo electrónico",

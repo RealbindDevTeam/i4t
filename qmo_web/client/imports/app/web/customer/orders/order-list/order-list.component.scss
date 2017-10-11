@@ -85,9 +85,10 @@ $sidenav-width: 225px;
 
 .order-form-1 {
     position: absolute;
-    //top: 195px;
+    top: 0;
     left: 0;
-    width: 100%;
+    right: 0;
+    bottom: 0;
     
     .order-form-2 {
         position: relative;
@@ -125,7 +126,7 @@ $sidenav-width: 225px;
                         display: -ms-flexbox;
                         display: -webkit-flex;
                         display: flex;
-                        height: calc( 100vh - 122px);
+                        height: calc( 100vh - 67px);
                         width: 100%;
                         -webkit-flex-direction: column;
                         flex-direction: column;
@@ -133,6 +134,13 @@ $sidenav-width: 225px;
                         overflow-y: auto;
                         -webkit-flex: 1 1 auto;
                         flex: 1 1 auto;
+
+                        #center{
+                            width: 80%; 
+                            margin: 0 auto; 
+                            max-width: 740px; 
+                            margin-top: 40px;
+                        }
                     }
             }
         }
@@ -225,8 +233,8 @@ $sidenav-width: 225px;
 
     button {
         position: absolute;
-        bottom: 30px;
-        right: 35px;
+        bottom: 20px;
+        right: 20px;
         width: 56px;
         -webkit-transition: all 0.3s ease;
         -moz-transition: all 0.3s ease;
