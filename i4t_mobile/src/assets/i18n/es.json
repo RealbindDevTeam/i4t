@@ -257,7 +257,7 @@
             "PAYED": "Pagado",
             "CANCEL_PAY_OTHER_USER": "Deseas cancelar la solicitud del pago de la orden",
             "CANCELED_PAY_OTHER_USER": "Se ha cancelado la solicitud del pago de la orden",
-            "NO_ORDERS" : "Aún no tienes ordenes realizadas"
+            "NO_ORDERS": "Aún no tienes ordenes realizadas"
         },
         "WAITER_CALL": {
             "TITTLE": "Solicitar mesero",
@@ -278,7 +278,8 @@
             "PAY_CONFIRM": "Confirmación de pago",
             "PAY_CLOSE": "Cerrar pagos recibidos",
             "NO_WAITERS": "No hay meseros asignados en el restaurante",
-            "ALPHANUMERIC_CODE": "Código"
+            "ALPHANUMERIC_CODE": "Código",
+            "CALL_LABEL_EXIT_CUSTOMER": "Salida de usuario"
         },
         "SECTIONS": {
             "MENU": "Menú",
@@ -330,6 +331,16 @@
             "ORDER_DELIVERED": "Orden entregada",
             "ORDER_DETAIL": "Orden entregada"
         },
+        "CANCEL_ORDER": {
+            "TITLE": "Cancelar orden",
+            "CUSTOMER": "Cliente",
+            "ORDER": "Orden",
+            "TABLE": "Mesa",
+            "ADDITION": "Adición(es)",
+            "BTN_CANCEL_ORDER": "Cancelar orden",
+            "ORDER_CANCELED": "Orden cancelada",
+            "CANCELING_ORDER_ERROR": "Un error ha ocurrido cancelando la orden, por favor verifica el estado"
+        },        
         "PAYMENTS_HISTORY": {
             "INFO": "Para obtener los comprobantes de tus pagos, podrás hacerlo desde",
             "TITLE": "Historial de pagos",

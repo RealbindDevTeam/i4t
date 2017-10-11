@@ -257,7 +257,7 @@
             "PAYED": "Payed",
             "CANCEL_PAY_OTHER_USER": "You want to cancel the order payment request",
             "CANCELED_PAY_OTHER_USER": "Payment request of order has been canceled",
-            "NO_ORDERS" : "You have no orders yet"
+            "NO_ORDERS": "You have no orders yet"
         },
         "WAITER_CALL": {
             "TITTLE": "Call waiter",
@@ -278,7 +278,8 @@
             "PAY_CONFIRM": "Payment confirm",
             "PAY_CLOSE": "Close payments received",
             "NO_WAITERS": "No waiters assignment in the restaurant",
-            "ALPHANUMERIC_CODE": "Table code"
+            "ALPHANUMERIC_CODE": "Table code",
+            "CALL_LABEL_EXIT_CUSTOMER": "Exit of customer"
         },
         "SECTIONS": {
             "MENU": "Menu",
@@ -330,8 +331,18 @@
             "ORDER_DELIVERED": "Order Delivered",
             "ORDER_DETAIL": "Order detail"
         },
+        "CANCEL_ORDER": {
+            "TITLE": "Cancel order",
+            "CUSTOMER": "Customer",
+            "ORDER": "Order",
+            "TABLE": "Table",
+            "ADDITION": "Additions",
+            "BTN_CANCEL_ORDER": "Cancel order",
+            "ORDER_CANCELED": "Order canceled",
+            "CANCELING_ORDER_ERROR": "An error has occurred canceling the order, please verify the status"
+        },
         "PAYMENTS_HISTORY": {
-            "INFO" : "To get proof of your payments, you can do it from",
+            "INFO": "To get proof of your payments, you can do it from",
             "TITLE": "Payments history",
             "TOTAL": "Total",
             "TIP": "Tip",
