@@ -51,15 +51,33 @@
         "YEAR_FORMAT": "Year format incorrect"
     },
     "LANDING": {
-        "PRICING": "Pricing",
-        "DOWNLOAD": "Download",
-        "FAQ": "FAQ",
+        "HOME": "Home",
+        "ABOUT": "About iurest",
+        "OWNER": "Restaurant owner",
         "CONTACT": "Contact",
         "SIGNIN": "Log In",
         "SIGNUP": "Sign Up",
         "LANGUAGE": "Language",
         "LANGUAGE_SELECT": "Select your language",
-        "ADMIN_SIGNUP": "Ally register"
+        "ADMIN_SIGNUP": "Ally register",
+        "HOME_CONTENT" : {
+            "TITLE" : "Test Test Test",
+            "TEXT1" : "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "TEXT2" : "Test Test Test"
+        },
+        "ABOUT_CONTENT" : {
+            "TITLE1" : "Test Test Test",
+            "TEXT1" : "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "TITLE2" : "Test Test Test",
+            "TEXT2" : "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "TITLE3" : "Test Test Test",
+            "TEXT3" : "Test Test Test Test Test Test Test Test Test Test Test Test"
+        },
+        "OWNER_CONTENT" : {
+            "TITLE1" : "Test Test Test",
+            "TEXT1" : "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "TEXT2" : "Test Test Test"
+        }
     },
     "SIGNUP": {
         "WITH_EMAIL": "Sign up with email",
