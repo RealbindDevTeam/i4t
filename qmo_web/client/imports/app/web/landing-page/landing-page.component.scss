@@ -115,7 +115,7 @@ md-toolbar {
   background-color: $second-color;
   position: fixed;
   top: 0;
-  z-index: 10000;
+  z-index: 1000;
   -webkit-transition: all 0.5s;
   -moz-transition: all 0.5s;
   transition: all 0.5s;
@@ -126,7 +126,7 @@ md-toolbar {
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 
   [_ngcontent-c1]   ul[_ngcontent-c1]   a[_ngcontent-c1] {
-    color: #fff;
+    color: silver;
     letter-spacing: 0.8px;
   }
 }
@@ -139,7 +139,7 @@ md-toolbar {
     box-shadow: none;
 
     [_ngcontent-c1]   ul[_ngcontent-c1]   a[_ngcontent-c1] {
-      color: #fff;
+      color: silver;
       letter-spacing: 0.8px;
     }
 
@@ -346,6 +346,10 @@ md-toolbar .button-collapse i {
   }
 }
 
+.bv {
+  visibility: hidden;
+}
+
 @media only screen and (min-width: 767px) {
   .dwi {
     display: block;
@@ -355,6 +359,10 @@ md-toolbar .button-collapse i {
     .dwimg > img {
       width: 80%;
     }
+  }
+  
+  .bv {
+    visibility: visible;
   }
 }
 
@@ -471,7 +479,7 @@ md-toolbar ul li.active {
 md-toolbar ul li a {
   transition: background-color .3s;
   font-size: 0.9rem;
-  color: $background-color;
+  color: silver;
   display: block;
   padding: 0 15px;
   cursor: pointer;
@@ -483,17 +491,14 @@ md-toolbar ul a.btn, md-toolbar ul a.btn-large, md-toolbar ul a.btn-large, md-to
 }
 
 md-toolbar ul a:hover {
-  background-color: $second-color;
   color: $background-color;
 }
 
 md-toolbar ul a:active {
-  background-color: $second-color;
   color: $background-color;
 }
 
 md-toolbar ul a.active  {
-  background-color: $second-color;
   color: $background-color;
 }
 
@@ -695,7 +700,7 @@ p {
     left: 0;
     top: 0;
     overflow-y: auto;
-    z-index: 1000;
+    z-index: 999;
     -webkit-transition: all .4s;
     -o-transition: all .4s;
     -moz-transition: all .4s;
