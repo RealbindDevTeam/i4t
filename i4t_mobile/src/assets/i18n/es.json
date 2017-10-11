@@ -167,12 +167,13 @@
             "QUANT": "Cant.",
             "TABLE_NOT_EXISTS": "La mesa no existe. Por favor verifica el código",
             "TABLE_NO_ACTIVE": "La mesa no tiene el servicio de Iurest activo. No es posible ingresar",
-            "Iurest_NO_ACTIVE": "El Restaurante no tiene el servicio de Iurest activo. No es posible ingresar",
+            "IUREST_NO_ACTIVE": "El Restaurante no tiene el servicio de Iurest activo. No es posible ingresar",
             "TABLE": "Mesa",
             "RESTAURANT_NOT_EXISTS": "El restaurante no existe. No es posible ingresar.",
             "MSG_1": "Puedes ordenar lo que deseas",
             "NO_ORDERS": "Aún no tienes ordenes, puedes crear una orden nueva",
-            "LOADING_MENU": "Cargando menú"
+            "LOADING_MENU": "Cargando menú",
+            "PENALTY": "En el momento no tienes disponible la opción para crear ordenes. Intenta de nuevo después del "
         },
         "ORDER_TRANS": {
             "ORDERS": "Orden",
@@ -379,7 +380,8 @@
             "INVALID_OPERATION": "Operación Inválida",
             "CALL_WAITER_MSG": "El estado de tus ordenes no te permite salir del restaurante. Deseas Llamar a un mesero para gestionar tus ordenes?",
             "WAITER_ON_THE_WAY_CALL": "Un mesero ya recibió la solicitud y va para tu mesa",
-            "CALLED_CANCELED": "Llamado Cancelado"
+            "CALLED_CANCELED": "Llamado Cancelado",
+            "GENERAL_ERROR": "Se ha producido un error. Intenta nuevamente."
         },
         "WAITER_OPTIONS": {
             "CALLS": "Llamadas",

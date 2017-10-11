@@ -14,6 +14,8 @@ import { Order } from '../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../both/collections/restaurant/order.collection';
 import { Payments } from '../../../../../../both/collections/restaurant/payment.collection';
 import { WaiterCallDetails } from '../../../../../../both/collections/restaurant/waiter-call-detail.collection';
+import { Account } from '../../../../../../both/models/restaurant/account.model';
+import { Accounts } from '../../../../../../both/collections/restaurant/account.collection';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './restaurant-exit.component.html';
@@ -32,6 +34,7 @@ export class RestaurantExitComponent implements OnInit, OnDestroy {
     private _paymentsSub            : Subscription;
     private _waiterCallDetSub       : Subscription;
     private _tablesSub              : Subscription;
+    private _accountsSub            : Subscription;
 
     private _userDetails            : Observable<UserDetail[]>;
     private _tables                 : Observable<Table[]>;
@@ -88,6 +91,7 @@ export class RestaurantExitComponent implements OnInit, OnDestroy {
                 this._tables = Tables.find( { } ).zone();
             });
         });
+        this._accountsSub = MeteorObservable.subscribe( 'getAccountsByUserId', this._user ).subscribe();
     }
 
     /**
@@ -107,6 +111,7 @@ export class RestaurantExitComponent implements OnInit, OnDestroy {
         if( this._paymentsSub ){ this._paymentsSub.unsubscribe(); }
         if( this._waiterCallDetSub ){ this._waiterCallDetSub.unsubscribe(); }
         if( this._tablesSub ){ this._tablesSub.unsubscribe(); }
+        if( this._accountsSub ){ this._accountsSub.unsubscribe(); }
     }
 
     /**
@@ -114,179 +119,196 @@ export class RestaurantExitComponent implements OnInit, OnDestroy {
      */
     exitRestaurantTable( _pUserDetailId:string, _pCurrentRestaurant:string, _pCurrentTable:string ):void{
 
-        let _lOrdersRegisteredStatus: number = Orders.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, 
-                                               tableId: _pCurrentTable, status: 'ORDER_STATUS.REGISTERED' } ).count();
-        let _lOrdersInProcessStatus: number = Orders.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, 
-                                              tableId: _pCurrentTable, status: 'ORDER_STATUS.IN_PROCESS' } ).count();
-        let _lOrdersPreparedStatus: number = Orders.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, 
-                                             tableId: _pCurrentTable, status: 'ORDER_STATUS.PREPARED' } ).count();
-        let _lOrdersDeliveredStatus: number = Orders.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, 
-                                              tableId: _pCurrentTable, status: 'ORDER_STATUS.DELIVERED', toPay: false } ).count();
-        let _lOrdersToConfirm: number = Orders.collection.find( { restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, 'translateInfo.firstOrderOwner': this._user, 
-                                        'translateInfo.markedToTranslate': true, status: 'ORDER_STATUS.PENDING_CONFIRM', toPay : false } ).count();
-        let _lOrdersWithPendingConfirmation: number = Orders.collection.find( { restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, 'translateInfo.lastOrderOwner': this._user, 
-                                        'translateInfo.markedToTranslate': true, status: 'ORDER_STATUS.PENDING_CONFIRM', toPay : false } ).count();
-        let _lUserWaiterCallsCount: number = WaiterCallDetails.collection.find( { restaurant_id: _pCurrentRestaurant, table_id: _pCurrentTable, 
-                                             type: 'CALL_OF_CUSTOMER', user_id: this._user, status: { $in: ['waiting', 'completed'] } } ).count();
-        let _lUserPaymentsCount: number = Payments.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, 
-                                          tableId: _pCurrentTable, status: 'PAYMENT.NO_PAID', received: false } ).count();
+        let _lUserAccount: Account = Accounts.findOne( { restaurantId : _pCurrentRestaurant, tableId : _pCurrentTable, status: 'OPEN' } );
 
-        if( _lOrdersRegisteredStatus === 0 && _lOrdersInProcessStatus === 0 && _lOrdersPreparedStatus === 0 
-            && _lOrdersDeliveredStatus === 0 && _lOrdersToConfirm === 0 && _lOrdersWithPendingConfirmation === 0 
-            && _lUserWaiterCallsCount === 0 && _lUserPaymentsCount === 0 ){
-            this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
-                disableClose: true,
-                data: {
-                    title: this.itemNameTraduction( 'EXIT_TABLE.RESTAURANT_EXIT' ),
-                    subtitle: '',
-                    content: this.itemNameTraduction( 'EXIT_TABLE.RESTAURANT_EXIT_CONFIRM' ),
-                    buttonCancel: this.itemNameTraduction( 'NO' ),
-                    buttonAccept: this.itemNameTraduction( 'YES' ),
-                    showCancel: true
-                }
-            });
-            this._dialogRef.afterClosed().subscribe( result => {
-                this._dialogRef = result;
-                if ( result.success ){
-                    this._loading = true;
-                    setTimeout(() => {
-                        MeteorObservable.call( 'restaurantExit', _pUserDetailId, _pCurrentRestaurant, _pCurrentTable ).subscribe( () => {
-                            this._loading = false;
-                            let _lMessage:string = this.itemNameTraduction( 'EXIT_TABLE.LEAVE_RESTAURANT_MSG' );
-                            this._snackBar.open( _lMessage, '',{ duration: 2500 } );
-                            this.goToOrders();
-                        });
-                    }, 1500 );
-                }
-            });
-        } else {
-            if( _lOrdersRegisteredStatus > 0 && _lOrdersInProcessStatus === 0 && _lOrdersPreparedStatus === 0 
+        if( _lUserAccount ){
+
+            let _lOrdersRegisteredStatus: number = Orders.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, accountId: _lUserAccount._id,
+                                                    tableId: _pCurrentTable, status: 'ORDER_STATUS.REGISTERED' } ).count();
+            let _lOrdersInProcessStatus: number = Orders.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, accountId: _lUserAccount._id,
+                                                    tableId: _pCurrentTable, status: 'ORDER_STATUS.IN_PROCESS' } ).count();
+            let _lOrdersPreparedStatus: number = Orders.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, accountId: _lUserAccount._id,
+                                                    tableId: _pCurrentTable, status: 'ORDER_STATUS.PREPARED' } ).count();
+            let _lOrdersDeliveredStatus: number = Orders.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, accountId: _lUserAccount._id,
+                                                    tableId: _pCurrentTable, status: 'ORDER_STATUS.DELIVERED', toPay: false } ).count();
+            let _lOrdersToConfirm: number = Orders.collection.find( { restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, 'translateInfo.firstOrderOwner': this._user, 
+                                                accountId: _lUserAccount._id,'translateInfo.markedToTranslate': true, status: 'ORDER_STATUS.PENDING_CONFIRM', toPay : false } ).count();
+            let _lOrdersWithPendingConfirmation: number = Orders.collection.find( { restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable, 'translateInfo.lastOrderOwner': this._user, 
+                                                accountId: _lUserAccount._id, 'translateInfo.markedToTranslate': true, status: 'ORDER_STATUS.PENDING_CONFIRM', toPay : false } ).count();
+            let _lUserWaiterCallsCount: number = WaiterCallDetails.collection.find( { restaurant_id: _pCurrentRestaurant, table_id: _pCurrentTable, 
+                                                    type: 'CALL_OF_CUSTOMER', user_id: this._user, status: { $in: ['waiting', 'completed'] } } ).count();
+            let _lUserPaymentsCount: number = Payments.collection.find( { creation_user: this._user, restaurantId: _pCurrentRestaurant, accountId: _lUserAccount._id,
+                                                tableId: _pCurrentTable, status: 'PAYMENT.NO_PAID', received: false } ).count();
+
+            if( _lOrdersRegisteredStatus === 0 && _lOrdersInProcessStatus === 0 && _lOrdersPreparedStatus === 0 
                 && _lOrdersDeliveredStatus === 0 && _lOrdersToConfirm === 0 && _lOrdersWithPendingConfirmation === 0 
                 && _lUserWaiterCallsCount === 0 && _lUserPaymentsCount === 0 ){
-                    this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
-                        disableClose: true,
-                        data: {
-                            title: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_REGISTERED' ),
-                            subtitle: '',
-                            content: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_CANCEL_CONFIRM' ),
-                            buttonCancel: this.itemNameTraduction( 'NO' ),
-                            buttonAccept: this.itemNameTraduction( 'YES' ),
-                            showCancel: true
-                        }
-                    });
-                    this._dialogRef.afterClosed().subscribe( result => {
-                        this._dialogRef = result;
-                        if ( result.success ){
-                            this._loading = true;
-                            setTimeout(() => {
-                                MeteorObservable.call( 'restaurantExitWithRegisteredOrders', this._user, _pUserDetailId, _pCurrentRestaurant, _pCurrentTable ).subscribe( () => {
-                                    this._loading = false;
-                                    let _lMessage:string = this.itemNameTraduction( 'EXIT_TABLE.LEAVE_RESTAURANT_MSG' );
-                                    this._snackBar.open( _lMessage, '',{ duration: 2500 } );
-                                    this.goToOrders();
-                                });
-                            }, 1500 );
-                        }
-                    });
+                this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
+                    disableClose: true,
+                    data: {
+                        title: this.itemNameTraduction( 'EXIT_TABLE.RESTAURANT_EXIT' ),
+                        subtitle: '',
+                        content: this.itemNameTraduction( 'EXIT_TABLE.RESTAURANT_EXIT_CONFIRM' ),
+                        buttonCancel: this.itemNameTraduction( 'NO' ),
+                        buttonAccept: this.itemNameTraduction( 'YES' ),
+                        showCancel: true
+                    }
+                });
+                this._dialogRef.afterClosed().subscribe( result => {
+                    this._dialogRef = result;
+                    if ( result.success ){
+                        this._loading = true;
+                        setTimeout(() => {
+                            MeteorObservable.call( 'restaurantExit', _pUserDetailId, _pCurrentRestaurant, _pCurrentTable ).subscribe( () => {
+                                this._loading = false;
+                                let _lMessage:string = this.itemNameTraduction( 'EXIT_TABLE.LEAVE_RESTAURANT_MSG' );
+                                this._snackBar.open( _lMessage, '',{ duration: 2500 } );
+                                this.goToOrders();
+                            });
+                        }, 1500 );
+                    }
+                });
             } else {
-                if( ( _lOrdersToConfirm > 0 || _lOrdersWithPendingConfirmation > 0 ) && _lOrdersRegisteredStatus === 0 && _lOrdersInProcessStatus === 0
-                    && _lOrdersPreparedStatus === 0 && _lOrdersDeliveredStatus === 0 && _lUserWaiterCallsCount === 0
-                    && _lUserPaymentsCount === 0 ){
+                if( _lOrdersRegisteredStatus > 0 && _lOrdersInProcessStatus === 0 && _lOrdersPreparedStatus === 0 
+                    && _lOrdersDeliveredStatus === 0 && _lOrdersToConfirm === 0 && _lOrdersWithPendingConfirmation === 0 
+                    && _lUserWaiterCallsCount === 0 && _lUserPaymentsCount === 0 ){
                         this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
                             disableClose: true,
                             data: {
-                                title: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_PENDING_CONFIRM' ),
+                                title: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_REGISTERED' ),
                                 subtitle: '',
-                                content: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_MUST_BE_ATTENDED' ),
-                                buttonCancel: '',
-                                buttonAccept: this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
-                                showCancel: false
+                                content: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_CANCEL_CONFIRM' ),
+                                buttonCancel: this.itemNameTraduction( 'NO' ),
+                                buttonAccept: this.itemNameTraduction( 'YES' ),
+                                showCancel: true
+                            }
+                        });
+                        this._dialogRef.afterClosed().subscribe( result => {
+                            this._dialogRef = result;
+                            if ( result.success ){
+                                this._loading = true;
+                                setTimeout(() => {
+                                    MeteorObservable.call( 'restaurantExitWithRegisteredOrders', this._user, _pUserDetailId, _pCurrentRestaurant, _pCurrentTable ).subscribe( () => {
+                                        this._loading = false;
+                                        let _lMessage:string = this.itemNameTraduction( 'EXIT_TABLE.LEAVE_RESTAURANT_MSG' );
+                                        this._snackBar.open( _lMessage, '',{ duration: 2500 } );
+                                        this.goToOrders();
+                                    });
+                                }, 1500 );
                             }
                         });
                 } else {
-                    if( _lUserWaiterCallsCount > 0 && _lOrdersRegisteredStatus === 0 && _lOrdersInProcessStatus === 0
-                        && _lOrdersPreparedStatus === 0 && _lOrdersDeliveredStatus === 0 && _lOrdersToConfirm === 0 
-                        && _lOrdersWithPendingConfirmation === 0 && _lUserPaymentsCount === 0 ){
+                    if( ( _lOrdersToConfirm > 0 || _lOrdersWithPendingConfirmation > 0 ) && _lOrdersRegisteredStatus === 0 && _lOrdersInProcessStatus === 0
+                        && _lOrdersPreparedStatus === 0 && _lOrdersDeliveredStatus === 0 && _lUserWaiterCallsCount === 0
+                        && _lUserPaymentsCount === 0 ){
                             this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
                                 disableClose: true,
                                 data: {
-                                    title: this.itemNameTraduction( 'EXIT_TABLE.PENDING_WAITER_CALL' ),
+                                    title: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_PENDING_CONFIRM' ),
                                     subtitle: '',
-                                    content: this.itemNameTraduction( 'EXIT_TABLE.WAITER_CALLS_MSG' ),
+                                    content: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_MUST_BE_ATTENDED' ),
                                     buttonCancel: '',
                                     buttonAccept: this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
                                     showCancel: false
                                 }
                             });
                     } else {
-                        if( _lUserPaymentsCount > 0 && _lOrdersRegisteredStatus === 0 && _lOrdersInProcessStatus === 0
+                        if( _lUserWaiterCallsCount > 0 && _lOrdersRegisteredStatus === 0 && _lOrdersInProcessStatus === 0
                             && _lOrdersPreparedStatus === 0 && _lOrdersDeliveredStatus === 0 && _lOrdersToConfirm === 0 
-                            && _lOrdersWithPendingConfirmation === 0 && _lUserWaiterCallsCount === 0 ){
+                            && _lOrdersWithPendingConfirmation === 0 && _lUserPaymentsCount === 0 ){
                                 this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
                                     disableClose: true,
                                     data: {
-                                        title: this.itemNameTraduction( 'EXIT_TABLE.PENDING_PAYMENTS' ),
+                                        title: this.itemNameTraduction( 'EXIT_TABLE.PENDING_WAITER_CALL' ),
                                         subtitle: '',
-                                        content: this.itemNameTraduction( 'EXIT_TABLE.PENDING_PAYMENTS_MSG' ),
+                                        content: this.itemNameTraduction( 'EXIT_TABLE.WAITER_CALLS_MSG' ),
                                         buttonCancel: '',
                                         buttonAccept: this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
                                         showCancel: false
                                     }
                                 });
                         } else {
-                            if( _lOrdersDeliveredStatus > 0 && _lOrdersRegisteredStatus === 0 && _lOrdersInProcessStatus === 0
-                                && _lOrdersPreparedStatus === 0 && _lOrdersToConfirm === 0 && _lOrdersWithPendingConfirmation === 0
-                                && _lUserWaiterCallsCount === 0 && _lUserPaymentsCount === 0 ){
+                            if( _lUserPaymentsCount > 0 && _lOrdersRegisteredStatus === 0 && _lOrdersInProcessStatus === 0
+                                && _lOrdersPreparedStatus === 0 && _lOrdersDeliveredStatus === 0 && _lOrdersToConfirm === 0 
+                                && _lOrdersWithPendingConfirmation === 0 && _lUserWaiterCallsCount === 0 ){
                                     this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
                                         disableClose: true,
                                         data: {
-                                            title: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_DELIVERED' ),
+                                            title: this.itemNameTraduction( 'EXIT_TABLE.PENDING_PAYMENTS' ),
                                             subtitle: '',
-                                            content: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_DELIVERED_MSG' ),
+                                            content: this.itemNameTraduction( 'EXIT_TABLE.PENDING_PAYMENTS_MSG' ),
                                             buttonCancel: '',
                                             buttonAccept: this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
                                             showCancel: false
                                         }
                                     });
                             } else {
-                                this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
-                                    disableClose: true,
-                                    data: {
-                                        title: this.itemNameTraduction( 'EXIT_TABLE.INVALID_OPERATION' ),
-                                        subtitle: '',
-                                        content: this.itemNameTraduction( 'EXIT_TABLE.CALL_WAITER_MSG' ),
-                                        buttonCancel: this.itemNameTraduction( 'NO' ),
-                                        buttonAccept: this.itemNameTraduction( 'YES' ),
-                                        showCancel: true
-                                    }
-                                });
-                                this._dialogRef.afterClosed().subscribe( result => {
-                                    this._dialogRef = result;
-                                    if ( result.success ){
-                                        this._loading = true;
-                                        setTimeout(() => {
-                                            MeteorObservable.call( 'restaurantExitWithOrdersInInvalidStatus', this._user, _pCurrentRestaurant, _pCurrentTable ).subscribe( () => {
-                                                this._loading = false;
-                                                this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
-                                                    disableClose: true,
-                                                    data: {
-                                                        title: this.itemNameTraduction( 'EXIT_TABLE.WAITER_ON_THE_WAY' ),
-                                                        subtitle: '',
-                                                        content: this.itemNameTraduction( 'EXIT_TABLE.WAITER_ON_THE_WAY_CALL' ),
-                                                        buttonCancel: '',
-                                                        buttonAccept: this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
-                                                        showCancel: false
-                                                    }
+                                if( _lOrdersDeliveredStatus > 0 && _lOrdersRegisteredStatus === 0 && _lOrdersInProcessStatus === 0
+                                    && _lOrdersPreparedStatus === 0 && _lOrdersToConfirm === 0 && _lOrdersWithPendingConfirmation === 0
+                                    && _lUserWaiterCallsCount === 0 && _lUserPaymentsCount === 0 ){
+                                        this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
+                                            disableClose: true,
+                                            data: {
+                                                title: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_DELIVERED' ),
+                                                subtitle: '',
+                                                content: this.itemNameTraduction( 'EXIT_TABLE.ORDERS_DELIVERED_MSG' ),
+                                                buttonCancel: '',
+                                                buttonAccept: this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
+                                                showCancel: false
+                                            }
+                                        });
+                                } else {
+                                    this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
+                                        disableClose: true,
+                                        data: {
+                                            title: this.itemNameTraduction( 'EXIT_TABLE.INVALID_OPERATION' ),
+                                            subtitle: '',
+                                            content: this.itemNameTraduction( 'EXIT_TABLE.CALL_WAITER_MSG' ),
+                                            buttonCancel: this.itemNameTraduction( 'NO' ),
+                                            buttonAccept: this.itemNameTraduction( 'YES' ),
+                                            showCancel: true
+                                        }
+                                    });
+                                    this._dialogRef.afterClosed().subscribe( result => {
+                                        this._dialogRef = result;
+                                        if ( result.success ){
+                                            this._loading = true;
+                                            setTimeout(() => {
+                                                MeteorObservable.call( 'restaurantExitWithOrdersInInvalidStatus', this._user, _pCurrentRestaurant, _pCurrentTable ).subscribe( () => {
+                                                    this._loading = false;
+                                                    this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
+                                                        disableClose: true,
+                                                        data: {
+                                                            title: this.itemNameTraduction( 'EXIT_TABLE.WAITER_ON_THE_WAY' ),
+                                                            subtitle: '',
+                                                            content: this.itemNameTraduction( 'EXIT_TABLE.WAITER_ON_THE_WAY_CALL' ),
+                                                            buttonCancel: '',
+                                                            buttonAccept: this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
+                                                            showCancel: false
+                                                        }
+                                                    });
                                                 });
-                                            });
-                                        }, 1500 );
-                                    }
-                                });
+                                            }, 1500 );
+                                        }
+                                    });
+                                }
                             }
                         }
                     }
                 }
             }
+        } else {
+            this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
+                disableClose: true,
+                data: {
+                    title: this.itemNameTraduction( 'EXIT_TABLE.RESTAURANT_EXIT' ),
+                    subtitle: '',
+                    content: this.itemNameTraduction( 'EXIT_TABLE.GENERAL_ERROR' ),
+                    buttonCancel: '',
+                    buttonAccept: this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
+                    showCancel: false
+                }
+            });
         }
     }
 

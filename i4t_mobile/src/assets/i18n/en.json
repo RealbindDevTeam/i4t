@@ -172,7 +172,8 @@
             "RESTAURANT_NOT_EXISTS": "The restaurant does not exist. It is not possible to enter.",
             "MSG_1": "You can sort what you want",
             "NO_ORDERS": "You do not have any orders yet, you can create a new order",
-            "LOADING_MENU": "Loading menu"
+            "LOADING_MENU": "Loading menu",
+            "PENALTY": "At the moment you do not have available the option to create orders. Try again after "
         },
         "ORDER_PAYMENT_TRANS": {
             "ORDER_TO_CONFIRM": "Confirm those orders that other users wish to pay for you.",
@@ -379,7 +380,8 @@
             "INVALID_OPERATION": "Invalid Operation",
             "CALL_WAITER_MSG": "The status of your orders does not allow you to leave the restaurant. Do you want to call a server to manage your orders?",
             "WAITER_ON_THE_WAY_CALL": "A waiter already received the request and goes to your table",
-            "CALLED_CANCELED": "Called Canceled"
+            "CALLED_CANCELED": "Called Canceled",
+            "GENERAL_ERROR": "An error has occurred. Try again."
         },
         "WAITER_OPTIONS": {
             "CALLS": "Calls",

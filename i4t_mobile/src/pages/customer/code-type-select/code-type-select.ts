@@ -94,8 +94,12 @@ export class CodeTypeSelectPage {
       }, (error) => {
         if (error.error === '400') {
           this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.TABLE_NOT_EXISTS'));
+        } else if (error.error === '300') {
+          this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.RESTAURANT_NOT_EXISTS'));
         } else if (error.error === '200') {
           this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.IUREST_NO_ACTIVE'));
+        } else if (error.error === '500') {
+          this.showConfirmMessage(this.itemNameTraduction('MOBILE.ORDERS.PENALTY') + error.reason);
         }
       });
     }
@@ -105,10 +109,10 @@ export class CodeTypeSelectPage {
    * Show message confirm
    * @param _pContent 
    */
-  showConfirmMessage( _pContent :any ){
-    let okBtn   = this.itemNameTraduction('MOBILE.OK'); 
-    let title   = this.itemNameTraduction('MOBILE.SYSTEM_MSG'); 
-  
+  showConfirmMessage(_pContent: any) {
+    let okBtn = this.itemNameTraduction('MOBILE.OK');
+    let title = this.itemNameTraduction('MOBILE.SYSTEM_MSG');
+
     let prompt = this._alertCtrl.create({
       title: title,
       message: _pContent,

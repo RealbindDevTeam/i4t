@@ -897,7 +897,8 @@
         "TABLE_NO_ACTIVE": "El restaurante no tiene la mesa activa para el servicio de Iurest",
         "TABLE_NOT_EXISTS": "La mesa no existe. Por favor verifíque el código.",
         "IUREST_NO_ACTIVE": "El restaurante no tiene el servicio de Iurest activo. No es posible ingresar.",
-        "RESTAURANT_NOT_EXISTS": "El restaurante no existe. No es posible ingresar."
+        "RESTAURANT_NOT_EXISTS": "El restaurante no existe. No es posible ingresar.",
+        "PENALTY": "En el momento no tienes disponible la opción para crear ordenes. Intenta de nuevo después del "
     },
     "MONTHLY_PAYMENT": {
         "TITLE": "Pago del servicio mensual de Iurest",
@@ -1281,7 +1282,8 @@
         "THERE_IS_NOT_REST": "No te encuentras en un restaurante",
         "THERE_IS_NOT_REST_MSG": "Ve a la opción de ordenes e ingresa el código",
         "GO_TO_ORDERS": "Ir a ordenes",
-        "ACCEPT": "Aceptar"
+        "ACCEPT": "Aceptar",
+        "GENERAL_ERROR": "Se ha producido un error. Intenta nuevamente."
     },
     "EXIT_TABLE_CONFIRM": {
         "CUSTOMER": "Cliente",

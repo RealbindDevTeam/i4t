@@ -13,6 +13,11 @@ import { Order } from '../../models/restaurant/order.model';
 import { Orders } from '../../collections/restaurant/order.collection';
 import { WaiterCallDetail } from '../../models/restaurant/waiter-call-detail.model';
 import { WaiterCallDetails } from '../../collections/restaurant/waiter-call-detail.collection';
+import { UserDetail } from '../../models/auth/user-detail.model';
+import { Parameters } from '../../collections/general/parameter.collection';
+import { Parameter } from '../../models/general/parameter.model';
+import { UserPenalty } from '../../models/auth/user-penalty.model';
+import { UserPenalties } from '../../collections/auth/user-penalty.collection';
 
 import * as QRious from 'qrious';
 
@@ -94,6 +99,24 @@ if (Meteor.isServer) {
         getRestaurantByQRCode: function (_qrcode: string, _userId: string) {
             let _table: Table = Tables.collection.findOne({ QR_code: _qrcode });
             let _restaurant: Restaurant;
+            let _lUserDetail: UserDetail = UserDetails.findOne( { user_id: _userId } );
+
+            if( _lUserDetail.penalties.length === 0 ){
+                let _lUserPenalty: UserPenalty = UserPenalties.findOne( { user_id: _userId, is_active: true } );
+                if( _lUserPenalty ){
+                    let _lUserPenaltyDays: Parameter = Parameters.findOne( { name: 'penalty_days' } );
+                    let _lCurrentDate: Date = new Date();
+                    let _lDateToCompare : Date = new Date( _lUserPenalty.last_date.setDate( ( _lUserPenalty.last_date.getDate() + Number( _lUserPenaltyDays.value ) ) ) );
+                    if( _lDateToCompare.getTime() >= _lCurrentDate.getTime() ){
+                        let _lDay: number = _lDateToCompare.getDate();
+                        let _lMonth: number = _lDateToCompare.getMonth() + 1;
+                        let _lYear: number = _lDateToCompare.getFullYear();
+                        throw new Meteor.Error('500', _lDay + '/' + _lMonth + '/' + _lYear );
+                    } else {
+                        UserPenalties.update( { _id: _lUserPenalty._id }, { $set: { is_active: false } } );
+                    }
+                }
+            }
 
             if (_table) {
                 _restaurant = Restaurants.collection.findOne({ _id: _table.restaurantId });
