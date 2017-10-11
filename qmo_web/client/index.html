@@ -6,6 +6,7 @@
   <meta charset="utf-8">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="../css/font-awesome.min.css" rel="stylesheet">
+  <link href="../css/animate.css" rel="stylesheet">
   <link rel="shortcut icon" type="image/png" href="../images/favicon.png"/>
 
   <title>Iurest</title>
@@ -116,31 +117,53 @@
 
 <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
 
+<script src="https://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.7.2.js"></script>
+
 <script>
+  
+  //$(document).ready(function () {
+  //  $(document).on("scroll", onScroll);
+  //});
+  $(function() {
 
-    $(document).ready(function () {
-        $(document).on("scroll", onScroll);
-    });
+    var $window           = $(window),
+        win_height_padded = $window.height() * 1.1,
+        isTouch           = Modernizr.touch;
 
-    function onScroll(event){
-        var scrollPos = $(document).scrollTop();
-        $('md-toolbar ul li a').each(function () {
-            var currLink = $(this);
-            var refElement = $(currLink.attr('data-target'));
-            
-            if (refElement.position()){
-              var top = refElement.position().top - 64;
-              if (top <= scrollPos && top + refElement.height() > scrollPos) {
-                  $('md-toolbar ul a').removeClass("active");
-                  currLink.addClass("active");
-              }
-              else{
-                  currLink.removeClass("active");
-              }
-            }
-        });
+    if (isTouch) { $('.revealOnScroll').addClass('animated'); }
+
+    $window.on('scroll', revealOnScroll);
+
+    function revealOnScroll() {
+      var scrolled = $window.scrollTop(),
+          win_height_padded = $window.height() * 1.1;
+
+      if (scrolled > 64) {
+        $('.menu').removeClass('menu_bar-hide');
+        $('.menu').addClass('menu_bar-show');
+      } else {
+        $('.menu').removeClass('menu_bar-show');
+        $('.menu').addClass('menu_bar-hide');
+      }
+
+      $(".revealOnScroll:not(.animated)").each(function () {
+        var $this     = $(this),
+            offsetTop = $this.offset().top;
+
+        if (scrolled + win_height_padded > offsetTop) {
+          if ($this.data('timeout')) {
+            window.setTimeout(function(){
+              $this.addClass('animated ' + $this.data('animation'));
+            }, parseInt($this.data('timeout'),10));
+          } else {
+            $this.addClass('animated ' + $this.data('animation'));
+          }
+        }
+      });
     }
 
+    revealOnScroll();
+  });
 </script>
 
 

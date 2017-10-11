@@ -1,18 +1,15 @@
- .main{
-    width: 100%;
-    height: calc( 100vh - 67px );
-    margin: 0 auto;
+ .main {
     position: absolute;
     top: 0;
-    left: 0;
     right: 0;
+    left: 0;
     bottom: 0;
 
     .detail-info{
-        overflow-y: scroll;
-        width: 72%;
-        margin: 0 auto;
-        padding: 24px;
+        position: relative;
+        margin: 20px;
+        padding: 17px 20px 0;
+        overflow: scroll;
 
         .card-info{
             margin-top: 13px;
@@ -45,17 +42,23 @@
             min-width: 100px;
         }
     }
+}
 
-    .fixed-action-btn {		
-        position: absolute;
-        bottom: 20px;
-        right: 20px;
-    
-        button {
-            width: 56px;
-            -webkit-transition: all 0.3s ease;
-            -moz-transition: all 0.3s ease;
-            transition: all 0.3s ease;
-        }
-     }
- }
+.mc {
+    position: relative;
+    height: 100%;
+    overflow: scroll;
+}
+
+.fixed-action-btn {		
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+
+    button {
+        width: 56px;
+        -webkit-transition: all 0.3s ease;
+        -moz-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+    }
+}
