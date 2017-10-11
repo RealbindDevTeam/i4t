@@ -21,6 +21,8 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     private _languages : Observable<Language[]>;
     private _subscription : Subscription;
 
+    private _showIconMenu : boolean = true;
+
     /**
      * LandingPageComponent Constructor
      * @param {Document} document 
@@ -30,12 +32,12 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     constructor( @Inject(DOCUMENT) private document: Document,
                  private pageScrollService: PageScrollService,
                  private translate: TranslateService) {
-                    PageScrollConfig.defaultScrollOffset = 64;
-                    PageScrollConfig.defaultDuration = 900; 
+        PageScrollConfig.defaultScrollOffset = 64;
+        PageScrollConfig.defaultDuration = 900; 
         
-                    let userLang = navigator.language.split('-')[0];
-                    translate.setDefaultLang('en');
-                    translate.use( userLang );
+        let userLang = navigator.language.split('-')[0];
+        translate.setDefaultLang('en');
+        translate.use( userLang );
     }
 
     /**
@@ -61,20 +63,37 @@ export class LandingPageComponent implements OnInit, OnDestroy {
         if( this._subscription ){ this._subscription.unsubscribe(); }
     }
 
-    public goToSection(section) {
-        let pageScrollInstance: PageScrollInstance = PageScrollInstance.simpleInstance(this.document, "#" + section);
+    /**
+     * Go to section
+     * @param _pSection 
+     * @param _pMobileFlag 
+     */
+    goToSection( _pSection : string, _pMobileFlag : boolean ) {
+        let pageScrollInstance: PageScrollInstance = PageScrollInstance.simpleInstance(this.document, "#" + _pSection);
         this.pageScrollService.start(pageScrollInstance);
+        if(_pMobileFlag) this.openNav();
     }
 
+    /**
+     * Open sidenav
+     */
     openNav(){
-        document.getElementById("sidenav-dev").style.width = "100%";
+        document.getElementById("sidenav-dev").classList.remove('active-sidenav');
+        document.getElementById("sidenav-bg").classList.remove('active-sidenav-bg');
+        
+        if(this._showIconMenu){
+            document.getElementById("sidenav-dev").classList.add('active-sidenav');
+            document.getElementById("sidenav-bg").classList.add('active-sidenav-bg');
+        }
+
+        this._showIconMenu = !this._showIconMenu;
     }
 
-    closeNav() {
-        document.getElementById("sidenav-dev").style.width = "0";
-    }
-
-    changeLang(lang) {
+    /**
+     * Language change
+     * @param lang 
+     */
+    langChange(lang) {
         this.translate.use(lang);
     }
 

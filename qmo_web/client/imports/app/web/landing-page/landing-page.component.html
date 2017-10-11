@@ -1,3 +1,5 @@
+<div id="sidenav-bg" class="sidenav-bg"></div>
+
 <md-toolbar class="home-md-toolbar opacity animated fadeInDown" data-animation="fadeInDown" data-timeout="1000">
     <div class="nav-wrapper container">
         <a id="logo-container" routerLink="/" class="brand-logo">
@@ -19,63 +21,49 @@
             <div style="padding-top: 70px; position: fixed">
                 <md-menu #menu="mdMenu" id="md-overlay-pane">
                     <button md-menu-item disabled>{{'LANDING.LANGUAGE_SELECT' | translate}}</button>
-                    <button md-menu-item *ngFor="let lang of _languages | async" (click)="changeLang(lang.language_code)" value="{{lang.language_code}}" >{{lang.name}}</button> 
+                    <button md-menu-item *ngFor="let lang of _languages | async" (click)="langChange(lang.language_code)" value="{{lang.language_code}}" >{{lang.name}}</button> 
                 </md-menu>
             </div>
         </ul>
         <ul class="right hide-on-med-and-down">
-            <li><a (click)="goToSection('owner')" data-target="#contact">{{'LANDING.OWNER' | translate}}</a></li>
+            <li><a (click)="goToSection('owner', false)" data-target="#contact">{{'LANDING.OWNER' | translate}}</a></li>
         </ul>
         <ul class="right hide-on-med-and-down">
-            <li><a (click)="goToSection('about')" data-target="#download">{{'LANDING.ABOUT' | translate}}</a></li>
+            <li><a (click)="goToSection('about', false)" data-target="#download">{{'LANDING.ABOUT' | translate}}</a></li>
         </ul>
         <ul class="right hide-on-med-and-down">
-            <li><a (click)="goToSection('home')" data-target="#home" class="active">{{'LANDING.HOME' | translate}}</a></li>
+            <li><a (click)="goToSection('home', false)" data-target="#home" class="active">{{'LANDING.HOME' | translate}}</a></li>
         </ul>
-
-        <div id="sidenav-dev" class="sidenav">
-
-            <a routerLink="/" class="logo_mobile">
-                <img src="/images/logo_iurest.png" alt="iurest">
-            </a>
-
-            <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
-            
-            <div class="sidenav-item">
-                <ul>
-                    <li><a href="javascript:void(document.getElementById('sidenav-dev').style.width = '0')" 
-                           (click)="goToSection('home')">{{'LANDING.HOME' | translate}}</a></li>
-                    <li><a href="javascript:void(document.getElementById('sidenav-dev').style.width = '0')"
-                           (click)="goToSection('about')">{{'LANDING.ABOUT' | translate}}</a></li>
-                    <li><a href="javascript:void(document.getElementById('sidenav-dev').style.width = '0')"
-                           (click)="goToSection('owner')">{{'LANDING.OWNER' | translate}}</a></li>
-                    <li>
-                        <a [md-menu-trigger-for]="menu" id="user-dropdown-toggler">
-                            {{'LANDING.LANGUAGE' | translate}}
-                            <md-icon style="float:right; line-height: inherit">keyboard_arrow_down</md-icon>
-                        </a>
-
-                        <div style="padding-top: 70px; position: fixed">
-                            <md-menu #menu="mdMenu" id="md-overlay-pane">
-                                <button md-menu-item disabled>{{'LANDING.LANGUAGE_SELECT' | translate}}</button>
-                                <button md-menu-item *ngFor="let lang of _languages | async" (click)="changeLang(lang.language_code)" value="{{lang.language_code}}" >{{lang.name}}</button> 
-                            </md-menu>
-                        </div>
-                    </li>
-                    <li><a href="#"></a></li>
-                </ul>
-                
-                <div class="row center" style="padding-top: 10px">
-                    <button md-raised-button class="primary-button" style="width: 45%" [routerLink]="['/signup']">{{'LANDING.SIGNUP' | translate}}</button>
-                    <button md-raised-button class="secondary-button" style="width: 45%" [routerLink]="['/signin']" >{{'LANDING.SIGNIN' | translate}}</button>
-                </div>
-                
-            </div>
-        </div>
-
-        <a href="javascript:void(0)" class="button-collapse" (click)="openNav()"><i class="material-icons">menu</i></a>
+        
+        <a href="javascript:void(0)" class="button-collapse" (click)="openNav()">
+            <i *ngIf="_showIconMenu" class="material-icons">menu</i>
+            <i *ngIf="!_showIconMenu" class="material-icons">arrow_back</i>
+        </a>
     </div>
 </md-toolbar>
+
+<div id="sidenav-dev" class="sidenav">
+    <div class="sidenav-item">
+        <ul>
+            <li><a (click)="goToSection('home', true)">{{'LANDING.HOME' | translate}}</a></li>
+            <li><a (click)="goToSection('about', true)">{{'LANDING.ABOUT' | translate}}</a></li>
+            <li><a (click)="goToSection('owner', true)">{{'LANDING.OWNER' | translate}}</a></li>
+            <li>
+                <a [md-menu-trigger-for]="menu" id="user-dropdown-toggler">
+                    {{'LANDING.LANGUAGE' | translate}}
+                    <md-icon style="float:right; line-height: inherit">keyboard_arrow_down</md-icon>
+                </a>
+                <div style="padding-top: 70px; position: fixed">
+                    <md-menu #menu="mdMenu" id="md-overlay-pane">
+                        <button md-menu-item disabled>{{'LANDING.LANGUAGE_SELECT' | translate}}</button>
+                        <button md-menu-item *ngFor="let lang of _languages | async" (click)="langChange(lang.language_code)" value="{{lang.language_code}}" >{{lang.name}}</button> 
+                    </md-menu>
+                </div>
+            </li>
+            <li><a href="#"></a></li>
+        </ul>
+    </div>
+</div>
 
 <div id="home">
     <div class="parallax img-1 parallax-container">
@@ -135,60 +123,19 @@
             <div style="padding-top: 70px; position: fixed">
                 <md-menu #menu="mdMenu" id="md-overlay-pane">
                     <button md-menu-item disabled>{{'LANDING.LANGUAGE_SELECT' | translate}}</button>
-                    <button md-menu-item *ngFor="let lang of _languages | async" (click)="changeLang(lang.language_code)" value="{{lang.language_code}}" >{{lang.name}}</button> 
+                    <button md-menu-item *ngFor="let lang of _languages | async" (click)="langChange(lang.language_code)" value="{{lang.language_code}}" >{{lang.name}}</button> 
                 </md-menu>
             </div>
         </ul>
         <ul class="right hide-on-med-and-down">
-            <li><a (click)="goToSection('owner')" data-target="#contact">{{'LANDING.OWNER' | translate}}</a></li>
+            <li><a (click)="goToSection('owner', false)" data-target="#contact">{{'LANDING.OWNER' | translate}}</a></li>
         </ul>
         <ul class="right hide-on-med-and-down">
-            <li><a (click)="goToSection('about')" data-target="#download">{{'LANDING.ABOUT' | translate}}</a></li>
+            <li><a (click)="goToSection('about', false)" data-target="#download">{{'LANDING.ABOUT' | translate}}</a></li>
         </ul>
         <ul class="right hide-on-med-and-down">
-            <li><a (click)="goToSection('home')" data-target="#home" class="active">{{'LANDING.HOME' | translate}}</a></li>
+            <li><a (click)="goToSection('home', false)" data-target="#home" class="active">{{'LANDING.HOME' | translate}}</a></li>
         </ul>
-
-        <div id="sidenav-dev" class="sidenav">
-
-            <a routerLink="/" class="logo_mobile">
-                <img src="/images/logo_iurest.png" alt="iurest">
-            </a>
-
-            <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
-            
-            <div class="sidenav-item">
-                <ul>
-                    <li><a href="javascript:void(document.getElementById('sidenav-dev').style.width = '0')" 
-                           (click)="goToSection('home')">{{'LANDING.HOME' | translate}}</a></li>
-                    <li><a href="javascript:void(document.getElementById('sidenav-dev').style.width = '0')"
-                           (click)="goToSection('about')">{{'LANDING.ABOUT' | translate}}</a></li>
-                    <li><a href="javascript:void(document.getElementById('sidenav-dev').style.width = '0')"
-                           (click)="goToSection('owner')">{{'LANDING.OWNER' | translate}}</a></li>
-                    <li>
-                        <a [md-menu-trigger-for]="menu" id="user-dropdown-toggler">
-                            {{'LANDING.LANGUAGE' | translate}}
-                            <md-icon style="float:right; line-height: inherit">keyboard_arrow_down</md-icon>
-                        </a>
-
-                        <div style="padding-top: 70px; position: fixed">
-                            <md-menu #menu="mdMenu" id="md-overlay-pane">
-                                <button md-menu-item disabled>{{'LANDING.LANGUAGE_SELECT' | translate}}</button>
-                                <button md-menu-item *ngFor="let lang of _languages | async" (click)="changeLang(lang.language_code)" value="{{lang.language_code}}" >{{lang.name}}</button> 
-                            </md-menu>
-                        </div>
-                    </li>
-                    <li><a href="#"></a></li>
-                </ul>
-
-                <div class="row center" style="padding-top: 10px">
-                    <button md-raised-button class="primary-button" style="width: 45%" [routerLink]="['/signup']">{{'LANDING.SIGNUP' | translate}}</button>
-                    <button md-raised-button class="secondary-button" style="width: 45%" [routerLink]="['/signin']" >{{'LANDING.SIGNIN' | translate}}</button>
-                </div>
-                
-            </div>
-        </div>
-
         <a href="javascript:void(0)" class="button-collapse" (click)="openNav()"><i class="material-icons">menu</i></a>
     </div>
 </md-toolbar>
