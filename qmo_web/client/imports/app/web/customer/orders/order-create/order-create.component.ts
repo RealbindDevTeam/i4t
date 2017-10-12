@@ -102,6 +102,17 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
+    showHeaderDetail(){
+        var _lScrollTop = document.getElementById("is").scrollTop;
+        if(_lScrollTop > 64){
+            document.getElementById("mt").classList.remove('menu_bar-hide');
+            document.getElementById("mt").classList.add('menu_bar-show');
+        } else {
+            document.getElementById("mt").classList.remove('menu_bar-show');
+            document.getElementById("mt").classList.add('menu_bar-hide');
+        }
+    }
+
     /**
      * ngOnInit implementation
      */
