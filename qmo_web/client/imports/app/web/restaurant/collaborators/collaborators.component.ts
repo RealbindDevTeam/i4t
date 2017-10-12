@@ -27,6 +27,7 @@ import style from './collaborators.component.scss';
 })
 export class CollaboratorsComponent implements OnInit, OnDestroy{
 
+    private _user = Meteor.userId();
     private _restaurants            : Observable<Restaurant[]>;
     private _userDetails            : Observable<UserDetail[]>;
     private _users                  : Observable<User[]>;
@@ -74,7 +75,7 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
         this._form = new FormGroup({
             restaurant: new FormControl('', [Validators.required]),
         });
-        this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe( () => {
+        this._restaurantSub = MeteorObservable.subscribe('restaurants', this._user ).subscribe( () => {
             this._ngZone.run( () => {
                 this._restaurants = Restaurants.find({}).zone();
                 this.countRestaurants();

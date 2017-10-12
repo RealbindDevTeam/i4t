@@ -256,9 +256,6 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                                     is_active: true,
                                     restaurant_work: this._collaboratorRegisterForm.value.restaurant_work,
                                     jobs: 0,
-                                    penalties: [],
-                                    current_restaurant: "",
-                                    current_table: '',
                                     birthdate : this._collaboratorRegisterForm.value.birthdate,
                                     phone: this._collaboratorRegisterForm.value.phone,
                                     enabled: true,
@@ -272,9 +269,6 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                                     is_active: true,
                                     restaurant_work: this._collaboratorRegisterForm.value.restaurant_work,
                                     jobs: 0,
-                                    penalties: [],
-                                    current_restaurant: "",
-                                    current_table: '',
                                     birthdate: new Date("<" + this._collaboratorRegisterForm.value.birthdate_yyyy + "-" +
                                         this._collaboratorRegisterForm.value.birthdate_mm + "-" +
                                         this._collaboratorRegisterForm.value.birthdate_dd + ">"),

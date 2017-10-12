@@ -9,7 +9,7 @@
     <div class="crop">
       <img src="{{getItemImage(item._id)}}" style="display:inline-block">
     </div>
-    <ion-card class="ion-card-custom">
+    <ion-card class="ion-card-custom" style="margin: 0px !important">
       <ion-card-content>
         <ion-card-title>{{item.name}}</ion-card-title>
         <p class="item-paragraph-custom" style="margin-bottom: 10px">
@@ -32,10 +32,10 @@
                 </ion-item>
                 <ion-item *ngIf="getItemAvailability()" style="padding-left: 0px">
                   {{'MOBILE.SECTIONS.QUANTITY' | translate}} <span style="color: #666; font-size: initial"> {{_quantityCount}}</span>
-                  <button *ngIf="_showActionsBtn" ion-button item-right icon-left outline (click)="removeCount()" [disabled]="_disabledMinusBtn">
+                  <button *ngIf="showActionsFooter()" ion-button item-right icon-left outline (click)="removeCount()" [disabled]="_disabledMinusBtn">
                     <ion-icon style="padding-right: 0px" name="remove"></ion-icon>
                   </button>
-                  <button *ngIf="_showActionsBtn" ion-button item-right icon-left outline style="margin-right: 0px;" (click)="addCount()">
+                  <button *ngIf="showActionsFooter()" ion-button item-right icon-left outline style="margin-right: 0px;" (click)="addCount()">
                     <ion-icon style="padding-right: 0px" name="add"></ion-icon> 
                   </button>
                 </ion-item>
@@ -43,13 +43,13 @@
               <p *ngIf="!getItemAvailability()" class="item-paragraph-custom" style="margin-top: 15px;  color: #000">
                 {{'MOBILE.SECTIONS.ITEM_UNAVAILABLE' | translate}}
               </p>
-              <button [disabled]="!_showActionsBtn" ion-button clear block icon-left class="button-secundary btn-size-custom" *ngIf="item.observations && getItemAvailability() && (itemId.observations == '')"
+              <button [disabled]="!showActionsFooter()" ion-button clear block icon-left class="button-secundary btn-size-custom" *ngIf="item.observations && getItemAvailability() && (itemId.observations == '')"
                 (click)="presentModal()" style="text-transform: inherit; margin-bottom: 15px">
                 <ion-icon name="chatboxes" *ngIf="_observations != null"></ion-icon>
                 {{_observations != null ? _observations.substring(0, 20)+ '...': 'MOBILE.SECTIONS.OBSERVATIONS' | translate}}
               </button>
 
-              <button [disabled]="!_showActionsBtn" ion-button clear block icon-left class="button-secundary btn-size-custom" *ngIf="item.observations && getItemAvailability() && (itemId.observations != '')"
+              <button [disabled]="!showActionsFooter()" ion-button clear block icon-left class="button-secundary btn-size-custom" *ngIf="item.observations && getItemAvailability() && (itemId.observations != '')"
                 (click)="presentModal(itemId.observations)" style="text-transform: inherit; margin-bottom: 15px">
                 <ion-icon name="chatboxes" *ngIf="_observations != null || (itemId.observations && _auxCounter == 0)"></ion-icon>
                 {{_observations != null ? _observations.substring(0, 20)+ '...': 
@@ -98,18 +98,17 @@
     </ion-card>
   </div>
 </ion-content>
-<ion-footer *ngIf="_showActionsBtn" class="ion-footer-custom" padding>
+<ion-footer *ngIf="showActionsFooter()" class="ion-footer-custom" padding>
   <div style="position: relative; width: 100%; text-align: right;">
     <ion-label style="font-size: large; margin-top: 0px; font-weight: bold;">{{'MOBILE.SECTIONS.TOTAL' | translate}}{{_finalPrice}} {{_currencyCode}} </ion-label>
   </div>
   <div>
     <button style="float:left; width: 45%" ion-button outline (click)="deleteOrderItem()">{{'MOBILE.ITEM_EDIT.REMOVE' | translate}}</button>
-    <button *ngIf="_showCancelBtn" [disabled]="_disabledAddBtn" style="float: right; width: 45%" ion-button
-      outline (click)="editOrderItem()">{{'MOBILE.ITEM_EDIT.MODIFY' | translate}}</button>
+    <button [disabled]="_disabledAddBtn" style="float: right; width: 45%" ion-button outline (click)="editOrderItem()">{{'MOBILE.ITEM_EDIT.MODIFY' | translate}}</button>
   </div>
 </ion-footer>
 
-<ion-footer *ngIf="!_showActionsBtn" padding>
+<ion-footer *ngIf="!showActionsFooter()" padding>
   <div style="position: relative; width: 100%; text-align: right;">
     <ion-label style="font-size: large; margin-top: 0px; font-weight: bold;">{{'MOBILE.SECTIONS.TOTAL' | translate}}{{_finalPrice}} {{_currencyCode}} </ion-label>
   </div>

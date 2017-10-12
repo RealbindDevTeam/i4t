@@ -15,6 +15,8 @@ import { Account } from '../../../../../../../both/models/restaurant/account.mod
 import { Accounts } from '../../../../../../../both/collections/restaurant/account.collection';
 import { Currency } from '../../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
+import { Users} from '../../../../../../../both/collections/auth/user.collection';
+import { TableDetailComponent } from './table-detail/table-detail.component';
 
 import template from './restaurant-table-control.component.html';
 import style from './restaurant-table-control.component.scss';
@@ -71,13 +73,15 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
         });
         this._tablesSub = MeteorObservable.subscribe( 'tables', this._user ).subscribe( () => {
             this._ngZone.run( () => {
-                this._tables = Tables.find( { status: 'BUSY' } ).zone();
+                this._tables = Tables.find( { } ).zone();
             });
         });
-        this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByAdminUser', this._user ).subscribe();
+        this._ordersSub = MeteorObservable.subscribe( 'getOrdersByAdminUser', this._user, ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 
+                                                                                           'ORDER_STATUS.PREPARED', 'ORDER_STATUS.DELIVERED',
+                                                                                           'ORDER_STATUS.PENDING_CONFIRM'] ).subscribe();
         this._accountsSub = MeteorObservable.subscribe( 'getAccountsByAdminUser', this._user ).subscribe();
-        this._ordersSub = MeteorObservable.subscribe( 'getOrdersByAdminUser', this._user, ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED', 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM'] ).subscribe();
         this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByUserId', this._user ).subscribe();
+        this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByAdminUser', this._user ).subscribe();
     }
 
     /**
@@ -104,8 +108,8 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * 
-     * @param _pRestaurantId 
+     * Change Restaurant Filter
+     * @param {string} _pRestaurantId 
      */
     changeRestaurantFilter (_pRestaurantId:string ) {
         if ( _pRestaurantId === 'All' ) {
@@ -151,8 +155,22 @@ export class RestaurantTableControlComponent implements OnInit, OnDestroy {
         return UserDetails.collection.find( { current_restaurant: _pRestaurantId } ).count();
     }
 
+    /**
+     * Go To Add Restaurant Component
+     */
     goToAddRestaurant():void{
         this._router.navigate(['/app/restaurant-register']);
+    }
+
+    /**
+     * Open Table Detail Dialog
+     * @param {string} _pRestaurantId
+     * @param {string} _pTableId
+     * @param {string} _pTableNumber
+     * @param {string} _pCurrencyId
+     */
+    openTableDetail( _pRestaurantId:string, _pTableId:string, _pTableNumber:string, _pCurrencyId:string ) {
+        this._router.navigate( [ 'app/table-detail', _pRestaurantId, _pTableId, _pTableNumber, _pCurrencyId, '100' ], { skipLocationChange: true } );
     }
 
     /**

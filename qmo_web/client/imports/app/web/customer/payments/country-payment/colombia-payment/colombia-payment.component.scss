@@ -78,9 +78,14 @@
 }
 
 .main{
-    width: 55%;
-    margin: 0 auto;
-
+    //width: 55%;
+    //margin: 0 auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
     .image{
         border-radius: 50%; 
         width: 100px; 
@@ -165,4 +170,20 @@
             color: red;
         }
     }
+}
+
+.mc {
+    position: relative;
+    height: 100%;
+    overflow: scroll;
+}
+
+.mmp{
+    margin: 20px;
+    padding: 17px 20px 0;
+}
+
+.mw{
+    margin: 0 auto;
+    width: 50%;
 }

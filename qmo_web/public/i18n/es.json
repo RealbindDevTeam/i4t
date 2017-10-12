@@ -51,15 +51,33 @@
         "YEAR_FORMAT": "Formato del año incorrecto"
     },
     "LANDING": {
-        "PRICING": "Precio",
-        "DOWNLOAD": "Descarga",
-        "FAQ": "FAQ",
+        "HOME": "Inicio",
+        "ABOUT": "Acerca de iurest",
+        "OWNER": "Propietario de restaurante",
         "CONTACT": "Contácto",
         "SIGNIN": "Iniciar sesión",
         "SIGNUP": "Registrarse",
         "LANGUAGE": "Idioma",
         "LANGUAGE_SELECT": "Selecciona tu idioma",
-        "ADMIN_SIGNUP": "Registro de aliado"
+        "ADMIN_SIGNUP": "Registro de aliado",
+        "HOME_CONTENT" : {
+            "TITLE" : "Prueba Prueba Prueba",
+            "TEXT1" : "Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba",
+            "TEXT2" : "Prueba Prueba Prueba"
+        },
+        "ABOUT_CONTENT" : {
+            "TITLE1" : "Prueba Prueba Prueba",
+            "TEXT1" : "Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba",
+            "TITLE2" : "Prueba Prueba Prueba",
+            "TEXT2" : "Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba",
+            "TITLE3" : "Prueba Prueba Prueba",
+            "TEXT3" : "Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba"
+        },
+        "OWNER_CONTENT" : {
+            "TITLE1" : "Prueba Prueba Prueba",
+            "TEXT1" : "Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba",
+            "TEXT2" : "Prueba Prueba Prueba"
+        }
     },
     "SIGNUP": {
         "WITH_EMAIL": "Registrarse con correo electrónico",
@@ -850,7 +868,7 @@
         "ADDITION": "Adición(es)",
         "NO_ORDERS": "Aún no hay ordenes por preparar",
         "DELETE_ORDER": "ELIMINAR ORDEN",
-        "ORDER_CANCELED_MSG": "Un mesero ha cancelado la orden del cliente",
+        "ORDER_CANCELED_MSG": "Se ha cancelado la orden del cliente",
         "ORDER_PREPARED_MSG": "Orden Preparada",
         "ORDER_DELETED": "Orden Eliminada"
     },
@@ -879,7 +897,8 @@
         "TABLE_NO_ACTIVE": "El restaurante no tiene la mesa activa para el servicio de Iurest",
         "TABLE_NOT_EXISTS": "La mesa no existe. Por favor verifíque el código.",
         "IUREST_NO_ACTIVE": "El restaurante no tiene el servicio de Iurest activo. No es posible ingresar.",
-        "RESTAURANT_NOT_EXISTS": "El restaurante no existe. No es posible ingresar."
+        "RESTAURANT_NOT_EXISTS": "El restaurante no existe. No es posible ingresar.",
+        "PENALTY": "En el momento no tienes disponible la opción para crear ordenes. Intenta de nuevo después del "
     },
     "MONTHLY_PAYMENT": {
         "TITLE": "Pago del servicio mensual de Iurest",
@@ -1263,7 +1282,8 @@
         "THERE_IS_NOT_REST": "No te encuentras en un restaurante",
         "THERE_IS_NOT_REST_MSG": "Ve a la opción de ordenes e ingresa el código",
         "GO_TO_ORDERS": "Ir a ordenes",
-        "ACCEPT": "Aceptar"
+        "ACCEPT": "Aceptar",
+        "GENERAL_ERROR": "Se ha producido un error. Intenta nuevamente."
     },
     "EXIT_TABLE_CONFIRM": {
         "CUSTOMER": "Cliente",
@@ -1280,5 +1300,41 @@
         "ADDITIONS": "Adiciones",
         "ADDITION": "Adición(es)",
         "ORDER_CANCELED": "Orden Cancelada"
+    },
+    "RESTAURANT_TABLE_CONTROL": {
+        "THERE_NOT_RESTAURANTS": "Aún no hay restaurantes registrados",
+        "MESSAGE": "Registra uno para habilitar esta opción",
+        "RESTAURANT_REGISTER": "Registrar restaurante",
+        "TABLE_CONTROL": "Control de Mesas",
+        "TABLE_CONTROL_MSG": "Consulta el estado de las mesas",
+        "SELECT_RESTAURANT": "Selecciona restaurante",
+        "ALL_RESTAURANTS": "Todos los Restaurantes",
+        "USERS": "Usuarios",
+        "TABLE":"Mesa",
+        "FREE_TABLE": "Mesa Libre",
+        "ORDERS":"Ordenes",
+        "IN_THE_ACCOUNT": "en la cuenta",
+        "VIEW_DETAIL": "Ver detalle",
+        "DETAIL_NOT_AVAILABLE": "Detalle No Disponible"
+    },
+    "TABLE_DETAIL": {
+        "TABLE_DETAIL_TITLE": "Detalle Mesa",
+        "TABLE_DETAIL_SUBTITLE": "Te presentamos los usuarios que se encuentran actualmente en la Mesa",
+        "TOTAL_CONSUMPTION": "Total Consumido",
+        "PENALIZE": "Penalizar"
+    },
+    "PENALIZE_CUSTOMER": {
+        "STATUS_MSG": "A Continuación te presentamos el estado de las ordenes del usuario",
+        "ORDER_REGISTERED": "Registradas",
+        "ORDER_IN_PROCESS": "En Proceso",
+        "ORDER_PREPARED": "Preparadas",
+        "ORDER_DELIVERED": "Entregadas",
+        "ORDER_TRANSLATE": "En Traslado",
+        "PENALIZE_MSG": "Al crear una penalización, este usuario quedara marcado para que Iurest lo tenga presente al momento de entrar en un restaurante y le notifique a sus administradores.",
+        "PENALIZE_TABLE": "La penalización retirara al usuario de la mesa",
+        "PENALIZE_CONFIRM_MSG": "y cancelara todas sus ordenes. Deseas continuar creando la penalización?",
+        "ACCOUNT_ERROR": "Se ha producido un error con la cuenta del usuario. Por favor verifique si el usuario aún se encuentra en la mesa con la opción ADMINISTRACION -> CONTROL DE MESAS",
+        "GENERAL_ERROR": "Se ha producido un error penalizando al usuario. Por favor intente mas tarde.",
+        "PENALTY_CREATED": "Penalización Creada"
     }
 }

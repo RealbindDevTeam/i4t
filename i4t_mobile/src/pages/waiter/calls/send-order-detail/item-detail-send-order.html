@@ -7,7 +7,7 @@
         <garnish-food-send-order-component *ngFor="let gar of item.garnishFood" [garnish]="gar"></garnish-food-send-order-component>
     </div>
     
-    <p *ngIf="(item.additions.length <= 0)" style="color: darkgoldenrod;">{{ 'MOBILE.SEND_ORDER.NO_GARNISH_FOOD' | translate }}</p>
+    <p *ngIf="(item.additions.length <= 0)" style="color: darkgoldenrod;">{{ 'MOBILE.SEND_ORDER.NO_ADDITIONS' | translate }}</p>
     <div *ngIf="(item.additions.length > 0)">
         <p style="color: darkgoldenrod;">{{ 'MOBILE.SEND_ORDER.ADDITIONS' | translate }}:</p>
         <additions-send-order-component *ngFor="let add of item.additions" [addition]="add" [quantity]="item.quantity"></additions-send-order-component>

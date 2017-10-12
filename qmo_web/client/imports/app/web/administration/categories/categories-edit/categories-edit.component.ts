@@ -32,9 +32,6 @@ export class CategoriesEditComponent implements OnInit {
     private _categories             : Observable<Category[]>;
     private _sections               : Observable<Section[]>;
 
-    //private _categoriesSub          : Subscription;    
-    //private _sectionsSub            : Subscription;
-
     private _categorySection        : string;
     private titleMsg                : string;
     private btnAcceptLbl            : string;
@@ -75,25 +72,7 @@ export class CategoriesEditComponent implements OnInit {
         this._categorySection = this._categoryToEdit.section;
         this._categories = Categories.find( { } ).zone();
         this._sections = Sections.find( { } ).zone();
-        /*this._categoriesSub = MeteorObservable.subscribe( 'categories', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._categories = Categories.find( { } ).zone();
-            });
-        });
-        this._sectionsSub = MeteorObservable.subscribe( 'sections', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._sections = Sections.find( { } ).zone();
-            });
-        });*/
     }
-
-    /**
-     * Remove all subscriptions
-     
-    removeSubscriptions():void{
-        if( this._categoriesSub ){ this._categoriesSub.unsubscribe(); }
-        if( this._sectionsSub ){ this._sectionsSub.unsubscribe(); }
-    }*/
 
     /**
      * Function to edit Category
@@ -172,11 +151,4 @@ export class CategoriesEditComponent implements OnInit {
             }
         });
     }
-
-    /**
-     * Implements ngOnDestroy function
-     
-    ngOnDestroy(){
-        this.removeSubscriptions();
-    }*/
 }

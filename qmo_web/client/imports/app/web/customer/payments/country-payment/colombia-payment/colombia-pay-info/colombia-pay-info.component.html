@@ -45,7 +45,7 @@
                                                                         <span *ngFor="let garnish of _garnishFood | async">
                                                                             <ng-template [ngIf]="gar === garnish._id">
                                                                                 <md-list-item class="element">
-                                                                                    <img md-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" src="/images/default-plate.png">
+                                                                                    <img md-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" src="/images/default_addition.png">
                                                                                     <h4 md-line>{{garnish.name}} ({{'PAYMENTS.COLOMBIA.GARNISH_FOOD' | translate}})</h4>
                                                                                     <div md-line>
                                                                                         <p class="element-price">{{'PAYMENTS.COLOMBIA.PRICE' | translate}}: {{ getGarnisFoodUnitPrice(garnish) }} {{_currencyCode}}</p>
@@ -63,7 +63,7 @@
                                                                         <span *ngFor="let addition of _additions | async">
                                                                             <ng-template [ngIf]="ad === addition._id">
                                                                                 <md-list-item class="element">
-                                                                                    <img md-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" src="/images/default-plate.png">
+                                                                                    <img md-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" src="/images/default_addition.png">
                                                                                     <h4 md-line>{{addition.name}} ({{'PAYMENTS.COLOMBIA.ADDITION' | translate}})</h4>
                                                                                     <div md-line>
                                                                                         <p class="element-price">{{'PAYMENTS.COLOMBIA.PRICE' | translate}}: {{ getAdditionUnitPrice(addition) }} {{_currencyCode}}</p>
@@ -85,7 +85,7 @@
                                                         <span *ngFor="let addition of _additions | async">
                                                             <ng-template [ngIf]="add.additionId === addition._id">
                                                                 <md-list-item class="element">
-                                                                    <img md-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" src="/images/default-plate.png">
+                                                                    <img md-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" src="/images/default_addition.png">
                                                                     <h4 md-line>{{addition.name}} ({{'PAYMENTS.COLOMBIA.ADDITION' | translate}})</h4>
                                                                     <div md-line>
                                                                         <p class="element-price">{{'PAYMENTS.COLOMBIA.PRICE' | translate}}: {{ getAdditionUnitPrice(addition) }} {{_currencyCode}}</p>

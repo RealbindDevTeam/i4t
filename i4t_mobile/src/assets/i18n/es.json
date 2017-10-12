@@ -167,12 +167,13 @@
             "QUANT": "Cant.",
             "TABLE_NOT_EXISTS": "La mesa no existe. Por favor verifica el código",
             "TABLE_NO_ACTIVE": "La mesa no tiene el servicio de Iurest activo. No es posible ingresar",
-            "Iurest_NO_ACTIVE": "El Restaurante no tiene el servicio de Iurest activo. No es posible ingresar",
+            "IUREST_NO_ACTIVE": "El Restaurante no tiene el servicio de Iurest activo. No es posible ingresar",
             "TABLE": "Mesa",
             "RESTAURANT_NOT_EXISTS": "El restaurante no existe. No es posible ingresar.",
             "MSG_1": "Puedes ordenar lo que deseas",
             "NO_ORDERS": "Aún no tienes ordenes, puedes crear una orden nueva",
-            "LOADING_MENU": "Cargando menú"
+            "LOADING_MENU": "Cargando menú",
+            "PENALTY": "En el momento no tienes disponible la opción para crear ordenes. Intenta de nuevo después del "
         },
         "ORDER_TRANS": {
             "ORDERS": "Orden",
@@ -256,7 +257,7 @@
             "PAYED": "Pagado",
             "CANCEL_PAY_OTHER_USER": "Deseas cancelar la solicitud del pago de la orden",
             "CANCELED_PAY_OTHER_USER": "Se ha cancelado la solicitud del pago de la orden",
-            "NO_ORDERS" : "Aún no tienes ordenes realizadas"
+            "NO_ORDERS": "Aún no tienes ordenes realizadas"
         },
         "WAITER_CALL": {
             "TITTLE": "Solicitar mesero",
@@ -277,7 +278,8 @@
             "PAY_CONFIRM": "Confirmación de pago",
             "PAY_CLOSE": "Cerrar pagos recibidos",
             "NO_WAITERS": "No hay meseros asignados en el restaurante",
-            "ALPHANUMERIC_CODE": "Código"
+            "ALPHANUMERIC_CODE": "Código",
+            "CALL_LABEL_EXIT_CUSTOMER": "Salida de usuario"
         },
         "SECTIONS": {
             "MENU": "Menú",
@@ -329,6 +331,16 @@
             "ORDER_DELIVERED": "Orden entregada",
             "ORDER_DETAIL": "Orden entregada"
         },
+        "CANCEL_ORDER": {
+            "TITLE": "Cancelar orden",
+            "CUSTOMER": "Cliente",
+            "ORDER": "Orden",
+            "TABLE": "Mesa",
+            "ADDITION": "Adición(es)",
+            "BTN_CANCEL_ORDER": "Cancelar orden",
+            "ORDER_CANCELED": "Orden cancelada",
+            "CANCELING_ORDER_ERROR": "Un error ha ocurrido cancelando la orden, por favor verifica el estado"
+        },        
         "PAYMENTS_HISTORY": {
             "INFO": "Para obtener los comprobantes de tus pagos, podrás hacerlo desde",
             "TITLE": "Historial de pagos",
@@ -379,7 +391,8 @@
             "INVALID_OPERATION": "Operación Inválida",
             "CALL_WAITER_MSG": "El estado de tus ordenes no te permite salir del restaurante. Deseas Llamar a un mesero para gestionar tus ordenes?",
             "WAITER_ON_THE_WAY_CALL": "Un mesero ya recibió la solicitud y va para tu mesa",
-            "CALLED_CANCELED": "Llamado Cancelado"
+            "CALLED_CANCELED": "Llamado Cancelado",
+            "GENERAL_ERROR": "Se ha producido un error. Intenta nuevamente."
         },
         "WAITER_OPTIONS": {
             "CALLS": "Llamadas",
@@ -392,6 +405,17 @@
             "NO_BTN": "No",
             "YES_BTN": "Sí",
             "LOADING": "Por favor espera..."
+        },
+        "HOME" : {
+            "SLIDE-1" : {
+                "WELCOME" : "Bienvenido a Iurest",
+                "TEXT" : "Ordena en tu restaurante favorito de una manera fácil y rápida"
+            },
+            "SLIDE-2" : {
+                "1" : "1. Ordena lo que deseas",
+                "2" : "2. Revisa lo que cuesta tu pedido",
+                "3" : "3. Puedes llamar a un mesero"
+            }
         },
         "HOME-MENU": {
             "HOME": "Inicio",

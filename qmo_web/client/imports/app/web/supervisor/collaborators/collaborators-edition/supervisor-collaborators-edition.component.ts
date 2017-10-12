@@ -7,8 +7,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { CustomValidators } from '../../../../../../../both/shared-components/validators/custom-validator';
-import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
 import { Role } from '../../../../../../../both/models/auth/role.model';
 import { Roles } from '../../../../../../../both/collections/auth/role.collection';
 import { Table } from '../../../../../../../both/models/restaurant/table.model';
@@ -19,6 +17,7 @@ import { UserDetail } from '../../../../../../../both/models/auth/user-detail.mo
 import { User } from '../../../../../../../both/models/auth/user.model';
 import { Users } from '../../../../../../../both/collections/auth/user.collection';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
+
 import template from './supervisor-collaborators-edition.component.html';
 
 @Component({
@@ -28,13 +27,10 @@ import template from './supervisor-collaborators-edition.component.html';
 })
 export class SupervisorCollaboratorsEditionComponent implements OnInit, OnDestroy {
 
-    private _roleSub                  : Subscription;
     private _tableSub                 : Subscription;
-    private _restaurantSub            : Subscription;
     private _collaboratorEditionForm  : FormGroup;
     private _mdDialogRef              : MdDialogRef<any>;
 
-    private _restaurants              : Observable<Restaurant[]>;
     private _roles                    : Observable<Role[]>;
     private _tables                   : Observable<Table[]>;
     
@@ -101,10 +97,7 @@ export class SupervisorCollaboratorsEditionComponent implements OnInit, OnDestro
         });
         this._tableInit = this.selectUserDetail.table_assignment_init;
         this._tableEnd  = this.selectUserDetail.table_assignment_end;
-        this._restaurants = Restaurants.find({}).zone();
-        this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
         this._roles = Roles.find({}).zone();
-        this._roleSub = MeteorObservable.subscribe('getRoleCollaborators').subscribe();
         this._tableSub = MeteorObservable.subscribe('getTablesByRestaurantWork', this.selectUser._id).subscribe();
     }
 
@@ -112,8 +105,6 @@ export class SupervisorCollaboratorsEditionComponent implements OnInit, OnDestro
      * Remove all subscriptions
      */
     removeSubscriptions():void{
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
-        if( this._roleSub ){ this._roleSub.unsubscribe(); }
         if( this._tableSub ){ this._tableSub.unsubscribe(); }
     }
     

@@ -16,12 +16,6 @@ import { ModalObservationsEdit } from './modal-observations-edit';
 import { Storage } from '@ionic/storage';
 import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
-/*
-  Generated class for the ItemEdit page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   selector: 'page-item-edit',
   templateUrl: 'item-edit.html'
@@ -63,9 +57,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
   private _createdGarnishFood: any[];
   private _orderItemGarnishFood: any[];
   private _orderAdditions: any[];
-  private _showActionsBtn: boolean = false;
   private _showCancelBtn: boolean = false;
-  private _showFooter: boolean = false;
   private _newOrderForm: FormGroup;
   private _garnishFormGroup: FormGroup = new FormGroup({});
   private _additionsFormGroup: FormGroup = new FormGroup({});
@@ -73,16 +65,16 @@ export class ItemEditPage implements OnInit, OnDestroy {
   private _currencyCode: string;
   private _currenciesSub: Subscription;
 
-  constructor(public _navCtrl: NavController, 
-              public _navParams: NavParams, 
-              public _translate: TranslateService, 
-              public _storage: Storage,
-              public _modalCtrl: ModalController, 
-              public _loadingCtrl: LoadingController, 
-              private _toastCtrl: ToastController, 
-              private _ngZone: NgZone,
-              public _alertCtrl: AlertController,
-              private _userLanguageService: UserLanguageService) {
+  constructor(public _navCtrl: NavController,
+    public _navParams: NavParams,
+    public _translate: TranslateService,
+    public _storage: Storage,
+    public _modalCtrl: ModalController,
+    public _loadingCtrl: LoadingController,
+    private _toastCtrl: ToastController,
+    private _ngZone: NgZone,
+    public _alertCtrl: AlertController,
+    private _userLanguageService: UserLanguageService) {
 
     this._userLang = navigator.language.split('-')[0];
     _translate.setDefaultLang('en');
@@ -106,7 +98,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+    this._translate.use(this._userLanguageService.getLanguage(Meteor.user()));
     this.removeSubscriptions();
     this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this._res_code).subscribe(() => {
       this._ngZone.run(() => {
@@ -115,15 +107,6 @@ export class ItemEditPage implements OnInit, OnDestroy {
           this._item = Items.collection.find({ _id: this._item_code }).fetch();
           for (let item of this._item) {
             this._unitPrice = this.getItemPrice(item);
-            this._showFooter = true;
-            let aux = item.restaurants.find(element => element.restaurantId === this._res_code);
-            if (aux.isAvailable) {
-              this._showActionsBtn = true;
-              this._showCancelBtn = true;
-            } else {
-              this._showActionsBtn = false;
-              this._showCancelBtn = false;
-            }
           }
           this._showGarnishFoodError = false;
           this._maxGarnishFoodElements = 0;
@@ -149,14 +132,6 @@ export class ItemEditPage implements OnInit, OnDestroy {
           }
         }
       }
-      //this._orderAux.items.forEach((itemOrder) => {
-      //});
-      if (this._orderAux.status === 'ORDER_STATUS.REGISTERED' && this._orderAux.creation_user === this._currentUserId) {
-        this._showActionsBtn = true;
-      } else {
-        this._showActionsBtn = false;
-      }
-      //});
     });
 
     this._garnishSub = MeteorObservable.subscribe('garnishFoodByRestaurant', this._res_code).subscribe(() => {
@@ -493,8 +468,21 @@ export class ItemEditPage implements OnInit, OnDestroy {
               }
             );
 
-            let _toastMsg = this.itemNameTraduction('MOBILE.ITEM_EDIT.TOAST_MSG_REMOVE');
+            let _lOrder2 = Orders.findOne({ _id: this._order_code });
+
+            if ((_lOrder2.items.length == 0) &&
+              (_lOrder2.additions.length == 0) &&
+              (_lOrder2.status === 'ORDER_STATUS.REGISTERED')) {
+              Orders.update({ _id: _lOrder2._id }, {
+                $set: {
+                  status: 'ORDER_STATUS.CANCELED',
+                  modification_user: Meteor.userId(),
+                  modification_date: new Date()
+                }
+              });
+            }
             this._navCtrl.pop();
+            let _toastMsg = this.itemNameTraduction('MOBILE.ITEM_EDIT.TOAST_MSG_REMOVE');
             this.presentToast(_toastMsg);
           }
         }
@@ -560,6 +548,25 @@ export class ItemEditPage implements OnInit, OnDestroy {
     return '';
   }
 
+  showActionsFooter(): boolean {
+    let item = Items.collection.findOne({ _id: this._item_code });
+    if (item) {
+      let aux = item.restaurants.find(element => element.restaurantId === this._res_code);
+      if (aux.isAvailable) {
+        let orderAux = Orders.findOne({ _id: this._order_code, creation_user: this._creation_user });
+        if (orderAux) {
+          if (orderAux.status === 'ORDER_STATUS.REGISTERED' && orderAux.creation_user === this._currentUserId) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      } else {
+        return false;
+      }
+    }
+  }
+
   /**
 * Function to get item avalaibility 
 */
@@ -576,12 +583,12 @@ export class ItemEditPage implements OnInit, OnDestroy {
   /**
    * Remove all subscriptions
    */
-  removeSubscriptions():void{
-    if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
-    if( this._additionSub ){ this._additionSub.unsubscribe(); }
-    if( this._garnishSub ){ this._garnishSub.unsubscribe(); }
-    if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
-    if( this._itemImageSub ){ this._itemImageSub.unsubscribe(); }
-    if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
+  removeSubscriptions(): void {
+    if (this._itemsSub) { this._itemsSub.unsubscribe(); }
+    if (this._additionSub) { this._additionSub.unsubscribe(); }
+    if (this._garnishSub) { this._garnishSub.unsubscribe(); }
+    if (this._ordersSub) { this._ordersSub.unsubscribe(); }
+    if (this._itemImageSub) { this._itemImageSub.unsubscribe(); }
+    if (this._currenciesSub) { this._currenciesSub.unsubscribe(); }
   }
 }

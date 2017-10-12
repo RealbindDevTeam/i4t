@@ -16,4 +16,5 @@ export interface Payment extends CollectionObject{
     currencyId: string;
     status: string;
     received: boolean;
+    canceled_by_penalization?: boolean;
 }

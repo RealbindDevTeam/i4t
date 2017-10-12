@@ -35,7 +35,11 @@ Meteor.publish('getOrders', function (_restaurantId: string, _tableQRCode: strin
 Meteor.publish('getOrdersByTableId', function (_restaurantId: string, _tableId, _status: string[]) {
     check(_restaurantId, String);
     let _lAccount: Account = Accounts.findOne({restaurantId: _restaurantId, tableId: _tableId, status: 'OPEN'});
-    return Orders.collection.find({ accountId: _lAccount._id, restaurantId: _restaurantId, tableId: _tableId, status: { $in: _status } });
+    if( _lAccount ){
+        return Orders.collection.find({ accountId: _lAccount._id, restaurantId: _restaurantId, tableId: _tableId, status: { $in: _status } });
+    } else {
+        return;
+    }
 });
 
 /**
@@ -51,7 +55,11 @@ Meteor.publish('getOrdersByUserId', function (_userId: string, _status: string[]
             let _lAccount: Account = Accounts.findOne({restaurantId: _lUserDetail.current_restaurant, 
                                                        tableId: _lUserDetail.current_table,
                                                        status: 'OPEN'});
-            return Orders.collection.find({ accountId: _lAccount._id, restaurantId: _lAccount.restaurantId, tableId: _lAccount.tableId, status: { $in: _status } });
+            if( _lAccount ){
+                return Orders.collection.find({ accountId: _lAccount._id, restaurantId: _lAccount.restaurantId, tableId: _lAccount.tableId, status: { $in: _status } });
+            } else {
+                return;
+            }
         } else {
             return;
         }
@@ -97,9 +105,13 @@ Meteor.publish('getOrdersByAccount', function (_userId: string) {
             let _lAccount: Account = Accounts.findOne({restaurantId: _lUserDetail.current_restaurant, 
                                                     tableId: _lUserDetail.current_table,
                                                     status: 'OPEN'});
-            return Orders.find( { creation_user: _userId, restaurantId: _lAccount.restaurantId, tableId: _lAccount.tableId, status: 'ORDER_STATUS.DELIVERED' } );
+            if( _lAccount ){
+                return Orders.find( { creation_user: _userId, restaurantId: _lAccount.restaurantId, tableId: _lAccount.tableId, status: 'ORDER_STATUS.DELIVERED' } );
+            } else {
+                return;
+            }
         }else{
-            return Orders.find( { creation_user: _userId, restaurantId: "", tableId: "", status: ""} );
+            return;
         }
     } else {
         return;
@@ -113,12 +125,16 @@ Meteor.publish( 'getOrdersWithConfirmationPending', function( _restaurantId:stri
     check( _restaurantId, String );
     check( _tableId, String );   
     let _lAccount: Account = Accounts.findOne({restaurantId: _restaurantId, tableId: _tableId, status: 'OPEN'});
-    return Orders.find( { accountId: _lAccount._id,
-                          restaurantId: _restaurantId,
-                          tableId: _tableId,
-                          status: 'ORDER_STATUS.PENDING_CONFIRM', 
-                          'translateInfo.markedToTranslate': true, 
-                          'translateInfo.confirmedToTranslate': false } );
+    if( _lAccount ){
+        return Orders.find( { accountId: _lAccount._id,
+            restaurantId: _restaurantId,
+            tableId: _tableId,
+            status: 'ORDER_STATUS.PENDING_CONFIRM', 
+            'translateInfo.markedToTranslate': true, 
+            'translateInfo.confirmedToTranslate': false } );
+    } else {
+        return;
+    }
 });
 
 /**

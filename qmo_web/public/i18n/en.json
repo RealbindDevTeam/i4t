@@ -51,15 +51,33 @@
         "YEAR_FORMAT": "Year format incorrect"
     },
     "LANDING": {
-        "PRICING": "Pricing",
-        "DOWNLOAD": "Download",
-        "FAQ": "FAQ",
+        "HOME": "Home",
+        "ABOUT": "About iurest",
+        "OWNER": "Restaurant owner",
         "CONTACT": "Contact",
         "SIGNIN": "Log In",
         "SIGNUP": "Sign Up",
         "LANGUAGE": "Language",
         "LANGUAGE_SELECT": "Select your language",
-        "ADMIN_SIGNUP": "Register as partner"
+        "ADMIN_SIGNUP": "Register as partnerr",
+        "HOME_CONTENT": {
+            "TITLE": "Test Test Test",
+            "TEXT1": "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "TEXT2": "Test Test Test"
+        },
+        "ABOUT_CONTENT": {
+            "TITLE1": "Test Test Test",
+            "TEXT1": "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "TITLE2": "Test Test Test",
+            "TEXT2": "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "TITLE3": "Test Test Test",
+            "TEXT3": "Test Test Test Test Test Test Test Test Test Test Test Test"
+        },
+        "OWNER_CONTENT": {
+            "TITLE1": "Test Test Test",
+            "TEXT1": "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "TEXT2": "Test Test Test"
+        }
     },
     "SIGNUP": {
         "WITH_EMAIL": "Sign up with your email",
@@ -302,7 +320,7 @@
         "ADD_LOCATION": "Enter the location of the establishment",
         "SCHEDULE_LABEL": "Schedule",
         "SCHEDULE_INFO": "Timing hours",
-        "SCHEDULE_INFO_TEXT": "Enter the opening hours of the establishment",
+        "SCHEDULE_INFO_TEXT": "Enter the attending hours of the establishment",
         "NO_CURRENCY_FOUND": "No Currency Found",
         "CURRENCY_ACCEPTED": "Currency Accepted",
         "ENTER_TAX_PERCENTAGE": "Enter the tax percentage (0% - 100%). You can enter the value or use the Slider",
@@ -642,7 +660,7 @@
         "WEBPAGE": "Web Page",
         "EMAIL": "Email",
         "FINANCIAL_LABEL": "Financial",
-        "FINANCIAL_INFO": "Restaurant Financial Information",
+        "FINANCIAL_INFO": "Restaurant's Financial Information",
         "FINANCIAL_INFO_TEXT": "Edit the financial information of the restaurant. This will allow Iurest to help you with business accounts and expenses",
         "INVOICE_CODE": "Invoice code",
         "TIP_PERCENTAGE": "Tip Percentage",
@@ -651,7 +669,7 @@
         "ADD_PAYMENTMETHODS_RESTURANT": "Select payment methods accepted by restaurant",
         "SCHEDULE_LABEL": "Schedule",
         "SCHEDULE_INFO": "Timing hours",
-        "SCHEDULE_INFO_TEXT": "Enter the opening hours of the establishment",
+        "SCHEDULE_INFO_TEXT": "Enter the attending hours of the establishment",
         "CURRENCY_ACCEPTED": "Currency accepted",
         "ENTER_TAX_PERCENTAGE": "Enter the tax percentage (0% - 100%). You can enter the value or use the Slider",
         "ENTER_TIP_PERCENTAGE": "Enter the percentage of the suggested tip (0% - 100%). You can enter the value or use the slider",
@@ -764,7 +782,7 @@
         "THERE_IS_NOT_REST": "You are not in any restaurant",
         "THERE_IS_NOT_REST_MSG": "Go to the order option and enter the code",
         "GO_TO_ORDERS": "Go to orders",
-        "NO_ORDERS": "You have no delivered orders at this time",
+        "NO_ORDERS": "You have no orders delivered at this time",
         "COLOMBIA": {
             "GARNISH_FOOD": "Side dishes",
             "ADDITION": "Addition",
@@ -782,7 +800,7 @@
             "CONSULT_PAYMENTS": "View payment detail",
             "SELECT_PAYMENT_METHOD": "Select payment method",
             "STATUS": "Status",
-            "FULL_PAYMENT": "Full order payment",
+            "FULL_PAYMENT": "Total order payment",
             "RETURN_ORDER_USER": "Do you want to return the order to the user ",
             "ORDER_PENDING_STATUS": "You have orders pending to confirm. You must confirm them or wait til someone confirm",
             "NO_ONLINE_PAYMENT": "Online payment is not yet available in Iurest",
@@ -839,7 +857,7 @@
         "ORDERS_CONFIRMED": "Orders Confirmed",
         "ORDER": "Order",
         "TABLE": "Table",
-        "MESSAGE": "Select the order you want to consult",
+        "MESSAGE": "Select the order you want to show",
         "TITLE": "Order Items",
         "OBSERVATIONS": "Observations",
         "ORDER_PREPARED": "ORDER PREPARED",
@@ -850,7 +868,7 @@
         "ADDITION": "Addition",
         "NO_ORDERS": "There are no orders to be prepared yet",
         "DELETE_ORDER": "DELETE ORDER",
-        "ORDER_CANCELED_MSG": "A waiter has canceled the customer order",
+        "ORDER_CANCELED_MSG": "Customer order canceled",
         "ORDER_PREPARED_MSG": "Order Prepared",
         "ORDER_DELETED": "Order Deleted"
     },
@@ -879,7 +897,8 @@
         "TABLE_NO_ACTIVE": "The restaurant does not have this table active for the service of Iurest",
         "TABLE_NOT_EXISTS": "The table does not exist. Please check the code.",
         "IUREST_NO_ACTIVE": "The restaurant does not have the Iurest service active. It is not possible to enter.",
-        "RESTAURANT_NOT_EXISTS": "The restaurant does not exist. It is not possible to enter."
+        "RESTAURANT_NOT_EXISTS": "The restaurant does not exist. It is not possible to enter.",
+        "PENALTY": "At the moment you do not have available the option to create orders. Try again after "
     },
     "MONTHLY_PAYMENT": {
         "TITLE": "Iurest services",
@@ -1262,8 +1281,9 @@
         "EXIT_MSG": "Exit",
         "THERE_IS_NOT_REST": "You are not in a restaurant",
         "THERE_IS_NOT_REST_MSG": "Go to the order option and enter the code",
-        "GO_TO_ORDERS": "Go to orders",
-        "ACCEPT": "Accept"
+        "GO_TO_ORDERS": "Go to Orders",
+        "ACCEPT": "Accept",
+        "GENERAL_ERROR": "An error has occurred. Try again."
     },
     "EXIT_TABLE_CONFIRM": {
         "CUSTOMER": "Customer",
@@ -1280,5 +1300,41 @@
         "ADDITIONS": "Additions",
         "ADDITION": "Addition",
         "ORDER_CANCELED": "Order Canceled"
+    },
+    "RESTAURANT_TABLE_CONTROL": {
+        "THERE_NOT_RESTAURANTS": "There are no restaurants register yet",
+        "MESSAGE": "Register at least one restaurant to enable this option",
+        "RESTAURANT_REGISTER": "Register Restaurant",
+        "TABLE_CONTROL": "Tables Control",
+        "TABLE_CONTROL_MSG": "Check tables status",
+        "SELECT_RESTAURANT": "Select restaurant",
+        "ALL_RESTAURANTS": "All Restaurants",
+        "USERS": "Users",
+        "TABLE": "Table",
+        "FREE_TABLE": "Free Table",
+        "ORDERS": "Orders",
+        "IN_THE_ACCOUNT": "in the account",
+        "VIEW_DETAIL": "View detail",
+        "DETAIL_NOT_AVAILABLE": "Detail not available"
+    },
+    "TABLE_DETAIL": {
+        "TABLE_DETAIL_TITLE": "Table detail",
+        "TABLE_DETAIL_SUBTITLE": "Users on the table",
+        "TOTAL_CONSUMPTION": "Total spent",
+        "PENALIZE": "Penalize"
+    },
+    "PENALIZE_CUSTOMER": {
+        "STATUS_MSG": "Status of the orders of the users",
+        "ORDER_REGISTERED": "Registered",
+        "ORDER_IN_PROCESS": "In Process",
+        "ORDER_PREPARED": "Prepared",
+        "ORDER_DELIVERED": "Delivered",
+        "ORDER_TRANSLATE": "In Transfer",
+        "PENALIZE_MSG": "Creating a penalty, will mark the user on Iurest system for notify the administrator when his/her is in establishment again",
+        "PENALIZE_TABLE": "The penalty will remove the user of the table",
+        "PENALIZE_CONFIRM_MSG": "and cancel all his/her orders. Do you want to continue creating the penalty?",
+        "ACCOUNT_ERROR": "An error has occurred with the user account. Please check if the user is still at the table with the option ADMINISTRATION -> TABLES CONTROL",
+        "GENERAL_ERROR": "An error has occurred while penalizing the user. Please try later.",
+        "PENALTY_CREATED": "Penalty created"
     }
 }
