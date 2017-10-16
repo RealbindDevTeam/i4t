@@ -94,6 +94,7 @@ import { RestaurantTableControlComponent } from './restaurant/restaurant/restaur
 import { TableDetailComponent } from './restaurant/restaurant/restaurant-table-control/table-detail/table-detail.component';
 import { PenalizeCustomerComponent } from './restaurant/restaurant/restaurant-table-control/table-detail/penalize-customer/penalize-customer.component';
 import { SupervisorRestaurantTableControlComponent } from './supervisor/restaurant-table-control/supervisor-restaurant-table-control.component';
+import { InvoicesDownloadPage } from './administration/invoices-download/invoices-download.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -156,7 +157,8 @@ export const WEB_DECLARATIONS = [
     RestaurantExitComponent,
     RestaurantTableControlComponent,
     TableDetailComponent,
-    SupervisorRestaurantTableControlComponent
+    SupervisorRestaurantTableControlComponent,
+    InvoicesDownloadPage
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [

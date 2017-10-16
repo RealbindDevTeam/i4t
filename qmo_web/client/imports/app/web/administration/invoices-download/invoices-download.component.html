@@ -1,0 +1,146 @@
+<md-card md-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
+    <md-card-content>
+        <div class="card_initial">
+        <div class="card_initial has-image">
+            <div class="card_initial-image-container">
+            <img class="card_initial-image" src="/images/mesas.png" />
+            </div>
+            <div class="card_initial-copy">
+            <div class="card_initial-tagline">
+                {{ 'RESTAURANT_TABLE_CONTROL.THERE_NOT_RESTAURANTS' | translate }}
+            </div>
+            <div class="card_initial-additional-links">
+                {{ 'RESTAURANT_TABLE_CONTROL.MESSAGE' | translate }}
+            </div>
+            </div>
+            <div class="card_initial-button">
+            <button md-raised-button (click)="goToAddRestaurant()">{{ 'RESTAURANT_TABLE_CONTROL.RESTAURANT_REGISTER' | translate }}</button>
+            </div>
+        </div>
+        </div>
+    </md-card-content>
+</md-card>
+
+<md-card *ngIf="_thereAreRestaurants">
+    <md-card-title>{{ 'RESTAURANT_TABLE_CONTROL.TABLE_CONTROL' | translate }}</md-card-title>
+    <md-card-subtitle>{{ 'RESTAURANT_TABLE_CONTROL.TABLE_CONTROL_MSG' | translate }}</md-card-subtitle>
+    <md-card-content>
+        <md-select placeholder="{{ 'RESTAURANT_TABLE_CONTROL.SELECT_RESTAURANT' | translate }}" class="select">
+            <md-option value="All">{{ 'RESTAURANT_TABLE_CONTROL.ALL_RESTAURANTS' | translate }}</md-option>
+            <md-option *ngFor="let rest of _restaurantsFilter | async" (click)="changeRestaurantFilter(rest._id);" value="{{rest._id}}">{{rest.name}}</md-option>
+        </md-select>
+    </md-card-content>
+
+    <md-input-container>
+        <input mdInput [mdDatepicker]="pickerInit" placeholder="{{'BIRTHDATE' | translate}}" [(ngModel)]="_initDate">
+        <button mdSuffix [mdDatepickerToggle]="pickerInit"></button>
+    </md-input-container>
+    <md-datepicker #pickerInit></md-datepicker>
+
+    <md-input-container>
+        <input mdInput [mdDatepicker]="pickerEnd" placeholder="{{'BIRTHDATE' | translate}}" [(ngModel)]="_endDate">
+        <button mdSuffix [mdDatepickerToggle]="pickerEnd"></button>
+    </md-input-container>
+    <md-datepicker #pickerEnd></md-datepicker>
+</md-card>
+
+<md-card class="main" *ngFor="let invoice of _invoices | async">
+    <md-card-content>
+        <md-list class="order-info">
+            <md-list-item>
+                <img md-list-avatar class="image" src="/images/orders.png">
+                <h2 md-line class="title">{{invoice.restaurant_name}}</h2>
+                <p md-line class="title">{{invoice.creation_date | date: 'dd MMM yyyy HH:mm'}}</p>
+                <button md-raised-button (click)="invoiceGenerate(invoice)" style="box-shadow: none; color: #ef5350;" mdTooltip="{{'PAYMENTS_HISTORY.TOOLTIP_DOWNLOAD_INVOICE' | translate}}">
+                    <md-icon>get_app</md-icon>
+                </button>
+            </md-list-item>
+        </md-list>
+        <md-list class="order-details">
+            <div *ngFor="let item of invoice.items">
+                <md-list-item class="element">
+                    <div md-line>
+                        <div class="item-name">
+                            <h4 class="display-inline">{{itemNameCrop(item.item_name)}}</h4>
+                        </div>
+                        <div class="item-price-quantity">
+                            <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{item.quantity}}</p>
+                            <p class="price">{{item.price}} {{invoice.currency}}</p>
+                        </div>
+                    </div>
+                </md-list-item>
+                <md-divider class="divider"></md-divider>
+                <div *ngIf="item.garnish_food.length > 0">
+                    <md-list-item class="element" *ngFor="let gf of item.garnish_food">
+                        <div md-line>
+                            <div class="item-name">
+                                <h4 class="display-inline">{{itemNameCrop(gf.garnish_food_name)}}</h4>
+                            </div>
+                            <div class="item-price-quantity">
+                                <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{item.quantity}}</p>
+                                <p class="price">{{gf.price}} {{invoice.currency}}</p>
+                            </div>
+                        </div>
+                    </md-list-item>
+                    <md-divider class="divider"></md-divider>
+                </div>
+                
+                <div *ngIf="item.additions.length > 0">
+                    <md-list-item class="element" *ngFor="let ad of item.additions">
+                        <div md-line>
+                            <div class="item-name">
+                                <h4 class="display-inline">{{itemNameCrop(ad.addition_name)}}</h4>
+                            </div>
+                            <div class="item-price-quantity">
+                                <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{item.quantity}}</p>
+                                <p class="price">{{ad.price}} {{invoice.currency}}</p>
+                            </div>
+                        </div>
+                    </md-list-item>
+                    <md-divider class="divider"></md-divider>
+                </div>
+            </div>
+
+            <div *ngFor="let addition of invoice.additions">
+                <md-list-item class="element">
+                    <div md-line>
+                        <div class="item-name">
+                            <h4 class="display-inline">{{itemNameCrop(addition.addition_name)}}</h4>
+                        </div>
+                        <div class="item-price-quantity">
+                            <p class="quantity">{{'PAYMENTS.COLOMBIA.QUANT' | translate}} {{addition.quantity}}</p>
+                            <p class="price">{{addition.price}} {{invoice.currency}}</p>
+                        </div>
+                    </div>
+                </md-list-item>
+                <md-divider class="divider"></md-divider>
+            </div>
+        </md-list>
+        
+        <div style="padding: 0 16px;">
+            <div>
+                <div style="display: -webkit-inline-box; width: 100%;">
+                    <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.CASH'" class="img-cards" src="images/pago.png">
+                    <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.CREDIT_CARD'" class="img-cards" src="images/pago_tarjeta_credito.png">
+                    <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.DEBIT_CARD'" class="img-cards" src="images/pago_tarjeta_debito.png">
+                    <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.ONLINE'" class="img-cards" src="images/img/payment-online.png">
+                    <p style="line-height: inherit">
+                        {{invoice.pay_method | translate}}
+                    </p>
+                </div>
+                <div style="display: inline-block; width: 100%;">
+                    <h4 style="display: inline-block;">{{ 'PAYMENTS_HISTORY.TOTAL_ORDERS' | translate }}</h4>
+                    <p style="float: right;">{{invoice.total_order}} {{invoice.currency}}</p>
+                </div>
+                <div style="display: inline-block; width: 100%;">
+                    <h4 style="display: inline-block;">{{ 'PAYMENTS_HISTORY.TIP' | translate }}</h4>
+                    <p style="float: right;">{{invoice.total_tip}} {{invoice.currency}}</p>
+                </div>
+            </div>
+            <div style="display: inline-block; width: 100%;">
+                <h1 style="display: inline-block;">{{ 'PAYMENTS_HISTORY.TOTAL' | translate }}</h1>
+                <h1 style="float: right;">{{invoice.total_pay}} {{invoice.currency}}</h1>
+            </div>
+        </div>
+    </md-card-content>
+</md-card>
