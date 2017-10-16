@@ -9,7 +9,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { uploadRestaurantImage } from '../../../../../../../both/methods/restaurant/restaurant.methods';
 import { Restaurants, RestaurantImages, RestaurantImageThumbs } from '../../../../../../../both/collections/restaurant/restaurant.collection';
-import { Restaurant, RestaurantSchedule, RestaurantImage, RestaurantFinancialElement, RestaurantImageThumb } from '../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurant, RestaurantSchedule, RestaurantImage, RestaurantImageThumb } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Hours } from '../../../../../../../both/collections/general/hours.collection';
 import { Hour } from '../../../../../../../both/models/general/hour.model';
 import { Currency } from '../../../../../../../both/models/general/currency.model';
@@ -20,12 +20,12 @@ import { Countries } from '../../../../../../../both/collections/settings/countr
 import { Country } from '../../../../../../../both/models/settings/country.model';
 import { City } from '../../../../../../../both/models/settings/city.model';
 import { Cities } from '../../../../../../../both/collections/settings/city.collection';
-import { FinancialBase } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-base';
-import { FinancialCheckBox } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-checkbox';
-import { FinancialDropDown } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-dropdown';
-import { FinancialTextBox } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-textbox';
-import { FinancialText } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-text';
-import { FinancialSlider } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-slider';
+//import { FinancialBase } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-base';
+//import { FinancialCheckBox } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-checkbox';
+//import { FinancialDropDown } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-dropdown';
+//import { FinancialTextBox } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-textbox';
+//import { FinancialText } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-text';
+//import { FinancialSlider } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-slider';
 import { Parameter } from '../../../../../../../both/models/general/parameter.model';
 import { Parameters } from '../../../../../../../both/collections/general/parameter.collection';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
@@ -88,10 +88,10 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     private _edition_schedule               : RestaurantSchedule;
 
     private _scheduleToEdit                 : RestaurantSchedule;
-    private _financialElements              : FinancialBase<any>[] = [];
+    //private _financialElements              : FinancialBase<any>[] = [];
     private _showFinancialElements          : boolean = false;
     private _restaurantFinancialInformation : Object = {};
-    private _financialInformation           : RestaurantFinancialElement[] = [];
+    //private _financialInformation           : RestaurantFinancialElement[] = [];
 
     private _showOtherCity: boolean;
 
@@ -139,7 +139,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             this._ngZone.run(() => {
                 this._countries = Countries.find({}).zone();
                 let _lCountry: Country = Countries.findOne({ _id: this._restaurantToEdit.countryId });
-                this.createFinancialFormEditMode(_lCountry.financialInformation, this._restaurantToEdit.financialInformation);
+                //this.createFinancialFormEditMode(_lCountry.financialInformation, this._restaurantToEdit.financialInformation);
             });
         });
 
@@ -359,7 +359,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                 }
             case 2:
                 let _lElementsValidated: boolean = true;
-                if (this._showFinancialElements) {
+                /*if (this._showFinancialElements) {
                     this._financialInformation.forEach((element) => {
                         if (element.required !== undefined && element.required === true) {
                             let _lObjects: string[] = [];
@@ -372,7 +372,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                     return _lElementsValidated;
                 } else {
                     return true;
-                }
+                }*/
             default:
                 return true;
         }
@@ -421,10 +421,10 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         this._queue = _lCountry.queue;
 
         this._showFinancialElements = false;
-        this._financialElements = [];
+        //this._financialElements = [];
         this._restaurantFinancialInformation = {};
-        this._financialInformation = _lCountry.financialInformation;
-        this.createFinancialForm(this._financialInformation);
+        //this._financialInformation = _lCountry.financialInformation;
+        //this.createFinancialForm(this._financialInformation);
     }
 
     /**
@@ -481,7 +481,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     /**
      * Create Financial form from restaurant template
      * @param {RestaurantFinancialElement[]} _pFinancialInformation 
-     */
+     
     createFinancialForm(_pFinancialInformation: RestaurantFinancialElement[]): void {
         if (_pFinancialInformation.length > 0) {
             _pFinancialInformation.forEach((element) => {
@@ -528,7 +528,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             this._financialElements.sort((a, b) => a.order - b.order);
             this._showFinancialElements = true;
         }
-    }
+    }*/
 
     /**
      * Set Restaurant Financial Information
@@ -541,7 +541,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     /**
      * Create Financial form from restaurant template in edit mode
      * @param {RestaurantFinancialElement[]} _pFinancialInformation 
-     */
+     
     createFinancialFormEditMode(_pFinancialInformation: RestaurantFinancialElement[], _pRestaurantFinancialInfo: Object): void {
         if (_pFinancialInformation.length > 0) {
             _pFinancialInformation.forEach((element) => {
@@ -594,7 +594,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             this._showFinancialElements = true;
             this._restaurantFinancialInformation = _pRestaurantFinancialInfo;
         }
-    }
+    }*/
 
     /**
     * This function open de error dialog according to parameters 

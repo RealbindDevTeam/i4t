@@ -3,7 +3,6 @@ import {NavigationService} from './navigation/navigation.service';
 import {Router, Event, NavigationStart, NavigationEnd} from '@angular/router';
 import 'hammerjs';
 import { OrderNavigationService } from './customer/orders/order-navigation/order-navigation.service';
-import { FinancialControlService } from './custom/financial-info/financial-control.service';
 import { UserLanguageService } from '../shared/services/user-language.service';
 
 import template from './app.web.component.html';
@@ -11,7 +10,7 @@ import style from './app.web.component.scss';
  
 @Component({
   selector: 'app',
-  providers: [ OrderNavigationService, FinancialControlService, UserLanguageService ],
+  providers: [ OrderNavigationService, UserLanguageService ],
   template,
   styles: [ style ]
 })
@@ -21,8 +20,7 @@ export class AppComponent implements OnInit{
   constructor( private _navigation: NavigationService, 
                private _router: Router, 
                private _elementRef: ElementRef, 
-               private _orderNavigationService: OrderNavigationService, 
-               private _financialControlService: FinancialControlService,
+               private _orderNavigationService: OrderNavigationService,
                private _userLanguageService: UserLanguageService ) {
                 var stopStyle = [ 'font-family: Roboto, "Helvetica Neue", sans-serif', 
                                   'font-size: 1.7rem', 

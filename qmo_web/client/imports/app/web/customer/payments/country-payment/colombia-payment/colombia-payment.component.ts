@@ -164,10 +164,10 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
 
         let _lRestaurant:Restaurant = Restaurants.findOne( { _id: this.restId } );
         if( _lRestaurant ){
-            if( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] > 0 ){
+            /*if( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] > 0 ){
                 this._tipValue = _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ];
                 this._tipTotal = this._totalValue * ( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] / 100 );
-            }
+            }*/
         }
 
         this._ipoComBaseValue  = (this._totalValue * 100 ) / this._ipoCom;

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
-import { Restaurant, RestaurantSchedule, RestaurantFinancialElement } from '../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurant, RestaurantSchedule } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Hours } from '../../../../../../../both/collections/general/hours.collection';
 import { Hour } from '../../../../../../../both/models/general/hour.model';
 import { Currency } from '../../../../../../../both/models/general/currency.model';
@@ -20,12 +20,6 @@ import { Country } from '../../../../../../../both/models/settings/country.model
 import { City } from '../../../../../../../both/models/settings/city.model';
 import { Cities } from '../../../../../../../both/collections/settings/city.collection';
 import { uploadRestaurantImage, createRestaurantCode, generateQRCode, createTableCode } from '../../../../../../../both/methods/restaurant/restaurant.methods';
-import { FinancialBase } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-base';
-import { FinancialCheckBox } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-checkbox';
-import { FinancialDropDown } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-dropdown';
-import { FinancialTextBox } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-textbox';
-import { FinancialText } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-text';
-import { FinancialSlider } from '../../../../../../../both/shared-components/restaurant/financial-info/financial-slider';
 import { CreateConfirmComponent } from './create-confirm/create-confirm.component';
 import { Table } from '../../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
@@ -77,10 +71,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _restaurantCurrencyId: string = '';
 
     private _schedule: RestaurantSchedule;
-    private _financialElements: FinancialBase<any>[] = [];
-    private _showFinancialElements: boolean = false;
-    private _restaurantFinancialInformation: Object = {};
-    private _financialInformation: RestaurantFinancialElement[] = [];
     private restaurantCode: string = '';
 
     private _loading: boolean;
@@ -256,7 +246,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                 }
             case 2:
                 let _lElementsValidated: boolean = true;
-                if (this._showFinancialElements) {
+                /*if (this._showFinancialElements) {
                     this._financialInformation.forEach((element) => {
                         if (element.required !== undefined && element.required === true) {
                             let _lObjects: string[] = [];
@@ -293,7 +283,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                     } else {
                         return true;
                     }
-                }
+                }*/
             default:
                 return true;
         }
@@ -333,7 +323,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._restaurantForm.controls['webPage'].reset();
         this._restaurantForm.controls['email'].reset();
         this._restaurantForm.controls['tables_number'].reset();
-        this._restaurantFinancialInformation = {};
+        //this._restaurantFinancialInformation = {};
         this._router.navigate(['app/restaurant']);
     }
 
@@ -407,7 +397,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                         webPage: this._restaurantForm.value.webPage,
                         email: this._restaurantForm.value.email,
                         restaurant_code: this.generateRestaurantCode(),
-                        financialInformation: this._restaurantFinancialInformation,
+                        //financialInformation: this._restaurantFinancialInformation,
                         paymentMethods: _lPaymentMethodsToInsert,
                         location: {
                             lat: 0,
@@ -540,11 +530,11 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._countryIndicative = _lCountry.indicative;
         this._queues = _lCountry.queue;
 
-        this._showFinancialElements = false;
-        this._financialElements = [];
-        this._restaurantFinancialInformation = {};
-        this._financialInformation = _lCountry.financialInformation;
-        this.createFinancialForm(this._financialInformation);
+        //this._showFinancialElements = false;
+        //this._financialElements = [];
+        //this._restaurantFinancialInformation = {};
+        //this._financialInformation = _lCountry.financialInformation;
+        //this.createFinancialForm(this._financialInformation);
         this._cities = Cities.find({ country: _country }).zone();
     }
 
@@ -601,64 +591,12 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Create Financial form from restaurant template
-     * @param {RestaurantFinancialElement[]} _pFinancialInformation 
-     */
-    createFinancialForm(_pFinancialInformation: RestaurantFinancialElement[]): void {
-        if (_pFinancialInformation.length > 0) {
-            _pFinancialInformation.forEach((element) => {
-                if (element.controlType === 'textbox') {
-                    this._financialElements.push(new FinancialTextBox({
-                        key: element.key,
-                        label: element.label,
-                        value: element.value,
-                        required: element.required,
-                        order: element.order
-                    }
-                    )
-                    );
-                } else if (element.controlType === 'checkbox') {
-                    this._financialElements.push(new FinancialCheckBox({
-                        key: element.key,
-                        label: element.label,
-                        value: element.value,
-                        required: element.required,
-                        order: element.order
-                    }
-                    )
-                    );
-                } else if (element.controlType === 'text') {
-                    this._financialElements.push(new FinancialText({
-                        key: element.key,
-                        label: element.label,
-                        order: element.order
-                    }
-                    )
-                    );
-                } else if (element.controlType === 'slider') {
-                    this._financialElements.push(new FinancialSlider({
-                        key: element.key,
-                        label: element.label,
-                        order: element.order,
-                        value: element.value,
-                        minValue: element.minValue,
-                        maxValue: element.maxValue,
-                        stepValue: element.stepValue
-                    }));
-                }
-            });
-            this._financialElements.sort((a, b) => a.order - b.order);
-            this._showFinancialElements = true;
-        }
-    }
-
-    /**
      * Set Restaurant Financial Information
      * @param {Object} _event 
-     */
+     
     setRestaurantFinancialInfo(_event: Object): void {
         this._restaurantFinancialInformation = _event;
-    }
+    }*/
 
     /**
      * Set Restaurant Financial Information

@@ -47,9 +47,6 @@ import { OrderAttentionComponent } from './chef/order-attention/order-attention.
 import { CallsComponent } from './waiter/calls/calls.component';
 import { CallCloseConfirmComponent } from './waiter/calls/call-close-confirm/call-close-confirm.component';
 import { NotFoundWebComponent } from './auth/notfound.web.component';
-import { FinancialControlService } from './custom/financial-info/financial-control.service';
-import { IurestFinancialFormComponent } from './custom/financial-info/financial-form/financial-form.component';
-import { IurestFinancialElementComponent } from './custom/financial-info/financial-element/financial-element.component';
 import { IurestSliderComponent } from './custom/slider/slider.component';
 import { PaymentsComponent } from './customer/payments/payments.component';
 import { ColombiaPaymentComponent } from './customer/payments/country-payment/colombia-payment/colombia-payment.component';
@@ -94,6 +91,8 @@ import { RestaurantTableControlComponent } from './restaurant/restaurant/restaur
 import { TableDetailComponent } from './restaurant/restaurant/restaurant-table-control/table-detail/table-detail.component';
 import { PenalizeCustomerComponent } from './restaurant/restaurant/restaurant-table-control/table-detail/penalize-customer/penalize-customer.component';
 import { SupervisorRestaurantTableControlComponent } from './supervisor/restaurant-table-control/supervisor-restaurant-table-control.component';
+import { RestaurantLegalityComponent } from './restaurant/restaurant/legality/restaurant-legality.component';
+import { ColombiaLegalityComponent } from './restaurant/restaurant/legality/country-legality/colombia-legality/colombia-legality.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -129,8 +128,6 @@ export const WEB_DECLARATIONS = [
     OrderAttentionComponent,
     CallsComponent,
     NotFoundWebComponent,
-    IurestFinancialFormComponent,
-    IurestFinancialElementComponent,
     IurestSliderComponent,
     PaymentsComponent,
     ColombiaPaymentComponent,
@@ -156,7 +153,9 @@ export const WEB_DECLARATIONS = [
     RestaurantExitComponent,
     RestaurantTableControlComponent,
     TableDetailComponent,
-    SupervisorRestaurantTableControlComponent
+    SupervisorRestaurantTableControlComponent,
+    RestaurantLegalityComponent,
+    ColombiaLegalityComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [
@@ -196,6 +195,5 @@ export const MODAL_DIALOG_DECLARATIONS = [
 
 export const SERVICES_DECLARATIONS = [
     OrderNavigationService,
-    FinancialControlService,
     UserLanguageService
 ]; 

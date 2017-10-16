@@ -24,7 +24,7 @@ if (Meteor.isServer) {
 
             let lInvoiceItems         : InvoiceItem[] = [];
             let lInvoiceAdditions     : InvoiceAddition[] = [];
-            let lFinantialInformation : FinancialInformation;
+            let lFinantialInformation : any;
             
             _pPay.orders.forEach((order)=> {
                 let lOrder = Orders.findOne({_id : order});
@@ -69,7 +69,7 @@ if (Meteor.isServer) {
                 });
             });
             
-            lFinantialInformation = {
+            /*lFinantialInformation = {
                 business_name        : lRestaurant.financialInformation['BUSINESS_NAME'],
                 nit                  : lRestaurant.financialInformation['NIT'],
                 dian_numeration_from : lRestaurant.financialInformation['DIAN_NUMERATION_FROM'],
@@ -77,7 +77,9 @@ if (Meteor.isServer) {
                 tip_porcentage       : lRestaurant.financialInformation['TIP_PERCENTAGE'],
                 address              : lRestaurant.address,
                 phone                : lRestaurant.phone,
-            }
+            }*/
+
+            lFinantialInformation = {};
             
             Invoices.insert({
                 restaurant_name       : lRestaurant.name,
