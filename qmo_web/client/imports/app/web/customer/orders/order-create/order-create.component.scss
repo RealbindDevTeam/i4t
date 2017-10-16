@@ -1,12 +1,12 @@
-$sidenav-primary-color : #F5F5F5;
 $sidenav-secondary-color : #EEEEEE;
 $menu-navegation-color : #F5F5F5;
 
 .order-form-1 {
     position: absolute;
-    top: 0;
+    top: -5px;
     left: 0;
-    width: 100%;
+    right: 0;
+    bottom: 0;
     
     .order-form-2 {
         position: relative;
@@ -193,8 +193,6 @@ $menu-navegation-color : #F5F5F5;
                     
                     .items {
                         overflow: scroll;
-                        //margin-top: 20px;
-                        //margin-left: 20px;
                         display: -webkit-box;
                         display: -moz-box;
                         display: -ms-flexbox;
@@ -252,27 +250,6 @@ $menu-navegation-color : #F5F5F5;
             overflow: hidden;
             z-index: 4;
 
-            .header-detail {
-                position: absolute;
-                background-color: white;
-                padding: 24px;
-                width: 348px;
-                z-index: 999;
-                box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
-
-                label {
-                    font-family: Roboto,"Helvetica Neue",sans-serif;
-                    font-size: 24px;
-                    font-weight: 400;
-                    color: #114b5f;
-                }
-
-                i {
-                    font-size: 20px; 
-                    color: #114b5f
-                }
-            }
-
             .btn-close {
                 position: absolute;
                 top: 16px;
@@ -284,7 +261,7 @@ $menu-navegation-color : #F5F5F5;
             
             .item-detail-card {
                 position: relative;
-                max-height: calc(100vh - 120px);
+                max-height: calc(100vh - 110px);
                 overflow-y: scroll;
                 overflow-x: hidden;
                 -webkit-flex: 1 1 auto;
@@ -294,7 +271,7 @@ $menu-navegation-color : #F5F5F5;
             }
 
             .crop {
-                margin: 48px -24px 16px;
+                margin: -24px -24px 16px;
                 img {
                     width: 396px;
                 }
@@ -310,6 +287,45 @@ $menu-navegation-color : #F5F5F5;
             }
         }
     }
+}
+
+.menu {
+    width: 348px;
+    padding: 24px;
+    position: fixed;
+    background-color: white;
+    color: #3d4247;
+    top: 0;
+    z-index: 999;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    transition: all 0.5s;
+    -webkit-transform: translateY(-100%);
+    -moz-transform: translateY(-100%);
+    transform: translateY(-100%);
+    -ms-transform: translateY(-100%);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2)
+}
+
+.menu label {
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.menu_bar-hide {
+    opacity: 0;
+    -webkit-transform: translateY(-100%);
+    -moz-transform: translateY(-100%);
+    transform: translateY(-100%);
+    -ms-transform: translateY(-100%);
+}
+
+.menu_bar-show {
+    -webkit-transform: translateY(0%);
+    -moz-transform: translateY(0%);
+    transform: translateY(0%);
+    -ms-transform: translateY(0%);
 }
 
 .quantity-count{
@@ -346,13 +362,13 @@ $menu-navegation-color : #F5F5F5;
     color: white;
 }
 
-.fixed-action-btn {		
+.fixed-action-btn {
     position: relative;
 
     button {
         position: absolute;
-        bottom: 30px;
-        right: 35px;
+        bottom: 20px;
+        right: 20px;
         width: 56px;
         -webkit-transition: all 0.3s ease;
         -moz-transition: all 0.3s ease;
