@@ -102,6 +102,9 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
+    /**
+     * Show the detail header
+     */
     showHeaderDetail(){
         var _lScrollTop = document.getElementById("is").scrollTop;
         if(_lScrollTop > 64){
