@@ -119,13 +119,13 @@
 
                 <div id="item-selected" class="item-detail">
                     <div *ngFor="let itemDet of _itemDetail | async">
-                        <div class="header-detail" #headerDetailCard>
+                        <div id="mt" class="menu menu_bar-hide">
                             <label>{{itemDet.name}}</label>
                             <button class="btn-close" md-raised-button (click)="viewItemDetail(true)">
                                 <i class="fa fa-times" aria-hidden="true"></i>
                             </button>
                         </div>
-                        <div class="item-detail-card">
+                        <div id="is" class="item-detail-card" (scroll)="showHeaderDetail()">
                             <div class="card-content">
                                 <div class="crop">
                                     <img src="{{ getItemImage(itemDet._id) }}">

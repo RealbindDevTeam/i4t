@@ -169,26 +169,6 @@ $sidenav-width: 225px;
             overflow: hidden;
             z-index: 4;
 
-            .header-detail {
-                position: absolute;
-                background-color: white;
-                padding: 24px;
-                width: 348px;
-                z-index: 999;
-
-                label {
-                    font-family: Roboto,"Helvetica Neue",sans-serif;
-                    font-size: 24px;
-                    font-weight: 400;
-                    color: #114b5f;
-                }
-
-                i {
-                    font-size: 20px; 
-                    color: #114b5f
-                }
-            }
-
             .btn-close {
                 position: absolute;
                 top: 16px;
@@ -210,7 +190,7 @@ $sidenav-width: 225px;
             }
 
             .crop {
-                margin: 48px -24px 16px;
+                margin: -24px -24px 16px;
                 img {
                     width: 396px;
                 }
@@ -226,6 +206,45 @@ $sidenav-width: 225px;
             }
         }
     }
+}
+
+.menu {
+    width: 348px;
+    padding: 24px;
+    position: fixed;
+    background-color: white;
+    color: #3d4247;
+    top: 0;
+    z-index: 999;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    transition: all 0.5s;
+    -webkit-transform: translateY(-100%);
+    -moz-transform: translateY(-100%);
+    transform: translateY(-100%);
+    -ms-transform: translateY(-100%);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2)
+}
+
+.menu label {
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.menu_bar-hide {
+    opacity: 0;
+    -webkit-transform: translateY(-100%);
+    -moz-transform: translateY(-100%);
+    transform: translateY(-100%);
+    -ms-transform: translateY(-100%);
+}
+
+.menu_bar-show {
+    -webkit-transform: translateY(0%);
+    -moz-transform: translateY(0%);
+    transform: translateY(0%);
+    -ms-transform: translateY(0%);
 }
 
 .fixed-action-btn {		
