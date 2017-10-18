@@ -1,12 +1,12 @@
+<div>
+    <p>Selecciona el regimen al que pertenece tu restaurante:</p>
+    <md-radio-group [(ngModel)]="_regimeSelected">
+        <md-radio-button [value]="'regime_co'" (change)="radioChange($event)">Regimen Comun</md-radio-button>
+        <md-radio-button style="margin-left: 2rem;" [value]="'regime_si'" (change)="radioChange($event)">Regimen Simplificado</md-radio-button>
+    </md-radio-group>
+</div>
 <form [formGroup]="_colombiaLegalityForm">
     <div>
-        <div>
-            <p>Selecciona el regimen al que pertenece tu restaurante:</p>
-            <md-radio-group formControlName="regime" [(ngModel)]="_regimeSelected">
-                <md-radio-button [value]="'regime_co'" (change)="radioChange($event)">Regimen Comun</md-radio-button>
-                <md-radio-button style="margin-left: 2rem;" [value]="'regime_si'" (change)="radioChange($event)">Regimen Simplificado</md-radio-button>
-            </md-radio-group>
-        </div>
         <div *ngIf="_showForcedToInvoice" style="margin-top: 1rem;">
             <md-checkbox formControlName="forced_to_invoice" (change)="evaluateForcedToInvoiceCheck($event)" [(ngModel)]="_forcedToInvoiceValue">Dar factura a los clientes</md-checkbox>
         </div>
@@ -108,3 +108,7 @@
         </md-input-container>
     </div>
 </form>
+<md-card-actions align="end" style="margin-top: 1rem;">
+    <button md-raised-button>{{'BACK' | translate}}</button>
+    <button md-raised-button (click)="buildColombiaRestaurantLegality()">{{'FINISH' | translate}}</button>
+</md-card-actions>
