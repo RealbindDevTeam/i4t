@@ -3,18 +3,18 @@
         <div class="card_initial">
         <div class="card_initial has-image">
             <div class="card_initial-image-container">
-            <img class="card_initial-image" src="/images/mesas.png" />
+                <img class="card_initial-image" src="/images/orders.png" />
             </div>
             <div class="card_initial-copy">
-            <div class="card_initial-tagline">
-                {{ 'RESTAURANT_TABLE_CONTROL.THERE_NOT_RESTAURANTS' | translate }}
-            </div>
-            <div class="card_initial-additional-links">
-                {{ 'RESTAURANT_TABLE_CONTROL.MESSAGE' | translate }}
-            </div>
+                <div class="card_initial-tagline">
+                    {{ 'INVOICES_DOWNLOAD.THERE_NOT_RESTAURANTS' | translate }}
+                </div>
+                <div class="card_initial-additional-links">
+                    {{ 'INVOICES_DOWNLOAD.MESSAGE' | translate }}
+                </div>
             </div>
             <div class="card_initial-button">
-            <button md-raised-button (click)="goToAddRestaurant()">{{ 'RESTAURANT_TABLE_CONTROL.RESTAURANT_REGISTER' | translate }}</button>
+                <button md-raised-button (click)="goToAddRestaurant()">{{ 'INVOICES_DOWNLOAD.RESTAURANT_REGISTER' | translate }}</button>
             </div>
         </div>
         </div>
@@ -22,26 +22,40 @@
 </md-card>
 
 <md-card *ngIf="_thereAreRestaurants">
-    <md-card-title>{{ 'RESTAURANT_TABLE_CONTROL.TABLE_CONTROL' | translate }}</md-card-title>
-    <md-card-subtitle>{{ 'RESTAURANT_TABLE_CONTROL.TABLE_CONTROL_MSG' | translate }}</md-card-subtitle>
-    <md-card-content>
-        <md-select placeholder="{{ 'RESTAURANT_TABLE_CONTROL.SELECT_RESTAURANT' | translate }}" class="select">
-            <md-option value="All">{{ 'RESTAURANT_TABLE_CONTROL.ALL_RESTAURANTS' | translate }}</md-option>
-            <md-option *ngFor="let rest of _restaurantsFilter | async" (click)="changeRestaurantFilter(rest._id);" value="{{rest._id}}">{{rest.name}}</md-option>
+    <md-card-title>{{ 'INVOICES_DOWNLOAD.TITLE' | translate }}</md-card-title>
+    <md-card-subtitle>{{ 'INVOICES_DOWNLOAD.TEXT' | translate }}</md-card-subtitle>
+        <md-card-content>
+            <md-select [(ngModel)]="_selectedYear" placeholder="{{'INVOICES_DOWNLOAD.YEAR_FILTER' | translate}}" style="width: 25%;">
+                <md-option *ngFor="let year of _yearsArray" value="{{year.value}}" (click)="monthChange()">{{year.viewValue}}</md-option>
+            </md-select>
+            
+            <md-select [(ngModel)]="_selectedMonth" placeholder="{{'INVOICES_DOWNLOAD.MONTH_FILTER' | translate}}" style="width: 25%; margin-left: 2%;">
+                <md-option *ngFor="let month of _monthsArray" value="{{month.value}}" (click)="monthChange()">{{month.viewValue}}</md-option>
+            </md-select>
+        </md-card-content>
+
+        <md-select [(ngModel)]="_selectedRestaurantId" class="select" placeholder="{{ 'INVOICES_DOWNLOAD.SELECT_RESTAURANT' | translate }}">
+            <md-option *ngFor="let rest of _restaurantsFilter | async" (click)="monthChange();" value="{{rest._id}}">{{rest.name}}</md-option>
         </md-select>
+</md-card>
+
+<md-card md-cell="12" class="demo-card demo-basic" *ngIf="_thereAreRestaurants && (_invoices | async)?.length <= 0">
+    <md-card-content>
+        <div class="card_initial">
+        <div class="card_initial has-image">
+            <div class="card_initial-image-container">
+                <img class="card_initial-image" src="/images/orders.png" />
+            </div>
+            <div class="card_initial-copy">
+                <div class="card_initial-tagline">
+                    {{ 'INVOICES_DOWNLOAD.NO_INVOICES' | translate }}
+                </div>
+                <div class="card_initial-additional-links">
+                </div>
+            </div>
+        </div>
+        </div>
     </md-card-content>
-
-    <md-input-container>
-        <input mdInput [mdDatepicker]="pickerInit" placeholder="{{'BIRTHDATE' | translate}}" [(ngModel)]="_initDate">
-        <button mdSuffix [mdDatepickerToggle]="pickerInit"></button>
-    </md-input-container>
-    <md-datepicker #pickerInit></md-datepicker>
-
-    <md-input-container>
-        <input mdInput [mdDatepicker]="pickerEnd" placeholder="{{'BIRTHDATE' | translate}}" [(ngModel)]="_endDate">
-        <button mdSuffix [mdDatepickerToggle]="pickerEnd"></button>
-    </md-input-container>
-    <md-datepicker #pickerEnd></md-datepicker>
 </md-card>
 
 <md-card class="main" *ngFor="let invoice of _invoices | async">
