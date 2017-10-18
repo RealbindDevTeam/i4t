@@ -13,14 +13,8 @@ import { Countries } from '../../../../../../both/collections/settings/country.c
 import { City } from '../../../../../../both/models/settings/city.model';
 import { Cities } from '../../../../../../both/collections/settings/city.collection';
 import { Meteor } from 'meteor/meteor';
-import { Hours } from '../../../../../../both/collections/general/hours.collection';
-import { Hour } from '../../../../../../both/models/general/hour.model';
 import { RestaurantScheduleComponent } from './restaurant-schedule/restaurant-schedule.component';
 import { RestaurantEditionComponent } from './restaurant-edition/restaurant-edition.component';
-import { RestaurantLocationComponent } from './restaurant-location/restaurant-location.component';
-import { RestaurantFacebookComponent } from './social-network/facebook/restaurant-facebook.component';
-import { RestaurantInstagramComponent } from './social-network/instagram/restaurant-instagram.component';
-import { RestaurantTwitterComponent } from './social-network/twitter/restaurant-twitter.component';
 
 import template from './restaurant.component.html';
 import style from './restaurant.component.scss';
@@ -34,13 +28,11 @@ export class RestaurantComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
     private restaurants             : Observable<Restaurant[]>;
-    private _hours                  : Observable<Hour[]>;
     private _restaurantImages       : Observable<RestaurantImage[]>;
 
     private restaurantSub           : Subscription;
     private countriesSub            : Subscription;
     private citiesSub               : Subscription;
-    private _hoursSub               : Subscription;
     private _restaurantImagesSub    : Subscription;
 
     public _dialogRef               : MdDialogRef<any>;
@@ -79,11 +71,6 @@ export class RestaurantComponent implements OnInit, OnDestroy {
         });
         this.countriesSub = MeteorObservable.subscribe('countries').subscribe();
         this.citiesSub = MeteorObservable.subscribe('cities').subscribe();
-        this._hoursSub = MeteorObservable.subscribe('hours').subscribe(() => {
-            this._ngZone.run( () => {
-                this._hours = Hours.find({});
-            });
-        });
         this._restaurantImagesSub = MeteorObservable.subscribe('restaurantImages', this._user).subscribe( () => {
             this._ngZone.run( () => {
                 this._restaurantImages = RestaurantImages.find({}).zone();
@@ -105,7 +92,6 @@ export class RestaurantComponent implements OnInit, OnDestroy {
         if( this.restaurantSub ){ this.restaurantSub.unsubscribe(); }
         if( this.countriesSub ){ this.countriesSub.unsubscribe(); }
         if( this.citiesSub ){ this.citiesSub.unsubscribe(); }
-        if( this._hoursSub ){ this._hoursSub.unsubscribe(); }
         if( this._restaurantImagesSub ){ this._restaurantImagesSub.unsubscribe(); }
     }
 
@@ -114,36 +100,6 @@ export class RestaurantComponent implements OnInit, OnDestroy {
      */
     openRestaurantRegister() {
         this.router.navigate(['app/restaurant-register']);
-    }
-
-    /**
-     * When user wants show schedule, this function open dialog with information
-     * @param {Restaurant} _restaurant
-     */
-    openSchedule(_restaurant: Restaurant) {
-        this._dialogRef = this._dialog.open(RestaurantScheduleComponent, {
-            disableClose: true,
-            width: '40%'
-        });
-        this._dialogRef.componentInstance._restaurantSchedule = _restaurant;
-        this._dialogRef.afterClosed().subscribe(result => {
-            this._dialogRef = null;
-        });
-    }
-
-    /**
-     * When user wants add or update restaurant location, this function open dialog with google maps
-     * @param {Restaurant} _restaurant 
-     */
-    openLocation(_restaurant: Restaurant) {
-        this._dialogRef = this._dialog.open(RestaurantLocationComponent, {
-            disableClose: true,
-            width: '60%'
-        });
-        this._dialogRef.componentInstance._restaurantLocation = _restaurant;
-        this._dialogRef.afterClosed().subscribe(result => {
-            this._dialogRef = null;
-        });
     }
 
     /**
@@ -187,51 +143,6 @@ export class RestaurantComponent implements OnInit, OnDestroy {
         if (_lCity) {
             return _lCity.name;
         }
-    }
-    
-    /**
-     * When user wants update restaurant facebook link
-     * @param {Restaurant} _restaurant
-     */
-    openFacebookLink(_restaurant: Restaurant) {
-        this._dialogRef = this._dialog.open(RestaurantFacebookComponent, {
-            disableClose: true,
-            width: '50%'
-        });
-        this._dialogRef.componentInstance._restaurant = _restaurant;
-        this._dialogRef.afterClosed().subscribe(result => {
-            this._dialogRef = null;
-        });
-    }
-
-    /**
-     * When user wants update restaurant twitter link
-     * @param {Restaurant} _restaurant
-     */
-    openTwitterLink(_restaurant: Restaurant) {
-        this._dialogRef = this._dialog.open(RestaurantTwitterComponent, {
-            disableClose: true,
-            width: '50%'
-        });
-        this._dialogRef.componentInstance._restaurant = _restaurant;
-        this._dialogRef.afterClosed().subscribe(result => {
-            this._dialogRef = null;
-        });
-    }
-
-    /**
-     * When user wants update restaurant instagram link
-     * @param {Restaurant} _restaurant
-     */
-    openInstagramLink(_restaurant: Restaurant) {
-        this._dialogRef = this._dialog.open(RestaurantInstagramComponent, {
-            disableClose: true,
-            width: '50%'
-        });
-        this._dialogRef.componentInstance._restaurant = _restaurant;
-        this._dialogRef.afterClosed().subscribe(result => {
-            this._dialogRef = null;
-        });
     }
 
     /**

@@ -12,12 +12,8 @@ export interface Restaurant extends CollectionObject {
     address: string;
     indicative: string;
     phone: string;
-    webPage: string;
-    email: string;
     restaurant_code: string;
     paymentMethods: string[];
-    location?: RestaurantLocation;
-    schedule: RestaurantSchedule;
     tables_quantity: number;
     orderNumberCount: number;
     max_jobs?: number;
@@ -25,7 +21,6 @@ export interface Restaurant extends CollectionObject {
     isActive: boolean;
     firstPay: boolean;
     freeDays: boolean;
-    social_network?: RestaurantSocialNetwork;
 }
 
 /**

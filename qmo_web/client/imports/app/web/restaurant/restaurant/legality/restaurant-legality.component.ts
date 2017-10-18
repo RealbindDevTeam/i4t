@@ -1,4 +1,4 @@
-import { Component, Input, Output } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
@@ -14,6 +14,7 @@ import style from './restaurant-legality.component.scss';
 export class RestaurantLegalityComponent {
 
     @Input() countryId: string;
+    @Output() restaurantLegality = new EventEmitter();
 
     /**
      * RestaurantLegality Constructor
@@ -24,5 +25,13 @@ export class RestaurantLegalityComponent {
                  private _userLanguageService: UserLanguageService ) {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
+    }
+
+    /**
+     * Receive restaurant legality
+     * @param {Object} _restaurantLegality 
+     */
+    setRestaurantLegality( _restaurantLegality: Object ):void {
+        this.restaurantLegality.emit( _restaurantLegality );
     }
 }

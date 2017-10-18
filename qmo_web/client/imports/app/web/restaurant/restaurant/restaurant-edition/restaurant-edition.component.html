@@ -55,7 +55,7 @@
                                     <md-hint align="end">{{inputPhone.value.length}} / 30</md-hint>
                                 </md-input-container>
                             </div>
-                            <div>
+                            <!--div>
                                 <md-input-container style="width: 48%">
                                     <input mdInput formControlName="webPage" placeholder="{{'RESTAURANT_EDITION.WEBPAGE' | translate}}" minlength="1" maxlength="40"
                                         #inputWebpage>
@@ -66,8 +66,8 @@
                                         maxlength="40" #inputEmail>
                                     <md-hint align="end">{{inputEmail.value.length}} / 40</md-hint>
                                 </md-input-container>
-                            </div>
-                            <div style="margin-top: 1%;">
+                            </div-->
+                            <div>
                                 <div style="display: inline-block;width: 50%;text-align: left;">
                                     <p style="display: inline-block;">{{'RESTAURANT_EDITION.UPDATE_IMAGE' | translate}}</p>
                                     <input formControlName="editImage" accept=".png, .jpg, .jpeg" (change)="onChangeImage($event)" style="display: none" type="file"
@@ -77,6 +77,14 @@
                                         <span *ngIf="!_editImage">{{'CHOOSE_FILE' | translate}}&hellip;</span>
                                         <span *ngIf="_editImage">{{_nameImageFileEdit}}&hellip;</span>
                                     </label>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1%;">
+                                <p>{{'RESTAURANT_EDITION.ADD_PAYMENTMETHODS_RESTURANT' | translate}}</p>
+                                <div formGroupName="paymentMethods">
+                                    <md-checkbox *ngFor="let payment of _paymentMethodsList" [formControlName]="payment.name" [class.invalid]="!_restaurantEditionForm.controls.paymentMethods.valid"
+                                        style="padding-right: 15px">{{payment.name}}</md-checkbox>
+                                    <label></label>
                                 </div>
                             </div>
                         </md-card-content>
@@ -92,14 +100,6 @@
                         <md-card-subtitle>{{'RESTAURANT_EDITION.FINANCIAL_INFO_TEXT' | translate}}</md-card-subtitle>
                         <md-card-content>
                             <!--iu-financialform *ngIf="_showFinancialElements" [financialElements]="_financialElements" (restaurantFinancialInfo)="setRestaurantFinancialInfo($event)"></iu-financialform-->
-                            <div>
-                                <p>{{'RESTAURANT_EDITION.ADD_PAYMENTMETHODS_RESTURANT' | translate}}</p>
-                                <div formGroupName="paymentMethods">
-                                    <md-checkbox *ngFor="let payment of _paymentMethodsList" [formControlName]="payment.name" [class.invalid]="!_restaurantEditionForm.controls.paymentMethods.valid"
-                                        style="padding-right: 15px">{{payment.name}}</md-checkbox>
-                                    <label></label>
-                                </div>
-                            </div>
                         </md-card-content>
                         <md-card-actions align="end">
                             <button md-raised-button (click)="cancel();">{{'CANCEL' | translate}}</button>
@@ -108,7 +108,7 @@
                         </md-card-actions>
                     </md-card>
                 </md-tab>
-                <md-tab [disabled]="!canMove(2)" label="{{'RESTAURANT_EDITION.SCHEDULE_LABEL' | translate}}">
+                <!--md-tab [disabled]="!canMove(2)" label="{{'RESTAURANT_EDITION.SCHEDULE_LABEL' | translate}}">
                     <md-card>
                         <md-card-title>{{'RESTAURANT_EDITION.SCHEDULE_INFO' | translate}}</md-card-title>
                         <md-card-subtitle>{{'RESTAURANT_EDITION.SCHEDULE_INFO_TEXT' | translate}}</md-card-subtitle>
@@ -123,7 +123,7 @@
                             <button md-raised-button [disabled]="!canFinish()" (click)="editRestaurant()">{{'FINISH' | translate}}</button>
                         </md-card-actions>
                     </md-card>
-                </md-tab>
+                </md-tab-->
             </md-tab-group>
         </form>
     </md-card-content>

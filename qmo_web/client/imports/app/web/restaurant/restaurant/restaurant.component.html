@@ -35,11 +35,6 @@
                     </button>
                 </div>
                 <md-card-content>
-                    <!--
-                    <div style="position: relative">
-                        <button md-tooltip="{{'RESTAURANT.LOCATION' | translate}}" md-mini-fab class="btn-position-location" (click)="openLocation(restaurant)"> <md-icon style="color: white;" class="md-24">map</md-icon></button>
-                    </div>
-                    -->
                     <ul class="list">
                         <li>
                             <md-icon class="vertical-align-middle" md-tooltip="{{'RESTAURANT.COUNTRY' | translate}}">room</md-icon>
@@ -49,29 +44,7 @@
                             <md-icon class="vertical-align-middle" md-tooltip="{{'RESTAURANT.PHONE' | translate}}">call</md-icon>
                             <label>{{restaurant.indicative}} {{restaurant.phone}}</label>
                         </li>
-                        <li *ngIf="restaurant.webPage">
-                            <md-icon class="vertical-align-middle" md-tooltip="{{'RESTAURANT.WEBPAGE' | translate}}">language</md-icon>
-                            <label>{{restaurant.webPage}}</label>
-                        </li>
-                        <li *ngIf="restaurant.email">
-                            <md-icon class="vertical-align-middle" md-tooltip="{{'RESTAURANT.EMAIL' | translate}}">email</md-icon>
-                            <label>{{restaurant.email}}</label>
-                        </li>
                     </ul>
-                    <div class="card-footer-btn">
-                        <button md-icon-button md-tooltip="{{'RESTAURANT.SCHEDULE' | translate}}" (click)="openSchedule(restaurant)">
-                            <i class="fa fa-calendar" aria-hidden="true"></i>
-                        </button>
-                        <button md-icon-button md-tooltip="Facebook" (click)="openFacebookLink(restaurant)">
-                            <i class="fa fa-facebook" aria-hidden="true"></i>
-                        </button>
-                        <button md-icon-button md-tooltip="Twitter" (click)="openTwitterLink(restaurant)">
-                            <i class="fa fa-twitter" aria-hidden="true"></i>
-                        </button>
-                        <button md-icon-button md-tooltip="Instagram" (click)="openInstagramLink(restaurant)">
-                            <i class="fa fa-instagram" aria-hidden="true"></i>
-                        </button>
-                    </div>
                     <p *ngIf="!restaurant.isActive" class="restaurant-inactive">{{'RESTAURANT.RESTAURANT_INACTIVE' | translate}}</p>
                     <p *ngIf="restaurant.isActive" class="restaurant-active">{{'RESTAURANT.RESTAURANT_ACTIVE' | translate}}</p>
                 </md-card-content>

@@ -9,9 +9,9 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { uploadRestaurantImage } from '../../../../../../../both/methods/restaurant/restaurant.methods';
 import { Restaurants, RestaurantImages, RestaurantImageThumbs } from '../../../../../../../both/collections/restaurant/restaurant.collection';
-import { Restaurant, RestaurantSchedule, RestaurantImage, RestaurantImageThumb } from '../../../../../../../both/models/restaurant/restaurant.model';
-import { Hours } from '../../../../../../../both/collections/general/hours.collection';
-import { Hour } from '../../../../../../../both/models/general/hour.model';
+import { Restaurant, RestaurantImage, RestaurantImageThumb } from '../../../../../../../both/models/restaurant/restaurant.model';
+//import { Hours } from '../../../../../../../both/collections/general/hours.collection';
+//import { Hour } from '../../../../../../../both/models/general/hour.model';
 import { Currency } from '../../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
 import { PaymentMethod } from '../../../../../../../both/models/general/paymentMethod.model';
@@ -47,7 +47,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     private _mdDialogRef                    : MdDialogRef<any>;
     
     private _restaurantSub                  : Subscription;
-    private _hoursSub                       : Subscription;
+    //private _hoursSub                       : Subscription;
     private _currencySub                    : Subscription;
     private _countriesSub                   : Subscription;
     private _citiesSub                      : Subscription;
@@ -56,7 +56,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     private _restaurantImageThumbsSub       : Subscription;
     private _parameterSub                   : Subscription;
 
-    private _hours                          : Observable<Hour[]>;
+    //private _hours                          : Observable<Hour[]>;
     private _countries                      : Observable<Country[]>;
     private _cities                         : Observable<City[]>;
     private _currencies                     : Observable<Currency[]>;
@@ -85,12 +85,12 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     private titleMsg                        : string;
     private btnAcceptLbl                    : string;
 
-    private _edition_schedule               : RestaurantSchedule;
+    //private _edition_schedule               : RestaurantSchedule;
 
-    private _scheduleToEdit                 : RestaurantSchedule;
+    //private _scheduleToEdit                 : RestaurantSchedule;
     //private _financialElements              : FinancialBase<any>[] = [];
-    private _showFinancialElements          : boolean = false;
-    private _restaurantFinancialInformation : Object = {};
+    //private _showFinancialElements          : boolean = false;
+    //private _restaurantFinancialInformation : Object = {};
     //private _financialInformation           : RestaurantFinancialElement[] = [];
 
     private _showOtherCity: boolean;
@@ -161,11 +161,11 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             });
         });
 
-        this._hoursSub = MeteorObservable.subscribe('hours').subscribe(() => {
+        /*this._hoursSub = MeteorObservable.subscribe('hours').subscribe(() => {
             this._ngZone.run(() => {
                 this._hours = Hours.find({}, { sort: { hour: 1 } });
             });
-        });
+        });*/
 
         this._currencySub = MeteorObservable.subscribe('currencies').subscribe(() => {
             this._ngZone.run(() => {
@@ -210,8 +210,8 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             name: new FormControl(this._restaurantToEdit.name),
             address: new FormControl(this._restaurantToEdit.address),
             phone: new FormControl(this._restaurantToEdit.phone),
-            webPage: new FormControl(this._restaurantToEdit.webPage),
-            email: new FormControl(this._restaurantToEdit.email),
+            //webPage: new FormControl(this._restaurantToEdit.webPage),
+            //email: new FormControl(this._restaurantToEdit.email),
             editImage: new FormControl(''),
             paymentMethods: this._paymentsFormGroup,
             otherCity: new FormControl({ value: this._restaurantToEdit.other_city, disabled: true })
@@ -223,7 +223,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         this._selectedCityValue = this._restaurantToEdit.cityId;
         this._restaurantCityValue = this._restaurantToEdit.cityId;
         this._restaurantPaymentMethods = this._restaurantToEdit.paymentMethods;
-        this._scheduleToEdit = this._restaurantToEdit.schedule;
+        //this._scheduleToEdit = this._restaurantToEdit.schedule;
         this._countryIndicative = this._restaurantToEdit.indicative;
         this._queue = this._restaurantToEdit.queue;
     }
@@ -233,7 +233,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
      */
     removeSubscriptions():void{
         if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
-        if( this._hoursSub ){ this._hoursSub.unsubscribe(); }
+        //if( this._hoursSub ){ this._hoursSub.unsubscribe(); }
         if( this._currencySub ){ this._currencySub.unsubscribe(); }
         if( this._countriesSub ){ this._countriesSub.unsubscribe(); }
         if( this._citiesSub ){ this._citiesSub.unsubscribe(); }
@@ -285,11 +285,11 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                 name: this._restaurantEditionForm.value.name,
                 address: this._restaurantEditionForm.value.address,
                 phone: this._restaurantEditionForm.value.phone,
-                webPage: this._restaurantEditionForm.value.webPage,
-                email: this._restaurantEditionForm.value.email,
-                financialInformation: this._restaurantFinancialInformation,
+                //webPage: this._restaurantEditionForm.value.webPage,
+                //email: this._restaurantEditionForm.value.email,
+                //financialInformation: this._restaurantFinancialInformation,
                 paymentMethods: _lPaymentMethodsToInsert,
-                schedule: this._edition_schedule,
+                //schedule: this._edition_schedule,
                 queue: this._queue
             }
         });
@@ -358,7 +358,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                     return false;
                 }
             case 2:
-                let _lElementsValidated: boolean = true;
+                //let _lElementsValidated: boolean = true;
                 /*if (this._showFinancialElements) {
                     this._financialInformation.forEach((element) => {
                         if (element.required !== undefined && element.required === true) {
@@ -420,9 +420,9 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         this._countryIndicative = _lCountry.indicative;
         this._queue = _lCountry.queue;
 
-        this._showFinancialElements = false;
+        //this._showFinancialElements = false;
         //this._financialElements = [];
-        this._restaurantFinancialInformation = {};
+        //this._restaurantFinancialInformation = {};
         //this._financialInformation = _lCountry.financialInformation;
         //this.createFinancialForm(this._financialInformation);
     }
@@ -473,10 +473,10 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     /**
      * This function receive schedule from iu-schedule component
      * @param {any} _event 
-     */
+     
     receiveSchedule(_event: any): void {
         this._edition_schedule = _event;
-    }
+    }*/
 
     /**
      * Create Financial form from restaurant template
@@ -533,10 +533,10 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     /**
      * Set Restaurant Financial Information
      * @param {Object} _event 
-     */
+     
     setRestaurantFinancialInfo(_event: Object): void {
         this._restaurantFinancialInformation = _event;
-    }
+    }*/
 
     /**
      * Create Financial form from restaurant template in edit mode

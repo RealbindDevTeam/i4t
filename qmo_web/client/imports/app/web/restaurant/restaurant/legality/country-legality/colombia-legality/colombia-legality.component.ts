@@ -1,12 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { MdRadioChange } from '@angular/material';
+import { MdRadioChange, MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../../../shared/services/user-language.service';
 import { RestaurantLegality } from '../../../../../../../../../both/models/restaurant/restaurant.model';
+import { AlertConfirmComponent } from '../../../../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './colombia-legality.component.html';
 import style from './colombia-legality.component.scss';
@@ -17,6 +18,8 @@ import style from './colombia-legality.component.scss';
     styles: [ style ]
 })
 export class ColombiaLegalityComponent implements OnInit, OnDestroy {
+
+    @Output() colombiaLegality = new EventEmitter();
 
     private _colombiaLegalityForm: FormGroup;
     private _regimeSelected: string;
@@ -33,14 +36,17 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
     private _prefrixValue: boolean = false;
 
     private _restaurantLegality: RestaurantLegality = { restaurant_id: '' };
+    private _dialogRef: MdDialogRef<any>;
 
     /**
      * ColombiaLegalityComponent Constructor
      * @param {TranslateService} _translate 
      * @param {UserLanguageService} _userLanguageService
+     * @param {MdDialog} _mdDialog
      */
     constructor( private _translate: TranslateService,
-                 private _userLanguageService: UserLanguageService ) {
+                 private _userLanguageService: UserLanguageService,
+                 protected _mdDialog: MdDialog ) {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
     }
@@ -168,6 +174,9 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
         }
     }
 
+    /**
+     * Build colombia restaurant legality object
+     */
     buildColombiaRestaurantLegality():void{
         if( this._restaurantLegality.regime === 'regime_co' ){
             this._restaurantLegality.business_name = this._colombiaLegalityForm.value.business_name;
@@ -191,6 +200,21 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
                 this._restaurantLegality.self_accepting_date = this._colombiaLegalityForm.value.self_accepting_date;
             }
             this._restaurantLegality.text_at_the_end = this._colombiaLegalityForm.value.text_at_the_end;
+            if( this._colombiaLegalityForm.valid ){
+                this.colombiaLegality.emit( this._restaurantLegality );
+            } else {
+                this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
+                    disableClose: true,
+                    data: {
+                        title: 'Datos Invalidos', //this.itemNameTraduction( 'EXIT_TABLE.ORDERS_PENDING_CONFIRM' ),
+                        subtitle: '',
+                        content: 'Por favor diligencia los campos obligatorios (*)',//this.itemNameTraduction( 'EXIT_TABLE.ORDERS_MUST_BE_ATTENDED' ),
+                        buttonCancel: '',
+                        buttonAccept: 'Aceptar',//this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
+                        showCancel: false
+                    }
+                });
+            }
         } else if( this._restaurantLegality.regime === 'regime_si' ){
             if( this._restaurantLegality.forced_to_invoice ){
                 this._restaurantLegality.business_name = this._colombiaLegalityForm.value.business_name;
@@ -204,9 +228,48 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
                 this._restaurantLegality.numeration_from = this._colombiaLegalityForm.value.numeration_from;
                 this._restaurantLegality.numeration_to = this._colombiaLegalityForm.value.numeration_to;
                 this._restaurantLegality.text_at_the_end = this._colombiaLegalityForm.value.text_at_the_end;
+                if( this._colombiaLegalityForm.valid ){
+                    this.colombiaLegality.emit( this._restaurantLegality );               
+                } else {
+                    this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
+                        disableClose: true,
+                        data: {
+                            title: 'Datos Invalidos', //this.itemNameTraduction( 'EXIT_TABLE.ORDERS_PENDING_CONFIRM' ),
+                            subtitle: '',
+                            content: 'Por favor diligencia los campos obligatorios (*)',//this.itemNameTraduction( 'EXIT_TABLE.ORDERS_MUST_BE_ATTENDED' ),
+                            buttonCancel: '',
+                            buttonAccept: 'Aceptar',//this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
+                            showCancel: false
+                        }
+                    });
+                }
             }
+            this.colombiaLegality.emit( this._restaurantLegality );            
+        } else {
+            this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
+                disableClose: true,
+                data: {
+                    title: 'Datos Invalidos', //this.itemNameTraduction( 'EXIT_TABLE.ORDERS_PENDING_CONFIRM' ),
+                    subtitle: '',
+                    content: 'Por favor seleccione el regimen al que pertenece el restaurante',//this.itemNameTraduction( 'EXIT_TABLE.ORDERS_MUST_BE_ATTENDED' ),
+                    buttonCancel: '',
+                    buttonAccept: 'Aceptar',//this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
+                    showCancel: false
+                }
+            });
         }
-        console.log(this._restaurantLegality);
+    }
+
+    /**
+     * Return traduction
+     * @param {string} itemName 
+     */
+    itemNameTraduction(itemName: string): string{
+        var wordTraduced: string;
+        this._translate.get(itemName).subscribe((res: string) => {
+            wordTraduced = res; 
+        });
+        return wordTraduced;
     }
 
     /**

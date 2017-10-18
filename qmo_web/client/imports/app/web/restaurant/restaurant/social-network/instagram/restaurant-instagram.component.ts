@@ -52,14 +52,14 @@ export class RestaurantInstagramComponent implements OnInit {
      * ngOnInit implementation
      */
     ngOnInit(){
-        if( this._restaurant.social_network !== undefined && this._restaurant.social_network !== null ){
+        /*if( this._restaurant.social_network !== undefined && this._restaurant.social_network !== null ){
             if( this._restaurant.social_network.instagram !== undefined && this._restaurant.social_network.instagram !== null ){
                 this._instagramLink = this._restaurant.social_network.instagram;
             }
         }
         this._restaurantInstagramForm = new FormGroup({
             instagramLink: new FormControl( this._instagramLink )
-        });
+        });*/
     }
 
     /**
