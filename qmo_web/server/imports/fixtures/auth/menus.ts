@@ -66,6 +66,13 @@ export function loadMenus() {
                         url: "/app/monthly-config",
                         icon_name: "",
                         order: 1005
+                    }, {
+                        _id: "1006",
+                        is_active: true,
+                        name: "MENUS.ADMINISTRATION.INVOICES_DOWNLOAD",
+                        url: "/app/invoices-download",
+                        icon_name: "",
+                        order: 1006
                     }
                 ]
             },

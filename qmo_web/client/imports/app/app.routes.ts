@@ -57,6 +57,7 @@ import { RestaurantExitComponent } from './web/customer/restaurant-exit/restaura
 import { RestaurantTableControlComponent } from './web/restaurant/restaurant/restaurant-table-control/restaurant-table-control.component';
 import { TableDetailComponent } from './web/restaurant/restaurant/restaurant-table-control/table-detail/table-detail.component';
 import { SupervisorRestaurantTableControlComponent } from './web/supervisor/restaurant-table-control/supervisor-restaurant-table-control.component';
+import { InvoicesDownloadPage } from './web/administration/invoices-download/invoices-download.component';
 
 export const routes: Route[] = [
     {
@@ -102,7 +103,8 @@ export const routes: Route[] = [
             { path: 'restaurant-exit', component: RestaurantExitComponent, canActivate: [CustomerGuard] },
             { path: 'restaurant-table-control', component: RestaurantTableControlComponent, canActivate: [AdminGuard] },
             { path: 'table-detail/:param1/:param2/:param3/:param4/:param5', component: TableDetailComponent, canActivate: [SupervisorGuard] }, 
-            { path: 'supervisor-restaurant-table-control', component: SupervisorRestaurantTableControlComponent, canActivate: [SupervisorGuard] }            
+            { path: 'supervisor-restaurant-table-control', component: SupervisorRestaurantTableControlComponent, canActivate: [SupervisorGuard] },
+            { path: 'invoices-download', component: InvoicesDownloadPage, canActivate: [AdminGuard] }
         ]
     },
     { path: '', component: LandingPageComponent },

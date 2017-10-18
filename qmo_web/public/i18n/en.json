@@ -236,7 +236,8 @@
             "TABLES": "Tables Search",
             "COLLABORATORS": "Employees",
             "MONTHLY_CONFIG": "Monthly config",
-            "TABLE_CONTROL": "Tables Control"
+            "TABLE_CONTROL": "Tables Control",
+            "INVOICES_DOWNLOAD" : "Invoices download"
         },
         "PAYMENTS": {
             "PAYMENTS": "Payments",
@@ -1336,5 +1337,23 @@
         "ACCOUNT_ERROR": "An error has occurred with the user account. Please check if the user is still at the table with the option ADMINISTRATION -> TABLES CONTROL",
         "GENERAL_ERROR": "An error has occurred while penalizing the user. Please try later.",
         "PENALTY_CREATED": "Penalty created"
+    },
+    "INVOICES_DOWNLOAD" : {
+        "TITLE" : "Invoices download",
+        "TEXT" : "It consults the invoices of your restaurant",
+        "FROM" : "From",
+        "INITIAL_DATE" : "Initial date",
+        "TO_DATE" : "To date",
+        "END_DATE" : "End date",
+        "SYSTEM_MSG": "System alert",
+        "SELECT_RANGE_VALID_DATES": "Select a valid range of dates",
+        "RANGE_DAYS" : "The date range cannot exceed 31 days",
+        "THERE_NOT_RESTAURANTS": "No restaurants registered yet",
+        "MESSAGE": "Register at least one restaurant to enable this option",
+        "RESTAURANT_REGISTER": "Register Restaurant",
+        "YEAR_FILTER": "Year",
+        "MONTH_FILTER": "Month",
+        "SELECT_RESTAURANT": "Select restaurant",
+        "NO_INVOICES" : "There are no invoices"
     }
 }
