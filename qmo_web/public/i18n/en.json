@@ -59,7 +59,7 @@
         "SIGNUP": "Sign Up",
         "LANGUAGE": "Language",
         "LANGUAGE_SELECT": "Select your language",
-        "ADMIN_SIGNUP": "Register as partnerr",
+        "ADMIN_SIGNUP": "More info",
         "HOME_CONTENT": {
             "TITLE": "Test Test Test",
             "TEXT1": "Test Test Test Test Test Test Test Test Test Test Test Test",
@@ -77,6 +77,9 @@
             "TITLE1": "Test Test Test",
             "TEXT1": "Test Test Test Test Test Test Test Test Test Test Test Test",
             "TEXT2": "Test Test Test"
+        },
+        "COMPLEMENTARY": {
+            "TITLE": "Sal y disfruta de una buena comida acompañado de amigos, pareja o familia"
         }
     },
     "SIGNUP": {
@@ -795,7 +798,7 @@
             "TIPS": "Suggested Tip",
             "OTHER_VALUE": "Other amount",
             "TOTAL_TO_PAY": "Total To Pay",
-            "PAY": "Pay",
+            "PAY": "I want to pay",
             "PENDING_PAYMENT": "Payment pending to be confirmed by the waiter/waitress",
             "CONSULT_PAYMENTS": "View payment detail",
             "SELECT_PAYMENT_METHOD": "Select payment method",
