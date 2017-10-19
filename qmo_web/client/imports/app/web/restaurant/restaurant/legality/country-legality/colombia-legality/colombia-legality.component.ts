@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MdRadioChange, MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../../../shared/services/user-language.service';
 import { RestaurantLegality } from '../../../../../../../../../both/models/restaurant/restaurant.model';
+import { RestaurantsLegality } from '../../../../../../../../../both/collections/restaurant/restaurant.collection';
 import { AlertConfirmComponent } from '../../../../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './colombia-legality.component.html';
@@ -19,6 +20,7 @@ import style from './colombia-legality.component.scss';
 })
 export class ColombiaLegalityComponent implements OnInit, OnDestroy {
 
+    @Input() restaurantId: string;
     @Output() colombiaLegality = new EventEmitter();
 
     private _colombiaLegalityForm: FormGroup;
@@ -35,7 +37,9 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
     private _showPrefixName: boolean = false;
     private _prefrixValue: boolean = false;
 
+    private _restaurantLegalitySub: Subscription;
     private _restaurantLegality: RestaurantLegality = { restaurant_id: '' };
+    private _restaurantLegalityInEditMode: RestaurantLegality;
     private _dialogRef: MdDialogRef<any>;
 
     /**
@@ -43,10 +47,12 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate 
      * @param {UserLanguageService} _userLanguageService
      * @param {MdDialog} _mdDialog
+     * @param {NgZone} _ngZone
      */
     constructor( private _translate: TranslateService,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog ) {
+                 protected _mdDialog: MdDialog,
+                 private _ngZone: NgZone ) {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
     }
@@ -73,6 +79,77 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
             self_accepting_date: new FormControl( '' ),
             text_at_the_end: new FormControl( '' )
         });
+        if( this.restaurantId !== null && this.restaurantId !== undefined ){
+            this._restaurantLegalitySub = MeteorObservable.subscribe( 'getRestaurantLegality', this.restaurantId ).subscribe( () => {
+                this._ngZone.run( () => {
+                    this._restaurantLegalityInEditMode = RestaurantsLegality.findOne( { restaurant_id: this.restaurantId } );
+                    if( this._restaurantLegalityInEditMode ){
+                        this._restaurantLegality = this._restaurantLegalityInEditMode;
+                        this._regimeSelected = this._restaurantLegalityInEditMode.regime;
+    
+                        this._colombiaLegalityForm.controls['forced_to_invoice'].setValue( this._restaurantLegalityInEditMode.forced_to_invoice === undefined || this._restaurantLegalityInEditMode.forced_to_invoice === null ? false : this._restaurantLegalityInEditMode.forced_to_invoice );
+                        this._colombiaLegalityForm.controls['business_name'].setValue( this._restaurantLegalityInEditMode.business_name === undefined || this._restaurantLegalityInEditMode.business_name === null ? '' : this._restaurantLegalityInEditMode.business_name );
+                        this._colombiaLegalityForm.controls['document'].setValue( this._restaurantLegalityInEditMode.document === undefined || this._restaurantLegalityInEditMode.document === null ? '' : this._restaurantLegalityInEditMode.document );
+                        this._colombiaLegalityForm.controls['invoice_resolution'].setValue( this._restaurantLegalityInEditMode.invoice_resolution === undefined || this._restaurantLegalityInEditMode.invoice_resolution === null ? '' : this._restaurantLegalityInEditMode.invoice_resolution );
+                        this._colombiaLegalityForm.controls['invoice_resolution_date'].setValue( this._restaurantLegalityInEditMode.invoice_resolution_date === undefined || this._restaurantLegalityInEditMode.invoice_resolution_date === null ? '' : this._restaurantLegalityInEditMode.invoice_resolution_date );
+                        this._colombiaLegalityForm.controls['prefix'].setValue( this._restaurantLegalityInEditMode.prefix === undefined || this._restaurantLegalityInEditMode.prefix === null ? false : this._restaurantLegalityInEditMode.prefix );
+                        this._colombiaLegalityForm.controls['prefix_name'].setValue( this._restaurantLegalityInEditMode.prefix_name === undefined || this._restaurantLegalityInEditMode.prefix_name === null ? '' : this._restaurantLegalityInEditMode.prefix_name );
+                        this._colombiaLegalityForm.controls['numeration_from'].setValue( this._restaurantLegalityInEditMode.numeration_from === undefined || this._restaurantLegalityInEditMode.numeration_from === null ? '' : this._restaurantLegalityInEditMode.numeration_from );
+                        this._colombiaLegalityForm.controls['numeration_to'].setValue( this._restaurantLegalityInEditMode.numeration_to === undefined || this._restaurantLegalityInEditMode.numeration_to === null ? '' : this._restaurantLegalityInEditMode.numeration_to );
+                        this._colombiaLegalityForm.controls['is_big_contributor'].setValue( this._restaurantLegalityInEditMode.is_big_contributor === undefined || this._restaurantLegalityInEditMode.is_big_contributor === null ? false : this._restaurantLegalityInEditMode.is_big_contributor );
+                        this._colombiaLegalityForm.controls['big_contributor_resolution'].setValue( this._restaurantLegalityInEditMode.big_contributor_resolution === undefined || this._restaurantLegalityInEditMode.big_contributor_resolution === null ? '' : this._restaurantLegalityInEditMode.big_contributor_resolution );
+                        this._colombiaLegalityForm.controls['big_contributor_date'].setValue( this._restaurantLegalityInEditMode.big_contributor_date === undefined || this._restaurantLegalityInEditMode.big_contributor_date === null ? '' : this._restaurantLegalityInEditMode.big_contributor_date );
+                        this._colombiaLegalityForm.controls['is_self_accepting'].setValue( this._restaurantLegalityInEditMode.is_self_accepting === undefined || this._restaurantLegalityInEditMode.is_self_accepting === null ? false : this._restaurantLegalityInEditMode.is_self_accepting );
+                        this._colombiaLegalityForm.controls['self_accepting_resolution'].setValue( this._restaurantLegalityInEditMode.self_accepting_resolution === undefined || this._restaurantLegalityInEditMode.self_accepting_resolution === null ? '' : this._restaurantLegalityInEditMode.self_accepting_resolution );
+                        this._colombiaLegalityForm.controls['self_accepting_date'].setValue( this._restaurantLegalityInEditMode.self_accepting_date === undefined || this._restaurantLegalityInEditMode.self_accepting_date === null ? '' : this._restaurantLegalityInEditMode.self_accepting_date );
+                        this._colombiaLegalityForm.controls['text_at_the_end'].setValue( this._restaurantLegalityInEditMode.text_at_the_end === undefined || this._restaurantLegalityInEditMode.text_at_the_end === null ? '' : this._restaurantLegalityInEditMode.text_at_the_end  );
+                        
+                        if( this._restaurantLegalityInEditMode.regime === 'regime_co' ){
+                            this._showForcedToInvoice = false;
+                            this._showGeneralInvoice = true;
+                            if( this._restaurantLegalityInEditMode.prefix ){
+                                this._showPrefixName = true;
+                            } else {
+                                this._showPrefixName = false;                                
+                            }
+                            this._showInvoiceSecondPart = true;
+                            if( this._restaurantLegalityInEditMode.is_big_contributor ){
+                                this._showBigContributorDetail = true;
+                            } else {
+                                this._showBigContributorDetail = false;                                
+                            }
+                            if( this._restaurantLegalityInEditMode.is_self_accepting ){
+                                this._showSeltAcceptingDetail = true;
+                            } else {
+                                this._showSeltAcceptingDetail = false;                                
+                            }
+                            this._showInvoiceFinalPart = true;
+                        } else if( this._restaurantLegalityInEditMode.regime === 'regime_si' ){
+                            this._showForcedToInvoice = true;
+                            if( this._restaurantLegalityInEditMode.forced_to_invoice ){
+                                this._showGeneralInvoice = true;
+                                if( this._restaurantLegalityInEditMode.prefix ){
+                                    this._showPrefixName = true;
+                                } else {
+                                    this._showPrefixName = false;                                
+                                }
+                                this._showInvoiceSecondPart = false;
+                                this._showBigContributorDetail = false;
+                                this._showSeltAcceptingDetail = false; 
+                                this._showInvoiceFinalPart = true;
+                            }
+                        }
+                    }
+                });
+            });
+        }
+    }
+
+    /**
+     * Remove all subscriptions
+     */
+    removeSubscriptions():void{
+        if( this._restaurantLegalitySub ){ this._restaurantLegalitySub.unsubscribe(); }
     }
 
     /**
@@ -276,6 +353,6 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
      * ngOnDestroy Implementation
      */
     ngOnDestroy(){
-
+        this.removeSubscriptions();
     }
 }

@@ -14,6 +14,7 @@ import style from './restaurant-legality.component.scss';
 export class RestaurantLegalityComponent {
 
     @Input() countryId: string;
+    @Input() restaurantId: string;
     @Output() restaurantLegality = new EventEmitter();
 
     /**

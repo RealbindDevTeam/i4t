@@ -2,43 +2,43 @@
     <p>Selecciona el regimen al que pertenece tu restaurante:</p>
     <md-radio-group [(ngModel)]="_regimeSelected">
         <md-radio-button [value]="'regime_co'" (change)="radioChange($event)">Regimen Comun</md-radio-button>
-        <md-radio-button style="margin-left: 2rem;" [value]="'regime_si'" (change)="radioChange($event)">Regimen Simplificado</md-radio-button>
+        <md-radio-button class="regime-si" [value]="'regime_si'" (change)="radioChange($event)">Regimen Simplificado</md-radio-button>
     </md-radio-group>
 </div>
 <form [formGroup]="_colombiaLegalityForm">
     <div>
-        <div *ngIf="_showForcedToInvoice" style="margin-top: 1rem;">
+        <div *ngIf="_showForcedToInvoice" class="forced-invoice">
             <md-checkbox formControlName="forced_to_invoice" (change)="evaluateForcedToInvoiceCheck($event)" [(ngModel)]="_forcedToInvoiceValue">Dar factura a los clientes</md-checkbox>
         </div>
     </div>
     <div *ngIf="_showGeneralInvoice">
         <div>
-            <div style="width: 49%;display: inline-block;">
+            <div class="business-name">
                 <p>Ingresa Apellidos y Nombres (si es persona natural) o Razón Social (si es persona jurídica):</p>
-                <md-input-container style="width: 100%;">
+                <md-input-container class="name">
                     <input mdInput formControlName="business_name" placeholder="Nombres - Razón Social *" minlength="1" maxlength="70" #inputBusinessName>
                     <md-hint align="end">{{inputBusinessName.value.length}} / 70</md-hint>
                 </md-input-container>
             </div>
-            <div style="width: 47%;display: inline-block;margin-left: 2rem;">
+            <div class="document">
                 <p>Ingresa documento o NIT de quien vende los Bienes o Servicios (Por favor incluya dígito de verificación en caso de NIT) :</p>
-                <md-input-container style="width: 100%;">
+                <md-input-container class="name">
                     <input mdInput formControlName="document" placeholder="Documento - NIT *" minlength="1" maxlength="20" #inputDocument>
                     <md-hint align="end">{{inputDocument.value.length}} / 20</md-hint>
                 </md-input-container>
             </div>
         </div>
         <div>
-            <div style="width: 49%;display: inline-block;">
+            <div class="invoice-resolution">
                 <p>Ingresa el numero de la resolucion de la DIAN para las facturas</p>
-                <md-input-container style="width: 100%;">
+                <md-input-container class="invoice">
                     <input mdInput type="number" formControlName="invoice_resolution" placeholder="Resolucion de la DIAN *" minlength="1" maxlength="20" #inputInvoiceResolution>
                     <md-hint align="end">{{inputInvoiceResolution.value.length}} / 20</md-hint>
                 </md-input-container>
             </div>
-            <div style="width: 47%;display: inline-block;margin-left: 2rem;">
+            <div class="invoice-resolution-date">
                 <p>Ingresa la fecha de la resolucion de la DIAN</p>
-                <md-input-container style="width: 100%;">
+                <md-input-container class="date">
                     <input mdInput [mdDatepicker]="pickerInvoiceResol" placeholder="Fecha resolucion de la DIAN *" formControlName="invoice_resolution_date">
                     <button mdSuffix [mdDatepickerToggle]="pickerInvoiceResol"></button>
                 </md-input-container>
@@ -46,18 +46,18 @@
             </div>
         </div>
         <div>
-            <md-checkbox formControlName="prefix" style="width: 35%;display: inline-block;" (change)="evaluatePrefixCheck($event)" [(ngModel)]="_prefrixValue">Maneja prefijo en el codigo de la factura</md-checkbox>
-            <md-input-container style="width: 35%;display: inline-block;" *ngIf="_showPrefixName">
+            <md-checkbox formControlName="prefix" class="prefix" (change)="evaluatePrefixCheck($event)" [(ngModel)]="_prefrixValue">Maneja prefijo en el codigo de la factura</md-checkbox>
+            <md-input-container class="prefix" *ngIf="_showPrefixName">
                 <input mdInput formControlName="prefix_name" placeholder="Prefijo" minlength="1" maxlength="10" #inputPrefix>
                 <md-hint align="end">{{inputPrefix.value.length}} / 10</md-hint>
             </md-input-container>
         </div>
         <div>
-            <p style="width: 35%;display: inline-block;">Ingresa numeración autorizada por la DIAN:</p>
+            <p class="dian-numeration">Ingresa numeración autorizada por la DIAN:</p>
             <md-input-container>
                 <input mdInput type="number" formControlName="numeration_from" placeholder="Desde *" minlength="1">
             </md-input-container>
-            <md-input-container style="margin-left: 1rem;">
+            <md-input-container class="numeration-to">
                 <input mdInput type="number" formControlName="numeration_to" placeholder="Hasta *" minlength="1">
             </md-input-container>
         </div>
@@ -65,16 +65,16 @@
     <div *ngIf="_showInvoiceSecondPart">
         <md-checkbox formControlName="is_big_contributor" (change)="evaluateBigContributorCheck($event)" [(ngModel)]="_bigContributorValue">Es gran Contribuyente</md-checkbox>
         <div *ngIf="_showBigContributorDetail">
-            <div style="width: 49%;display: inline-block;">
+            <div class="dian-big-contributor">
                 <p>Ingresa el numero de la resolucion de la DIAN para gran Contribuyente</p>
-                <md-input-container style="width: 100%;">
+                <md-input-container class="resolution">
                     <input mdInput type="number" formControlName="big_contributor_resolution" placeholder="Resolucion DIAN" minlength="1" maxlength="20" #inputBigContResolution>
                     <md-hint align="end">{{inputBigContResolution.value.length}} / 20</md-hint>
                 </md-input-container>
             </div>
-            <div style="width: 47%;display: inline-block;margin-left: 2rem;">
+            <div class="date-big-contributor">
                 <p>Ingresa la fecha de la resolucion de la DIAN para gran Contribuyente</p>
-                <md-input-container style="width: 100%;">
+                <md-input-container class="date">
                     <input mdInput [mdDatepicker]="pickerBigContr" placeholder="Fecha resolucion de la DIAN" formControlName="big_contributor_date">
                     <button mdSuffix [mdDatepickerToggle]="pickerBigContr"></button>
                 </md-input-container>
@@ -83,16 +83,16 @@
         </div>
         <md-checkbox formControlName="is_self_accepting" (change)="evaluateSelfAcceptingCheck($event)" [(ngModel)]="_selfAcceptingValue">Es autoretenedor</md-checkbox>
         <div *ngIf="_showSeltAcceptingDetail">
-            <div style="width: 49%;display: inline-block;">
+            <div class="dian-self-accepting">
                 <p>Ingresa el numero de la resolucion de la DIAN para autoretenedor</p>
-                <md-input-container style="width: 100%;">
+                <md-input-container class="resolution">
                     <input mdInput type="number" formControlName="self_accepting_resolution" placeholder="Resolucion DIAN" minlength="1" maxlength="20" #inputSeltAcResolution>
                     <md-hint align="end">{{inputSeltAcResolution.value.length}} / 20</md-hint>
                 </md-input-container>
             </div>
-            <div style="width: 47%;display: inline-block;margin-left: 2rem;">
+            <div class="date-self-accepting">
                 <p>Ingresa la fecha de la resolucion de la DIAN para autoretenedor</p>
-                <md-input-container style="width: 100%;">
+                <md-input-container class="date">
                     <input mdInput [mdDatepicker]="pickerSelfAccept" placeholder="Fecha resolucion de la DIAN" formControlName="self_accepting_date">
                     <button mdSuffix [mdDatepickerToggle]="pickerSelfAccept"></button>
                 </md-input-container>
@@ -102,13 +102,13 @@
     </div>
     <div *ngIf="_showInvoiceFinalPart">
         <p>Si desea que al final de las facturas aparezca un texto especifico, por favor ingreselo aqui:</p>
-        <md-input-container style="width: 100%;">
+        <md-input-container class="final-text">
             <textarea mdInput formControlName="text_at_the_end" placeholder="Texto factura" minlength="1" maxlength="150" #inputFinalText></textarea>
             <md-hint align="end">{{inputFinalText.value.length}} / 150</md-hint>
         </md-input-container>
     </div>
 </form>
-<md-card-actions align="end" style="margin-top: 1rem;">
+<md-card-actions align="end" class="buttons">
     <button md-raised-button>{{'BACK' | translate}}</button>
     <button md-raised-button (click)="buildColombiaRestaurantLegality()">{{'FINISH' | translate}}</button>
 </md-card-actions>

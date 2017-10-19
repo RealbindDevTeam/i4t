@@ -55,18 +55,6 @@
                                     <md-hint align="end">{{inputPhone.value.length}} / 30</md-hint>
                                 </md-input-container>
                             </div>
-                            <!--div>
-                                <md-input-container style="width: 48%">
-                                    <input mdInput formControlName="webPage" placeholder="{{'RESTAURANT_EDITION.WEBPAGE' | translate}}" minlength="1" maxlength="40"
-                                        #inputWebpage>
-                                    <md-hint align="end">{{inputWebpage.value.length}} / 40</md-hint>
-                                </md-input-container>
-                                <md-input-container style="width: 48%;margin-left: 2%;">
-                                    <input mdInput formControlName="email" type="email" placeholder="{{'RESTAURANT_EDITION.EMAIL' | translate}}" minlength="1"
-                                        maxlength="40" #inputEmail>
-                                    <md-hint align="end">{{inputEmail.value.length}} / 40</md-hint>
-                                </md-input-container>
-                            </div-->
                             <div>
                                 <div style="display: inline-block;width: 50%;text-align: left;">
                                     <p style="display: inline-block;">{{'RESTAURANT_EDITION.UPDATE_IMAGE' | translate}}</p>
@@ -99,31 +87,15 @@
                         <md-card-title>{{'RESTAURANT_EDITION.FINANCIAL_INFO' | translate}}</md-card-title>
                         <md-card-subtitle>{{'RESTAURANT_EDITION.FINANCIAL_INFO_TEXT' | translate}}</md-card-subtitle>
                         <md-card-content>
-                            <!--iu-financialform *ngIf="_showFinancialElements" [financialElements]="_financialElements" (restaurantFinancialInfo)="setRestaurantFinancialInfo($event)"></iu-financialform-->
+                            <restaurant-legality [countryId]="_selectedCountryValue" [restaurantId]="_restaurantToEdit._id" (restaurantLegality)="setRestaurantLegality($event)"></restaurant-legality>
                         </md-card-content>
-                        <md-card-actions align="end">
+                        <!--md-card-actions align="end">
                             <button md-raised-button (click)="cancel();">{{'CANCEL' | translate}}</button>
                             <button md-raised-button (click)="previous()" [disabled]="!canMove(0)">{{'BACK' | translate}}</button>
                             <button md-raised-button (click)="next()" [disabled]="!canMove(1)">{{'NEXT' | translate}}</button>
-                        </md-card-actions>
+                        </md-card-actions-->
                     </md-card>
                 </md-tab>
-                <!--md-tab [disabled]="!canMove(2)" label="{{'RESTAURANT_EDITION.SCHEDULE_LABEL' | translate}}">
-                    <md-card>
-                        <md-card-title>{{'RESTAURANT_EDITION.SCHEDULE_INFO' | translate}}</md-card-title>
-                        <md-card-subtitle>{{'RESTAURANT_EDITION.SCHEDULE_INFO_TEXT' | translate}}</md-card-subtitle>
-                        <md-card-content>
-                            <div style="padding-top: 15px;text-align: -webkit-center;">
-                                <iu-schedule [scheduleToEdit]="_scheduleToEdit" (finalSchedule)="receiveSchedule($event)"></iu-schedule>
-                            </div>
-                        </md-card-content>
-                        <md-card-actions align="end">
-                            <button md-raised-button (click)="cancel();">{{'CANCEL' | translate}}</button>
-                            <button md-raised-button (click)="previous()" [disabled]="!canMove(2)">{{'BACK' | translate}}</button>
-                            <button md-raised-button [disabled]="!canFinish()" (click)="editRestaurant()">{{'FINISH' | translate}}</button>
-                        </md-card-actions>
-                    </md-card>
-                </md-tab-->
             </md-tab-group>
         </form>
     </md-card-content>
