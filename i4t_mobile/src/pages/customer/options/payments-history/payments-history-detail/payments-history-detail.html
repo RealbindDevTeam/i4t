@@ -59,9 +59,9 @@
 <ion-footer class="ion-footer-custom" padding>
     <ion-item>
         <div style="display: -webkit-inline-box; width: 100%; line-height: 30px;">
-            <img *ngIf="_invoice.pay_method == 'PAYMENT_METHODS.CASH'" class="img-footer img-cards" src="assets/img/pago.png">
-            <img *ngIf="_invoice.pay_method == 'PAYMENT_METHODS.CREDIT_CARD'" class="img-footer img-cards" src="assets/img/pago_tarjeta_credito.png">
-            <img *ngIf="_invoice.pay_method == 'PAYMENT_METHODS.DEBIT_CARD'" class="img-footer img-cards" src="assets/img/pago_tarjeta_debito.png">
+            <img *ngIf="_invoice.pay_method == 'PAYMENT_METHODS.CASH'" class="img-footer img-cards" src="assets/img/cash-payment.png">
+            <img *ngIf="_invoice.pay_method == 'PAYMENT_METHODS.CREDIT_CARD'" class="img-footer img-cards" src="assets/img/credit-card-payment.png">
+            <img *ngIf="_invoice.pay_method == 'PAYMENT_METHODS.DEBIT_CARD'" class="img-footer img-cards" src="assets/img/debit-card-payment.png">
             <img *ngIf="_invoice.pay_method == 'PAYMENT_METHODS.ONLINE'" class="img-footer img-cards" src="assets/img/payment-online.png">
             <p style="line-height: inherit">
                 {{_invoice.pay_method | translate}}
