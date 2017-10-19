@@ -175,21 +175,6 @@
             "LOADING_MENU": "Cargando menú",
             "PENALTY": "En el momento no tienes disponible la opción para crear ordenes. Intenta de nuevo después del "
         },
-        "ORDER_TRANS": {
-            "ORDERS": "Orden",
-            "TOTAL": "Total",
-            "STATUS": "Estado",
-            "PRICE": "Precio",
-            "PAY": "Pagar",
-            "NO_ORDERS": "No se encuentran ordenes listas para pagar",
-            "QUANT": "Cant. ",
-            "GARNISH_FOOD": "Guarniciones",
-            "ADDITIONS": "Adiciones",
-            "ADDITION": "Adición",
-            "ORDER_PAY": "Deseas realizar el pago de la orden?",
-            "USER_CONFIRM": "Orden debe confirmar que tú la pagarás",
-            "NO_PAY_POSSIBLE": "La orden no ha sido entregada"
-        },
         "ORDER_PAYMENT_TRANS": {
             "ORDER_TO_CONFIRM": "Confirma aquellas ordenes que otros usuarios desean pagar por ti.",
             "NO_ORDERS": "No se encuentran ordenes",
@@ -206,6 +191,21 @@
             "WANTS_PAY": " desea pagar la orden ",
             "AGREE": ", estas de acuerdo?"
         },
+        "ORDER_TRANS": {
+            "ORDERS": "Orden",
+            "TOTAL": "Total",
+            "STATUS": "Estado",
+            "PRICE": "Precio",
+            "PAY": "Pagar",
+            "NO_ORDERS": "No se encuentran ordenes listas para pagar",
+            "QUANT": "Cant. ",
+            "GARNISH_FOOD": "Guarniciones",
+            "ADDITIONS": "Adiciones",
+            "ADDITION": "Adición",
+            "ORDER_PAY": "Deseas realizar el pago de la orden?",
+            "USER_CONFIRM": "Orden debe confirmar que tú la pagarás",
+            "NO_PAY_POSSIBLE": "La orden no ha sido entregada"
+        },
         "PAYMENTS": {
             "TITTLE": "Pagos",
             "TITTLE_CONTENT": "Tu cuenta",
@@ -217,7 +217,7 @@
             "PAYMENT_METHOD": "Medio de pago",
             "TOTAL_BILL": "Total cuenta",
             "TOTAL_PAY": "Total por pagar",
-            "PAY_BTN": "Pagar",
+            "PAY_BTN": "Quiero pagar",
             "PAY_DETAIL_TITTLE": "Detalle de las ordenes",
             "PAY_ORDER": "Orden",
             "SUBTOTAL": "SubTotal",
@@ -239,7 +239,7 @@
             "CONFIRM_TO_ADD_ACCOUNT": "Deseas realizar el pago de la orden?",
             "CONFIRM_OWNER_ORDER": "El propietario de la orden debe confirmar la solicitud del pago",
             "CONFIRM_ORDER_STATUS": "La orden no ha sido entregada",
-            "CONFIRM_PAY_OTHER_USER": "Deseas transferir el pago de la orden",
+            "CONFIRM_PAY_OTHER_USER": "Deseas transferir el pago de la orden?",
             "SUCCESSFUL_PAY_OTHER_USER": "Se ha transferido el pago de la orden",
             "PAYMENTS_TO_BE_CONFIRM": "Tienes ordenes en estado pendiente por confirmación",
             "MOMENT_ANSWER": "En un momento te atenderemos",
@@ -340,7 +340,7 @@
             "BTN_CANCEL_ORDER": "Cancelar orden",
             "ORDER_CANCELED": "Orden cancelada",
             "CANCELING_ORDER_ERROR": "Un error ha ocurrido cancelando la orden, por favor verifica el estado"
-        },        
+        },
         "PAYMENTS_HISTORY": {
             "INFO": "Para obtener los comprobantes de tus pagos, podrás hacerlo desde",
             "TITLE": "Historial de pagos",
@@ -401,20 +401,20 @@
         },
         "SIGN_OUT": {
             "TITLE_CONFIRM": "Cerrar sesión",
-            "CONTENT_CONFIRM": "Estás seguro de salir de la aplicación?",
+            "CONTENT_CONFIRM": "Estás seguro de salir de Iurest?",
             "NO_BTN": "No",
             "YES_BTN": "Sí",
             "LOADING": "Por favor espera..."
         },
-        "HOME" : {
-            "SLIDE-1" : {
-                "WELCOME" : "Bienvenido a Iurest",
-                "TEXT" : "Ordena en tu restaurante favorito de una manera fácil y rápida"
+        "HOME": {
+            "SLIDE-1": {
+                "WELCOME": "Bienvenido a Iurest",
+                "TEXT": "Ordena en tu restaurante favorito fácil y rápido"
             },
-            "SLIDE-2" : {
-                "1" : "1. Ordena lo que deseas",
-                "2" : "2. Revisa lo que cuesta tu orden",
-                "3" : "3. Solicita un mesero"
+            "SLIDE-2": {
+                "1": "1. Ordena lo que deseas",
+                "2": "2. Revisa lo que cuesta tu orden",
+                "3": "3. Solicita un mesero"
             }
         },
         "HOME-MENU": {

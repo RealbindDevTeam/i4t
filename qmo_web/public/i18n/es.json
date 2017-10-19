@@ -59,24 +59,27 @@
         "SIGNUP": "Registrarse",
         "LANGUAGE": "Idioma",
         "LANGUAGE_SELECT": "Selecciona tu idioma",
-        "ADMIN_SIGNUP": "Registro de aliado",
-        "HOME_CONTENT" : {
-            "TITLE" : "Prueba Prueba Prueba",
-            "TEXT1" : "Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba",
-            "TEXT2" : "Prueba Prueba Prueba"
+        "ADMIN_SIGNUP": "Mas información",
+        "HOME_CONTENT": {
+            "TITLE": "Una nueva experiencia para ordernar en tu restaurante favorito",
+            "TEXT1": "",
+            "TEXT2": "Descargala gratis en: "
         },
-        "ABOUT_CONTENT" : {
-            "TITLE1" : "Prueba Prueba Prueba",
-            "TEXT1" : "Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba",
-            "TITLE2" : "Prueba Prueba Prueba",
-            "TEXT2" : "Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba",
-            "TITLE3" : "Prueba Prueba Prueba",
-            "TEXT3" : "Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba"
+        "ABOUT_CONTENT": {
+            "TITLE1": "Accede desde tu dispositivo preferido",
+            "TEXT1": "Ingresa desde tu smartphone, tablet o computador y disfruta de todas las características que tenemos para ofrecerte.",
+            "TITLE2": "Mira el menú y ordena directo a la cocina",
+            "TEXT2": "Asegura tu pedido, revisa el detalle de tus ordenes y evita tiempos de espera para comer.",
+            "TITLE3": "Solicita ayuda de un mesero si deseas",
+            "TEXT3": "LLama a un mesero de una forma simple y efectiva."
         },
-        "OWNER_CONTENT" : {
-            "TITLE1" : "Prueba Prueba Prueba",
-            "TEXT1" : "Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba Prueba",
-            "TEXT2" : "Prueba Prueba Prueba"
+        "OWNER_CONTENT": {
+            "TITLE1": "Tienes un restaurante y te gustaria usar el servicio Iurest?",
+            "TEXT1": "",
+            "TEXT2": "Ofrecemos un sistema que va a mejorar tu negocio"
+        },
+        "COMPLEMENTARY": {
+            "TITLE": "Sal y disfruta de una buena comida acompañado de amigos, pareja o familia"
         }
     },
     "SIGNUP": {
@@ -796,7 +799,7 @@
             "TIPS": "Propina sugerida",
             "OTHER_VALUE": "Otro valor",
             "TOTAL_TO_PAY": "Total a pagar",
-            "PAY": "Pagar",
+            "PAY": "Quiero pagar",
             "PENDING_PAYMENT": "Pago pendiente por confirmar por parte del mesero",
             "CONSULT_PAYMENTS": "Consultar detalle del pago",
             "SELECT_PAYMENT_METHOD": "Selecciona medio de pago",
@@ -1311,9 +1314,9 @@
         "SELECT_RESTAURANT": "Selecciona restaurante",
         "ALL_RESTAURANTS": "Todos los Restaurantes",
         "USERS": "Usuarios",
-        "TABLE":"Mesa",
+        "TABLE": "Mesa",
         "FREE_TABLE": "Mesa Libre",
-        "ORDERS":"Ordenes",
+        "ORDERS": "Ordenes",
         "IN_THE_ACCOUNT": "en la cuenta",
         "VIEW_DETAIL": "Ver detalle",
         "DETAIL_NOT_AVAILABLE": "Detalle No Disponible"
