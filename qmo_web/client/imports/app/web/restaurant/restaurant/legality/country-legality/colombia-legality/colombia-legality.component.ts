@@ -88,18 +88,22 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
                         this._regimeSelected = this._restaurantLegalityInEditMode.regime;
     
                         this._colombiaLegalityForm.controls['forced_to_invoice'].setValue( this._restaurantLegalityInEditMode.forced_to_invoice === undefined || this._restaurantLegalityInEditMode.forced_to_invoice === null ? false : this._restaurantLegalityInEditMode.forced_to_invoice );
+                        this._forcedToInvoiceValue = this._restaurantLegalityInEditMode.forced_to_invoice === undefined || this._restaurantLegalityInEditMode.forced_to_invoice === null ? false : this._restaurantLegalityInEditMode.forced_to_invoice;
                         this._colombiaLegalityForm.controls['business_name'].setValue( this._restaurantLegalityInEditMode.business_name === undefined || this._restaurantLegalityInEditMode.business_name === null ? '' : this._restaurantLegalityInEditMode.business_name );
                         this._colombiaLegalityForm.controls['document'].setValue( this._restaurantLegalityInEditMode.document === undefined || this._restaurantLegalityInEditMode.document === null ? '' : this._restaurantLegalityInEditMode.document );
                         this._colombiaLegalityForm.controls['invoice_resolution'].setValue( this._restaurantLegalityInEditMode.invoice_resolution === undefined || this._restaurantLegalityInEditMode.invoice_resolution === null ? '' : this._restaurantLegalityInEditMode.invoice_resolution );
                         this._colombiaLegalityForm.controls['invoice_resolution_date'].setValue( this._restaurantLegalityInEditMode.invoice_resolution_date === undefined || this._restaurantLegalityInEditMode.invoice_resolution_date === null ? '' : this._restaurantLegalityInEditMode.invoice_resolution_date );
                         this._colombiaLegalityForm.controls['prefix'].setValue( this._restaurantLegalityInEditMode.prefix === undefined || this._restaurantLegalityInEditMode.prefix === null ? false : this._restaurantLegalityInEditMode.prefix );
+                        this._prefrixValue = this._restaurantLegalityInEditMode.prefix === undefined || this._restaurantLegalityInEditMode.prefix === null ? false : this._restaurantLegalityInEditMode.prefix;
                         this._colombiaLegalityForm.controls['prefix_name'].setValue( this._restaurantLegalityInEditMode.prefix_name === undefined || this._restaurantLegalityInEditMode.prefix_name === null ? '' : this._restaurantLegalityInEditMode.prefix_name );
                         this._colombiaLegalityForm.controls['numeration_from'].setValue( this._restaurantLegalityInEditMode.numeration_from === undefined || this._restaurantLegalityInEditMode.numeration_from === null ? '' : this._restaurantLegalityInEditMode.numeration_from );
                         this._colombiaLegalityForm.controls['numeration_to'].setValue( this._restaurantLegalityInEditMode.numeration_to === undefined || this._restaurantLegalityInEditMode.numeration_to === null ? '' : this._restaurantLegalityInEditMode.numeration_to );
                         this._colombiaLegalityForm.controls['is_big_contributor'].setValue( this._restaurantLegalityInEditMode.is_big_contributor === undefined || this._restaurantLegalityInEditMode.is_big_contributor === null ? false : this._restaurantLegalityInEditMode.is_big_contributor );
+                        this._bigContributorValue = this._restaurantLegalityInEditMode.is_big_contributor === undefined || this._restaurantLegalityInEditMode.is_big_contributor === null ? false : this._restaurantLegalityInEditMode.is_big_contributor;
                         this._colombiaLegalityForm.controls['big_contributor_resolution'].setValue( this._restaurantLegalityInEditMode.big_contributor_resolution === undefined || this._restaurantLegalityInEditMode.big_contributor_resolution === null ? '' : this._restaurantLegalityInEditMode.big_contributor_resolution );
                         this._colombiaLegalityForm.controls['big_contributor_date'].setValue( this._restaurantLegalityInEditMode.big_contributor_date === undefined || this._restaurantLegalityInEditMode.big_contributor_date === null ? '' : this._restaurantLegalityInEditMode.big_contributor_date );
                         this._colombiaLegalityForm.controls['is_self_accepting'].setValue( this._restaurantLegalityInEditMode.is_self_accepting === undefined || this._restaurantLegalityInEditMode.is_self_accepting === null ? false : this._restaurantLegalityInEditMode.is_self_accepting );
+                        this._selfAcceptingValue = this._restaurantLegalityInEditMode.is_self_accepting === undefined || this._restaurantLegalityInEditMode.is_self_accepting === null ? false : this._restaurantLegalityInEditMode.is_self_accepting;
                         this._colombiaLegalityForm.controls['self_accepting_resolution'].setValue( this._restaurantLegalityInEditMode.self_accepting_resolution === undefined || this._restaurantLegalityInEditMode.self_accepting_resolution === null ? '' : this._restaurantLegalityInEditMode.self_accepting_resolution );
                         this._colombiaLegalityForm.controls['self_accepting_date'].setValue( this._restaurantLegalityInEditMode.self_accepting_date === undefined || this._restaurantLegalityInEditMode.self_accepting_date === null ? '' : this._restaurantLegalityInEditMode.self_accepting_date );
                         this._colombiaLegalityForm.controls['text_at_the_end'].setValue( this._restaurantLegalityInEditMode.text_at_the_end === undefined || this._restaurantLegalityInEditMode.text_at_the_end === null ? '' : this._restaurantLegalityInEditMode.text_at_the_end  );
@@ -320,8 +324,9 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
                         }
                     });
                 }
+            } else {
+                this.colombiaLegality.emit( this._restaurantLegality );            
             }
-            this.colombiaLegality.emit( this._restaurantLegality );            
         } else {
             this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
                 disableClose: true,
