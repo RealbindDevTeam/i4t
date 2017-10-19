@@ -786,7 +786,7 @@
         "COLOMBIA": {
             "GARNISH_FOOD": "Side dishes",
             "ADDITION": "Addition",
-            "ORDER_DETAILS": "Order Details",
+            "ORDER_DETAILS": "Order details",
             "PAY_ORDER": "Order",
             "SUBTOTAL": "SubTotal",
             "INC": "Inc",
@@ -1244,7 +1244,7 @@
         "MSG_INITIAL": "Enter the Table Code to which you want to change",
         "CANCEL": "Cancel",
         "ENTER": "Enter Code",
-        "CHANGE_TABLE_OK": "Table change applied successfulLy",
+        "CHANGE_TABLE_OK": "Table change applied successfully",
         "TABLE_DESTINY_NOT_EXISTS": "The code for the new table does not exist. Please try again.",
         "TABLE_DESTINY_NO_ACTIVE": "The table entered is not active for the Iurest service",
         "TABLE_DESTINY_NO_RESTAURANT": "The code of the table entered does not belong to the restaurant where you are located. Please try again.",
@@ -1256,10 +1256,10 @@
         "SAME_TABLE_ERROR": "It is not possible to perform the operation with the actual table code. Please check and try again."
     },
     "EXIT_TABLE": {
-        "RESTAURANT_EXIT": "Restaurant Exit",
+        "RESTAURANT_EXIT": "Restaurant exit",
         "RESTAURANT_EXIT_CONFIRM": "Are you sure you want to leave the restaurant?",
         "LEAVE_RESTAURANT_MSG": "You left the restaurant. See you later!",
-        "ORDERS_REGISTERED": "You have orders registered !",
+        "ORDERS_REGISTERED": "You have orders registered!",
         "ORDERS_CANCEL_CONFIRM": "If you leave the restaurant the orders will be canceled. Are you sure to leave?",
         "ORDERS_PENDING_CONFIRM": "Orders to be confirmed!",
         "ORDERS_MUST_BE_ATTENDED": "Orders must be served to leave the restaurant",

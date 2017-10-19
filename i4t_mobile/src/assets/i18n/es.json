@@ -401,7 +401,7 @@
         },
         "SIGN_OUT": {
             "TITLE_CONFIRM": "Cerrar sesión",
-            "CONTENT_CONFIRM": "Estás seguro de salir de la aplicación?",
+            "CONTENT_CONFIRM": "Estás seguro de salir de Iurest?",
             "NO_BTN": "No",
             "YES_BTN": "Sí",
             "LOADING": "Por favor espera..."
@@ -409,7 +409,7 @@
         "HOME": {
             "SLIDE-1": {
                 "WELCOME": "Bienvenido a Iurest",
-                "TEXT": "Ordena en tu restaurante favorito de una manera fácil y rápida"
+                "TEXT": "Ordena en tu restaurante favorito fácil y rápido"
             },
             "SLIDE-2": {
                 "1": "1. Ordena lo que deseas",
