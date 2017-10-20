@@ -16,6 +16,7 @@ export class RestaurantLegalityComponent {
     @Input() countryId: string;
     @Input() restaurantId: string;
     @Output() restaurantLegality = new EventEmitter();
+    @Output() previous = new EventEmitter(); 
 
     /**
      * RestaurantLegality Constructor
@@ -34,5 +35,13 @@ export class RestaurantLegalityComponent {
      */
     setRestaurantLegality( _restaurantLegality: Object ):void {
         this.restaurantLegality.emit( _restaurantLegality );
+    }
+
+    /**
+     * Emit action to come back in tabs
+     * @param {boolean} _previous 
+     */
+    setPrevious( _previous: boolean ):void{
+        this.previous.emit( _previous );
     }
 }

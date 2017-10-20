@@ -1,99 +1,99 @@
 <div>
-    <p>Selecciona el regimen al que pertenece tu restaurante:</p>
+    <p>{{'RESTAURANT_LEGALITY.COLOMBIA.SELECT_REGIME' | translate}}:</p>
     <md-radio-group [(ngModel)]="_regimeSelected">
-        <md-radio-button [value]="'regime_co'" (change)="radioChange($event)">Regimen Comun</md-radio-button>
-        <md-radio-button class="regime-si" [value]="'regime_si'" (change)="radioChange($event)">Regimen Simplificado</md-radio-button>
+        <md-radio-button [value]="'regime_co'" (change)="radioChange($event)">{{'RESTAURANT_LEGALITY.COLOMBIA.REGIME_CO' | translate}}</md-radio-button>
+        <md-radio-button class="regime-si" [value]="'regime_si'" (change)="radioChange($event)">{{'RESTAURANT_LEGALITY.COLOMBIA.REGIME_SI' | translate}}</md-radio-button>
     </md-radio-group>
 </div>
 <form [formGroup]="_colombiaLegalityForm">
     <div>
         <div *ngIf="_showForcedToInvoice" class="forced-invoice">
-            <md-checkbox formControlName="forced_to_invoice" (change)="evaluateForcedToInvoiceCheck($event)" [(ngModel)]="_forcedToInvoiceValue">Dar factura a los clientes</md-checkbox>
+            <md-checkbox formControlName="forced_to_invoice" (change)="evaluateForcedToInvoiceCheck($event)" [(ngModel)]="_forcedToInvoiceValue">{{'RESTAURANT_LEGALITY.COLOMBIA.FORCED_TO_INVOICE' | translate}}</md-checkbox>
         </div>
     </div>
     <div *ngIf="_showGeneralInvoice">
         <div>
             <div class="business-name">
-                <p>Ingresa Apellidos y Nombres (si es persona natural) o Razón Social (si es persona jurídica):</p>
+                <p>{{'RESTAURANT_LEGALITY.COLOMBIA.BUSINESS_NAME' | translate}}:</p>
                 <md-input-container class="name">
-                    <input mdInput formControlName="business_name" placeholder="Nombres - Razón Social *" minlength="1" maxlength="70" #inputBusinessName>
+                    <input mdInput formControlName="business_name" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.BUSINESS_NAME_PLACEHOLDER' | translate}} *" minlength="1" maxlength="70" #inputBusinessName>
                     <md-hint align="end">{{inputBusinessName.value.length}} / 70</md-hint>
                 </md-input-container>
             </div>
             <div class="document">
-                <p>Ingresa documento o NIT de quien vende los Bienes o Servicios (Por favor incluya dígito de verificación en caso de NIT) :</p>
+                <p>{{'RESTAURANT_LEGALITY.COLOMBIA.DOCUMENT' | translate}}:</p>
                 <md-input-container class="name">
-                    <input mdInput formControlName="document" placeholder="Documento - NIT *" minlength="1" maxlength="20" #inputDocument>
+                    <input mdInput formControlName="document" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.DOCUMENT_PLACEHOLDER' | translate}} *" minlength="1" maxlength="20" #inputDocument>
                     <md-hint align="end">{{inputDocument.value.length}} / 20</md-hint>
                 </md-input-container>
             </div>
         </div>
         <div>
             <div class="invoice-resolution">
-                <p>Ingresa el numero de la resolucion de la DIAN para las facturas</p>
+                <p>{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION' | translate}}</p>
                 <md-input-container class="invoice">
-                    <input mdInput type="number" formControlName="invoice_resolution" placeholder="Resolucion de la DIAN *" minlength="1" maxlength="20" #inputInvoiceResolution>
+                    <input mdInput type="number" formControlName="invoice_resolution" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_PLACEHOLDER' | translate}} *" minlength="1" maxlength="20" #inputInvoiceResolution>
                     <md-hint align="end">{{inputInvoiceResolution.value.length}} / 20</md-hint>
                 </md-input-container>
             </div>
             <div class="invoice-resolution-date">
-                <p>Ingresa la fecha de la resolucion de la DIAN</p>
+                <p>{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_DATE' | translate}}</p>
                 <md-input-container class="date">
-                    <input mdInput [mdDatepicker]="pickerInvoiceResol" placeholder="Fecha resolucion de la DIAN *" formControlName="invoice_resolution_date">
+                    <input mdInput [mdDatepicker]="pickerInvoiceResol" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_DATE_PLACEHOLDER' | translate}} *" formControlName="invoice_resolution_date">
                     <button mdSuffix [mdDatepickerToggle]="pickerInvoiceResol"></button>
                 </md-input-container>
                 <md-datepicker #pickerInvoiceResol></md-datepicker>
             </div>
         </div>
         <div>
-            <md-checkbox formControlName="prefix" class="prefix" (change)="evaluatePrefixCheck($event)" [(ngModel)]="_prefrixValue">Maneja prefijo en el codigo de la factura</md-checkbox>
+            <md-checkbox formControlName="prefix" class="prefix" (change)="evaluatePrefixCheck($event)" [(ngModel)]="_prefrixValue">{{'RESTAURANT_LEGALITY.COLOMBIA.PREFIX' | translate}}</md-checkbox>
             <md-input-container class="prefix" *ngIf="_showPrefixName">
-                <input mdInput formControlName="prefix_name" placeholder="Prefijo" minlength="1" maxlength="10" #inputPrefix>
+                <input mdInput formControlName="prefix_name" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.PREFIX_PLACEHOLDER' | translate}}" minlength="1" maxlength="10" #inputPrefix>
                 <md-hint align="end">{{inputPrefix.value.length}} / 10</md-hint>
             </md-input-container>
         </div>
         <div>
-            <p class="dian-numeration">Ingresa numeración autorizada por la DIAN:</p>
+            <p class="dian-numeration">{{'RESTAURANT_LEGALITY.COLOMBIA.DIAN_NUMERATION' | translate}}:</p>
             <md-input-container>
-                <input mdInput type="number" formControlName="numeration_from" placeholder="Desde *" minlength="1">
+                <input mdInput type="number" formControlName="numeration_from" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.NUMERATION_FROM' | translate}} *" minlength="1">
             </md-input-container>
             <md-input-container class="numeration-to">
-                <input mdInput type="number" formControlName="numeration_to" placeholder="Hasta *" minlength="1">
+                <input mdInput type="number" formControlName="numeration_to" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.NUMERATION_TO' | translate}} *" minlength="1">
             </md-input-container>
         </div>
     </div>
     <div *ngIf="_showInvoiceSecondPart">
-        <md-checkbox formControlName="is_big_contributor" (change)="evaluateBigContributorCheck($event)" [(ngModel)]="_bigContributorValue">Es gran Contribuyente</md-checkbox>
+        <md-checkbox formControlName="is_big_contributor" (change)="evaluateBigContributorCheck($event)" [(ngModel)]="_bigContributorValue">{{'RESTAURANT_LEGALITY.COLOMBIA.IS_BIG_CONTRIBUTOR' | translate}}</md-checkbox>
         <div *ngIf="_showBigContributorDetail">
             <div class="dian-big-contributor">
-                <p>Ingresa el numero de la resolucion de la DIAN para gran Contribuyente</p>
+                <p>{{'RESTAURANT_LEGALITY.COLOMBIA.BIG_CONTRIBUTOR_RESOLUTION' | translate}}</p>
                 <md-input-container class="resolution">
-                    <input mdInput type="number" formControlName="big_contributor_resolution" placeholder="Resolucion DIAN" minlength="1" maxlength="20" #inputBigContResolution>
+                    <input mdInput type="number" formControlName="big_contributor_resolution" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_PLACEHOLDER' | translate}}" minlength="1" maxlength="20" #inputBigContResolution>
                     <md-hint align="end">{{inputBigContResolution.value.length}} / 20</md-hint>
                 </md-input-container>
             </div>
             <div class="date-big-contributor">
-                <p>Ingresa la fecha de la resolucion de la DIAN para gran Contribuyente</p>
+                <p>{{'RESTAURANT_LEGALITY.COLOMBIA.BIG_CONTRIBUTOR_DATE' | translate}}</p>
                 <md-input-container class="date">
-                    <input mdInput [mdDatepicker]="pickerBigContr" placeholder="Fecha resolucion de la DIAN" formControlName="big_contributor_date">
+                    <input mdInput [mdDatepicker]="pickerBigContr" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_DATE_PLACEHOLDER' | translate}}" formControlName="big_contributor_date">
                     <button mdSuffix [mdDatepickerToggle]="pickerBigContr"></button>
                 </md-input-container>
                 <md-datepicker #pickerBigContr></md-datepicker>
             </div>
         </div>
-        <md-checkbox formControlName="is_self_accepting" (change)="evaluateSelfAcceptingCheck($event)" [(ngModel)]="_selfAcceptingValue">Es autoretenedor</md-checkbox>
+        <md-checkbox formControlName="is_self_accepting" (change)="evaluateSelfAcceptingCheck($event)" [(ngModel)]="_selfAcceptingValue">{{'RESTAURANT_LEGALITY.COLOMBIA.IS_SELF_ACCEPTING' | translate}}</md-checkbox>
         <div *ngIf="_showSeltAcceptingDetail">
             <div class="dian-self-accepting">
-                <p>Ingresa el numero de la resolucion de la DIAN para autoretenedor</p>
+                <p>{{'RESTAURANT_LEGALITY.COLOMBIA.SELF_ACCEPTING_RESOLUTION' | translate}}</p>
                 <md-input-container class="resolution">
-                    <input mdInput type="number" formControlName="self_accepting_resolution" placeholder="Resolucion DIAN" minlength="1" maxlength="20" #inputSeltAcResolution>
+                    <input mdInput type="number" formControlName="self_accepting_resolution" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_PLACEHOLDER' | translate}}" minlength="1" maxlength="20" #inputSeltAcResolution>
                     <md-hint align="end">{{inputSeltAcResolution.value.length}} / 20</md-hint>
                 </md-input-container>
             </div>
             <div class="date-self-accepting">
-                <p>Ingresa la fecha de la resolucion de la DIAN para autoretenedor</p>
+                <p>{{'RESTAURANT_LEGALITY.COLOMBIA.SELF_ACCEPTING_DATE' | translate}}</p>
                 <md-input-container class="date">
-                    <input mdInput [mdDatepicker]="pickerSelfAccept" placeholder="Fecha resolucion de la DIAN" formControlName="self_accepting_date">
+                    <input mdInput [mdDatepicker]="pickerSelfAccept" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_DATE_PLACEHOLDER' | translate}}" formControlName="self_accepting_date">
                     <button mdSuffix [mdDatepickerToggle]="pickerSelfAccept"></button>
                 </md-input-container>
                 <md-datepicker #pickerSelfAccept></md-datepicker>
@@ -101,14 +101,14 @@
         </div>
     </div>
     <div *ngIf="_showInvoiceFinalPart">
-        <p>Si desea que al final de las facturas aparezca un texto especifico, por favor ingreselo aqui:</p>
+        <p>{{'RESTAURANT_LEGALITY.COLOMBIA.FINAL_TEXT' | translate}}:</p>
         <md-input-container class="final-text">
-            <textarea mdInput formControlName="text_at_the_end" placeholder="Texto factura" minlength="1" maxlength="150" #inputFinalText></textarea>
+            <textarea mdInput formControlName="text_at_the_end" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.FINAL_TEXT_PLACEHOLDER' | translate}}" minlength="1" maxlength="150" #inputFinalText></textarea>
             <md-hint align="end">{{inputFinalText.value.length}} / 150</md-hint>
         </md-input-container>
     </div>
 </form>
 <md-card-actions align="end" class="buttons">
-    <button md-raised-button>{{'BACK' | translate}}</button>
+    <button md-raised-button (click)="previousTab()">{{'BACK' | translate}}</button>
     <button md-raised-button (click)="buildColombiaRestaurantLegality()">{{'FINISH' | translate}}</button>
 </md-card-actions>

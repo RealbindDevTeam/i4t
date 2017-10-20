@@ -22,6 +22,7 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
 
     @Input() restaurantId: string;
     @Output() colombiaLegality = new EventEmitter();
+    @Output() previous = new EventEmitter();
 
     private _colombiaLegalityForm: FormGroup;
     private _regimeSelected: string;
@@ -287,11 +288,11 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
                 this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
                     disableClose: true,
                     data: {
-                        title: 'Datos Invalidos', //this.itemNameTraduction( 'EXIT_TABLE.ORDERS_PENDING_CONFIRM' ),
+                        title: this.itemNameTraduction( 'RESTAURANT_LEGALITY.COLOMBIA.INVALID_DATA' ),
                         subtitle: '',
-                        content: 'Por favor diligencia los campos obligatorios (*)',//this.itemNameTraduction( 'EXIT_TABLE.ORDERS_MUST_BE_ATTENDED' ),
+                        content: this.itemNameTraduction( 'RESTAURANT_LEGALITY.COLOMBIA.REQUIRED_FILES' ),
                         buttonCancel: '',
-                        buttonAccept: 'Aceptar',//this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
+                        buttonAccept: this.itemNameTraduction( 'RESTAURANT_LEGALITY.COLOMBIA.ACCEPT' ),
                         showCancel: false
                     }
                 });
@@ -315,11 +316,11 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
                     this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
                         disableClose: true,
                         data: {
-                            title: 'Datos Invalidos', //this.itemNameTraduction( 'EXIT_TABLE.ORDERS_PENDING_CONFIRM' ),
+                            title: this.itemNameTraduction( 'RESTAURANT_LEGALITY.COLOMBIA.INVALID_DATA' ),
                             subtitle: '',
-                            content: 'Por favor diligencia los campos obligatorios (*)',//this.itemNameTraduction( 'EXIT_TABLE.ORDERS_MUST_BE_ATTENDED' ),
+                            content: this.itemNameTraduction( 'RESTAURANT_LEGALITY.COLOMBIA.REQUIRED_FILES' ),
                             buttonCancel: '',
-                            buttonAccept: 'Aceptar',//this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
+                            buttonAccept: this.itemNameTraduction( 'RESTAURANT_LEGALITY.COLOMBIA.ACCEPT' ),
                             showCancel: false
                         }
                     });
@@ -331,11 +332,11 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
             this._dialogRef = this._mdDialog.open( AlertConfirmComponent, {
                 disableClose: true,
                 data: {
-                    title: 'Datos Invalidos', //this.itemNameTraduction( 'EXIT_TABLE.ORDERS_PENDING_CONFIRM' ),
+                    title: this.itemNameTraduction( 'RESTAURANT_LEGALITY.COLOMBIA.INVALID_DATA' ),
                     subtitle: '',
-                    content: 'Por favor seleccione el regimen al que pertenece el restaurante',//this.itemNameTraduction( 'EXIT_TABLE.ORDERS_MUST_BE_ATTENDED' ),
+                    content: this.itemNameTraduction( 'RESTAURANT_LEGALITY.COLOMBIA.INVALID_DATA' ),
                     buttonCancel: '',
-                    buttonAccept: 'Aceptar',//this.itemNameTraduction( 'EXIT_TABLE.ACCEPT' ),
+                    buttonAccept: this.itemNameTraduction( 'RESTAURANT_LEGALITY.COLOMBIA.SELECT_REGIME' ),
                     showCancel: false
                 }
             });
@@ -352,6 +353,13 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
             wordTraduced = res; 
         });
         return wordTraduced;
+    }
+
+    /**
+     * Emit action to come back in tabs
+     */
+    previousTab():void{
+        this.previous.emit( true );
     }
 
     /**

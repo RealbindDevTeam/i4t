@@ -185,9 +185,19 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             case 0:
                 return true;
             case 1:
+                let arrPay: any[] = Object.keys(this._restaurantForm.value.paymentMethods);
+                let _lPaymentMethods: string[] = [];
+
+                arrPay.forEach((pay) => {
+                    if (this._restaurantForm.value.paymentMethods[pay]) {
+                        _lPaymentMethods.push( pay );
+                    }
+                });
+
                 if (this._restaurantForm.controls['country'].valid && this._restaurantForm.controls['city'].valid
                     && this._restaurantForm.controls['name'].valid && this._restaurantForm.controls['address'].valid
-                    && this._restaurantForm.controls['phone'].valid && this._restaurantForm.controls['tables_number'].valid) {
+                    && this._restaurantForm.controls['phone'].valid && this._restaurantForm.controls['tables_number'].valid
+                    && _lPaymentMethods.length > 0) {
                     return true;
                 } else {
                     return false;
@@ -498,6 +508,16 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             }
         }
         return _lCode;
+    }
+
+    /**
+     * Run previous function
+     * @param {boolean} _event 
+     */
+    runPrevious( _event : boolean ):void{
+        if( _event ){
+            this.previous();
+        }
     }
 
     /**

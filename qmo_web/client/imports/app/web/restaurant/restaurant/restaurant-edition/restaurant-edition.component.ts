@@ -421,6 +421,16 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Run previous function
+     * @param {boolean} _event 
+     */
+    runPrevious( _event : boolean ):void{
+        if( _event ){
+            this.previous();
+        }
+    }
+
+    /**
     * This function open de error dialog according to parameters 
     * @param {string} title
     * @param {string} subtitle

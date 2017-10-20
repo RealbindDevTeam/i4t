@@ -58,7 +58,7 @@
                                         </div>
                                         <div>
                                             <md-input-container style="width: 48%;">
-                                                <input mdInput formControlName="tables_number" placeholder="{{'RESTAURANT_REGISTER.INITIAL_TABLES_NUMBER' | translate}} *"
+                                                <input mdInput formControlName="tables_number" type="number" placeholder="{{'RESTAURANT_REGISTER.INITIAL_TABLES_NUMBER' | translate}} *"
                                                     minlength="1" maxlength="3" #inputInitialTables>
                                                 <md-hint align="end">{{inputInitialTables.value.length}} / 3</md-hint>
                                             </md-input-container>
@@ -89,12 +89,12 @@
                                     </md-card-actions>
                                 </md-card>
                             </md-tab>
-                            <md-tab label="{{'RESTAURANT_REGISTER.FINANCIAL_LABEL' | translate}}">
+                            <md-tab label="{{'RESTAURANT_REGISTER.LEGAL_LABEL' | translate}}">
                                 <md-card>
-                                    <md-card-title>{{'RESTAURANT_REGISTER.FINANCIAL_INFO' | translate}}</md-card-title>
-                                    <md-card-subtitle>{{'RESTAURANT_REGISTER.FINANCIAL_INFO_TEXT' | translate}}</md-card-subtitle>
+                                    <md-card-title>{{'RESTAURANT_REGISTER.LEGAL_INFO' | translate}}</md-card-title>
+                                    <md-card-subtitle>{{'RESTAURANT_REGISTER.LEGAL_INFO_TEXT' | translate}}</md-card-subtitle>
                                     <md-card-content>
-                                        <restaurant-legality [countryId]="_selectedCountryValue" (restaurantLegality)="setRestaurantLegality($event)"></restaurant-legality>
+                                        <restaurant-legality [countryId]="_selectedCountryValue" (restaurantLegality)="setRestaurantLegality($event)" (previous)="runPrevious($event)"></restaurant-legality>
                                     </md-card-content>
                                 </md-card>
                             </md-tab>
