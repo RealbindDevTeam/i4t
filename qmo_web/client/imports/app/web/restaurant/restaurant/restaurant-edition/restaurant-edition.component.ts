@@ -103,12 +103,6 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
 
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';
-
-        if (this._restaurantToEdit.other_city !== '') {
-            this._showOtherCity = true;
-        } else {
-            this._showOtherCity = false;
-        }
     }
 
     /**
@@ -188,13 +182,20 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             phone: new FormControl(this._restaurantToEdit.phone),
             editImage: new FormControl(''),
             paymentMethods: this._paymentsFormGroup,
-            otherCity: new FormControl({ value: this._restaurantToEdit.other_city, disabled: true })
+            otherCity: new FormControl(this._restaurantToEdit.other_city)
         });
 
 
         this._selectedCountryValue = this._restaurantToEdit.countryId;
         this._restaurantCountryValue = this._restaurantToEdit.countryId;
-        this._selectedCityValue = this._restaurantToEdit.cityId;
+        if( ( this._restaurantToEdit.cityId === null || this._restaurantToEdit.cityId === '' ) && this._restaurantToEdit.other_city !== '' ){
+            this._selectedCityValue = '0000';
+            this._showOtherCity = true;
+        } else {
+            this._selectedCityValue = this._restaurantToEdit.cityId;   
+            this._showOtherCity = false;         
+        }
+
         this._restaurantCityValue = this._restaurantToEdit.cityId;
         this._restaurantPaymentMethods = this._restaurantToEdit.paymentMethods;
         this._countryIndicative = this._restaurantToEdit.indicative;
@@ -259,6 +260,32 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                 queue: this._queue
             }
         });
+
+        // Colombia
+        if( this._restaurantEditionForm.value.country === '1900' ){
+            RestaurantsLegality.update( { _id: this._restaurantLegalityToEdit._id }, {
+                $set: {
+                    regime: this._restaurantLegalityToEdit.regime,
+                    forced_to_invoice: this._restaurantLegalityToEdit.forced_to_invoice === undefined || this._restaurantLegalityToEdit.forced_to_invoice === null ? false : this._restaurantLegalityToEdit.forced_to_invoice,
+                    forced_to_inc: this._restaurantLegalityToEdit.forced_to_inc === undefined || this._restaurantLegalityToEdit.forced_to_inc === null ? false : this._restaurantLegalityToEdit.forced_to_inc,
+                    business_name: this._restaurantLegalityToEdit.business_name === undefined || this._restaurantLegalityToEdit.business_name === null ? '' : this._restaurantLegalityToEdit.business_name,
+                    document: this._restaurantLegalityToEdit.document === undefined || this._restaurantLegalityToEdit.document === null ? '' : this._restaurantLegalityToEdit.document,
+                    invoice_resolution: this._restaurantLegalityToEdit.invoice_resolution === undefined || this._restaurantLegalityToEdit.invoice_resolution === null ? '' : this._restaurantLegalityToEdit.invoice_resolution,
+                    invoice_resolution_date: this._restaurantLegalityToEdit.invoice_resolution_date === undefined || this._restaurantLegalityToEdit.invoice_resolution_date === null ? '' : this._restaurantLegalityToEdit.invoice_resolution_date,
+                    prefix: this._restaurantLegalityToEdit.prefix === undefined || this._restaurantLegalityToEdit.prefix === null ? false : this._restaurantLegalityToEdit.prefix,
+                    prefix_name: this._restaurantLegalityToEdit.prefix_name === undefined || this._restaurantLegalityToEdit.prefix_name === null ? '' : this._restaurantLegalityToEdit.prefix_name,
+                    numeration_from: this._restaurantLegalityToEdit.numeration_from === undefined || this._restaurantLegalityToEdit.numeration_from === null ? '' : this._restaurantLegalityToEdit.numeration_from,
+                    numeration_to: this._restaurantLegalityToEdit.numeration_to === undefined || this._restaurantLegalityToEdit.numeration_to === null ? '' : this._restaurantLegalityToEdit.numeration_to,
+                    is_big_contributor: this._restaurantLegalityToEdit.is_big_contributor === undefined || this._restaurantLegalityToEdit.is_big_contributor === null ? false : this._restaurantLegalityToEdit.is_big_contributor,
+                    big_contributor_resolution: this._restaurantLegalityToEdit.big_contributor_resolution === undefined || this._restaurantLegalityToEdit.big_contributor_resolution === null ? '' : this._restaurantLegalityToEdit.big_contributor_resolution,
+                    big_contributor_date: this._restaurantLegalityToEdit.big_contributor_date === undefined || this._restaurantLegalityToEdit.big_contributor_date === null ? '' : this._restaurantLegalityToEdit.big_contributor_date,
+                    is_self_accepting: this._restaurantLegalityToEdit.is_self_accepting === undefined || this._restaurantLegalityToEdit.is_self_accepting === null ? false : this._restaurantLegalityToEdit.is_self_accepting,
+                    self_accepting_resolution: this._restaurantLegalityToEdit.self_accepting_resolution === undefined || this._restaurantLegalityToEdit.self_accepting_resolution === null ? '' : this._restaurantLegalityToEdit.self_accepting_resolution,
+                    self_accepting_date: this._restaurantLegalityToEdit.self_accepting_date === undefined || this._restaurantLegalityToEdit.self_accepting_date === null ? '' : this._restaurantLegalityToEdit.self_accepting_date,
+                    text_at_the_end: this._restaurantLegalityToEdit.text_at_the_end === undefined || this._restaurantLegalityToEdit.text_at_the_end === null ? '' : this._restaurantLegalityToEdit.text_at_the_end
+                }
+            });
+        }
 
         if (this._editImage) {
             let _lRestaurantImage: RestaurantImage = RestaurantImages.findOne({ restaurantId: this._restaurantEditionForm.value.editId });
@@ -376,13 +403,12 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
      * @param {string} _city
      */
     changeCity(_city) {
-
         let control = this._restaurantEditionForm.get('otherCity');
         if (_city === '0000') {
-            control.enable();
+            this._showOtherCity = true;
             control.setValidators(Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(50)]));
         } else {
-            control.disable();
+            this._showOtherCity = false;
             control.clearValidators();
             control.reset();
         }
@@ -429,6 +455,16 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             this.previous();
         }
     }
+
+    /**
+     * Run cancel function
+     * @param {boolean} _event
+     */
+    runCancel( _event: boolean ):void{
+        if( _event ){
+            this.cancel();
+        }
+    } 
 
     /**
     * This function open de error dialog according to parameters 

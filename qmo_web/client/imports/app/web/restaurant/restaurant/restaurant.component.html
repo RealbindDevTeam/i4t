@@ -38,7 +38,7 @@
                     <ul class="list">
                         <li>
                             <md-icon class="vertical-align-middle" md-tooltip="{{'RESTAURANT.COUNTRY' | translate}}">room</md-icon>
-                            <label>{{ getRestaurantCountry(restaurant.countryId) | translate }} - {{ getRestaurantCity(restaurant.cityId) | translate }}</label>
+                            <label>{{ getRestaurantCountry(restaurant.countryId) | translate }} - {{ getRestaurantCity(restaurant.cityId,restaurant.other_city) | translate }}</label>
                         </li>
                         <li>
                             <md-icon class="vertical-align-middle" md-tooltip="{{'RESTAURANT.PHONE' | translate}}">call</md-icon>

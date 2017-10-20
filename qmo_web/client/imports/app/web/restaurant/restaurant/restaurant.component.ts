@@ -137,11 +137,14 @@ export class RestaurantComponent implements OnInit, OnDestroy {
     /**
      * Get Restaurant City
      * @param {string} _pCityId 
+     * @param {string} _pOtherCity
      */
-    getRestaurantCity(_pCityId: string): string {
+    getRestaurantCity(_pCityId: string, _pOtherCity:string): string {
         let _lCity: City = Cities.findOne({ _id: _pCityId });
         if (_lCity) {
             return _lCity.name;
+        } else {
+            return _pOtherCity;
         }
     }
 

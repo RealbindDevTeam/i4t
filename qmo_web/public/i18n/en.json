@@ -1366,7 +1366,10 @@
             "FINAL_TEXT_PLACEHOLDER": "Texto de la factura",
             "INVALID_DATA": "Datos Invalidos",
             "REQUIRED_FILES": "Por favor diligencia los campos obligatorios (*)",
-            "ACCEPT": "Aceptar"
+            "ACCEPT": "Aceptar",
+            "ENTER_PREFIX": "Por favor indique el nombre del prefijo",
+            "ENTER_BIG_CONTRIBUTOR_FILES": "Por favor ingrese los datos de gran contribuyente",
+            "ENTER_SELF_ACCEPTING_FILES": "Por favor ingrese los datos de autoretenedor"
         }
     }
 }

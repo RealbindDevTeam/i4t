@@ -17,6 +17,7 @@ export class RestaurantLegalityComponent {
     @Input() restaurantId: string;
     @Output() restaurantLegality = new EventEmitter();
     @Output() previous = new EventEmitter(); 
+    @Output() cancel = new EventEmitter(); 
 
     /**
      * RestaurantLegality Constructor
@@ -43,5 +44,13 @@ export class RestaurantLegalityComponent {
      */
     setPrevious( _previous: boolean ):void{
         this.previous.emit( _previous );
+    }
+
+    /**
+     * Emit action to cancel edition
+     * @param {boolean} _cancel 
+     */
+    setCancel( _cancel: boolean ):void{
+        this.cancel.emit( _cancel );
     }
 }

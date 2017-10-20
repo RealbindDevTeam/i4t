@@ -127,6 +127,7 @@ export interface RestaurantSocialNetwork {
  * Restaurant legality model
  */
 export interface RestaurantLegality{
+    _id?: string;
     restaurant_id:string;
     // Colombia
     regime?: string;

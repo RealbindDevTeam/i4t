@@ -109,6 +109,7 @@
     </div>
 </form>
 <md-card-actions align="end" class="buttons">
+    <button md-raised-button *ngIf="restaurantId" (click)="cancelEdition()">{{'CANCEL' | translate}}</button>
     <button md-raised-button (click)="previousTab()">{{'BACK' | translate}}</button>
     <button md-raised-button (click)="buildColombiaRestaurantLegality()">{{'FINISH' | translate}}</button>
 </md-card-actions>
