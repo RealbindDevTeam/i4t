@@ -82,6 +82,8 @@ if (Meteor.isServer) {
             lFinantialInformation = {};
             
             Invoices.insert({
+                restaurant_id         : _pPay.restaurantId,
+                payment_id            : _pPay._id,
                 restaurant_name       : lRestaurant.name,
                 table_number          : lTable._number,
                 total_pay             : _pPay.totalToPayment,

@@ -8,33 +8,41 @@
         <span class="app-flex-filler"></span>
 
         <ul style="padding-left: 15px" class="right hide-on-med-and-down">
-            <button md-raised-button class="primary-button" style="font-size: .9rem" [routerLink]="['/signup']" >{{'LANDING.SIGNUP' | translate}}</button>
+            <button md-raised-button class="primary-button" style="font-size: .9rem" [routerLink]="['/signup']">{{'LANDING.SIGNUP' | translate}}</button>
         </ul>
         <ul style="padding-left: 15px" class="right hide-on-med-and-down">
-            <button md-raised-button class="secondary-button" style="font-size: .9rem" [routerLink]="['/signin']" >{{'LANDING.SIGNIN' | translate}}</button>
+            <button md-raised-button class="secondary-button" style="font-size: .9rem" [routerLink]="['/signin']">{{'LANDING.SIGNIN' | translate}}</button>
         </ul>
         <ul class="right hide-on-med-and-down">
             <li>
-                <a [md-menu-trigger-for]="menu" id="user-dropdown-toggler">{{'LANDING.LANGUAGE' | translate}}<md-icon style="vertical-align: middle">keyboard_arrow_down</md-icon></a>
+                <a [md-menu-trigger-for]="menu" id="user-dropdown-toggler">{{'LANDING.LANGUAGE' | translate}}
+                    <md-icon style="vertical-align: middle">keyboard_arrow_down</md-icon>
+                </a>
             </li>
 
             <div style="padding-top: 70px; position: fixed">
                 <md-menu #menu="mdMenu" id="md-overlay-pane">
                     <button md-menu-item disabled>{{'LANDING.LANGUAGE_SELECT' | translate}}</button>
-                    <button md-menu-item *ngFor="let lang of _languages | async" (click)="langChange(lang.language_code)" value="{{lang.language_code}}" >{{lang.name}}</button> 
+                    <button md-menu-item *ngFor="let lang of _languages | async" (click)="langChange(lang.language_code)" value="{{lang.language_code}}">{{lang.name}}</button>
                 </md-menu>
             </div>
         </ul>
         <ul class="right hide-on-med-and-down">
-            <li><a (click)="goToSection('owner', false)" data-target="#contact">{{'LANDING.OWNER' | translate}}</a></li>
+            <li>
+                <a (click)="goToSection('owner', false)" data-target="#contact">{{'LANDING.OWNER' | translate}}</a>
+            </li>
         </ul>
         <ul class="right hide-on-med-and-down">
-            <li><a (click)="goToSection('about', false)" data-target="#download">{{'LANDING.ABOUT' | translate}}</a></li>
+            <li>
+                <a (click)="goToSection('about', false)" data-target="#download">{{'LANDING.ABOUT' | translate}}</a>
+            </li>
         </ul>
         <ul class="right hide-on-med-and-down">
-            <li><a (click)="goToSection('home', false)" data-target="#home" class="active">{{'LANDING.HOME' | translate}}</a></li>
+            <li>
+                <a (click)="goToSection('home', false)" data-target="#home" class="active">{{'LANDING.HOME' | translate}}</a>
+            </li>
         </ul>
-        
+
         <a href="javascript:void(0)" class="button-collapse" (click)="openNav()">
             <i *ngIf="_showIconMenu" class="material-icons">menu</i>
             <i *ngIf="!_showIconMenu" class="material-icons">arrow_back</i>
@@ -45,9 +53,15 @@
 <div id="sidenav-dev" class="sidenav">
     <div class="sidenav-item">
         <ul>
-            <li><a (click)="goToSection('home', true)">{{'LANDING.HOME' | translate}}</a></li>
-            <li><a (click)="goToSection('about', true)">{{'LANDING.ABOUT' | translate}}</a></li>
-            <li><a (click)="goToSection('owner', true)">{{'LANDING.OWNER' | translate}}</a></li>
+            <li>
+                <a (click)="goToSection('home', true)">{{'LANDING.HOME' | translate}}</a>
+            </li>
+            <li>
+                <a (click)="goToSection('about', true)">{{'LANDING.ABOUT' | translate}}</a>
+            </li>
+            <li>
+                <a (click)="goToSection('owner', true)">{{'LANDING.OWNER' | translate}}</a>
+            </li>
             <li>
                 <a [md-menu-trigger-for]="menu" id="user-dropdown-toggler">
                     {{'LANDING.LANGUAGE' | translate}}
@@ -56,11 +70,13 @@
                 <div style="padding-top: 70px; position: fixed">
                     <md-menu #menu="mdMenu" id="md-overlay-pane">
                         <button md-menu-item disabled>{{'LANDING.LANGUAGE_SELECT' | translate}}</button>
-                        <button md-menu-item *ngFor="let lang of _languages | async" (click)="langChange(lang.language_code)" value="{{lang.language_code}}" >{{lang.name}}</button> 
+                        <button md-menu-item *ngFor="let lang of _languages | async" (click)="langChange(lang.language_code)" value="{{lang.language_code}}">{{lang.name}}</button>
                     </md-menu>
                 </div>
             </li>
-            <li><a href="#"></a></li>
+            <li>
+                <a href="#"></a>
+            </li>
         </ul>
     </div>
 </div>
@@ -82,11 +98,13 @@
                                 {{'LANDING.HOME_CONTENT.TEXT2' | translate}}
                             </div>
                             <div class="dwtl opacity animated fadeInDown" data-animation="fadeInUp" data-timeout="1000">
-                                <a href="" >
-                                    <img alt="" src="https://d3i4yxtzktqr9n.cloudfront.net/web-eats/static/images/components/app-badge-app-store/Download_on_the_App_Store_Badge_US-UK_135x40-d0558d9106.svg"/>
+                                <a href="">
+                                    <img alt="" src="https://d3i4yxtzktqr9n.cloudfront.net/web-eats/static/images/components/app-badge-app-store/Download_on_the_App_Store_Badge_US-UK_135x40-d0558d9106.svg"
+                                    />
                                 </a>
                                 <a href="">
-                                    <img alt="" src="https://d3i4yxtzktqr9n.cloudfront.net/web-eats/static/images/components/app-badge-google-play/es_badge_web_generic-d34417d674.png"/>
+                                    <img alt="" src="https://d3i4yxtzktqr9n.cloudfront.net/web-eats/static/images/components/app-badge-google-play/es_badge_web_generic-d34417d674.png"
+                                    />
                                 </a>
                             </div>
                         </div>
@@ -94,7 +112,7 @@
                 </div>
                 <div class="dwi">
                     <div class="dwimg opacity animated fadeIn" data-animation="fadeIn" data-timeout="300">
-                        <img src="/images/iphone.png"/>
+                        <img src="/images/iphone.png" />
                     </div>
                 </div>
             </div>
@@ -110,33 +128,43 @@
         <span class="app-flex-filler"></span>
 
         <ul style="padding-left: 15px" class="right hide-on-med-and-down">
-            <button md-raised-button class="primary-button" style="font-size: .9rem" [routerLink]="['/signup']" >{{'LANDING.SIGNUP' | translate}}</button>
+            <button md-raised-button class="primary-button" style="font-size: .9rem" [routerLink]="['/signup']">{{'LANDING.SIGNUP' | translate}}</button>
         </ul>
         <ul style="padding-left: 15px" class="right hide-on-med-and-down">
-            <button md-raised-button class="secondary-button" style="font-size: .9rem" [routerLink]="['/signin']" >{{'LANDING.SIGNIN' | translate}}</button>
+            <button md-raised-button class="secondary-button" style="font-size: .9rem" [routerLink]="['/signin']">{{'LANDING.SIGNIN' | translate}}</button>
         </ul>
         <ul class="right hide-on-med-and-down">
             <li>
-                <a [md-menu-trigger-for]="menu" id="user-dropdown-toggler">{{'LANDING.LANGUAGE' | translate}}<md-icon style="vertical-align: middle">keyboard_arrow_down</md-icon></a>
+                <a [md-menu-trigger-for]="menu" id="user-dropdown-toggler">{{'LANDING.LANGUAGE' | translate}}
+                    <md-icon style="vertical-align: middle">keyboard_arrow_down</md-icon>
+                </a>
             </li>
 
             <div style="padding-top: 70px; position: fixed">
                 <md-menu #menu="mdMenu" id="md-overlay-pane">
                     <button md-menu-item disabled>{{'LANDING.LANGUAGE_SELECT' | translate}}</button>
-                    <button md-menu-item *ngFor="let lang of _languages | async" (click)="langChange(lang.language_code)" value="{{lang.language_code}}" >{{lang.name}}</button> 
+                    <button md-menu-item *ngFor="let lang of _languages | async" (click)="langChange(lang.language_code)" value="{{lang.language_code}}">{{lang.name}}</button>
                 </md-menu>
             </div>
         </ul>
         <ul class="right hide-on-med-and-down">
-            <li><a (click)="goToSection('owner', false)" data-target="#contact">{{'LANDING.OWNER' | translate}}</a></li>
+            <li>
+                <a (click)="goToSection('owner', false)" data-target="#contact">{{'LANDING.OWNER' | translate}}</a>
+            </li>
         </ul>
         <ul class="right hide-on-med-and-down">
-            <li><a (click)="goToSection('about', false)" data-target="#download">{{'LANDING.ABOUT' | translate}}</a></li>
+            <li>
+                <a (click)="goToSection('about', false)" data-target="#download">{{'LANDING.ABOUT' | translate}}</a>
+            </li>
         </ul>
         <ul class="right hide-on-med-and-down">
-            <li><a (click)="goToSection('home', false)" data-target="#home" class="active">{{'LANDING.HOME' | translate}}</a></li>
+            <li>
+                <a (click)="goToSection('home', false)" data-target="#home" class="active">{{'LANDING.HOME' | translate}}</a>
+            </li>
         </ul>
-        <a href="javascript:void(0)" class="button-collapse" (click)="openNav()"><i class="material-icons">menu</i></a>
+        <a href="javascript:void(0)" class="button-collapse" (click)="openNav()">
+            <i class="material-icons">menu</i>
+        </a>
     </div>
 </md-toolbar>
 
@@ -146,25 +174,31 @@
             <div class="br">
                 <div class="bc opacity revealOnScroll" data-animation="fadeInUp" data-timeout="300">
                     <div class="icon-block center">
-                        <h2><i class="material-icons bi">devices</i></h2>
+                        <h2>
+                            <i class="material-icons bi">devices</i>
+                        </h2>
                         <h5>{{'LANDING.ABOUT_CONTENT.TITLE1' | translate}}</h5>
                         <p class="light">{{'LANDING.ABOUT_CONTENT.TEXT1' | translate}}</p>
                     </div>
                 </div>
 
-                <div class="bc opacity revealOnScroll" data-animation="fadeInUp"  data-timeout="600">
+                <div class="bc opacity revealOnScroll" data-animation="fadeInUp" data-timeout="600">
                     <div class="icon-block center">
-                        <h2><i class="material-icons bi">search</i></h2>
+                        <h2>
+                            <i class="material-icons bi">search</i>
+                        </h2>
                         <h5>{{'LANDING.ABOUT_CONTENT.TITLE2' | translate}}</h5>
                         <p class="light">{{'LANDING.ABOUT_CONTENT.TEXT2' | translate}}</p>
                     </div>
                 </div>
 
-                <div class="bc opacity revealOnScroll" data-animation="fadeInUp"  data-timeout="900">
+                <div class="bc opacity revealOnScroll" data-animation="fadeInUp" data-timeout="900">
                     <div class="icon-block center">
-                        <h2><i class="material-icons bi">pan_tool</i></h2>
-                        <h5>{{'LANDING.ABOUT_CONTENT.TITLE2' | translate}}</h5>
-                        <p class="light">{{'LANDING.ABOUT_CONTENT.TEXT2' | translate}}</p>
+                        <h2>
+                            <i class="material-icons bi">pan_tool</i>
+                        </h2>
+                        <h5>{{'LANDING.ABOUT_CONTENT.TITLE3' | translate}}</h5>
+                        <p class="light">{{'LANDING.ABOUT_CONTENT.TEXT3' | translate}}</p>
                     </div>
                 </div>
             </div>
@@ -175,7 +209,7 @@
         <div class="section no-pad-bot">
             <div class="container">
                 <div class="center">
-                    <h5 class="header col s12 light-text opacity revealOnScroll" data-animation="fadeInUp"  data-timeout="300">
+                    <h5 class="header col s12 light-text opacity revealOnScroll" data-animation="fadeInUp" data-timeout="300">
                         {{'LANDING.ABOUT_CONTENT.TITLE2' | translate}}
                     </h5>
                 </div>
@@ -201,13 +235,13 @@
                 </div>
                 <div class="dwtl opacity revealOnScroll" data-animation="fadeInUp" data-timeout="1000">
                     <button md-raised-button class="primary-button bv" style="font-size: .9rem" [routerLink]="['/admin-signup']">
-                        {{'LANDING.SIGNUP' | translate}}
+                        {{'LANDING.ADMIN_SIGNUP' | translate}}
                     </button>
                 </div>
             </div>
             <div class="dwi">
-                <div class="dwimg opacity revealOnScroll" data-animation="fadeInUp"  data-timeout="600">
-                    <img src="http://www.shegy.nazwa.pl/materialupmarket/mdlp2/images/features_3.png"/>
+                <div class="dwimg opacity revealOnScroll" data-animation="fadeInUp" data-timeout="600">
+                    <img src="http://www.shegy.nazwa.pl/materialupmarket/mdlp2/images/features_3.png" />
                 </div>
             </div>
         </div>
@@ -217,7 +251,7 @@
         <div class="section no-pad-bot">
             <div class="container">
                 <div class="center">
-                    <h5 class="header col s12 light-text">{{'LANDING.ABOUT_CONTENT.TITLE2' | translate}}</h5>
+                    <h5 class="header col s12 light-text">{{'LANDING.COMPLEMENTARY.TITLE' | translate}}</h5>
                 </div>
             </div>
         </div>

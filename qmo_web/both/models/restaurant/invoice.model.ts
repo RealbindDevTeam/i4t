@@ -4,6 +4,8 @@ import { CollectionObject } from '../collection-object.model';
  * Invoice Model
  */
 export interface Invoice extends CollectionObject{
+    restaurant_id         : string;
+    payment_id            : string;
     restaurant_name       : string;
     table_number          : number;
     total_pay             : number;
