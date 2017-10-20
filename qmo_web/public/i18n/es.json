@@ -33,7 +33,7 @@
     "VALUE": "Valor",
     "SIGN_OUT": "Cerrar sesión",
     "CHOOSE_A_DATE": "Elige una fecha",
-    "UPLOAD_IMG_ERROR": "Error de carga de la imagen. Solo acepta .png, .jpg, .jpeg files.",
+    "UPLOAD_IMG_ERROR": "Error de carga de la imagen. Solo archivo .png, .jpg, .jpeg ",
     "LOGIN_SYSTEM_OPERATIONS_MSG": "Por favor inicia sesión para realizar operaciones en el sistema",
     "YES": "Sí",
     "NO": "No",
@@ -51,15 +51,36 @@
         "YEAR_FORMAT": "Formato del año incorrecto"
     },
     "LANDING": {
-        "PRICING": "Precio",
-        "DOWNLOAD": "Descarga",
-        "FAQ": "FAQ",
+        "HOME": "Inicio",
+        "ABOUT": "Acerca de iurest",
+        "OWNER": "Propietario de restaurante",
         "CONTACT": "Contácto",
         "SIGNIN": "Iniciar sesión",
         "SIGNUP": "Registrarse",
         "LANGUAGE": "Idioma",
         "LANGUAGE_SELECT": "Selecciona tu idioma",
-        "ADMIN_SIGNUP": "Registro de aliado"
+        "ADMIN_SIGNUP": "Mas información",
+        "HOME_CONTENT": {
+            "TITLE": "Una nueva experiencia para ordernar en tu restaurante favorito",
+            "TEXT1": "",
+            "TEXT2": "Descargala gratis en: "
+        },
+        "ABOUT_CONTENT": {
+            "TITLE1": "Accede desde tu dispositivo preferido",
+            "TEXT1": "Ingresa desde tu smartphone, tablet o computador y disfruta de todas las características que tenemos para ofrecerte.",
+            "TITLE2": "Mira el menú y ordena directo a la cocina",
+            "TEXT2": "Asegura tu pedido, revisa el detalle de tus ordenes y evita tiempos de espera para comer.",
+            "TITLE3": "Solicita ayuda de un mesero si deseas",
+            "TEXT3": "LLama a un mesero de una forma simple y efectiva."
+        },
+        "OWNER_CONTENT": {
+            "TITLE1": "Tienes un restaurante y te gustaria usar el servicio Iurest?",
+            "TEXT1": "",
+            "TEXT2": "Ofrecemos un sistema que va a mejorar tu negocio"
+        },
+        "COMPLEMENTARY": {
+            "TITLE": "Sal y disfruta de una buena comida acompañado de amigos, pareja o familia"
+        }
     },
     "SIGNUP": {
         "WITH_EMAIL": "Registrarse con correo electrónico",
@@ -218,7 +239,8 @@
             "TABLES": "Buscar mesas",
             "COLLABORATORS": "Colaboradores",
             "MONTHLY_CONFIG": "Configuración mensual",
-            "TABLE_CONTROL": "Control de Mesas"
+            "TABLE_CONTROL": "Control de Mesas",
+            "INVOICES_DOWNLOAD" : "Descarga de facturas"
         },
         "PAYMENTS": {
             "PAYMENTS": "Pagos",
@@ -777,7 +799,7 @@
             "TIPS": "Propina sugerida",
             "OTHER_VALUE": "Otro valor",
             "TOTAL_TO_PAY": "Total a pagar",
-            "PAY": "Pagar",
+            "PAY": "Quiero pagar",
             "PENDING_PAYMENT": "Pago pendiente por confirmar por parte del mesero",
             "CONSULT_PAYMENTS": "Consultar detalle del pago",
             "SELECT_PAYMENT_METHOD": "Selecciona medio de pago",
@@ -1028,7 +1050,7 @@
         "CONTINUE_PAYMENT": "Continuar",
         "DIALOG_TITLE": "Confirmación de pago",
         "DIALOG_PLEASE": "Por favor revisa la información antes de confirmar",
-        "Iurest_SERVICE": "Servicio Iurest",
+        "IUREST_SERVICE": "Servicio Iurest",
         "MONTHLY_SERVICE": "Mensual",
         "PERSONAL_INFO": "Información de facturación",
         "PERSONAL_TEL": "Tel. ",
@@ -1273,9 +1295,9 @@
         "CANCELING_ORDER_ERROR": "Se ha producido un error cancelando la orden ",
         "VALIDATE_ORDER_MSG": " Por favor válida que la orden está en estado preparada o en proceso.",
         "ORDER": "Orden",
-        "STATUS":"Estado",
-        "CANCEL_ORDER":"Cancelar Orden",
-        "OBSERVATIONS":"Observaciones",
+        "STATUS": "Estado",
+        "CANCEL_ORDER": "Cancelar Orden",
+        "OBSERVATIONS": "Observaciones",
         "NO_GARNISH_FOOD": "Sin guarniciones",
         "GARNISH_FOOD": "Guarniciones",
         "NO_ADDITIONS": "Sin adiciones",
@@ -1292,9 +1314,9 @@
         "SELECT_RESTAURANT": "Selecciona restaurante",
         "ALL_RESTAURANTS": "Todos los Restaurantes",
         "USERS": "Usuarios",
-        "TABLE":"Mesa",
+        "TABLE": "Mesa",
         "FREE_TABLE": "Mesa Libre",
-        "ORDERS":"Ordenes",
+        "ORDERS": "Ordenes",
         "IN_THE_ACCOUNT": "en la cuenta",
         "VIEW_DETAIL": "Ver detalle",
         "DETAIL_NOT_AVAILABLE": "Detalle No Disponible"
@@ -1318,5 +1340,23 @@
         "ACCOUNT_ERROR": "Se ha producido un error con la cuenta del usuario. Por favor verifique si el usuario aún se encuentra en la mesa con la opción ADMINISTRACION -> CONTROL DE MESAS",
         "GENERAL_ERROR": "Se ha producido un error penalizando al usuario. Por favor intente mas tarde.",
         "PENALTY_CREATED": "Penalización Creada"
+    },
+    "INVOICES_DOWNLOAD" : {
+        "TITLE" : "Descarga de facturas",
+        "TEXT" : "Consulta las facturas de tu restaurante",
+        "FROM" : "Desde",
+        "INIT_DATE" : "Fecha inicial",
+        "TO_DATE" : "Hasta la fecha",
+        "END_DATE" : "Fecha final",
+        "SYSTEM_MSG": "Mensaje del sistema",
+        "SELECT_RANGE_VALID_DATES": "Selecciona un rango valido de fechas",
+        "RANGE_DAYS" : "El rango de fechas no puede superar a 31 días",
+        "THERE_NOT_RESTAURANTS": "Aún no hay restaurantes registrados",
+        "MESSAGE": "Registra uno para habilitar esta opción",
+        "RESTAURANT_REGISTER": "Registrar restaurante",
+        "YEAR_FILTER": "Año",
+        "MONTH_FILTER": "Mes",
+        "SELECT_RESTAURANT": "Selecciona restaurante",
+        "NO_INVOICES" : "No hay facturas"
     }
 }

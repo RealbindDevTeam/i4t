@@ -6,6 +6,7 @@
   <meta charset="utf-8">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="../css/font-awesome.min.css" rel="stylesheet">
+  <link href="../css/animate.css" rel="stylesheet">
   <link rel="shortcut icon" type="image/png" href="../images/favicon.png"/>
 
   <title>Iurest</title>
@@ -115,33 +116,7 @@
 </script>
 
 <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-
-<script>
-
-    $(document).ready(function () {
-        $(document).on("scroll", onScroll);
-    });
-
-    function onScroll(event){
-        var scrollPos = $(document).scrollTop();
-        $('md-toolbar ul li a').each(function () {
-            var currLink = $(this);
-            var refElement = $(currLink.attr('data-target'));
-            
-            if (refElement.position()){
-              var top = refElement.position().top - 64;
-              if (top <= scrollPos && top + refElement.height() > scrollPos) {
-                  $('md-toolbar ul a').removeClass("active");
-                  currLink.addClass("active");
-              }
-              else{
-                  currLink.removeClass("active");
-              }
-            }
-        });
-    }
-
-</script>
-
+<script src="https://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.7.2.js"></script>
+<script src="../js/animate.js"></script>
 
 </body>

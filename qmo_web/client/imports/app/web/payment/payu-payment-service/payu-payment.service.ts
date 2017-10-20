@@ -15,11 +15,11 @@ export class PayuPaymenteService {
     private headers = new Headers({
         //'Host': 'sandbox.api.payulatam.com',
         'Content-Type': 'application/json;charset=utf-8',
-        'Accept': 'application/json',
+        'Accept': 'application/json'
         //'Accept-language': 'es',
         //'Content-Length': 'length',
     });
-
+    
     constructor(private http: Http, private _ngZone: NgZone) {
 
     }
