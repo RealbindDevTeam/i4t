@@ -74,12 +74,18 @@
                                             </div>
                                         </div>
                                         <div style="margin-top: 1%;">
-                                            <p>{{'RESTAURANT_REGISTER.ADD_PAYMENTMETHODS_RESTURANT' | translate}}</p>
-                                            <div formGroupName="paymentMethods">
-                                                <span *ngFor="let pay of _paymentMethods | async">
-                                                    <md-checkbox [formControlName]="pay._id" [class.invalid]="!_restaurantForm.controls.paymentMethods.valid" style="padding-right: 15px">{{pay.name | translate}}</md-checkbox>
-                                                    <label></label>
-                                                </span>
+                                            <div>
+                                                <p>{{'TIP_PERCENTAGE' | translate}}</p>
+                                                <iu-slider [percentageValue]="0" [label]="TIP_PERCENTAGE" [minValue]="0" [maxValue]="100" [stepValue]="0.01" (sliderValue)="setTipValue($event)"></iu-slider>
+                                            </div>
+                                            <div>
+                                                <p>{{'RESTAURANT_REGISTER.ADD_PAYMENTMETHODS_RESTURANT' | translate}}</p>
+                                                <div formGroupName="paymentMethods">
+                                                    <span *ngFor="let pay of _paymentMethods | async">
+                                                        <md-checkbox [formControlName]="pay._id" [class.invalid]="!_restaurantForm.controls.paymentMethods.valid" style="padding-right: 15px">{{pay.name | translate}}</md-checkbox>
+                                                        <label></label>
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
                                     </md-card-content>

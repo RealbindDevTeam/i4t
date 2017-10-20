@@ -77,6 +77,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
 
     private _showOtherCity: boolean;
     private _restaurantLegalityToEdit: RestaurantLegality;
+    private _tipValue: number = 0;
 
     /**
      * RestaurantEditionComponent Constructor
@@ -200,6 +201,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         this._restaurantPaymentMethods = this._restaurantToEdit.paymentMethods;
         this._countryIndicative = this._restaurantToEdit.indicative;
         this._queue = this._restaurantToEdit.queue;
+        this._tipValue = this._restaurantToEdit.tip_percentage;
     }
 
     /**
@@ -257,6 +259,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                 address: this._restaurantEditionForm.value.address,
                 phone: this._restaurantEditionForm.value.phone,
                 paymentMethods: _lPaymentMethodsToInsert,
+                tip_percentage: this._tipValue,
                 queue: this._queue
             }
         });
@@ -464,7 +467,15 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         if( _event ){
             this.cancel();
         }
-    } 
+    }
+    
+    /**
+     * Set restaurant tip value
+     * @param {number} _event
+     */
+    setTipValue( _event: number ):void{
+        this._tipValue = _event;
+    }
 
     /**
     * This function open de error dialog according to parameters 

@@ -14,6 +14,7 @@ export interface Restaurant extends CollectionObject {
     phone: string;
     restaurant_code: string;
     paymentMethods: string[];
+    tip_percentage: number;
     tables_quantity: number;
     orderNumberCount: number;
     max_jobs?: number;

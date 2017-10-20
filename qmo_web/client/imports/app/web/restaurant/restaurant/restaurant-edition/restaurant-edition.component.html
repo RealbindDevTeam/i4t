@@ -56,8 +56,8 @@
                                 </md-input-container>
                             </div>
                             <div>
-                                <div style="display: inline-block;width: 50%;text-align: left;">
-                                    <p style="display: inline-block;margin-right: 1rem;">{{'RESTAURANT_EDITION.UPDATE_IMAGE' | translate}}</p>
+                                <div style="display: inline-block;width: 48%;">
+                                    <p style="display: inline-block;margin-right: 0.5rem;">{{'RESTAURANT_EDITION.UPDATE_IMAGE' | translate}}</p>
                                     <input formControlName="editImage" accept=".png, .jpg, .jpeg" (change)="onChangeImage($event)" style="display: none" type="file"
                                         name="file-1[]" id="file-1" class="inputfile inputfile-1" data-multiple-caption="{count} files selected"
                                     />
@@ -65,6 +65,10 @@
                                         <span *ngIf="!_editImage">{{'CHOOSE_FILE' | translate}}&hellip;</span>
                                         <span *ngIf="_editImage">{{_nameImageFileEdit}}&hellip;</span>
                                     </label>
+                                </div>
+                                <div style="display: inline-block;width: 48%;margin-left: 2%;">
+                                    <p>{{'TIP_PERCENTAGE' | translate}}</p>
+                                    <iu-slider [percentageValue]="_tipValue" [label]="TIP_PERCENTAGE" [minValue]="0" [maxValue]="100" [stepValue]="0.01" (sliderValue)="setTipValue($event)"></iu-slider>
                                 </div>
                             </div>
                             <div style="margin-top: 1%;">

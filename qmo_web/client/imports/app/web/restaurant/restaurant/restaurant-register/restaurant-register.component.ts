@@ -77,6 +77,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private titleMsg: string;
     private btnAcceptLbl: string;
     private _restaurantLegality: RestaurantLegality;
+    private _tipValue: number = 0;
 
     /**
      * RestaurantRegisterComponent constructor
@@ -310,6 +311,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                         phone: this._restaurantForm.value.phone,
                         restaurant_code: this.generateRestaurantCode(),
                         paymentMethods: _lPaymentMethodsToInsert,
+                        tip_percentage: this._tipValue,
                         tables_quantity: 0,
                         orderNumberCount: 0,
                         max_jobs: 5,
@@ -518,6 +520,14 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         if( _event ){
             this.previous();
         }
+    }
+
+    /**
+     * Set restaurant tip value
+     * @param {number} _event
+     */
+    setTipValue( _event: number ):void{
+        this._tipValue = _event;
     }
 
     /**
