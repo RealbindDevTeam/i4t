@@ -164,7 +164,7 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
    * Allow navegate to ColombiaPaymentDetailsPage
    */
   goToPaymentDetails() {
-    this._navCtrl.push(ColombiaPaymentDetailsPage, { currency: this._currencyCode });
+    this._navCtrl.push(ColombiaPaymentDetailsPage, { currency: this._currencyCode, restaurant: this.restId });
   }
 
   /**
