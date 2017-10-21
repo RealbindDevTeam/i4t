@@ -73,13 +73,24 @@
             "TITLE3": "Solicita ayuda de un mesero si deseas",
             "TEXT3": "LLama a un mesero de una forma simple y efectiva."
         },
+        "STEPS" : {
+            "EASY_AND_FAST" : "Fácil y rápido",
+            "ONE" : "Ve a un restaurante y escanea el código de la mesa",
+            "TWO" : "Elige lo que deseas comer y confirma para que llegue directo a la cocina",
+            "THREE" : "Un mesero te llevará la comida cuando este preparada",
+            "FOUR" : "Consulta el detalle de tu cuenta",
+            "FIVE" : "Indica que vas a pagar y un mesero ira a tu mesa"
+        },
         "OWNER_CONTENT": {
-            "TITLE1": "Tienes un restaurante y te gustaria usar el servicio Iurest?",
+            "TITLE1": "Tienes un restaurante y te gustaría usar el servicio Iurest?",
             "TEXT1": "",
             "TEXT2": "Ofrecemos un sistema que va a mejorar tu negocio"
         },
         "COMPLEMENTARY": {
             "TITLE": "Sal y disfruta de una buena comida acompañado de amigos, pareja o familia"
+        },
+        "FOOTER" : {
+            "ALL_RIGHT_RESERVED" : "Todos los derechos reservados"
         }
     },
     "SIGNUP": {
