@@ -1,5 +1,3 @@
-import { RestaurantFinancialElement } from '../restaurant/restaurant.model';
-
 /**
  * Country Model
  */
@@ -14,7 +12,6 @@ export interface Country {
     currencyId: string;
     itemsWithDifferentTax: boolean;
     queue: string[];
-    financialInformation: RestaurantFinancialElement[];
     restaurantPrice: number;
     tablePrice: number;
     cronValidateActive: string;

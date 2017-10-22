@@ -1,7 +1,0 @@
-<div>
-  <form [formGroup]="form">
-    <div *ngFor="let financialElement of financialElements">
-      <iu-financialelement [element]="financialElement" [form]="form" (financialInformation)="setFinancialInfo($event)"></iu-financialelement>
-    </div>
-  </form>
-</div>

@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { Restaurants, RestaurantImages, RestaurantImageThumbs } from '../../../../both/collections/restaurant/restaurant.collection';
+import { Restaurants, RestaurantImages, RestaurantImageThumbs, RestaurantsLegality } from '../../../../both/collections/restaurant/restaurant.collection';
 import { UserDetails } from '../../../../both/collections/auth/user-detail.collection';
 import { check } from 'meteor/check';
 import { Accounts } from '../../../../both/collections/restaurant/account.collection';
@@ -190,4 +190,13 @@ Meteor.publish('getActiveRestaurants', function (_userId: string) {
 Meteor.publish('getRestaurantById', function (_pId: string) {
     check(_pId, String);
     return Restaurants.collection.find({ _id: _pId});
+});
+
+/**
+ * Meteor publication return restaurant legality by restaurant id
+ * @param {string} _restaurantId
+ */
+Meteor.publish('getRestaurantLegality', function(_restaurantId: string){
+    check( _restaurantId, String );
+    return RestaurantsLegality.find( { restaurant_id: _restaurantId } );
 });

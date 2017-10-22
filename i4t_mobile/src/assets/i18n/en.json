@@ -86,7 +86,7 @@
         "RESET_PASWORD": {
             "TITLE": "Reset password",
             "BTN_RESET": "Reset",
-            "EMAIL_SEND": "A message has been sent to your email to change the password", // please check on your inbox to change the password
+            "EMAIL_SEND": "A message has been sent to your email to change the password",
             "SUCCESS": "your password has been changed, now you can log in on mobile app or web page."
         },
         "SETTINGS": {

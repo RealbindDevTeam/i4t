@@ -81,67 +81,84 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
      * Generate Invoice pdf
      * @param { Invoice } _pInvoice 
      */
-    invoiceGenerate( _pInvoice : Invoice ) {
+    invoiceGenerate( _pInvoice : Invoice, _pCountryId: string ) {
         if( !Meteor.userId() ){
             var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
 
-        let heightPage : number = this.calculateHeight(_pInvoice);
+        if( _pCountryId === '1900' ){
+            this.generateColombiaInvoice( _pInvoice );
+        }
+    }
 
+    /**
+     * Generate colombia restaurant invoice
+     * @param {Invoice} _pInvoice
+     */
+    generateColombiaInvoice( _pInvoice : Invoice ):void{
+        let heightPage : number = this.calculateHeight(_pInvoice);
+        
         let widthText   : number = 180;
         let x           : number = 105;
-        let y           : number = 50;
+        let y           : number = 35;
         let maxLength   : number = 48;
         let alignCenter : string = 'center';
         let alignRight  : string  = 'right';
         let pdf = new jsPDF("portrait", "pt", [209.76,  heightPage]);
 
         pdf.setFontSize(8);
-        let splitBusinessName = pdf.splitTextToSize(_pInvoice.financial_information.business_name, widthText  );
-        let splitNit          = pdf.splitTextToSize(_pInvoice.financial_information.nit, widthText);
-        let splitAddress      = pdf.splitTextToSize(_pInvoice.financial_information.address, widthText);
-        let splitPhone        = pdf.splitTextToSize(_pInvoice.financial_information.phone, widthText);
+        let splitBusinessName   = pdf.splitTextToSize(_pInvoice.legal_information.business_name, widthText  );
+        let splitNit            = pdf.splitTextToSize(_pInvoice.legal_information.document, widthText);
+        let splitRestaurantName = pdf.splitTextToSize(_pInvoice.restaurant_name, widthText);
+        let splitAddress        = pdf.splitTextToSize(_pInvoice.restaurant_address, widthText);
+        let splitPhone          = pdf.splitTextToSize(_pInvoice.restaurant_phone, widthText);
 
-        let despcriptionTitle = this.itemNameTraduction('DESCRIPTION');
-        let quantTitle        = this.itemNameTraduction('PAYMENTS.COLOMBIA.QUANT');
-        let valueTitle        = this.itemNameTraduction('VALUE');
+        let despcriptionTitle = 'Descripción';
+        let quantTitle        = 'Cant.';
+        let valueTitle        = 'Valor';
 
-        pdf.text( this.itemNameTraduction('PAYMENTS_HISTORY.SOFTWARE_BY_REALBIND'), x, y, alignCenter );
-        y = this.calculateY(y, 10);
-        pdf.setFontType("bold");
         pdf.text( splitBusinessName, x, y, alignCenter );
-        pdf.setFontType("normal");
-        if(_pInvoice.financial_information.business_name.length > maxLength){
+        if(_pInvoice.legal_information.business_name.length > maxLength){
             y = this.calculateY(y, 20);
         } else {
             y = this.calculateY(y, 10);
         }
-        pdf.text( this.itemNameTraduction('FINANCIAL_INFO.COLOMBIA.NIT_LABEL') + ' ' + splitNit, x, y, alignCenter );
+        pdf.text( splitNit, x, y, alignCenter );
         y = this.calculateY(y, 10);
-        pdf.text( splitAddress, x, y, alignCenter );
-        if(_pInvoice.financial_information.address.length > maxLength){
+        pdf.setFontType("bold");
+        pdf.text( splitRestaurantName, x, y, alignCenter );
+        if(_pInvoice.restaurant_name.length > maxLength){
             y = this.calculateY(y, 20);
         } else {
             y = this.calculateY(y, 10);
         }
-        pdf.text( this.itemNameTraduction('PHONE') + ' ' + splitPhone, x, y, alignCenter );
+        pdf.setFontType("normal");
+        pdf.text( splitAddress, x, y, alignCenter );
+        if(_pInvoice.restaurant_address.length > maxLength){
+            y = this.calculateY(y, 20);
+        } else {
+            y = this.calculateY(y, 10);
+        }
+        pdf.text( 'Teléfono: ' + splitPhone, x, y, alignCenter );
         
-        
-        y = this.calculateY(y, 30);
+        y = this.calculateY(y, 20);
         pdf.setFontType("bold");
-        pdf.text( this.itemNameTraduction('PAYMENTS_HISTORY.INVOICE_SALE'), 10, y);
+        pdf.text( 'Factura de venta', 10, y);
         //TODO Invoice number
         pdf.text( '9811261128', 120, y);
         
         y = this.calculateY(y, 10);
         pdf.setFontType("normal");
-        pdf.text( this.itemNameTraduction('PAYMENTS_HISTORY.DATE'), 10, y);
-        pdf.text( this.dateFormater(_pInvoice.creation_date), 120, y);
+        pdf.text( 'Fecha-Hora', 10, y);
+        pdf.text( this.dateFormater(_pInvoice.creation_date, true), 120, y);
+
+        y = this.calculateY(y, 10);
+        pdf.text( x, y, '==========================================', alignCenter );
 
         pdf.setFontType("bold");
-        y = this.calculateY(y, 20);
+        y = this.calculateY(y, 15);
         pdf.text( despcriptionTitle, 10, y );
         pdf.text( quantTitle, 120, y );
         pdf.text( valueTitle, 200, y, alignRight );
@@ -212,45 +229,134 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             }
         });
 
-        y = this.calculateY(y, 30);
+        if( _pInvoice.legal_information.regime === 'regime_co' ){
+            y = this.calculateY(y, 20);
+            pdf.setFontType("bold");
+            pdf.text( 80, y, 'SubTotal' );
+            pdf.text( 200, y, (_pInvoice.total_order).toFixed(2) + ' ' + _pInvoice.currency, alignRight );
+            pdf.setFontType("normal");
+    
+            y = this.calculateY(y, 10);
+            pdf.text( 80, y, 'Base IMPO' );
+            pdf.text( 200, y, ((_pInvoice.total_order * 100) / 108).toFixed(2) + ' ' + _pInvoice.currency, alignRight );
+    
+            y = this.calculateY(y, 10);
+            pdf.text( 80, y, 'IMPO (8%)' );
+            pdf.text( 200, y, (_pInvoice.total_order - ((_pInvoice.total_order * 100) / 108)).toFixed(2) + ' ' + _pInvoice.currency, alignRight );
+            
+            y = this.calculateY(y, 10);
+            pdf.text( 80, y, 'Propina' );
+            pdf.text( 200, y, (_pInvoice.total_tip).toFixed(2) + ' ' + _pInvoice.currency, alignRight );
+            
+            y = this.calculateY(y, 10);
+            pdf.setFontType("bold");
+            pdf.text( 80, y, 'Total a pagar' );
+            
+            y = this.calculateY(y, 10);
+            pdf.text( 80, y, this.itemNameTraduction(_pInvoice.pay_method) );
+            pdf.text( 200, y, (_pInvoice.total_pay).toFixed(2) + ' ' + _pInvoice.currency, alignRight );
+            pdf.setFontType("normal");
+        } else if( _pInvoice.legal_information.regime === 'regime_si' ){
+            if( _pInvoice.legal_information.forced_to_invoice ){
+                y = this.calculateY(y, 20);
+                pdf.setFontType("bold");
+                pdf.text( 80, y, 'SubTotal' );
+                pdf.text( 200, y, (_pInvoice.total_order).toFixed(2) + ' ' + _pInvoice.currency, alignRight );
+                pdf.setFontType("normal");
+
+                y = this.calculateY(y, 10);
+                pdf.text( 80, y, 'Propina' );
+                pdf.text( 200, y, (_pInvoice.total_tip).toFixed(2) + ' ' + _pInvoice.currency, alignRight );
+
+                y = this.calculateY(y, 10);
+                pdf.setFontType("bold");
+                pdf.text( 80, y, 'Total a pagar' );
+                
+                y = this.calculateY(y, 10);
+                pdf.text( 80, y, this.itemNameTraduction(_pInvoice.pay_method) );
+                pdf.text( 200, y, (_pInvoice.total_pay).toFixed(2) + ' ' + _pInvoice.currency, alignRight );
+                pdf.setFontType("normal");
+            }
+        }
+
+        y = this.calculateY(y, 20);
+        pdf.text( x, y, '==========================================', alignCenter );
+        
+        y = this.calculateY(y, 10);
         pdf.setFontType("bold");
-        pdf.text( 80, y, this.itemNameTraduction('PAYMENTS_HISTORY.SUB_TOTAL') );
-        pdf.text( 200, y, (_pInvoice.total_order).toFixed(2) + ' ' + _pInvoice.currency, alignRight );
+        if( _pInvoice.legal_information.regime === 'regime_co' ){
+            pdf.text( x, y, 'RÉGIMEN COMÚN', alignCenter );
+        } else if( _pInvoice.legal_information.regime === 'regime_si' ){
+            pdf.text( x, y, 'RÉGIMEN SIMPLIFICADO', alignCenter );
+        }
         pdf.setFontType("normal");
 
         y = this.calculateY(y, 10);
-        pdf.text( 80, y, this.itemNameTraduction('PAYMENTS_HISTORY.BASE_IMPO') );
-        pdf.text( 200, y, ((_pInvoice.total_order * 100) / 108).toFixed(2) + ' ' + _pInvoice.currency, alignRight );
+        pdf.text( x, y, 'Res. DIAN No. '+ _pInvoice.legal_information.invoice_resolution + ' del ' + this.dateFormater(_pInvoice.legal_information.invoice_resolution_date, false), alignCenter );
+        
+        if( _pInvoice.legal_information.prefix ){
+            y = this.calculateY(y, 10);
+            pdf.text( x, y, 'HABILITA FAC: ' + _pInvoice.legal_information.prefix_name + '-' + _pInvoice.legal_information.numeration_from + ' AL ' + _pInvoice.legal_information.prefix_name + '-' + _pInvoice.legal_information.numeration_to, alignCenter );
+        } else {
+            y = this.calculateY(y, 10);
+            pdf.text( x, y, 'HABILITA FAC: ' + _pInvoice.legal_information.numeration_from + ' AL ' + _pInvoice.legal_information.numeration_to, alignCenter );            
+        }
+
+        if( _pInvoice.legal_information.is_big_contributor ){
+            y = this.calculateY(y, 10);
+            let splitIsBigContributor = pdf.splitTextToSize( 'Grandes contribuyentes según Res.No. ' + _pInvoice.legal_information.big_contributor_resolution + ' del ' + this.dateFormater( _pInvoice.legal_information.big_contributor_date, false ), widthText );
+            pdf.text( splitIsBigContributor, x, y, alignCenter );
+            y = this.calculateY(y, 20);
+        } else {
+            y = this.calculateY(y, 10);
+            pdf.text( x, y, 'No somos grandes contribuyentes', alignCenter );
+            y = this.calculateY(y, 10);
+        }
+
+        if( _pInvoice.legal_information.is_self_accepting ){
+            let splitIsSelfAccepting = pdf.splitTextToSize( 'Autorretenedores según Res.No. ' + _pInvoice.legal_information.self_accepting_resolution + ' del ' + this.dateFormater( _pInvoice.legal_information.self_accepting_date, false ) , widthText);
+            pdf.text( splitIsSelfAccepting, x, y, alignCenter );
+            y = this.calculateY(y, 20);
+        } else {
+            pdf.text( x, y, 'No somos Autorretenedores', alignCenter );
+            y = this.calculateY(y, 10);
+        }
+
+        pdf.text( x, y, '==========================================', alignCenter );
+
+        if( _pInvoice.legal_information.text_at_the_end !== null && _pInvoice.legal_information.text_at_the_end !== undefined 
+            && _pInvoice.legal_information.text_at_the_end.length > 0 ){
+                y = this.calculateY(y, 10);
+                let splitFinalText = pdf.splitTextToSize( _pInvoice.legal_information.text_at_the_end , widthText);
+                pdf.text( splitFinalText, x, y, alignCenter );
+                if(_pInvoice.legal_information.text_at_the_end.length <= 23){
+                    y = this.calculateY(y, 10);
+                } else if(_pInvoice.legal_information.text_at_the_end.length > 23 && _pInvoice.legal_information.text_at_the_end.length <= 46){
+                    y = this.calculateY(y, 20);
+                } else {
+                    y = this.calculateY(y, 40);
+                }
+                pdf.text( x, y, '==========================================', alignCenter );
+        }
+        
+        y = this.calculateY(y, 10);
+        pdf.text( x, y, 'Desarrollado por Realbind S.A.S', alignCenter );
 
         y = this.calculateY(y, 10);
-        pdf.text( 80, y, this.itemNameTraduction('PAYMENTS_HISTORY.IMPO') );
-        pdf.text( 200, y, (_pInvoice.total_order - ((_pInvoice.total_order * 100) / 108)).toFixed(2) + ' ' + _pInvoice.currency, alignRight );
-        
+        pdf.text( x, y, 'NIT 901.036.585-0', alignCenter );
+
         y = this.calculateY(y, 10);
-        pdf.text( 80, y, this.itemNameTraduction('PAYMENTS_HISTORY.TIP') );
-        pdf.text( 200, y, (_pInvoice.total_tip).toFixed(2) + ' ' + _pInvoice.currency, alignRight );
-        
-        y = this.calculateY(y, 10);
+        pdf.text( x, y, 'www.iurest.com', alignCenter );
+
         pdf.setFontType("bold");
-        pdf.text( 80, y, this.itemNameTraduction('PAYMENTS_HISTORY.TOTAL_TO_PAY') );
-        
         y = this.calculateY(y, 10);
-        pdf.text( 80, y, this.itemNameTraduction(_pInvoice.pay_method) );
-        pdf.text( 200, y, (_pInvoice.total_pay).toFixed(2) + ' ' + _pInvoice.currency, alignRight );
-        pdf.setFontType("normal");
+        pdf.text( x, y, 'FACTURA EMITIDA POR COMPUTADOR', alignCenter );
 
-        y = this.calculateY(y, 30);
-        pdf.text( x, y, this.itemNameTraduction('PAYMENTS_HISTORY.RES_DIAN') + ' ' + '3100000000095678 2016/07/01', alignCenter );
-        y = this.calculateY(y, 10);
-        pdf.text( x, y, this.itemNameTraduction('PAYMENTS_HISTORY.CONS_FROM') + ' ' + _pInvoice.financial_information.dian_numeration_from, alignCenter );
-        y = this.calculateY(y, 10);
-        pdf.text( x, y, this.itemNameTraduction('PAYMENTS_HISTORY.CONS_TO') + ' ' + _pInvoice.financial_information.dian_numeration_to, alignCenter );
-        
         pdf.setProperties({
             title: this.itemNameTraduction('PAYMENTS_HISTORY.INVOICE_SALE'),
             author: this.itemNameTraduction('PAYMENTS_HISTORY.SOFTWARE_BY_REALBIND'),
         });
-        pdf.save('9811261128-' + this.dateFormater(_pInvoice.creation_date) +'.pdf');
+        pdf.save('9811261128-' + this.dateFormater(_pInvoice.creation_date, false) +'.pdf');
     }
 
     /**
@@ -278,7 +384,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             quantRows = quantRows + item.additions.length;
         });
 
-        heightPage = heightPage + ( quantRows * 10 );
+        heightPage = heightPage + ( quantRows * 100 );
 
         return heightPage;
     }
@@ -287,12 +393,14 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
      * Allow return date format
      * @param _pDate 
      */
-    dateFormater( _pDate : Date ) : string {
-        let dateFormat = (_pDate.getFullYear()) + '/' + 
+    dateFormater( _pDate : Date, _time : boolean ) : string {
+        let dateFormat = (_pDate.getDate() <= 9 ? '0' + _pDate.getDate() : _pDate.getDate()) + '/' +
                          (_pDate.getMonth() + 1 <= 9 ? '0' + (_pDate.getMonth() + 1) : (_pDate.getMonth() + 1))  + '/' + 
-                         (_pDate.getDate() <= 9 ? '0' + _pDate.getDate() : _pDate.getDate()) + ' ' +
-                         (_pDate.getHours() <= 9 ? '0' + _pDate.getHours() : _pDate.getHours()) + ':' + 
-                         (_pDate.getMinutes() <= 9 ? '0' + _pDate.getMinutes() : _pDate.getMinutes());
+                         (_pDate.getFullYear()) + ' '
+        if( _time ){
+            dateFormat += (_pDate.getHours() <= 9 ? '0' + _pDate.getHours() : _pDate.getHours()) + ':' + 
+                          (_pDate.getMinutes() <= 9 ? '0' + _pDate.getMinutes() : _pDate.getMinutes());
+        }                
         return dateFormat;
     }
 
@@ -305,6 +413,29 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             return _pItemName.substring(1, 20) + '...';
         } else {
             return _pItemName;
+        }
+    }
+
+    /**
+     * Function to validate if user can download restaurant invoice
+     * @param {Invoice} _pInvoice 
+     * @param {string} _pCountryId 
+     */
+    isInvoiceCanDownload( _pInvoice : Invoice, _pCountryId: string ):boolean{
+        if( _pCountryId === '1900' ){
+            if( _pInvoice.legal_information.regime === 'regime_co' ){
+                return true;
+            } else if( _pInvoice.legal_information.regime === 'regime_si' ){
+                if( _pInvoice.legal_information.forced_to_invoice ){
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return true;
         }
     }
 

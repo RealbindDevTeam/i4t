@@ -55,6 +55,18 @@
              }
          }
      }
+
+     .regime-si-total{
+        width: 50%;
+        margin: 0 auto;
+        text-align: center;
+
+        .info{
+            display: inline-block;
+            font-size: 24px;
+            font-weight: bold;
+        }
+     }
  }
 
  .order-form-1 {

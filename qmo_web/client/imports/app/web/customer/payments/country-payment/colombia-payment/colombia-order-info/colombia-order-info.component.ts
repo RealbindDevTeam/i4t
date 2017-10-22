@@ -11,8 +11,8 @@ import { UserDetails } from '../../../../../../../../../both/collections/auth/us
 import { UserDetail } from '../../../../../../../../../both/models/auth/user-detail.model';
 import { Table } from '../../../../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../../../../both/collections/restaurant/table.collection';
-import { Restaurant } from '../../../../../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants } from '../../../../../../../../../both/collections/restaurant/restaurant.collection';
+import { Restaurant, RestaurantLegality } from '../../../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants, RestaurantsLegality } from '../../../../../../../../../both/collections/restaurant/restaurant.collection';
 import { Currency } from '../../../../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../../../../both/collections/general/currency.collection';
 import { Users } from '../../../../../../../../../both/collections/auth/user.collection';
@@ -46,6 +46,7 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
     private _garnishFoodSub     : Subscription;
     private _additionSub        : Subscription;
     private _itemImageThumbsSub : Subscription;
+    private _restaurantLegSub   : Subscription;
 
     private _orders             : Observable<Order[]>;
     private _items              : Observable<Item[]>;
@@ -68,6 +69,9 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
     private titleMsg            : string;
     private btnAcceptLbl        : string;
     private _mdDialogRef        : MdDialogRef<any>;
+    private _restaurantLegality : RestaurantLegality;
+    private _showRegimeCoData   : boolean = false;
+    private _showRegimeSiData   : boolean = false;
 
     /**
      * ColombiaOrderInfoComponent Constructor
@@ -106,6 +110,11 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
                                 this._ngZone.run( () => {
                                     let _lCurrency: Currency = Currencies.findOne( { _id: _lRestaurant.currencyId } );
                                     this._currencyCode = _lCurrency.code;
+                                });
+                            });
+                            this._restaurantLegSub = MeteorObservable.subscribe( 'getRestaurantLegality', this._restaurantId ).subscribe( () => {
+                                this._ngZone.run( () =>{
+                                    this._restaurantLegality = RestaurantsLegality.findOne( { restaurant_id: this._restaurantId } );
                                 });
                             });
                             this._tableSub = MeteorObservable.subscribe( 'getTableByCurrentTable', this._user ).subscribe( () => {
@@ -161,6 +170,7 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
         if( this._garnishFoodSub ){ this._garnishFoodSub.unsubscribe(); }
         if( this._additionSub ){ this._additionSub.unsubscribe(); }
         if( this._itemImageThumbsSub ){ this._itemImageThumbsSub.unsubscribe(); }
+        if( this._restaurantLegSub ){ this._restaurantLegSub.unsubscribe(); }
     }
 
     /**
@@ -171,11 +181,17 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
         Orders.collection.find( { creation_user: this._user, restaurantId: this._restaurantId, tableId: this._tableId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] }, toPay : false } ).fetch().forEach( ( order ) => {
             this._totalValue += order.totalPayment;
         });
-        this._ipoComBaseValue  = (this._totalValue * 100 ) / this._ipoCom;
-        this._ipoComBaseString = (this._ipoComBaseValue).toFixed(2);
-
-        this._ipoComValue      = this._totalValue - this._ipoComBaseValue;
-        this._ipoComString     = (this._ipoComValue).toFixed(2);
+        if( this._restaurantLegality.regime === 'regime_co' ){
+            this._showRegimeCoData = true;
+            this._showRegimeSiData = false;
+            this._ipoComBaseValue  = (this._totalValue * 100 ) / this._ipoCom;
+            this._ipoComBaseString = (this._ipoComBaseValue).toFixed(2);
+            this._ipoComValue      = this._totalValue - this._ipoComBaseValue;
+            this._ipoComString     = (this._ipoComValue).toFixed(2);
+        } else if( this._restaurantLegality.regime === 'regime_si' ){
+            this._showRegimeSiData = true;
+            this._showRegimeCoData = false;
+        }
         this._totalValue > 0 ? this._showOrderDetails = true : this._showOrderDetails = false;
     }
 

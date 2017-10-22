@@ -136,7 +136,7 @@
                                         </div>
                                     </md-list>
                                 </div>
-                                <table class="centered striped">
+                                <table class="centered striped" *ngIf="_showRegimeCoData">
                                     <thead>
                                         <tr>
                                             <th data-field="subtotal">{{'PAYMENTS.COLOMBIA.SUBTOTAL' | translate}}</th>
@@ -152,6 +152,10 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <div *ngIf="_showRegimeSiData" class="regime-si-total">
+                                    <p class="info">{{'PAYMENTS.COLOMBIA.TOTAL' | translate}}:</p>
+                                    <p class="info">{{_totalValue}} {{_currencyCode}}</p>
+                                </div>
                             </md-card-content>
                         </md-card>
                     </div>
