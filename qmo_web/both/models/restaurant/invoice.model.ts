@@ -7,6 +7,8 @@ export interface Invoice extends CollectionObject{
     restaurant_id         : string;
     payment_id            : string;
     restaurant_name       : string;
+    restaurant_address    : string;
+    restaurant_phone      : string;
     table_number          : number;
     total_pay             : number;
     total_order           : number;
@@ -16,7 +18,7 @@ export interface Invoice extends CollectionObject{
     pay_method            : string;
     items?                : InvoiceItem[];
     additions?            : InvoiceAddition[];
-    financial_information : FinancialInformation;
+    legal_information     : InvoiceLegalInformation;
 }
 
 /**
@@ -40,14 +42,26 @@ export interface InvoiceAddition {
 }
 
 /**
- * FinancialInformation Model
+ * InvoiceLegalInformation Model
  */
-export interface FinancialInformation {
-    business_name        : string;
-    nit                  : string;
-    dian_numeration_from : string;
-    dian_numeration_to   : string;
-    tip_porcentage       : string;
-    address              : string;
-    phone                : string;
+export interface InvoiceLegalInformation {
+    // Colombia
+    regime?                     : string;
+    forced_to_invoice?          : boolean;
+    forced_to_inc?              : boolean;
+    business_name?              : string;
+    document?                   : string;
+    invoice_resolution?         : string;
+    invoice_resolution_date?    : Date;
+    prefix?                     : boolean;
+    prefix_name?                : string;
+    numeration_from?            : number;
+    numeration_to?              : number;
+    is_big_contributor?         : boolean;
+    big_contributor_resolution? : string;
+    big_contributor_date?       : Date;
+    is_self_accepting?          : boolean;
+    self_accepting_resolution?  : string;
+    self_accepting_date?        : Date;
+    text_at_the_end?            : string;
 }
