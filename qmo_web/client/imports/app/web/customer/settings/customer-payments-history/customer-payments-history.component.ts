@@ -81,15 +81,25 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
      * Generate Invoice pdf
      * @param { Invoice } _pInvoice 
      */
-    invoiceGenerate( _pInvoice : Invoice ) {
+    invoiceGenerate( _pInvoice : Invoice, _pCountryId: string ) {
         if( !Meteor.userId() ){
             var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
 
-        let heightPage : number = this.calculateHeight(_pInvoice);
+        if( _pCountryId === '1900' ){
+            this.generateColombiaInvoice( _pInvoice );
+        }
+    }
 
+    /**
+     * Generate colombia restaurant invoice
+     * @param {Invoice} _pInvoice
+     */
+    generateColombiaInvoice( _pInvoice : Invoice ):void{
+        let heightPage : number = this.calculateHeight(_pInvoice);
+        
         let widthText   : number = 180;
         let x           : number = 105;
         let y           : number = 35;
@@ -403,6 +413,29 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             return _pItemName.substring(1, 20) + '...';
         } else {
             return _pItemName;
+        }
+    }
+
+    /**
+     * Function to validate if user can download restaurant invoice
+     * @param {Invoice} _pInvoice 
+     * @param {string} _pCountryId 
+     */
+    isInvoiceCanDownload( _pInvoice : Invoice, _pCountryId: string ):boolean{
+        if( _pCountryId === '1900' ){
+            if( _pInvoice.legal_information.regime === 'regime_co' ){
+                return true;
+            } else if( _pInvoice.legal_information.regime === 'regime_si' ){
+                if( _pInvoice.legal_information.forced_to_invoice ){
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return true;
         }
     }
 

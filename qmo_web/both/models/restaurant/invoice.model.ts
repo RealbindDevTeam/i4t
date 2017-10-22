@@ -9,6 +9,7 @@ export interface Invoice extends CollectionObject{
     restaurant_name       : string;
     restaurant_address    : string;
     restaurant_phone      : string;
+    country_id            : string;
     table_number          : number;
     total_pay             : number;
     total_order           : number;

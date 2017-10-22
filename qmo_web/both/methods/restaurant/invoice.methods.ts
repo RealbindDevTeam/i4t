@@ -122,6 +122,7 @@ if (Meteor.isServer) {
                 restaurant_name       : lRestaurant.name,
                 restaurant_address    : lRestaurant.address,
                 restaurant_phone      : lRestaurant.phone,
+                country_id            : lRestaurant.countryId,
                 table_number          : lTable._number,
                 total_pay             : _pPay.totalToPayment,
                 total_order           : _pPay.totalOrdersPrice,
