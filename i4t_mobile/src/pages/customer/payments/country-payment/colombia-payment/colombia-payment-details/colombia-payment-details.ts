@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { AlertController, LoadingController, ToastController, NavParams } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs'
 import { TranslateService } from '@ngx-translate/core';
@@ -7,6 +7,7 @@ import { Order, OrderTranslateInfo } from 'qmo_web/both/models/restaurant/order.
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { Users } from 'qmo_web/both/collections/auth/user.collection';
 import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { RestaurantsLegality } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 
 /*
   Generated class for the ColombiaPaymentDetailsPage page.
@@ -22,6 +23,7 @@ import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/
 export class ColombiaPaymentDetailsPage implements OnInit, OnDestroy {
     
     private _ordersSubscription : Subscription;
+    private _restaurantLegSub   : Subscription;
     
     private _orders             : any;
     private _totalValue         : number = 0;
@@ -32,6 +34,10 @@ export class ColombiaPaymentDetailsPage implements OnInit, OnDestroy {
     private _ipoComBaseString   : string;
     private _ipoComString       : string;
     private _currency           : string;
+    private _restaurantId       : string;
+    private _restaurantLegality : any;
+    private _showRegimeCoData   : boolean = false;
+    private _showRegimeSiData   : boolean = false;
      
      /**
       * ColombiaPaymentDetailsPage constructor
@@ -47,7 +53,8 @@ export class ColombiaPaymentDetailsPage implements OnInit, OnDestroy {
                 public _loadingCtrl: LoadingController,
                 private _toastCtrl: ToastController,
                 public _navParams: NavParams,
-                private _userLanguageService: UserLanguageService){
+                private _userLanguageService: UserLanguageService,
+                private _ngZone: NgZone){
         _translate.setDefaultLang('en');
     }
 
@@ -60,18 +67,31 @@ export class ColombiaPaymentDetailsPage implements OnInit, OnDestroy {
         this._ordersSubscription  = MeteorObservable.subscribe('getOrdersByAccount', Meteor.userId()).subscribe( () =>{
             MeteorObservable.autorun().subscribe(() => {
                 this._currency = this._navParams.get("currency");
-                
-                this._totalValue = 0;
-                this._orders = Orders.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : false } ).zone();
-                Orders.collection.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : false } ).fetch().forEach( ( order ) => {
-                    this._totalValue += order.totalPayment;
+                this._restaurantId = this._navParams.get("restaurant");
+
+                this._restaurantLegSub = MeteorObservable.subscribe( 'getRestaurantLegality', this._restaurantId ).subscribe( () => {
+                    this._ngZone.run( () =>{
+                        this._restaurantLegality = RestaurantsLegality.findOne( { restaurant_id: this._restaurantId } );
+                        this._totalValue = 0;
+                        this._orders = Orders.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : false } ).zone();
+                        Orders.collection.find( { creation_user: Meteor.userId(), status: 'ORDER_STATUS.DELIVERED', toPay : false } ).fetch().forEach( ( order ) => {
+                            this._totalValue += order.totalPayment;
+                        });
+        
+                        if( this._restaurantLegality.regime === 'regime_co' ){
+                            this._showRegimeCoData = true;
+                            this._showRegimeSiData = false;
+                            this._ipoComBaseValue  = (this._totalValue * 100 ) / this._ipoCom;
+                            this._ipoComValue      = this._totalValue - this._ipoComBaseValue;
+                            
+                            this._ipoComBaseString = (this._ipoComBaseValue).toFixed(2);
+                            this._ipoComString     = (this._ipoComValue).toFixed(2);
+                        } else if( this._restaurantLegality.regime === 'regime_si' ){
+                            this._showRegimeSiData = true;
+                            this._showRegimeCoData = false;
+                        }
+                    });
                 });
-                
-                this._ipoComBaseValue  = (this._totalValue * 100 ) / this._ipoCom;
-                this._ipoComValue      = this._totalValue - this._ipoComBaseValue;
-                
-                this._ipoComBaseString = (this._ipoComBaseValue).toFixed(2);
-                this._ipoComString     = (this._ipoComValue).toFixed(2);
             });
         });
     }
@@ -198,5 +218,6 @@ export class ColombiaPaymentDetailsPage implements OnInit, OnDestroy {
      */
     removeSubscriptions():void{
         if( this._ordersSubscription ){ this._ordersSubscription.unsubscribe(); }
+        if( this._restaurantLegSub ){ this._restaurantLegSub.unsubscribe(); }
     }
 }

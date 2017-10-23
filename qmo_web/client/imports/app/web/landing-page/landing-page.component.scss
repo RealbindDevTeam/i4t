@@ -276,6 +276,12 @@ md-toolbar .button-collapse i {
   }
 }
 
+@media only screen and (max-width: 992px) {
+  .dw {
+    padding: 70px 0;
+  }
+}
+
 .dwt {
   flex-basis: 450px; 
   flex-grow: 1;
@@ -288,10 +294,10 @@ md-toolbar .button-collapse i {
   -webkit-font-smoothing: antialiased;
 }
 
-@media only screen and (max-width: 321px) {
+@media only screen and (max-width: 720px) {
   .dwt-1 {
     font-size: 2rem;
-    max-width: 270px;
+    max-width: 100%;
   }
 }
 
@@ -321,10 +327,10 @@ md-toolbar .button-collapse i {
   width: 171px;
 }
 
-@media only screen and (max-width: 321px) {
+@media only screen and (max-width: 360px) {
   .dwtl > a > img {
-    width: 150px;
-  }  
+    width: 140px;
+  }
 }
 
 .dwi {
@@ -350,11 +356,29 @@ md-toolbar .button-collapse i {
   visibility: hidden;
 }
 
+.id {
+  display: none;
+}
+
+@media only screen and (max-width: 766px){
+  .id {
+    display: block;
+  }
+
+  .idc {
+    padding: 60px 0;
+  }
+
+  .idc img {
+    width: 90%;
+  }
+}
+
 @media only screen and (min-width: 767px) {
   .dwi {
     display: block;
-    bottom: 0;
-    left: 50%;
+    top: 0;
+    left: 60%;
     
     .dwimg > img {
       width: 80%;
@@ -383,11 +407,18 @@ md-toolbar .button-collapse i {
 
 .bc {
   margin: 26px 0;
+  width: 33.3333%
 }
 
 @media only screen and (max-width : 768px){
   .br {
     display: block;
+  }
+
+  .bc {
+    width: 90%;
+    margin: 0 auto;
+    padding: 26px 0;
   }
 }
 
@@ -574,8 +605,16 @@ p {
   font-weight: 700;
 }
 
-#home {
-  height: 100vh;
+#home, #owner {
+  height: 634px;
+}
+
+#about {
+  background-color: #f8f8f8;
+}
+
+#steps{
+  border-top: 1px solid rgba(0,0,0,.1);
 }
 
 .parallax-container {
@@ -603,7 +642,7 @@ p {
 
 @media only screen and (max-width : 600px) {
   #home .section {
-    top: 60;
+    top: 60px;
   }
 }
 
@@ -772,6 +811,35 @@ p {
 
 .sidenav-item a:hover, .offcanvas a:focus{
     color: $primary-color;
+}
+
+/**
+ * Step section style
+ */
+.sr {
+  //padding-left: 95px!important;
+  //padding-right: 95px!important;
+  display: block;
+}
+
+.ro {
+  padding: 25px 0;
+}
+
+.si {
+  padding: 10px 0;
+  color: #3d4247;
+  display: inline-flex;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.si img {
+  float: left;
+  margin-right: 15px;
+  width: 80px;
+  display: inline-table;
 }
 
 /**

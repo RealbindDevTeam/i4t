@@ -10,9 +10,9 @@
                             <div *ngFor="let pay of _payments | async">
                                 <md-list class="payment">
                                     <md-list-item>
-                                        <img class="icon" *ngIf="pay.paymentMethodId === '10'" md-list-avatar src="/images/pago.png">
-                                        <img class="icon" *ngIf="pay.paymentMethodId === '20'" md-list-avatar src="/images/pago_tarjeta_credito.png">
-                                        <img class="icon" *ngIf="pay.paymentMethodId === '30'" md-list-avatar src="/images/pago_tarjeta_debito.png">
+                                        <img class="icon" *ngIf="pay.paymentMethodId === '10'" md-list-avatar src="/images/cash-payment.png">
+                                        <img class="icon" *ngIf="pay.paymentMethodId === '20'" md-list-avatar src="/images/credit-card-payment.png">
+                                        <img class="icon" *ngIf="pay.paymentMethodId === '30'" md-list-avatar src="/images/debit-card-payment.png">
                                         <img class="icon" *ngIf="pay.paymentMethodId === '40'" md-list-avatar src="/images/payment-online.png">
                                         <div md-line>
                                             <h3 class="total-pay">{{'PAYMENTS.COLOMBIA.TOTAL_TO_PAY' | translate}}: {{pay.totalToPayment}} {{_currencyCode}} - </h3>

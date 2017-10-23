@@ -52,14 +52,14 @@ export class RestaurantFacebookComponent implements OnInit {
      * ngOnInit implementation
      */
     ngOnInit(){
-        if( this._restaurant.social_network !== undefined && this._restaurant.social_network !== null ){
+        /*if( this._restaurant.social_network !== undefined && this._restaurant.social_network !== null ){
             if( this._restaurant.social_network.facebook !== undefined && this._restaurant.social_network.facebook !== null ){
                 this._facebookLink = this._restaurant.social_network.facebook;
             }
         }
         this._restaurantFacebookForm = new FormGroup({
             facebookLink: new FormControl( this._facebookLink )
-        });
+        });*/
     }
 
     /**

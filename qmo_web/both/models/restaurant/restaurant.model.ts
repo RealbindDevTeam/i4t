@@ -12,13 +12,9 @@ export interface Restaurant extends CollectionObject {
     address: string;
     indicative: string;
     phone: string;
-    webPage: string;
-    email: string;
     restaurant_code: string;
-    financialInformation: Object;
     paymentMethods: string[];
-    location?: RestaurantLocation;
-    schedule: RestaurantSchedule;
+    tip_percentage: number;
     tables_quantity: number;
     orderNumberCount: number;
     max_jobs?: number;
@@ -26,7 +22,6 @@ export interface Restaurant extends CollectionObject {
     isActive: boolean;
     firstPay: boolean;
     freeDays: boolean;
-    social_network?: RestaurantSocialNetwork;
 }
 
 /**
@@ -121,26 +116,37 @@ export interface RestaurantTurn extends CollectionObject {
 }
 
 /**
- * RestaurantFinancialElement Model
- */
-export interface RestaurantFinancialElement {
-    value?: any;
-    key?: string;
-    label?: string;
-    required?: boolean;
-    order?: number;
-    controlType?: string;
-    options?: { key: string, value: string }[];
-    minValue?: number;
-    maxValue?: number;
-    stepValue?: number;
-}
-
-/**
  * RestaurantSocialNetwork Model
  */
 export interface RestaurantSocialNetwork {
     facebook?: string;
     twitter?: string;
     instagram?: string;
+}
+
+/**
+ * Restaurant legality model
+ */
+export interface RestaurantLegality{
+    _id?: string;
+    restaurant_id:string;
+    // Colombia
+    regime?: string;
+    forced_to_invoice?: boolean;
+    forced_to_inc?: boolean;
+    business_name?: string;
+    document?: string;
+    invoice_resolution?: string;
+    invoice_resolution_date?: Date;
+    prefix?: boolean;
+    prefix_name?: string;
+    numeration_from?: number;
+    numeration_to?: number;
+    is_big_contributor?: boolean;
+    big_contributor_resolution?: string;
+    big_contributor_date?: Date;
+    is_self_accepting?: boolean;
+    self_accepting_resolution?: string;
+    self_accepting_date?: Date;
+    text_at_the_end?: string;
 }

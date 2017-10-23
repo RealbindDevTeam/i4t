@@ -73,13 +73,24 @@
             "TITLE3": "Solicita ayuda de un mesero si deseas",
             "TEXT3": "LLama a un mesero de una forma simple y efectiva."
         },
+        "STEPS" : {
+            "EASY_AND_FAST" : "Fácil y rápido",
+            "ONE" : "Ve a un restaurante y escanea el código de la mesa",
+            "TWO" : "Elige lo que deseas comer y confirma para que llegue directo a la cocina",
+            "THREE" : "Un mesero te llevará la comida cuando este preparada",
+            "FOUR" : "Consulta el detalle de tu cuenta",
+            "FIVE" : "Indica que vas a pagar y un mesero ira a tu mesa"
+        },
         "OWNER_CONTENT": {
-            "TITLE1": "Tienes un restaurante y te gustaria usar el servicio Iurest?",
+            "TITLE1": "Tienes un restaurante y te gustaría usar el servicio Iurest?",
             "TEXT1": "",
             "TEXT2": "Ofrecemos un sistema que va a mejorar tu negocio"
         },
         "COMPLEMENTARY": {
             "TITLE": "Sal y disfruta de una buena comida acompañado de amigos, pareja o familia"
+        },
+        "FOOTER" : {
+            "ALL_RIGHT_RESERVED" : "Todos los derechos reservados"
         }
     },
     "SIGNUP": {
@@ -318,9 +329,9 @@
         "GENERAL_LABEL": "General",
         "GENERAL_INFO": "Información general del restaurante",
         "GENERAL_INFO_TEXT": "Por favor ingresa la información del restaurante. Dicha información será visualizada por las personas en internet y te dará mayor visivilidad",
-        "FINANCIAL_LABEL": "Financiera",
-        "FINANCIAL_INFO": "Información financiera del restaurante",
-        "FINANCIAL_INFO_TEXT": "La información financiera del restaurante será establecida de acuerdo al país al cual pertenece. Esto le permitirá a Iurest ayudarte con las cuentas y gastos de tu negocio",
+        "LEGAL_LABEL": "Legal",
+        "LEGAL_INFO": "Información legal del restaurante",
+        "LEGAL_INFO_TEXT": "La información legal del restaurante será establecida de acuerdo al país al cual pertenece. Esto le permitirá a Iurest ayudarte con las cuentas y gastos de tu negocio.",
         "ADD_LOCATION": "Ingresa la ubicación del establecimiento",
         "SCHEDULE_LABEL": "Horario",
         "SCHEDULE_INFO": "Horario de atención",
@@ -663,9 +674,9 @@
         "PHONE": "Teléfono",
         "WEBPAGE": "Página de internet",
         "EMAIL": "Correo electrónico",
-        "FINANCIAL_LABEL": "Financiera",
-        "FINANCIAL_INFO": "Información financiera del restaurante",
-        "FINANCIAL_INFO_TEXT": "Edita la información financiera del restaurante. Esto le permitirá a Iurest ayudarte con las cuentas y gastos del negocio",
+        "LEGAL_LABEL": "Legal",
+        "LEGAL_INFO": "Información legal del restaurante",
+        "LEGAL_INFO_TEXT": "Edita la información legal del restaurante. Esto le permitirá a Iurest ayudarte con las cuentas y gastos del negocio.",
         "INVOICE_CODE": "Código de factura",
         "TIP_PERCENTAGE": "Porcentaje de propina",
         "TAX_PERCENTAGE": "Porcentaje de impuestos",
@@ -1358,5 +1369,40 @@
         "MONTH_FILTER": "Mes",
         "SELECT_RESTAURANT": "Selecciona restaurante",
         "NO_INVOICES" : "No hay facturas"
+    },
+    "RESTAURANT_LEGALITY":{
+        "COLOMBIA": {
+            "SELECT_REGIME": "Selecciona el régimen al que pertenece tu restaurante",
+            "REGIME_CO": "Régimen Común",
+            "REGIME_SI": "Régimen Simplificado",
+            "FORCED_TO_INVOICE": "Dar factura a los clientes",
+            "BUSINESS_NAME": "Ingresa Apellidos y Nombres (si es persona natural) o Razón Social (si es persona jurídica)",
+            "BUSINESS_NAME_PLACEHOLDER": "Nombres - Razón Social",
+            "DOCUMENT": "Ingresa documento o NIT de quién vende los Bienes o Servicios (Por favor incluya dígito de verificación en caso de NIT)",
+            "DOCUMENT_PLACEHOLDER": "Documento - NIT",
+            "INVOICE_RESOLUTION": "Ingresa el número de la resolución de la DIAN para las facturas",
+            "INVOICE_RESOLUTION_PLACEHOLDER": "Resolución de la DIAN",
+            "INVOICE_RESOLUTION_DATE": "Ingresa la fecha de la resolución de la DIAN",
+            "INVOICE_RESOLUTION_DATE_PLACEHOLDER": "Fecha resolución de la DIAN",
+            "PREFIX": "Maneja prefijo en el codigo de la factura",
+            "PREFIX_PLACEHOLDER": "Prefijo",
+            "DIAN_NUMERATION": "Ingresa numeración autorizada por la DIAN",
+            "NUMERATION_FROM": "Desde",
+            "NUMERATION_TO": "Hasta",
+            "IS_BIG_CONTRIBUTOR": "Es gran Contribuyente",
+            "BIG_CONTRIBUTOR_RESOLUTION": "Ingresa el numero de la resolución de la DIAN para gran Contribuyente",
+            "BIG_CONTRIBUTOR_DATE": "Ingresa la fecha de la resolución de la DIAN para gran Contribuyente",
+            "IS_SELF_ACCEPTING": "Es autoretenedor",
+            "SELF_ACCEPTING_RESOLUTION": "Ingresa el numero de la resolución de la DIAN para autoretenedor",
+            "SELF_ACCEPTING_DATE": "Ingresa la fecha de la resolución de la DIAN para autoretenedor",
+            "FINAL_TEXT": "Si desea que al final de las facturas aparezca un texto específico, por favor ingreselo aqui",
+            "FINAL_TEXT_PLACEHOLDER": "Texto de la factura",
+            "INVALID_DATA": "Datos Invalidos",
+            "REQUIRED_FILES": "Por favor diligencia los campos obligatorios (*)",
+            "ACCEPT": "Aceptar",
+            "ENTER_PREFIX": "Por favor indique el nombre del prefijo",
+            "ENTER_BIG_CONTRIBUTOR_FILES": "Por favor ingrese los datos de gran contribuyente",
+            "ENTER_SELF_ACCEPTING_FILES": "Por favor ingrese los datos de autoretenedor"
+        }
     }
 }

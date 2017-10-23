@@ -73,6 +73,14 @@
             "TITLE3": "Test Test Test",
             "TEXT3": "Test Test Test Test Test Test Test Test Test Test Test Test"
         },
+        "STEPS" : {
+            "EASY_AND_FAST" : "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "ONE" : "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "TWO" : "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "THREE" : "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "FOUR" : "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "FIVE" : "Test Test Test Test Test Test Test Test Test Test Test Test"
+        },
         "OWNER_CONTENT": {
             "TITLE1": "Test Test Test",
             "TEXT1": "Test Test Test Test Test Test Test Test Test Test Test Test",
@@ -80,6 +88,9 @@
         },
         "COMPLEMENTARY": {
             "TITLE": "Sal y disfruta de una buena comida acompañado de amigos, pareja o familia"
+        },
+        "FOOTER" : {
+            "ALL_RIGHT_RESERVED" : "All right reserved"
         }
     },
     "SIGNUP": {
@@ -130,7 +141,7 @@
     "RESET_PASWORD": {
         "TITLE": "Reset your password",
         "BTN_RESET": "Reset",
-        "EMAIL_SEND": "A message has been sent to your email to change the password", // please check on your inbox to change the password
+        "EMAIL_SEND": "A message has been sent to your email to change the password",
         "SUCCESS": "your password has been changed, now you can login your mobile app or web page.",
         "SLOGAN": "Reset your Password"
     },
@@ -318,9 +329,9 @@
         "GENERAL_LABEL": "General",
         "GENERAL_INFO": "General information about the restaurant",
         "GENERAL_INFO_TEXT": "Please enter the information of the restaurant. This information will be displayed to people on the internet and will give you greater visibility",
-        "FINANCIAL_LABEL": "Financial",
-        "FINANCIAL_INFO": "Restaurant's Financial Information",
-        "FINANCIAL_INFO_TEXT": "The financial information of the restaurant will be managed according to the regulations of the country to which it belongs. This will allow Iurest to help you with the accounts and expenses of your business.",
+        "LEGAL_LABEL": "Legal",
+        "LEGAL_INFO": "Restaurant's Legal Information",
+        "LEGAL_INFO_TEXT": "The legal information of the restaurant will be managed according to the regulations of the country to which it belongs. This will allow Iurest to help you with the accounts and expenses of your business.",
         "ADD_LOCATION": "Enter the location of the establishment",
         "SCHEDULE_LABEL": "Schedule",
         "SCHEDULE_INFO": "Timing hours",
@@ -337,7 +348,7 @@
         "TABLES": "tables",
         "MORE": "more",
         "RESTAURANT_CREATION": "Restaurant creation",
-        "ACTIVATION_MESSAGE": "Se activará el cobro mensual del servicio Iurest por restaurante",
+        "ACTIVATION_MESSAGE": "The monthly Iurest service charge will be activated per restaurant",
         "CLARIFICATION_MESSAGE_1": "Iurest charges the service fee on the ",
         "CLARIFICATION_MESSAGE_2": " day of each month, the first charge is up to",
         "ACCEPT_CREATION": "Accept",
@@ -663,9 +674,9 @@
         "PHONE": "Phone",
         "WEBPAGE": "Web Page",
         "EMAIL": "Email",
-        "FINANCIAL_LABEL": "Financial",
-        "FINANCIAL_INFO": "Restaurant's Financial Information",
-        "FINANCIAL_INFO_TEXT": "Edit the financial information of the restaurant. This will allow Iurest to help you with business accounts and expenses",
+        "LEGAL_LABEL": "Legal",
+        "LEGAL_INFO": "Restaurant's Legal Information",
+        "LEGAL_INFO_TEXT": "Edit the legal information of the restaurant. This will allow Iurest to help you with business accounts and expenses",
         "INVOICE_CODE": "Invoice code",
         "TIP_PERCENTAGE": "Tip Percentage",
         "TAX_PERCENTAGE": "Tax Percentage",
@@ -1358,5 +1369,40 @@
         "MONTH_FILTER": "Month",
         "SELECT_RESTAURANT": "Select restaurant",
         "NO_INVOICES" : "There are no invoices"
+    },
+    "RESTAURANT_LEGALITY":{
+        "COLOMBIA": {
+            "SELECT_REGIME": "Select restaurant regime",
+            "REGIME_CO": "Comun regime",
+            "REGIME_SI": "Simplified regime",
+            "FORCED_TO_INVOICE": "Give invoice to customers",
+            "BUSINESS_NAME": "Enter surname and firstname (if natural person) or legal name (if legal person):",
+            "BUSINESS_NAME_PLACEHOLDER": "Names - Legal name",
+            "DOCUMENT": "Enter document or NIT of who sells the ods or Services. Please include verification digit:",
+            "DOCUMENT_PLACEHOLDER": "Document - NIT",
+            "INVOICE_RESOLUTION": "Enter DIAN resolution number to invoices",
+            "INVOICE_RESOLUTION_PLACEHOLDER": "DIAN Resolution number",
+            "INVOICE_RESOLUTION_DATE": "Enter DIAN resolution date to invoices",
+            "INVOICE_RESOLUTION_DATE_PLACEHOLDER": "DIAN Resolution date",
+            "PREFIX": "Prefix code in invoice?",
+            "PREFIX_PLACEHOLDER": "Prefix",
+            "DIAN_NUMERATION": "Enter numbers authorized by DIAN:",
+            "NUMERATION_FROM": "From",
+            "NUMERATION_TO": "To",
+            "IS_BIG_CONTRIBUTOR": "Is big contributor",
+            "BIG_CONTRIBUTOR_RESOLUTION": "Enter DIAN resolution number to big contributor",
+            "BIG_CONTRIBUTOR_DATE": "Enter DIAN resolution date to big contributor",
+            "IS_SELF_ACCEPTING": "Is self accepting",
+            "SELF_ACCEPTING_RESOLUTION": "Enter DIAN resolution number to self accepting",
+            "SELF_ACCEPTING_DATE": "Enter DIAN resolution date to self accepting",
+            "FINAL_TEXT": "If you want a specific text to appear at the end of the invoices, please enter it here",
+            "FINAL_TEXT_PLACEHOLDER": "Invoice final text",
+            "INVALID_DATA": "Invalid Data",
+            "REQUIRED_FILES": "Please fill in the required fields (*)",
+            "ACCEPT": "Accept",
+            "ENTER_PREFIX": "Please fill in prefix name",
+            "ENTER_BIG_CONTRIBUTOR_FILES": "Please fill in big contributor fields",
+            "ENTER_SELF_ACCEPTING_FILES": "Please fill in self accepting fields"
+        }
     }
 }

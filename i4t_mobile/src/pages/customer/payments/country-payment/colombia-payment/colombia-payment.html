@@ -49,9 +49,9 @@
                 <button ion-item (click)="presentModal()">
                     <ion-avatar item-start>
                         <img *ngIf="_paymentMethod === 'MOBILE.PAYMENTS.SELECT_PAYMENT_METHOD'" src="assets/img/payment-methods.png">
-                        <img *ngIf="_paymentMethod === 'PAYMENT_METHODS.CASH'" src="assets/img/pago.png">
-                        <img *ngIf="_paymentMethod === 'PAYMENT_METHODS.CREDIT_CARD'" src="assets/img/pago_tarjeta_credito.png">
-                        <img *ngIf="_paymentMethod === 'PAYMENT_METHODS.DEBIT_CARD'" src="assets/img/pago_tarjeta_debito.png">
+                        <img *ngIf="_paymentMethod === 'PAYMENT_METHODS.CASH'" src="assets/img/cash-payment.png">
+                        <img *ngIf="_paymentMethod === 'PAYMENT_METHODS.CREDIT_CARD'" src="assets/img/credit-card-payment.png">
+                        <img *ngIf="_paymentMethod === 'PAYMENT_METHODS.DEBIT_CARD'" src="assets/img/debit-card-payment.png">
                         <img *ngIf="_paymentMethod === 'PAYMENT_METHODS.ONLINE'" src="assets/img/payment-online.png">
                     </ion-avatar>
                     <h2>{{'MOBILE.PAYMENTS.MODAL_TITLE' | translate}}</h2>

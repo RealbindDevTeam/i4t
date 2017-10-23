@@ -31,7 +31,7 @@
                                             <img md-list-avatar class="image" src="/images/orders.png">
                                             <h2 md-line class="title">{{invoice.restaurant_name}}</h2>
                                             <p md-line class="title">{{invoice.creation_date | date: 'dd MMM yyyy HH:mm'}}</p>
-                                            <button md-raised-button (click)="invoiceGenerate(invoice)" style="box-shadow: none; color: #ef5350;" mdTooltip="{{'PAYMENTS_HISTORY.TOOLTIP_DOWNLOAD_INVOICE' | translate}}">
+                                            <button md-raised-button *ngIf="isInvoiceCanDownload(invoice, invoice.country_id)" (click)="invoiceGenerate(invoice, invoice.country_id)" style="box-shadow: none; color: #ef5350;" mdTooltip="{{'PAYMENTS_HISTORY.TOOLTIP_DOWNLOAD_INVOICE' | translate}}">
                                                 <md-icon>get_app</md-icon>
                                             </button>
                                         </md-list-item>
@@ -100,9 +100,9 @@
                                     <div style="padding: 0 16px;">
                                         <div>
                                             <div style="display: -webkit-inline-box; width: 100%;">
-                                                <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.CASH'" class="img-cards" src="images/pago.png">
-                                                <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.CREDIT_CARD'" class="img-cards" src="images/pago_tarjeta_credito.png">
-                                                <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.DEBIT_CARD'" class="img-cards" src="images/pago_tarjeta_debito.png">
+                                                <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.CASH'" class="img-cards" src="images/cash-payment.png">
+                                                <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.CREDIT_CARD'" class="img-cards" src="images/credit-card-payment.png">
+                                                <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.DEBIT_CARD'" class="img-cards" src="images/debit-card-payment.png">
                                                 <img *ngIf="invoice.pay_method == 'PAYMENT_METHODS.ONLINE'" class="img-cards" src="images/img/payment-online.png">
                                                 <p style="line-height: inherit">
                                                     {{invoice.pay_method | translate}}

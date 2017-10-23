@@ -37,7 +37,7 @@ export class RestaurantLocationInfoComponent implements OnInit {
      * ngOnInit implementation
      */
     ngOnInit(){
-        if( this._restaurantLocation.location.lat !== 0 && this._restaurantLocation.location.lng !== 0  ){
+        /*if( this._restaurantLocation.location.lat !== 0 && this._restaurantLocation.location.lng !== 0  ){
             this._lat = this._restaurantLocation.location.lat;
             this._lng = this._restaurantLocation.location.lng;
             this._showMessage = false;
@@ -45,6 +45,6 @@ export class RestaurantLocationInfoComponent implements OnInit {
             this._lat = 37.4292;
             this._lng = -122.1381;
             this._showMessage = true;
-        }
+        }*/
     }
 }

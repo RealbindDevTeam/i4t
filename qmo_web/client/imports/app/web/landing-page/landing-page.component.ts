@@ -18,10 +18,11 @@ import style    from './landing-page.component.scss';
 })
 export class LandingPageComponent implements OnInit, OnDestroy {
 
-    private _languages : Observable<Language[]>;
+    private _languages    : Observable<Language[]>;
     private _subscription : Subscription;
 
     private _showIconMenu : boolean = true;
+    private _userLang     : string  = "";
 
     /**
      * LandingPageComponent Constructor
@@ -35,9 +36,9 @@ export class LandingPageComponent implements OnInit, OnDestroy {
         PageScrollConfig.defaultScrollOffset = 64;
         PageScrollConfig.defaultDuration = 900; 
         
-        let userLang = navigator.language.split('-')[0];
+        this._userLang = navigator.language.split('-')[0];
         translate.setDefaultLang('en');
-        translate.use( userLang );
+        translate.use( this._userLang );
     }
 
     /**
@@ -94,6 +95,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
      * @param lang 
      */
     langChange(lang) {
+        this._userLang = lang;
         this.translate.use(lang);
     }
 
