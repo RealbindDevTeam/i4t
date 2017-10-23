@@ -72,7 +72,7 @@ export class ModalColombiaPayment implements OnInit, OnDestroy {
           this._paymentMethodsSubscription = MeteorObservable.subscribe('getPaymentMethodsByUserCurrentRestaurant', Meteor.userId()).subscribe(()=>{
             this._paymentMethods = PaymentMethods.find({}).zone();
           });
-          this.shearchTipPorcentage();
+          this.searchTipPercentage();
           this._tip = this._tipValue;
         });
       });
@@ -85,10 +85,10 @@ export class ModalColombiaPayment implements OnInit, OnDestroy {
    * @param _param 
    * @param _totalTipValue 
    */
-  shearchTipPorcentage(){
+  searchTipPercentage(){
       let _lRestaurant   = Restaurants.findOne( {} );
-      if( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] > 0 ){
-          this._tipValue = _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ];
+      if( _lRestaurant.tip_percentage > 0 ){
+          this._tipValue = _lRestaurant.tip_percentage;
       }
       this._tipTotal = this._totalValue * ( this._tipValue / 100 );
   }
@@ -99,7 +99,7 @@ export class ModalColombiaPayment implements OnInit, OnDestroy {
    */
   allowTip( _event : any ) : void {
     if( _event.checked ){
-      this.shearchTipPorcentage();
+      this.searchTipPercentage();
       this._disabledSubggestedTip = true;
     } else {
       this._disabledSubggestedTip = false;

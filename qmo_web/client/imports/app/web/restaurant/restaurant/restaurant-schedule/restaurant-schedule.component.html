@@ -13,7 +13,7 @@
                 <tr *ngIf="!_restaurantSchedule.schedule.monday.isActive && !_restaurantSchedule.schedule.tuesday.isActive && 
                         !_restaurantSchedule.schedule.wednesday.isActive && !_restaurantSchedule.schedule.thursday.isActive && 
                         !_restaurantSchedule.schedule.friday.isActive && !_restaurantSchedule.schedule.saturday.isActive && 
-                        !_restaurantSchedule.schedule.sunday.isActive">
+                        !_restaurantSchedule.schedule.sunday.isActive && !_restaurantSchedule.schedule.holiday.isActive">
                     <td colspan="3">
                         <label>{{'SCHEDULE.NO_RESTAURANT_HOURS' | translate}}</label>
                     </td>

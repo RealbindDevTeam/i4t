@@ -35,7 +35,7 @@
     </ion-card>
 </ion-content>
 
-<ion-footer *ngIf="(_invoices | async)?.length > 0" class="ion-footer-custom" padding style="background: white;">
+<ion-footer *ngIf="_showRegimeCoData" class="ion-footer-custom" padding style="background: white;">
     <ion-item>
         <h2>{{ 'MOBILE.PAYMENTS.SUBTOTAL' | translate }}</h2>
         <h2>{{ 'MOBILE.PAYMENTS.INC' | translate }} (8%):</h2>
@@ -46,4 +46,10 @@
     </ion-item>
     <h1 style="display: inline-block;">{{ 'MOBILE.PAYMENTS.TOTAL' | translate }}</h1>
     <h1 style="display: inline-block; position: absolute; right: 15px;">{{_totalValue}} {{_currency}}</h1>
+</ion-footer>
+<ion-footer *ngIf="_showRegimeSiData" class="ion-footer-custom" padding style="background: white;">
+    <div style="border-top: 0.55px solid #c8c7cc;text-align: center;">
+        <h1 style="display: inline-block;">{{ 'MOBILE.PAYMENTS.TOTAL' | translate }}</h1>
+        <h1 style="display: inline-block;margin-left: 8rem;">{{_totalValue}} {{_currency}}</h1>
+    </div>
 </ion-footer>

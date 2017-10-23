@@ -52,14 +52,14 @@ export class RestaurantLocationComponent implements OnInit, OnDestroy {
      */
     ngOnInit(){
         this.removeSubscriptions();
-        if( this._restaurantLocation.location.lat !== 0 && this._restaurantLocation.location.lng !== 0 ){
+        /*if( this._restaurantLocation.location.lat !== 0 && this._restaurantLocation.location.lng !== 0 ){
             this._lat = this._restaurantLocation.location.lat;
             this._lng = this._restaurantLocation.location.lng;
         } else {
             if( navigator.geolocation ) {
                 navigator.geolocation.getCurrentPosition( this.setPosition.bind( this ) );
             }
-        }
+        }*/
         this._restaurantSub = MeteorObservable.subscribe( 'restaurants', Meteor.userId() ).subscribe();
     }
 

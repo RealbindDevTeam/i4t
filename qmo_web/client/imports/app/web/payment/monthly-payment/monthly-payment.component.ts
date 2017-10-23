@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -55,6 +55,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     constructor(private router: Router,
         private _formBuilder: FormBuilder,
         private translate: TranslateService,
+        private _ngZone: NgZone,
         private _userLanguageService: UserLanguageService) {
         translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         translate.setDefaultLang('en');
@@ -72,12 +73,23 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
         this._currencies = Currencies.find({}).zone();
         this._countrySub = MeteorObservable.subscribe('countries').subscribe();
         this._tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe();
-        this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
-
-        this._currentDate = new Date();
-        this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
-        this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
-        this._firstNextMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 1);
+        this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe(() => {
+            this._ngZone.run(() => {
+                let is_prod_flag = Parameters.findOne({ name: 'payu_is_prod' }).value;
+                if (is_prod_flag == 'true') {
+                    this._currentDate = new Date();
+                    this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
+                    this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
+                    this._firstNextMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 1);
+                } else {
+                    let test_date = Parameters.findOne({ name: 'date_test_monthly_pay' }).value;
+                    this._currentDate = new Date(test_date);
+                    this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
+                    this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
+                    this._firstNextMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 1);
+                }
+            });
+        });
     }
 
     /**
@@ -251,14 +263,15 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
     validatePeriodDays(): boolean {
         let startDay = Parameters.findOne({ name: 'start_payment_day' });
         let endDay = Parameters.findOne({ name: 'end_payment_day' });
-        let currentDay = this._currentDate.getDate();
-        let restaurants = Restaurants.collection.find({ creation_user: Meteor.userId(), isActive: true }).fetch();
-
-        if (startDay && endDay && restaurants) {
-            if (currentDay >= Number(startDay.value) && currentDay <= Number(endDay.value) && (restaurants.length > 0)) {
-                return true;
-            } else {
-                return false;
+        if (this._currentDate) {
+            let currentDay = this._currentDate.getDate();
+            let restaurants = Restaurants.collection.find({ creation_user: Meteor.userId(), isActive: true }).fetch();
+            if (startDay && endDay && restaurants) {
+                if (currentDay >= Number(startDay.value) && currentDay <= Number(endDay.value) && (restaurants.length > 0)) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
     }

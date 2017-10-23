@@ -164,10 +164,10 @@ export class InvoicesDownloadPage implements OnInit, OnDestroy {
         let pdf = new jsPDF("portrait", "pt", [209.76,  heightPage]);
 
         pdf.setFontSize(8);
-        let splitBusinessName = pdf.splitTextToSize(_pInvoice.financial_information.business_name, widthText  );
-        let splitNit          = pdf.splitTextToSize(_pInvoice.financial_information.nit, widthText);
-        let splitAddress      = pdf.splitTextToSize(_pInvoice.financial_information.address, widthText);
-        let splitPhone        = pdf.splitTextToSize(_pInvoice.financial_information.phone, widthText);
+        //let splitBusinessName = pdf.splitTextToSize(_pInvoice.financial_information.business_name, widthText  );
+        //let splitNit          = pdf.splitTextToSize(_pInvoice.financial_information.nit, widthText);
+        //let splitAddress      = pdf.splitTextToSize(_pInvoice.financial_information.address, widthText);
+        //let splitPhone        = pdf.splitTextToSize(_pInvoice.financial_information.phone, widthText);
 
         let despcriptionTitle = this.itemNameTraduction('DESCRIPTION');
         let quantTitle        = this.itemNameTraduction('PAYMENTS.COLOMBIA.QUANT');
@@ -176,22 +176,22 @@ export class InvoicesDownloadPage implements OnInit, OnDestroy {
         pdf.text( this.itemNameTraduction('PAYMENTS_HISTORY.SOFTWARE_BY_REALBIND'), x, y, alignCenter );
         y = this.calculateY(y, 10);
         pdf.setFontType("bold");
-        pdf.text( splitBusinessName, x, y, alignCenter );
+        //pdf.text( splitBusinessName, x, y, alignCenter );
         pdf.setFontType("normal");
-        if(_pInvoice.financial_information.business_name.length > maxLength){
+        /*if(_pInvoice.financial_information.business_name.length > maxLength){
             y = this.calculateY(y, 20);
         } else {
             y = this.calculateY(y, 10);
-        }
-        pdf.text( this.itemNameTraduction('FINANCIAL_INFO.COLOMBIA.NIT_LABEL') + ' ' + splitNit, x, y, alignCenter );
+        }*/
+        //pdf.text( this.itemNameTraduction('FINANCIAL_INFO.COLOMBIA.NIT_LABEL') + ' ' + splitNit, x, y, alignCenter );
         y = this.calculateY(y, 10);
-        pdf.text( splitAddress, x, y, alignCenter );
-        if(_pInvoice.financial_information.address.length > maxLength){
+        //pdf.text( splitAddress, x, y, alignCenter );
+        /*if(_pInvoice.financial_information.address.length > maxLength){
             y = this.calculateY(y, 20);
         } else {
             y = this.calculateY(y, 10);
-        }
-        pdf.text( this.itemNameTraduction('PHONE') + ' ' + splitPhone, x, y, alignCenter );
+        }*/
+        //pdf.text( this.itemNameTraduction('PHONE') + ' ' + splitPhone, x, y, alignCenter );
         
         
         y = this.calculateY(y, 30);
@@ -307,9 +307,9 @@ export class InvoicesDownloadPage implements OnInit, OnDestroy {
         y = this.calculateY(y, 30);
         pdf.text( x, y, this.itemNameTraduction('PAYMENTS_HISTORY.RES_DIAN') + ' ' + '3100000000095678 2016/07/01', alignCenter );
         y = this.calculateY(y, 10);
-        pdf.text( x, y, this.itemNameTraduction('PAYMENTS_HISTORY.CONS_FROM') + ' ' + _pInvoice.financial_information.dian_numeration_from, alignCenter );
+        //pdf.text( x, y, this.itemNameTraduction('PAYMENTS_HISTORY.CONS_FROM') + ' ' + _pInvoice.financial_information.dian_numeration_from, alignCenter );
         y = this.calculateY(y, 10);
-        pdf.text( x, y, this.itemNameTraduction('PAYMENTS_HISTORY.CONS_TO') + ' ' + _pInvoice.financial_information.dian_numeration_to, alignCenter );
+        //pdf.text( x, y, this.itemNameTraduction('PAYMENTS_HISTORY.CONS_TO') + ' ' + _pInvoice.financial_information.dian_numeration_to, alignCenter );
         
         pdf.setProperties({
             title: this.itemNameTraduction('PAYMENTS_HISTORY.INVOICE_SALE'),

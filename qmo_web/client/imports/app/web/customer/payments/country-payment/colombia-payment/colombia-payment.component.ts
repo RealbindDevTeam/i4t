@@ -51,14 +51,9 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     private _mdDialogRef                        : MdDialogRef<any>;
 
     private _tipTotal                           : number = 0;
-    private _ipoCom                             : number = 108;
-    private _ipoComValue                        : number = 0;
-    private _ipoComBaseValue                    : number = 0;
     private _totalToPayment                     : number = 0;
     private _otherTip                           : number = 0;
     private _oldOtherTip                        : number = 0;
-    private _ipoComBaseString                   : string;
-    private _ipoComString                       : string;
     private _tipTotalString                     : string;
     private _currencyCode                       : string;
     private _tipValue                           : string;
@@ -164,17 +159,11 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
 
         let _lRestaurant:Restaurant = Restaurants.findOne( { _id: this.restId } );
         if( _lRestaurant ){
-            if( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] > 0 ){
-                this._tipValue = _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ];
-                this._tipTotal = this._totalValue * ( _lRestaurant.financialInformation[ "TIP_PERCENTAGE" ] / 100 );
+            if( _lRestaurant.tip_percentage > 0 ){
+                this._tipValue = _lRestaurant.tip_percentage.toString();
+                this._tipTotal = this._totalValue * ( _lRestaurant.tip_percentage / 100 );
             }
         }
-
-        this._ipoComBaseValue  = (this._totalValue * 100 ) / this._ipoCom;
-        this._ipoComBaseString = (this._ipoComBaseValue).toFixed(2);
-
-        this._ipoComValue      = this._totalValue - this._ipoComBaseValue;
-        this._ipoComString     = (this._ipoComValue).toFixed(2);
 
         this._tipTotalString   = (this._tipTotal).toFixed(2);
         this._totalToPayment   = this._totalValue;
@@ -319,8 +308,6 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
                         this._tipTotal = 0;
                         this._tipTotalString = (this._tipTotal).toFixed(2);
                         this._totalValue = 0;
-                        this._ipoComBaseValue = 0;
-                        this._ipoComValue = 0;
                         this._OutstandingBalance = true;
                         this._totalToPayment = 0;
                         this._paymentMethodId = '';

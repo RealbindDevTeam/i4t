@@ -1,5 +1,5 @@
 import { MongoObservable } from 'meteor-rxjs';
-import { Restaurant, RestaurantImage, RestaurantImageThumb, RestaurantTurn } from '../../models/restaurant/restaurant.model';
+import { Restaurant, RestaurantImage, RestaurantImageThumb, RestaurantTurn, RestaurantLegality } from '../../models/restaurant/restaurant.model';
 import { Meteor } from 'meteor/meteor';
 
 /**
@@ -64,3 +64,16 @@ RestaurantTurns.allow({
     update: loggedIn,
     remove: loggedIn
 });
+
+/**
+ * Restaurant Legality Collection
+ */
+export const RestaurantsLegality = new MongoObservable.Collection<RestaurantLegality>('restaurants_legality');
+
+/**
+ * Allow Restaurant Legality collection insert and update functions
+ */
+RestaurantsLegality.allow({
+    insert: loggedIn,
+    update: loggedIn
+})

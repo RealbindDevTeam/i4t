@@ -52,14 +52,14 @@ export class RestaurantTwitterComponent implements OnInit {
      * ngOnInit implementation
      */
     ngOnInit(){
-        if( this._restaurant.social_network !== undefined && this._restaurant.social_network !== null ){
+        /*if( this._restaurant.social_network !== undefined && this._restaurant.social_network !== null ){
             if( this._restaurant.social_network.twitter !== undefined && this._restaurant.social_network.twitter !== null ){
                 this._twitterLink = this._restaurant.social_network.twitter;
             }
         }
         this._restaurantTwitterForm = new FormGroup({
             twitterLink: new FormControl( this._twitterLink )
-        });
+        });*/
     }
 
     /**
