@@ -73,6 +73,14 @@
             "TITLE3": "Test Test Test",
             "TEXT3": "Test Test Test Test Test Test Test Test Test Test Test Test"
         },
+        "STEPS" : {
+            "EASY_AND_FAST" : "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "ONE" : "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "TWO" : "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "THREE" : "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "FOUR" : "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "FIVE" : "Test Test Test Test Test Test Test Test Test Test Test Test"
+        },
         "OWNER_CONTENT": {
             "TITLE1": "Test Test Test",
             "TEXT1": "Test Test Test Test Test Test Test Test Test Test Test Test",
@@ -80,6 +88,9 @@
         },
         "COMPLEMENTARY": {
             "TITLE": "Sal y disfruta de una buena comida acompañado de amigos, pareja o familia"
+        },
+        "FOOTER" : {
+            "ALL_RIGHT_RESERVED" : "All right reserved"
         }
     },
     "SIGNUP": {
