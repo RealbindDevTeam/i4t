@@ -96,3 +96,16 @@
         }
     }
 }
+
+.restaurant-card {
+    width: 84%;
+    margin: 0 auto;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.card_image {
+    background-image: url(/images/background_waiter.png); 
+    background-repeat: no-repeat; 
+    background-size: 100% 100%;
+}

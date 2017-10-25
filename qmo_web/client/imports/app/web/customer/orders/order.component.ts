@@ -43,6 +43,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     private _showOrderCreation          : boolean = false;
     private _showOrderList              : boolean = false;
     private _showTableIsNotActiveError  : boolean = false;
+    private _loading                    : boolean = false;
 
     /**
      * OrdersComponent Constructor
@@ -116,23 +117,33 @@ export class OrdersComponent implements OnInit, OnDestroy {
             let _lTable:Table = Tables.findOne( { QR_code: this._ordersForm.value.qrCode } );
             if( _lTable ){
                 if( _lTable.is_active ){
-                    MeteorObservable.call( 'getRestaurantByQRCode', _lTable.QR_code, this._user ).subscribe( ( _result: Restaurant ) => {
-                        this._currentRestaurant = _result;
-                        this._currentQRCode = _lTable.QR_code;
-                        this._showAlphanumericCodeCard = false;
-                        this._showOrderList = true;
-                        this._showNewOrderButton = true;
-                    }, ( error ) => {
-                        if( error.error === '400' ){
-                            this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.TABLE_NOT_EXISTS' ), '', this.btnAcceptLbl, false);
-                        } else if( error.error === '300' ){
-                            this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.RESTAURANT_NOT_EXISTS' ), '', this.btnAcceptLbl, false);                            
-                        } else if( error.error === '200' ){
-                            this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.IUREST_NO_ACTIVE' ), '', this.btnAcceptLbl, false);                            
-                        } else if( error.error === '500' ){
-                            this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.PENALTY' ) + error.reason, '', this.btnAcceptLbl, false);                            
-                        }
-                    });
+                    this._loading = true;
+                    setTimeout(() => { 
+                        MeteorObservable.call( 'getRestaurantByQRCode', _lTable.QR_code, this._user ).subscribe( ( _result: Restaurant ) => {
+                            this._currentRestaurant = _result;
+                            this._currentQRCode = _lTable.QR_code;
+                            this._showAlphanumericCodeCard = false;
+                            this._showOrderList = true;
+                            this._showNewOrderButton = true;
+                            this._loading = false;
+                        }, ( error ) => {
+                            if( error.error === '400' ){
+                                this._loading = false;                        
+                                this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.TABLE_NOT_EXISTS' ), '', this.btnAcceptLbl, false);
+                            } else if( error.error === '300' ){
+                                this._loading = false;                        
+                                this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.RESTAURANT_NOT_EXISTS' ), '', this.btnAcceptLbl, false);                            
+                            } else if( error.error === '200' ){
+                                this._loading = false;                        
+                                this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.IUREST_NO_ACTIVE' ), '', this.btnAcceptLbl, false);                            
+                            } else if( error.error === '500' ){
+                                this._loading = false;                        
+                                this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.PENALTY' ) + error.reason, '', this.btnAcceptLbl, false);                            
+                            } else{
+                            this._loading = false;                        
+                            }
+                        });
+                    }, 1500 );
                 } else {
                     this._showTableIsNotActiveError = true;
                 }
