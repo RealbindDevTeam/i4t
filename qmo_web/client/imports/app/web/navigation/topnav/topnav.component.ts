@@ -48,6 +48,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
 
   private showMenuName: boolean = true;
   private menuName: string;
+  private _userLang: string  = "";
 
   /**
    * TopnavComponent Constructor
@@ -66,8 +67,9 @@ export class TopnavComponent implements OnInit, OnDestroy {
     private _translate: TranslateService,
     private _userLanguageService: UserLanguageService,
     private _ngZone: NgZone) {
-    _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+    this._userLang = navigator.language.split('-')[0];
     _translate.setDefaultLang('en');
+    _translate.use( this._userLang );
   }
 
   ngOnInit() {
@@ -276,6 +278,9 @@ export class TopnavComponent implements OnInit, OnDestroy {
   private updatePageTitle() {
     this._navigation.currentRoute.take(1).subscribe(currentRoute => {
       this._pageTitle = this._navigation.getAutoPageTitle(currentRoute);
+      if(this._pageTitle){
+        this._pageTitle = this.itemNameTraduction(this._pageTitle);
+      }
       if (this._browserTitle === null) {
         this._title.setTitle(this._navigation.getAutoBrowserTitle(this._pageTitle));
       }
