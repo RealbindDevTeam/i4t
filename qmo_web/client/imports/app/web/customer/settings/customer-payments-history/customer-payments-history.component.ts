@@ -80,6 +80,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
     /**
      * Generate Invoice pdf
      * @param { Invoice } _pInvoice 
+     * @param {string} _pCountryId
      */
     invoiceGenerate( _pInvoice : Invoice, _pCountryId: string ) {
         if( !Meteor.userId() ){
@@ -374,6 +375,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
     /**
      * Calculate Invoice pdf height
      * @param { Invoice } _pInvoice 
+     * @param { string } _pCountryId
      */
     calculateHeight( _pInvoice : Invoice, _pCountryId: string ) : number {
         let quantRows  : number = 0;
@@ -436,7 +438,8 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
 
     /**
      * Allow return date format
-     * @param _pDate 
+     * @param {Date} _pDate 
+     * @param {boolean} _time
      */
     dateFormater( _pDate : Date, _time : boolean ) : string {
         let dateFormat = (_pDate.getDate() <= 9 ? '0' + _pDate.getDate() : _pDate.getDate()) + '/' +

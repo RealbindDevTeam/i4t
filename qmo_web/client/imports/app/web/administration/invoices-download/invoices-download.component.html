@@ -65,7 +65,7 @@
                 <img md-list-avatar class="image" src="/images/orders.png">
                 <h2 md-line class="title">{{invoice.restaurant_name}}</h2>
                 <p md-line class="title">{{invoice.creation_date | date: 'dd MMM yyyy HH:mm'}}</p>
-                <button md-raised-button (click)="invoiceGenerate(invoice)" style="box-shadow: none; color: #ef5350;" mdTooltip="{{'PAYMENTS_HISTORY.TOOLTIP_DOWNLOAD_INVOICE' | translate}}">
+                <button md-raised-button *ngIf="isInvoiceCanDownload(invoice, invoice.country_id)" (click)="invoiceGenerate(invoice, invoice.country_id)" style="box-shadow: none; color: #ef5350;" mdTooltip="{{'PAYMENTS_HISTORY.TOOLTIP_DOWNLOAD_INVOICE' | translate}}">
                     <md-icon>get_app</md-icon>
                 </button>
             </md-list-item>

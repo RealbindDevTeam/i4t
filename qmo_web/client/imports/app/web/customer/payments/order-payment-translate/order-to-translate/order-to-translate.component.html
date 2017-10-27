@@ -1,11 +1,11 @@
 <div *ngFor="let or of _ordersTable | async; let in = index">
     <md-toolbar class="other-order" (click)="showOthersOrderDetail(or,in)">
-        <i class="fa fa-list-alt" aria-hidden="true" class="order-icon"></i>
+        <img style="width: 3rem;" src="/images/my-orders.png">
         <span class="order-code">{{'ORDER_TRANS.ORDERS' | translate}} # {{or.code}}</span>
         <span>{{'ORDER_TRANS.TOTAL' | translate}}: {{or.totalPayment}} {{_currencyCode}}</span>
         <span class="app-flex-filler"></span>
         <span class="order-status">{{'ORDER_TRANS.STATUS' | translate}}: {{or.status | translate}}</span>
-        <button md-raised-button class="secondary-button pay-button" (click)="markOrderToPay(or)">{{'ORDER_TRANS.PAY' | translate}}</button>
+        <button md-raised-button class="primary-button pay-button" (click)="markOrderToPay(or)">{{'ORDER_TRANS.PAY' | translate}}</button>
     </md-toolbar>
     <md-card *ngIf="_orderOthersIndex == in">
         <md-card-content>
@@ -43,6 +43,7 @@
             </md-list>
         </md-card-content>
     </md-card>
+    <button style="margin-top: 1rem;" md-raised-button (click)="close()">{{'CLOSE' | translate}}</button>
 </div>
 <md-card md-cell="12" class="demo-card demo-basic payment-info" *ngIf="(_ordersTable | async)?.length <= 0">
     <md-card-content>
