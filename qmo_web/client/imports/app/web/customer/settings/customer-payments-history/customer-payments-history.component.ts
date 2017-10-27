@@ -89,7 +89,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         }
 
         if( _pCountryId === '1900' ){
-            this.generateColombiaInvoice( _pInvoice );
+            this.generateColombiaInvoice( _pInvoice, _pCountryId );
         }
     }
 
@@ -97,8 +97,8 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
      * Generate colombia restaurant invoice
      * @param {Invoice} _pInvoice
      */
-    generateColombiaInvoice( _pInvoice : Invoice ):void{
-        let heightPage : number = this.calculateHeight(_pInvoice);
+    generateColombiaInvoice( _pInvoice : Invoice, _pCountryId: string ):void{
+        let heightPage : number = this.calculateHeight(_pInvoice, _pCountryId);
         
         let widthText   : number = 180;
         let x           : number = 105;
@@ -130,9 +130,9 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         pdf.setFontType("bold");
         pdf.text( splitRestaurantName, x, y, alignCenter );
         if(_pInvoice.restaurant_name.length > maxLength){
-            y = this.calculateY(y, 20);
+            y = this.calculateY(y, 30);
         } else {
-            y = this.calculateY(y, 10);
+            y = this.calculateY(y, 20);
         }
         pdf.setFontType("normal");
         pdf.text( splitAddress, x, y, alignCenter );
@@ -329,10 +329,12 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
                 y = this.calculateY(y, 10);
                 let splitFinalText = pdf.splitTextToSize( _pInvoice.legal_information.text_at_the_end , widthText);
                 pdf.text( splitFinalText, x, y, alignCenter );
-                if(_pInvoice.legal_information.text_at_the_end.length <= 23){
+                if(_pInvoice.legal_information.text_at_the_end.length <= 40){
                     y = this.calculateY(y, 10);
-                } else if(_pInvoice.legal_information.text_at_the_end.length > 23 && _pInvoice.legal_information.text_at_the_end.length <= 46){
+                } else if(_pInvoice.legal_information.text_at_the_end.length > 41 && _pInvoice.legal_information.text_at_the_end.length <= 80){
                     y = this.calculateY(y, 20);
+                } else if(_pInvoice.legal_information.text_at_the_end.length > 81 && _pInvoice.legal_information.text_at_the_end.length <= 120){
+                    y = this.calculateY(y, 30);
                 } else {
                     y = this.calculateY(y, 40);
                 }
@@ -373,19 +375,62 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
      * Calculate Invoice pdf height
      * @param { Invoice } _pInvoice 
      */
-    calculateHeight( _pInvoice : Invoice ) : number {
+    calculateHeight( _pInvoice : Invoice, _pCountryId: string ) : number {
         let quantRows  : number = 0;
         let heightPage : number = 340;
-        
-        quantRows = quantRows + _pInvoice.items.length;
-        quantRows = quantRows + _pInvoice.additions.length;
-        _pInvoice.items.forEach( (item) => {
-            quantRows = quantRows + item.garnish_food.length;
-            quantRows = quantRows + item.additions.length;
-        });
 
-        heightPage = heightPage + ( quantRows * 100 );
+        if( _pCountryId === '1900' ){
+            if( _pInvoice.legal_information.regime === 'regime_co' ){
+                quantRows = quantRows + 22;
+            } else if( _pInvoice.legal_information.regime === 'regime_si' ){
+                quantRows = quantRows + 17;                
+            }
+            
+            if( _pInvoice.legal_information.is_big_contributor ){
+                quantRows = quantRows + 2;                
+            } else {
+                quantRows = quantRows + 1;                
+            }
 
+            if( _pInvoice.legal_information.is_self_accepting ){
+                quantRows = quantRows + 2;                                
+            } else {
+                quantRows = quantRows + 1;                                
+            }
+
+            if( _pInvoice.legal_information.text_at_the_end !== null && _pInvoice.legal_information.text_at_the_end !== undefined 
+                && _pInvoice.legal_information.text_at_the_end.length > 0 ){
+                    quantRows = quantRows + 1;
+                    if(_pInvoice.legal_information.text_at_the_end.length <= 40){
+                        quantRows = quantRows + 1;
+                    } else if(_pInvoice.legal_information.text_at_the_end.length > 41 && _pInvoice.legal_information.text_at_the_end.length <= 80){
+                        quantRows = quantRows + 2;
+                    } else if(_pInvoice.legal_information.text_at_the_end.length > 81 && _pInvoice.legal_information.text_at_the_end.length <= 120){
+                        quantRows = quantRows + 3;
+                    } else {
+                        quantRows = quantRows + 4;
+                    }
+                    quantRows = quantRows + 1;
+            }
+
+            quantRows = quantRows + _pInvoice.items.length;
+            quantRows = quantRows + _pInvoice.additions.length;
+            _pInvoice.items.forEach( (item) => {
+                quantRows = quantRows + item.garnish_food.length;
+                quantRows = quantRows + item.additions.length;
+            });
+    
+            heightPage = heightPage + ( quantRows * 4 );
+        } else{
+            quantRows = quantRows + _pInvoice.items.length;
+            quantRows = quantRows + _pInvoice.additions.length;
+            _pInvoice.items.forEach( (item) => {
+                quantRows = quantRows + item.garnish_food.length;
+                quantRows = quantRows + item.additions.length;
+            });
+    
+            heightPage = heightPage + ( quantRows * 30 );
+        }
         return heightPage;
     }
 

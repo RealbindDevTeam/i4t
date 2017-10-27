@@ -1,7 +1,26 @@
-<md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" *ngIf="!_thereAreOrders">
+<div class="restaurant-card">
+    <md-card class="card_image">
+        <md-list>
+            <md-list-item *ngFor="let _res of _restaurants | async">
+                    <img md-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{ getRestaurantImage( _res._id ) }}">
+                <h2 md-line style="font-size: 1.5rem;"> {{_res.name}} </h2>
+                <p md-line style="font-size: 1rem;">
+                    <md-icon style="vertical-align: middle">location_on</md-icon>
+                    <span> {{_res.address}} </span>
+                </p>
+                <p md-line style="font-size: 1rem;">
+                    <md-icon style="vertical-align: middle">phone</md-icon>
+                    <span class="detail-message">{{_res.phone}} </span>
+                </p>
+            </md-list-item>
+        </md-list>
+    </md-card>
+</div>
+
+<md-card md-cell="12" class="demo-card demo-basic" style="width: 80%; margin: 0 auto" *ngIf="!_thereAreOrders">
     <md-card-content>
         <div class="card_initial">
-            <div class="card_initial has-image">
+            <div class="card_initial has-image" style="margin: auto;">
                 <div class="card_initial-image-container">
                     <img class="card_initial-image" 
                         src="/images/categories.png"/>
