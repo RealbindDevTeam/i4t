@@ -7,7 +7,7 @@
                 <md-icon style="vertical-align: middle">location_on</md-icon>
                 <span>{{_res.address}}</span>
             </p>
-            <p md-line style="font-size: 1rem;font-weight: bold;">
+            <p *ngIf="_showTableInfo" md-line style="font-size: 1rem;font-weight: bold;">
                 <md-icon style="vertical-align: middle">restaurant</md-icon>
                 <span>{{'RESTAURANT_INFO_MASTER.TABLE_CODE' | translate}}: {{_tableNumber}}</span>
             </p>

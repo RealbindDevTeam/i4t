@@ -25,6 +25,7 @@ export class RestaurantInfoComponent implements OnInit, OnDestroy {
 
     public _dialogRef           : MdDialogRef<any>;
     private _tableNumber        : number;
+    private _showTableInfo      : boolean = true;
 
     private _restaurantSub      : Subscription;
     private _restaurantThumbSub : Subscription;
@@ -57,11 +58,16 @@ export class RestaurantInfoComponent implements OnInit, OnDestroy {
             });
         });
         this._restaurantThumbSub = MeteorObservable.subscribe( 'restaurantImageThumbsByRestaurantId', this.restaurantId ).subscribe();
-        this._tablesSub = MeteorObservable.subscribe( 'getTableByQRCode', this.tableQRCode ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._tableNumber = Tables.collection.findOne( { QR_code: this.tableQRCode } )._number;
+        if( this.tableQRCode !== null && this.tableQRCode !== undefined && this.tableQRCode !== '' ){
+            this._showTableInfo = true;
+            this._tablesSub = MeteorObservable.subscribe( 'getTableByQRCode', this.tableQRCode ).subscribe( () => {
+                this._ngZone.run( () => {
+                    this._tableNumber = Tables.collection.findOne( { QR_code: this.tableQRCode } )._number;
+                });
             });
-        });
+        } else {
+            this._showTableInfo = false;
+        }
     }
 
     /**

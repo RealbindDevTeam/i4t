@@ -15,6 +15,10 @@ import { GarnishFood } from '../../../../../../both/models/administration/garnis
 import { GarnishFoodCol } from '../../../../../../both/collections/administration/garnish-food.collection';
 import { Addition } from '../../../../../../both/models/administration/addition.model';
 import { Additions } from '../../../../../../both/collections/administration/addition.collection';
+import { Restaurant, RestaurantImageThumb } from '../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants, RestaurantImageThumbs } from "../../../../../../both/collections/restaurant/restaurant.collection";
+import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
+import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
 import template from './order-attention.component.html';
@@ -33,6 +37,9 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     private _tablesSub                      : Subscription;
     private _garnishFoodSub                 : Subscription;
     private _additionsSub                   : Subscription;
+    private _userDetailSub                  : Subscription;
+    private _userRestaurantSub              : Subscription;
+    private _imgRestaurantSub               : Subscription;
 
     private _ordersInProcess                : Observable<Order[]>;    
     private _ordersInProcessDetail          : Observable<Order[]>;
@@ -42,6 +49,7 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     private _tables                         : Observable<Table[]>;
     private _garnishFoodCol                 : Observable<GarnishFood[]>;
     private _additions                      : Observable<Addition[]>;
+    private _restaurants                    : Observable<Restaurant[]>;
 
     private _showDetails                    : boolean = false;
     private _loading                        : boolean;
@@ -50,6 +58,7 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     private btnAcceptLbl                    : string;
     public _dialogRef                       : MdDialogRef<any>;
     private _thereAreOrders                 : boolean = true;
+    private _userDetail                     : UserDetail;
 
     /**
      * OrderAttentionComponent Constructor
@@ -73,6 +82,18 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
      */
     ngOnInit(){
         this.removeSubscriptions();
+
+        this._userDetailSub = MeteorObservable.subscribe( 'getUserDetailsByUser', Meteor.userId() ).subscribe(()=>{
+            this._userDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+            if (this._userDetail){
+                this._userRestaurantSub = MeteorObservable.subscribe( 'getRestaurantById', this._userDetail.restaurant_work ).subscribe(() => {
+                    this._restaurants = Restaurants.find({_id : this._userDetail.restaurant_work});
+                });
+            }
+        });
+
+        this._imgRestaurantSub = MeteorObservable.subscribe( 'getRestaurantImageThumbByRestaurantWork', this._user ).subscribe();
+
         this._ordersSub = MeteorObservable.subscribe( 'getOrdersByRestaurantWork', this._user, [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.CANCELED' ] ).subscribe( () => {
             this._ngZone.run( () => {
                 this._ordersInProcess = Orders.find( { status: 'ORDER_STATUS.IN_PROCESS' } ).zone();
@@ -125,6 +146,9 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
         if( this._tablesSub ){ this._tablesSub.unsubscribe(); }
         if( this._garnishFoodSub ){ this._garnishFoodSub.unsubscribe(); }
         if( this._additionsSub ){ this._additionsSub.unsubscribe(); }
+        if( this._userDetailSub ){ this._userDetailSub.unsubscribe(); }
+        if( this._userRestaurantSub ){ this._userRestaurantSub.unsubscribe(); }
+        if( this._imgRestaurantSub ){ this._imgRestaurantSub.unsubscribe(); }
     }
 
     /**
@@ -274,6 +298,19 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
 
             }
         });
+    }
+
+    /**
+     * Get Restaurant Image
+     * @param {string} _pRestaurantId
+     */
+    getRestaurantImage(_pRestaurantId: string): string {
+        let _lRestaurantImageThumb: RestaurantImageThumb = RestaurantImageThumbs.findOne({ restaurantId: _pRestaurantId });
+        if (_lRestaurantImageThumb) {
+            return _lRestaurantImageThumb.url
+        } else {
+            return '/images/default-restaurant.png';
+        }
     }
     
     /**
