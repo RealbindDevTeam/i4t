@@ -24,6 +24,7 @@ import { Tables } from '../../../../../../../both/collections/restaurant/table.c
 import { PaymentsHistory } from '../../../../../../../both/collections/payment/payment-history.collection';
 import { PaymentHistory } from '../../../../../../../both/models/payment/payment-history.model';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
+import { Parameters } from '../../../../../../../both/collections/general/parameter.collection';
 
 import template from './restaurant-register.component.html';
 import style from './restaurant-register.component.scss';
@@ -191,7 +192,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
 
                 arrPay.forEach((pay) => {
                     if (this._restaurantForm.value.paymentMethods[pay]) {
-                        _lPaymentMethods.push( pay );
+                        _lPaymentMethods.push(pay);
                     }
                 });
 
@@ -318,11 +319,11 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                         queue: this._queues,
                         isActive: true,
                         firstPay: true,
-                        freeDays: true
+                        is_premium: false
                     });
 
                     this._restaurantLegality.restaurant_id = _lNewRestaurant;
-                    RestaurantsLegality.insert( this._restaurantLegality );
+                    RestaurantsLegality.insert(this._restaurantLegality);
 
                     if (this._createImage) {
                         uploadRestaurantImage(this._restaurantImageToInsert,
@@ -460,7 +461,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._selectedCityValue = _city;
         this._restaurantForm.controls['city'].setValue(_city);
     }
-    
+
     /**
      * When user change Image, this function allow insert in the store
      * @param {any} _fileInput
@@ -491,7 +492,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * Set restaurant legality
      * @param {RestaurantLegality} _event
      */
-    setRestaurantLegality( _event: RestaurantLegality ):void {
+    setRestaurantLegality(_event: RestaurantLegality): void {
         this._restaurantLegality = _event;
         this.addRestaurant();
     }
@@ -516,8 +517,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * Run previous function
      * @param {boolean} _event 
      */
-    runPrevious( _event : boolean ):void{
-        if( _event ){
+    runPrevious(_event: boolean): void {
+        if (_event) {
             this.previous();
         }
     }
@@ -526,7 +527,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * Set restaurant tip value
      * @param {number} _event
      */
-    setTipValue( _event: number ):void{
+    setTipValue(_event: number): void {
         this._tipValue = _event;
     }
 

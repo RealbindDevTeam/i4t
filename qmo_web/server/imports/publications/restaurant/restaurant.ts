@@ -149,7 +149,7 @@ Meteor.publish('currentRestaurantsNoPayed', function (_userId: string) {
     let historyPaymentRes: string[] = [];
     let restaurantsInitial: string[] = [];
 
-    Restaurants.collection.find({ creation_user: _userId, isActive: true, freeDays: false }).fetch().forEach((restaurant) => {
+    Restaurants.collection.find({ creation_user: _userId, isActive: true, is_premium: true }).fetch().forEach((restaurant) => {
         restaurantsInitial.push(restaurant._id);
     });
 
@@ -163,7 +163,7 @@ Meteor.publish('currentRestaurantsNoPayed', function (_userId: string) {
         });
     });
 
-    return Restaurants.collection.find({ _id: { $nin: historyPaymentRes }, creation_user: _userId, isActive: true, freeDays: false });
+    return Restaurants.collection.find({ _id: { $nin: historyPaymentRes }, creation_user: _userId, isActive: true, is_premium: true });
 });
 
 /**

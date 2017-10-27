@@ -73,13 +73,13 @@
             "TITLE3": "Solicita ayuda de un mesero si deseas",
             "TEXT3": "LLama a un mesero de una forma simple y efectiva."
         },
-        "STEPS" : {
-            "EASY_AND_FAST" : "Fácil y rápido",
-            "ONE" : "Ve a un restaurante y escanea el código de la mesa",
-            "TWO" : "Elige lo que deseas comer y confirma para que llegue directo a la cocina",
-            "THREE" : "Un mesero te llevará la comida cuando este preparada",
-            "FOUR" : "Consulta el detalle de tu cuenta",
-            "FIVE" : "Indica que vas a pagar y un mesero ira a tu mesa"
+        "STEPS": {
+            "EASY_AND_FAST": "Fácil y rápido",
+            "ONE": "Ve a un restaurante y escanea el código de la mesa",
+            "TWO": "Elige lo que deseas comer y confirma para que llegue directo a la cocina",
+            "THREE": "Un mesero te llevará la comida cuando este preparada",
+            "FOUR": "Consulta el detalle de tu cuenta",
+            "FIVE": "Indica que vas a pagar y un mesero ira a tu mesa"
         },
         "OWNER_CONTENT": {
             "TITLE1": "Tienes un restaurante y te gustaría usar el servicio Iurest?",
@@ -89,8 +89,8 @@
         "COMPLEMENTARY": {
             "TITLE": "Sal y disfruta de una buena comida acompañado de amigos, pareja o familia"
         },
-        "FOOTER" : {
-            "ALL_RIGHT_RESERVED" : "Todos los derechos reservados"
+        "FOOTER": {
+            "ALL_RIGHT_RESERVED": "Todos los derechos reservados"
         }
     },
     "SIGNUP": {
@@ -251,7 +251,7 @@
             "COLLABORATORS": "Colaboradores",
             "MONTHLY_CONFIG": "Configuración mensual",
             "TABLE_CONTROL": "Control de Mesas",
-            "INVOICES_DOWNLOAD" : "Descarga de facturas"
+            "INVOICES_DOWNLOAD": "Descarga de facturas"
         },
         "PAYMENTS": {
             "PAYMENTS": "Pagos",
@@ -1352,25 +1352,25 @@
         "GENERAL_ERROR": "Se ha producido un error penalizando al usuario. Por favor intente mas tarde.",
         "PENALTY_CREATED": "Penalización Creada"
     },
-    "INVOICES_DOWNLOAD" : {
-        "TITLE" : "Descarga de facturas",
-        "TEXT" : "Consulta las facturas de tu restaurante",
-        "FROM" : "Desde",
-        "INIT_DATE" : "Fecha inicial",
-        "TO_DATE" : "Hasta la fecha",
-        "END_DATE" : "Fecha final",
+    "INVOICES_DOWNLOAD": {
+        "TITLE": "Descarga de facturas",
+        "TEXT": "Consulta las facturas de tu restaurante",
+        "FROM": "Desde",
+        "INIT_DATE": "Fecha inicial",
+        "TO_DATE": "Hasta la fecha",
+        "END_DATE": "Fecha final",
         "SYSTEM_MSG": "Mensaje del sistema",
         "SELECT_RANGE_VALID_DATES": "Selecciona un rango valido de fechas",
-        "RANGE_DAYS" : "El rango de fechas no puede superar a 31 días",
+        "RANGE_DAYS": "El rango de fechas no puede superar a 31 días",
         "THERE_NOT_RESTAURANTS": "Aún no hay restaurantes registrados",
         "MESSAGE": "Registra uno para habilitar esta opción",
         "RESTAURANT_REGISTER": "Registrar restaurante",
         "YEAR_FILTER": "Año",
         "MONTH_FILTER": "Mes",
         "SELECT_RESTAURANT": "Selecciona restaurante",
-        "NO_INVOICES" : "No hay facturas"
+        "NO_INVOICES": "No hay facturas"
     },
-    "RESTAURANT_LEGALITY":{
+    "RESTAURANT_LEGALITY": {
         "COLOMBIA": {
             "SELECT_REGIME": "Selecciona el régimen al que pertenece tu restaurante",
             "REGIME_CO": "Régimen Común",
