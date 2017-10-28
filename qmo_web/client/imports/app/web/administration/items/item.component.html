@@ -63,7 +63,7 @@
                     </button>
             </div>
             <md-card-content>
-                <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
+                <p *ngIf="item.description.length > 50">{{item.description.substring(0, 50)}}...</p>
                 <p *ngIf="item.description.length <= 50">{{item.description}}</p>
                 <div class="card-item-price">{{showItemPrices(item.prices)}}</div>
                 <div class="card-item-tax">{{showItemTaxes(item.prices)}}</div>
