@@ -42,10 +42,10 @@ export class CallsComponent implements OnInit, OnDestroy {
     private _restaurants                : any;
     private _waiterCallDetail           : any;
     private _tables                     : any;
-    private _waiterCallDetailCollection : any;
     private _imgRestaurant              : any;
 
     private _loading  : boolean;
+    private _thereAreCalls : boolean = true;
 
     /**
      * CallsComponent Constructor
@@ -81,7 +81,8 @@ export class CallsComponent implements OnInit, OnDestroy {
         this._callsDetailsSubscription = MeteorObservable.subscribe('waiterCallDetailByWaiterId', this._user ).subscribe(() => {
             this._ngZone.run( () => {
                 this._waiterCallDetail = WaiterCallDetails.find({}).zone();
-                this._waiterCallDetailCollection = WaiterCallDetails.collection.find({}).fetch()[0];
+                this.countCalls();
+                this._waiterCallDetail.subscribe( () => { this.countCalls(); });
             });
         });
 
@@ -101,6 +102,14 @@ export class CallsComponent implements OnInit, OnDestroy {
         if( this._callsDetailsSubscription ){ this._callsDetailsSubscription.unsubscribe(); }
         if( this._tableSubscription ){ this._tableSubscription.unsubscribe(); }
         if( this._imgRestaurantSubscription ){ this._imgRestaurantSubscription.unsubscribe(); }
+    }
+
+    /**
+     * Count calls
+     */
+    countCalls():void{
+        let _lCalls: number = WaiterCallDetails.collection.find( { } ).count();
+        _lCalls > 0 ? this._thereAreCalls = true : this._thereAreCalls = false;
     }
 
     /**

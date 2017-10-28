@@ -17,7 +17,25 @@
     </md-card>
 </div>
 
-<md-card class="call-card" style="padding: 0">
+<md-card md-cell="12" class="demo-card demo-basic" style="width: 76%; margin: 0 auto" *ngIf="!_thereAreCalls">
+    <md-card-content>
+        <div class="card_initial">
+            <div class="card_initial has-image" style="margin: auto;">
+                <div class="card_initial-image-container">
+                    <img class="card_initial-image" 
+                        src="/images/sections.png"/>
+                </div>
+                <div class="card_initial-copy">
+                    <div class="card_initial-tagline">
+                        No hay llamados pendientes
+                    </div>
+                </div>
+            </div>
+        </div>
+    </md-card-content>
+</md-card>
+
+<md-card class="call-card" style="padding: 0" *ngIf="_thereAreCalls">
     <div *ngFor="let _call of _waiterCallDetail | async" style="float: left; width: 330px; ">
         <div *ngFor="let _table of _tables | async">
             <md-card *ngIf="_table._id === _call.table_id" class="cards">

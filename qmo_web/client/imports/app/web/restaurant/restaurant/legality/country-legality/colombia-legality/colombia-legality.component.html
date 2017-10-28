@@ -32,7 +32,7 @@
             <div class="invoice-resolution">
                 <p>{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION' | translate}}</p>
                 <md-input-container class="invoice">
-                    <input mdInput type="number" formControlName="invoice_resolution" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_PLACEHOLDER' | translate}} *" minlength="1" maxlength="20" #inputInvoiceResolution>
+                    <input mdInput formControlName="invoice_resolution" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_PLACEHOLDER' | translate}} *" minlength="1" maxlength="20" #inputInvoiceResolution>
                     <md-hint align="end">{{inputInvoiceResolution.value.length}} / 20</md-hint>
                 </md-input-container>
             </div>
@@ -68,7 +68,7 @@
             <div class="dian-big-contributor">
                 <p>{{'RESTAURANT_LEGALITY.COLOMBIA.BIG_CONTRIBUTOR_RESOLUTION' | translate}}</p>
                 <md-input-container class="resolution">
-                    <input mdInput type="number" formControlName="big_contributor_resolution" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_PLACEHOLDER' | translate}}" minlength="1" maxlength="20" #inputBigContResolution>
+                    <input mdInput formControlName="big_contributor_resolution" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_PLACEHOLDER' | translate}}" minlength="1" maxlength="20" #inputBigContResolution>
                     <md-hint align="end">{{inputBigContResolution.value.length}} / 20</md-hint>
                 </md-input-container>
             </div>
@@ -86,7 +86,7 @@
             <div class="dian-self-accepting">
                 <p>{{'RESTAURANT_LEGALITY.COLOMBIA.SELF_ACCEPTING_RESOLUTION' | translate}}</p>
                 <md-input-container class="resolution">
-                    <input mdInput type="number" formControlName="self_accepting_resolution" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_PLACEHOLDER' | translate}}" minlength="1" maxlength="20" #inputSeltAcResolution>
+                    <input mdInput formControlName="self_accepting_resolution" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_PLACEHOLDER' | translate}}" minlength="1" maxlength="20" #inputSeltAcResolution>
                     <md-hint align="end">{{inputSeltAcResolution.value.length}} / 20</md-hint>
                 </md-input-container>
             </div>
