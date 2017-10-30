@@ -58,7 +58,7 @@
                                         </div>
                                         <div>
                                             <md-input-container style="width: 48%;">
-                                                <input mdInput required formControlName="tables_number" type="tel" placeholder="{{'RESTAURANT_REGISTER.INITIAL_TABLES_NUMBER' | translate}} *"
+                                                <input mdInput required formControlName="tables_number" type="tel" placeholder="{{'RESTAURANT_REGISTER.INITIAL_TABLES_NUMBER' | translate}} {{'RESTAURANT_REGISTER.MAX_TABLES' | translate}} {{max_table_number}}"
                                                     minlength="1" maxlength="3" #inputInitialTables>
                                                 <md-hint align="end">{{inputInitialTables.value.length}} / 3</md-hint>
                                             </md-input-container>

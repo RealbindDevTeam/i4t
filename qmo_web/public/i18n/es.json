@@ -354,7 +354,8 @@
         "CLARIFICATION_MESSAGE_2": " día de cada mes, el primer cobro es sobre el ",
         "ACCEPT_CREATION": "Aceptar",
         "CANCEL_CREATION": "Cancelar",
-        "INITIAL_TABLES_NUMBER": "Número inicial de mesas"
+        "INITIAL_TABLES_NUMBER": "Número inicial de mesas, ",
+        "MAX_TABLES": "máximo "
     },
     "WEEK": {
         "MONDAY": "Lunes",

@@ -24,7 +24,6 @@ import { Tables } from '../../../../../../../both/collections/restaurant/table.c
 import { PaymentsHistory } from '../../../../../../../both/collections/payment/payment-history.collection';
 import { PaymentHistory } from '../../../../../../../both/models/payment/payment-history.model';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
-import { Parameters } from '../../../../../../../both/collections/general/parameter.collection';
 
 import template from './restaurant-register.component.html';
 import style from './restaurant-register.component.scss';
@@ -48,6 +47,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _citiesSub: Subscription;
     private _paymentMethodsSub: Subscription;
     private _restaurantImagesSub: Subscription;
+    private _parameterSub: Subscription;
 
     private _countries: Observable<Country[]>;
     private _cities: Observable<City[]>;
@@ -79,6 +79,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private btnAcceptLbl: string;
     private _restaurantLegality: RestaurantLegality;
     private _tipValue: number = 0;
+
+    private max_table_number: number;
 
     /**
      * RestaurantRegisterComponent constructor
@@ -142,6 +144,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._currentDate = new Date();
         this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
         this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
+
+        this._restaurantForm.get('tables_number').disable();
     }
 
     /**
@@ -432,6 +436,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         let _lCountry: Country;
         Countries.find({ _id: _country }).fetch().forEach((c) => {
             _lCountry = c;
+            this.max_table_number = _lCountry.max_number_tables;
         });
         let _lCurrency: Currency;
         Currencies.find({ _id: _lCountry.currencyId }).fetch().forEach((cu) => {
@@ -442,6 +447,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._countryIndicative = _lCountry.indicative;
         this._queues = _lCountry.queue;
         this._cities = Cities.find({ country: _country }).zone();
+
+        this._restaurantForm.get('tables_number').enable();
     }
 
     /**
