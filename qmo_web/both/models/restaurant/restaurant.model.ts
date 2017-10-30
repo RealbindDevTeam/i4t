@@ -21,7 +21,8 @@ export interface Restaurant extends CollectionObject {
     queue: string[];
     isActive: boolean;
     firstPay: boolean;
-    freeDays: boolean;
+    freeDays?: boolean;
+    is_premium: boolean;
 }
 
 /**
@@ -127,9 +128,9 @@ export interface RestaurantSocialNetwork {
 /**
  * Restaurant legality model
  */
-export interface RestaurantLegality{
+export interface RestaurantLegality {
     _id?: string;
-    restaurant_id:string;
+    restaurant_id: string;
     // Colombia
     regime?: string;
     forced_to_invoice?: boolean;

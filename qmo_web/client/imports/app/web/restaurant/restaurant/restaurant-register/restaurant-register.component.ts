@@ -47,6 +47,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _citiesSub: Subscription;
     private _paymentMethodsSub: Subscription;
     private _restaurantImagesSub: Subscription;
+    private _parameterSub: Subscription;
 
     private _countries: Observable<Country[]>;
     private _cities: Observable<City[]>;
@@ -78,6 +79,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private btnAcceptLbl: string;
     private _restaurantLegality: RestaurantLegality;
     private _tipValue: number = 0;
+
+    private max_table_number: number;
 
     /**
      * RestaurantRegisterComponent constructor
@@ -141,6 +144,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._currentDate = new Date();
         this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
         this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
+
+        this._restaurantForm.get('tables_number').disable();
     }
 
     /**
@@ -191,7 +196,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
 
                 arrPay.forEach((pay) => {
                     if (this._restaurantForm.value.paymentMethods[pay]) {
-                        _lPaymentMethods.push( pay );
+                        _lPaymentMethods.push(pay);
                     }
                 });
 
@@ -318,11 +323,11 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                         queue: this._queues,
                         isActive: true,
                         firstPay: true,
-                        freeDays: true
+                        is_premium: false
                     });
 
                     this._restaurantLegality.restaurant_id = _lNewRestaurant;
-                    RestaurantsLegality.insert( this._restaurantLegality );
+                    RestaurantsLegality.insert(this._restaurantLegality);
 
                     if (this._createImage) {
                         uploadRestaurantImage(this._restaurantImageToInsert,
@@ -431,6 +436,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         let _lCountry: Country;
         Countries.find({ _id: _country }).fetch().forEach((c) => {
             _lCountry = c;
+            this.max_table_number = _lCountry.max_number_tables;
         });
         let _lCurrency: Currency;
         Currencies.find({ _id: _lCountry.currencyId }).fetch().forEach((cu) => {
@@ -441,6 +447,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._countryIndicative = _lCountry.indicative;
         this._queues = _lCountry.queue;
         this._cities = Cities.find({ country: _country }).zone();
+
+        this._restaurantForm.get('tables_number').enable();
     }
 
     /**
@@ -460,7 +468,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._selectedCityValue = _city;
         this._restaurantForm.controls['city'].setValue(_city);
     }
-    
+
     /**
      * When user change Image, this function allow insert in the store
      * @param {any} _fileInput
@@ -491,7 +499,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * Set restaurant legality
      * @param {RestaurantLegality} _event
      */
-    setRestaurantLegality( _event: RestaurantLegality ):void {
+    setRestaurantLegality(_event: RestaurantLegality): void {
         this._restaurantLegality = _event;
         this.addRestaurant();
     }
@@ -516,8 +524,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * Run previous function
      * @param {boolean} _event 
      */
-    runPrevious( _event : boolean ):void{
-        if( _event ){
+    runPrevious(_event: boolean): void {
+        if (_event) {
             this.previous();
         }
     }
@@ -526,7 +534,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * Set restaurant tip value
      * @param {number} _event
      */
-    setTipValue( _event: number ):void{
+    setTipValue(_event: number): void {
         this._tipValue = _event;
     }
 
