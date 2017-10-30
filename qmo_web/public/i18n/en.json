@@ -354,7 +354,8 @@
         "CLARIFICATION_MESSAGE_2": " day of each month, the first charge is up to",
         "ACCEPT_CREATION": "Accept",
         "CANCEL_CREATION": "Cancel",
-        "INITIAL_TABLES_NUMBER": "Initial tables number"
+        "INITIAL_TABLES_NUMBER": "Initial tables number, ",
+        "MAX_TABLES": "max "
     },
     "WEEK": {
         "MONDAY": "Monday",

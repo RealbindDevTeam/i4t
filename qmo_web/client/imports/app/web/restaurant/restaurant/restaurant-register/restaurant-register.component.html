@@ -46,7 +46,7 @@
                                         </div>
                                         <div style="margin-top: 1%;">
                                             <div style="width: 48%; display: inline-block;text-align: left;">
-                                                <p*ngIf="_restaurantCurrency === ''">{{'RESTAURANT_REGISTER.NO_CURRENCY_FOUND' | translate}}</p>
+                                                <p *ngIf="_restaurantCurrency === ''">{{'RESTAURANT_REGISTER.NO_CURRENCY_FOUND' | translate}}</p>
                                                     <p *ngIf="_restaurantCurrency !== ''" style="font-weight: bold;">{{'RESTAURANT_REGISTER.CURRENCY_ACCEPTED' | translate}}: {{_restaurantCurrency}}</p>
                                             </div>
                                             <md-input-container style="width: 48%;margin-left: 2%;">
@@ -58,7 +58,7 @@
                                         </div>
                                         <div>
                                             <md-input-container style="width: 48%;">
-                                                <input mdInput formControlName="tables_number" type="number" placeholder="{{'RESTAURANT_REGISTER.INITIAL_TABLES_NUMBER' | translate}} *"
+                                                <input mdInput required formControlName="tables_number" type="tel" placeholder="{{'RESTAURANT_REGISTER.INITIAL_TABLES_NUMBER' | translate}} {{'RESTAURANT_REGISTER.MAX_TABLES' | translate}} {{max_table_number}}"
                                                     minlength="1" maxlength="3" #inputInitialTables>
                                                 <md-hint align="end">{{inputInitialTables.value.length}} / 3</md-hint>
                                             </md-input-container>

@@ -15,8 +15,9 @@ export interface Country {
     restaurantPrice: number;
     tablePrice: number;
     cronValidateActive: string;
-    cronChangeFreeDays: string;
+    cronChangeFreeDays?: string;
     cronEmailChargeSoon: string;
     cronEmailExpireSoon: string;
     cronEmailRestExpired: string;
+    max_number_tables: number;
 }
