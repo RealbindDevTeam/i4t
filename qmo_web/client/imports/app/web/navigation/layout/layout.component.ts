@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { MdSidenav } from '@angular/material';
+import { MatSidenav } from '@angular/material';
 import { NavigationService } from '../navigation.service';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Observable, Subscription, Subject } from 'rxjs';
@@ -10,15 +10,12 @@ import { Menu } from '../../../../../../both/models/auth/menu.model';
 import { MenuItem } from '../menu-item';
 import { TranslateService } from '@ngx-translate/core';
 
-import template from './layout.component.html';
-import style from './layout.component.scss';
-
 @Component({
-  template,
-  styles: [style]
+  templateUrl: './layout.component.html',
+  styles: [ './layout.component.scss' ]
 })
 export class LayoutComponent implements OnInit, OnDestroy {
-  @ViewChild(MdSidenav) sideNav: MdSidenav;
+  @ViewChild(MatSidenav) sideNav: MatSidenav;
 
   private sidenavStyle       : string = 'side';
   private isHovering         : boolean = false;

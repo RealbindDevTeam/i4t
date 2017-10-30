@@ -3,17 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
-import { MaterialModule } from '@angular/material';
 import { HttpModule, Http } from '@angular/http';
-import { MdSnackBar, MdDatepicker, MdNativeDateModule } from '@angular/material';
+import { MatSnackBarModule, MatDatepickerModule, MatNativeDateModule, MatDialogModule, MatSidenavModule } from '@angular/material';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { routes, ROUTES_PROVIDERS } from './app.routes';
 import { Ng2PageScrollModule } from 'ng2-page-scroll';
 //import { AgmCoreModule } from '@agm/core';
-import { ChartModule } from 'angular2-highcharts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './web/app.web.component';
@@ -52,7 +49,6 @@ moduleDefinition = {
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot(routes),
-    MaterialModule,
     FlexLayoutModule,
     NavigationModule.forRoot(),
     HttpClientModule,
@@ -65,10 +61,12 @@ moduleDefinition = {
     }),
     SharedModule.forRoot(),
     Ng2PageScrollModule.forRoot(),
-    NgxPaginationModule,
-    ChartModule,
     BrowserAnimationsModule,
-    MdNativeDateModule
+    MatSnackBarModule, 
+    MatDatepickerModule, 
+    MatNativeDateModule,
+    MatDialogModule,
+    MatSidenavModule,
     /*AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBXJSlwWRSHoRiZdqlOfHPqxxDRdqm8_Jk'
     })*/
@@ -80,7 +78,6 @@ moduleDefinition = {
   ],
   providers: [
     ColorService,
-    MdSnackBar,
     { provide: 'AppConfigOptions', useValue: defaultOptions },
     ...ROUTES_PROVIDERS,
     CustomerGuard,
@@ -90,7 +87,6 @@ moduleDefinition = {
     ChefGuard,
     CashierGuard,
     PayuPaymenteService,
-    MdDatepicker
   ],
   bootstrap: [
     AppComponent

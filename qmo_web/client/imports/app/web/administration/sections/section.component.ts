@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Sections } from '../../../../../../both/collections/administration/section.collection';
 import { Section } from '../../../../../../both/models/administration/section.model';
@@ -30,7 +30,7 @@ export class SectionComponent implements OnInit, OnDestroy {
     private _user = Meteor.userId();
     private _sectionForm: FormGroup;
     private _restaurantsFormGroup: FormGroup = new FormGroup({});
-    private _mdDialogRef: MdDialogRef<any>;
+    private _mdDialogRef: MatDialogRef<any>;
 
     private _sections: Observable<Section[]>;
     private _restaurants: Observable<Restaurant[]>;
@@ -40,7 +40,7 @@ export class SectionComponent implements OnInit, OnDestroy {
     private _restaurantSub: Subscription;
     private _userDetailsSub: Subscription;
 
-    public _dialogRef: MdDialogRef<any>;
+    public _dialogRef: MatDialogRef<any>;
     private _showRestaurants: boolean = true;
     private titleMsg: string;
     private btnAcceptLbl: string;
@@ -51,16 +51,16 @@ export class SectionComponent implements OnInit, OnDestroy {
 
     /**
      * SectionComponent constructor
-     * @param {MdSnackBar} snackBar
-     * @param {MdDialog} _dialog
+     * @param {MatSnackBar} snackBar
+     * @param {MatDialog} _dialog
      * @param {FormBuilder} _formBuilder
      * @param {TranslateService} _translate
      * @param {NgZone} _ngZone
      * @param {Router} _router
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor(public snackBar: MdSnackBar,
-        public _dialog: MdDialog,
+    constructor(public snackBar: MatSnackBar,
+        public _dialog: MatDialog,
         private _formBuilder: FormBuilder,
         private _translate: TranslateService,
         private _ngZone: NgZone,
