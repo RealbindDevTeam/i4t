@@ -67,6 +67,14 @@ export class CustomValidators {
     }
   }
 
+  public static noSpacesValidator(control: AbstractControl) {
+    if (control.value.match(/^\S*$/)) {
+      return null;
+    } else {
+      return { 'invalidNoSpacesValidator': true };
+    }
+  }
+
   /*Password constraints
     min 6 characters
     max 20 characters

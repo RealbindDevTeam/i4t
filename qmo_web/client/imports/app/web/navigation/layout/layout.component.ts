@@ -28,7 +28,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   private _subscriptions     : Subscription[] = [];
   
   menuItemSetup: MenuItem[];
-  userLang: string;
+  _userLang: string;
 
   /**
    * LayoutComponent constructor
@@ -39,8 +39,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
   constructor( private _navigation: NavigationService, 
                private _translate: TranslateService,
                private _userLanguageService: UserLanguageService ) {
-                 _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-                 _translate.setDefaultLang( 'en' );
+    this._userLang = navigator.language.split('-')[0];
+    _translate.setDefaultLang('en');
+    _translate.use( this._userLang );
   }
 
   /**
@@ -118,23 +119,30 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.menuItemSetup = [];
 
     MeteorObservable.call('getMenus').subscribe((param: Menu[]) => {
-       for(let entry of param){
-         var nameTraduced = this.itemNameTraduction(entry.name);
-              let menuItem =  new MenuItem({title : nameTraduced, link : entry.url, icon : entry.icon_name});
-              if(typeof entry.children != "undefined"){
-                for(let entry2 of entry.children){
-                  var nameTraduced2 = this.itemNameTraduction(entry2.name)
-                  let menuItem2 = new MenuItem({title : nameTraduced2, link : entry2.url, icon : entry2.icon_name});
-                  menuItem.children.push(menuItem2);
-                }
-              }
-          this.menuItemSetup.push(menuItem);
+      for(let entry of param) {
+        let menuItem = this.menuItems(entry);
+        this.menuItemSetup.push(menuItem);
       }
 
     }, (error) => {
       alert(`Failed to to load menu ${error}`);
     });
     this._navigation.setMenuItems(this.menuItemSetup);
+  }
+
+  /**
+   * This function allow creating the menu
+   * @param _pMenuItem 
+   */
+  menuItems( _pMenuItem : any ) : MenuItem {
+    let menuItem =  new MenuItem({title : _pMenuItem.name, link : _pMenuItem.url, icon : _pMenuItem.icon_name});
+    if(_pMenuItem.children){
+      for(let _lMenuChildren of _pMenuItem.children){
+        let menuItemChild = this.menuItems(_lMenuChildren);
+        menuItem.children.push(menuItemChild);
+      }
+    }
+    return menuItem;
   }
 
   public get sidenavMode(): string {

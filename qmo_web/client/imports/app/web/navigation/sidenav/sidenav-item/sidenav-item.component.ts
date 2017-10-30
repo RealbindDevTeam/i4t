@@ -14,23 +14,23 @@ import { UserLanguageService } from '../../../../shared/services/user-language.s
   template: `
     <a md-list-item *ngIf="hasExternalLink" (click)="clicked($event)" [href]="menuItem.link" [ngClass]="{ 'active' : active }">
       <md-icon *ngIf="showIcon">{{menuItem.icon}}</md-icon>
-      <span class="title">{{ menuItem.title }}</span>
+      <span class="title">{{ menuItem.title | translate }}</span>
     </a>
     <a md-list-item *ngIf="!hasLink && !hasChildren && !hasQuery && !hasExternalLink" (click)="clicked($event)" [ngClass]="{ 'active' : active }">
       <md-icon *ngIf="showIcon">{{menuItem.icon}}</md-icon>
-      <span class="title">{{ menuItem.title }}</span>
+      <span class="title">{{ menuItem.title | translate }}</span>
     </a>
     <a md-list-item *ngIf="hasLink && !hasChildren && !hasQuery && !hasExternalLink" [routerLink]="menuItem.link" [ngClass]="{ 'active' : active }" (toggle)="true" (click)="clicked($event)">
       <md-icon *ngIf="showIcon">{{menuItem.icon}}</md-icon>
-      <span class="title">{{ menuItem.title }}</span>
+      <span class="title">{{ menuItem.title | translate }}</span>
     </a>
     <a md-list-item *ngIf="hasLink && !hasChildren && hasQuery && !hasExternalLink" [routerLink]="menuItem.link" [queryParams]="menuItem.queryParams" [ngClass]="{ 'active' : active }" (toggle)="true">
       <md-icon *ngIf="showIcon">{{menuItem.icon}}</md-icon>
-      <span class="title">{{ menuItem.title }}</span>
+      <span class="title">{{ menuItem.title | translate }}</span>
     </a>
     <a md-list-item class="nav-dropdown" *ngIf="hasChildren" [ngClass]="{ 'active' : active }" (click)="clicked($event)">
       <md-icon *ngIf="showIcon">{{menuItem.icon}}</md-icon>
-      <span class="title">{{ menuItem.title }}</span>
+      <span class="title">{{ menuItem.title | translate }}</span>
       <span class="app-flex-filler"></span>
       <i class="material-icons" *ngIf="!menuItem.showOnly"></i>
     </a>
@@ -56,7 +56,7 @@ export class SidenavItemComponent implements AfterViewInit, OnDestroy {
   private _active: boolean = false;
   private _currentRoute: string;
 
-  userLang: string;
+  _userLang: string;
 
   /**
    * SidenavItemComponent Constructor
@@ -71,9 +71,12 @@ export class SidenavItemComponent implements AfterViewInit, OnDestroy {
     private _activatedRoute: ActivatedRoute,
     private _translate: TranslateService,
     private _userLanguageService: UserLanguageService,
-    private cdRef: ChangeDetectorRef) {
-    _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
-    _translate.setDefaultLang('en');
+    private cdRef: ChangeDetectorRef,
+    private translate: TranslateService) {
+
+    this._userLang = navigator.language.split('-')[0];
+    translate.setDefaultLang('en');
+    translate.use( this._userLang );
   }
 
   ngAfterViewInit() {
@@ -239,7 +242,8 @@ export class SidenavItemComponent implements AfterViewInit, OnDestroy {
     if (!this.menuItem) {
       return false;
     }
-    return this.menuItem.children.length > 0;
+    //return this.menuItem.children.length > 0;
+    return (this.menuItem.children ? this.menuItem.children.length : 0) > 0;
   }
 
   get hasQuery(): boolean {

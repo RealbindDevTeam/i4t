@@ -35,7 +35,7 @@ import { CashierGuard } from './web/auth/navigation/cashier-guard.service';
 import { PayuPaymenteService } from './web/payment/payu-payment-service/payu-payment.service';
 
 const defaultOptions: AppConfigOptions = {
-  appTitle: 'QMO',
+  appTitle: 'iurest',
   openSidenavStyle: 'side',
   closedSidenavStyle: 'icon overlay'
 };

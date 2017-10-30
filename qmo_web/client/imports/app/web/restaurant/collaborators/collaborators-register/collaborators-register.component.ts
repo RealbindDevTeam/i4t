@@ -89,7 +89,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
             restaurant_work: new FormControl('', [Validators.required]),
             role: new FormControl('', [Validators.required]),
             phone: new FormControl('', [Validators.minLength(1), Validators.maxLength(40)]),
-            username: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
+            username: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(20), CustomValidators.noSpacesValidator]),
             email: new FormControl(''),
             password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]),
             confirmPassword: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]),
