@@ -25,7 +25,7 @@
                                                 <img src="{{ getItemImageThumb(item._id) }}">
                                                 <span class="mat-card-title">{{item.name}}</span>
                                                 <button matTooltip="{{'ORDER_CREATE.VIEW_DETAIL' | translate}}" mat-fab class="btn-position-edition" (click)="showItemInformation(item)">
-                                                    <mat-icon style="color: white;" class="md-24">search</mat-icon>
+                                                    <mat-icon style="color: white;" class="mat-24">search</mat-icon>
                                                 </button>
                                             </div>
                                             <mat-card-content>
@@ -33,11 +33,11 @@
                                                 <p *ngIf="item.description.length <= 50">{{item.description}}</p>
                                                 <ul class="list">
                                                     <li *ngIf="!getItemAvailability(item._id)" class="available-button">
-                                                        <mat-icon class="md-24" class="vertical-align-middle">clear</mat-icon>
+                                                        <mat-icon class="mat-24" class="vertical-align-middle">clear</mat-icon>
                                                         <span>{{'ORDER_CREATE.UNAVAILABLE' | translate}}</span>
                                                     </li>
                                                     <li *ngIf="getItemAvailability(item._id)" class="price-button">
-                                                        <mat-icon class="md-24" class="vertical-align-middle">done</mat-icon>
+                                                        <mat-icon class="mat-24" class="vertical-align-middle">done</mat-icon>
                                                         <span>{{ getItemPrice( item ) }} {{_currencyCode}}</span>
                                                     </li>
                                                 </ul>
@@ -54,7 +54,7 @@
                                                         <img src="{{ getItemImageThumb(item._id) }}">
                                                         <span class="mat-card-title">{{item.name}}</span>
                                                         <button matTooltip="{{'ORDER_CREATE.VIEW_DETAIL' | translate}}" mat-fab class="btn-position-edition" (click)="showItemInformation(item)">
-                                                            <mat-icon style="color: white;" class="md-24">search</mat-icon>
+                                                            <mat-icon style="color: white;" class="mat-24">search</mat-icon>
                                                         </button>
                                                     </div>
                                                     <mat-card-content>
@@ -62,11 +62,11 @@
                                                         <p *ngIf="item.description.length <= 50">{{item.description}}</p>
                                                         <ul class="list">
                                                             <li *ngIf="!getItemAvailability(item._id)" class="available-button">
-                                                                <mat-icon class="md-24" class="vertical-align-middle">clear</mat-icon>
+                                                                <mat-icon class="mat-24" class="vertical-align-middle">clear</mat-icon>
                                                                 <span>{{'ORDER_CREATE.UNAVAILABLE' | translate}}</span>
                                                             </li>
                                                             <li *ngIf="getItemAvailability(item._id)" class="price-button">
-                                                                <mat-icon class="md-24" class="vertical-align-middle">done</mat-icon>
+                                                                <mat-icon class="mat-24" class="vertical-align-middle">done</mat-icon>
                                                                 <span>{{ getItemPrice( item ) }} {{_currencyCode}}</span>
                                                             </li>
                                                         </ul>
@@ -83,7 +83,7 @@
                                                                 <img src="{{ getItemImageThumb(item._id) }}">
                                                                 <span class="mat-card-title">{{item.name}}</span>
                                                                 <button matTooltip="{{'ORDER_CREATE.VIEW_DETAIL' | translate}}" mat-fab class="btn-position-edition" (click)="showItemInformation(item)">
-                                                                    <mat-icon style="color: white;" class="md-24">search</mat-icon>
+                                                                    <mat-icon style="color: white;" class="mat-24">search</mat-icon>
                                                                 </button>
                                                             </div>
                                                             <mat-card-content>
@@ -91,11 +91,11 @@
                                                                 <p *ngIf="item.description.length <= 50">{{item.description}}</p>
                                                                 <ul class="list">
                                                                     <li *ngIf="!getItemAvailability(item._id)" class="available-button">
-                                                                        <mat-icon class="md-24" class="vertical-align-middle">clear</mat-icon>
+                                                                        <mat-icon class="mat-24" class="vertical-align-middle">clear</mat-icon>
                                                                         <span>{{'ORDER_CREATE.UNAVAILABLE' | translate}}</span>
                                                                     </li>
                                                                     <li *ngIf="getItemAvailability(item._id)" class="price-button">
-                                                                        <mat-icon class="md-24" class="vertical-align-middle">done</mat-icon>
+                                                                        <mat-icon class="mat-24" class="vertical-align-middle">done</mat-icon>
                                                                         <span>{{ getItemPrice( item ) }} {{_currencyCode}}</span>
                                                                     </li>
                                                                 </ul>

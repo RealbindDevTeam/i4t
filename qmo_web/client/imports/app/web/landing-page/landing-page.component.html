@@ -1,6 +1,6 @@
 <div id="sidenav-bg" class="sidenav-bg"></div>
 
-<mat-toolbar class="home-md-toolbar opacity animated fadeInDown" data-animation="fadeInDown" data-timeout="1000">
+<mat-toolbar class="home-mat-toolbar opacity animated fadeInDown" data-animation="fadeInDown" data-timeout="1000">
     <div class="nav-wrapper container">
         <a id="logo-container" routerLink="/" class="brand-logo">
             <img src="/images/logo_iurest_white.png" alt="iurest">
@@ -21,7 +21,7 @@
             </li>
 
             <div style="padding-top: 70px; position: fixed">
-                <mat-menu #menu="matMenu" id="md-overlay-pane">
+                <mat-menu #menu="matMenu" id="mat-overlay-pane">
                     <button mat-menu-item disabled>{{'LANDING.LANGUAGE_SELECT' | translate}}</button>
                     <button mat-menu-item *ngFor="let lang of _languages | async" (click)="langChange(lang.language_code)" value="{{lang.language_code}}">{{lang.name}}</button>
                 </mat-menu>
@@ -60,7 +60,7 @@
                     <mat-icon style="float:right; line-height: inherit">keyboard_arrow_down</mat-icon>
                 </a>
                 <div style="padding-top: 70px; position: fixed">
-                    <mat-menu #menu="matMenu" id="md-overlay-pane">
+                    <mat-menu #menu="matMenu" id="mat-overlay-pane">
                         <button mat-menu-item disabled>{{'LANDING.LANGUAGE_SELECT' | translate}}</button>
                         <button mat-menu-item *ngFor="let lang of _languages | async" (click)="langChange(lang.language_code)" value="{{lang.language_code}}">{{lang.name}}</button>
                     </mat-menu>
@@ -131,7 +131,7 @@
             </li>
 
             <div style="padding-top: 70px; position: fixed">
-                <mat-menu #menu="matMenu" id="md-overlay-pane">
+                <mat-menu #menu="matMenu" id="mat-overlay-pane">
                     <button mat-menu-item disabled>{{'LANDING.LANGUAGE_SELECT' | translate}}</button>
                     <button mat-menu-item *ngFor="let lang of _languages | async" (click)="langChange(lang.language_code)" value="{{lang.language_code}}">{{lang.name}}</button>
                 </mat-menu>

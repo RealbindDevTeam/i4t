@@ -1,10 +1,10 @@
-@import "./public/scss/_variables.scss";
-@import "./public/scss/_colors.scss";
-@import "./public/scss/_flex.scss";
-@import "./public/scss/_navigation.scss";
-@import "./public/scss/_typography.scss";
-@import "./public/scss/_cards.scss";
-@import "./public/scss/_tables.scss";
+@import "../public/scss/_variables.scss";
+@import "../public/scss/_colors.scss";
+@import "../public/scss/_flex.scss";
+@import "../public/scss/_navigation.scss";
+@import "../public/scss/_typography.scss";
+@import "../public/scss/_cards.scss";
+@import "../public/scss/_tables.scss";
 
 /***************
   HTML Styles
@@ -59,7 +59,7 @@ th {
 /*
   Card
 */
-md-card-title {
+mat-card-title {
     color: $button-color-secundary;
 }
 
@@ -67,7 +67,7 @@ md-card-title {
   CheckBox
 */
 
-.md-checkbox-checked .md-checkbox-background {
+.mat-checkbox-checked .mat-checkbox-background {
     background-color: $primary-color;
 }
 
@@ -75,7 +75,7 @@ md-card-title {
   Toolbar Component
 */
 
-md-toolbar {
+mat-toolbar {
   background-color: $primary-color;
   color: $white_color-text;
 }
@@ -83,26 +83,26 @@ md-toolbar {
 /*
   Toggle Component
 */
-md-slide-toggle.md-checked .md-slide-toggle-thumb {
+mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
     background-color: $primary-color;
 }
 
-md-slide-toggle.md-checked .md-slide-toggle-bar {
+mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
     background-color: $primary-color-hover;
 }
 
-md-slide-toggle.md-checked .md-slide-toggle-focused {
+mat-slide-toggle.mat-checked .mat-slide-toggle-focused {
     background-color: $primary-color-hover;
 }
 
 /*
   Toggle Component Primary
 */
-md-slide-toggle.md-primary.md-checked .md-slide-toggle-thumb {
+mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-thumb {
     background-color: $primary-color;
 }
 
-md-slide-toggle.md-primary.md-checked .md-slide-toggle-bar {
+mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar {
     background-color: $primary-color-hover;
 }
 
@@ -110,11 +110,11 @@ md-slide-toggle.md-primary.md-checked .md-slide-toggle-bar {
   Wizard
 */
 
-md-ink-bar {
+mat-ink-bar {
     background-color: $primary-color;
 }
 
-.md-tab-label:focus {
+.mat-tab-label:focus {
     background-color: $primary-color-hover;
     $color-black: "0,0,0";
     $select-background-color: transparent;
@@ -431,7 +431,7 @@ md-ink-bar {
   border: 0;
 }
 
-.md-tooltip {
+.mat-tooltip {
     font-size: $tooltip-fontsize-sm !important;
 }
 

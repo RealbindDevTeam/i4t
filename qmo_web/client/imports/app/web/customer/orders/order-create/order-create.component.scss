@@ -48,7 +48,7 @@ $menu-navegation-color : #F5F5F5;
                     width: 225px;
                     height: 100%;
                     
-                    md-nav-list {
+                    mat-nav-list {
                         position: relative;
                         max-height: calc(100vh - 120px);
                         overflow-y: scroll;
@@ -151,7 +151,7 @@ $menu-navegation-color : #F5F5F5;
                         }
                     }
 
-                    md-nav-list > a {
+                    mat-nav-list > a {
                         align-items: center;
                         background-color: #EF5350;
                         color: #fff;
@@ -164,7 +164,7 @@ $menu-navegation-color : #F5F5F5;
                             font-size: 14px;
                         }
 
-                        md-icon {
+                        mat-icon {
                             height: 18px;
                             font-size: 18px;
                         }
@@ -376,6 +376,6 @@ $menu-navegation-color : #F5F5F5;
     }
  }
 
-md-tab-group {
+mat-tab-group {
     width: 348px;
 }

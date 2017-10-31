@@ -13,7 +13,7 @@
                     <h3 class="user-name">{{ getUserName(payment.userId) }}</h3>
                     <h3 class="total-payment">{{ 'PAYMENT_CONFIRM.TOTAL' | translate }} {{payment.totalToPayment}} {{ getPaymentCurrency(payment.currencyId)}}</h3>
                     <div class="received-button">
-                        <button mat-raised-button *ngIf="!payment.received" class="active-button" (click)="updateReceivedStatus(payment)"><mat-icon class="md-24">check</mat-icon>{{ 'PAYMENT_CONFIRM.RECEIVED' | translate }}</button>
+                        <button mat-raised-button *ngIf="!payment.received" class="active-button" (click)="updateReceivedStatus(payment)"><mat-icon class="mat-24">check</mat-icon>{{ 'PAYMENT_CONFIRM.RECEIVED' | translate }}</button>
                         <button mat-raised-button *ngIf="payment.received" class="inactive-button" (click)="updateReceivedStatus(payment)">{{ 'PAYMENT_CONFIRM.NO_RECEIVED' | translate }}</button>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                             <div class="order-payment">
                                 <p class="order-payment-info">{{order.totalPayment}} {{ getPaymentCurrency(payment.currencyId)}}</p>
                             </div>
-                            <button mat-icon-button (click)="showOrderDetail(or, inPay, inOrd)"> <mat-icon class="md-24">keyboard_arrow_right</mat-icon> </button>
+                            <button mat-icon-button (click)="showOrderDetail(or, inPay, inOrd)"> <mat-icon class="mat-24">keyboard_arrow_right</mat-icon> </button>
                             <div class="items" *ngIf="_paymentIndex === inPay && _orderIndex === inOrd">
                                 <div *ngIf="(order.items.length > 0)">
                                     <span *ngFor="let it of order.items">
