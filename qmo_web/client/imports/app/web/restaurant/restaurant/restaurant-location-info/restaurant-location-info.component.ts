@@ -7,7 +7,7 @@ import { Restaurant } from '../../../../../../../both/models/restaurant/restaura
 @Component({
     selector: 'restaurant-location-info',
     templateUrl: './restaurant-location-info.component.html',
-    styles: [ './restaurant-location-info.component.scss' ],
+    styleUrls: [ './restaurant-location-info.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class RestaurantLocationInfoComponent implements OnInit {

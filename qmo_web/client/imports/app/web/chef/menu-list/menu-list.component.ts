@@ -30,7 +30,7 @@ import { Restaurants } from '../../../../../../both/collections/restaurant/resta
 @Component({
     selector: 'menu-list',
     templateUrl: './menu-list.component.html',
-    styles: [ './menu-list.component.scss' ]
+    styleUrls: [ './menu-list.component.scss' ]
 })
 export class MenuListComponent implements OnInit, OnDestroy {
 

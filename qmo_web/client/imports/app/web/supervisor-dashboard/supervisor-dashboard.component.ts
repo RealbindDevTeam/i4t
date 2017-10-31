@@ -20,7 +20,7 @@ import { Currencies } from '../../../../../both/collections/general/currency.col
 @Component({
     selector: 'supervisor-dashboard',
     templateUrl: './supervisor-dashboard.component.html',
-    styles: [ './supervisor-dashboard.component.scss' ]
+    styleUrls: [ './supervisor-dashboard.component.scss' ]
 })
 export class SupervisorDashboardComponent implements OnInit, OnDestroy {
 

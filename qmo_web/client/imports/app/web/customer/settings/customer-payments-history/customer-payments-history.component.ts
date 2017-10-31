@@ -17,7 +17,7 @@ let jsPDF = require('jspdf');
 @Component({
     selector: 'iu-customer-payments-history',
     templateUrl: './customer-payments-history.component.html',
-    styles: [ './customer-payments-history.component.scss' ]
+    styleUrls: [ './customer-payments-history.component.scss' ]
 })
 export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
 

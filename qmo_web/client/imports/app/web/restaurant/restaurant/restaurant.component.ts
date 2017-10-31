@@ -19,7 +19,7 @@ import { RestaurantEditionComponent } from './restaurant-edition/restaurant-edit
 @Component({
     selector: 'restaurant',
     templateUrl: './restaurant.component.html',
-    styles: [ './restaurant.component.scss' ]
+    styleUrls: [ './restaurant.component.scss' ]
 })
 export class RestaurantComponent implements OnInit, OnDestroy {
 

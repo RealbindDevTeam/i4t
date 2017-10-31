@@ -22,7 +22,7 @@ import { GarnishFoodCol } from '../../../../../../../both/collections/administra
 @Component({
     selector: 'send-order-confirm',
     templateUrl: './send-order-confirm.component.html',
-    styles: [ './send-order-confirm.component.scss' ],
+    styleUrls: [ './send-order-confirm.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class SendOrderConfirmComponent implements OnInit, OnDestroy{

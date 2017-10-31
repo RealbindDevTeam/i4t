@@ -8,7 +8,7 @@ import { UserLanguageService } from '../../../../shared/services/user-language.s
 @Component({
     selector: 'verify-result-confirm',
     templateUrl: './verify-result.component.html',
-    styles: [ './verify-result.component.scss' ],
+    styleUrls: [ './verify-result.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class VerifyResultComponent implements OnInit, OnDestroy {

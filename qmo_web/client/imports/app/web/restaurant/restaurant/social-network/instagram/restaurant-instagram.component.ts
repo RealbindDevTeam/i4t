@@ -11,7 +11,7 @@ import { AlertConfirmComponent } from '../../../../../web/general/alert-confirm/
 @Component({
     selector: 'restaurant-instagram',
     templateUrl: './restaurant-instagram.component.html',
-    styles: [ './restaurant-instagram.component.scss' ],
+    styleUrls: [ './restaurant-instagram.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class RestaurantInstagramComponent implements OnInit {

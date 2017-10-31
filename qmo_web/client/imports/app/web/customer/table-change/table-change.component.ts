@@ -16,7 +16,7 @@ import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-
 @Component({
     selector: 'table-change',
     templateUrl: './table-change.component.html',
-    styles: [ './table-change.component.scss' ]
+    styleUrls: [ './table-change.component.scss' ]
 })
 export class TableChangeComponent implements OnInit, OnDestroy {
 

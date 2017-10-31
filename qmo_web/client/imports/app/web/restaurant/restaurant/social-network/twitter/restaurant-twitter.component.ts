@@ -11,7 +11,7 @@ import { AlertConfirmComponent } from '../../../../../web/general/alert-confirm/
 @Component({
     selector: 'restaurant-twitter',
     templateUrl: './restaurant-twitter.component.html',
-    styles: [ './restaurant-twitter.component.scss' ],
+    styleUrls: [ './restaurant-twitter.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class RestaurantTwitterComponent implements OnInit {

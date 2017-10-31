@@ -21,7 +21,7 @@ import { TableDetailComponent } from './table-detail/table-detail.component';
 @Component({
     selector: 'restaurant-table-control',
     templateUrl: './restaurant-table-control.component.html',
-    styles: [ './restaurant-table-control.component.scss' ]
+    styleUrls: [ './restaurant-table-control.component.scss' ]
 })
 export class RestaurantTableControlComponent implements OnInit, OnDestroy {
 

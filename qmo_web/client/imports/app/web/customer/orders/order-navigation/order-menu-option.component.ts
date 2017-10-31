@@ -27,7 +27,7 @@ import { StringUtils } from '../../../../shared/utils/string-utils';
       <order-menu-option *ngFor="let orderMenuChild of orderMenu.children" (idToEvaluate)="evaluateId($event)" [orderMenu]="orderMenuChild" [level]="level + 1" [parent]="_this"></order-menu-option>
     </mat-nav-list>
   `,
-  styles: [ './order-menu-option.component.scss' ]
+  styleUrls: [ './order-menu-option.component.scss' ]
 })
 export class OrderMenuOptionComponent implements AfterViewInit, OnDestroy{
     @ViewChildren(OrderMenuOptionComponent) children: QueryList<OrderMenuOptionComponent>;

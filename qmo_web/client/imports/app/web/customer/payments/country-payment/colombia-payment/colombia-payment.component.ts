@@ -21,7 +21,7 @@ import { AlertConfirmComponent } from '../../../../../web/general/alert-confirm/
 @Component({
     selector: 'iu-colombia-payment',
     templateUrl: './colombia-payment.component.html',
-    styles: [ './colombia-payment.component.scss' ]
+    styleUrls: [ './colombia-payment.component.scss' ]
 })
 export class ColombiaPaymentComponent implements OnInit, OnDestroy {
 

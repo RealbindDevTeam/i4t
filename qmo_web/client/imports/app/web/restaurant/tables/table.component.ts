@@ -19,7 +19,7 @@ let jsPDF = require('jspdf');
 @Component({
   selector: 'iu-table',
   templateUrl: './table.component.html',
-  styles: [ './table.component.scss' ]
+  styleUrls: [ './table.component.scss' ]
 })
 export class TableComponent implements OnInit, OnDestroy {
 

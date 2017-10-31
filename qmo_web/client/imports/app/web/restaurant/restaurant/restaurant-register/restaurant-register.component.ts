@@ -30,7 +30,7 @@ import * as QRious from 'qrious';
 @Component({
     selector: 'restaurant-register',
     templateUrl: './restaurant-register.component.html',
-    styles: [ './restaurant-register.component.scss' ]
+    styleUrls: [ './restaurant-register.component.scss' ]
 })
 export class RestaurantRegisterComponent implements OnInit, OnDestroy {
 

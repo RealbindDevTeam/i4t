@@ -22,7 +22,7 @@ import { PaymentHistory } from '../../../../../../both/models/payment/payment-hi
 @Component({
     selector: 'restaurant-list',
     templateUrl: './restaurant-list.component.html',
-    styles: [ './restaurant-list.component.scss' ]
+    styleUrls: [ './restaurant-list.component.scss' ]
 })
 export class RestaurantListComponent implements OnInit, OnDestroy {
 

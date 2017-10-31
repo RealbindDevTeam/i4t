@@ -6,7 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 @Component({
     selector: 'disable-confirm',
     templateUrl: './disable-confirm.component.html',
-    styles: [ './disable-confirm.component.scss' ]
+    styleUrls: [ './disable-confirm.component.scss' ]
 })
 
 export class DisableConfirmComponent {

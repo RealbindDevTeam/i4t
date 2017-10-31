@@ -21,7 +21,7 @@ import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-
 @Component({
     selector: 'restaurant-exit',
     templateUrl: './restaurant-exit.component.html',
-    styles: [ './restaurant-exit.component.scss' ]
+    styleUrls: [ './restaurant-exit.component.scss' ]
 })
 export class RestaurantExitComponent implements OnInit, OnDestroy {
 

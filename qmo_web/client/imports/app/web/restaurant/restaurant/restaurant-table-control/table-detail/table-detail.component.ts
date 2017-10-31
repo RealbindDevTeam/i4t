@@ -20,7 +20,7 @@ import { PenalizeCustomerComponent } from './penalize-customer/penalize-customer
 @Component({
     selector: 'table-detail',
     templateUrl: './table-detail.component.html',
-    styles: [ './table-detail.component.scss' ]
+    styleUrls: [ './table-detail.component.scss' ]
 })
 export class TableDetailComponent implements OnInit, OnDestroy {
 

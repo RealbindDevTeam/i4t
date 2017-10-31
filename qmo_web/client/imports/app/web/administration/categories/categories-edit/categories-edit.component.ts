@@ -16,7 +16,7 @@ import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/ale
 @Component({
     selector: 'categories-edit',
     templateUrl: './categories-edit.component.html',
-    styles: [ './categories-edit.component.scss' ],
+    styleUrls: [ './categories-edit.component.scss' ],
     providers:[ UserLanguageService ]
 })
 export class CategoriesEditComponent implements OnInit {

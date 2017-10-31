@@ -6,7 +6,7 @@ import { UserLanguageService } from '../../../../shared/services/user-language.s
 @Component({
     selector: 'restaurant-legality',
     templateUrl: './restaurant-legality.component.html',
-    styles: [ './restaurant-legality.component.scss' ]
+    styleUrls: [ './restaurant-legality.component.scss' ]
 })
 export class RestaurantLegalityComponent {
 

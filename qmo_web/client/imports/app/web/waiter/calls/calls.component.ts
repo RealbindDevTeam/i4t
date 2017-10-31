@@ -21,7 +21,7 @@ import { RestaurantExitConfirmComponent } from './restaurant-exit-confirm/restau
 @Component({
     selector: 'calls',
     templateUrl: './calls.component.html',
-    styles: [ './calls.component.scss' ]
+    styleUrls: [ './calls.component.scss' ]
 })
 export class CallsComponent implements OnInit, OnDestroy {
 

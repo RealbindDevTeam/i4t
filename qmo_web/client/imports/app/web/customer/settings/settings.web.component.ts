@@ -25,7 +25,7 @@ import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-
 @Component({
     selector: 'settings',
     templateUrl: './settings.web.component.html',
-    styles: [ './settings.web.component.scss' ]
+    styleUrls: [ './settings.web.component.scss' ]
 })
 export class SettingsWebComponent implements OnInit, OnDestroy {
 

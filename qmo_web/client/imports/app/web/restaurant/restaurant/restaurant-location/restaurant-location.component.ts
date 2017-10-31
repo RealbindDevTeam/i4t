@@ -13,7 +13,7 @@ import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/ale
 @Component({
   selector: 'restaurant-location',
   templateUrl: './restaurant-location.component.html',
-  styles: [ './restaurant-location.component.scss' ],
+  styleUrls: [ './restaurant-location.component.scss' ],
   providers: [ UserLanguageService ]
 })
 export class RestaurantLocationComponent implements OnInit, OnDestroy {

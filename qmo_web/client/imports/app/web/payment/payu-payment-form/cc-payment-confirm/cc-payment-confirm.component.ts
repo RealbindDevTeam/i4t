@@ -8,7 +8,7 @@ import { UserLanguageService } from '../../../../shared/services/user-language.s
 @Component({
     selector: 'cc-payment-confirm',
     templateUrl: './cc-payment-confirm.component.html',
-    styles: [ './cc-payment-confirm.component.scss' ],
+    styleUrls: [ './cc-payment-confirm.component.scss' ],
     providers: [UserLanguageService]
 })
 export class CcPaymentConfirmComponent implements OnInit, OnDestroy {

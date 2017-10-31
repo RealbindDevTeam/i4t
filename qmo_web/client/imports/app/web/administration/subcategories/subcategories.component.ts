@@ -21,7 +21,7 @@ import { UserDetail } from '../../../../../../both/models/auth/user-detail.model
 @Component({
     selector: 'subcategory',
     templateUrl: './subcategories.component.html',
-    styles: [ './subcategories.component.scss' ]
+    styleUrls: [ './subcategories.component.scss' ]
 })
 export class SubcategoryComponent implements OnInit, OnDestroy {
 

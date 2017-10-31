@@ -7,7 +7,7 @@ import { Restaurant } from '../../../../../../../both/models/restaurant/restaura
 @Component({
     selector: 'resturant-schedule',
     templateUrl: './restaurant-schedule.component.html',
-    styles: [ './restaurant-schedule.component.scss' ],
+    styleUrls: [ './restaurant-schedule.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class RestaurantScheduleComponent{

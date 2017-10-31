@@ -6,7 +6,7 @@ import { UserLanguageService } from '../../../shared/services/user-language.serv
 @Component({
     selector: 'go-to-store',
     templateUrl: './go-to-store.component.html',
-    styles: [ './go-to-store.component.scss' ]
+    styleUrls: [ './go-to-store.component.scss' ]
 })
 
 export class GoToStoreComponent {

@@ -12,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './layout.component.html',
-  styles: [ './layout.component.scss' ]
+  styleUrls: [ './layout.component.scss' ]
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   @ViewChild(MatSidenav) sideNav: MatSidenav;

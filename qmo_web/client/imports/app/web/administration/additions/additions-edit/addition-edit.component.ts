@@ -20,7 +20,7 @@ import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/ale
 @Component({
     selector: 'addition-edit',
     templateUrl: './addition-edit.component.html',
-    styles: [ './addition-edit.component.scss' ],
+    styleUrls: [ './addition-edit.component.scss' ],
     providers:[ UserLanguageService ]
 })
 export class AdditionEditComponent implements OnInit {

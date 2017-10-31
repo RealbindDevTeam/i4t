@@ -10,7 +10,7 @@ import { RestaurantSchedule } from '../../../../../../both/models/restaurant/res
 @Component({
     selector: 'iu-schedule',
     templateUrl: './schedule.component.html',
-    styles: [ './schedule.component.scss' ]
+    styleUrls: [ './schedule.component.scss' ]
 })
 export class IurestScheduleComponent implements OnInit, OnDestroy {
 

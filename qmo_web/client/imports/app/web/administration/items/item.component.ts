@@ -21,7 +21,7 @@ import { UserDetail } from '../../../../../../both/models/auth/user-detail.model
 @Component({
     selector: 'item',
     templateUrl: './item.component.html',
-    styles: [ './item.component.scss' ]
+    styleUrls: [ './item.component.scss' ]
 })
 export class ItemComponent implements OnInit, OnDestroy {
 

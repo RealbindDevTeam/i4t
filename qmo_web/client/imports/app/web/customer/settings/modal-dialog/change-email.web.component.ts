@@ -11,7 +11,7 @@ import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/ale
 @Component({
   selector: 'change-email',
   templateUrl: './change-email.web.component.html',
-  styles: [],
+  styleUrls: [],
   providers: [ UserLanguageService ]
 })
 export class ChangeEmailWebComponent implements OnInit {

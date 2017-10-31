@@ -28,7 +28,7 @@ import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/ale
 @Component({
     selector: 'order-create',
     templateUrl: './order-create.component.html',
-    styles: [ './order-create.component.scss' ]
+    styleUrls: [ './order-create.component.scss' ]
 })
 export class OrderCreateComponent implements OnInit, OnDestroy {
 

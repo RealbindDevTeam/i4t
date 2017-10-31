@@ -10,7 +10,7 @@ import { Languages } from '../../../../../both/collections/settings/language.col
 @Component({
     selector: 'landing-page',
     templateUrl: './landing-page.component.html',
-    styles: [ './landing-page.component.scss' ]
+    styleUrls: [ './landing-page.component.scss' ]
 })
 export class LandingPageComponent implements OnInit, OnDestroy {
 

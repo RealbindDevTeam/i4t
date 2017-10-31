@@ -24,7 +24,7 @@ import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/ale
 @Component({
     selector: 'order-payment-translate',
     templateUrl: './order-payment-translate.component.html',
-    styles: [ './order-payment-translate.component.scss' ]
+    styleUrls: [ './order-payment-translate.component.scss' ]
 })
 export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
 

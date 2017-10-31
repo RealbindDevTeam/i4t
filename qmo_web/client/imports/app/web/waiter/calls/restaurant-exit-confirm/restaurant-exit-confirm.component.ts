@@ -26,7 +26,7 @@ import { Account } from '../../../../../../../both/models/restaurant/account.mod
 @Component({
     selector: 'restaurant-exit-confirm',
     templateUrl: './restaurant-exit-confirm.component.html',
-    styles: [ './restaurant-exit-confirm.component.scss' ],
+    styleUrls: [ './restaurant-exit-confirm.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class RestaurantExitConfirmComponent implements OnInit, OnDestroy {

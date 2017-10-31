@@ -19,7 +19,7 @@ import { Parameter } from '../../../../../../both/models/general/parameter.model
 @Component({
     selector: 'monthly-payment',
     templateUrl: './monthly-payment.component.html',
-    styles: [ './monthly-payment.component.scss' ]
+    styleUrls: [ './monthly-payment.component.scss' ]
 })
 export class MonthlyPaymentComponent implements OnInit, OnDestroy {
 

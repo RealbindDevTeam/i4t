@@ -15,7 +15,7 @@ import { UserProfileImage } from '../../../../../../both/models/auth/user-profil
 @Component({
   selector: 'app-topnav',
   templateUrl: './topnav.component.html',
-  styles: [ './topnav.component.scss' ]
+  styleUrls: [ './topnav.component.scss' ]
 })
 export class TopnavComponent implements OnInit, OnDestroy {
 

@@ -8,7 +8,7 @@ import { Parameters } from '../../../../../../../../both/collections/general/par
 @Component({
     selector: 'create-confirm',
     templateUrl: './create-confirm.component.html',
-    styles: [ './create-confirm.component.scss' ]
+    styleUrls: [ './create-confirm.component.scss' ]
 })
 export class CreateConfirmComponent implements OnInit, OnDestroy{
 

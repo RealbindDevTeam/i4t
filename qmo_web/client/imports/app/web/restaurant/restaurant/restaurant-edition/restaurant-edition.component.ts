@@ -25,7 +25,7 @@ import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/ale
 @Component({
     selector: 'restaurant-edition',
     templateUrl: './restaurant-edition.component.html',
-    styles: [ './restaurant-edition.component.scss' ]
+    styleUrls: [ './restaurant-edition.component.scss' ]
 })
 export class RestaurantEditionComponent implements OnInit, OnDestroy {
 

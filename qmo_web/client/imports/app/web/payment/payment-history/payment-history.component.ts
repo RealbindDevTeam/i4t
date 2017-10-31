@@ -33,7 +33,7 @@ let base64 = require('base-64');
 @Component({
     selector: 'payment-history',
     templateUrl: './payment-history.component.html',
-    styles: [ './payment-history.component.scss' ]
+    styleUrls: [ './payment-history.component.scss' ]
 })
 export class PaymentHistoryComponent implements OnInit, OnDestroy {
 

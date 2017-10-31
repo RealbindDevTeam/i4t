@@ -13,7 +13,7 @@ import { UserDetail } from '../../../../../../both/models/auth/user-detail.model
 @Component({
     selector: 'payments',
     templateUrl: './payments.component.html',
-    styles: [ './payments.component.scss' ]
+    styleUrls: [ './payments.component.scss' ]
 })
 export class PaymentsComponent implements OnInit, OnDestroy {
 

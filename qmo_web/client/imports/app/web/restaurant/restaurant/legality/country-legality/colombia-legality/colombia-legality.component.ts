@@ -13,7 +13,7 @@ import { AlertConfirmComponent } from '../../../../../../web/general/alert-confi
 @Component({
     selector: 'colombia-legality',
     templateUrl: './colombia-legality.component.html',
-    styles: [ './colombia-legality.component.scss' ]
+    styleUrls: [ './colombia-legality.component.scss' ]
 })
 export class ColombiaLegalityComponent implements OnInit, OnDestroy {
 

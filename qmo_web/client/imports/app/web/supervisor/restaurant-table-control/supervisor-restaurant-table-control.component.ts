@@ -20,7 +20,7 @@ import { Users} from '../../../../../../both/collections/auth/user.collection';
 @Component({
     selector: 'supervisor-restaurant-table-control',
     templateUrl: './supervisor-restaurant-table-control.component.html',
-    styles: [ './supervisor-restaurant-table-control.component.scss' ]
+    styleUrls: [ './supervisor-restaurant-table-control.component.scss' ]
 })
 export class SupervisorRestaurantTableControlComponent implements OnInit, OnDestroy {
 

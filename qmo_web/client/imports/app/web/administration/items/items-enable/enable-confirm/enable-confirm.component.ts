@@ -12,7 +12,7 @@ import { Items } from '../../../../../../../../both/collections/administration/i
 @Component({
     selector: 'enable-confirm',
     templateUrl: './enable-confirm.component.html',
-    styles: [ './enable-confirm.component.scss' ],
+    styleUrls: [ './enable-confirm.component.scss' ],
     providers: [UserLanguageService]
 })
 

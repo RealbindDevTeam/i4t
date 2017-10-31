@@ -24,7 +24,7 @@ import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-
 @Component({
     selector: 'order-attention',
     templateUrl: './order-attention.component.html',
-    styles: [ './order-attention.component.scss' ]
+    styleUrls: [ './order-attention.component.scss' ]
 })
 export class OrderAttentionComponent implements OnInit, OnDestroy {
 

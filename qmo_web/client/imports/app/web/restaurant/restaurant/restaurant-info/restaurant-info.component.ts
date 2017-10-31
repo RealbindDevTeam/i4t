@@ -13,7 +13,7 @@ import { UserLanguageService } from '../../../../shared/services/user-language.s
 @Component({
     selector: 'restaurant-info',
     templateUrl: './restaurant-info.component.html',
-    styles: [ './restaurant-info.component.scss' ]
+    styleUrls: [ './restaurant-info.component.scss' ]
 })
 export class RestaurantInfoComponent implements OnInit, OnDestroy {
 

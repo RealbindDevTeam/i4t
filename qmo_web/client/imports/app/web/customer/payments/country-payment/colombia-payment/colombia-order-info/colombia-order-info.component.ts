@@ -28,7 +28,7 @@ import { AlertConfirmComponent } from '../../../../../../web/general/alert-confi
 @Component({
     selector: 'colombia-order-info',
     templateUrl: './colombia-order-info.component.html',
-    styles: [ './colombia-order-info.component.scss' ]
+    styleUrls: [ './colombia-order-info.component.scss' ]
 })
 export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
 

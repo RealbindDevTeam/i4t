@@ -28,7 +28,7 @@ import { GarnishFoodCol } from '../../../../../../../both/collections/administra
 @Component({
     selector: 'payment-confirm',
     templateUrl: './payment-confirm.component.html',
-    styles: [ './payment-confirm.component.scss' ],
+    styleUrls: [ './payment-confirm.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class PaymentConfirmComponent implements OnInit, OnDestroy{

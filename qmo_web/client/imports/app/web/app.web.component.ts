@@ -9,7 +9,7 @@ import { UserLanguageService } from '../shared/services/user-language.service';
   selector: 'app',
   providers: [ OrderNavigationService, UserLanguageService ],
   templateUrl: './app.web.component.html',
-  styles: [ './app.web.component.scss' ]
+  styleUrls: [ './app.web.component.scss' ]
 })
 export class AppComponent implements OnInit{
   private pageTitle: string;

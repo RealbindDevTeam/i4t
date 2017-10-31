@@ -17,7 +17,7 @@ let jsPDF = require('jspdf');
 @Component({
   selector: 'invoices-download-page',
   templateUrl: './invoices-download.component.html',
-  styles: [ './invoices-download.component.scss' ]
+  styleUrls: [ './invoices-download.component.scss' ]
 })
 export class InvoicesDownloadPage implements OnInit, OnDestroy {
   

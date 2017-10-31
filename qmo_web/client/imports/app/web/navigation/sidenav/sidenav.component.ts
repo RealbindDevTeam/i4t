@@ -7,7 +7,7 @@ import { Observable, Subscription } from 'rxjs';
 @Component({
   selector : 'app-sidenav',
   templateUrl: './sidenav.component.html',
-  styles: [ './sidenav.component.scss' ],
+  styleUrls: [ './sidenav.component.scss' ],
 })
 export class SidenavComponent implements OnInit, OnDestroy {
   @ViewChildren(SidenavItemComponent) children: QueryList<SidenavItemComponent>;

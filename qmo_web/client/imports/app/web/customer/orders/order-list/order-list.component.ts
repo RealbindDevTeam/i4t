@@ -23,7 +23,7 @@ import { Tables } from '../../../../../../../both/collections/restaurant/table.c
 @Component({
     selector: 'order-list',
     templateUrl: './order-list.component.html',
-    styles: [ './order-list.component.scss' ]
+    styleUrls: [ './order-list.component.scss' ]
 })
 export class OrdersListComponent implements OnInit, OnDestroy {
 

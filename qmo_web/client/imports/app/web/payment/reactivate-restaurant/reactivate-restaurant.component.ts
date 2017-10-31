@@ -19,7 +19,7 @@ import { Parameter } from '../../../../../../both/models/general/parameter.model
 @Component({
     selector: 'reactivate-restaurant',
     templateUrl: './reactivate-restaurant.component.html',
-    styles: [ './reactivate-restaurant.component.scss' ]
+    styleUrls: [ './reactivate-restaurant.component.scss' ]
 })
 export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
 

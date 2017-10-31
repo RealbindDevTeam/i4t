@@ -15,7 +15,7 @@ import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-
 @Component({
     selector: 'waiter-call',
     templateUrl: './waiter-call.component.html',
-    styles: [ './waiter-call.component.scss' ]
+    styleUrls: [ './waiter-call.component.scss' ]
 })
 export class WaiterCallComponent implements OnInit, OnDestroy {
 

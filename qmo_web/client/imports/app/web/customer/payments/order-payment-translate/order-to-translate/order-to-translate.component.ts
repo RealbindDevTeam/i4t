@@ -18,7 +18,7 @@ import { AlertConfirmComponent } from '../../../../../web/general/alert-confirm/
 @Component({
     selector: 'order-to-translate',
     templateUrl: './order-to-translate.component.html',
-    styles: [ './order-to-translate.component.scss' ],
+    styleUrls: [ './order-to-translate.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class OrderToTranslateComponent implements OnInit, OnDestroy {

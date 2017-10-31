@@ -32,7 +32,7 @@ import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/ale
 @Component({
     selector: 'item-edition',
     templateUrl: './item-edition.component.html',
-    styles: [ './item-edition.component.scss' ]
+    styleUrls: [ './item-edition.component.scss' ]
 })
 export class ItemEditionComponent implements OnInit, OnDestroy {
 

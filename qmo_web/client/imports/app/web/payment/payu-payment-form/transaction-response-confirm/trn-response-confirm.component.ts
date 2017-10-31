@@ -8,7 +8,7 @@ import { UserLanguageService } from '../../../../shared/services/user-language.s
 @Component({
     selector: 'transaction-response-confirm',
     templateUrl: './trn-response-confirm.component.html',
-    styles: [ './trn-response-confirm.component.scss' ],
+    styleUrls: [ './trn-response-confirm.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class TrnResponseConfirmComponent implements OnInit, OnDestroy {

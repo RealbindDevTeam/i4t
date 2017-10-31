@@ -12,7 +12,7 @@ import { Parameter } from '../../../../../../both/models/general/parameter.model
 @Component({
     selector: 'monthly-config',
     templateUrl: './monthly-config.component.html',
-    styles: [ './monthly-config.component.scss' ]
+    styleUrls: [ './monthly-config.component.scss' ]
 })
 export class MonthlyConfigComponent implements OnInit, OnDestroy {
 

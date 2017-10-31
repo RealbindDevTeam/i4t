@@ -5,7 +5,7 @@ import { UserLanguageService } from '../../shared/services/user-language.service
 @Component({
     selector: 'notfound',
     templateUrl: './notfound.web.component.html',
-    styles: [ './notfound.web.component.scss' ]
+    styleUrls: [ './notfound.web.component.scss' ]
 })
 export class NotFoundWebComponent {
 

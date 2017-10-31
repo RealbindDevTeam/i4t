@@ -17,7 +17,7 @@ let jsPDF = require('jspdf');
 @Component({
     selector: 'sup-tables',
     templateUrl: './supervisor-tables.component.html',
-    styles: [ './supervisor-tables.component.scss' ]
+    styleUrls: [ './supervisor-tables.component.scss' ]
 })
 export class SupervisorTableComponent implements OnInit, OnDestroy {
 

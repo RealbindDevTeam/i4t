@@ -31,7 +31,7 @@ import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/ale
 @Component({
     selector: 'item-creation',
     templateUrl: './item-creation.component.html',
-    styles: [ './item-creation.component.scss' ]
+    styleUrls: [ './item-creation.component.scss' ]
 })
 
 export class ItemCreationComponent implements OnInit, OnDestroy {

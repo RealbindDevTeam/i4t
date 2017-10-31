@@ -12,7 +12,7 @@ import { User } from '../../../../../../../../../both/models/auth/user.model';
 @Component({
     selector: 'penalize-customer',
     templateUrl: './penalize-customer.component.html',
-    styles: [ './penalize-customer.component.scss' ],
+    styleUrls: [ './penalize-customer.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class PenalizeCustomerComponent implements OnInit, OnDestroy {

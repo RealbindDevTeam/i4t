@@ -8,7 +8,7 @@ import { UserLanguageService } from '../../../shared/services/user-language.serv
 @Component({
     selector: 'alert-confirm',
     templateUrl: './alert-confirm.component.html',
-    styles: [ './alert-confirm.component.scss' ],
+    styleUrls: [ './alert-confirm.component.scss' ],
     providers: [UserLanguageService]
 })
 export class AlertConfirmComponent implements OnInit, OnDestroy {

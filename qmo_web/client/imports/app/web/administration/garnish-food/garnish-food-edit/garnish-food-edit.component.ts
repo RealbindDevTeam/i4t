@@ -20,7 +20,7 @@ import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/ale
 @Component({
     selector: 'garnishFood-edit',
     templateUrl: './garnish-food-edit.component.html',
-    styles: [ './garnish-food-edit.component.scss' ],
+    styleUrls: [ './garnish-food-edit.component.scss' ],
     providers:[ UserLanguageService ]
 })
 export class GarnishFoodEditComponent implements OnInit {

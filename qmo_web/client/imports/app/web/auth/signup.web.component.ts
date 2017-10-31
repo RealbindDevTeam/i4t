@@ -12,7 +12,7 @@ import { AuthClass } from './auth.class';
 @Component({
     selector: 'signup',
     templateUrl: './signup.web.component.html',
-    styles: [ './auth.component.scss' ]
+    styleUrls: [ './auth.component.scss' ]
 })
 export class SignupWebComponent extends AuthClass implements OnInit {
 

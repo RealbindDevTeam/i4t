@@ -30,7 +30,7 @@ import { Additions } from '../../../../../../../../../both/collections/administr
 @Component({
     selector: 'colombia-pay-info',
     templateUrl: './colombia-pay-info.component.html',
-    styles: [ './colombia-pay-info.component.scss' ]
+    styleUrls: [ './colombia-pay-info.component.scss' ]
 })
 export class ColombiaPayInfoComponent implements OnInit, OnDestroy{
 

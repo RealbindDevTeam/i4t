@@ -3,7 +3,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 @Component({
     selector:'iu-slider',
     templateUrl: './slider.component.html',
-    styles: [ './slider.component.scss' ]
+    styleUrls: [ './slider.component.scss' ]
 })
 export class IurestSliderComponent {
 

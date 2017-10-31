@@ -10,7 +10,7 @@ import { RecoverConfirmComponent } from './recover-confirm.component';
 @Component({
     selector: 'recover',
     templateUrl: './recover.web.component.html',
-    styles: [ './recover.web.component.scss' ]
+    styleUrls: [ './recover.web.component.scss' ]
 })
 export class RecoverWebComponent {
 

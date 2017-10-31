@@ -20,7 +20,7 @@ import * as QRious from 'qrious';
 @Component({
     selector: 'enable-disable',
     templateUrl: './enable-disable.component.html',
-    styles: [ './enable-disable.component.scss' ]
+    styleUrls: [ './enable-disable.component.scss' ]
 })
 export class EnableDisableComponent implements OnInit, OnDestroy {
 

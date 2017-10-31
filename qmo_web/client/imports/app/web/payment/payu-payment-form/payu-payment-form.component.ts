@@ -38,7 +38,7 @@ let md5 = require('md5');
 @Component({
     selector: 'payu-payment-form',
     templateUrl: './payu-payment-form.component.html',
-    styles: [ './payu-payment-form.component.scss' ]
+    styleUrls: [ './payu-payment-form.component.scss' ]
 })
 export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 

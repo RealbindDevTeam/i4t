@@ -17,7 +17,7 @@ import { AuthClass } from './auth.class';
 @Component({
     selector: 'admin-signup',
     templateUrl: './admin-signup.component.html',
-    styles: [ './auth.component.scss' ]
+    styleUrls: [ './auth.component.scss' ]
 })
 export class AdminSignupComponent extends AuthClass implements OnInit, OnDestroy {
 

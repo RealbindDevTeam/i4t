@@ -7,7 +7,7 @@ import { UserLanguageService } from '../../../../shared/services/user-language.s
 @Component({
     selector: 'call-close-confirm',
     templateUrl: './call-close-confirm.component.html',
-    styles: [ './call-close-confirm.component.scss' ],
+    styleUrls: [ './call-close-confirm.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class CallCloseConfirmComponent{

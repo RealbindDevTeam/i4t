@@ -12,7 +12,7 @@ import { EnableConfirmComponent } from './enable-confirm/enable-confirm.componen
 @Component({
     selector: 'item-enable',
     templateUrl: './items-enable.component.html',
-    styles: [ '../item.component.scss' ]
+    styleUrls: [ '../item.component.scss' ]
 })
 export class ItemEnableComponent implements OnInit, OnDestroy {
 

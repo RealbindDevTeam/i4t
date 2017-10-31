@@ -16,7 +16,7 @@ import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/ale
 @Component({
     selector: 'subcategory-edit',
     templateUrl: './subcategories-edit.component.html',
-    styles: [ './subcategories-edit.component.scss' ],
+    styleUrls: [ './subcategories-edit.component.scss' ],
     providers:[ UserLanguageService ]
 })
 export class SubcategoryEditComponent implements OnInit {

@@ -20,7 +20,7 @@ import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-
 @Component({
     selector: 'collaborators',
     templateUrl: './collaborators.component.html',
-    styles: [ './collaborators.component.scss' ]
+    styleUrls: [ './collaborators.component.scss' ]
 })
 export class CollaboratorsComponent implements OnInit, OnDestroy{
 

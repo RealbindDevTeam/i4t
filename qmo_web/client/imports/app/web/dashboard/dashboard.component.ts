@@ -20,7 +20,7 @@ import { Currencies } from '../../../../../both/collections/general/currency.col
 @Component({
   selector : 'admin-dashboard',
   templateUrl: './dashboard.component.html',
-  styles: [ './dashboard.component.scss' ]
+  styleUrls: [ './dashboard.component.scss' ]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 

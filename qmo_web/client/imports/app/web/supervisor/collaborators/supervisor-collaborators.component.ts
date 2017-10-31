@@ -17,7 +17,7 @@ import { SupervisorCollaboratorsEditionComponent } from './collaborators-edition
 @Component({
     selector: 'supervisor-collaborators',
     templateUrl: './supervisor-collaborators.component.html',
-    styles: [ './supervisor-collaborators.component.scss' ]
+    styleUrls: [ './supervisor-collaborators.component.scss' ]
 })
 export class SupervisorCollaboratorsComponent implements OnInit, OnDestroy{
     

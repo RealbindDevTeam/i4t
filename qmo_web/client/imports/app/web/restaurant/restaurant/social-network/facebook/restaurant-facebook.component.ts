@@ -11,7 +11,7 @@ import { AlertConfirmComponent } from '../../../../../web/general/alert-confirm/
 @Component({
     selector: 'restaurant-facebook',
     templateUrl: './restaurant-facebook.component.html',
-    styles: [ './restaurant-facebook.component.scss' ],
+    styleUrls: [ './restaurant-facebook.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class RestaurantFacebookComponent implements OnInit {
