@@ -44,7 +44,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _citiesSub: Subscription;
     private _paymentMethodsSub: Subscription;
     private _restaurantImagesSub: Subscription;
-    private _parameterSub: Subscription;
 
     private _countries: Observable<Country[]>;
     private _cities: Observable<City[]>;
@@ -320,7 +319,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                         queue: this._queues,
                         isActive: true,
                         firstPay: true,
-                        is_premium: false
+                        freeDays: true
                     });
 
                     this._restaurantLegality.restaurant_id = _lNewRestaurant;

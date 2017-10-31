@@ -8,7 +8,6 @@ export function createCrons() {
     /**
     * This cron evaluates the freeDays flag on restaurants with value true, and change it to false
     */
-    /*
     SyncedCron.add({
       name: 'cronChangeFreeDays.' + country.name,
       schedule: function (parser) {
@@ -18,7 +17,6 @@ export function createCrons() {
         Meteor.call('changeFreeDaysToFalse', country._id);
       }
     });
-    **/
 
     /**
     * This cron sends email to warn the charge soon of iurest service
