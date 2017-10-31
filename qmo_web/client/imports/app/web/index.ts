@@ -7,7 +7,6 @@ import { SigninWebComponent } from './auth/signin.web.component';
 import { CategoryComponent } from './administration/categories/categories.component';
 import { SubcategoryComponent } from './administration/subcategories/subcategories.component';
 import { AdditionComponent } from './administration/additions/addition.component';
-import { PromotionComponent } from './administration/promotions/promotion.component';
 import { GarnishFoodComponent } from './administration/garnish-food/garnish-food.component';
 import { OrdersComponent } from './customer/orders/order.component';
 import { TableComponent } from './restaurant/tables/table.component';
@@ -21,7 +20,6 @@ import { AdditionEditComponent } from './administration/additions/additions-edit
 import { CategoriesEditComponent } from './administration/categories/categories-edit/categories-edit.component';
 import { SubcategoryEditComponent } from './administration/subcategories/subcategories-edit/subcategories-edit.component';
 import { SectionEditComponent } from './administration/sections/sections-edit/section-edit.component';
-import { PromotionEditComponent } from './administration/promotions/promotions-edit/promotion-edit.component';
 import { ItemCreationComponent } from './administration/items/items-creation/item-creation.component';
 import { RecoverWebComponent } from './auth/recover-password/recover.web.component';
 import { ResetPasswordWebComponent } from './auth/reset-password.web.component';
@@ -106,7 +104,6 @@ export const WEB_DECLARATIONS = [
     CategoryComponent,
     SubcategoryComponent,
     AdditionComponent,
-    PromotionComponent,
     GarnishFoodComponent,
     ItemComponent,
     ItemCreationComponent,
@@ -168,7 +165,6 @@ export const MODAL_DIALOG_DECLARATIONS = [
     AdditionEditComponent,
     CategoriesEditComponent,
     SubcategoryEditComponent,
-    PromotionEditComponent,
     RecoverWebComponent,
     ItemEditionComponent,
     RestaurantLocationComponent,

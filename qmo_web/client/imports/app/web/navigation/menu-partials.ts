@@ -29,20 +29,20 @@ export class RoutingClass {
  */
 @Component({
   selector: 'c-customer-menu',
-  template: `  <button md-icon-button id="menu-toggler" mdTooltip="{{'TOPNAV.ORDERS' | translate}}" (click)="goToRoute('/app/orders','TOPNAV.ORDERS')">
-                    <md-icon>restaurant_menu</md-icon>
+  template: `  <button mat-icon-button id="menu-toggler" matTooltip="{{'TOPNAV.ORDERS' | translate}}" (click)="goToRoute('/app/orders','TOPNAV.ORDERS')">
+                    <mat-icon>restaurant_menu</mat-icon>
                 </button>
-                <button md-icon-button id="menu-toggler" mdTooltip="{{'TOPNAV.PAYMENTS' | translate}}" (click)="goToRoute('/app/payments','TOPNAV.PAYMENTS')">
-                    <md-icon>local_atm</md-icon>
+                <button mat-icon-button id="menu-toggler" matTooltip="{{'TOPNAV.PAYMENTS' | translate}}" (click)="goToRoute('/app/payments','TOPNAV.PAYMENTS')">
+                    <mat-icon>local_atm</mat-icon>
                 </button>
-                <button md-icon-button id="menu-toggler" mdTooltip="{{'TOPNAV.WAITER' | translate}}" (click)="goToRoute('/app/waiter-call','TOPNAV.WAITER')">
-                    <md-icon>record_voice_over</md-icon>
+                <button mat-icon-button id="menu-toggler" matTooltip="{{'TOPNAV.WAITER' | translate}}" (click)="goToRoute('/app/waiter-call','TOPNAV.WAITER')">
+                    <mat-icon>record_voice_over</mat-icon>
                 </button>
-                <button md-icon-button id="menu-toggler" mdTooltip="{{'TOPNAV.TABLES' | translate}}" (click)="goToRoute('/app/table-change','TOPNAV.TABLES')">
-                    <md-icon>compare_arrows</md-icon>
+                <button mat-icon-button id="menu-toggler" matTooltip="{{'TOPNAV.TABLES' | translate}}" (click)="goToRoute('/app/table-change','TOPNAV.TABLES')">
+                    <mat-icon>compare_arrows</mat-icon>
                 </button>
-                <button md-icon-button id="menu-toggler" mdTooltip="{{'TOPNAV.RESTAURANT_EXIT' | translate}}" (click)="goToRoute('/app/restaurant-exit','TOPNAV.RESTAURANT_EXIT')">
-                    <md-icon>exit_to_app</md-icon>
+                <button mat-icon-button id="menu-toggler" matTooltip="{{'TOPNAV.RESTAURANT_EXIT' | translate}}" (click)="goToRoute('/app/restaurant-exit','TOPNAV.RESTAURANT_EXIT')">
+                    <mat-icon>exit_to_app</mat-icon>
                 </button>`
 })
 export class CustomerMenuComponent {
@@ -76,11 +76,11 @@ export class CustomerMenuComponent {
  */
 @Component({
   selector: 'c-waiter-menu',
-  template: `  <button md-icon-button id="menu-toggler" mdTooltip="{{'TOPNAV.CALLS' | translate}}" (click)="goToRoute('/app/calls','TOPNAV.CALLS')">
-                    <md-icon>restaurant_menu</md-icon>
+  template: `  <button mat-icon-button id="menu-toggler" matTooltip="{{'TOPNAV.CALLS' | translate}}" (click)="goToRoute('/app/calls','TOPNAV.CALLS')">
+                    <mat-icon>restaurant_menu</mat-icon>
                 </button>
-                <button md-icon-button id="menu-toggler" mdTooltip="{{'TOPNAV.MENU' | translate}}" (click)="goToRoute('/app/menu-list','TOPNAV.MENU')">
-                    <md-icon>view_list</md-icon>
+                <button mat-icon-button id="menu-toggler" matTooltip="{{'TOPNAV.MENU' | translate}}" (click)="goToRoute('/app/menu-list','TOPNAV.MENU')">
+                    <mat-icon>view_list</mat-icon>
                 </button>`
 })
 export class WaiterMenuComponent {
@@ -114,11 +114,11 @@ export class WaiterMenuComponent {
  */
 @Component({
   selector: 'c-chef-menu',
-  template: `  <button md-icon-button id="menu-toggler" mdTooltip="{{'TOPNAV.ORDERS' | translate}}" (click)="goToRoute('/app/chef-orders','TOPNAV.ORDERS')">
-                    <md-icon>restaurant_menu</md-icon>
+  template: `  <button mat-icon-button id="menu-toggler" matTooltip="{{'TOPNAV.ORDERS' | translate}}" (click)="goToRoute('/app/chef-orders','TOPNAV.ORDERS')">
+                    <mat-icon>restaurant_menu</mat-icon>
                 </button>
-                <button md-icon-button id="menu-toggler" mdTooltip="{{'TOPNAV.MENU' | translate}}" (click)="goToRoute('/app/menu-list','TOPNAV.MENU')">
-                    <md-icon>view_list</md-icon>
+                <button mat-icon-button id="menu-toggler" matTooltip="{{'TOPNAV.MENU' | translate}}" (click)="goToRoute('/app/menu-list','TOPNAV.MENU')">
+                    <mat-icon>view_list</mat-icon>
                 </button>`
 })
 export class ChefMenuComponent {

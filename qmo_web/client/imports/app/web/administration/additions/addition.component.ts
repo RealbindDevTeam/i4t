@@ -5,8 +5,8 @@ import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
-import { MdSnackBar } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Additions } from '../../../../../../both/collections/administration/addition.collection';
 import { Addition, AdditionRestaurant, AdditionPrice } from '../../../../../../both/models/administration/addition.model';
@@ -21,13 +21,10 @@ import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 
-import template from './addition.component.html';
-import style from './addition.component.scss';
-
 @Component({
     selector: 'addition',
-    template,
-    styles: [style]
+    templateUrl: './addition.component.html',
+    styles: [ './addition.component.scss' ]
 })
 export class AdditionComponent implements OnInit, OnDestroy {
 
@@ -35,7 +32,7 @@ export class AdditionComponent implements OnInit, OnDestroy {
     private _additionForm: FormGroup;
     private _currenciesFormGroup: FormGroup = new FormGroup({});
     private _taxesFormGroup: FormGroup = new FormGroup({});
-    private _mdDialogRef: MdDialogRef<any>;
+    private _mdDialogRef: MatDialogRef<any>;
 
     private _additions: Observable<Addition[]>;
     private _currencies: Observable<Currency[]>;
@@ -48,7 +45,7 @@ export class AdditionComponent implements OnInit, OnDestroy {
     private _countriesSub: Subscription;
     private _userDetailsSub: Subscription;
 
-    public _dialogRef: MdDialogRef<any>;
+    public _dialogRef: MatDialogRef<any>;
     private titleMsg: string;
     private btnAcceptLbl: string;
     private _restaurantCurrencies: string[] = [];
@@ -62,22 +59,22 @@ export class AdditionComponent implements OnInit, OnDestroy {
 
     /**
      * AdditionComponent constructor
-     * @param {MdDialog} _dialog
-     * @param {MdSnackBar} snackBar
+     * @param {MatDialog} _dialog
+     * @param {MatSnackBar} snackBar
      * @param {FormBuilder} _formBuilder
      * @param {TranslateService} _translate
      * @param {NgZone} _ngZone
      * @param {Router} _router
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor(public _dialog: MdDialog,
-        public snackBar: MdSnackBar,
+    constructor(public _dialog: MatDialog,
+        public snackBar: MatSnackBar,
         private _formBuilder: FormBuilder,
         private _translate: TranslateService,
         private _ngZone: NgZone,
         private _router: Router,
         private _userLanguageService: UserLanguageService,
-        protected _mdDialog: MdDialog) {
+        protected _mdDialog: MatDialog) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';

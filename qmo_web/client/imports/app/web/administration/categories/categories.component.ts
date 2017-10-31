@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Categories } from '../../../../../../both/collections/administration/category.collection';
 import { Category } from '../../../../../../both/models/administration/category.model';
@@ -19,13 +19,10 @@ import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 
-import template from './categories.component.html';
-import style from './categories.component.scss';
-
 @Component({
     selector: 'category',
-    template,
-    styles: [style]
+    templateUrl: './categories.component.html',
+    styles: [ './categories.component.scss' ]
 })
 export class CategoryComponent implements OnInit, OnDestroy {
 
@@ -34,7 +31,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
     private _categories: Observable<Category[]>;
     private _sections: Observable<Section[]>;
     private _restaurants: Observable<Restaurant[]>;
-    private _mdDialogRef: MdDialogRef<any>;
+    private _mdDialogRef: MatDialogRef<any>;
     private _userDetails: Observable<UserDetail[]>;
 
     private _categoriesSub: Subscription;
@@ -45,7 +42,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
     private _selectedValue: string;
     private titleMsg: string;
     private btnAcceptLbl: string;
-    public _dialogRef: MdDialogRef<any>;
+    public _dialogRef: MatDialogRef<any>;
     private _thereAreRestaurants: boolean = true;
 
     private _thereAreUsers: boolean = true;
@@ -53,22 +50,22 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
     /**
      * CategoryComponent constructor
-     * @param {MdSnackBar} snackBar
+     * @param {MatSnackBar} snackBar
      * @param {FormBuilder} _formBuilder
      * @param {TranslateService} _translate
-     * @param {MdDialog} _dialog
+     * @param {MatDialog} _dialog
      * @param {Router} _router
      * @param {NgZone} _ngZone
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor(public snackBar: MdSnackBar,
-        public _dialog: MdDialog,
+    constructor(public snackBar: MatSnackBar,
+        public _dialog: MatDialog,
         private _formBuilder: FormBuilder,
         private _translate: TranslateService,
         private _router: Router,
         private _ngZone: NgZone,
         private _userLanguageService: UserLanguageService,
-        protected _mdDialog: MdDialog) {
+        protected _mdDialog: MatDialog) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
         this._selectedValue = "";

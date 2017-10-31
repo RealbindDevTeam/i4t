@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MdDialogRef, MdDialog } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
@@ -17,13 +17,10 @@ import { Users } from '../../../../../../both/collections/auth/user.collection';
 import { CollaboratorsEditionComponent } from './collaborators-edition/collaborators-edition.component';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './collaborators.component.html';
-import style from './collaborators.component.scss';
-
 @Component({
     selector: 'collaborators',
-    template,
-    styles: [ style ]
+    templateUrl: './collaborators.component.html',
+    styles: [ './collaborators.component.scss' ]
 })
 export class CollaboratorsComponent implements OnInit, OnDestroy{
 
@@ -39,8 +36,8 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
     private _usersSub               : Subscription;
 
     private _form                   : FormGroup;
-    public _dialogRef               : MdDialogRef<any>;
-    private _mdDialogRef            : MdDialogRef<any>;
+    public _dialogRef               : MatDialogRef<any>;
+    private _mdDialogRef            : MatDialogRef<any>;
     private titleMsg                : string;
     private btnAcceptLbl            : string;
     private _thereAreRestaurants    : boolean = true;
@@ -50,15 +47,15 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
      * @param {Router} _router 
      * @param {FormBuilder} _formBuilder 
      * @param {TranslateService} _translate 
-     * @param {MdDialog} _dialog 
+     * @param {MatDialog} _dialog 
      * @param {UserLanguageService} _userLanguageService 
      */
     constructor( private _router: Router, 
                  private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
-                 public _dialog: MdDialog,
+                 public _dialog: MatDialog,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog,
+                 protected _mdDialog: MatDialog,
                  private _ngZone: NgZone )
     {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );

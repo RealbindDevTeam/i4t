@@ -1,39 +1,37 @@
 import { Component, ViewContainerRef, OnInit, NgZone } from '@angular/core';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Accounts } from 'meteor/accounts-base'
 import { TranslateService } from '@ngx-translate/core';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './change-password.web.component.html';
-
 @Component({
   selector: 'change-password',
-  template,
+  templateUrl: './change-password.web.component.html',
   providers: [ UserLanguageService ]
 })
 export class ChangePasswordWebComponent implements OnInit {
 
     private _changePasswordForm     : FormGroup;
     private _user                   : Meteor.User;
-    private _mdDialogRef            : MdDialogRef<any>;
+    private _mdDialogRef            : MatDialogRef<any>;
     private _error                  : string;
     private titleMsg                : string;
     private btnAcceptLbl            : string;
 
     /**
      * ChangePasswordWebComponent Constructor
-     * @param {MdDialogRef<any>} _dialogRef 
+     * @param {MatDialogRef<any>} _dialogRef 
      * @param {NgZone} _zone 
      * @param {TranslateService} _translate 
      * @param {UserLanguageService} _userLanguageService 
      */
-    constructor( public _dialogRef: MdDialogRef<any>, 
+    constructor( public _dialogRef: MatDialogRef<any>, 
                  private _zone: NgZone, 
                  protected _translate: TranslateService,
                  protected _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog ) { 
+                 protected _mdDialog: MatDialog ) { 
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';

@@ -17,13 +17,10 @@ import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 
-import template from './section.component.html';
-import style from './section.component.scss';
-
 @Component({
     selector: 'section',
-    template,
-    styles: [style]
+    templateUrl: './section.component.html',
+    styles: [ './section.component.scss' ]
 })
 export class SectionComponent implements OnInit, OnDestroy {
 

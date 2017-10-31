@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {Subject, BehaviorSubject} from 'rxjs';
 import {MenuItem} from './menu-item';
-import {MdDialog} from '@angular/material';
+import {MatDialog} from '@angular/material';
 import {menuItemSetup} from './menu-setup';
 import {StringUtils} from '../../shared/utils/string-utils';
 import {AppConfigOptions} from '../../app.config.options';
@@ -27,7 +27,7 @@ export class NavigationService {
   private _fixedNavbar: Subject<boolean> = new BehaviorSubject(true);
   private _isRouteLoading: Subject<boolean> = new BehaviorSubject(true);
 
-  constructor(public dialog: MdDialog, @Inject('AppConfigOptions') private _coreOptions: AppConfigOptions) {
+  constructor(public dialog: MatDialog, @Inject('AppConfigOptions') private _coreOptions: AppConfigOptions) {
     if(!StringUtils.isNull(_coreOptions.appTitle)) {
       this._appTitle.next(_coreOptions.appTitle);
     }

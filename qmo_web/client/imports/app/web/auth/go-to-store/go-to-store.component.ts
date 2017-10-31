@@ -3,13 +3,10 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 
-import template from './go-to-store.component.html';
-import style from './go-to-store.component.scss';
-
 @Component({
     selector: 'go-to-store',
-    template,
-    styles: [style]
+    templateUrl: './go-to-store.component.html',
+    styles: [ './go-to-store.component.scss' ]
 })
 
 export class GoToStoreComponent {

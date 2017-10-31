@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MdDialogRef, MdDialog, MdSnackBar } from '@angular/material';
+import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import { MeteorObservable } from 'meteor-rxjs';
 import { FormGroup, FormControl } from '@angular/forms';
 import { UserLanguageService } from '../../../../../shared/services/user-language.service';
@@ -8,13 +8,10 @@ import { Restaurant } from '../../../../../../../../both/models/restaurant/resta
 import { Restaurants } from '../../../../../../../../both/collections/restaurant/restaurant.collection';
 import { AlertConfirmComponent } from '../../../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './restaurant-twitter.component.html';
-import style from './restaurant-twitter.component.scss';
-
 @Component({
     selector: 'restaurant-twitter',
-    template,
-    styles: [ style ],
+    templateUrl: './restaurant-twitter.component.html',
+    styles: [ './restaurant-twitter.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class RestaurantTwitterComponent implements OnInit {
@@ -23,7 +20,7 @@ export class RestaurantTwitterComponent implements OnInit {
     public _restaurant                  : Restaurant;
 
     private _restaurantTwitterForm      : FormGroup;
-    private _mdDialogRef                : MdDialogRef<any>;
+    private _mdDialogRef                : MatDialogRef<any>;
 
     private _twitterLink                : string = '';
     private titleMsg                    : string;
@@ -32,16 +29,16 @@ export class RestaurantTwitterComponent implements OnInit {
 
     /**
      * RestaurantTwitterComponent constructor
-     * @param {MdDialogRef<any>} _dialogRef
+     * @param {MatDialogRef<any>} _dialogRef
      * @param {TranslateService} _translate
-     * @param {MdSnackBar} _snackBar
+     * @param {MatSnackBar} _snackBar
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor( public _dialogRef: MdDialogRef<any>, 
+    constructor( public _dialogRef: MatDialogRef<any>, 
                  private _translate: TranslateService, 
-                 private _snackBar: MdSnackBar,
+                 private _snackBar: MatSnackBar,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog ){
+                 protected _mdDialog: MatDialog ){
                      _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
                      _translate.setDefaultLang( 'en' );
                      this.titleMsg = 'SIGNUP.SYSTEM_MSG';

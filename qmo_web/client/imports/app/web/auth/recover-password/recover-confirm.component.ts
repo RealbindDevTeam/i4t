@@ -1,12 +1,10 @@
 import { Component, NgZone, Inject, OnInit, OnDestroy } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
-
-import template from './recover-confirm.component.html';
 
 @Component({
     selector: 'recover-confirm',
-    template
+    templateUrl: './recover-confirm.component.html'
 })
 
 export class RecoverConfirmComponent implements OnInit, OnDestroy {
@@ -14,9 +12,9 @@ export class RecoverConfirmComponent implements OnInit, OnDestroy {
     private showCancelButton: boolean;
 
 
-    constructor(public _dialogRef: MdDialogRef<any>,
+    constructor(public _dialogRef: MatDialogRef<any>,
         private _zone: NgZone,
-        @Inject(MD_DIALOG_DATA) public data: any,
+        @Inject(MAT_DIALOG_DATA) public data: any,
         private translate: TranslateService) {
 
         this.showCancelButton = data.showCancel;

@@ -5,14 +5,11 @@ import 'hammerjs';
 import { OrderNavigationService } from './customer/orders/order-navigation/order-navigation.service';
 import { UserLanguageService } from '../shared/services/user-language.service';
 
-import template from './app.web.component.html';
-import style from './app.web.component.scss';
- 
 @Component({
   selector: 'app',
   providers: [ OrderNavigationService, UserLanguageService ],
-  template,
-  styles: [ style ]
+  templateUrl: './app.web.component.html',
+  styles: [ './app.web.component.scss' ]
 })
 export class AppComponent implements OnInit{
   private pageTitle: string;

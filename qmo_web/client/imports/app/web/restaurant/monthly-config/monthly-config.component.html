@@ -1,5 +1,5 @@
-<md-card *ngIf="!_thereAreRestaurants" md-cell="12" class="demo-card demo-basic">
-    <md-card-content>
+<mat-card *ngIf="!_thereAreRestaurants" mat-cell="12" class="demo-card demo-basic">
+    <mat-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
                 <div class="card_initial-image-container">
@@ -14,12 +14,12 @@
                     </div>
                 </div>
                 <div class="card_initial-button">
-                    <button md-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
+                    <button mat-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
                 </div>
             </div>
         </div>
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>
 
 <restaurant-list *ngIf="_thereAreRestaurants && _showRestaurantList" (gotoenabledisabled)="goToEnableDisable($event)"></restaurant-list>
 <enable-disable *ngIf="_thereAreRestaurants && _showEnableDisable" [restaurantId]="_restaurantId" (gotorestaurantlist)="goToRestaurantList($event)"></enable-disable>

@@ -7,13 +7,10 @@ import { Hours } from '../../../../../../both/collections/general/hours.collecti
 import { Hour } from '../../../../../../both/models/general/hour.model';
 import { RestaurantSchedule } from '../../../../../../both/models/restaurant/restaurant.model';
 
-import template from './schedule.component.html';
-import style from './schedule.component.scss';
-
 @Component({
     selector: 'iu-schedule',
-    template,
-    styles: [ style ]
+    templateUrl: './schedule.component.html',
+    styles: [ './schedule.component.scss' ]
 })
 export class IurestScheduleComponent implements OnInit, OnDestroy {
 

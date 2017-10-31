@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { CustomValidators } from '../../../../../both/shared-components/validators/custom-validator';
 import { Observable, Subscription } from 'rxjs';
@@ -14,15 +14,11 @@ import { Cities } from '../../../../../both/collections/settings/city.collection
 import { UserProfile } from '../../../../../both/models/auth/user-profile.model';
 import { AuthClass } from './auth.class';
 
-import template from './admin-signup.component.html';
-import style from './auth.component.scss';
-
 @Component({
     selector: 'admin-signup',
-    template,
-    styles: [style]
+    templateUrl: './admin-signup.component.html',
+    styles: [ './auth.component.scss' ]
 })
-
 export class AdminSignupComponent extends AuthClass implements OnInit, OnDestroy {
 
     private _countrySub: Subscription;
@@ -49,7 +45,7 @@ export class AdminSignupComponent extends AuthClass implements OnInit, OnDestroy
     constructor(protected router: Router,
         protected zone: NgZone,
         protected translate: TranslateService,
-        protected _mdDialog: MdDialog) {
+        protected _mdDialog: MatDialog) {
         super(router, zone, translate, _mdDialog);
     }
 

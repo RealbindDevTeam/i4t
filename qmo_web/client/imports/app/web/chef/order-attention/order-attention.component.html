@@ -1,24 +1,24 @@
 <div class="restaurant-card">
-    <md-card class="card_image">
-        <md-list>
-            <md-list-item *ngFor="let _res of _restaurants | async">
-                    <img md-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{ getRestaurantImage( _res._id ) }}">
-                <h2 md-line style="font-size: 1.5rem;"> {{_res.name}} </h2>
-                <p md-line style="font-size: 1rem;">
-                    <md-icon style="vertical-align: middle">location_on</md-icon>
+    <mat-card class="card_image">
+        <mat-list>
+            <mat-list-item *ngFor="let _res of _restaurants | async">
+                    <img mat-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{ getRestaurantImage( _res._id ) }}">
+                <h2 mat-line style="font-size: 1.5rem;"> {{_res.name}} </h2>
+                <p mat-line style="font-size: 1rem;">
+                    <mat-icon style="vertical-align: middle">location_on</mat-icon>
                     <span> {{_res.address}} </span>
                 </p>
-                <p md-line style="font-size: 1rem;">
-                    <md-icon style="vertical-align: middle">phone</md-icon>
+                <p mat-line style="font-size: 1rem;">
+                    <mat-icon style="vertical-align: middle">phone</mat-icon>
                     <span class="detail-message">{{_res.phone}} </span>
                 </p>
-            </md-list-item>
-        </md-list>
-    </md-card>
+            </mat-list-item>
+        </mat-list>
+    </mat-card>
 </div>
 
-<md-card md-cell="12" class="demo-card demo-basic" style="width: 80%; margin: 0 auto" *ngIf="!_thereAreOrders">
-    <md-card-content>
+<mat-card mat-cell="12" class="demo-card demo-basic" style="width: 80%; margin: 0 auto" *ngIf="!_thereAreOrders">
+    <mat-card-content>
         <div class="card_initial">
             <div class="card_initial has-image" style="margin: auto;">
                 <div class="card_initial-image-container">
@@ -32,11 +32,11 @@
                 </div>
             </div>
         </div>
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>
 
 <div class="order-content"  *ngIf="_thereAreOrders">
-    <md-toolbar *ngFor="let order of _ordersInProcess | async;" class="order" (click)="showOrderInProcessDetail(order)">
+    <mat-toolbar *ngFor="let order of _ordersInProcess | async;" class="order" (click)="showOrderInProcessDetail(order)">
         <img style="width: 3rem;" src="/images/my-orders.png">
         <span class="order-code">{{'ORDER_ATTENTION.ORDER' | translate}} # {{order.code}}</span>
         <span class="app-flex-filler"></span>
@@ -45,9 +45,9 @@
                 <span class="order-table">{{'ORDER_ATTENTION.TABLE' | translate}} {{table._number}}</span>
             </ng-template>
         </span>
-        <md-icon>keyboard_arrow_right</md-icon>
-    </md-toolbar>
-    <md-toolbar *ngFor="let order of _ordersCanceled | async;" class="order" (click)="showOrderInProcessDetail(order)">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+    </mat-toolbar>
+    <mat-toolbar *ngFor="let order of _ordersCanceled | async;" class="order" (click)="showOrderInProcessDetail(order)">
         <img style="width: 3rem;" src="/images/others-orders.png">
         <span class="order-code">{{'ORDER_ATTENTION.ORDER' | translate}} # {{order.code}} <span style="color:red" *ngIf="order.status === 'ORDER_STATUS.CANCELED'">- {{order.status | translate}}</span></span>
         <span class="app-flex-filler"></span>
@@ -56,9 +56,9 @@
                 <span class="order-table">{{'ORDER_ATTENTION.TABLE' | translate}} {{table._number}}</span>
             </ng-template>
         </span>
-        <md-icon>keyboard_arrow_right</md-icon>
-    </md-toolbar>
-    <md-toolbar *ngFor="let order of _ordersCanceledByAdmin | async;" class="order" (click)="showOrderInProcessDetail(order)">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+    </mat-toolbar>
+    <mat-toolbar *ngFor="let order of _ordersCanceledByAdmin | async;" class="order" (click)="showOrderInProcessDetail(order)">
         <img style="width: 3rem;" src="/images/others-orders.png">
         <span class="order-code">{{'ORDER_ATTENTION.ORDER' | translate}} # {{order.code}} <span style="color:red" *ngIf="order.status === 'ORDER_STATUS.CANCELED'">- {{order.status | translate}}</span></span>
         <span class="app-flex-filler"></span>
@@ -67,20 +67,20 @@
                 <span class="order-table">{{'ORDER_ATTENTION.TABLE' | translate}} {{table._number}}</span>
             </ng-template>
         </span>
-        <md-icon>keyboard_arrow_right</md-icon>
-    </md-toolbar>
+        <mat-icon>keyboard_arrow_right</mat-icon>
+    </mat-toolbar>
 </div>
 <div class="order-detail" *ngIf="_thereAreOrders">
-    <md-card>
-        <md-card-title *ngIf="!_showDetailsInProcess" class="message">{{'ORDER_ATTENTION.MESSAGE' | translate}}</md-card-title>
+    <mat-card>
+        <mat-card-title *ngIf="!_showDetailsInProcess" class="message">{{'ORDER_ATTENTION.MESSAGE' | translate}}</mat-card-title>
         <div *ngIf="_showDetailsInProcess">
             <div *ngFor="let order of _ordersInProcessDetail | async;">
-                <md-card-title class="title">{{'ORDER_ATTENTION.TITLE' | translate}} # {{order.code}}</md-card-title>
-                <button md-raised-button *ngIf="!orderMarkedToCancel(order)" class="primary-button prepared-button" (click)="setPreparedState(order)">{{'ORDER_ATTENTION.ORDER_PREPARED' | translate}}</button>
-                <button md-raised-button *ngIf="orderMarkedToCancel(order)" class="primary-button prepared-button" (click)="deleteOrder(order)">{{'ORDER_ATTENTION.DELETE_ORDER' | translate}}</button>
+                <mat-card-title class="title">{{'ORDER_ATTENTION.TITLE' | translate}} # {{order.code}}</mat-card-title>
+                <button mat-raised-button *ngIf="!orderMarkedToCancel(order)" class="primary-button prepared-button" (click)="setPreparedState(order)">{{'ORDER_ATTENTION.ORDER_PREPARED' | translate}}</button>
+                <button mat-raised-button *ngIf="orderMarkedToCancel(order)" class="primary-button prepared-button" (click)="deleteOrder(order)">{{'ORDER_ATTENTION.DELETE_ORDER' | translate}}</button>
                 <p *ngIf="orderMarkedToCancel(order)" class="waiter-cancel-order-msg">{{'ORDER_ATTENTION.ORDER_CANCELED_MSG' | translate}}</p>
-                <md-card-content>
-                    <md-divider></md-divider>
+                <mat-card-content>
+                    <mat-divider></mat-divider>
                     <span *ngFor="let item of _items | async">
                         <span *ngFor="let it of order.items">
                             <ng-template [ngIf]="item._id === it.itemId">
@@ -108,7 +108,7 @@
                                         </span>
                                     </span>
                                 </div>
-                                <md-divider></md-divider>
+                                <mat-divider></mat-divider>
                             </ng-template>
                         </span>
                     </span>
@@ -116,16 +116,16 @@
                         <span *ngFor="let ad of order.additions">
                             <ng-template [ngIf]="addit._id === ad.additionId">
                                 <h2 class="name">{{ad.quantity}} {{'ORDER_ATTENTION.ADDITION' | translate}} - {{addit.name}}</h2>
-                                <md-divider></md-divider>
+                                <mat-divider></mat-divider>
                             </ng-template>
                         </span>
                     </span>
-                </md-card-content>
+                </mat-card-content>
             </div>
         </div>
-    </md-card>
+    </mat-card>
 </div>
 
 <div class="loading" *ngIf="_loading">
-    <md-spinner></md-spinner>
+    <mat-spinner></mat-spinner>
 </div>

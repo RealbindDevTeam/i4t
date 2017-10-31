@@ -1,80 +1,80 @@
 <form [formGroup]="_collaboratorEditionForm">
-    <md-card style="box-shadow: none;">
-        <md-card-title>{{'COLLABORATORS_REGISTER.GENERAL_INFO' | translate}}</md-card-title>
-        <md-card-subtitle>{{'COLLABORATORS_REGISTER.GENERAL_INFO_TEXT' | translate}}</md-card-subtitle>
-        <md-card-content>
+    <mat-card style="box-shadow: none;">
+        <mat-card-title>{{'COLLABORATORS_REGISTER.GENERAL_INFO' | translate}}</mat-card-title>
+        <mat-card-subtitle>{{'COLLABORATORS_REGISTER.GENERAL_INFO_TEXT' | translate}}</mat-card-subtitle>
+        <mat-card-content>
             <table style="width: 100%" cellspacing="0">
                 <tr>
                     <td style="width: 50%">
-                        <md-select required formControlName="restaurant_work" placeholder="{{'COLLABORATORS_REGISTER.SELECT_RESTAURANT' | translate}}" style="width: 95%;">
-                            <md-option *ngFor="let rest of _restaurants | async" value="{{rest._id}}">{{rest.name}}</md-option>
-                        </md-select>
+                        <mat-select required formControlName="restaurant_work" placeholder="{{'COLLABORATORS_REGISTER.SELECT_RESTAURANT' | translate}}" style="width: 95%;">
+                            <mat-option *ngFor="let rest of _restaurants | async" value="{{rest._id}}">{{rest.name}}</mat-option>
+                        </mat-select>
                     </td>
                     <td>
-                        <md-select required formControlName="role" placeholder="{{'COLLABORATORS_REGISTER.SELECT_ROLE' | translate}}" style="width: 90%;" [disabled]="true">
-                            <md-option *ngFor="let rol of _roles | async" value="{{rol._id}}">{{rol.name | translate}}</md-option>
-                        </md-select>
+                        <mat-select required formControlName="role" placeholder="{{'COLLABORATORS_REGISTER.SELECT_ROLE' | translate}}" style="width: 90%;" [disabled]="true">
+                            <mat-option *ngFor="let rol of _roles | async" value="{{rol._id}}">{{rol.name | translate}}</mat-option>
+                        </mat-select>
                     </td>
                 </tr>
             </table>
             <table style="width: 100%" cellspacing="0">
                 <tr>
                     <td colspan="3" style="padding-top: 10px;">
-                        <md-input-container style="width: 100%">
-                            <input mdInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="70" #inputName/>
-                            <md-hint align="end">{{inputName.value.length}} / 70</md-hint>
-                        </md-input-container>
+                        <mat-form-field style="width: 100%">
+                            <input matInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="70" #inputName/>
+                            <mat-hint align="end">{{inputName.value.length}} / 70</mat-hint>
+                        </mat-form-field>
                     </td>
                     <td colspan="3" style="padding-top: 10px;">
-                        <md-input-container style="width: 100%">
-                            <input mdInput required formControlName="last_name" placeholder="{{'LAST_NAME' | translate}}" minlength="1" maxlength="70" #inputAddress/>
-                            <md-hint align="end">{{inputAddress.value.length}} / 70</md-hint>
-                        </md-input-container>
+                        <mat-form-field style="width: 100%">
+                            <input matInput required formControlName="last_name" placeholder="{{'LAST_NAME' | translate}}" minlength="1" maxlength="70" #inputAddress/>
+                            <mat-hint align="end">{{inputAddress.value.length}} / 70</mat-hint>
+                        </mat-form-field>
                     </td>
                 </tr>
             </table>   
             <table style="width: 100%" cellspacing="0">
                 <tr>
                     <td colspan="1" style="padding-top: 10px; width: 50%">
-                        <md-input-container style="width: 100%">
-                            <input mdInput [mdDatepicker]="picker" placeholder="{{'BIRTHDATE' | translate}}" formControlName="birthdate">
-                            <button mdSuffix [mdDatepickerToggle]="picker"></button>
-                        </md-input-container>
-                        <md-datepicker #picker></md-datepicker>
+                        <mat-form-field style="width: 100%">
+                            <input matInput [matDatepicker]="picker" placeholder="{{'BIRTHDATE' | translate}}" formControlName="birthdate">
+                            <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
+                        </mat-form-field>
+                        <mat-datepicker #picker></mat-datepicker>
                     </td>
                     <td colspan="2" style="padding-top: 10px;">
-                        <md-input-container style="width: 100%">
-                            <input mdInput formControlName="phone" placeholder="{{'PHONE' | translate}}" #inputPhone/>
-                            <md-hint align="end">{{inputPhone.value.length}} / 40</md-hint>
-                        </md-input-container>
+                        <mat-form-field style="width: 100%">
+                            <input matInput formControlName="phone" placeholder="{{'PHONE' | translate}}" #inputPhone/>
+                            <mat-hint align="end">{{inputPhone.value.length}} / 40</mat-hint>
+                        </mat-form-field>
                     </td>
                 </tr>
                 <tr *ngIf="_showTablesSelect">
                     <td colspan="1" style="padding-top: 10px; width: 50%">
-                        <md-checkbox class="checkbox" (change)="pushSelectArray($event)">{{'COLLABORATORS_REGISTER.TABLES_ASSIGNMENT' | translate}}</md-checkbox>
+                        <mat-checkbox class="checkbox" (change)="pushSelectArray($event)">{{'COLLABORATORS_REGISTER.TABLES_ASSIGNMENT' | translate}}</mat-checkbox>
                         
-                        <md-input-container *ngIf="_disabledTablesAssignment" style="width: 100px">
-                            <input mdInput value="{{_tableInit}}" placeholder="{{'COLLABORATORS.TABLE_INIT' | translate}}" disabled="true"/>
-                        </md-input-container>
+                        <mat-form-field *ngIf="_disabledTablesAssignment" style="width: 100px">
+                            <input matInput value="{{_tableInit}}" placeholder="{{'COLLABORATORS.TABLE_INIT' | translate}}" disabled="true"/>
+                        </mat-form-field>
                         
-                        <md-select style="width: 100px;" formControlName="table_init" *ngIf="!_disabledTablesAssignment">
-                            <md-option *ngFor="let index of _tablesNumber" value="{{index}}" ng-selected="_tableInit">{{index}}</md-option>
-                        </md-select>
+                        <mat-select style="width: 100px;" formControlName="table_init" *ngIf="!_disabledTablesAssignment">
+                            <mat-option *ngFor="let index of _tablesNumber" value="{{index}}" ng-selected="_tableInit">{{index}}</mat-option>
+                        </mat-select>
                         &nbsp;
-                        <md-input-container *ngIf="_disabledTablesAssignment" style="width: 100px">
-                            <input mdInput mdInput value="{{_tableEnd}}" placeholder="{{'COLLABORATORS.TABLE_END' | translate}}" disabled="true"/>
-                        </md-input-container>
+                        <mat-form-field *ngIf="_disabledTablesAssignment" style="width: 100px">
+                            <input matInput matInput value="{{_tableEnd}}" placeholder="{{'COLLABORATORS.TABLE_END' | translate}}" disabled="true"/>
+                        </mat-form-field>
 
-                        <md-select style="width: 100px;" formControlName="table_end" *ngIf="!_disabledTablesAssignment">
-                            <md-option *ngFor="let index of _tablesNumber" value="{{index}}" ng-selected="_tableEnd">{{index}}</md-option>
-                        </md-select>
+                        <mat-select style="width: 100px;" formControlName="table_end" *ngIf="!_disabledTablesAssignment">
+                            <mat-option *ngFor="let index of _tablesNumber" value="{{index}}" ng-selected="_tableEnd">{{index}}</mat-option>
+                        </mat-select>
                     </td>
                 </tr>
             </table>
-        </md-card-content>
-        <md-card-actions align="end">
-            <button md-raised-button class="secondary-button" (click)="_dialogRef.close()">{{'CANCEL' | translate}}</button>
-            <button md-raised-button class="primary-button"   (click)="updateUser()">{{'UPDATE' | translate}}</button>
-        </md-card-actions>
-    </md-card>
+        </mat-card-content>
+        <mat-card-actions align="end">
+            <button mat-raised-button class="secondary-button" (click)="_dialogRef.close()">{{'CANCEL' | translate}}</button>
+            <button mat-raised-button class="primary-button"   (click)="updateUser()">{{'UPDATE' | translate}}</button>
+        </mat-card-actions>
+    </mat-card>
 </form>

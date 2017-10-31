@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { MdRadioChange, MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatRadioChange, MatDialogRef, MatDialog } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,13 +10,10 @@ import { RestaurantLegality } from '../../../../../../../../../both/models/resta
 import { RestaurantsLegality } from '../../../../../../../../../both/collections/restaurant/restaurant.collection';
 import { AlertConfirmComponent } from '../../../../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './colombia-legality.component.html';
-import style from './colombia-legality.component.scss';
-
 @Component({
     selector: 'colombia-legality',
-    template,
-    styles: [ style ]
+    templateUrl: './colombia-legality.component.html',
+    styles: [ './colombia-legality.component.scss' ]
 })
 export class ColombiaLegalityComponent implements OnInit, OnDestroy {
 
@@ -42,18 +39,18 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
     private _restaurantLegalitySub: Subscription;
     private _restaurantLegality: RestaurantLegality = { restaurant_id: '' };
     private _restaurantLegalityInEditMode: RestaurantLegality;
-    private _dialogRef: MdDialogRef<any>;
+    private _dialogRef: MatDialogRef<any>;
 
     /**
      * ColombiaLegalityComponent Constructor
      * @param {TranslateService} _translate 
      * @param {UserLanguageService} _userLanguageService
-     * @param {MdDialog} _mdDialog
+     * @param {MatDialog} _mdDialog
      * @param {NgZone} _ngZone
      */
     constructor( private _translate: TranslateService,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog,
+                 protected _mdDialog: MatDialog,
                  private _ngZone: NgZone ) {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
@@ -160,9 +157,9 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
 
     /**
      * Evaluate radio changes
-     * @param {MdRadioChange} _event 
+     * @param {MatRadioChange} _event 
      */
-    radioChange( _event: MdRadioChange ){
+    radioChange( _event: MatRadioChange ){
         this._colombiaLegalityForm.reset();
         this._restaurantLegality = this._restaurantLegalityInEditMode === null || this._restaurantLegalityInEditMode === undefined ? { restaurant_id: '' } : { _id: this._restaurantLegalityInEditMode._id, restaurant_id: this._restaurantLegalityInEditMode.restaurant_id };
         if( _event.value === 'regime_co' ){

@@ -3,9 +3,9 @@ import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Subcategories } from '../../../../../../../both/collections/administration/subcategory.collection';
 import { Subcategory } from '../../../../../../../both/models/administration/subcategory.model';
@@ -13,13 +13,10 @@ import { Categories } from '../../../../../../../both/collections/administration
 import { Category } from '../../../../../../../both/models/administration/category.model';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './subcategories-edit.component.html';
-import style from './subcategories-edit.component.scss';
-
 @Component({
     selector: 'subcategory-edit',
-    template,
-    styles: [ style ],
+    templateUrl: './subcategories-edit.component.html',
+    styles: [ './subcategories-edit.component.scss' ],
     providers:[ UserLanguageService ]
 })
 export class SubcategoryEditComponent implements OnInit {
@@ -27,7 +24,7 @@ export class SubcategoryEditComponent implements OnInit {
     private _user = Meteor.userId();
     public _subcategoryToEdit       : Subcategory;
     private _editForm               : FormGroup;
-    private _mdDialogRef            : MdDialogRef<any>;
+    private _mdDialogRef            : MatDialogRef<any>;
 
     private _subcategories          : Observable<Subcategory[]>;
     private _categories             : Observable<Category[]>;
@@ -40,18 +37,18 @@ export class SubcategoryEditComponent implements OnInit {
      * SubcategoryEditComponent constructor
      * @param {FormBuilder} _formBuilder
      * @param {TranslateService} _translate
-     * @param {MdDialogRef<any>} _dialogRef
-     * @param {MdSnackBar} snackBar
+     * @param {MatDialogRef<any>} _dialogRef
+     * @param {MatSnackBar} snackBar
      * @param {NgZone} _ngZone
      * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _formBuilder: FormBuilder,     
                  private _translate: TranslateService, 
-                 public _dialogRef: MdDialogRef<any>, 
-                 public snackBar: MdSnackBar,
+                 public _dialogRef: MatDialogRef<any>, 
+                 public snackBar: MatSnackBar,
                  private _ngZone: NgZone,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog ){
+                 protected _mdDialog: MatDialog ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';

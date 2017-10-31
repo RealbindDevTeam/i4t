@@ -1,24 +1,21 @@
 import { Component, NgZone, Inject } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MeteorObservable } from "meteor-rxjs";
 import { Observable, Subscription } from 'rxjs';
 
-import template from './disable-confirm.component.html';
-import style from './disable-confirm.component.scss';
-
 @Component({
     selector: 'disable-confirm',
-    template,
-    styles: [style]
+    templateUrl: './disable-confirm.component.html',
+    styles: [ './disable-confirm.component.scss' ]
 })
 
 export class DisableConfirmComponent {
 
     /**
-     * CallCloseConfirmComponent constructor
-     * @param {MdDialogRef<any>} _dialogRef
+     * DisableConfirmComponent constructor
+     * @param {MatDialogRef<any>} _dialogRef
      */
-    constructor(public _dialogRef: MdDialogRef<any>, private _zone: NgZone, @Inject(MD_DIALOG_DATA) public data: any) {
+    constructor(public _dialogRef: MatDialogRef<any>, private _zone: NgZone, @Inject(MAT_DIALOG_DATA) public data: any) {
     }
 
     /**

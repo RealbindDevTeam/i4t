@@ -5,15 +5,15 @@
                 <h2 class="customer-info">{{'EXIT_TABLE_CONFIRM.CUSTOMER' | translate}}: {{ getUserName(userDetail.user_id) }} - {{'EXIT_TABLE_CONFIRM.TABLE' | translate}} # {{_tableNumber}}</h2>
                 <p class="order-cancel-error" *ngIf="_showError">{{'EXIT_TABLE_CONFIRM.CANCELING_ORDER_ERROR' | translate}}. {{'EXIT_TABLE_CONFIRM.VALIDATE_ORDER_MSG' | translate}}</p>
             </div>
-            <md-card>
-                <md-card-content>
+            <mat-card>
+                <mat-card-content>
                     <div class="order-info">
                         <h2 class="order-status">{{'EXIT_TABLE_CONFIRM.ORDER' | translate}} # {{order.code}} - {{'EXIT_TABLE_CONFIRM.STATUS' | translate}}: {{order.status | translate}}</h2>
                         <div *ngIf="order.status !== 'ORDER_STATUS.CANCELED'" class="cancel-order-button">
-                            <button md-raised-button class="primary-button" (click)="cancelOrderToExitTable(order)">{{'EXIT_TABLE_CONFIRM.CANCEL_ORDER' | translate}}</button>
+                            <button mat-raised-button class="primary-button" (click)="cancelOrderToExitTable(order)">{{'EXIT_TABLE_CONFIRM.CANCEL_ORDER' | translate}}</button>
                         </div>
                     </div>
-                    <md-divider></md-divider>
+                    <mat-divider></mat-divider>
                     <span *ngFor="let it of order.items">
                         <span *ngFor="let item of _items | async">
                             <ng-template [ngIf]="it.itemId === item._id">
@@ -41,7 +41,7 @@
                                         </span>
                                     </span>
                                 </div>
-                                <md-divider></md-divider>
+                                <mat-divider></mat-divider>
                             </ng-template>
                         </span>
                     </span>
@@ -49,17 +49,17 @@
                         <span *ngFor="let ad of order.additions">
                             <ng-template [ngIf]="addit._id === ad.additionId">
                                 <h2 class="name">{{ad.quantity}} {{'EXIT_TABLE_CONFIRM.ADDITION' | translate}} - {{addit.name}}</h2>
-                                <md-divider></md-divider>
+                                <mat-divider></mat-divider>
                             </ng-template>
                         </span>
                     </span>
-                </md-card-content>
-            </md-card>
+                </mat-card-content>
+            </mat-card>
         </div>
     </div>
 </div>
 <br/>
-<button md-raised-button class="secondary-button" (click)="close()">{{ 'CLOSE' | translate }}</button>
+<button mat-raised-button class="secondary-button" (click)="close()">{{ 'CLOSE' | translate }}</button>
 <div class="loading" *ngIf="_loading">
-    <md-spinner></md-spinner>
+    <mat-spinner></mat-spinner>
 </div>

@@ -1,19 +1,19 @@
-<md-card style="box-shadow: none">
-    <md-card-title>{{'ENABLE_DISABLED.BTN_TOGGLE_MSG' | translate}}</md-card-title>
-    <md-card-subtitle>{{'ENABLE_DISABLED.DIALOG_SUBTITLE' | translate}}</md-card-subtitle>
-    <md-card-content>
+<mat-card style="box-shadow: none">
+    <mat-card-title>{{'ENABLE_DISABLED.BTN_TOGGLE_MSG' | translate}}</mat-card-title>
+    <mat-card-subtitle>{{'ENABLE_DISABLED.DIALOG_SUBTITLE' | translate}}</mat-card-subtitle>
+    <mat-card-content>
         <table width="100%">
             <tbody>
                 <tr *ngFor="let restaurant of data.one.restaurants">
                     <td>{{getRestaurantName(restaurant.restaurantId)}}</td>
                     <td>
-                        <md-slide-toggle style="float:right" [checked]="restaurant.isAvailable" (change)="updateAvailableFlag(restaurant.restaurantId)"></md-slide-toggle>
+                        <mat-slide-toggle style="float:right" [checked]="restaurant.isAvailable" (change)="updateAvailableFlag(restaurant.restaurantId)"></mat-slide-toggle>
                     </td>
                 </tr>
             </tbody>
         </table>
-    </md-card-content>
-    <md-card-actions align="end">
-        <button md-raised-button class="secondary-button" (click)="cancel()">{{ 'ENABLE_DISABLED.CLOSE_DIALOG' | translate }}</button>
-    </md-card-actions>
-</md-card>
+    </mat-card-content>
+    <mat-card-actions align="end">
+        <button mat-raised-button class="secondary-button" (click)="cancel()">{{ 'ENABLE_DISABLED.CLOSE_DIALOG' | translate }}</button>
+    </mat-card-actions>
+</mat-card>

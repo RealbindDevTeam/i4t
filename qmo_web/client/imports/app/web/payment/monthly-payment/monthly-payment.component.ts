@@ -16,13 +16,10 @@ import { Table } from '../../../../../../both/models/restaurant/table.model';
 import { Parameters } from '../../../../../../both/collections/general/parameter.collection';
 import { Parameter } from '../../../../../../both/models/general/parameter.model';
 
-import template from './monthly-payment.component.html';
-import style from './monthly-payment.component.scss';
-
 @Component({
     selector: 'monthly-payment',
-    template,
-    styles: [style]
+    templateUrl: './monthly-payment.component.html',
+    styles: [ './monthly-payment.component.scss' ]
 })
 export class MonthlyPaymentComponent implements OnInit, OnDestroy {
 

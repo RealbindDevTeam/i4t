@@ -3,22 +3,18 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CustomValidators } from '../../../../../../both/shared-components/validators/custom-validator';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
-import { RecoverClass } from '../../../../../../both/shared-components/auth/recover-password/recover.class';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 import { RecoverConfirmComponent } from './recover-confirm.component';
 
-import template from './recover.web.component.html';
-import style from './recover.web.component.scss';
-
 @Component({
     selector: 'recover',
-    template,
-    styles: [style]
+    templateUrl: './recover.web.component.html',
+    styles: [ './recover.web.component.scss' ]
 })
 export class RecoverWebComponent {
 
-    private _mdDialogRef: MdDialogRef<any>;
+    private _mdDialogRef: MatDialogRef<any>;
     private titleMsg: string;
     private btnAcceptLbl: string;
     private recoverForm: FormGroup;
@@ -26,14 +22,14 @@ export class RecoverWebComponent {
 
     /**
      * RecoverWebComponent Constructor
-     * @param {MdDialogRef<any>} dialogRef 
+     * @param {MatDialogRef<any>} dialogRef 
      * @param {NgZone} zone 
      * @param {TranslateService} translate 
      */
-    constructor(public dialogRef: MdDialogRef<any>,
+    constructor(public dialogRef: MatDialogRef<any>,
         private zone: NgZone,
         private translate: TranslateService,
-        public _mdDialog: MdDialog) {
+        public _mdDialog: MatDialog) {
 
         let userLang = navigator.language.split('-')[0];
         translate.setDefaultLang('en');

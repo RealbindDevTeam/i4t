@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,13 +13,10 @@ import { Table } from '../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './table-change.component.html';
-import style from './table-change.component.scss';
-
 @Component({
     selector: 'table-change',
-    template,
-    styles: [ style ]
+    templateUrl: './table-change.component.html',
+    styles: [ './table-change.component.scss' ]
 })
 export class TableChangeComponent implements OnInit, OnDestroy {
 
@@ -32,7 +29,7 @@ export class TableChangeComponent implements OnInit, OnDestroy {
     private _userDetails                : Observable<UserDetail[]>
     private _tables                     : Observable<Table[]>;
 
-    private _mdDialogRef                : MdDialogRef<any>;
+    private _mdDialogRef                : MatDialogRef<any>;
     private titleMsg                    : string;
     private btnAcceptLbl                : string;
 
@@ -41,13 +38,13 @@ export class TableChangeComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate 
      * @param {NgZone} _ngZone 
      * @param {UserLanguageService} _userLanguageService
-     * @param {MdDialog} _mdDialog
+     * @param {MatDialog} _mdDialog
      * @param {Router} _router
      */
     constructor( private _translate: TranslateService, 
                  private _ngZone: NgZone,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog,
+                 protected _mdDialog: MatDialog,
                  private _router: Router ) {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );

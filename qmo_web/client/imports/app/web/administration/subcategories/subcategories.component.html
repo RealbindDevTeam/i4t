@@ -1,13 +1,13 @@
-<md-card *ngIf="_thereAreUsers">
-  <md-card-header>
-    <div md-card-avatar class="example-header-image"></div>
-    <md-card-title>{{'SUBCATEGORIES.WARNING' | translate}} {{_usersCount}} {{'SUBCATEGORIES.WARNING_2' | translate}}</md-card-title>
-    <md-card-subtitle style="margin-bottom: 0px">{{'SUBCATEGORIES.WARNING_3' | translate}}</md-card-subtitle>
-  </md-card-header>
-</md-card>
+<mat-card *ngIf="_thereAreUsers">
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>{{'SUBCATEGORIES.WARNING' | translate}} {{_usersCount}} {{'SUBCATEGORIES.WARNING_2' | translate}}</mat-card-title>
+    <mat-card-subtitle style="margin-bottom: 0px">{{'SUBCATEGORIES.WARNING_3' | translate}}</mat-card-subtitle>
+  </mat-card-header>
+</mat-card>
 
-<md-card md-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
-  <md-card-content>
+<mat-card mat-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
+  <mat-card-content>
     <div class="card_initial">
       <div class="card_initial has-image">
         <div class="card_initial-image-container">
@@ -22,48 +22,48 @@
           </div>
         </div>
         <div class="card_initial-button">
-          <button md-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
+          <button mat-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
         </div>
       </div>
     </div>
-  </md-card-content>
-</md-card>
+  </mat-card-content>
+</mat-card>
 
-<md-card *ngIf="_thereAreRestaurants">
-  <md-card-title>{{'SUBCATEGORIES.SUBCATEGORY_CREATION' | translate}}</md-card-title>
-  <md-card-subtitle>{{'SUBCATEGORIES.SUBCATEGORY_TEXT' | translate}}</md-card-subtitle>
-  <md-card-content>
+<mat-card *ngIf="_thereAreRestaurants">
+  <mat-card-title>{{'SUBCATEGORIES.SUBCATEGORY_CREATION' | translate}}</mat-card-title>
+  <mat-card-subtitle>{{'SUBCATEGORIES.SUBCATEGORY_TEXT' | translate}}</mat-card-subtitle>
+  <mat-card-content>
     <form [formGroup]="_subcategoryForm" (ngSubmit)="addSubcategory();">
       <div>
-        <md-input-container class="name">
-          <input mdInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #inputName>
-          <md-hint align="end">{{inputName.value.length}} / 50</md-hint>
-        </md-input-container>
-        <md-select class="select" formControlName="category" required id="categorySelect" placeholder="{{'SUBCATEGORIES.CATEGORY_SELECTION' | translate}}"
+        <mat-form-field class="name">
+          <input matInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #inputName>
+          <mat-hint align="end">{{inputName.value.length}} / 50</mat-hint>
+        </mat-form-field>
+        <mat-select class="select" formControlName="category" required id="categorySelect" placeholder="{{'SUBCATEGORIES.CATEGORY_SELECTION' | translate}}"
           [(ngModel)]="_selectedValue">
-          <md-option *ngFor="let category of _categories | async" value="{{category._id}}" (click)="changeCategory(category._id);">{{category.name}}</md-option>
-        </md-select>
+          <mat-option *ngFor="let category of _categories | async" value="{{category._id}}" (click)="changeCategory(category._id);">{{category.name}}</mat-option>
+        </mat-select>
       </div>
       <br/>
-      <button md-raised-button class="secondary-button" [disabled]="!_subcategoryForm.valid" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
-      <button md-raised-button class="primary-button" [disabled]="!_subcategoryForm.valid" type="submit">{{'CREATE' | translate}}</button>
+      <button mat-raised-button class="secondary-button" [disabled]="!_subcategoryForm.valid" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
+      <button mat-raised-button class="primary-button" [disabled]="!_subcategoryForm.valid" type="submit">{{'CREATE' | translate}}</button>
     </form>
-  </md-card-content>
-</md-card>
+  </mat-card-content>
+</mat-card>
 
-<md-card *ngFor="let subcategory of _subcategories | async" class="subcategory">
-  <md-card-title>{{subcategory.name}}</md-card-title>
-  <md-card-content>
+<mat-card *ngFor="let subcategory of _subcategories | async" class="subcategory">
+  <mat-card-title>{{subcategory.name}}</mat-card-title>
+  <mat-card-content>
     <span *ngFor="let cat of _categories | async">
       <ng-template [ngIf]="cat._id == subcategory.category">                
         <p *ngIf="cat.is_active" class="category-active">{{'SUBCATEGORIES.CATEGORY' | translate}}: {{cat.name}}</p>
         <p *ngIf="!cat.is_active" class="category-inactive">{{'SUBCATEGORIES.CATEGORY' | translate}}: {{cat.name}}</p>
       </ng-template>
     </span>
-  </md-card-content>
-  <md-card-actions>
-    <button md-raised-button (click)="open(subcategory)" class="secondary-button">{{'SUBCATEGORIES.MODIFY' | translate}}</button>
-    <button md-raised-button *ngIf="subcategory.is_active" class="inactive-button" (click)="updateStatus(subcategory)">{{'SUBCATEGORIES.INACTIVATE' | translate}}</button>
-    <button md-raised-button *ngIf="!subcategory.is_active" class="active-button" (click)="updateStatus(subcategory)">{{'SUBCATEGORIES.ACTIVATE' | translate}}</button>
-  </md-card-actions>
-</md-card>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button (click)="open(subcategory)" class="secondary-button">{{'SUBCATEGORIES.MODIFY' | translate}}</button>
+    <button mat-raised-button *ngIf="subcategory.is_active" class="inactive-button" (click)="updateStatus(subcategory)">{{'SUBCATEGORIES.INACTIVATE' | translate}}</button>
+    <button mat-raised-button *ngIf="!subcategory.is_active" class="active-button" (click)="updateStatus(subcategory)">{{'SUBCATEGORIES.ACTIVATE' | translate}}</button>
+  </mat-card-actions>
+</mat-card>

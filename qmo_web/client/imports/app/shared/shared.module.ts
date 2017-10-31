@@ -3,9 +3,9 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import { MatCardModule } from '@angular/material';
 import {WidgetComponent} from './layout/widget/widget.component';
 import {ChipComponent} from './layout/chip/chip.component';
-import {MaterialModule} from '@angular/material';
 import {ColorService} from './services/color.service';
 import {CodeHighlighterDirective} from './layout/code-highlighter/code-highlighter.directive';
 import {SearchService} from './services/search.service';
@@ -20,7 +20,6 @@ import {NavigationService} from '../web/navigation/navigation.service';
   exports : [ FormsModule, 
               HttpModule, 
               CommonModule, 
-              MaterialModule, 
               FlexLayoutModule, 
               NavigationModule, 
               WidgetComponent, 
@@ -28,9 +27,9 @@ import {NavigationService} from '../web/navigation/navigation.service';
   imports : [ FormsModule, 
               HttpModule, 
               CommonModule, 
-              MaterialModule, 
               FlexLayoutModule, 
-              NavigationModule ]
+              NavigationModule,
+              MatCardModule ]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

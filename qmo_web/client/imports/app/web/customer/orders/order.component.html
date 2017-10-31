@@ -1,5 +1,5 @@
-<md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" *ngIf="_showAlphanumericCodeCard">
-    <md-card-content>
+<mat-card mat-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" *ngIf="_showAlphanumericCodeCard">
+    <mat-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
                 <form [formGroup]="_ordersForm" (ngSubmit)="validateQRCodeExists();">
@@ -12,14 +12,14 @@
                             {{ 'ORDERS.MSG_INITIAL' | translate }}
                         </div>
                         <div class="card_initial-additional-links">
-                            <md-input-container>
-                                <input mdInput required formControlName="qrCode" minlength="6" (keypress)="hideMessageError()" class="code" #input [value]="input.value.toUpperCase()">
-                            </md-input-container>
+                            <mat-form-field>
+                                <input matInput required formControlName="qrCode" minlength="6" (keypress)="hideMessageError()" class="code" #input [value]="input.value.toUpperCase()">
+                            </mat-form-field>
                         </div>
                     </div>
                     <div class="card_initial-button">
-                        <button md-raised-button (click)="cancel()">{{'ORDERS.CANCEL' | translate}}</button>
-                        <button md-raised-button [disabled]="!_ordersForm.valid" type="submit">{{'ORDERS.ENTER' | translate}}</button>
+                        <button mat-raised-button (click)="cancel()">{{'ORDERS.CANCEL' | translate}}</button>
+                        <button mat-raised-button [disabled]="!_ordersForm.valid" type="submit">{{'ORDERS.ENTER' | translate}}</button>
                     </div>
                 </form>
                 <div *ngIf="_showError" class="error">
@@ -32,16 +32,16 @@
                 </div>
             </div>
         </div>
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>
 <order-create *ngIf="_showOrderCreation" [restaurantId]="_currentRestaurant._id" [restaurantCurrency]="_currentRestaurant.currencyId" [tableQRCode]="_currentQRCode" (finishOrdenCreation)="validateFinishOrderCreation($event)"></order-create>
 <order-list *ngIf="_showOrderList" [restaurantId]="_currentRestaurant._id" [restaurantCurrency]="_currentRestaurant.currencyId" [tableQRCode]="_currentQRCode" (createNewOrder)="createNewOrder($event)"></order-list>
 
 <div class="fixed-action-btn" *ngIf="!_showOrderList">
-    <button *ngIf="_showNewOrderButton" md-fab (click)="createNewOrder()">
-        <md-icon style="color: white;">add</md-icon>
+    <button *ngIf="_showNewOrderButton" mat-fab (click)="createNewOrder()">
+        <mat-icon style="color: white;">add</mat-icon>
     </button>
 </div>
 <div class="loading" *ngIf="_loading">
-    <md-spinner></md-spinner>
+    <mat-spinner></mat-spinner>
 </div>

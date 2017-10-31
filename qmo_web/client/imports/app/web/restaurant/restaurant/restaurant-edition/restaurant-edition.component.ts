@@ -3,7 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
@@ -22,13 +22,10 @@ import { Parameter } from '../../../../../../../both/models/general/parameter.mo
 import { Parameters } from '../../../../../../../both/collections/general/parameter.collection';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './restaurant-edition.component.html';
-import style from './restaurant-edition.component.scss';
-
 @Component({
     selector: 'restaurant-edition',
-    template,
-    styles: [style]
+    templateUrl: './restaurant-edition.component.html',
+    styles: [ './restaurant-edition.component.scss' ]
 })
 export class RestaurantEditionComponent implements OnInit, OnDestroy {
 
@@ -36,7 +33,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     private _restaurantToEdit               : Restaurant;
     private _restaurantEditionForm          : FormGroup;
     private _paymentsFormGroup              : FormGroup = new FormGroup({});
-    private _mdDialogRef                    : MdDialogRef<any>;
+    private _mdDialogRef                    : MatDialogRef<any>;
     
     private _restaurantSub                  : Subscription;
     private _currencySub                    : Subscription;
@@ -94,7 +91,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         private _route: ActivatedRoute,
         private _router: Router,
         private _userLanguageService: UserLanguageService,
-        protected _mdDialog: MdDialog) {
+        protected _mdDialog: MatDialog) {
 
         this._route.params.forEach((params: Params) => {
             this._restaurantToEdit = JSON.parse(params['param1']);

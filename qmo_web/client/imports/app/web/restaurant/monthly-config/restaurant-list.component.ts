@@ -19,13 +19,10 @@ import { Parameter } from '../../../../../../both/models/general/parameter.model
 import { PaymentsHistory } from '../../../../../../both/collections/payment/payment-history.collection';
 import { PaymentHistory } from '../../../../../../both/models/payment/payment-history.model';
 
-import template from './restaurant-list.component.html';
-import style from './restaurant-list.component.scss';
-
 @Component({
     selector: 'restaurant-list',
-    template,
-    styles: [style]
+    templateUrl: './restaurant-list.component.html',
+    styles: [ './restaurant-list.component.scss' ]
 })
 export class RestaurantListComponent implements OnInit, OnDestroy {
 

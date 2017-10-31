@@ -3,8 +3,8 @@
         <div *ngFor="let table of _tables | async">
             <div *ngIf="table._id === userDetail.current_table">
                 <restaurant-info [restaurantId]="userDetail.current_restaurant" [tableQRCode]="table.QR_code"></restaurant-info>
-                <md-card md-cell="12" class="demo-card demo-basic">
-                    <md-card-content>
+                <mat-card mat-cell="12" class="demo-card demo-basic">
+                    <mat-card-content>
                         <div class="card_initial">
                             <div class="card_initial has-image" style="margin: auto;">
                                 <form [formGroup]="_changeTableForm" (ngSubmit)="changeUserTable(userDetail.current_restaurant,table.QR_code);">
@@ -17,26 +17,26 @@
                                             {{'CHANGE_TABLE.MSG_INITIAL' | translate}}
                                         </div>
                                         <div class="card_initial-additional-links">
-                                            <md-input-container>
-                                                <input mdInput required formControlName="qrCodeDestiny" minlength="6" class="code" #input [value]="input.value.toUpperCase()">
-                                            </md-input-container>
+                                            <mat-form-field>
+                                                <input matInput required formControlName="qrCodeDestiny" minlength="6" class="code" #input [value]="input.value.toUpperCase()">
+                                            </mat-form-field>
                                         </div>
                                     </div>
                                     <div class="card_initial-button">
-                                        <button md-raised-button (click)="cancel()">{{'CHANGE_TABLE.CANCEL' | translate}}</button>
-                                        <button md-raised-button [disabled]="!_changeTableForm.valid" type="submit">{{'CHANGE_TABLE.ENTER' | translate}}</button>
+                                        <button mat-raised-button (click)="cancel()">{{'CHANGE_TABLE.CANCEL' | translate}}</button>
+                                        <button mat-raised-button [disabled]="!_changeTableForm.valid" type="submit">{{'CHANGE_TABLE.ENTER' | translate}}</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
-                    </md-card-content>
-                </md-card>
+                    </mat-card-content>
+                </mat-card>
             </div>
         </div>
     </div>
     <div style="width: 90%; margin: 0 auto" *ngIf=" userDetail.current_restaurant === '' && userDetail.current_table === '' ">
-        <md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
-            <md-card-content>
+        <mat-card mat-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
+            <mat-card-content>
                 <div class="card_initial">
                     <div class="card_initial has-image">
                         <div class="card_initial-image-container">
@@ -51,11 +51,11 @@
                         </div>
                         </div>
                         <div class="card_initial-button">
-                        <button md-raised-button (click)="goToOrders()">{{'CHANGE_TABLE.GO_TO_ORDERS' | translate}}</button>
+                        <button mat-raised-button (click)="goToOrders()">{{'CHANGE_TABLE.GO_TO_ORDERS' | translate}}</button>
                         </div>
                     </div>
                 </div>
-            </md-card-content>
-        </md-card>
+            </mat-card-content>
+        </mat-card>
     </div>
 </div>

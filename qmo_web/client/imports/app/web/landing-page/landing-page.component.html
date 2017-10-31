@@ -1,6 +1,6 @@
 <div id="sidenav-bg" class="sidenav-bg"></div>
 
-<md-toolbar class="home-md-toolbar opacity animated fadeInDown" data-animation="fadeInDown" data-timeout="1000">
+<mat-toolbar class="home-md-toolbar opacity animated fadeInDown" data-animation="fadeInDown" data-timeout="1000">
     <div class="nav-wrapper container">
         <a id="logo-container" routerLink="/" class="brand-logo">
             <img src="/images/logo_iurest_white.png" alt="iurest">
@@ -8,23 +8,23 @@
         <span class="app-flex-filler"></span>
 
         <ul style="padding-left: 15px" class="right hide-on-med-and-down">
-            <button md-raised-button class="primary-button" style="font-size: .9rem" [routerLink]="['/signup']">{{'LANDING.SIGNUP' | translate}}</button>
+            <button mat-raised-button class="primary-button" style="font-size: .9rem" [routerLink]="['/signup']">{{'LANDING.SIGNUP' | translate}}</button>
         </ul>
         <ul style="padding-left: 15px" class="right hide-on-med-and-down">
-            <button md-raised-button class="secondary-button" style="font-size: .9rem" [routerLink]="['/signin']">{{'LANDING.SIGNIN' | translate}}</button>
+            <button mat-raised-button class="secondary-button" style="font-size: .9rem" [routerLink]="['/signin']">{{'LANDING.SIGNIN' | translate}}</button>
         </ul>
         <ul class="right hide-on-med-and-down">
             <li>
-                <a [md-menu-trigger-for]="menu" id="user-dropdown-toggler">{{'LANDING.LANGUAGE' | translate}}
-                    <md-icon style="vertical-align: middle">keyboard_arrow_down</md-icon>
+                <a [mat-menu-trigger-for]="menu" id="user-dropdown-toggler">{{'LANDING.LANGUAGE' | translate}}
+                    <mat-icon style="vertical-align: middle">keyboard_arrow_down</mat-icon>
                 </a>
             </li>
 
             <div style="padding-top: 70px; position: fixed">
-                <md-menu #menu="mdMenu" id="md-overlay-pane">
-                    <button md-menu-item disabled>{{'LANDING.LANGUAGE_SELECT' | translate}}</button>
-                    <button md-menu-item *ngFor="let lang of _languages | async" (click)="langChange(lang.language_code)" value="{{lang.language_code}}">{{lang.name}}</button>
-                </md-menu>
+                <mat-menu #menu="matMenu" id="md-overlay-pane">
+                    <button mat-menu-item disabled>{{'LANDING.LANGUAGE_SELECT' | translate}}</button>
+                    <button mat-menu-item *ngFor="let lang of _languages | async" (click)="langChange(lang.language_code)" value="{{lang.language_code}}">{{lang.name}}</button>
+                </mat-menu>
             </div>
         </ul>
         <ul class="right hide-on-med-and-down">
@@ -43,7 +43,7 @@
             <i *ngIf="!_showIconMenu" class="material-icons">arrow_back</i>
         </a>
     </div>
-</md-toolbar>
+</mat-toolbar>
 
 <div id="sidenav-dev" class="sidenav">
     <div class="sidenav-item">
@@ -55,15 +55,15 @@
                 <a (click)="goToSection('owner', true)">{{'LANDING.OWNER' | translate}}</a>
             </li>
             <li>
-                <a [md-menu-trigger-for]="menu" id="user-dropdown-toggler">
+                <a [mat-menu-trigger-for]="menu" id="user-dropdown-toggler">
                     {{'LANDING.LANGUAGE' | translate}}
-                    <md-icon style="float:right; line-height: inherit">keyboard_arrow_down</md-icon>
+                    <mat-icon style="float:right; line-height: inherit">keyboard_arrow_down</mat-icon>
                 </a>
                 <div style="padding-top: 70px; position: fixed">
-                    <md-menu #menu="mdMenu" id="md-overlay-pane">
-                        <button md-menu-item disabled>{{'LANDING.LANGUAGE_SELECT' | translate}}</button>
-                        <button md-menu-item *ngFor="let lang of _languages | async" (click)="langChange(lang.language_code)" value="{{lang.language_code}}">{{lang.name}}</button>
-                    </md-menu>
+                    <mat-menu #menu="matMenu" id="md-overlay-pane">
+                        <button mat-menu-item disabled>{{'LANDING.LANGUAGE_SELECT' | translate}}</button>
+                        <button mat-menu-item *ngFor="let lang of _languages | async" (click)="langChange(lang.language_code)" value="{{lang.language_code}}">{{lang.name}}</button>
+                    </mat-menu>
                 </div>
             </li>
             <li>
@@ -110,7 +110,7 @@
     </div>
 </div>
 
-<md-toolbar class="menu menu_bar-hide">
+<mat-toolbar class="menu menu_bar-hide">
     <div class="nav-wrapper container">
         <a id="logo-container" routerLink="/" class="brand-logo">
             <img src="/images/logo_iurest_white.png" alt="iurest">
@@ -118,23 +118,23 @@
         <span class="app-flex-filler"></span>
 
         <ul style="padding-left: 15px" class="right hide-on-med-and-down">
-            <button md-raised-button class="primary-button" style="font-size: .9rem" [routerLink]="['/signup']">{{'LANDING.SIGNUP' | translate}}</button>
+            <button mat-raised-button class="primary-button" style="font-size: .9rem" [routerLink]="['/signup']">{{'LANDING.SIGNUP' | translate}}</button>
         </ul>
         <ul style="padding-left: 15px" class="right hide-on-med-and-down">
-            <button md-raised-button class="secondary-button" style="font-size: .9rem" [routerLink]="['/signin']">{{'LANDING.SIGNIN' | translate}}</button>
+            <button mat-raised-button class="secondary-button" style="font-size: .9rem" [routerLink]="['/signin']">{{'LANDING.SIGNIN' | translate}}</button>
         </ul>
         <ul class="right hide-on-med-and-down">
             <li>
-                <a [md-menu-trigger-for]="menu" id="user-dropdown-toggler">{{'LANDING.LANGUAGE' | translate}}
-                    <md-icon style="vertical-align: middle">keyboard_arrow_down</md-icon>
+                <a [mat-menu-trigger-for]="menu" id="user-dropdown-toggler">{{'LANDING.LANGUAGE' | translate}}
+                    <mat-icon style="vertical-align: middle">keyboard_arrow_down</mat-icon>
                 </a>
             </li>
 
             <div style="padding-top: 70px; position: fixed">
-                <md-menu #menu="mdMenu" id="md-overlay-pane">
-                    <button md-menu-item disabled>{{'LANDING.LANGUAGE_SELECT' | translate}}</button>
-                    <button md-menu-item *ngFor="let lang of _languages | async" (click)="langChange(lang.language_code)" value="{{lang.language_code}}">{{lang.name}}</button>
-                </md-menu>
+                <mat-menu #menu="matMenu" id="md-overlay-pane">
+                    <button mat-menu-item disabled>{{'LANDING.LANGUAGE_SELECT' | translate}}</button>
+                    <button mat-menu-item *ngFor="let lang of _languages | async" (click)="langChange(lang.language_code)" value="{{lang.language_code}}">{{lang.name}}</button>
+                </mat-menu>
             </div>
         </ul>
         <ul class="right hide-on-med-and-down">
@@ -151,7 +151,7 @@
             <i class="material-icons">menu</i>
         </a>
     </div>
-</md-toolbar>
+</mat-toolbar>
 
 <div class="id">
     <div class="container center">
@@ -266,7 +266,7 @@
                         </div>
                     </div>
                     <div class="dwtl opacity revealOnScroll" data-animation="fadeInUp" data-timeout="1000">
-                        <button md-raised-button class="primary-button bv" style="font-size: .9rem" [routerLink]="['/admin-signup']">
+                        <button mat-raised-button class="primary-button bv" style="font-size: .9rem" [routerLink]="['/admin-signup']">
                             {{'LANDING.ADMIN_SIGNUP' | translate}}
                         </button>
                     </div>

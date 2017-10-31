@@ -1,5 +1,5 @@
 import { Component, ViewContainerRef, OnInit, OnDestroy, AfterContentInit, NgZone } from '@angular/core';
-import { MdDialogRef, MdDialog } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -12,19 +12,16 @@ import { UserDetails } from '../../../../../../both/collections/auth/user-detail
 import { WaiterCallDetails } from '../../../../../../both/collections/restaurant/waiter-call-detail.collection';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './waiter-call.component.html';
-import style from './waiter-call.component.scss';
-
 @Component({
     selector: 'waiter-call',
-    template,
-    styles: [ style ]
+    templateUrl: './waiter-call.component.html',
+    styles: [ './waiter-call.component.scss' ]
 })
 export class WaiterCallComponent implements OnInit, OnDestroy {
 
   private _userDetailSubscription       : Subscription;
   private _waiterCallDetailSubscription : Subscription;
-  public _dialogRef                       : MdDialogRef<any>;
+  public _dialogRef                     : MatDialogRef<any>;
 
   private _restaurants      : any;
   private _userDetail       : any;
@@ -44,13 +41,13 @@ export class WaiterCallComponent implements OnInit, OnDestroy {
    * @param { ViewContainerRef } _viewContainerRef 
    * @param {NgZone} _ngZone
    * @param {UserLanguageService} _userLanguageService
-   * @param {MdDialog} _mdDialog
+   * @param {MatDialog} _mdDialog
    */
   constructor ( protected _translate: TranslateService, 
                 public _viewContainerRef: ViewContainerRef,
                 private _ngZone: NgZone, 
                 private _userLanguageService: UserLanguageService,
-                protected _mdDialog: MdDialog) {
+                protected _mdDialog: MatDialog) {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';

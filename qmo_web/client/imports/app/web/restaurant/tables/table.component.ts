@@ -12,17 +12,14 @@ import { Restaurants } from '../../../../../../both/collections/restaurant/resta
 import { Table } from '../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
 
-import template from './table.component.html';
-import style from './table.component.scss';
-
 import * as QRious from 'qrious';
 
 let jsPDF = require('jspdf');
 
 @Component({
   selector: 'iu-table',
-  template,
-  styles: [style]
+  templateUrl: './table.component.html',
+  styles: [ './table.component.scss' ]
 })
 export class TableComponent implements OnInit, OnDestroy {
 

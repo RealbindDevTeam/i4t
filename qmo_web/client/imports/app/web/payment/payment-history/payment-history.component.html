@@ -1,18 +1,18 @@
 <div class="global-div" *ngIf="_thereArePaymentsHistory">
     <div class="div-whitout-overflow">
         <div class="cards-div">
-            <md-card style="margin: 24px">
-                <md-card-title>{{'RES_PAYMENT_HISTORY.TITLE' | translate }}</md-card-title>
-                <md-card-subtitle>{{'RES_PAYMENT_HISTORY.SUBTITLE' | translate}}</md-card-subtitle>
-                <md-card-content style="background: #FFF">
-                    <md-select [(ngModel)]="_selectedYear" placeholder="{{'RES_PAYMENT_HISTORY.YEAR_FILTER' | translate}}" style="width: 25%;">
-                        <md-option *ngFor="let year of _yearsArray" value="{{year.value}}" (click)="changeHistoryPaymentYear()">{{year.viewValue}}</md-option>
-                    </md-select>
-                    <md-select [(ngModel)]="_selectedMonth" placeholder="{{'RES_PAYMENT_HISTORY.MONTH_FILTER' | translate}}" style="width: 25%; margin-left: 2%;"
+            <mat-card style="margin: 24px">
+                <mat-card-title>{{'RES_PAYMENT_HISTORY.TITLE' | translate }}</mat-card-title>
+                <mat-card-subtitle>{{'RES_PAYMENT_HISTORY.SUBTITLE' | translate}}</mat-card-subtitle>
+                <mat-card-content style="background: #FFF">
+                    <mat-select [(ngModel)]="_selectedYear" placeholder="{{'RES_PAYMENT_HISTORY.YEAR_FILTER' | translate}}" style="width: 25%;">
+                        <mat-option *ngFor="let year of _yearsArray" value="{{year.value}}" (click)="changeHistoryPaymentYear()">{{year.viewValue}}</mat-option>
+                    </mat-select>
+                    <mat-select [(ngModel)]="_selectedMonth" placeholder="{{'RES_PAYMENT_HISTORY.MONTH_FILTER' | translate}}" style="width: 25%; margin-left: 2%;"
                         [disabled]="_activateMonth">
-                        <md-option value="0" (click)="changeHistoryPaymentMonth()">{{'RES_PAYMENT_HISTORY.ALL_FILTER' | translate}}</md-option>
-                        <md-option *ngFor="let month of _monthsArray" value="{{month.value}}" (click)="changeHistoryPaymentMonth()">{{month.viewValue}}</md-option>
-                    </md-select>
+                        <mat-option value="0" (click)="changeHistoryPaymentMonth()">{{'RES_PAYMENT_HISTORY.ALL_FILTER' | translate}}</mat-option>
+                        <mat-option *ngFor="let month of _monthsArray" value="{{month.value}}" (click)="changeHistoryPaymentMonth()">{{month.viewValue}}</mat-option>
+                    </mat-select>
                     <table class="striped" width="100%" style="border:0.5px solid; border-color: lightgrey; margin-top: 15px">
                         <thead>
                             <tr>
@@ -33,37 +33,37 @@
                                 <td class="cust-center-align">
                                     <div>
                                         <div style="display: inline-block; vertical-align: middle">
-                                            <img md-list-avatar style="height: 30px; width: 30px;" src="{{getImageName(historyPayment.status)}}">
+                                            <img mat-list-avatar style="height: 30px; width: 30px;" src="{{getImageName(historyPayment.status)}}">
                                         </div>
                                         <div style="display: inline-block; vertical-align: middle">
-                                            <button md-button disabled *ngIf="historyPayment.status != 'TRANSACTION_STATUS.PENDING'">{{historyPayment.status | translate}}</button>
+                                            <button mat-button disabled *ngIf="historyPayment.status != 'TRANSACTION_STATUS.PENDING'">{{historyPayment.status | translate}}</button>
                                         </div>
                                         <div style="display: inline-block; vertical-align: middle">
-                                            <button md-button [ngClass]="{'link-color': historyPayment.status == 'TRANSACTION_STATUS.PENDING'}" *ngIf="historyPayment.status == 'TRANSACTION_STATUS.PENDING'"
+                                            <button mat-button [ngClass]="{'link-color': historyPayment.status == 'TRANSACTION_STATUS.PENDING'}" *ngIf="historyPayment.status == 'TRANSACTION_STATUS.PENDING'"
                                                 (click)="getPayInfo(historyPayment.transactionId)">{{historyPayment.status | translate}}</button>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="cust-center-align">
-                                        <button md-raised-button *ngIf="historyPayment.status == 'TRANSACTION_STATUS.APPROVED'" (click)="generateInvoice(historyPayment)">{{'RES_PAYMENT_HISTORY.GENERATE_INVOICE' | translate}}</button>
+                                        <button mat-raised-button *ngIf="historyPayment.status == 'TRANSACTION_STATUS.APPROVED'" (click)="generateInvoice(historyPayment)">{{'RES_PAYMENT_HISTORY.GENERATE_INVOICE' | translate}}</button>
                                     </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                </md-card-content>
-            </md-card>
+                </mat-card-content>
+            </mat-card>
         </div>
     </div>
 </div>
 
 <div class="loading" *ngIf="_loading">
-    <md-spinner></md-spinner>
+    <mat-spinner></mat-spinner>
 </div>
 
-<md-card *ngIf="!_thereArePaymentsHistory" md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
-    <md-card-content>
+<mat-card *ngIf="!_thereArePaymentsHistory" mat-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
+    <mat-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
                 <div class="card_initial-image-container">
@@ -76,5 +76,5 @@
                 </div>
             </div>
         </div>
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>

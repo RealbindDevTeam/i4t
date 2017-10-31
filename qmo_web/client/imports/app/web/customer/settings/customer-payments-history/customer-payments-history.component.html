@@ -4,8 +4,8 @@
             <div class="menu-items-content">
                 <div class="content">
                     <div>
-                        <md-card *ngIf="!_showPayments" md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
-                            <md-card-content>
+                        <mat-card *ngIf="!_showPayments" mat-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
+                            <mat-card-content>
                                 <div class="card_initial">
                                     <div class="card_initial has-image">
                                         <div class="card_initial-image-container">
@@ -20,26 +20,26 @@
                                         </div>
                                     </div>
                                 </div>
-                            </md-card-content>
-                        </md-card>
+                            </mat-card-content>
+                        </mat-card>
                         
                         <div *ngIf="_showPayments" id="pruebaCard" >
-                            <md-card class="main" *ngFor="let invoice of _invoices | async">
-                                <md-card-content>
-                                    <md-list class="order-info">
-                                        <md-list-item>
-                                            <img md-list-avatar class="image" src="/images/orders.png">
-                                            <h2 md-line class="title">{{invoice.restaurant_name}}</h2>
-                                            <p md-line class="title">{{invoice.creation_date | date: 'dd MMM yyyy HH:mm'}}</p>
-                                            <button md-raised-button *ngIf="isInvoiceCanDownload(invoice, invoice.country_id)" (click)="invoiceGenerate(invoice, invoice.country_id)" style="box-shadow: none; color: #ef5350;" mdTooltip="{{'PAYMENTS_HISTORY.TOOLTIP_DOWNLOAD_INVOICE' | translate}}">
-                                                <md-icon>get_app</md-icon>
+                            <mat-card class="main" *ngFor="let invoice of _invoices | async">
+                                <mat-card-content>
+                                    <mat-list class="order-info">
+                                        <mat-list-item>
+                                            <img mat-list-avatar class="image" src="/images/orders.png">
+                                            <h2 mat-line class="title">{{invoice.restaurant_name}}</h2>
+                                            <p mat-line class="title">{{invoice.creation_date | date: 'dd MMM yyyy HH:mm'}}</p>
+                                            <button mat-raised-button *ngIf="isInvoiceCanDownload(invoice, invoice.country_id)" (click)="invoiceGenerate(invoice, invoice.country_id)" style="box-shadow: none; color: #ef5350;" matTooltip="{{'PAYMENTS_HISTORY.TOOLTIP_DOWNLOAD_INVOICE' | translate}}">
+                                                <mat-icon>get_app</mat-icon>
                                             </button>
-                                        </md-list-item>
-                                    </md-list>
-                                    <md-list class="order-details">
+                                        </mat-list-item>
+                                    </mat-list>
+                                    <mat-list class="order-details">
                                         <div *ngFor="let item of invoice.items">
-                                            <md-list-item class="element">
-                                                <div md-line>
+                                            <mat-list-item class="element">
+                                                <div mat-line>
                                                     <div class="item-name">
                                                         <h4 class="display-inline">{{itemNameCrop(item.item_name)}}</h4>
                                                     </div>
@@ -48,11 +48,11 @@
                                                         <p class="price">{{item.price}} {{invoice.currency}}</p>
                                                     </div>
                                                 </div>
-                                            </md-list-item>
-                                            <md-divider class="divider"></md-divider>
+                                            </mat-list-item>
+                                            <mat-divider class="divider"></mat-divider>
                                             <div *ngIf="item.garnish_food.length > 0">
-                                                <md-list-item class="element" *ngFor="let gf of item.garnish_food">
-                                                    <div md-line>
+                                                <mat-list-item class="element" *ngFor="let gf of item.garnish_food">
+                                                    <div mat-line>
                                                         <div class="item-name">
                                                             <h4 class="display-inline">{{itemNameCrop(gf.garnish_food_name)}}</h4>
                                                         </div>
@@ -61,13 +61,13 @@
                                                             <p class="price">{{gf.price}} {{invoice.currency}}</p>
                                                         </div>
                                                     </div>
-                                                </md-list-item>
-                                                <md-divider class="divider"></md-divider>
+                                                </mat-list-item>
+                                                <mat-divider class="divider"></mat-divider>
                                             </div>
                                             
                                             <div *ngIf="item.additions.length > 0">
-                                                <md-list-item class="element" *ngFor="let ad of item.additions">
-                                                    <div md-line>
+                                                <mat-list-item class="element" *ngFor="let ad of item.additions">
+                                                    <div mat-line>
                                                         <div class="item-name">
                                                             <h4 class="display-inline">{{itemNameCrop(ad.addition_name)}}</h4>
                                                         </div>
@@ -76,14 +76,14 @@
                                                             <p class="price">{{ad.price}} {{invoice.currency}}</p>
                                                         </div>
                                                     </div>
-                                                </md-list-item>
-                                                <md-divider class="divider"></md-divider>
+                                                </mat-list-item>
+                                                <mat-divider class="divider"></mat-divider>
                                             </div>
                                         </div>
 
                                         <div *ngFor="let addition of invoice.additions">
-                                            <md-list-item class="element">
-                                                <div md-line>
+                                            <mat-list-item class="element">
+                                                <div mat-line>
                                                     <div class="item-name">
                                                         <h4 class="display-inline">{{itemNameCrop(addition.addition_name)}}</h4>
                                                     </div>
@@ -92,10 +92,10 @@
                                                         <p class="price">{{addition.price}} {{invoice.currency}}</p>
                                                     </div>
                                                 </div>
-                                            </md-list-item>
-                                            <md-divider class="divider"></md-divider>
+                                            </mat-list-item>
+                                            <mat-divider class="divider"></mat-divider>
                                         </div>
-                                    </md-list>
+                                    </mat-list>
                                     
                                     <div style="padding: 0 16px;">
                                         <div>
@@ -122,8 +122,8 @@
                                             <h1 style="float: right;">{{invoice.total_pay}} {{invoice.currency}}</h1>
                                         </div>
                                     </div>
-                                </md-card-content>
-                            </md-card>
+                                </mat-card-content>
+                            </mat-card>
                         </div>
                     </div>
                 </div>

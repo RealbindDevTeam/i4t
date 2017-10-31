@@ -3,9 +3,9 @@ import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Sections } from '../../../../../../../both/collections/administration/section.collection';
 import { Section } from '../../../../../../../both/models/administration/section.model';
@@ -13,13 +13,10 @@ import { Restaurant } from '../../../../../../../both/models/restaurant/restaura
 import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './section-edit.component.html';
-import style from './section-edit.component.scss';
-
 @Component({
     selector: 'section-edit',
-    template,
-    styles: [ style ],
+    templateUrl: './section-edit.component.html',
+    styles: [ './section-edit.component.scss' ],
     providers:[ UserLanguageService ]
 })
 export class SectionEditComponent implements OnInit {
@@ -28,7 +25,7 @@ export class SectionEditComponent implements OnInit {
     public _sectionToEdit           : Section;
     private _editForm               : FormGroup;
     private _restaurantsFormGroup   : FormGroup = new FormGroup({});
-    private _mdDialogRef            : MdDialogRef<any>;
+    private _mdDialogRef            : MatDialogRef<any>;
 
     private _sections               : Observable<Section[]>;
     private _restaurants            : Observable<Restaurant[]>;
@@ -41,18 +38,18 @@ export class SectionEditComponent implements OnInit {
      * SectionEditComponent constructor
      * @param {FormBuilder} _formBuilder
      * @param {TranslateService} _translate
-     * @param {MdDialogRef<any>} _dialogRef 
+     * @param {MatDialogRef<any>} _dialogRef 
      * @param {NgZone} _ngZone
-     * @param {MdSnackBar} snackBar
+     * @param {MatSnackBar} snackBar
      * @param {UserLanguageService} _userLanguageService
      */    
     constructor( private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
-                 public _dialogRef: MdDialogRef<any>, 
+                 public _dialogRef: MatDialogRef<any>, 
                  private _ngZone: NgZone, 
-                 public snackBar: MdSnackBar,
+                 public snackBar: MatSnackBar,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog ){
+                 protected _mdDialog: MatDialog ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
         this._sectionRestaurants = [];

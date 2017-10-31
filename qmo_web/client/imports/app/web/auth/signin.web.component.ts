@@ -1,5 +1,5 @@
 import { Component, NgZone, ViewContainerRef, OnInit } from '@angular/core';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -9,19 +9,15 @@ import { UserDetails } from '../../../../../both/collections/auth/user-detail.co
 import { UserLogin } from '../../../../../both/models/auth/user-login.model';
 import { AuthClass } from './auth.class';
 
-import template from './signin.web.component.html';
-import style from './auth.component.scss';
-
 @Component({
     selector: 'signin',
-    template,
-    styles: [style]
+    templateUrl: './signin.web.component.html',
+    styles: [ './auth.component.scss' ]
 })
-
 export class SigninWebComponent extends AuthClass implements OnInit {
 
     private signinForm: FormGroup;
-    private mdDialogRef2: MdDialogRef<any>;
+    private mdDialogRef2: MatDialogRef<any>;
     private error: string;
 
     /**
@@ -29,12 +25,12 @@ export class SigninWebComponent extends AuthClass implements OnInit {
      * @param {Router} router 
      * @param {NgZone} zone 
      * @param {TranslateService} translate 
-     * @param {MdDialog} mdDialog 
+     * @param {MatDialog} mdDialog 
      */
     constructor(protected router: Router,
         protected zone: NgZone,
         protected translate: TranslateService,
-        protected _mdDialog: MdDialog) {
+        protected _mdDialog: MatDialog) {
 
         super(router, zone, translate, _mdDialog);
         if (!Meteor.user()) {

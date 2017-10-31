@@ -1,50 +1,50 @@
-<md-card>
-    <md-card-content>
+<mat-card>
+    <mat-card-content>
         <form [formGroup]="_itemEditionForm">
-             <md-tab-group [(selectedIndex)]="selectedIndex">
-                 <md-tab [disabled]="!canMove(0)" label="{{'ITEMS.SECTIONS_CATEGORIES' | translate}}">
-                     <md-card>
-                        <md-card-title>{{'ITEMS.SECTIONS_CATEGORIES' | translate}}</md-card-title>
-                        <md-card-subtitle class="subtitle">{{'ITEMS.SECTIONS_CATEGORIES_TEXT_EDIT' | translate}}</md-card-subtitle>
-                        <md-card-content>
+             <mat-tab-group [(selectedIndex)]="selectedIndex">
+                 <mat-tab [disabled]="!canMove(0)" label="{{'ITEMS.SECTIONS_CATEGORIES' | translate}}">
+                     <mat-card>
+                        <mat-card-title>{{'ITEMS.SECTIONS_CATEGORIES' | translate}}</mat-card-title>
+                        <mat-card-subtitle class="subtitle">{{'ITEMS.SECTIONS_CATEGORIES_TEXT_EDIT' | translate}}</mat-card-subtitle>
+                        <mat-card-content>
                             <div>
-                                <md-select formControlName="editSectionId" placeholder="{{'ITEMS.SELECT_SECTION' | translate}}" style="width: 30%;" [(ngModel)]="_selectedSection">
-                                    <md-option *ngFor="let sec of _sections | async" (click)="changeSectionEdit(sec._id);" value="{{sec._id}}" ng-selected="_itemSection === sec._id">{{sec.name}}</md-option>
-                                </md-select>
-                                <md-select formControlName="editCategoryId" placeholder="{{'ITEMS.SELECT_CATEGORY' | translate}}" style="width: 30%;margin-left: 3%;" [(ngModel)]="_selectedCategory">
-                                    <md-option *ngFor="let cat of _categories | async" (click)="changeCategoryEdit(cat._id);" value="{{cat._id}}" ng-selected="_itemCategory === cat._id">{{cat.name}}</md-option>
-                                </md-select>
-                                <md-select formControlName="editSubcategoryId" placeholder="{{'ITEMS.SELECT_SUBCATEGORY' | translate}}" style="width: 30%;margin-left: 3%;" [(ngModel)]="_selectedSubcategory">
-                                    <md-option *ngFor="let subcat of _subcategories | async" (click)="changeSubcategoryEdit(subcat._id);" value="{{subcat._id}}" ng-selected="_itemSubcategory === subcat._id">{{subcat.name}}</md-option>
-                                </md-select>
+                                <mat-select formControlName="editSectionId" placeholder="{{'ITEMS.SELECT_SECTION' | translate}}" style="width: 30%;" [(ngModel)]="_selectedSection">
+                                    <mat-option *ngFor="let sec of _sections | async" (click)="changeSectionEdit(sec._id);" value="{{sec._id}}" ng-selected="_itemSection === sec._id">{{sec.name}}</mat-option>
+                                </mat-select>
+                                <mat-select formControlName="editCategoryId" placeholder="{{'ITEMS.SELECT_CATEGORY' | translate}}" style="width: 30%;margin-left: 3%;" [(ngModel)]="_selectedCategory">
+                                    <mat-option *ngFor="let cat of _categories | async" (click)="changeCategoryEdit(cat._id);" value="{{cat._id}}" ng-selected="_itemCategory === cat._id">{{cat.name}}</mat-option>
+                                </mat-select>
+                                <mat-select formControlName="editSubcategoryId" placeholder="{{'ITEMS.SELECT_SUBCATEGORY' | translate}}" style="width: 30%;margin-left: 3%;" [(ngModel)]="_selectedSubcategory">
+                                    <mat-option *ngFor="let subcat of _subcategories | async" (click)="changeSubcategoryEdit(subcat._id);" value="{{subcat._id}}" ng-selected="_itemSubcategory === subcat._id">{{subcat.name}}</mat-option>
+                                </mat-select>
                             </div>
-                        </md-card-content>
-                        <md-card-actions align="end">
-                            <button md-raised-button (click)="_dialogRef.close()">{{'CANCEL' | translate}}</button>
-                            <button md-raised-button (click)="next()" [disabled]="!canMove(1)">{{'NEXT' | translate}}</button>
-                        </md-card-actions>
-                     </md-card>
-                 </md-tab>
-                 <md-tab [disabled]="!canMove(1)" label="{{'ITEMS.GENERAL' | translate}}">
-                     <md-card>
-                         <md-card-title-group>
-                            <img md-card-sm-image src="{{_itemEditImage}}">
-                            <md-card-title>{{'ITEMS.GENERAL_INFORMATION' | translate}}</md-card-title>
-                            <md-card-subtitle>{{'ITEMS.GENERAL_TEXT_EDIT' | translate}}</md-card-subtitle>
-                        </md-card-title-group>
-                        <md-card-content>
+                        </mat-card-content>
+                        <mat-card-actions align="end">
+                            <button mat-raised-button (click)="_dialogRef.close()">{{'CANCEL' | translate}}</button>
+                            <button mat-raised-button (click)="next()" [disabled]="!canMove(1)">{{'NEXT' | translate}}</button>
+                        </mat-card-actions>
+                     </mat-card>
+                 </mat-tab>
+                 <mat-tab [disabled]="!canMove(1)" label="{{'ITEMS.GENERAL' | translate}}">
+                     <mat-card>
+                         <mat-card-title-group>
+                            <img mat-card-sm-image src="{{_itemEditImage}}">
+                            <mat-card-title>{{'ITEMS.GENERAL_INFORMATION' | translate}}</mat-card-title>
+                            <mat-card-subtitle>{{'ITEMS.GENERAL_TEXT_EDIT' | translate}}</mat-card-subtitle>
+                        </mat-card-title-group>
+                        <mat-card-content>
                             <div>
-                                <md-input-container class="name">
-                                    <input mdInput required formControlName="editName" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="55" #inputName>
-                                    <md-hint align="end">{{inputName.value.length}} / 55</md-hint>
-                                </md-input-container>
-                                <md-slide-toggle formControlName="editObservations" class="toogle">{{'ITEMS.OBSERVATIONS' | translate}}</md-slide-toggle>                                
+                                <mat-form-field class="name">
+                                    <input matInput required formControlName="editName" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="55" #inputName>
+                                    <mat-hint align="end">{{inputName.value.length}} / 55</mat-hint>
+                                </mat-form-field>
+                                <mat-slide-toggle formControlName="editObservations" class="toogle">{{'ITEMS.OBSERVATIONS' | translate}}</mat-slide-toggle>                                
                             </div>
                             <div>
-                                <md-input-container class="description">
-                                    <textarea mdInput required formControlName="editDescription" placeholder="{{'DESCRIPTION' | translate}}" minlength="1" maxlength="200" #inputDesc></textarea>
-                                    <md-hint align="end">{{inputDesc.value.length}} / 200</md-hint>
-                                </md-input-container>
+                                <mat-form-field class="description">
+                                    <textarea matInput required formControlName="editDescription" placeholder="{{'DESCRIPTION' | translate}}" minlength="1" maxlength="200" #inputDesc></textarea>
+                                    <mat-hint align="end">{{inputDesc.value.length}} / 200</mat-hint>
+                                </mat-form-field>
                                 <div class="image">
                                     <p>{{'ITEMS.UPDATE_IMAGE' | translate}}:</p>
                                     <input formControlName="editImage" accept=".png, .jpg, .jpeg" (change)="onChangeEditImage($event)" style="display: none" type="file" name="file-1[]" id="file-1" class="inputfile inputfile-1" data-multiple-caption="{count} files selected"/>
@@ -55,23 +55,23 @@
                                 </div>
                             </div>
                             <div>
-                                <md-select formControlName="editCookingTime" placeholder="{{'ITEMS.COOKING_TIME' | translate}}" [(ngModel)]="_selectedTime" style="width: 30%;margin-top: 2%;">
-                                    <md-option value="5 min aprox">5 min aprox</md-option>
-                                    <md-option value="15 min aprox">15 min aprox</md-option>
-                                    <md-option value="30 min aprox">30 min aprox</md-option>
-                                    <md-option value="45 min aprox">45 min aprox</md-option>
-                                    <md-option value="1 h aprox">1 h aprox</md-option>
-                                    <md-option value="1 h 15 min aprox">1 h 15 min aprox</md-option>
-                                    <md-option value="1 h 30 min aprox">1 h 30 min aprox</md-option>
-                                    <md-option value="1 h 45 min aprox">1 h 45 min aprox</md-option>
-                                    <md-option value="2 h aprox">2 h aprox</md-option>
-                                    <md-option value="+ 2 h aprox">+ 2 h aprox</md-option>                                                                        
-                                </md-select>
+                                <mat-select formControlName="editCookingTime" placeholder="{{'ITEMS.COOKING_TIME' | translate}}" [(ngModel)]="_selectedTime" style="width: 30%;margin-top: 2%;">
+                                    <mat-option value="5 min aprox">5 min aprox</mat-option>
+                                    <mat-option value="15 min aprox">15 min aprox</mat-option>
+                                    <mat-option value="30 min aprox">30 min aprox</mat-option>
+                                    <mat-option value="45 min aprox">45 min aprox</mat-option>
+                                    <mat-option value="1 h aprox">1 h aprox</mat-option>
+                                    <mat-option value="1 h 15 min aprox">1 h 15 min aprox</mat-option>
+                                    <mat-option value="1 h 30 min aprox">1 h 30 min aprox</mat-option>
+                                    <mat-option value="1 h 45 min aprox">1 h 45 min aprox</mat-option>
+                                    <mat-option value="2 h aprox">2 h aprox</mat-option>
+                                    <mat-option value="+ 2 h aprox">+ 2 h aprox</mat-option>                                                                        
+                                </mat-select>
                             </div>
                             <div class="restaurants">
                                 <p *ngIf="!_showRestaurants">{{'ITEMS.NO_RESTAURANTS' | translate}}</p>
                                 <div *ngIf="_showRestaurants" formGroupName="editRestaurants">
-                                    <md-checkbox *ngFor="let restaurant of _restaurantList" [formControlName]="restaurant._id" [class.invalid]="!_itemEditionForm.controls.editRestaurants.valid" class="checkbox" (change)="onCheckRestaurant(restaurant.name, $event)">{{restaurant.name}}</md-checkbox>
+                                    <mat-checkbox *ngFor="let restaurant of _restaurantList" [formControlName]="restaurant._id" [class.invalid]="!_itemEditionForm.controls.editRestaurants.valid" class="checkbox" (change)="onCheckRestaurant(restaurant.name, $event)">{{restaurant.name}}</mat-checkbox>
                                 </div>
                             </div>
                             <div>
@@ -81,65 +81,65 @@
                                 <div *ngFor="let currency of _currencies | async">
                                     <div *ngIf="_showCurrencies" formGroupName="editCurrencies" class="currencies">
                                         <div *ngFor="let cur of _restaurantCurrencies">
-                                            <md-input-container *ngIf="currency._id === cur" class="currency">
-                                                <input mdInput required [formControlName]="cur" [class.invalid]="!_itemEditionForm.controls.editCurrencies.valid" type="number" placeholder="{{'ITEMS.ITEM_PRICE' | translate}}" min="0" [step]="currency.decimal">
+                                            <mat-form-field *ngIf="currency._id === cur" class="currency">
+                                                <input matInput required [formControlName]="cur" [class.invalid]="!_itemEditionForm.controls.editCurrencies.valid" type="number" placeholder="{{'ITEMS.ITEM_PRICE' | translate}}" min="0" [step]="currency.decimal">
                                                 <span mdSuffix>{{currency.code}} - {{currency.name | translate}} </span>
-                                            </md-input-container>
+                                            </mat-form-field>
                                         </div>
                                     </div>
                                     <div *ngIf="_showTaxes" formGroupName="editTaxes" class="taxes">
                                         <div *ngFor="let tax of _restaurantTaxes">
-                                            <md-input-container *ngIf="currency._id === tax" class="tax">
-                                                <input mdInput required [formControlName]="tax" [class.invalid]="!_itemEditionForm.controls.editTaxes.valid" type="number" placeholder="{{'ITEMS.TAXES' | translate}}" min="0" max="100">
+                                            <mat-form-field *ngIf="currency._id === tax" class="tax">
+                                                <input matInput required [formControlName]="tax" [class.invalid]="!_itemEditionForm.controls.editTaxes.valid" type="number" placeholder="{{'ITEMS.TAXES' | translate}}" min="0" max="100">
                                                 <span mdSuffix>% {{currency.code}} - {{currency.name | translate}} </span>
-                                            </md-input-container>
+                                            </mat-form-field>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </md-card-content>
-                        <md-card-actions align="end">
-                            <button md-raised-button (click)="previous()" [disabled]="!canMove(0)">{{'BACK' | translate}}</button>
-                            <button md-raised-button (click)="next()" [disabled]="!canMove(2)">{{'NEXT' | translate}}</button>
-                        </md-card-actions>
-                     </md-card>
-                 </md-tab>
-                 <md-tab [disabled]="!canMove(2)" label="{{'ITEMS.ADDITION_GARNISHFOOD' | translate}}">
-                    <md-card>
-                        <md-card-title>{{'ITEMS.ADDITION_GARNISHFOOD_TITLE' | translate}}</md-card-title>
-                        <md-card-subtitle>{{'ITEMS.ADDITION_GARNISHFOOD_SUBTITLE' | translate}}</md-card-subtitle>
-                        <md-card-content>
+                        </mat-card-content>
+                        <mat-card-actions align="end">
+                            <button mat-raised-button (click)="previous()" [disabled]="!canMove(0)">{{'BACK' | translate}}</button>
+                            <button mat-raised-button (click)="next()" [disabled]="!canMove(2)">{{'NEXT' | translate}}</button>
+                        </mat-card-actions>
+                     </mat-card>
+                 </mat-tab>
+                 <mat-tab [disabled]="!canMove(2)" label="{{'ITEMS.ADDITION_GARNISHFOOD' | translate}}">
+                    <mat-card>
+                        <mat-card-title>{{'ITEMS.ADDITION_GARNISHFOOD_TITLE' | translate}}</mat-card-title>
+                        <mat-card-subtitle>{{'ITEMS.ADDITION_GARNISHFOOD_SUBTITLE' | translate}}</mat-card-subtitle>
+                        <mat-card-content>
                             <p *ngIf="!_showGarnishFood">{{'ITEMS.NOT_GARNISHFOOD' | translate}}</p>
                             <div *ngIf="_showGarnishFood">
                                 <p>{{'ITEMS.GARNISHFOOD_TEXT' | translate}}</p>
-                                <md-input-container style="width: 25%;margin-top: 1%;">
-                                    <input mdInput required type="number" formControlName="editGarnishFoodQuantity" placeholder="{{'ITEMS.GARNISHFOOD_ALLOWED' | translate}}" min="0" #inputGarnishQuantity>
-                                </md-input-container>
+                                <mat-form-field style="width: 25%;margin-top: 1%;">
+                                    <input matInput required type="number" formControlName="editGarnishFoodQuantity" placeholder="{{'ITEMS.GARNISHFOOD_ALLOWED' | translate}}" min="0" #inputGarnishQuantity>
+                                </mat-form-field>
                                 <br/>
-                                <md-checkbox style="font-weight: bold;" (change)="markAllGarnishFood($event)">{{'ITEMS.SELECT_ALL_GARNISH_FOOD' | translate}}</md-checkbox>
+                                <mat-checkbox style="font-weight: bold;" (change)="markAllGarnishFood($event)">{{'ITEMS.SELECT_ALL_GARNISH_FOOD' | translate}}</mat-checkbox>
                                 <br/>
                                 <div formGroupName="editGarnishFood">
-                                    <md-checkbox *ngFor="let garnish of _garnishFoodList" [formControlName]="garnish._id" [class.invalid]="!_itemEditionForm.controls.editGarnishFood.valid" class="checkbox">{{garnish.name}}</md-checkbox>
+                                    <mat-checkbox *ngFor="let garnish of _garnishFoodList" [formControlName]="garnish._id" [class.invalid]="!_itemEditionForm.controls.editGarnishFood.valid" class="checkbox">{{garnish.name}}</mat-checkbox>
                                 </div>
                             </div>
                             <p *ngIf="!_showAddition">{{'ITEMS.NOT_ADDITIONS' | translate}}</p>
                             <div *ngIf="_showAddition">
                                 <p>{{'ITEMS.ADDITIONS_TEXT' | translate}}:</p>
-                                <md-checkbox style="font-weight: bold;" (change)="markAllAdditions($event)">{{'ITEMS.SELECT_ALL_ADDITIONS' | translate}}</md-checkbox>
+                                <mat-checkbox style="font-weight: bold;" (change)="markAllAdditions($event)">{{'ITEMS.SELECT_ALL_ADDITIONS' | translate}}</mat-checkbox>
                                 <br/>
                                 <div formGroupName="editAdditions">
-                                    <md-checkbox *ngFor="let addition of _additionList" [formControlName]="addition._id" [class.invalid]="!_itemEditionForm.controls.editAdditions.valid" class="checkbox">{{addition.name}}</md-checkbox>
+                                    <mat-checkbox *ngFor="let addition of _additionList" [formControlName]="addition._id" [class.invalid]="!_itemEditionForm.controls.editAdditions.valid" class="checkbox">{{addition.name}}</mat-checkbox>
                                 </div>
                             </div>
-                        </md-card-content>
-                        <md-card-actions align="end">
-                            <button md-raised-button (click)="_dialogRef.close()">{{'CANCEL' | translate}}</button>
-                            <button md-raised-button (click)="previous()" [disabled]="!canMove(1)">{{'BACK' | translate}}</button>
-                            <button md-raised-button [disabled]="!canFinish()" (click)="editItem()">{{'FINISH' | translate}}</button>
-                        </md-card-actions>
-                    </md-card>
-                 </md-tab>
-             </md-tab-group>
+                        </mat-card-content>
+                        <mat-card-actions align="end">
+                            <button mat-raised-button (click)="_dialogRef.close()">{{'CANCEL' | translate}}</button>
+                            <button mat-raised-button (click)="previous()" [disabled]="!canMove(1)">{{'BACK' | translate}}</button>
+                            <button mat-raised-button [disabled]="!canFinish()" (click)="editItem()">{{'FINISH' | translate}}</button>
+                        </mat-card-actions>
+                    </mat-card>
+                 </mat-tab>
+             </mat-tab-group>
         </form>
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>

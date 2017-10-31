@@ -1,12 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import template from './slider.component.html';
-import style from './slider.component.scss';
-
 @Component({
     selector:'iu-slider',
-    template,
-    styles: [ style ]
+    templateUrl: './slider.component.html',
+    styles: [ './slider.component.scss' ]
 })
 export class IurestSliderComponent {
 

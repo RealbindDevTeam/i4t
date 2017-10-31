@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { MdSnackBar, MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Order, OrderItem, OrderAddition } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
@@ -20,13 +20,10 @@ import { Restaurant, RestaurantImageThumb } from '../../../../../../../both/mode
 import { Restaurants, RestaurantImageThumbs } from '../../../../../../../both/collections/restaurant/restaurant.collection';
 import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
 
-import template from './order-list.component.html';
-import style from './order-list.component.scss';
-
 @Component({
     selector: 'order-list',
-    template,
-    styles: [style]
+    templateUrl: './order-list.component.html',
+    styles: [ './order-list.component.scss' ]
 })
 export class OrdersListComponent implements OnInit, OnDestroy {
 
@@ -46,7 +43,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     private _restaurantSub              : Subscription;
     private _restaurantThumbSub         : Subscription;
     private _tablesSub                  : Subscription;
-    private _mdDialogRef                : MdDialogRef<any>;
+    private _mdDialogRef                : MatDialogRef<any>;
 
     private _orders                     : Observable<Order[]>;
     private _ordersTable                : Observable<Order[]>;
@@ -97,14 +94,14 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * OrdersListComponent Constructor
      * @param {TranslateService} _translate 
      * @param {NgZone} _ngZone
-     * @param {MdSnackBar} snackBar
+     * @param {MatSnackBar} snackBar
      * @param {UserLanguageService} _userLanguageService
      */
     constructor(private _translate: TranslateService,
         private _ngZone: NgZone,
-        public snackBar: MdSnackBar,
+        public snackBar: MatSnackBar,
         private _userLanguageService: UserLanguageService,
-        protected _mdDialog: MdDialog) {
+        protected _mdDialog: MatDialog) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';

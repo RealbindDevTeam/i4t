@@ -1,5 +1,5 @@
 import { Component, NgZone,OnInit, OnDestroy } from '@angular/core';
-import { MdDialogRef, MdDialog } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Observable, Subscription } from 'rxjs';
@@ -12,15 +12,12 @@ import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 
-import template from './invoices-download.component.html';
-import style from './invoices-download.component.scss';
-
 let jsPDF = require('jspdf');
 
 @Component({
   selector: 'invoices-download-page',
-  template,
-  styles: [ style ]
+  templateUrl: './invoices-download.component.html',
+  styles: [ './invoices-download.component.scss' ]
 })
 export class InvoicesDownloadPage implements OnInit, OnDestroy {
   
@@ -28,7 +25,7 @@ export class InvoicesDownloadPage implements OnInit, OnDestroy {
 
     private _restaurantsSubscription : Subscription;
     private _invoicesSubscription    : Subscription;
-    public _dialogRef                : MdDialogRef<any>;
+    public _dialogRef                : MatDialogRef<any>;
     private _restaurantsFilter       : Observable<Restaurant[]>;
     private _invoices                : Observable<Invoice[]>;
 
@@ -45,7 +42,15 @@ export class InvoicesDownloadPage implements OnInit, OnDestroy {
     private _activateMonth          : boolean = true;
     private _thereAreRestaurants    : boolean = true;
 
-    constructor(public _dialog: MdDialog,
+    /**
+     * InvoicesDownloadPage Constructor
+     * @param {MatDialog} _dialog
+     * @param {TranslateService} _translate
+     * @param {NgZone} _ngZone
+     * @param {Router} _router
+     * @param {UserLanguageService} _userLanguageService
+     */
+    constructor(public _dialog: MatDialog,
                 private _translate: TranslateService,
                 private _ngZone: NgZone,
                 private _router: Router,

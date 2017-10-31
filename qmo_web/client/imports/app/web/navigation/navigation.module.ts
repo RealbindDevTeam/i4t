@@ -3,8 +3,8 @@ import {RouterModule} from '@angular/router';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {MaterialModule} from '@angular/material';
 import { HttpModule, Http } from '@angular/http';
+import { MatSidenavModule, MatListModule, MatMenuModule, MatToolbarModule, MatProgressBarModule, MatIconModule, MatTooltipModule, MatButtonModule } from '@angular/material';
 import {SidenavComponent} from './sidenav/sidenav.component';
 import {TopnavComponent} from './topnav/topnav.component';
 import {NavigationService} from './navigation.service';
@@ -26,7 +26,6 @@ export function createTranslateLoader(http: HttpClient) {
     CommonModule,
     RouterModule,
     FormsModule,
-    MaterialModule,
     FlexLayoutModule,
     ReactiveFormsModule,
     TranslateModule.forRoot({
@@ -36,6 +35,14 @@ export function createTranslateLoader(http: HttpClient) {
           deps: [HttpClient]
       }
     }),
+    MatSidenavModule,
+    MatListModule,
+    MatMenuModule,
+    MatToolbarModule,
+    MatProgressBarModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatButtonModule
     ],
   declarations : [SidenavComponent, 
                   TopnavComponent, 

@@ -3,9 +3,9 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Subcategories } from '../../../../../../both/collections/administration/subcategory.collection';
 import { Subcategory } from '../../../../../../both/models/administration/subcategory.model';
@@ -18,19 +18,16 @@ import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 
-import template from './subcategories.component.html';
-import style from './subcategories.component.scss';
-
 @Component({
     selector: 'subcategory',
-    template,
-    styles: [style]
+    templateUrl: './subcategories.component.html',
+    styles: [ './subcategories.component.scss' ]
 })
 export class SubcategoryComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
     private _subcategoryForm: FormGroup;
-    private _mdDialogRef: MdDialogRef<any>;
+    private _mdDialogRef: MatDialogRef<any>;
 
     private _subcategories: Observable<Subcategory[]>;
     private _categories: Observable<Category[]>;
@@ -45,7 +42,7 @@ export class SubcategoryComponent implements OnInit, OnDestroy {
     _selectedValue: string;
     private titleMsg: string;
     private btnAcceptLbl: string;
-    _dialogRef: MdDialogRef<any>;
+    _dialogRef: MatDialogRef<any>;
     private _thereAreRestaurants: boolean = true;
 
     private _thereAreUsers: boolean = true;
@@ -54,22 +51,22 @@ export class SubcategoryComponent implements OnInit, OnDestroy {
 
     /**
      * SubcategoryComponent constructor
-     * @param {MdDialog} _dialog
-     * @param {MdSnackBar} snackBar
+     * @param {MatDialog} _dialog
+     * @param {MatSnackBar} snackBar
      * @param {FormBuilder} _formBuilder
      * @param {TranslateService} _translate
      * @param {Router} _router
      * @param {NgZone} _ngZone
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor(public _dialog: MdDialog,
-        public snackBar: MdSnackBar,
+    constructor(public _dialog: MatDialog,
+        public snackBar: MatSnackBar,
         private _formBuilder: FormBuilder,
         private _translate: TranslateService,
         private _router: Router,
         private _ngZone: NgZone,
         private _userLanguageService: UserLanguageService,
-        protected _mdDialog: MdDialog) {
+        protected _mdDialog: MatDialog) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
         this._selectedValue = "";

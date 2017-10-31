@@ -10,33 +10,33 @@ import { UserLanguageService } from '../../../../shared/services/user-language.s
 
 @Component({
   selector: 'c-sidenav-item',
-  styles: [`md-icon { color: #ef5350; }`],
+  styles: [`mat-icon { color: #ef5350; }`],
   template: `
-    <a md-list-item *ngIf="hasExternalLink" (click)="clicked($event)" [href]="menuItem.link" [ngClass]="{ 'active' : active }">
-      <md-icon *ngIf="showIcon">{{menuItem.icon}}</md-icon>
+    <a mat-list-item *ngIf="hasExternalLink" (click)="clicked($event)" [href]="menuItem.link" [ngClass]="{ 'active' : active }">
+      <mat-icon *ngIf="showIcon">{{menuItem.icon}}</mat-icon>
       <span class="title">{{ menuItem.title | translate }}</span>
     </a>
-    <a md-list-item *ngIf="!hasLink && !hasChildren && !hasQuery && !hasExternalLink" (click)="clicked($event)" [ngClass]="{ 'active' : active }">
-      <md-icon *ngIf="showIcon">{{menuItem.icon}}</md-icon>
+    <a mat-list-item *ngIf="!hasLink && !hasChildren && !hasQuery && !hasExternalLink" (click)="clicked($event)" [ngClass]="{ 'active' : active }">
+      <mat-icon *ngIf="showIcon">{{menuItem.icon}}</mat-icon>
       <span class="title">{{ menuItem.title | translate }}</span>
     </a>
-    <a md-list-item *ngIf="hasLink && !hasChildren && !hasQuery && !hasExternalLink" [routerLink]="menuItem.link" [ngClass]="{ 'active' : active }" (toggle)="true" (click)="clicked($event)">
-      <md-icon *ngIf="showIcon">{{menuItem.icon}}</md-icon>
+    <a mat-list-item *ngIf="hasLink && !hasChildren && !hasQuery && !hasExternalLink" [routerLink]="menuItem.link" [ngClass]="{ 'active' : active }" (toggle)="true" (click)="clicked($event)">
+      <mat-icon *ngIf="showIcon">{{menuItem.icon}}</mat-icon>
       <span class="title">{{ menuItem.title | translate }}</span>
     </a>
-    <a md-list-item *ngIf="hasLink && !hasChildren && hasQuery && !hasExternalLink" [routerLink]="menuItem.link" [queryParams]="menuItem.queryParams" [ngClass]="{ 'active' : active }" (toggle)="true">
-      <md-icon *ngIf="showIcon">{{menuItem.icon}}</md-icon>
+    <a mat-list-item *ngIf="hasLink && !hasChildren && hasQuery && !hasExternalLink" [routerLink]="menuItem.link" [queryParams]="menuItem.queryParams" [ngClass]="{ 'active' : active }" (toggle)="true">
+      <mat-icon *ngIf="showIcon">{{menuItem.icon}}</mat-icon>
       <span class="title">{{ menuItem.title | translate }}</span>
     </a>
-    <a md-list-item class="nav-dropdown" *ngIf="hasChildren" [ngClass]="{ 'active' : active }" (click)="clicked($event)">
-      <md-icon *ngIf="showIcon">{{menuItem.icon}}</md-icon>
+    <a mat-list-item class="nav-dropdown" *ngIf="hasChildren" [ngClass]="{ 'active' : active }" (click)="clicked($event)">
+      <mat-icon *ngIf="showIcon">{{menuItem.icon}}</mat-icon>
       <span class="title">{{ menuItem.title | translate }}</span>
       <span class="app-flex-filler"></span>
       <i class="material-icons" *ngIf="!menuItem.showOnly"></i>
     </a>
-    <md-nav-list *ngIf="hasChildren" class="nav-children {{levelClass}}" [ngClass]="{ 'active' : active, 'shrink' : menuItem.shrinkDisplayHeight, 'no-animation' : menuItem.showOnly }" [ngStyle]="{'height.px': height}">
+    <mat-nav-list *ngIf="hasChildren" class="nav-children {{levelClass}}" [ngClass]="{ 'active' : active, 'shrink' : menuItem.shrinkDisplayHeight, 'no-animation' : menuItem.showOnly }" [ngStyle]="{'height.px': height}">
       <c-sidenav-item *ngFor="let menuItemChild of menuItem.children" [menuItem]="menuItemChild" [level]="level + 1" [parent]="_this"></c-sidenav-item>
-    </md-nav-list>
+    </mat-nav-list>
   `
 })
 export class SidenavItemComponent implements AfterViewInit, OnDestroy {

@@ -17,13 +17,10 @@ import { Orders } from '../../../../../both/collections/restaurant/order.collec
 import { Currency } from '../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../both/collections/general/currency.collection';
 
-import template from './supervisor-dashboard.component.html';
-import style from './supervisor-dashboard.component.scss';
-
 @Component({
     selector: 'supervisor-dashboard',
-    template,
-    styles: [style]
+    templateUrl: './supervisor-dashboard.component.html',
+    styles: [ './supervisor-dashboard.component.scss' ]
 })
 export class SupervisorDashboardComponent implements OnInit, OnDestroy {
 

@@ -1,28 +1,25 @@
 import { Component, NgZone } from '@angular/core';
-import { MdDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 import { MeteorObservable } from "meteor-rxjs";
 import { TranslateService } from '@ngx-translate/core';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 
-import template from './call-close-confirm.component.html';
-import style from './call-close-confirm.component.scss';
-
 @Component({
     selector: 'call-close-confirm',
-    template,
-    styles: [ style ],
+    templateUrl: './call-close-confirm.component.html',
+    styles: [ './call-close-confirm.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class CallCloseConfirmComponent{
 
     /**
      * CallCloseConfirmComponent constructor
-     * @param {MdDialogRef<any>} _dialogRef 
+     * @param {MatDialogRef<any>} _dialogRef 
      * @param {NgZone} _zone 
      * @param {TranslateService} _translate 
      * @param {UserLanguageService} _userLanguageService 
      */
-    constructor( public _dialogRef: MdDialogRef<any>,  
+    constructor( public _dialogRef: MatDialogRef<any>,  
                  private _zone: NgZone,
                  public _translate: TranslateService,
                  private _userLanguageService: UserLanguageService ){

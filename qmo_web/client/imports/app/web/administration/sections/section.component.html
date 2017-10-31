@@ -1,13 +1,13 @@
-<md-card *ngIf="_thereAreUsers">
-  <md-card-header>
-    <div md-card-avatar class="example-header-image"></div>
-    <md-card-title>{{'SECTIONS.WARNING' | translate}} {{_usersCount}} {{'SECTIONS.WARNING_2' | translate}}</md-card-title>
-    <md-card-subtitle style="margin-bottom: 0px">{{'SECTIONS.WARNING_3' | translate}}</md-card-subtitle>
-  </md-card-header>
-</md-card>
+<mat-card *ngIf="_thereAreUsers">
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>{{'SECTIONS.WARNING' | translate}} {{_usersCount}} {{'SECTIONS.WARNING_2' | translate}}</mat-card-title>
+    <mat-card-subtitle style="margin-bottom: 0px">{{'SECTIONS.WARNING_3' | translate}}</mat-card-subtitle>
+  </mat-card-header>
+</mat-card>
 
-<md-card md-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
-  <md-card-content>
+<mat-card mat-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
+  <mat-card-content>
     <div class="card_initial">
       <div class="card_initial has-image">
         <div class="card_initial-image-container">
@@ -22,55 +22,55 @@
           </div>
         </div>
         <div class="card_initial-button">
-          <button md-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
+          <button mat-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
         </div>
       </div>
     </div>
-  </md-card-content>
-</md-card>
+  </mat-card-content>
+</mat-card>
 
-<md-card *ngIf="_thereAreRestaurants">
-  <md-card-title>{{'SECTIONS.SECTION_CREATION' | translate}}</md-card-title>
-  <md-card-subtitle>{{'SECTIONS.SECTION_TEXT' | translate}}</md-card-subtitle>
-  <md-card-content>
+<mat-card *ngIf="_thereAreRestaurants">
+  <mat-card-title>{{'SECTIONS.SECTION_CREATION' | translate}}</mat-card-title>
+  <mat-card-subtitle>{{'SECTIONS.SECTION_TEXT' | translate}}</mat-card-subtitle>
+  <mat-card-content>
     <form [formGroup]="_sectionForm" (ngSubmit)="addSection();">
       <div>
-        <md-input-container class="section-name">
-          <input mdInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #inputName>
-          <md-hint align="end">{{inputName.value.length}} / 50</md-hint>
-        </md-input-container>
+        <mat-form-field class="section-name">
+          <input matInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #inputName>
+          <mat-hint align="end">{{inputName.value.length}} / 50</mat-hint>
+        </mat-form-field>
       </div>
       <div>
         <p>{{'SECTIONS.RESTAURANT_SECTION' | translate}}</p>
         <p><label *ngIf="!_showRestaurants" class="label-field-void">{{'SECTIONS.NO_RESTAURANT_CREATED' | translate}}</label></p>
         <div *ngIf="_showRestaurants" formGroupName="restaurants">
-          <md-checkbox *ngFor="let restaurant of _restaurants | async" [formControlName]="restaurant._id" [class.invalid]="!_sectionForm.controls.restaurants.valid"
-            class="checkbox">{{restaurant.name}}</md-checkbox>
+          <mat-checkbox *ngFor="let restaurant of _restaurants | async" [formControlName]="restaurant._id" [class.invalid]="!_sectionForm.controls.restaurants.valid"
+            class="checkbox">{{restaurant.name}}</mat-checkbox>
           <label></label>
         </div>
       </div>
       <br/>
-      <button md-raised-button class="secondary-button" [disabled]="!_sectionForm.valid" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
-      <button md-raised-button class="primary-button" [disabled]="!_sectionForm.valid" type="submit">{{'CREATE' | translate}}</button>
+      <button mat-raised-button class="secondary-button" [disabled]="!_sectionForm.valid" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
+      <button mat-raised-button class="primary-button" [disabled]="!_sectionForm.valid" type="submit">{{'CREATE' | translate}}</button>
     </form>
-  </md-card-content>
-</md-card>
-<md-card *ngFor="let section of _sections | async" class="section">
-  <md-card-title>{{section.name}}</md-card-title>
-  <md-card-content>
+  </mat-card-content>
+</mat-card>
+<mat-card *ngFor="let section of _sections | async" class="section">
+  <mat-card-title>{{section.name}}</mat-card-title>
+  <mat-card-content>
     <p *ngIf="section.restaurants.length == 0">{{'SECTIONS.NO_RESTAURANT' | translate}}</p>
     <div *ngFor="let rst of _restaurants | async">
       <div *ngFor="let secRest of section.restaurants">
         <div *ngIf="rst._id == secRest">
           <div>
-            <md-icon>store</md-icon> {{rst.name}}</div>
+            <mat-icon>store</mat-icon> {{rst.name}}</div>
         </div>
       </div>
     </div>
-  </md-card-content>
-  <md-card-actions>
-    <button md-raised-button (click)="open(section)" class="secondary-button">{{'SECTIONS.MODIFY' | translate}}</button>
-    <button md-raised-button *ngIf="section.is_active" class="inactive-button" (click)="updateStatus(section)">{{'SECTIONS.INACTIVATE' | translate}}</button>
-    <button md-raised-button *ngIf="!section.is_active" class="active-button" (click)="updateStatus(section)">{{'SECTIONS.ACTIVATE' | translate}}</button>
-  </md-card-actions>
-</md-card>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button (click)="open(section)" class="secondary-button">{{'SECTIONS.MODIFY' | translate}}</button>
+    <button mat-raised-button *ngIf="section.is_active" class="inactive-button" (click)="updateStatus(section)">{{'SECTIONS.INACTIVATE' | translate}}</button>
+    <button mat-raised-button *ngIf="!section.is_active" class="active-button" (click)="updateStatus(section)">{{'SECTIONS.ACTIVATE' | translate}}</button>
+  </mat-card-actions>
+</mat-card>

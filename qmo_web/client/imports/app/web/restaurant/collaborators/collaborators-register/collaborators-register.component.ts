@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { MdDialogRef, MdDialog } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -19,16 +19,14 @@ import { UserDetail } from '../../../../../../../both/models/auth/user-detail.mo
 import { Users } from '../../../../../../../both/collections/auth/user.collection';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './collaborators-register.component.html';
-
 @Component({
     selector: 'collaborators-register',
-    template
+    templateUrl: './collaborators-register.component.html'
 })
 export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
 
     private _collaboratorRegisterForm : FormGroup;
-    private _mdDialogRef              : MdDialogRef<any>;
+    private _mdDialogRef              : MatDialogRef<any>;
     private _restaurantSub            : Subscription;
     private _roleSub                  : Subscription;
     private _tableSub                 : Subscription;
@@ -67,7 +65,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                  private _translate: TranslateService,
                  private _zone: NgZone,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog ) 
+                 protected _mdDialog: MatDialog ) 
     {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');

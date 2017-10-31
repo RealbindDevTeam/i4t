@@ -3,19 +3,16 @@ import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { MdDialogRef, MdDialog, MdDialogConfig, MdSnackBar } from '@angular/material';
+import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { UserLanguageService } from '../../../../../../shared/services/user-language.service';
 import { Order } from '../../../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../../../both/collections/restaurant/order.collection';
 import { User } from '../../../../../../../../../both/models/auth/user.model';
 
-import template from './penalize-customer.component.html';
-import style from './penalize-customer.component.scss';
-
 @Component({
     selector: 'penalize-customer',
-    template,
-    styles: [ style ],
+    templateUrl: './penalize-customer.component.html',
+    styles: [ './penalize-customer.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class PenalizeCustomerComponent implements OnInit, OnDestroy {
@@ -34,13 +31,13 @@ export class PenalizeCustomerComponent implements OnInit, OnDestroy {
      * PenalizeCustomerComponent Constructor
      * @param {TranslateService} _translate
      * @param {UserLanguageService} _userLanguageService
-     * @param {MdDialogRef<any>} _dialogRef
-     * @param {MdSnackBar} _snackBar
+     * @param {MatDialogRef<any>} _dialogRef
+     * @param {MatSnackBar} _snackBar
      */
     constructor( private _translate: TranslateService,
                  private _userLanguageService: UserLanguageService,
-                 public _dialogRef: MdDialogRef<any>,
-                 public _snackBar: MdSnackBar ){
+                 public _dialogRef: MatDialogRef<any>,
+                 public _snackBar: MatSnackBar ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
     }

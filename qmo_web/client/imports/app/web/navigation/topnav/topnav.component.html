@@ -1,8 +1,8 @@
-<md-progress-bar mode="indeterminate" *ngIf="_isLoadingRoute"></md-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="_isLoadingRoute"></mat-progress-bar>
 
-<md-toolbar>
-  <button md-icon-button (click)="toggleSidenav()" id="menu-toggler" *ngIf="_showToggleSidenav" style="margin-right: -16px;">
-    <md-icon>menu</md-icon>
+<mat-toolbar>
+  <button mat-icon-button (click)="toggleSidenav()" id="menu-toggler" *ngIf="_showToggleSidenav" style="margin-right: -16px;">
+    <mat-icon>menu</mat-icon>
   </button>
 
   <a href="/app/">
@@ -28,28 +28,28 @@
   <c-waiter-menu *ngIf="!_showToggleSidenav && _itemsTopMenu === 'waiter'" (menuname)="getMenuName($event)"></c-waiter-menu>
 
   <div class="buttom-profile">
-    <button md-icon-button [md-menu-trigger-for]="menu" id="user-dropdown-toggler" style="padding: 0;">
-      <img class="profile-img" md-list-avatar src="{{ getUsetImage() }}">
+    <button mat-icon-button [mat-menu-trigger-for]="menu" id="user-dropdown-toggler" style="padding: 0;">
+      <img class="profile-img" mat-list-avatar src="{{ getUsetImage() }}">
       {{ _userName }}
-      <md-icon>keyboard_arrow_down</md-icon>
+      <mat-icon>keyboard_arrow_down</mat-icon>
     </button>
   </div>
 
-  <md-menu #menu="mdMenu" x-position="before">
-    <button md-menu-item *ngIf="_itemsTopMenu === 'customer' " [routerLink]="['/app/customer-payments-history']" (click)="setMenuName('PAYMENTS_HISTORY.TITLE')">
-      <md-icon>payment</md-icon>
+  <mat-menu #menu="matMenu" x-position="before">
+    <button mat-menu-item *ngIf="_itemsTopMenu === 'customer' " [routerLink]="['/app/customer-payments-history']" (click)="setMenuName('PAYMENTS_HISTORY.TITLE')">
+      <mat-icon>payment</mat-icon>
       <span>{{ 'PAYMENTS_HISTORY.TITLE' | translate }}</span>
     </button>
-    <button md-menu-item [routerLink]="['/app/settings']" (click)="setMenuName('SETTINGS.TITTLE')">
-      <md-icon>settings</md-icon>
+    <button mat-menu-item [routerLink]="['/app/settings']" (click)="setMenuName('SETTINGS.TITTLE')">
+      <mat-icon>settings</mat-icon>
       <span>{{ 'SETTINGS.TITTLE' | translate }}</span>
     </button>
-    <button md-menu-item (click)="signOut()">
-      <md-icon>launch</md-icon>
+    <button mat-menu-item (click)="signOut()">
+      <mat-icon>launch</mat-icon>
       <span>{{ 'SIGN_OUT' | translate }}</span>
     </button>
-  </md-menu>
-  <md-toolbar-row *ngIf="_navigation.mediumScreenAndDown && _breadcrumbs.length > 0 && !_autoBreadcrumbs">
+  </mat-menu>
+  <mat-toolbar-row *ngIf="_navigation.mediumScreenAndDown && _breadcrumbs.length > 0 && !_autoBreadcrumbs">
     <span class="breadcrumb-holder">
       <span *ngFor="let breadcrumb of _breadcrumbs" class="breadcrumb">
         <a *ngIf="breadcrumb.link !== null" [routerLink]="breadcrumb.link" class="breadcrumb-link">{{breadcrumb.title}}</a>
@@ -57,5 +57,5 @@
       </span>
     <span class="breadcrumb">{{ _pageTitle | translate }}</span>
     </span>
-  </md-toolbar-row>
-</md-toolbar>
+  </mat-toolbar-row>
+</mat-toolbar>

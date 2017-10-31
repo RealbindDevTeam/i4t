@@ -1,5 +1,5 @@
-<md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" >
-    <md-card-content>
+<mat-card mat-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" >
+    <mat-card-content>
         <div class="card_initial">
 
             <div *ngIf="!_userRestaurant" class="card_initial has-image">
@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="card_initial-button">
-                    <button md-raised-button class="primary-button" (click)="addWaiterCall()">{{'WAITER_CALL.BTN_CALL_WAITER' | translate}}</button>
+                    <button mat-raised-button class="primary-button" (click)="addWaiterCall()">{{'WAITER_CALL.BTN_CALL_WAITER' | translate}}</button>
                 </div>
             </div>
             
@@ -92,14 +92,14 @@
                         {{'WAITER_CALL.ONE_MOMENT' | translate}}
                     </div>
                     <div style="margin-top: 10px;">
-                        <button md-raised-button class="primary-button" (click)="cancelWaiterCall()">{{'WAITER_CALL.BTN_CANCEL_WAITER' | translate}}</button>
+                        <button mat-raised-button class="primary-button" (click)="cancelWaiterCall()">{{'WAITER_CALL.BTN_CANCEL_WAITER' | translate}}</button>
                     </div>
                 </div>
             </div>
         </div>
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>
 
 <div class="loading" *ngIf="_loading">
-    <md-spinner></md-spinner>
+    <mat-spinner></mat-spinner>
 </div>

@@ -3,7 +3,7 @@ import { MeteorObservable } from "meteor-rxjs";
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { MdSnackBar, MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
 import { UserLanguageService } from '../../../../../shared/services/user-language.service';
 import { Orders } from "../../../../../../../../both/collections/restaurant/order.collection";
 import { Order, OrderTranslateInfo } from '../../../../../../../../both/models/restaurant/order.model';
@@ -18,13 +18,10 @@ import { Payment } from '../../../../../../../../both/models/restaurant/payment.
 import { Payments } from '../../../../../../../../both/collections/restaurant/payment.collection';
 import { AlertConfirmComponent } from '../../../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './colombia-payment.component.html';
-import style from './colombia-payment.component.scss';
-
 @Component({
     selector: 'iu-colombia-payment',
-    template,
-    styles: [ style ]
+    templateUrl: './colombia-payment.component.html',
+    styles: [ './colombia-payment.component.scss' ]
 })
 export class ColombiaPaymentComponent implements OnInit, OnDestroy {
 
@@ -48,7 +45,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
     private _paymentsNoPaid                     : Observable<Payment[]>;
     private _ordersToConfirm                    : Observable<Order[]>;
     private _ordersWithPendingConfirmation      : Observable<Order[]>;
-    private _mdDialogRef                        : MdDialogRef<any>;
+    private _mdDialogRef                        : MatDialogRef<any>;
 
     private _tipTotal                           : number = 0;
     private _totalToPayment                     : number = 0;
@@ -76,15 +73,15 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate 
      * @param {NgZone} _ngZone 
      * @param {Router} _router
-     * @param {MdSnackBar} _snackBar
+     * @param {MatSnackBar} _snackBar
      * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _translate: TranslateService, 
                  private _ngZone: NgZone,
                  private _router: Router,
-                 public _snackBar: MdSnackBar,
+                 public _snackBar: MatSnackBar,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog ) {
+                 protected _mdDialog: MatDialog ) {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';

@@ -16,13 +16,10 @@ import { Table } from '../../../../../../both/models/restaurant/table.model';
 import { Parameters } from '../../../../../../both/collections/general/parameter.collection';
 import { Parameter } from '../../../../../../both/models/general/parameter.model';
 
-import template from './reactivate-restaurant.component.html';
-import style from './reactivate-restaurant.component.scss';
-
 @Component({
     selector: 'reactivate-restaurant',
-    template,
-    styles: [style]
+    templateUrl: './reactivate-restaurant.component.html',
+    styles: [ './reactivate-restaurant.component.scss' ]
 })
 export class ReactivateRestaurantComponent implements OnInit, OnDestroy {
 

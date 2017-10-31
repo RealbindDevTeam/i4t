@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Meteor } from 'meteor/meteor';
 import { Router } from '@angular/router';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { OrderToTranslateComponent } from './order-to-translate/order-to-translate.component';
 import { Order, OrderTranslateInfo } from '../../../../../../../both/models/restaurant/order.model';
@@ -21,13 +21,10 @@ import { Users } from '../../../../../../../both/collections/auth/user.collectio
 import { User } from '../../../../../../../both/models/auth/user.model';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './order-payment-translate.component.html';
-import style from './order-payment-translate.component.scss';
-
 @Component({
     selector: 'order-payment-translate',
-    template,
-    styles: [ style ]
+    templateUrl: './order-payment-translate.component.html',
+    styles: [ './order-payment-translate.component.scss' ]
 })
 export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
 
@@ -42,7 +39,7 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
     private _ordersToConfirm                    : Observable<Order[]>;
     private _ordersWithPendingConfirmation      : Observable<Order[]>;
 
-    public _dialogRef                           : MdDialogRef<any>;
+    public _dialogRef                           : MatDialogRef<any>;
     private _restaurantId                       : string;
     private _currencyCode                       : string;
     private _tableId                            : string;
@@ -55,13 +52,13 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
      * OrderPaymentTranslateComponent Constructor
      * @param { TranslateService } _translate 
      * @param { NgZone } _ngZone 
-     * @param { MdDialog } _dialog
+     * @param { MatDialog } _dialog
      * @param { Router } _router
      * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _translate: TranslateService, 
                  private _ngZone: NgZone, 
-                 public _dialog: MdDialog,
+                 public _dialog: MatDialog,
                  private _router: Router,
                  private _userLanguageService: UserLanguageService ) {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );

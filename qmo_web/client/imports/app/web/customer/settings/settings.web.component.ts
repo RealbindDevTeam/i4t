@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Accounts } from 'meteor/accounts-base';
 import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -22,13 +22,10 @@ import { uploadUserImage } from '../../../../../../both/methods/auth/user-profil
 import { UserProfileImage } from '../../../../../../both/models/auth/user-profile.model';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './settings.web.component.html';
-import style from './settings.web.component.scss';
-
 @Component({
     selector: 'settings',
-    template,
-    styles: [ style ]
+    templateUrl: './settings.web.component.html',
+    styles: [ './settings.web.component.scss' ]
 })
 export class SettingsWebComponent implements OnInit, OnDestroy {
 
@@ -44,7 +41,7 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     private _cities                 : Observable<City[]>;
     private _languages              : Observable<Language[]>;
 
-    private _mdDialogRef            : MdDialogRef<any>;
+    private _mdDialogRef            : MatDialogRef<any>;
     private _user                   : User;
     private _userDetail             : UserDetail;
 
@@ -71,12 +68,12 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     /**
      * SettingsWebComponent Constructor
      * @param {TranslateService} _translate 
-     * @param {MdDialog} _mdDialog
+     * @param {MatDialog} _mdDialog
      * @param {UserLanguageService} _userLanguageService 
      * @param {NgZone} _ngZone
      */
     constructor ( private _translate: TranslateService, 
-                  public _mdDialog: MdDialog,
+                  public _mdDialog: MatDialog,
                   private _userLanguageService: UserLanguageService,
                   private _ngZone: NgZone ){
         let _lUserLanguage = this._userLanguageService.getLanguage( Meteor.user() );

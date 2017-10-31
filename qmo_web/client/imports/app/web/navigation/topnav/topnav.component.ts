@@ -12,14 +12,10 @@ import { Users, UserImages } from '../../../../../../both/collections/auth/user.
 import { User } from '../../../../../../both/models/auth/user.model';
 import { UserProfileImage } from '../../../../../../both/models/auth/user-profile.model';
 
-
-import template from './topnav.component.html';
-import style from './topnav.component.scss';
-
 @Component({
   selector: 'app-topnav',
-  template,
-  styles: [style]
+  templateUrl: './topnav.component.html',
+  styles: [ './topnav.component.scss' ]
 })
 export class TopnavComponent implements OnInit, OnDestroy {
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,13 +10,10 @@ import { Items, ItemImagesThumbs } from '../../../../../../../both/collections/a
 import { UserDetail } from '../../../../../../../both/models/auth/user-detail.model';
 import { UserDetails } from '../../../../../../../both/collections/auth/user-detail.collection';
 
-import template from './items-enable-sup.component.html';
-import style from '../item.component.scss';
-
 @Component({
     selector: 'item-enable-sup',
-    template,
-    styles: [style]
+    templateUrl: './items-enable-sup.component.html',
+    styles: [ '../item.component.scss' ]
 })
 export class ItemEnableSupComponent implements OnInit, OnDestroy {
 
@@ -35,12 +32,12 @@ export class ItemEnableSupComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate 
      * @param {NgZone} _ngZone 
      * @param {UserLanguageService} _userLanguageService 
-     * @param {MdSnackBar} snackBar 
+     * @param {MatSnackBar} snackBar 
      */
     constructor(private _translate: TranslateService,
         private _ngZone: NgZone,
         private _userLanguageService: UserLanguageService,
-        public snackBar: MdSnackBar) {
+        public snackBar: MatSnackBar) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
     }

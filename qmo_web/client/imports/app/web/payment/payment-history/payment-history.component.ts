@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
@@ -25,19 +25,15 @@ import { City } from '../../../../../../both/models/settings/city.model';
 import { Cities } from '../../../../../../both/collections/settings/city.collection';
 import { Country } from '../../../../../../both/models/settings/country.model';
 import { Countries } from '../../../../../../both/collections/settings/country.collection';
-
 import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
-
-import template from './payment-history.component.html';
-import style from './payment-history.component.scss';
 
 let jsPDF = require('jspdf');
 let base64 = require('base-64');
 
 @Component({
     selector: 'payment-history',
-    template,
-    styles: [style]
+    templateUrl: './payment-history.component.html',
+    styles: [ './payment-history.component.scss' ]
 })
 export class PaymentHistoryComponent implements OnInit, OnDestroy {
 
@@ -62,7 +58,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
     private _currentYear: number;
     private _activateMonth: boolean;
     private _loading: boolean;
-    private _mdDialogRef: MdDialogRef<any>;
+    private _mdDialogRef: MatDialogRef<any>;
     private titleMsg: string;
     private btnAcceptLbl: string;
     private _thereArePaymentsHistory: boolean = true;
@@ -72,14 +68,14 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
      * @param {Router} _router 
      * @param {FormBuilder} _formBuilder 
      * @param {TranslateService} _translate 
-     * @param {MdDialog} _mdDialog 
+     * @param {MatDialog} _mdDialog 
      * @param {PayuPaymenteService} _payuPaymentService 
      * @param {UserLanguageService} _userLanguageService 
      */
     constructor(private _router: Router,
         private _formBuilder: FormBuilder,
         private _translate: TranslateService,
-        public _mdDialog: MdDialog,
+        public _mdDialog: MatDialog,
         private _payuPaymentService: PayuPaymenteService,
         private _ngZone: NgZone,
         private _userLanguageService: UserLanguageService) {

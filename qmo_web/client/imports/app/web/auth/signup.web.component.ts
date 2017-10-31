@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { Accounts } from 'meteor/accounts-base';
 import { TranslateService } from '@ngx-translate/core';
 import { CustomValidators } from '../../../../../both/shared-components/validators/custom-validator';
@@ -9,15 +9,11 @@ import { UserDetails } from '../../../../../both/collections/auth/user-detail.co
 import { UserProfile } from '../../../../../both/models/auth/user-profile.model';
 import { AuthClass } from './auth.class';
 
-import template from './signup.web.component.html';
-import style from './auth.component.scss';
-
 @Component({
     selector: 'signup',
-    template,
-    styles: [style]
+    templateUrl: './signup.web.component.html',
+    styles: [ './auth.component.scss' ]
 })
-
 export class SignupWebComponent extends AuthClass implements OnInit {
 
     private signupForm: FormGroup;
@@ -35,7 +31,7 @@ export class SignupWebComponent extends AuthClass implements OnInit {
     constructor(protected router: Router,
         protected zone: NgZone,
         protected translate: TranslateService,
-        protected _mdDialog: MdDialog) {
+        protected _mdDialog: MatDialog) {
 
         super(router, zone, translate, _mdDialog);
     }

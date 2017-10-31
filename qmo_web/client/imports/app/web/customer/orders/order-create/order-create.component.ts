@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { MdSnackBar, MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Section } from '../../../../../../../both/models/administration/section.model';
 import { Sections } from '../../../../../../../both/collections/administration/section.collection';
@@ -25,13 +25,10 @@ import { Orders } from '../../../../../../../both/collections/restaurant/order.c
 import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './order-create.component.html';
-import style from './order-create.component.scss';
-
 @Component({
     selector: 'order-create',
-    template,
-    styles: [style]
+    templateUrl: './order-create.component.html',
+    styles: [ './order-create.component.scss' ]
 })
 export class OrderCreateComponent implements OnInit, OnDestroy {
 
@@ -44,7 +41,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     private _garnishFormGroup           : FormGroup = new FormGroup({});
     private _additionsFormGroup         : FormGroup = new FormGroup({});
     private _additionsDetailFormGroup   : FormGroup = new FormGroup({});
-    private _mdDialogRef                : MdDialogRef<any>;
+    private _mdDialogRef                : MatDialogRef<any>;
 
     private _sectionsSub                : Subscription;
     private _categoriesSub              : Subscription;
@@ -86,16 +83,16 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate 
      * @param {OrderNavigationService} _navigation 
      * @param {NgZone} _ngZone 
-     * @param {MdSnackBar} snackBar
+     * @param {MatSnackBar} snackBar
      * @param {UserLanguageService} _userLanguageService
      */
     constructor(private _formBuilder: FormBuilder,
         private _translate: TranslateService,
         private _navigation: OrderNavigationService,
         private _ngZone: NgZone,
-        public snackBar: MdSnackBar,
+        public snackBar: MatSnackBar,
         private _userLanguageService: UserLanguageService,
-        protected _mdDialog: MdDialog) {
+        protected _mdDialog: MatDialog) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';

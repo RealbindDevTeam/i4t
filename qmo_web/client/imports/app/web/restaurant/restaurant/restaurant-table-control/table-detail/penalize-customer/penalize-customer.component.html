@@ -1,13 +1,13 @@
 <div class="main">
-    <md-card *ngIf="_user.services.facebook">
-        <md-card-content>
-            <md-list>
-                <md-list-item>
-                    <img md-list-avatar class="image" src="{{_urlImage}}">
-                    <h2 md-line class="card-title">{{_user.services.facebook.name}}</h2>
-                    <p md-line class="card-subtitle">{{_user.services.facebook.email}}</p>
-                </md-list-item>
-            </md-list>
+    <mat-card *ngIf="_user.services.facebook">
+        <mat-card-content>
+            <mat-list>
+                <mat-list-item>
+                    <img mat-list-avatar class="image" src="{{_urlImage}}">
+                    <h2 mat-line class="card-title">{{_user.services.facebook.name}}</h2>
+                    <p mat-line class="card-subtitle">{{_user.services.facebook.email}}</p>
+                </mat-list-item>
+            </mat-list>
             <p class="status-message">{{ 'PENALIZE_CUSTOMER.STATUS_MSG' | translate }} <span class="username">{{_user.services.facebook.name}}</span>: </p>
             <table class="centered striped">
                 <thead>
@@ -31,19 +31,19 @@
             </table>
             <p>{{ 'PENALIZE_CUSTOMER.PENALIZE_MSG' | translate }}</p>
             <p>{{ 'PENALIZE_CUSTOMER.PENALIZE_TABLE' | translate }} <span class="table-number"># {{_tableNumber}}</span> {{ 'PENALIZE_CUSTOMER.PENALIZE_CONFIRM_MSG' | translate }}</p>
-            <button md-raised-button class="primary-button card-button" (click)="close()">{{ 'NO' | translate }}</button>
-            <button md-raised-button class="primary-button card-button" (click)="penalizeCustomer()">{{ 'YES' | translate }}</button>        
-        </md-card-content>
-    </md-card>
-    <md-card *ngIf="_user.username">
-        <md-card-content>
-            <md-list>
-                <md-list-item>
-                    <img md-list-avatar class="image" src="{{_urlImage}}">
-                    <h2 md-line class="card-title">{{_user.username}}</h2>
-                    <p md-line class="card-subtitle">{{_user.emails[0].address}}</p>
-                </md-list-item>
-            </md-list>
+            <button mat-raised-button class="primary-button card-button" (click)="close()">{{ 'NO' | translate }}</button>
+            <button mat-raised-button class="primary-button card-button" (click)="penalizeCustomer()">{{ 'YES' | translate }}</button>        
+        </mat-card-content>
+    </mat-card>
+    <mat-card *ngIf="_user.username">
+        <mat-card-content>
+            <mat-list>
+                <mat-list-item>
+                    <img mat-list-avatar class="image" src="{{_urlImage}}">
+                    <h2 mat-line class="card-title">{{_user.username}}</h2>
+                    <p mat-line class="card-subtitle">{{_user.emails[0].address}}</p>
+                </mat-list-item>
+            </mat-list>
             <p class="status-message">{{ 'PENALIZE_CUSTOMER.STATUS_MSG' | translate }} <span class="username">{{_user.username}}</span>: </p>        
             <table class="centered striped">
                 <thead>
@@ -67,13 +67,13 @@
             </table>
             <p>{{ 'PENALIZE_CUSTOMER.PENALIZE_MSG' | translate }}</p>
             <p>{{ 'PENALIZE_CUSTOMER.PENALIZE_TABLE' | translate }} <span class="table-number"># {{_tableNumber}}</span> {{ 'PENALIZE_CUSTOMER.PENALIZE_CONFIRM_MSG' | translate }}</p>        
-            <button md-raised-button class="primary-button card-button" (click)="close()">{{ 'NO' | translate }}</button>
-            <button md-raised-button class="primary-button card-button" (click)="penalizeCustomer()">{{ 'YES' | translate }}</button>
+            <button mat-raised-button class="primary-button card-button" (click)="close()">{{ 'NO' | translate }}</button>
+            <button mat-raised-button class="primary-button card-button" (click)="penalizeCustomer()">{{ 'YES' | translate }}</button>
             <p class="error-msg" *ngIf="_showAccountError">{{ 'PENALIZE_CUSTOMER.ACCOUNT_ERROR' | translate }}</p>     
             <p class="error-msg" *ngIf="_showGeneralError">{{ 'PENALIZE_CUSTOMER.GENERAL_ERROR' | translate }}</p>     
-        </md-card-content>
-    </md-card>
+        </mat-card-content>
+    </mat-card>
 </div>
 <div class="loading" *ngIf="_loading">
-    <md-spinner></md-spinner>
+    <mat-spinner></mat-spinner>
 </div>
