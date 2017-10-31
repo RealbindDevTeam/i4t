@@ -22,7 +22,7 @@ export interface Restaurant extends CollectionObject {
     isActive: boolean;
     firstPay: boolean;
     freeDays?: boolean;
-    is_premium: boolean;
+    is_premium?: boolean;
 }
 
 /**
