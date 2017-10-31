@@ -106,7 +106,7 @@ if (Meteor.isServer) {
             maxPaymentDay.setDate(maxPaymentDay.getDate() + (Number(endDay.value) - 1));
             let auxArray: string[] = [];
 
-            Restaurants.collection.find({ countryId: _countryId, isActive: true, is_premium: true }).forEach((restaurant: Restaurant) => {
+            Restaurants.collection.find({ countryId: _countryId, isActive: true, freeDays: false }).forEach((restaurant: Restaurant) => {
                 let user: User = Users.collection.findOne({ _id: restaurant.creation_user });
                 let indexofvar = auxArray.indexOf(user._id);
 
@@ -117,7 +117,7 @@ if (Meteor.isServer) {
 
             Users.collection.find({ _id: { $in: auxArray } }).forEach((user: User) => {
                 let auxRestaurants: string[] = [];
-                Restaurants.collection.find({ creation_user: user._id, isActive: true, is_premium: true }, { fields: { _id: 0, name: 1 } }).forEach((name: Restaurant) => {
+                Restaurants.collection.find({ creation_user: user._id, isActive: true, freeDays: false }, { fields: { _id: 0, name: 1 } }).forEach((name: Restaurant) => {
                     auxRestaurants.push(name.name);
                 });
 
@@ -159,7 +159,7 @@ if (Meteor.isServer) {
             let currentMonth: string = (currentDate.getMonth() + 1).toString();
             let currentYear: string = currentDate.getFullYear().toString();
 
-            Restaurants.collection.find({ countryId: _countryId, isActive: true, is_premium: true }).forEach((restaurant: Restaurant) => {
+            Restaurants.collection.find({ countryId: _countryId, isActive: true, freeDays: false }).forEach((restaurant: Restaurant) => {
                 let historyPayment: PaymentHistory;
                 let auxArray: string[] = [];
                 auxArray.push(restaurant._id);
@@ -189,7 +189,7 @@ if (Meteor.isServer) {
 
             let auxArray: string[] = [];
 
-            Restaurants.collection.find({ countryId: _countryId, isActive: false, is_premium: true, firstPay: false }).forEach((restaurant: Restaurant) => {
+            Restaurants.collection.find({ countryId: _countryId, isActive: false, freeDays: false, firstPay: false }).forEach((restaurant: Restaurant) => {
                 let user: User = Users.collection.findOne({ _id: restaurant.creation_user });
                 let indexofvar = auxArray.indexOf(user._id);
 
@@ -200,7 +200,7 @@ if (Meteor.isServer) {
 
             Users.collection.find({ _id: { $in: auxArray } }).forEach((user: User) => {
                 let auxRestaurants: string[] = [];
-                Restaurants.collection.find({ creation_user: user._id, isActive: false, is_premium: true, firstPay: false }, { fields: { _id: 0, name: 1 } }).forEach((name: Restaurant) => {
+                Restaurants.collection.find({ creation_user: user._id, isActive: false, freeDays: false, firstPay: false }, { fields: { _id: 0, name: 1 } }).forEach((name: Restaurant) => {
                     auxRestaurants.push(name.name);
                 });
 
