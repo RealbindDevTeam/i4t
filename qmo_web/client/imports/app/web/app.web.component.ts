@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, HostListener} from '@angular/core';
+import {Component, ElementRef, OnInit, HostListener, ViewEncapsulation} from '@angular/core';
 import {NavigationService} from './navigation/navigation.service';
 import {Router, Event, NavigationStart, NavigationEnd} from '@angular/router';
 import 'hammerjs';
@@ -9,7 +9,8 @@ import { UserLanguageService } from '../shared/services/user-language.service';
   selector: 'app',
   providers: [ OrderNavigationService, UserLanguageService ],
   templateUrl: './app.web.component.html',
-  styleUrls: [ './app.web.component.scss' ]
+  styleUrls: [ './app.web.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit{
   private pageTitle: string;
