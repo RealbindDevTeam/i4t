@@ -1,12 +1,12 @@
-<md-card style="box-shadow: none">
-    <md-card-title>{{data.title | translate}}</md-card-title>
-    <md-card-subtitle>{{data.subtitle | translate}}</md-card-subtitle>
+<mat-card style="box-shadow: none">
+    <mat-card-title>{{data.title | translate}}</mat-card-title>
+    <mat-card-subtitle>{{data.subtitle | translate}}</mat-card-subtitle>
 
-    <md-card-content>
+    <mat-card-content>
         <p>{{data.content | translate}}</p>
-    </md-card-content>
-    <md-card-actions align="end">
-        <button *ngIf="showCancelButton" md-raised-button class="secondary-button" (click)="cancel()">{{data.buttonCancel | translate}}</button>
-        <button md-raised-button class="primary-button" (click)="closeConfirm()">{{data.buttonAccept | translate}}</button>
-    </md-card-actions>
-</md-card>
+    </mat-card-content>
+    <mat-card-actions align="end">
+        <button *ngIf="showCancelButton" mat-raised-button class="secondary-button" (click)="cancel()">{{data.buttonCancel | translate}}</button>
+        <button mat-raised-button class="primary-button" (click)="closeConfirm()">{{data.buttonAccept | translate}}</button>
+    </mat-card-actions>
+</mat-card>

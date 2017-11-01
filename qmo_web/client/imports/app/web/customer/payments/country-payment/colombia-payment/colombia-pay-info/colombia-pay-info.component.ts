@@ -27,13 +27,10 @@ import { GarnishFoodCol } from '../../../../../../../../../both/collections/admi
 import { Addition } from '../../../../../../../../../both/models/administration/addition.model';
 import { Additions } from '../../../../../../../../../both/collections/administration/addition.collection';
 
-import template from './colombia-pay-info.component.html';
-import style from './colombia-pay-info.component.scss';
-
 @Component({
     selector: 'colombia-pay-info',
-    template,
-    styles: [ style ]
+    templateUrl: './colombia-pay-info.component.html',
+    styleUrls: [ './colombia-pay-info.component.scss' ]
 })
 export class ColombiaPayInfoComponent implements OnInit, OnDestroy{
 

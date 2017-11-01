@@ -1,16 +1,16 @@
-<md-card style="box-shadow: none">
-    <md-card-title>{{'PAYU_PAYMENT_FORM.TRANSACTION_STATUS' | translate}}</md-card-title>
-    <md-card-content>
-        <md-list>
-            <md-list-item>
-                <img md-list-avatar class="image" src="/images/{{data.transactionImage}}">
-                <h1 md-line class="card-title">{{data.transactionResponse | translate}}</h2>
-                <p *ngIf="data.transactionResponse != 'PAYU_PAYMENT_FORM.AUTH_ERROR_MSG'" md-line>{{'PAYU_PAYMENT_FORM.TRANSACTION_MSG' | translate}}</p>
-            </md-list-item>
-        </md-list>
-    </md-card-content>
-    <md-card-actions align="end">
-        <button *ngIf="showCancelButton" md-raised-button class="secondary-button" (click)="cancel()">{{ 'PAYU_PAYMENT_FORM.PAY_ACCEPT' | translate }}</button>
-        <button *ngIf="!showCancelButton" md-raised-button class="primary-button" (click)="closeConfirm()">{{ 'PAYU_PAYMENT_FORM.PAY_ACCEPT' | translate }}</button>
-    </md-card-actions>
-</md-card>
+<mat-card style="box-shadow: none">
+    <mat-card-title>{{'PAYU_PAYMENT_FORM.TRANSACTION_STATUS' | translate}}</mat-card-title>
+    <mat-card-content>
+        <mat-list>
+            <mat-list-item>
+                <img mat-list-avatar class="image" src="/images/{{data.transactionImage}}">
+                <h1 mat-line class="card-title">{{data.transactionResponse | translate}}</h1>
+                <p *ngIf="data.transactionResponse != 'PAYU_PAYMENT_FORM.AUTH_ERROR_MSG'" mat-line>{{'PAYU_PAYMENT_FORM.TRANSACTION_MSG' | translate}}</p>
+            </mat-list-item>
+        </mat-list>
+    </mat-card-content>
+    <mat-card-actions align="end">
+        <button *ngIf="showCancelButton" mat-raised-button class="secondary-button" (click)="cancel()">{{ 'PAYU_PAYMENT_FORM.PAY_ACCEPT' | translate }}</button>
+        <button *ngIf="!showCancelButton" mat-raised-button class="primary-button" (click)="closeConfirm()">{{ 'PAYU_PAYMENT_FORM.PAY_ACCEPT' | translate }}</button>
+    </mat-card-actions>
+</mat-card>

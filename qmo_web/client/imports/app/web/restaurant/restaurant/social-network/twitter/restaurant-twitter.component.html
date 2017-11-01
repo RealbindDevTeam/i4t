@@ -1,15 +1,15 @@
-<md-card>
-    <md-card-title>Twitter</md-card-title>
-    <md-card-subtitle>{{'RESTAURANT.ADD_TWITTER_LINK' | translate}}</md-card-subtitle>
-    <md-card-content>
+<mat-card>
+    <mat-card-title>Twitter</mat-card-title>
+    <mat-card-subtitle>{{'RESTAURANT.ADD_TWITTER_LINK' | translate}}</mat-card-subtitle>
+    <mat-card-content>
         <form [formGroup]="_restaurantTwitterForm" (ngSubmit)="updateTwitterLink()">
-            <md-input-container style="width: 100%;" type="url">
-                <input mdInput formControlName="twitterLink" placeholder="{{'RESTAURANT.TWITTER_LINK' | translate}}">
-            </md-input-container>
+            <mat-form-field style="width: 100%;" type="url">
+                <input matInput formControlName="twitterLink" placeholder="{{'RESTAURANT.TWITTER_LINK' | translate}}">
+            </mat-form-field>
             <div>
-                <button md-raised-button class="secondary-button" type="button" (click)="close()">{{'CANCEL' | translate}}</button>
-                <button md-raised-button class="primary-button" type="submit">{{'UPDATE' | translate}}</button>
+                <button mat-raised-button class="secondary-button" type="button" (click)="close()">{{'CANCEL' | translate}}</button>
+                <button mat-raised-button class="primary-button" type="submit">{{'UPDATE' | translate}}</button>
             </div>
         </form>
-    </md-card-conten>
-</md-card>
+    </mat-card-content>
+</mat-card>

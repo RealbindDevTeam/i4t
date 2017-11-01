@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 //import { MouseEvent } from "@agm/core";
 import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -10,20 +10,17 @@ import { Restaurant } from '../../../../../../../both/models/restaurant/restaura
 import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './restaurant-location.component.html';
-import style from './restaurant-location.component.scss';
-
 @Component({
   selector: 'restaurant-location',
-  template,
-  styles: [ style ],
+  templateUrl: './restaurant-location.component.html',
+  styleUrls: [ './restaurant-location.component.scss' ],
   providers: [ UserLanguageService ]
 })
 export class RestaurantLocationComponent implements OnInit, OnDestroy {
     
     public _restaurantLocation      : Restaurant;
     private _restaurantSub          : Subscription;
-    private _mdDialogRef            : MdDialogRef<any>;
+    private _mdDialogRef            : MatDialogRef<any>;
     
     private titleMsg                : string;
     private btnAcceptLbl            : string;
@@ -34,13 +31,13 @@ export class RestaurantLocationComponent implements OnInit, OnDestroy {
     /**
      * RestaurantLocationComponent constructor
      * @param {TranslateService} _translate
-     * @param {MdDialogRef<any>} _dialogRef
+     * @param {MatDialogRef<any>} _dialogRef
      * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _translate: TranslateService, 
-                 public _dialogRef: MdDialogRef<any>,
+                 public _dialogRef: MatDialogRef<any>,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog ){
+                 protected _mdDialog: MatDialog ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';

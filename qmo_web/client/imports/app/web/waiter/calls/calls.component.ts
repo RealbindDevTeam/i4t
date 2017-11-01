@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from "meteor-rxjs";
 import { Subscription } from "rxjs";
@@ -18,13 +18,10 @@ import { PaymentConfirmComponent } from './payment-confirm/payment-confirm.compo
 import { SendOrderConfirmComponent } from './send-order-confirm/send-order-confirm.component';
 import { RestaurantExitConfirmComponent } from './restaurant-exit-confirm/restaurant-exit-confirm.component';
 
-import template from './calls.component.html';
-import style from './calls.component.scss';
-
 @Component({
     selector: 'calls',
-    template,
-    styles: [ style ]
+    templateUrl: './calls.component.html',
+    styleUrls: [ './calls.component.scss' ]
 })
 export class CallsComponent implements OnInit, OnDestroy {
 
@@ -36,26 +33,26 @@ export class CallsComponent implements OnInit, OnDestroy {
     private _tableSubscription          : Subscription;
     private _imgRestaurantSubscription  : Subscription;
 
-    private _mdDialogRef                : MdDialogRef<any>;
+    private _mdDialogRef                : MatDialogRef<any>;
 
     private _userDetail                 : UserDetail;
     private _restaurants                : any;
     private _waiterCallDetail           : any;
     private _tables                     : any;
-    private _waiterCallDetailCollection : any;
     private _imgRestaurant              : any;
 
     private _loading  : boolean;
+    private _thereAreCalls : boolean = true;
 
     /**
      * CallsComponent Constructor
      * @param {TranslateService} _translate 
-     * @param {MdDialog} _mdDialog 
+     * @param {MatDialog} _mdDialog 
      * @param {UserLanguageService} _userLanguageService 
      * @param {NgZone} _ngZone
      */
     constructor( public _translate: TranslateService,
-                 public _mdDialog: MdDialog,
+                 public _mdDialog: MatDialog,
                  private _userLanguageService: UserLanguageService,
                  private _ngZone: NgZone ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
@@ -81,7 +78,8 @@ export class CallsComponent implements OnInit, OnDestroy {
         this._callsDetailsSubscription = MeteorObservable.subscribe('waiterCallDetailByWaiterId', this._user ).subscribe(() => {
             this._ngZone.run( () => {
                 this._waiterCallDetail = WaiterCallDetails.find({}).zone();
-                this._waiterCallDetailCollection = WaiterCallDetails.collection.find({}).fetch()[0];
+                this.countCalls();
+                this._waiterCallDetail.subscribe( () => { this.countCalls(); });
             });
         });
 
@@ -101,6 +99,14 @@ export class CallsComponent implements OnInit, OnDestroy {
         if( this._callsDetailsSubscription ){ this._callsDetailsSubscription.unsubscribe(); }
         if( this._tableSubscription ){ this._tableSubscription.unsubscribe(); }
         if( this._imgRestaurantSubscription ){ this._imgRestaurantSubscription.unsubscribe(); }
+    }
+
+    /**
+     * Count calls
+     */
+    countCalls():void{
+        let _lCalls: number = WaiterCallDetails.collection.find( { } ).count();
+        _lCalls > 0 ? this._thereAreCalls = true : this._thereAreCalls = false;
     }
 
     /**

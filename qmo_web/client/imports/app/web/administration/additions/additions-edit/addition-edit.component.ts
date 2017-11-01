@@ -2,10 +2,10 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Observable } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Additions } from '../../../../../../../both/collections/administration/addition.collection';
 import { Addition, AdditionRestaurant, AdditionPrice } from '../../../../../../../both/models/administration/addition.model';
@@ -17,13 +17,10 @@ import { Country } from '../../../../../../../both/models/settings/country.model
 import { Countries } from '../../../../../../../both/collections/settings/country.collection';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './addition-edit.component.html';
-import style from './addition-edit.component.scss';
-
 @Component({
     selector: 'addition-edit',
-    template,
-    styles: [ style ],
+    templateUrl: './addition-edit.component.html',
+    styleUrls: [ './addition-edit.component.scss' ],
     providers:[ UserLanguageService ]
 })
 export class AdditionEditComponent implements OnInit {
@@ -33,7 +30,7 @@ export class AdditionEditComponent implements OnInit {
     private _editForm               : FormGroup;
     private _currenciesFormGroup    : FormGroup = new FormGroup({});    
     private _taxesFormGroup         : FormGroup = new FormGroup({});
-    private _mdDialogRef            : MdDialogRef<any>;
+    private _mdDialogRef            : MatDialogRef<any>;
 
     private _additions              : Observable<Addition[]>;
     private _currencies             : Observable<Currency[]>;
@@ -50,18 +47,18 @@ export class AdditionEditComponent implements OnInit {
      * AdditionEditComponent constructor
      * @param {FormBuilder} _formBuilder
      * @param {TranslateService} _translate
-     * @param {MdDialogRef<any>} _dialogRef
+     * @param {MatDialogRef<any>} _dialogRef
      * @param {NgZone} _ngZone
-     * @param {MdSnackBar} snackBar
+     * @param {MatSnackBar} snackBar
      * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
-                 public _dialogRef: MdDialogRef<any>, 
+                 public _dialogRef: MatDialogRef<any>, 
                  private _ngZone: NgZone, 
-                 public snackBar: MdSnackBar,
+                 public snackBar: MatSnackBar,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog ){
+                 protected _mdDialog: MatDialog ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' ); 
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';

@@ -1,27 +1,24 @@
 import { Component, NgZone, OnInit, OnDestroy} from '@angular/core';
-import { MdDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 import { MeteorObservable } from "meteor-rxjs";
 import { Observable, Subscription } from 'rxjs';
 import { Parameter } from '../../../../../../../../both/models/general/parameter.model';
 import { Parameters } from '../../../../../../../../both/collections/general/parameter.collection';
 
-import template from './create-confirm.component.html';
-import style from './create-confirm.component.scss';
-
 @Component({
     selector: 'create-confirm',
-    template,
-    styles: [style]
+    templateUrl: './create-confirm.component.html',
+    styleUrls: [ './create-confirm.component.scss' ]
 })
 export class CreateConfirmComponent implements OnInit, OnDestroy{
 
      private _parameterSub: Subscription;
 
     /**
-     * CallCloseConfirmComponent constructor
-     * @param {MdDialogRef<any>} _dialogRef
+     * CreateConfirmComponent constructor
+     * @param {MatDialogRef<any>} _dialogRef
      */
-    constructor(public _dialogRef: MdDialogRef<any>, private _zone: NgZone) {
+    constructor(public _dialogRef: MatDialogRef<any>, private _zone: NgZone) {
         
     }
 

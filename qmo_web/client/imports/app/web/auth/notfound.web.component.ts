@@ -2,15 +2,11 @@ import { Component, NgZone, ViewContainerRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { UserLanguageService } from '../../shared/services/user-language.service';
 
-import template from './notfound.web.component.html';
-import style from './notfound.web.component.scss';
-
 @Component({
     selector: 'notfound',
-    template,
-    styles: [style]
+    templateUrl: './notfound.web.component.html',
+    styleUrls: [ './notfound.web.component.scss' ]
 })
-
 export class NotFoundWebComponent {
 
     private userLang: string;

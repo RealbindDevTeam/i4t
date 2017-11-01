@@ -37,6 +37,7 @@ import './imports/publications/payment/cc-payment-method';
 import './imports/publications/payment/payment-transaction';
 import './imports/publications/restaurant/invoice';
 
+import { removeFixtures } from './imports/fixtures/remove-fixtures';
 import { loadRoles } from './imports/fixtures/auth/roles';
 import { loadMenus } from './imports/fixtures/auth/menus';
 import { loadHours } from './imports/fixtures/general/hours';
@@ -52,6 +53,7 @@ import { createdbindexes } from './imports/indexes/indexdb';
 import { createCrons } from './cron';
 
 Meteor.startup(() => {
+    removeFixtures();
     loadMenus();
     loadRoles();
     loadHours();

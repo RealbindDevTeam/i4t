@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="login-form login-form-right">
-            <button md-raised-button class="btn-facebook" type="submit" (click)="loginWithFacebook()">
+            <button mat-raised-button class="btn-facebook" type="submit" (click)="loginWithFacebook()">
                 <i class="fa fa-facebook" aria-hidden="true"></i>Facebook
             </button>
             <div style="width: 100%; text-align: center">
@@ -21,29 +21,29 @@
 
             <form [formGroup]="signinForm" (ngSubmit)="login()" novalidate>
                 <div>
-                    <md-input-container style="width: 100%">
-                        <input mdInput formControlName="email" placeholder="{{'SIGNIN.EMAIL_USERNAME' | translate}}" name="email" required/>
-                    </md-input-container>
+                    <mat-form-field style="width: 100%">
+                        <input matInput formControlName="email" placeholder="{{'SIGNIN.EMAIL_USERNAME' | translate}}" name="email" required/>
+                    </mat-form-field>
                     <div *ngIf="signinForm.controls['email'].hasError('required') && signinForm.controls['email'].touched" class="error-message">{{'SIGNUP.REQUIRED_EMAIL' | translate}}</div>
                 </div>
                 <div>
-                    <md-input-container style="width: 100%">
-                        <input mdInput formControlName="password" placeholder="{{'SIGNIN.PASSWORD' | translate}}" name="password" required type="password"
+                    <mat-form-field style="width: 100%">
+                        <input matInput formControlName="password" placeholder="{{'SIGNIN.PASSWORD' | translate}}" name="password" required type="password"
                         />
-                    </md-input-container>
+                    </mat-form-field>
                     <div *ngIf="signinForm.controls['password'].hasError('required') && signinForm.controls['password'].touched" class="error-message">{{'SIGNUP.REQUIRED_PASSWORD' | translate}}</div>
                 </div>
                 <!--
                 <div>
-                    <md-checkbox [checked]="true" align="start">
+                    <mat-checkbox [checked]="true" align="start">
                         {{'SIGNIN.KEEP_SIGNED' | translate}}
-                    </md-checkbox>
+                    </mat-checkbox>
                 <div>
                 -->
-                <button md-raised-button class="primary-button" type="submit" [disabled]="!signinForm.valid">{{'SIGNIN.START_SESSION' | translate}}</button>
+                <button mat-raised-button class="primary-button" type="submit" [disabled]="!signinForm.valid">{{'SIGNIN.START_SESSION' | translate}}</button>
             </form>
             <div style="text-align: center; padding-top: 10px">
-                <button style="margin: 0 auto" md-button (click)="openDialogForgotPassword()">{{'SIGNIN.FORGOT_PASSWORD' | translate}}</button>
+                <button style="margin: 0 auto" mat-button (click)="openDialogForgotPassword()">{{'SIGNIN.FORGOT_PASSWORD' | translate}}</button>
             </div>
             <div style="text-align: center; padding-top: 10px">
                 {{'SIGNIN.DONT_ACCOUNT'| translate}} <span class="right-align"><a routerLink="/signup">{{'LANDING.SIGNUP' | translate}}</a></span>

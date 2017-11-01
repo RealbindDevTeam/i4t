@@ -11,16 +11,13 @@ import { Restaurants } from '../../../../../../both/collections/restaurant/resta
 import { Table } from '../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
 
-import template from './supervisor-tables.component.html';
-import style from './supervisor-tables.component.scss';
-
 import * as QRious from 'qrious';
 let jsPDF = require('jspdf');
 
 @Component({
     selector: 'sup-tables',
-    template,
-    styles: [ style ]
+    templateUrl: './supervisor-tables.component.html',
+    styleUrls: [ './supervisor-tables.component.scss' ]
 })
 export class SupervisorTableComponent implements OnInit, OnDestroy {
 

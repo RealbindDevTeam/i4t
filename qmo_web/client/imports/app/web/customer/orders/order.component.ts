@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
@@ -14,19 +14,16 @@ import { UserDetails } from '../../../../../../both/collections/auth/user-detail
 import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './order.component.html';
-import style from './order.component.scss';
-
 @Component({
     selector: 'orders',
-    template,
-    styles: [ style ]
+    templateUrl: './order.component.html',
+    styleUrls: [ './order.component.scss' ]
 })
 export class OrdersComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
     private _ordersForm                 : FormGroup;
-    private _mdDialogRef                : MdDialogRef<any>;
+    private _mdDialogRef                : MatDialogRef<any>;
 
     private _tablesSub                  : Subscription;
     private _userDetailsSub             : Subscription;
@@ -54,7 +51,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     constructor( private _translate: TranslateService, 
                  private _ngZone: NgZone,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog ) {
+                 protected _mdDialog: MatDialog ) {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';

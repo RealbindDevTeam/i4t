@@ -10,13 +10,10 @@ import { Restaurants } from '../../../../../../both/collections/restaurant/resta
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 
-import template from './payments.component.html';
-import style from './payments.component.scss';
-
 @Component({
     selector: 'payments',
-    template,
-    styles: [ style ]
+    templateUrl: './payments.component.html',
+    styleUrls: [ './payments.component.scss' ]
 })
 export class PaymentsComponent implements OnInit, OnDestroy {
 

@@ -5,16 +5,16 @@ import {ColorService} from '../../services/color.service';
 @Component({
   selector : 'core-widget',
   template : `
-   <md-card class="flex-item widget" [ngStyle]="{'background-color': style, 'color': textStyle}">
-   <md-card-title style="text-align: center;color: white;margin-bottom: 0;" *ngIf="title">{{title}}</md-card-title>
-    <md-card-content class="layout-stretch-between layout-row">
-      <md-icon style="min-width: 100px;" class="widget-icon" *ngIf="icon">{{icon}}</md-icon>
+   <mat-card class="flex-item widget" [ngStyle]="{'background-color': style, 'color': textStyle}">
+   <mat-card-title style="text-align: center;color: white;margin-bottom: 0;" *ngIf="title">{{title}}</mat-card-title>
+    <mat-card-content class="layout-stretch-between layout-row">
+      <mat-icon style="min-width: 100px;" class="widget-icon" *ngIf="icon">{{icon}}</mat-icon>
       <div class="layout-column">
         <p [ngStyle]="{'background-color': style, 'color': textStyle, 'font-weight': 400}" class="counter">{{count}}</p>
         <p [ngStyle]="{'background-color': style, 'color': textStyle, 'font-weight': 600}" class="description" *ngIf="description">{{description}}</p>
       </div>
-    </md-card-content>
-  </md-card>
+    </mat-card-content>
+  </mat-card>
   `,
   styles : []
 })

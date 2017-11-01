@@ -1,16 +1,16 @@
-md-card {
+mat-card {
   margin-bottom: 20px;
 
   &.card-toolbar {
     padding: 0;
 
-    > md-card-content {
+    > mat-card-content {
       padding: 24px;
     }
   }
 }
 
-md-dialog-container md-card, .md-tab-body md-card {
+mat-dialog-container mat-card, .mat-tab-body mat-card {
   box-shadow: none;
   margin-bottom: 0;
 
@@ -37,7 +37,7 @@ md-dialog-container md-card, .md-tab-body md-card {
   }
 }
 
-md-card.widget {
+mat-card.widget {
   margin: 8px;
   padding: 16px;
 

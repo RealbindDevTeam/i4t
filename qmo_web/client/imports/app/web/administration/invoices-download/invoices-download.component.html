@@ -1,5 +1,5 @@
-<md-card md-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
-    <md-card-content>
+<mat-card mat-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
+    <mat-card-content>
         <div class="card_initial">
         <div class="card_initial has-image">
             <div class="card_initial-image-container">
@@ -14,33 +14,33 @@
                 </div>
             </div>
             <div class="card_initial-button">
-                <button md-raised-button (click)="goToAddRestaurant()">{{ 'INVOICES_DOWNLOAD.RESTAURANT_REGISTER' | translate }}</button>
+                <button mat-raised-button (click)="goToAddRestaurant()">{{ 'INVOICES_DOWNLOAD.RESTAURANT_REGISTER' | translate }}</button>
             </div>
         </div>
         </div>
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>
 
-<md-card *ngIf="_thereAreRestaurants">
-    <md-card-title>{{ 'INVOICES_DOWNLOAD.TITLE' | translate }}</md-card-title>
-    <md-card-subtitle>{{ 'INVOICES_DOWNLOAD.TEXT' | translate }}</md-card-subtitle>
-        <md-card-content>
-            <md-select [(ngModel)]="_selectedYear" placeholder="{{'INVOICES_DOWNLOAD.YEAR_FILTER' | translate}}" style="width: 25%;">
-                <md-option *ngFor="let year of _yearsArray" value="{{year.value}}" (click)="monthChange()">{{year.viewValue}}</md-option>
-            </md-select>
+<mat-card *ngIf="_thereAreRestaurants">
+    <mat-card-title>{{ 'INVOICES_DOWNLOAD.TITLE' | translate }}</mat-card-title>
+    <mat-card-subtitle>{{ 'INVOICES_DOWNLOAD.TEXT' | translate }}</mat-card-subtitle>
+        <mat-card-content>
+            <mat-select [(ngModel)]="_selectedYear" placeholder="{{'INVOICES_DOWNLOAD.YEAR_FILTER' | translate}}" style="width: 25%;">
+                <mat-option *ngFor="let year of _yearsArray" value="{{year.value}}" (click)="monthChange()">{{year.viewValue}}</mat-option>
+            </mat-select>
             
-            <md-select [(ngModel)]="_selectedMonth" placeholder="{{'INVOICES_DOWNLOAD.MONTH_FILTER' | translate}}" style="width: 25%; margin-left: 2%;">
-                <md-option *ngFor="let month of _monthsArray" value="{{month.value}}" (click)="monthChange()">{{month.viewValue}}</md-option>
-            </md-select>
-        </md-card-content>
+            <mat-select [(ngModel)]="_selectedMonth" placeholder="{{'INVOICES_DOWNLOAD.MONTH_FILTER' | translate}}" style="width: 25%; margin-left: 2%;">
+                <mat-option *ngFor="let month of _monthsArray" value="{{month.value}}" (click)="monthChange()">{{month.viewValue}}</mat-option>
+            </mat-select>
+        </mat-card-content>
 
-        <md-select [(ngModel)]="_selectedRestaurantId" class="select" placeholder="{{ 'INVOICES_DOWNLOAD.SELECT_RESTAURANT' | translate }}">
-            <md-option *ngFor="let rest of _restaurantsFilter | async" (click)="monthChange();" value="{{rest._id}}">{{rest.name}}</md-option>
-        </md-select>
-</md-card>
+        <mat-select [(ngModel)]="_selectedRestaurantId" class="select" placeholder="{{ 'INVOICES_DOWNLOAD.SELECT_RESTAURANT' | translate }}">
+            <mat-option *ngFor="let rest of _restaurantsFilter | async" (click)="monthChange();" value="{{rest._id}}">{{rest.name}}</mat-option>
+        </mat-select>
+</mat-card>
 
-<md-card md-cell="12" class="demo-card demo-basic" *ngIf="_thereAreRestaurants && (_invoices | async)?.length <= 0">
-    <md-card-content>
+<mat-card mat-cell="12" class="demo-card demo-basic" *ngIf="_thereAreRestaurants && (_invoices | async)?.length <= 0">
+    <mat-card-content>
         <div class="card_initial">
         <div class="card_initial has-image">
             <div class="card_initial-image-container">
@@ -55,25 +55,25 @@
             </div>
         </div>
         </div>
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>
 
-<md-card class="main" *ngFor="let invoice of _invoices | async">
-    <md-card-content>
-        <md-list class="order-info">
-            <md-list-item>
-                <img md-list-avatar class="image" src="/images/orders.png">
-                <h2 md-line class="title">{{invoice.restaurant_name}}</h2>
-                <p md-line class="title">{{invoice.creation_date | date: 'dd MMM yyyy HH:mm'}}</p>
-                <button md-raised-button (click)="invoiceGenerate(invoice)" style="box-shadow: none; color: #ef5350;" mdTooltip="{{'PAYMENTS_HISTORY.TOOLTIP_DOWNLOAD_INVOICE' | translate}}">
-                    <md-icon>get_app</md-icon>
+<mat-card class="main" *ngFor="let invoice of _invoices | async">
+    <mat-card-content>
+        <mat-list class="order-info">
+            <mat-list-item>
+                <img mat-list-avatar class="image" src="/images/orders.png">
+                <h2 mat-line class="title">{{invoice.restaurant_name}}</h2>
+                <p mat-line class="title">{{invoice.creation_date | date: 'dd MMM yyyy HH:mm'}}</p>
+                <button mat-raised-button *ngIf="isInvoiceCanDownload(invoice, invoice.country_id)" (click)="invoiceGenerate(invoice, invoice.country_id)" style="box-shadow: none; color: #ef5350;" matTooltip="{{'PAYMENTS_HISTORY.TOOLTIP_DOWNLOAD_INVOICE' | translate}}">
+                    <mat-icon>get_app</mat-icon>
                 </button>
-            </md-list-item>
-        </md-list>
-        <md-list class="order-details">
+            </mat-list-item>
+        </mat-list>
+        <mat-list class="order-details">
             <div *ngFor="let item of invoice.items">
-                <md-list-item class="element">
-                    <div md-line>
+                <mat-list-item class="element">
+                    <div mat-line>
                         <div class="item-name">
                             <h4 class="display-inline">{{itemNameCrop(item.item_name)}}</h4>
                         </div>
@@ -82,11 +82,11 @@
                             <p class="price">{{item.price}} {{invoice.currency}}</p>
                         </div>
                     </div>
-                </md-list-item>
-                <md-divider class="divider"></md-divider>
+                </mat-list-item>
+                <mat-divider class="divider"></mat-divider>
                 <div *ngIf="item.garnish_food.length > 0">
-                    <md-list-item class="element" *ngFor="let gf of item.garnish_food">
-                        <div md-line>
+                    <mat-list-item class="element" *ngFor="let gf of item.garnish_food">
+                        <div mat-line>
                             <div class="item-name">
                                 <h4 class="display-inline">{{itemNameCrop(gf.garnish_food_name)}}</h4>
                             </div>
@@ -95,13 +95,13 @@
                                 <p class="price">{{gf.price}} {{invoice.currency}}</p>
                             </div>
                         </div>
-                    </md-list-item>
-                    <md-divider class="divider"></md-divider>
+                    </mat-list-item>
+                    <mat-divider class="divider"></mat-divider>
                 </div>
                 
                 <div *ngIf="item.additions.length > 0">
-                    <md-list-item class="element" *ngFor="let ad of item.additions">
-                        <div md-line>
+                    <mat-list-item class="element" *ngFor="let ad of item.additions">
+                        <div mat-line>
                             <div class="item-name">
                                 <h4 class="display-inline">{{itemNameCrop(ad.addition_name)}}</h4>
                             </div>
@@ -110,14 +110,14 @@
                                 <p class="price">{{ad.price}} {{invoice.currency}}</p>
                             </div>
                         </div>
-                    </md-list-item>
-                    <md-divider class="divider"></md-divider>
+                    </mat-list-item>
+                    <mat-divider class="divider"></mat-divider>
                 </div>
             </div>
 
             <div *ngFor="let addition of invoice.additions">
-                <md-list-item class="element">
-                    <div md-line>
+                <mat-list-item class="element">
+                    <div mat-line>
                         <div class="item-name">
                             <h4 class="display-inline">{{itemNameCrop(addition.addition_name)}}</h4>
                         </div>
@@ -126,10 +126,10 @@
                             <p class="price">{{addition.price}} {{invoice.currency}}</p>
                         </div>
                     </div>
-                </md-list-item>
-                <md-divider class="divider"></md-divider>
+                </mat-list-item>
+                <mat-divider class="divider"></mat-divider>
             </div>
-        </md-list>
+        </mat-list>
         
         <div style="padding: 0 16px;">
             <div>
@@ -156,5 +156,5 @@
                 <h1 style="float: right;">{{invoice.total_pay}} {{invoice.currency}}</h1>
             </div>
         </div>
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>

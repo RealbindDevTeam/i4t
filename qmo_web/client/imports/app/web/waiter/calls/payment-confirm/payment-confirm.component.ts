@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { MdDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
@@ -25,13 +25,10 @@ import { Addition } from '../../../../../../../both/models/administration/additi
 import { GarnishFood } from '../../../../../../../both/models/administration/garnish-food.model';
 import { GarnishFoodCol } from '../../../../../../../both/collections/administration/garnish-food.collection';
 
-import template from './payment-confirm.component.html';
-import style from './payment-confirm.component.scss';
-
 @Component({
     selector: 'payment-confirm',
-    template,
-    styles: [ style ],
+    templateUrl: './payment-confirm.component.html',
+    styleUrls: [ './payment-confirm.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class PaymentConfirmComponent implements OnInit, OnDestroy{
@@ -67,12 +64,12 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy{
     /**
      * PaymentConfirmComponent constructor
      * @param {TranslateService} translate
-     * @param {MdDialogRef<any>} _dialogRef
+     * @param {MatDialogRef<any>} _dialogRef
      * @param {NgZone} _ngZone
      * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _translate: TranslateService, 
-                 public _dialogRef: MdDialogRef<any>, 
+                 public _dialogRef: MatDialogRef<any>, 
                  private _ngZone: NgZone,
                  private _userLanguageService: UserLanguageService ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );

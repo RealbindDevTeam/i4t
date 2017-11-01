@@ -17,13 +17,10 @@ import { Orders } from '../../../../../both/collections/restaurant/order.collec
 import { Currency } from '../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../both/collections/general/currency.collection';
 
-import template from './dashboard.component.html';
-import style from './dashboard.component.scss';   
-
 @Component({
   selector : 'admin-dashboard',
-  template,
-  styles: [ style ]
+  templateUrl: './dashboard.component.html',
+  styleUrls: [ './dashboard.component.scss' ]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 

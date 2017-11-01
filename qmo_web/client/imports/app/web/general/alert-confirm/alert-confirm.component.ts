@@ -1,25 +1,21 @@
 import { Component, NgZone, Inject, OnInit, OnDestroy } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MeteorObservable } from "meteor-rxjs";
 import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 
-import template from './alert-confirm.component.html';
-import style from './alert-confirm.component.scss';
-
 @Component({
     selector: 'alert-confirm',
-    template,
-    styles: [style],
+    templateUrl: './alert-confirm.component.html',
+    styleUrls: [ './alert-confirm.component.scss' ],
     providers: [UserLanguageService]
 })
-
 export class AlertConfirmComponent implements OnInit, OnDestroy {
 
     private showCancelButton: boolean;
 
-    constructor(public _dialogRef: MdDialogRef<any>, private _zone: NgZone, @Inject(MD_DIALOG_DATA) public data: any, private translate: TranslateService, private _userLanguageService: UserLanguageService, ) {
+    constructor(public _dialogRef: MatDialogRef<any>, private _zone: NgZone, @Inject(MAT_DIALOG_DATA) public data: any, private translate: TranslateService, private _userLanguageService: UserLanguageService, ) {
         this.showCancelButton = data.showCancel;
         if (Meteor.user()) {
             translate.use(this._userLanguageService.getLanguage(Meteor.user()));

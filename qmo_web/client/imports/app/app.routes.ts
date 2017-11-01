@@ -9,7 +9,6 @@ import { SigninWebComponent } from './web/auth/signin.web.component';
 import { CategoryComponent } from './web/administration/categories/categories.component';
 import { SubcategoryComponent } from './web/administration/subcategories/subcategories.component';
 import { AdditionComponent } from './web/administration/additions/addition.component';
-import { PromotionComponent } from './web/administration/promotions/promotion.component';
 import { GarnishFoodComponent } from './web/administration/garnish-food/garnish-food.component';
 import { OrdersComponent } from './web/customer/orders/order.component';
 import { SettingsWebComponent } from './web/customer/settings/settings.web.component';
@@ -70,7 +69,6 @@ export const routes: Route[] = [
             { path: 'categories', component: CategoryComponent, canActivate: [AdminGuard] },
             { path: 'subcategories', component: SubcategoryComponent, canActivate: [AdminGuard] },
             { path: 'additions', component: AdditionComponent, canActivate: [AdminGuard] },
-            { path: 'promotions', component: PromotionComponent, canActivate: [AdminGuard] },
             { path: 'garnishFood', component: GarnishFoodComponent, canActivate: [AdminGuard] },
             { path: 'items', component: ItemComponent, canActivate: [AdminGuard] },
             { path: 'items-creation', component: ItemCreationComponent, canActivate: [AdminGuard] },

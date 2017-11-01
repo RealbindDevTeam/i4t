@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../../shared/services/user-language.service';
@@ -15,13 +15,10 @@ import { Addition } from '../../../../../../../../both/models/administration/add
 import { Additions } from '../../../../../../../../both/collections/administration/addition.collection';
 import { AlertConfirmComponent } from '../../../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './order-to-translate.component.html';
-import style from './order-to-translate.component.scss';
-
 @Component({
     selector: 'order-to-translate',
-    template,
-    styles: [ style ],
+    templateUrl: './order-to-translate.component.html',
+    styleUrls: [ './order-to-translate.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class OrderToTranslateComponent implements OnInit, OnDestroy {
@@ -36,7 +33,7 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
     private _itemImageThumbsSub         : Subscription;
     private _currencySub                : Subscription;
     private _additionsSub               : Subscription;
-    private _mdDialogRef                : MdDialogRef<any>;
+    private _mdDialogRef                : MatDialogRef<any>;
 
     private _ordersTable                : Observable<Order[]>;
     private _items                      : Observable<Item[]>;
@@ -50,15 +47,15 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
     /**
      * OrderToTranslateComponent constructor
      * @param {TranslateService} translate
-     * @param {MdDialogRef<any>} _dialogRef
+     * @param {MatDialogRef<any>} _dialogRef
      * @param {NgZone} _ngZone
      * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _translate: TranslateService, 
-                 public _dialogRef: MdDialogRef<any>, 
+                 public _dialogRef: MatDialogRef<any>, 
                  private _ngZone: NgZone,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog ){
+                 protected _mdDialog: MatDialog ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' ); 
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';

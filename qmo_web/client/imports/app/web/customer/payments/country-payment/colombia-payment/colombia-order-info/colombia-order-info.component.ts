@@ -3,7 +3,7 @@ import { MeteorObservable } from "meteor-rxjs";
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { UserLanguageService } from '../../../../../../shared/services/user-language.service';
 import { Orders } from '../../../../../../../../../both/collections/restaurant/order.collection';
 import { Order, OrderTranslateInfo } from '../../../../../../../../../both/models/restaurant/order.model';
@@ -25,13 +25,10 @@ import { Addition } from '../../../../../../../../../both/models/administration/
 import { Additions } from '../../../../../../../../../both/collections/administration/addition.collection';
 import { AlertConfirmComponent } from '../../../../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './colombia-order-info.component.html';
-import style from './colombia-order-info.component.scss';
-
 @Component({
     selector: 'colombia-order-info',
-    template,
-    styles: [ style ]
+    templateUrl: './colombia-order-info.component.html',
+    styleUrls: [ './colombia-order-info.component.scss' ]
 })
 export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
 
@@ -68,7 +65,7 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
     private _ipoComString       : string;
     private titleMsg            : string;
     private btnAcceptLbl        : string;
-    private _mdDialogRef        : MdDialogRef<any>;
+    private _mdDialogRef        : MatDialogRef<any>;
     private _restaurantLegality : RestaurantLegality;
     private _showRegimeCoData   : boolean = false;
     private _showRegimeSiData   : boolean = false;
@@ -78,13 +75,13 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
      * @param {TranslateService} _translate 
      * @param {NgZone} _ngZone 
      * @param {Router} _router
-     * @param {MdDialog} _dialog
+     * @param {MatDialog} _dialog
      * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _translate: TranslateService, 
                  private _ngZone:NgZone, 
                  private _router: Router,
-                 public _dialog: MdDialog,
+                 public _dialog: MatDialog,
                  private _userLanguageService: UserLanguageService ) {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );

@@ -4,7 +4,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { UserLanguageService } from '../../../../../shared/services/user-language.service';
 import { User } from '../../../../../../../../both/models/auth/user.model';
 import { UserProfileImage } from '../../../../../../../../both/models/auth/user-profile.model';
@@ -17,13 +17,10 @@ import { Currency } from '../../../../../../../../both/models/general/currency.m
 import { Currencies } from '../../../../../../../../both/collections/general/currency.collection';
 import { PenalizeCustomerComponent } from './penalize-customer/penalize-customer.component';
 
-import template from './table-detail.component.html';
-import style from './table-detail.component.scss';
-
 @Component({
     selector: 'table-detail',
-    template,
-    styles: [ style ]
+    templateUrl: './table-detail.component.html',
+    styleUrls: [ './table-detail.component.scss' ]
 })
 export class TableDetailComponent implements OnInit, OnDestroy {
 
@@ -43,7 +40,7 @@ export class TableDetailComponent implements OnInit, OnDestroy {
 
     private _userDetails            : Observable<UserDetail[]>;
     private _users                  : Observable<User[]>;
-    public _dialogRef               : MdDialogRef<any>;
+    public _dialogRef               : MatDialogRef<any>;
 
     /**
      * TableDetailComponent Constructor
@@ -58,7 +55,7 @@ export class TableDetailComponent implements OnInit, OnDestroy {
                  private _userLanguageService: UserLanguageService,
                  private _route: ActivatedRoute,
                  private _router: Router,
-                 public _dialog: MdDialog ){
+                 public _dialog: MatDialog ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
         this._route.params.forEach( ( params: Params ) => {

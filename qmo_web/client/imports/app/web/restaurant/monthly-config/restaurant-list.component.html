@@ -1,11 +1,11 @@
-<md-card *ngIf="(_restaurants | async)?.length > 0">
-    <md-card-title>{{'MONTHLY_CONFIG.TITLE' | translate}}</md-card-title>
-    <md-card-subtitle>{{'MONTHLY_CONFIG.SUBTITLE' | translate}}</md-card-subtitle>
-    <md-card-content>
+<mat-card *ngIf="(_restaurants | async)?.length > 0">
+    <mat-card-title>{{'MONTHLY_CONFIG.TITLE' | translate}}</mat-card-title>
+    <mat-card-subtitle>{{'MONTHLY_CONFIG.SUBTITLE' | translate}}</mat-card-subtitle>
+    <mat-card-content>
         <div *ngFor="let currency of _currencies | async">
-            <md-toolbar color="primary">
+            <mat-toolbar color="primary">
                 <span>{{getCountryByCurrency(currency._id) | translate}}</span>
-            </md-toolbar>
+            </mat-toolbar>
             <table class="striped" width="100%" style="border:0.5px solid; border-color: lightgrey; margin-bottom: 20px">
                 <thead>
                     <tr>
@@ -23,11 +23,11 @@
                         <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">{{getActiveTables(restaurant)}}</td>
                         <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">{{getRestaurantStatus(restaurant) | translate}}</td>
                         <td *ngIf="restaurant.currencyId === currency._id" class="cust-center-align">
-                            <button md-raised-button [disabled]="validateConditions(restaurant)" (click)="goToEnableDisable(restaurant._id)">{{'MONTHLY_CONFIG.BTN_EDIT' | translate}}</button>
+                            <button mat-raised-button [disabled]="validateConditions(restaurant)" (click)="goToEnableDisable(restaurant._id)">{{'MONTHLY_CONFIG.BTN_EDIT' | translate}}</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>

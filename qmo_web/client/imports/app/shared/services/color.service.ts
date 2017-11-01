@@ -17,8 +17,8 @@ export class ColorService {
   }
 
   private transformColor(palette: string): string {
-    if(palette.indexOf('md-') === 0) {
-      palette = palette.substring(3); // Remove md- from beginning
+    if(palette.indexOf('mat-') === 0) {
+      palette = palette.substring(3); // Remove mat- from beginning
     }
     let split: string[] = palette.split('-');
     if(split.length === 0) {

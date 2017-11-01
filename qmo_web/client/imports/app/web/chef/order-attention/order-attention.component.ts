@@ -3,7 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { MdDialogRef, MdDialog, MdDialogConfig, MdSnackBar } from '@angular/material';
+import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Order, OrderItem } from '../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../both/collections/restaurant/order.collection';
@@ -21,13 +21,10 @@ import { UserDetail } from '../../../../../../both/models/auth/user-detail.model
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './order-attention.component.html';
-import style from './order-attention.component.scss';
-
 @Component({
     selector: 'order-attention',
-    template,
-    styles: [ style ]
+    templateUrl: './order-attention.component.html',
+    styleUrls: [ './order-attention.component.scss' ]
 })
 export class OrderAttentionComponent implements OnInit, OnDestroy {
 
@@ -56,7 +53,7 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     private _showDetailsInProcess           : boolean = false;
     private titleMsg                        : string;
     private btnAcceptLbl                    : string;
-    public _dialogRef                       : MdDialogRef<any>;
+    public _dialogRef                       : MatDialogRef<any>;
     private _thereAreOrders                 : boolean = true;
     private _userDetail                     : UserDetail;
 
@@ -69,8 +66,8 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     constructor( private _translate: TranslateService, 
                  private _ngZone: NgZone,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog,
-                 public snackBar: MdSnackBar ) {
+                 protected _mdDialog: MatDialog,
+                 public snackBar: MatSnackBar ) {
                     _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
                     _translate.setDefaultLang( 'en' );
                     this.titleMsg = 'SIGNUP.SYSTEM_MSG';

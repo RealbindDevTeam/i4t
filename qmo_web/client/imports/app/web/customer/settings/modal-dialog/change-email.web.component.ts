@@ -1,6 +1,6 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { Accounts } from 'meteor/accounts-base';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
@@ -8,17 +8,15 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { CustomValidators } from '../../../../../../../both/shared-components/validators/custom-validator';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './change-email.web.component.html';
-
 @Component({
   selector: 'change-email',
-  template,
-  styles: [],
+  templateUrl: './change-email.web.component.html',
+  styleUrls: [],
   providers: [ UserLanguageService ]
 })
 export class ChangeEmailWebComponent implements OnInit {
 
-    private _mdDialogRef        : MdDialogRef<any>;
+    private _mdDialogRef        : MatDialogRef<any>;
     private _emailEditForm      : FormGroup;
     private _error              : string;
     private titleMsg            : string;
@@ -26,16 +24,16 @@ export class ChangeEmailWebComponent implements OnInit {
     
     /**
      * ChangeEmailWebComponent Constructor
-     * @param {MdDialogRef<any>} _dialogRef 
+     * @param {MatDialogRef<any>} _dialogRef 
      * @param {NgZone} _zone 
      * @param {TranslateService} _translate 
      * @param {UserLanguageService} _userLanguageService 
      */
-    constructor( public _dialogRef: MdDialogRef<any>, 
+    constructor( public _dialogRef: MatDialogRef<any>, 
                  private _zone: NgZone, 
                  private _translate: TranslateService,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog ) { 
+                 protected _mdDialog: MatDialog ) { 
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';

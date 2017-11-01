@@ -1,25 +1,19 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { CustomValidators } from '../../../../../both/shared-components/validators/custom-validator';
-import { ResetPasswordClass } from '../../../../../both/shared-components/auth/reset-password.class';
 import { AlertConfirmComponent } from '../../web/general/alert-confirm/alert-confirm.component';
-
-import template from './reset-password.web.component.html';
-import style from './auth.component.scss';
-
 
 @Component({
     selector: 'reset-password',
-    template,
-    styles: [style]
+    templateUrl: './reset-password.web.component.html',
+    styleUrls: [ './auth.component.scss' ]
 })
-
 export class ResetPasswordWebComponent {
 
-    private _mdDialogRef: MdDialogRef<any>;
+    private _mdDialogRef: MatDialogRef<any>;
     private titleMsg: string;
     private btnAcceptLbl: string;
     private resetPasswordForm: FormGroup;
@@ -38,7 +32,7 @@ export class ResetPasswordWebComponent {
         protected zone: NgZone,
         protected translate: TranslateService,
         protected activatedRoute: ActivatedRoute,
-        protected _mdDialog: MdDialog) {
+        protected _mdDialog: MatDialog) {
 
         let userLang = navigator.language.split('-')[0];
         translate.setDefaultLang('en');

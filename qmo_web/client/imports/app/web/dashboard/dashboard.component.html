@@ -1,69 +1,69 @@
-<md-card class="landing-welcome-card">
-    <md-card-content>
+<mat-card class="landing-welcome-card">
+    <mat-card-content>
         <div class="left-content custom">
             <div class="content">
-                <md-card-title>
+                <mat-card-title>
                     {{'ADMIN_DASHBOARD.TITLE' | translate}}
-                </md-card-title>
-                <md-card-subtitle>
+                </mat-card-title>
+                <mat-card-subtitle>
                     {{'ADMIN_DASHBOARD.CARD_CONTENT' | translate}}
-                </md-card-subtitle>
+                </mat-card-subtitle>
             </div>
         </div>
         <div class="action-links custom">
             <a class="dashboard-links" [routerLink]="['/app/restaurant']">
-                <md-icon class="vertical-align-middle" md-tooltip="{{'ADMIN_DASHBOARD.LINK.NEW_RESTAURANT' | translate}}">store</md-icon>
+                <mat-icon class="vertical-align-middle" matTooltip="{{'ADMIN_DASHBOARD.LINK.NEW_RESTAURANT' | translate}}">store</mat-icon>
                 {{'ADMIN_DASHBOARD.LINK.NEW_RESTAURANT' | translate}}
             </a>
             <a class="dashboard-links" [routerLink]="['/app/collaborators']">
-                <md-icon class="vertical-align-middle" md-tooltip="{{'ADMIN_DASHBOARD.LINK.NEW_COLLABORATOR' | translate}}">person</md-icon>
+                <mat-icon class="vertical-align-middle" matTooltip="{{'ADMIN_DASHBOARD.LINK.NEW_COLLABORATOR' | translate}}">person</mat-icon>
                 {{'ADMIN_DASHBOARD.LINK.NEW_COLLABORATOR' | translate}}
             </a>
             <a class="dashboard-links" [routerLink]="['/app/items']">
-                <md-icon class="vertical-align-middle" md-tooltip="{{'ADMIN_DASHBOARD.LINK.ITEMS' | translate}}">local_dining</md-icon>
+                <mat-icon class="vertical-align-middle" matTooltip="{{'ADMIN_DASHBOARD.LINK.ITEMS' | translate}}">local_dining</mat-icon>
                 {{'ADMIN_DASHBOARD.LINK.ITEMS' | translate}}
             </a>
             <a class="dashboard-links" [routerLink]="['/app/items-enable']">
-                <md-icon class="vertical-align-middle" md-tooltip="{{'ADMIN_DASHBOARD.LINK.ENABLE-ITEMS' | translate}}">check</md-icon>
+                <mat-icon class="vertical-align-middle" matTooltip="{{'ADMIN_DASHBOARD.LINK.ENABLE-ITEMS' | translate}}">check</mat-icon>
                 {{'ADMIN_DASHBOARD.LINK.ENABLE-ITEMS' | translate}}
             </a>
         </div>
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>
 
-<md-card *ngFor="let restaurant of _restaurants | async" class="custom-cards">
+<mat-card *ngFor="let restaurant of _restaurants | async" class="custom-cards">
     <div>
         <span class="mat-card-title title">{{restaurant.name}}</span>
         <span class="mat-card-subtitle">{{restaurant.address}}</span>
     </div>
-    <md-card-content>
+    <mat-card-content>
         <ul class="list">
             <li>
-                <md-icon style="color: #81C784;" class="vertical-align-middle" md-tooltip="{{'ADMIN_DASHBOARD.SALES' | translate}}">local_atm</md-icon>
+                <mat-icon style="color: #81C784;" class="vertical-align-middle" matTooltip="{{'ADMIN_DASHBOARD.SALES' | translate}}">local_atm</mat-icon>
                 <label>{{getDailySales( restaurant._id)}} {{getRestaurantCurrency( restaurant.currencyId )}}</label>
             </li>
             <li>
-                <md-icon style="color: #90CAF9;" class="vertical-align-middle" md-tooltip="{{'ADMIN_DASHBOARD.USERS' | translate}}">person</md-icon>
+                <mat-icon style="color: #90CAF9;" class="vertical-align-middle" matTooltip="{{'ADMIN_DASHBOARD.USERS' | translate}}">person</mat-icon>
                 <label>{{getRestaurantUsers( restaurant._id )}} {{'ADMIN_DASHBOARD.USERS' | translate}}</label>
             </li>
             <li>
-                <md-icon style="color: #81C784;" class="vertical-align-middle" md-tooltip="{{'ADMIN_DASHBOARD.FREE' | translate}}">check</md-icon>
+                <mat-icon style="color: #81C784;" class="vertical-align-middle" matTooltip="{{'ADMIN_DASHBOARD.FREE' | translate}}">check</mat-icon>
                 <label>{{getTablesWithFreeStatus( restaurant._id )}} {{'ADMIN_DASHBOARD.FREE' | translate}}</label>
             </li>
             <li>
-                <md-icon style="color: #EF5350;" class="vertical-align-middle" md-tooltip="{{'ADMIN_DASHBOARD.BUSY' | translate}}">not_interested</md-icon>
+                <mat-icon style="color: #EF5350;" class="vertical-align-middle" matTooltip="{{'ADMIN_DASHBOARD.BUSY' | translate}}">not_interested</mat-icon>
                 <label>{{getTablesWithBusyStatus( restaurant._id )}} {{'ADMIN_DASHBOARD.BUSY' | translate}}</label>
             </li>
             <li>
-                <md-icon style="color: #FDD835;" class="vertical-align-middle" md-tooltip="{{'ADMIN_DASHBOARD.ITEMS' | translate}}">thumb_up</md-icon>
+                <mat-icon style="color: #FDD835;" class="vertical-align-middle" matTooltip="{{'ADMIN_DASHBOARD.ITEMS' | translate}}">thumb_up</mat-icon>
                 <label>{{getItemsSold( restaurant._id )}} {{'ADMIN_DASHBOARD.ITEMS' | translate}}</label>
             </li>
         </ul>
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>
 
-<md-card md-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
-    <md-card-content>
+<mat-card mat-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
+    <mat-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
                 <div class="card_initial-image-container">
@@ -79,9 +79,9 @@
                     </div>
                 </div>
                 <div class="card_initial-button">
-                    <button md-raised-button (click)="goToAddRestaurant()">{{'ADMIN_DASHBOARD.RESTAURANT_REGISTER' | translate}}</button>
+                    <button mat-raised-button (click)="goToAddRestaurant()">{{'ADMIN_DASHBOARD.RESTAURANT_REGISTER' | translate}}</button>
                 </div>
             </div>
         </div>
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>

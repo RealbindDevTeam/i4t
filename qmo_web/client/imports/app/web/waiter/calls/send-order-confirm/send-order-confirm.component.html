@@ -1,9 +1,9 @@
 <div *ngFor="let order of _orders | async" class="order">
-    <md-card>
-        <md-card-title>{{ 'SEND_ORDER.ORDER' | translate }} # {{order.code}} - {{ 'SEND_ORDER.TABLE' | translate }} {{_tableNumber}} ( {{ 'SEND_ORDER.CODE' | translate }} {{_tableQRCode}} )</md-card-title>
-        <md-card-subtitle>{{ 'SEND_ORDER.CUSTOMER' | translate }}: {{ getUserName(order.creation_user) }}</md-card-subtitle>
-        <md-card-content>
-            <md-divider></md-divider>
+    <mat-card>
+        <mat-card-title>{{ 'SEND_ORDER.ORDER' | translate }} # {{order.code}} - {{ 'SEND_ORDER.TABLE' | translate }} {{_tableNumber}} ( {{ 'SEND_ORDER.CODE' | translate }} {{_tableQRCode}} )</mat-card-title>
+        <mat-card-subtitle>{{ 'SEND_ORDER.CUSTOMER' | translate }}: {{ getUserName(order.creation_user) }}</mat-card-subtitle>
+        <mat-card-content>
+            <mat-divider></mat-divider>
             <span *ngFor="let it of order.items">
                 <span *ngFor="let item of _items | async">
                     <ng-template [ngIf]="it.itemId === item._id">
@@ -31,7 +31,7 @@
                                 </span>
                             </span>
                         </div>
-                        <md-divider></md-divider>
+                        <mat-divider></mat-divider>
                     </ng-template>
                 </span>
             </span>
@@ -39,15 +39,15 @@
                 <span *ngFor="let ad of order.additions">
                     <ng-template [ngIf]="addit._id === ad.additionId">
                         <h2 class="name">{{ad.quantity}} {{ 'SEND_ORDER.ADDITION' | translate }} - {{addit.name}}</h2>
-                        <md-divider></md-divider>
+                        <mat-divider></mat-divider>
                     </ng-template>
                 </span>
             </span>
-        </md-card-content>
-        <button md-raised-button class="button-second" (click)="close()">{{ 'CLOSE' | translate }}</button>
-        <button md-raised-button class="primary-button" (click)="closeCall()">{{ 'SEND_ORDER.ORDER_DELIVERED' | translate }}</button>
-    </md-card>
+        </mat-card-content>
+        <button mat-raised-button class="button-second" (click)="close()">{{ 'CLOSE' | translate }}</button>
+        <button mat-raised-button class="primary-button" (click)="closeCall()">{{ 'SEND_ORDER.ORDER_DELIVERED' | translate }}</button>
+    </mat-card>
 </div>
 <div class="loading" *ngIf="_loading">
-    <md-spinner></md-spinner>
+    <mat-spinner></mat-spinner>
 </div>

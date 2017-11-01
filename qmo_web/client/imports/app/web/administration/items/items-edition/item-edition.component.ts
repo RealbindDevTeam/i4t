@@ -3,10 +3,10 @@ import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Item, ItemImage, ItemImageThumb, ItemRestaurant, ItemPrice } from '../../../../../../../both/models/administration/item.model';
 import { Items, ItemImages, ItemImagesThumbs } from '../../../../../../../both/collections/administration/item.collection';
@@ -29,13 +29,10 @@ import { Country } from '../../../../../../../both/models/settings/country.model
 import { Countries } from '../../../../../../../both/collections/settings/country.collection';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './item-edition.component.html';
-import style from './item-edition.component.scss';
-
 @Component({
     selector: 'item-edition',
-    template,
-    styles: [style]
+    templateUrl: './item-edition.component.html',
+    styleUrls: [ './item-edition.component.scss' ]
 })
 export class ItemEditionComponent implements OnInit, OnDestroy {
 
@@ -47,7 +44,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
     private _restaurantsFormGroup               : FormGroup = new FormGroup({});
     private _currenciesFormGroup                : FormGroup = new FormGroup({});
     private _taxesFormGroup                     : FormGroup = new FormGroup({});
-    private _mdDialogRef                        : MdDialogRef<any>;
+    private _mdDialogRef                        : MatDialogRef<any>;
 
     private _sections                           : Observable<Section[]>;
     private _categories                         : Observable<Category[]>;
@@ -106,17 +103,17 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
      * @param {FormBuilder} _formBuilder
      * @param {TranslateService} _translate
      * @param {NgZone} _ngZone
-     * @param {MdDialogRef<any>} _dialogRef
-     * @param {MdSnackBar} snackBar
+     * @param {MatDialogRef<any>} _dialogRef
+     * @param {MatSnackBar} snackBar
      * @param {UserLanguageService} _userLanguageService
      */
     constructor(private _formBuilder: FormBuilder,
         private _translate: TranslateService,
         private _ngZone: NgZone,
-        public _dialogRef: MdDialogRef<any>,
-        public snackBar: MdSnackBar,
+        public _dialogRef: MatDialogRef<any>,
+        public snackBar: MatSnackBar,
         private _userLanguageService: UserLanguageService,
-        protected _mdDialog: MdDialog) {
+        protected _mdDialog: MatDialog) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
         this._itemGarnishFood = [];

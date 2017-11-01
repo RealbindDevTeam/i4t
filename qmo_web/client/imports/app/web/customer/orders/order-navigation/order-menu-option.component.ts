@@ -3,7 +3,6 @@ import { OrderMenu } from './order-menu';
 import { OrderNavigationService } from './order-navigation.service';
 import { Subscription } from 'rxjs';
 import { StringUtils } from '../../../../shared/utils/string-utils';
-import style from './order-menu-option.component.scss';
 
 @Component({
   selector : 'order-menu-option',
@@ -24,11 +23,11 @@ import style from './order-menu-option.component.scss';
             <i class="material-icons"></i>
         </div>    
     </a>
-    <md-nav-list *ngIf="hasChildren" class="nav-children {{levelClass}}" [ngClass]="{ 'active' : active }" [ngStyle]="{'height.px': auto}">
+    <mat-nav-list *ngIf="hasChildren" class="nav-children {{levelClass}}" [ngClass]="{ 'active' : active }" [ngStyle]="{'height.px': auto}">
       <order-menu-option *ngFor="let orderMenuChild of orderMenu.children" (idToEvaluate)="evaluateId($event)" [orderMenu]="orderMenuChild" [level]="level + 1" [parent]="_this"></order-menu-option>
-    </md-nav-list>
+    </mat-nav-list>
   `,
-  styles: [ style ]
+  styleUrls: [ './order-menu-option.component.scss' ]
 })
 export class OrderMenuOptionComponent implements AfterViewInit, OnDestroy{
     @ViewChildren(OrderMenuOptionComponent) children: QueryList<OrderMenuOptionComponent>;

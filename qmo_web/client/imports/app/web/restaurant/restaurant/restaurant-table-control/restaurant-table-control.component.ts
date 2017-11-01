@@ -18,13 +18,10 @@ import { Currencies } from '../../../../../../../both/collections/general/curren
 import { Users} from '../../../../../../../both/collections/auth/user.collection';
 import { TableDetailComponent } from './table-detail/table-detail.component';
 
-import template from './restaurant-table-control.component.html';
-import style from './restaurant-table-control.component.scss';
-
 @Component({
     selector: 'restaurant-table-control',
-    template,
-    styles: [ style ]
+    templateUrl: './restaurant-table-control.component.html',
+    styleUrls: [ './restaurant-table-control.component.scss' ]
 })
 export class RestaurantTableControlComponent implements OnInit, OnDestroy {
 

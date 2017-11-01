@@ -17,13 +17,10 @@ import { Currency } from '../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../both/collections/general/currency.collection';
 import { Users} from '../../../../../../both/collections/auth/user.collection';
 
-import template from './supervisor-restaurant-table-control.component.html';
-import style from './supervisor-restaurant-table-control.component.scss';
-
 @Component({
     selector: 'supervisor-restaurant-table-control',
-    template,
-    styles: [ style ]
+    templateUrl: './supervisor-restaurant-table-control.component.html',
+    styleUrls: [ './supervisor-restaurant-table-control.component.scss' ]
 })
 export class SupervisorRestaurantTableControlComponent implements OnInit, OnDestroy {
 

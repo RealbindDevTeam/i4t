@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { MdSnackBar, MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
@@ -18,13 +18,10 @@ import { Account } from '../../../../../../both/models/restaurant/account.model'
 import { Accounts } from '../../../../../../both/collections/restaurant/account.collection';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './restaurant-exit.component.html';
-import style from './restaurant-exit.component.scss';
-
 @Component({
     selector: 'restaurant-exit',
-    template,
-    styles: [ style ]
+    templateUrl: './restaurant-exit.component.html',
+    styleUrls: [ './restaurant-exit.component.scss' ]
 })
 export class RestaurantExitComponent implements OnInit, OnDestroy {
 
@@ -40,7 +37,7 @@ export class RestaurantExitComponent implements OnInit, OnDestroy {
     private _tables                 : Observable<Table[]>;
     private _orders                 : Observable<Order[]>;
 
-    private _dialogRef              : MdDialogRef<any>;
+    private _dialogRef              : MatDialogRef<any>;
     private titleMsg                : string;
     private btnAcceptLbl            : string;
     private _showWaiterCard         : boolean = false;
@@ -51,15 +48,15 @@ export class RestaurantExitComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate 
      * @param {NgZone} _ngZone 
      * @param {UserLanguageService} _userLanguageService
-     * @param {MdDialog} _mdDialog
-     * @param {MdSnackBar} _snackBar
+     * @param {MatDialog} _mdDialog
+     * @param {MatSnackBar} _snackBar
      * @param {Router} _router
      */
     constructor( private _translate: TranslateService, 
                  private _ngZone: NgZone,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog,
-                 public _snackBar: MdSnackBar,
+                 protected _mdDialog: MatDialog,
+                 public _snackBar: MatSnackBar,
                  private _router: Router ) {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );

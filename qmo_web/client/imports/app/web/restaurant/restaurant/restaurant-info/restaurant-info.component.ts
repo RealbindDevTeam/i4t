@@ -3,27 +3,24 @@ import { Observable, Subscription } from 'rxjs';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { Restaurant, RestaurantImageThumb } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantImageThumbs } from '../../../../../../../both/collections/restaurant/restaurant.collection';
 import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 
-import template from './restaurant-info.component.html';
-import style from './restaurant-info.component.scss';
-
 @Component({
     selector: 'restaurant-info',
-    template,
-    styles: [ style ]
+    templateUrl: './restaurant-info.component.html',
+    styleUrls: [ './restaurant-info.component.scss' ]
 })
 export class RestaurantInfoComponent implements OnInit, OnDestroy {
 
     @Input() restaurantId       : string;
     @Input() tableQRCode        : string;
 
-    public _dialogRef           : MdDialogRef<any>;
+    public _dialogRef           : MatDialogRef<any>;
     private _tableNumber        : number;
     private _showTableInfo      : boolean = true;
 
@@ -36,11 +33,11 @@ export class RestaurantInfoComponent implements OnInit, OnDestroy {
     /**
      * RestaurantInfoComponent Constructor
      * @param {TranslateService} _translate 
-     * @param {MdDialog} _dialog
+     * @param {MatDialog} _dialog
      * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _translate: TranslateService, 
-                 public _dialog: MdDialog,
+                 public _dialog: MatDialog,
                  private _ngZone: NgZone,
                  private _userLanguageService: UserLanguageService ){
                     _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );

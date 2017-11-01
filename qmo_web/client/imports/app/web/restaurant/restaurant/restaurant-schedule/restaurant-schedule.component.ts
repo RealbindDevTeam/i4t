@@ -1,16 +1,13 @@
 import { Component } from '@angular/core';
-import { MdDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
 
-import template from './restaurant-schedule.component.html';
-import style from './restaurant-schedule.component.scss';
-
 @Component({
     selector: 'resturant-schedule',
-    template,
-    styles: [ style ],
+    templateUrl: './restaurant-schedule.component.html',
+    styleUrls: [ './restaurant-schedule.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class RestaurantScheduleComponent{
@@ -19,11 +16,11 @@ export class RestaurantScheduleComponent{
 
     /**
      * RestaurantScheduleComponent constructor
-     * @param {MdDialogRef<any>} _dialogRef
+     * @param {MatDialogRef<any>} _dialogRef
      * @param {TranslateService} _translate
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor( public _dialogRef: MdDialogRef<any>, 
+    constructor( public _dialogRef: MatDialogRef<any>, 
                  private _translate: TranslateService, 
                  private _userLanguageService: UserLanguageService ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );

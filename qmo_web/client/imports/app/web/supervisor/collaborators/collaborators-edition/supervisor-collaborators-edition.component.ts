@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { MdDialogRef, MdDialog } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,18 +18,16 @@ import { User } from '../../../../../../../both/models/auth/user.model';
 import { Users } from '../../../../../../../both/collections/auth/user.collection';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './supervisor-collaborators-edition.component.html';
-
 @Component({
     selector: 'supervisor-collaborators-edition',
-    template,
+    templateUrl: './supervisor-collaborators-edition.component.html',
     providers: [ UserLanguageService ]
 })
 export class SupervisorCollaboratorsEditionComponent implements OnInit, OnDestroy {
 
     private _tableSub                 : Subscription;
     private _collaboratorEditionForm  : FormGroup;
-    private _mdDialogRef              : MdDialogRef<any>;
+    private _mdDialogRef              : MatDialogRef<any>;
 
     private _roles                    : Observable<Role[]>;
     private _tables                   : Observable<Table[]>;
@@ -59,16 +57,16 @@ export class SupervisorCollaboratorsEditionComponent implements OnInit, OnDestro
      * @param {FormBuilder} _formBuilder 
      * @param {TranslateService} _translate 
      * @param {NgZone} _zone 
-     * @param {MdDialogRef<any>} _dialogRef 
+     * @param {MatDialogRef<any>} _dialogRef 
      * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _router: Router, 
                  private _formBuilder: FormBuilder, 
                  private _translate: TranslateService,
                  private _zone: NgZone,
-                 public _dialogRef: MdDialogRef<any>,
+                 public _dialogRef: MatDialogRef<any>,
                  private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MdDialog )
+                 protected _mdDialog: MatDialog )
     {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );

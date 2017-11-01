@@ -1,13 +1,13 @@
-<md-card *ngIf="_thereAreUsers">
-  <md-card-header>
-    <div md-card-avatar class="example-header-image"></div>
-    <md-card-title>{{'ADDITIONS.WARNING' | translate}} {{_usersCount}} {{'ADDITIONS.WARNING_2' | translate}}</md-card-title>
-    <md-card-subtitle style="margin-bottom: 0px">{{'ADDITIONS.WARNING_3' | translate}}</md-card-subtitle>
-  </md-card-header>
-</md-card>
+<mat-card *ngIf="_thereAreUsers">
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>{{'ADDITIONS.WARNING' | translate}} {{_usersCount}} {{'ADDITIONS.WARNING_2' | translate}}</mat-card-title>
+    <mat-card-subtitle style="margin-bottom: 0px">{{'ADDITIONS.WARNING_3' | translate}}</mat-card-subtitle>
+  </mat-card-header>
+</mat-card>
 
-<md-card md-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
-    <md-card-content>
+<mat-card mat-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
+    <mat-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
                 <div class="card_initial-image-container">
@@ -23,23 +23,23 @@
                     </div>
                 </div>
                 <div class="card_initial-button">
-                    <button md-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
+                    <button mat-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
                 </div>
             </div>
         </div>
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>
 
-<md-card *ngIf="_thereAreRestaurants">
-  <md-card-title>{{'ADDITIONS.ADDITION_CREATION' | translate}}</md-card-title>
-  <md-card-subtitle>{{'ADDITIONS.ADDITIONS_TEXT' | translate}}</md-card-subtitle>
-  <md-card-content>
+<mat-card *ngIf="_thereAreRestaurants">
+  <mat-card-title>{{'ADDITIONS.ADDITION_CREATION' | translate}}</mat-card-title>
+  <mat-card-subtitle>{{'ADDITIONS.ADDITIONS_TEXT' | translate}}</mat-card-subtitle>
+  <mat-card-content>
     <form [formGroup]="_additionForm" (ngSubmit)="addAddition();">
       <div>
-        <md-input-container class="name">
-          <input mdInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #inputName>
-          <md-hint align="end">{{inputName.value.length}} / 50</md-hint>
-        </md-input-container>
+        <mat-form-field class="name">
+          <input matInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #inputName>
+          <mat-hint align="end">{{inputName.value.length}} / 50</mat-hint>
+        </mat-form-field>
       </div>
       <div>
         <p *ngIf="!_showCurrencies">{{'ADDITIONS.NO_RESTAURANT_CREATED' | translate}}</p>
@@ -48,40 +48,40 @@
         <div *ngFor="let currency of _currencies | async">
           <div *ngIf="_showCurrencies" formGroupName="currencies" class="currencies">
             <div *ngFor="let cur of _restaurantCurrencies">
-                <md-input-container *ngIf="currency._id === cur" class="currency">
-                  <input mdInput required [formControlName]="cur" [class.invalid]="!_additionForm.controls.currencies.valid" type="number" placeholder="{{'ADDITIONS.ADITION_PRICE' | translate}}" min="0" [step]="currency.decimal">
+                <mat-form-field *ngIf="currency._id === cur" class="currency">
+                  <input matInput required [formControlName]="cur" [class.invalid]="!_additionForm.controls.currencies.valid" type="number" placeholder="{{'ADDITIONS.ADITION_PRICE' | translate}}" min="0" [step]="currency.decimal">
                   <span mdSuffix>{{currency.code}} - {{currency.name | translate}} </span>
-                </md-input-container>
+                </mat-form-field>
             </div>
           </div>
           <div *ngIf="_showTaxes" formGroupName="taxes" class="taxes">
             <div *ngFor="let tax of _restaurantTaxes">
-              <md-input-container *ngIf="currency._id === tax" class="tax">
-                <input mdInput required [formControlName]="tax" [class.invalid]="!_additionForm.controls.taxes.valid" type="number" placeholder="{{'ADDITIONS.TAXES' | translate}}" min="0" max="100">
+              <mat-form-field *ngIf="currency._id === tax" class="tax">
+                <input matInput required [formControlName]="tax" [class.invalid]="!_additionForm.controls.taxes.valid" type="number" placeholder="{{'ADDITIONS.TAXES' | translate}}" min="0" max="100">
                 <span mdSuffix>% {{currency.code}} - {{currency.name | translate}} </span>
-              </md-input-container>
+              </mat-form-field>
             </div>
           </div>
         </div>
       </div>
-      <button md-raised-button class="secondary-button" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
-      <button md-raised-button class="primary-button" [disabled]="!_additionForm.valid" type="submit">{{'CREATE' | translate}}</button>
+      <button mat-raised-button class="secondary-button" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
+      <button mat-raised-button class="primary-button" [disabled]="!_additionForm.valid" type="submit">{{'CREATE' | translate}}</button>
     </form>    
-  </md-card-content>
-</md-card>
-<md-card *ngFor="let addition of _additions | async" class="cards">
-  <md-card-title class="card-title">{{addition.name}}</md-card-title>
-  <md-card-subtitle class="card-subtitle">
+  </mat-card-content>
+</mat-card>
+<mat-card *ngFor="let addition of _additions | async" class="cards">
+  <mat-card-title class="card-title">{{addition.name}}</mat-card-title>
+  <mat-card-subtitle class="card-subtitle">
     <label class="prices">{{'ADDITIONS.PRICES' | translate}}</label>&emsp;-&emsp;
     <label class="taxes">{{'ADDITIONS.TAXES' | translate}}</label>
-  </md-card-subtitle>
-  <md-card-content>
+  </mat-card-subtitle>
+  <mat-card-content>
     <div class="card-addition-price">{{showAdditionPrices(addition.prices)}}</div>
     <div class="card-addition-tax">{{showAdditionTaxes(addition.prices)}}</div>    
-  </md-card-content>
-  <md-card-actions class="card-actions">
-    <button md-raised-button (click)="open(addition)" class="secondary-button">{{'ADDITIONS.MODIFY' | translate}}</button>
-    <button md-raised-button *ngIf="addition.is_active" class="inactive-button" (click)="updateStatus(addition)">{{'ADDITIONS.INACTIVATE' | translate}}</button>
-    <button md-raised-button *ngIf="!addition.is_active" class="active-button" (click)="updateStatus(addition)">{{'ADDITIONS.ACTIVATE' | translate}}</button>
-  </md-card-actions>
-</md-card>
+  </mat-card-content>
+  <mat-card-actions class="card-actions">
+    <button mat-raised-button (click)="open(addition)" class="secondary-button">{{'ADDITIONS.MODIFY' | translate}}</button>
+    <button mat-raised-button *ngIf="addition.is_active" class="inactive-button" (click)="updateStatus(addition)">{{'ADDITIONS.INACTIVATE' | translate}}</button>
+    <button mat-raised-button *ngIf="!addition.is_active" class="active-button" (click)="updateStatus(addition)">{{'ADDITIONS.ACTIVATE' | translate}}</button>
+  </mat-card-actions>
+</mat-card>

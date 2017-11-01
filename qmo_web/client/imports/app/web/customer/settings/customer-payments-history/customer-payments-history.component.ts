@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, NgZone, Input } from '@angular/core';
 import { MeteorObservable } from "meteor-rxjs";
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Invoice } from '../../../../../../../both/models/restaurant/invoice.model';
 import { Invoices } from '../../../../../../../both/collections/restaurant/invoice.collection';
@@ -12,15 +12,12 @@ import { UserDetails } from '../../../../../../../both/collections/auth/user-det
 import { UserDetail } from '../../../../../../../both/models/auth/user-detail.model';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './customer-payments-history.component.html';
-import style from './customer-payments-history.component.scss';
-
 let jsPDF = require('jspdf');
 
 @Component({
     selector: 'iu-customer-payments-history',
-    template,
-    styles: [ style ]
+    templateUrl: './customer-payments-history.component.html',
+    styleUrls: [ './customer-payments-history.component.scss' ]
 })
 export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
 
@@ -28,20 +25,20 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
 
     private _invoices               : any;
     private _showPayments           : boolean = true;
-    public _dialogRef               : MdDialogRef<any>;
+    public _dialogRef               : MatDialogRef<any>;
     private titleMsg                : string;
     private btnAcceptLbl            : string;
 
     /**
-     * PaymentsHistoryComponent component
+     * CustomerPaymentsHistoryComponent component
      * @param {NgZone} _ngZone 
      * @param {TranslateService} _translate 
-     * @param {MdDialog} _dialog
+     * @param {MatDialog} _dialog
      * @param {UserLanguageService} _userLanguageService
      */
     constructor( private _ngZone: NgZone,
                  public _translate: TranslateService, 
-                 public _dialog: MdDialog, 
+                 public _dialog: MatDialog, 
                  private _userLanguageService: UserLanguageService ){
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
@@ -80,6 +77,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
     /**
      * Generate Invoice pdf
      * @param { Invoice } _pInvoice 
+     * @param {string} _pCountryId
      */
     invoiceGenerate( _pInvoice : Invoice, _pCountryId: string ) {
         if( !Meteor.userId() ){
@@ -374,6 +372,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
     /**
      * Calculate Invoice pdf height
      * @param { Invoice } _pInvoice 
+     * @param { string } _pCountryId
      */
     calculateHeight( _pInvoice : Invoice, _pCountryId: string ) : number {
         let quantRows  : number = 0;
@@ -436,7 +435,8 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
 
     /**
      * Allow return date format
-     * @param _pDate 
+     * @param {Date} _pDate 
+     * @param {boolean} _time
      */
     dateFormater( _pDate : Date, _time : boolean ) : string {
         let dateFormat = (_pDate.getDate() <= 9 ? '0' + _pDate.getDate() : _pDate.getDate()) + '/' +

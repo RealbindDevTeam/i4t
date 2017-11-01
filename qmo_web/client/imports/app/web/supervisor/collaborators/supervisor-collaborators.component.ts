@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { MdDialogRef, MdDialog } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { MeteorObservable } from "meteor-rxjs";
 import { Observable, Subscription } from "rxjs";
@@ -14,17 +14,14 @@ import { Role } from '../../../../../../both/models/auth/role.model';
 import { Roles } from '../../../../../../both/collections/auth/role.collection';
 import { SupervisorCollaboratorsEditionComponent } from './collaborators-edition/supervisor-collaborators-edition.component';
 
-import template from './supervisor-collaborators.component.html';
-import style from './supervisor-collaborators.component.scss';
-
 @Component({
     selector: 'supervisor-collaborators',
-    template,
-    styles: [ style ]
+    templateUrl: './supervisor-collaborators.component.html',
+    styleUrls: [ './supervisor-collaborators.component.scss' ]
 })
 export class SupervisorCollaboratorsComponent implements OnInit, OnDestroy{
     
-    public _dialogRef                   : MdDialogRef<any>;
+    public _dialogRef                   : MatDialogRef<any>;
     private _userDetailSubscription     : Subscription;
     private _userRestaurantSubscription : Subscription;
     private _imgRestaurantSubscription  : Subscription;
@@ -38,7 +35,7 @@ export class SupervisorCollaboratorsComponent implements OnInit, OnDestroy{
     private _restaurant             : Restaurant;
     private _userDetail             : UserDetail;
 
-    constructor(public _dialog: MdDialog,
+    constructor(public _dialog: MatDialog,
                 private _ngZone: NgZone,
                 private _router: Router){
     }

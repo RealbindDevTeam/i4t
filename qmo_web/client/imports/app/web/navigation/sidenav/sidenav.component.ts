@@ -4,13 +4,10 @@ import { MenuItem } from '../menu-item';
 import { SidenavItemComponent } from './sidenav-item/sidenav-item.component';
 import { Observable, Subscription } from 'rxjs';
 
-import template from './sidenav.component.html';
-import style from './sidenav.component.scss';
-
 @Component({
   selector : 'app-sidenav',
-  template,
-  styles: [ style ],
+  templateUrl: './sidenav.component.html',
+  styleUrls: [ './sidenav.component.scss' ],
 })
 export class SidenavComponent implements OnInit, OnDestroy {
   @ViewChildren(SidenavItemComponent) children: QueryList<SidenavItemComponent>;

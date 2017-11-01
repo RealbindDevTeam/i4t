@@ -1,27 +1,45 @@
 <div class="call-card">
-    <md-card class="card_image">
-        <md-list>
-            <md-list-item *ngFor="let _res of _restaurants | async">
-                    <img md-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{ getRestaurantImage( _res._id ) }}">
-                <h2 md-line style="font-size: 1.5rem;"> {{_res.name}} </h2>
-                <p md-line style="font-size: 1rem;">
-                    <md-icon style="vertical-align: middle">location_on</md-icon>
+    <mat-card class="card_image">
+        <mat-list>
+            <mat-list-item *ngFor="let _res of _restaurants | async">
+                    <img mat-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{ getRestaurantImage( _res._id ) }}">
+                <h2 mat-line style="font-size: 1.5rem;"> {{_res.name}} </h2>
+                <p mat-line style="font-size: 1rem;">
+                    <mat-icon style="vertical-align: middle">location_on</mat-icon>
                     <span> {{_res.address}} </span>
                 </p>
-                <p md-line style="font-size: 1rem;">
-                    <md-icon style="vertical-align: middle">phone</md-icon>
+                <p mat-line style="font-size: 1rem;">
+                    <mat-icon style="vertical-align: middle">phone</mat-icon>
                     <span class="detail-message">{{_res.phone}} </span>
                 </p>
-            </md-list-item>
-        </md-list>
-    </md-card>
+            </mat-list-item>
+        </mat-list>
+    </mat-card>
 </div>
 
-<md-card class="call-card" style="padding: 0">
+<mat-card mat-cell="12" class="demo-card demo-basic" style="width: 76%; margin: 0 auto" *ngIf="!_thereAreCalls">
+    <mat-card-content>
+        <div class="card_initial">
+            <div class="card_initial has-image" style="margin: auto;">
+                <div class="card_initial-image-container">
+                    <img class="card_initial-image" 
+                        src="/images/sections.png"/>
+                </div>
+                <div class="card_initial-copy">
+                    <div class="card_initial-tagline">
+                        No hay llamados pendientes
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="call-card" style="padding: 0" *ngIf="_thereAreCalls">
     <div *ngFor="let _call of _waiterCallDetail | async" style="float: left; width: 330px; ">
         <div *ngFor="let _table of _tables | async">
-            <md-card *ngIf="_table._id === _call.table_id" class="cards">
-                <md-card-content style="padding: 12px">
+            <mat-card *ngIf="_table._id === _call.table_id" class="cards">
+                <mat-card-content style="padding: 12px">
                     <div class="item-block">
                         <img *ngIf="_call.type === 'SEND_ORDER'" class="img-list" src="/images/chef.png"/>
                         <img *ngIf="_call.type === 'CALL_OF_CUSTOMER'" class="img-list" src="/images/waiter-call.png"/>
@@ -35,19 +53,19 @@
                                 <p style="margin-bottom: 0px; margin-top: 0px;" *ngIf="_call.type === 'PAYMENT'">{{ 'WAITER_CALL.CALL_LABEL_CUSTOMER_PAYMENT' | translate }}</p>
                                 <p style="margin-bottom: 0px; margin-top: 0px;" *ngIf="_call.type === 'USER_EXIT_TABLE'">{{ 'WAITER_CALL.CALL_LABEL_EXIT_TABLE' | translate }}</p>
                             </div>
-                            <button md-raised-button *ngIf="_call.type === 'CALL_OF_CUSTOMER'" (click)="showConfirm(_call)" class="active-button">{{ 'CLOSE' | translate }}</button>
-                            <button md-raised-button *ngIf="_call.type === 'PAYMENT'" (click)="showPayment(_call)" class="active-button">{{ 'VIEW_DETAIL' | translate }}</button>
-                            <button md-raised-button *ngIf="_call.type === 'SEND_ORDER'" (click)="showSendOrder(_call)" class="active-button">{{ 'VIEW_DETAIL' | translate }}</button>
-                            <button md-raised-button *ngIf="_call.type === 'USER_EXIT_TABLE'" (click)="showUserExitTable(_call)" class="active-button">{{ 'VIEW_DETAIL' | translate }}</button>
+                            <button mat-raised-button *ngIf="_call.type === 'CALL_OF_CUSTOMER'" (click)="showConfirm(_call)" class="active-button">{{ 'CLOSE' | translate }}</button>
+                            <button mat-raised-button *ngIf="_call.type === 'PAYMENT'" (click)="showPayment(_call)" class="active-button">{{ 'VIEW_DETAIL' | translate }}</button>
+                            <button mat-raised-button *ngIf="_call.type === 'SEND_ORDER'" (click)="showSendOrder(_call)" class="active-button">{{ 'VIEW_DETAIL' | translate }}</button>
+                            <button mat-raised-button *ngIf="_call.type === 'USER_EXIT_TABLE'" (click)="showUserExitTable(_call)" class="active-button">{{ 'VIEW_DETAIL' | translate }}</button>
                         </div>
                     </div>
-                </md-card-content>
-                <md-card-footer></md-card-footer>
-            </md-card>
+                </mat-card-content>
+                <mat-card-footer></mat-card-footer>
+            </mat-card>
         </div>
     </div>
-</md-card>
+</mat-card>
 
 <div class="loading" *ngIf="_loading">
-    <md-spinner></md-spinner>
+    <mat-spinner></mat-spinner>
 </div>

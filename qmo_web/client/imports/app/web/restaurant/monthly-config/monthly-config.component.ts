@@ -9,13 +9,10 @@ import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { Parameter } from '../../../../../../both/models/general/parameter.model';
 
-import template from './monthly-config.component.html';
-import style from './monthly-config.component.scss';
-
 @Component({
     selector: 'monthly-config',
-    template,
-    styles: [style]
+    templateUrl: './monthly-config.component.html',
+    styleUrls: [ './monthly-config.component.scss' ]
 })
 export class MonthlyConfigComponent implements OnInit, OnDestroy {
 

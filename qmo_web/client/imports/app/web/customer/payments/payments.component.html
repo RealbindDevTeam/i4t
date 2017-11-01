@@ -9,8 +9,8 @@
     </div>
   </div>
   <div *ngIf=" userDetail.current_restaurant === '' && userDetail.current_table === '' ">
-    <md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" *ngIf="!_showPaymentInfo">
-        <md-card-content>
+    <mat-card mat-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" *ngIf="!_showPaymentInfo">
+        <mat-card-content>
             <div class="card_initial">
                 <div class="card_initial has-image">
                   <div class="card_initial-image-container">
@@ -25,11 +25,11 @@
                     </div>
                   </div>
                   <div class="card_initial-button">
-                    <button md-raised-button (click)="goToOrders()">{{'PAYMENTS.GO_TO_ORDERS' | translate}}</button>
+                    <button mat-raised-button (click)="goToOrders()">{{'PAYMENTS.GO_TO_ORDERS' | translate}}</button>
                   </div>
                 </div>
             </div>
-        </md-card-content>
-    </md-card>
+        </mat-card-content>
+    </mat-card>
   </div>
 </div>

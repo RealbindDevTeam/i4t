@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
-import { MdSnackBar } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
@@ -15,15 +15,12 @@ import { Table } from '../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './enable-disable.component.html';
-import style from './enable-disable.component.scss';
-
 import * as QRious from 'qrious';
 
 @Component({
     selector: 'enable-disable',
-    template,
-    styles: [style]
+    templateUrl: './enable-disable.component.html',
+    styleUrls: [ './enable-disable.component.scss' ]
 })
 export class EnableDisableComponent implements OnInit, OnDestroy {
 
@@ -46,18 +43,18 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
     private restaurantCode          : string = '';
     private tables_count            : number = 0;
 
-    private _mdDialogRef            : MdDialogRef<any>;
+    private _mdDialogRef            : MatDialogRef<any>;
 
     /**
      * EnableDisableComponent Constructor
      * @param {TranslateService} translate 
-     * @param {MdSnackBar} snackBar 
-     * @param {MdDialog} _mdDialog 
+     * @param {MatSnackBar} snackBar 
+     * @param {MatDialog} _mdDialog 
      * @param {UserLanguageService} _userLanguageService 
      */
     constructor( private translate: TranslateService, 
-                 public snackBar: MdSnackBar,
-                 public _mdDialog: MdDialog, 
+                 public snackBar: MatSnackBar,
+                 public _mdDialog: MatDialog, 
                  private _userLanguageService: UserLanguageService, ) {
         translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         translate.setDefaultLang( 'en' );

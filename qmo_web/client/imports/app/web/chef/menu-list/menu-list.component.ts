@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { MdSnackBar, MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Section } from '../../../../../../both/models/administration/section.model';
 import { Sections } from '../../../../../../both/collections/administration/section.collection';
@@ -27,13 +27,10 @@ import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 
-import template from './menu-list.component.html';
-import style from './menu-list.component.scss';
-
 @Component({
     selector: 'menu-list',
-    template,
-    styles: [style]
+    templateUrl: './menu-list.component.html',
+    styleUrls: [ './menu-list.component.scss' ]
 })
 export class MenuListComponent implements OnInit, OnDestroy {
 
@@ -43,7 +40,7 @@ export class MenuListComponent implements OnInit, OnDestroy {
     private _garnishFormGroup: FormGroup = new FormGroup({});
     private _additionsFormGroup: FormGroup = new FormGroup({});
     private _additionsDetailFormGroup: FormGroup = new FormGroup({});
-    private _mdDialogRef: MdDialogRef<any>;
+    private _mdDialogRef: MatDialogRef<any>;
 
     private _sectionsSub: Subscription;
     private _categoriesSub: Subscription;
@@ -88,16 +85,16 @@ export class MenuListComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate 
      * @param {OrderNavigationService} _navigation 
      * @param {NgZone} _ngZone 
-     * @param {MdSnackBar} snackBar
+     * @param {MatSnackBar} snackBar
      * @param {UserLanguageService} _userLanguageService
      */
     constructor(private _formBuilder: FormBuilder,
         private _translate: TranslateService,
         private _navigation: OrderNavigationService,
         private _ngZone: NgZone,
-        public snackBar: MdSnackBar,
+        public snackBar: MatSnackBar,
         private _userLanguageService: UserLanguageService,
-        protected _mdDialog: MdDialog) {
+        protected _mdDialog: MatDialog) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';

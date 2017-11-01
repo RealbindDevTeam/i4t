@@ -4,17 +4,13 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { PageScrollService, PageScrollInstance, PageScrollConfig } from 'ng2-page-scroll';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
-
 import { Language } from '../../../../../both/models/settings/language.model';
 import { Languages } from '../../../../../both/collections/settings/language.collection';
 
-import template from './landing-page.component.html';
-import style    from './landing-page.component.scss';
-
 @Component({
     selector: 'landing-page',
-    template,
-    styles: [ style ]
+    templateUrl: './landing-page.component.html',
+    styleUrls: [ './landing-page.component.scss' ]
 })
 export class LandingPageComponent implements OnInit, OnDestroy {
 

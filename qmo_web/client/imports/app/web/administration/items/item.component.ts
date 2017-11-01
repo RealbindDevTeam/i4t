@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Item, ItemImageThumb, ItemPrice } from '../../../../../../both/models/administration/item.model';
 import { Items, ItemImagesThumbs } from '../../../../../../both/collections/administration/item.collection';
@@ -18,13 +18,10 @@ import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 
-import template from './item.component.html';
-import style from './item.component.scss';
-
 @Component({
     selector: 'item',
-    template,
-    styles: [style]
+    templateUrl: './item.component.html',
+    styleUrls: [ './item.component.scss' ]
 })
 export class ItemComponent implements OnInit, OnDestroy {
 
@@ -39,7 +36,7 @@ export class ItemComponent implements OnInit, OnDestroy {
     private _restaurants: Observable<Restaurant[]>;
     private _userDetails: Observable<UserDetail[]>;
 
-    public _dialogRef: MdDialogRef<any>;
+    public _dialogRef: MatDialogRef<any>;
     private titleMsg: string;
     private btnAcceptLbl: string;
     private _thereAreRestaurants: boolean = true;
@@ -54,14 +51,14 @@ export class ItemComponent implements OnInit, OnDestroy {
      * @param {FormBuilder} _formBuilder
      * @param {TranslateService} _translate
      * @param {NgZone} _ngZone
-     * @param {MdDialog} _dialog
+     * @param {MatDialog} _dialog
      * @param {UserLanguageService} _userLanguageService
      */
     constructor(private _router: Router,
         private _formBuilder: FormBuilder,
         private _translate: TranslateService,
         private _ngZone: NgZone,
-        public _dialog: MdDialog,
+        public _dialog: MatDialog,
         private _userLanguageService: UserLanguageService) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');

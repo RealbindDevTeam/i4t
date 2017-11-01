@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -31,18 +31,14 @@ import { CcRequestColombia, Merchant, Transaction, Order, Payer, TX_VALUE, TX_TA
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
-
 import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
-
-import template from './payu-payment-form.component.html';
-import style from './payu-payment-form.component.scss';
 
 let md5 = require('md5');
 
 @Component({
     selector: 'payu-payment-form',
-    template,
-    styles: [style]
+    templateUrl: './payu-payment-form.component.html',
+    styleUrls: [ './payu-payment-form.component.scss' ]
 })
 export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 
@@ -80,8 +76,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _monthsArray: any[];
     private _paymentLogoName: string = "";
     private _deviceSessionId: string;
-    private _mdDialogRef: MdDialogRef<any>;
-    private _mdDialogRef2: MdDialogRef<any>;
+    private _mdDialogRef: MatDialogRef<any>;
+    private _mdDialogRef2: MatDialogRef<any>;
     private _countryName: string;
     private _ccMethodPayment: string;
     private _session_id: string;
@@ -115,7 +111,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate 
      * @param {PayuPaymenteService} _payuPaymentService 
      * @param {NgZone} _ngZone 
-     * @param {MdDialog} _mdDialog 
+     * @param {MatDialog} _mdDialog 
      * @param {DomSanitizer} _domSanitizer 
      * @param {UserLanguageService} _userLanguageService 
      */
@@ -125,7 +121,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         private _translate: TranslateService,
         private _payuPaymentService: PayuPaymenteService,
         private _ngZone: NgZone,
-        public _mdDialog: MdDialog,
+        public _mdDialog: MatDialog,
         private _domSanitizer: DomSanitizer,
         private _userLanguageService: UserLanguageService) {
 

@@ -9,7 +9,7 @@
         </div>
         <div class="login-form login-form-right">
             <div>
-                <button md-raised-button class="btn-facebook" type="submit" (click)="loginWithFacebook()">
+                <button mat-raised-button class="btn-facebook" type="submit" (click)="loginWithFacebook()">
                     <i class="fa fa-facebook" aria-hidden="true"></i>Facebook
                 </button>
                 <div style="width: 100%; text-align: center">
@@ -22,32 +22,32 @@
                 <div>
                     <form [formGroup]="signupForm" (ngSubmit)="register()" novalidate>
 
-                        <md-input-container style="width: 100%">
-                            <input mdInput formControlName="username" placeholder="{{'USERNAME' | translate}}" required></input>
-                        </md-input-container>
+                        <mat-form-field style="width: 100%">
+                            <input matInput formControlName="username" placeholder="{{'USERNAME' | translate}}" required>
+                        </mat-form-field>
                         <div *ngIf="signupForm.controls['username'].hasError('required') && signupForm.controls['username'].touched" class="error-message">{{'SIGNUP.REQUIRED_USERNAME' | translate}}</div>
                         <div *ngIf="signupForm.controls['username'].hasError('minlength') && signupForm.controls['username'].touched" class="error-message">{{'SIGNUP.MIN_LENGTH_USERNAME' | translate}}</div>
                         <div *ngIf="signupForm.controls['username'].hasError('maxlength') && signupForm.controls['username'].touched" class="error-message">{{'SIGNUP.MAX_LENGTH_USERNAME' | translate}}</div>
                         <div *ngIf="signupForm.controls['username'].hasError('invalidNoSpacesValidator') && signupForm.controls['username'].touched" class="error-message">{{'SIGNUP.NO_SPACES' | translate}}</div>
                         
-                        <md-input-container style="width: 100%">
-                            <input mdInput formControlName="email" placeholder="{{'EMAIL' | translate}}" name="email" required></input>
-                        </md-input-container>
+                        <mat-form-field style="width: 100%">
+                            <input matInput formControlName="email" placeholder="{{'EMAIL' | translate}}" name="email" required>
+                        </mat-form-field>
                         <div *ngIf="signupForm.controls['email'].hasError('invalidEmailAddress') && signupForm.controls['email'].touched" class="error-message">{{'SIGNUP.REQUIRED_EMAIL' | translate}}</div>
                         <div *ngIf="signupForm.controls['email'].hasError('minlength') && signupForm.controls['email'].touched" class="error-message">{{'SIGNUP.MIN_LENGTH_EMAIL' | translate}}</div>
                         <div *ngIf="signupForm.controls['email'].hasError('maxlength') && signupForm.controls['email'].touched" class="error-message">{{'SIGNUP.MAX_LENGTH_EMAIL' | translate}}</div>
 
-                        <md-input-container style="width: 100%">
-                            <input mdInput formControlName="password" placeholder="{{'PASSWORD' | translate}}" name="password" required type="password"></input>
-                        </md-input-container>
+                        <mat-form-field style="width: 100%">
+                            <input matInput formControlName="password" placeholder="{{'PASSWORD' | translate}}" name="password" required type="password">
+                        </mat-form-field>
                         <div *ngIf="signupForm.controls['password'].hasError('required') && signupForm.controls['password'].touched" class="error-message">{{'SIGNUP.REQUIRED_PASSWORD' | translate}}</div>
                         <div *ngIf="signupForm.controls['password'].hasError('minlength') && signupForm.controls['password'].touched" class="error-message">{{'SIGNUP.MIN_LENGTH_PASSWORD' | translate}}</div>
                         <div *ngIf="signupForm.controls['password'].hasError('maxlength') && signupForm.controls['password'].touched" class="error-message">{{'SIGNUP.MAX_LENGTH_PASSWORD' | translate}}</div>
 
-                        <md-input-container style="width: 100%">
-                            <input mdInput formControlName="confirmPassword" placeholder="{{'CONFIRM_PASSWORD' | translate}}" name="confirmPassword"
-                                required type="password"></input>
-                        </md-input-container>
+                        <mat-form-field style="width: 100%">
+                            <input matInput formControlName="confirmPassword" placeholder="{{'CONFIRM_PASSWORD' | translate}}" name="confirmPassword"
+                                required type="password">
+                        </mat-form-field>
                         <div *ngIf="signupForm.controls['confirmPassword'].hasError('required') && signupForm.controls['confirmPassword'].touched"
                             class="error-message">{{'SIGNUP.REQUIRED_PASSWORD' | translate}}</div>
                         <div *ngIf="signupForm.controls['confirmPassword'].hasError('minlength') && signupForm.controls['confirmPassword'].touched"
@@ -57,7 +57,7 @@
 
                         <div *ngIf="showConfirmError" class="error-message"> {{'SIGNUP.PASSWORD_NOT_MATCH' | translate}}</div>
 
-                        <button md-raised-button class="primary-button" type="submit" [disabled]="!signupForm.valid">{{'LANDING.SIGNUP' | translate}}</button>
+                        <button mat-raised-button class="primary-button" type="submit" [disabled]="!signupForm.valid">{{'LANDING.SIGNUP' | translate}}</button>
                     </form>
                 </div>
                 <div style="text-align: center; padding-top: 10px">

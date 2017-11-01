@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -25,15 +25,12 @@ import { PaymentsHistory } from '../../../../../../../both/collections/payment/p
 import { PaymentHistory } from '../../../../../../../both/models/payment/payment-history.model';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
-import template from './restaurant-register.component.html';
-import style from './restaurant-register.component.scss';
-
 import * as QRious from 'qrious';
 
 @Component({
     selector: 'restaurant-register',
-    template,
-    styles: [style]
+    templateUrl: './restaurant-register.component.html',
+    styleUrls: [ './restaurant-register.component.scss' ]
 })
 export class RestaurantRegisterComponent implements OnInit, OnDestroy {
 
@@ -70,7 +67,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
 
     private _loading: boolean;
     private _showMessage: boolean = false;
-    private _mdDialogRef: MdDialogRef<any>;
+    private _mdDialogRef: MatDialogRef<any>;
     private _currentDate: Date;
     private _firstMonthDay: Date;
     private _lastMonthDay: Date;
@@ -87,14 +84,14 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translate
      * @param {NgZone} _ngZone
      * @param {Router} _router
-     * @param {MdDialog} _mdDialog
+     * @param {MatDialog} _mdDialog
      * @param {UserLanguageService} _userLanguageService
      */
     constructor(private _formBuilder: FormBuilder,
         private _translate: TranslateService,
         private _ngZone: NgZone,
         private _router: Router,
-        public _mdDialog: MdDialog,
+        public _mdDialog: MatDialog,
         private _userLanguageService: UserLanguageService) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');

@@ -1,23 +1,23 @@
-<md-select placeholder="{{'SCHEDULE.SELECT_OPENING_HOUR' | translate}}">
-    <md-option *ngFor="let hour of _hours | async" value="{{hour.hour}}" (click)="changeOpenTime(hour.hour)">{{hour.hour}}</md-option>
-</md-select>
+<mat-select placeholder="{{'SCHEDULE.SELECT_OPENING_HOUR' | translate}}">
+    <mat-option *ngFor="let hour of _hours | async" value="{{hour.hour}}" (click)="changeOpenTime(hour.hour)">{{hour.hour}}</mat-option>
+</mat-select>
 <label style="padding-left: 20px; padding-right: 20px;font-size: 1.2rem"> - </label>
-<md-select placeholder="{{'SCHEDULE.SELECT_CLOSING_HOUR' | translate}}">
-    <md-option *ngFor="let hour of _hours | async" value="{{hour.hour}}" (click)="changeCloseTime(hour.hour)">{{hour.hour}}</md-option>
-</md-select>
+<mat-select placeholder="{{'SCHEDULE.SELECT_CLOSING_HOUR' | translate}}">
+    <mat-option *ngFor="let hour of _hours | async" value="{{hour.hour}}" (click)="changeCloseTime(hour.hour)">{{hour.hour}}</mat-option>
+</mat-select>
 <br/>
 <br/>
-<md-button-toggle md-tooltip="{{'SCHEDULE.MONDAY' | translate}}" [(checked)]="schedule.monday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Mon">{{'SCHEDULE.MONDAY_LETTER' | translate}}</md-button-toggle>
-<md-button-toggle md-tooltip="{{'SCHEDULE.TUESDAY' | translate}}" [(checked)]="schedule.tuesday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Tues">{{'SCHEDULE.TUESDAY_LETTER' | translate}}</md-button-toggle>
-<md-button-toggle md-tooltip="{{'SCHEDULE.WEDNESDAY' | translate}}" [(checked)]="schedule.wednesday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Wed">{{'SCHEDULE.WEDNESDAY_LETTER' | translate}}</md-button-toggle>
-<md-button-toggle md-tooltip="{{'SCHEDULE.THURSDAY' | translate}}" [(checked)]="schedule.thursday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Thur">{{'SCHEDULE.THURSDAY_LETTER' | translate}}</md-button-toggle>
-<md-button-toggle md-tooltip="{{'SCHEDULE.FRIDAY' | translate}}" [(checked)]="schedule.friday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Fri">{{'SCHEDULE.FRIDAY_LETTER' | translate}}</md-button-toggle>
-<md-button-toggle md-tooltip="{{'SCHEDULE.SATURDAY' | translate}}" [(checked)]="schedule.saturday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Sat">{{'SCHEDULE.SATURDAY_LETTER' | translate}}</md-button-toggle>
-<md-button-toggle md-tooltip="{{'SCHEDULE.SUNDAY' | translate}}" [(checked)]="schedule.sunday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Sun">{{'SCHEDULE.SUNDAY_LETTER' | translate}}</md-button-toggle>
-<md-button-toggle md-tooltip="{{'SCHEDULE.HOLIDAY' | translate}}" [(checked)]="schedule.holiday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Hol">{{'SCHEDULE.HOLIDAY_LETTER' | translate}}</md-button-toggle>
+<mat-button-toggle matTooltip="{{'SCHEDULE.MONDAY' | translate}}" [(checked)]="schedule.monday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Mon">{{'SCHEDULE.MONDAY_LETTER' | translate}}</mat-button-toggle>
+<mat-button-toggle matTooltip="{{'SCHEDULE.TUESDAY' | translate}}" [(checked)]="schedule.tuesday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Tues">{{'SCHEDULE.TUESDAY_LETTER' | translate}}</mat-button-toggle>
+<mat-button-toggle matTooltip="{{'SCHEDULE.WEDNESDAY' | translate}}" [(checked)]="schedule.wednesday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Wed">{{'SCHEDULE.WEDNESDAY_LETTER' | translate}}</mat-button-toggle>
+<mat-button-toggle matTooltip="{{'SCHEDULE.THURSDAY' | translate}}" [(checked)]="schedule.thursday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Thur">{{'SCHEDULE.THURSDAY_LETTER' | translate}}</mat-button-toggle>
+<mat-button-toggle matTooltip="{{'SCHEDULE.FRIDAY' | translate}}" [(checked)]="schedule.friday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Fri">{{'SCHEDULE.FRIDAY_LETTER' | translate}}</mat-button-toggle>
+<mat-button-toggle matTooltip="{{'SCHEDULE.SATURDAY' | translate}}" [(checked)]="schedule.saturday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Sat">{{'SCHEDULE.SATURDAY_LETTER' | translate}}</mat-button-toggle>
+<mat-button-toggle matTooltip="{{'SCHEDULE.SUNDAY' | translate}}" [(checked)]="schedule.sunday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Sun">{{'SCHEDULE.SUNDAY_LETTER' | translate}}</mat-button-toggle>
+<mat-button-toggle matTooltip="{{'SCHEDULE.HOLIDAY' | translate}}" [(checked)]="schedule.holiday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Hol">{{'SCHEDULE.HOLIDAY_LETTER' | translate}}</mat-button-toggle>
 <br/>
 <br/>
-<button md-raised-button [(disabled)]="!_allowWeekButtons" (click)="buildSchedule()">{{'SCHEDULE.ADD_SCHEDULE' | translate}}</button>
+<button mat-raised-button [(disabled)]="!_allowWeekButtons" (click)="buildSchedule()">{{'SCHEDULE.ADD_SCHEDULE' | translate}}</button>
 <br/>
 <br/>
 <table class="centered striped" style="width: 60%;" cellspacing="0">
@@ -43,8 +43,8 @@
             <td><label>{{schedule.monday.opening_time}}</label></td>
             <td><label>{{schedule.monday.closing_time}}</label></td>
             <td>
-            <button md-icon-button md-tooltip="{{'SCHEDULE.DELETE' | translate}}" (click)="inactiveDay('Mon')">
-                <md-icon>clear</md-icon>
+            <button mat-icon-button matTooltip="{{'SCHEDULE.DELETE' | translate}}" (click)="inactiveDay('Mon')">
+                <mat-icon>clear</mat-icon>
             </button>
             </td> 
         </tr>
@@ -53,8 +53,8 @@
             <td><label>{{schedule.tuesday.opening_time}}</label></td>
             <td><label>{{schedule.tuesday.closing_time}}</label></td>
             <td>
-            <button md-icon-button md-tooltip="{{'SCHEDULE.DELETE' | translate}}" (click)="inactiveDay('Tues')">
-                <md-icon>clear</md-icon>
+            <button mat-icon-button matTooltip="{{'SCHEDULE.DELETE' | translate}}" (click)="inactiveDay('Tues')">
+                <mat-icon>clear</mat-icon>
             </button>
             </td> 
         </tr>
@@ -63,8 +63,8 @@
             <td><label>{{schedule.wednesday.opening_time}}</label></td>
             <td><label>{{schedule.wednesday.closing_time}}</label></td>
             <td>
-            <button md-icon-button md-tooltip="{{'SCHEDULE.DELETE' | translate}}" (click)="inactiveDay('Wed')">
-                <md-icon>clear</md-icon>
+            <button mat-icon-button matTooltip="{{'SCHEDULE.DELETE' | translate}}" (click)="inactiveDay('Wed')">
+                <mat-icon>clear</mat-icon>
             </button>
             </td> 
         </tr>
@@ -73,8 +73,8 @@
             <td><label>{{schedule.thursday.opening_time}}</label></td>
             <td><label>{{schedule.thursday.closing_time}}</label></td>
             <td>
-            <button md-icon-button md-tooltip="{{'SCHEDULE.DELETE' | translate}}" (click)="inactiveDay('Thur')">
-                <md-icon>clear</md-icon>
+            <button mat-icon-button matTooltip="{{'SCHEDULE.DELETE' | translate}}" (click)="inactiveDay('Thur')">
+                <mat-icon>clear</mat-icon>
             </button>
             </td> 
         </tr>
@@ -83,8 +83,8 @@
             <td><label>{{schedule.friday.opening_time}}</label></td>
             <td><label>{{schedule.friday.closing_time}}</label></td>
             <td>
-            <button md-icon-button md-tooltip="{{'SCHEDULE.DELETE' | translate}}" (click)="inactiveDay('Fri')">
-                <md-icon>clear</md-icon>
+            <button mat-icon-button matTooltip="{{'SCHEDULE.DELETE' | translate}}" (click)="inactiveDay('Fri')">
+                <mat-icon>clear</mat-icon>
             </button>
             </td> 
         </tr>
@@ -93,8 +93,8 @@
             <td><label>{{schedule.saturday.opening_time}}</label></td>
             <td><label>{{schedule.saturday.closing_time}}</label></td>
             <td>
-            <button md-icon-button md-tooltip="{{'SCHEDULE.DELETE' | translate}}" (click)="inactiveDay('Sat')">
-                <md-icon>clear</md-icon>
+            <button mat-icon-button matTooltip="{{'SCHEDULE.DELETE' | translate}}" (click)="inactiveDay('Sat')">
+                <mat-icon>clear</mat-icon>
             </button>
             </td> 
         </tr>
@@ -103,8 +103,8 @@
             <td><label>{{schedule.sunday.opening_time}}</label></td>
             <td><label>{{schedule.sunday.closing_time}}</label></td>
             <td>
-            <button md-icon-button md-tooltip="{{'SCHEDULE.DELETE' | translate}}" (click)="inactiveDay('Sun')">
-                <md-icon>clear</md-icon>
+            <button mat-icon-button matTooltip="{{'SCHEDULE.DELETE' | translate}}" (click)="inactiveDay('Sun')">
+                <mat-icon>clear</mat-icon>
             </button>
             </td> 
         </tr>
@@ -113,8 +113,8 @@
             <td><label>{{schedule.holiday.opening_time}}</label></td>
             <td><label>{{schedule.holiday.closing_time}}</label></td>
             <td>
-            <button md-icon-button md-tooltip="{{'SCHEDULE.DELETE' | translate}}" (click)="inactiveDay('Hol')">
-                <md-icon>clear</md-icon>
+            <button mat-icon-button matTooltip="{{'SCHEDULE.DELETE' | translate}}" (click)="inactiveDay('Hol')">
+                <mat-icon>clear</mat-icon>
             </button>
             </td> 
         </tr>

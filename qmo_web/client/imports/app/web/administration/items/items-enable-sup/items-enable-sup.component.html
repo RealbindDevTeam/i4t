@@ -1,5 +1,5 @@
-<md-card md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" *ngIf="!_thereAreItems">
-    <md-card-content>
+<mat-card mat-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto" *ngIf="!_thereAreItems">
+    <mat-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
                 <div class="card_initial-image-container">
@@ -12,21 +12,21 @@
                 </div>
             </div>
         </div>
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>
 
 <div class="main" *ngIf="_thereAreItems">
     <div class="main-overflow">
-        <md-card class="custom-cards" *ngFor="let item of _items | async">
+        <mat-card class="custom-cards" *ngFor="let item of _items | async">
             <div class="header-card">
                 <img src="{{ getItemImage(item._id) }}">
                 <span class="mat-card-title">{{item.name}}</span>
             </div>
-            <md-card-content>
+            <mat-card-content>
                 <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
                 <p *ngIf="item.description.length <= 50">{{item.description}}</p>
-                <md-slide-toggle [checked]="getItemAvailable(item)" (change)="updateAvailableFlag(item._id)">{{'ENABLE_DISABLED.BTN_TOGGLE_MSG' | translate}}</md-slide-toggle>
-            </md-card-content>
-        </md-card>
+                <mat-slide-toggle [checked]="getItemAvailable(item)" (change)="updateAvailableFlag(item._id)">{{'ENABLE_DISABLED.BTN_TOGGLE_MSG' | translate}}</mat-slide-toggle>
+            </mat-card-content>
+        </mat-card>
     </div>
 </div>

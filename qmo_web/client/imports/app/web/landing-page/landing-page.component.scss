@@ -93,17 +93,17 @@ small {
 
 header,
 footer,
-md-toolbar,
+mat-toolbar,
 section {
   display: block;
 }
 
-md-card {
+mat-card {
     background: transparent !important;
     box-shadow: 0 0 0 0;
 }
 
-md-card:hover {
+mat-card:hover {
     box-shadow: 0 0 0 0;
 }
 
@@ -111,7 +111,7 @@ md-card:hover {
   color: $background-color;
 }
 
-md-toolbar {
+mat-toolbar {
   background-color: $second-color;
   position: fixed;
   top: 0;
@@ -132,7 +132,7 @@ md-toolbar {
 }
 
 @media only screen and (min-width: 992px) {
-  .home-md-toolbar {
+  .home-mat-toolbar {
     background: transparent;
     position: absolute;
     top: 0;
@@ -181,29 +181,29 @@ md-toolbar {
 }
 
 @media (max-width: 600px) and (orientation: landscape) {
-  md-toolbar {
+  mat-toolbar {
     min-height: 64px;
   }
 }
 
 @media (max-width: 600px) and (orientation: portrait) {
-  md-toolbar {
+  mat-toolbar {
     min-height: 64px;
   }
 }
 
-md-toolbar .nav-wrapper {
+mat-toolbar .nav-wrapper {
   position: relative;
   height: 100%;
 }
 
 @media only screen and (min-width: 993px) {
-  md-toolbar a.button-collapse {
+  mat-toolbar a.button-collapse {
     display: none;
   }
 }
 
-md-toolbar .button-collapse {
+mat-toolbar .button-collapse {
   color: $background-color;
   float: left;
   position: relative;
@@ -211,7 +211,7 @@ md-toolbar .button-collapse {
   height: 64px;
 }
 
-md-toolbar .button-collapse i {
+mat-toolbar .button-collapse i {
   height: 64px;
   line-height: 64px;
 }
@@ -493,21 +493,21 @@ ul:not(.browser-default) li {
   display: block;
 }
 
-md-toolbar ul {
+mat-toolbar ul {
   margin: 0;
 }
 
-md-toolbar ul li {
+mat-toolbar ul li {
   transition: background-color .3s;
   float: left;
   padding: 0;
 }
 
-md-toolbar ul li.active {
+mat-toolbar ul li.active {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-md-toolbar ul li a {
+mat-toolbar ul li a {
   transition: background-color .3s;
   font-size: 0.9rem;
   color: silver;
@@ -516,29 +516,29 @@ md-toolbar ul li a {
   cursor: pointer;
 }
 
-md-toolbar ul a.btn, md-toolbar ul a.btn-large, md-toolbar ul a.btn-large, md-toolbar ul a.btn-flat, md-toolbar ul a.btn-floating {
+mat-toolbar ul a.btn, mat-toolbar ul a.btn-large, mat-toolbar ul a.btn-large, mat-toolbar ul a.btn-flat, mat-toolbar ul a.btn-floating {
   margin-top: -2px;
   margin-left: 15px;
 }
 
-md-toolbar ul a:hover {
+mat-toolbar ul a:hover {
   color: $background-color;
 }
 
-md-toolbar ul a:active {
+mat-toolbar ul a:active {
   color: $background-color;
 }
 
-md-toolbar ul a.active  {
+mat-toolbar ul a.active  {
   color: $background-color;
 }
 
-md-toolbar ul.left {
+mat-toolbar ul.left {
   float: left;
 }
 
 @media only screen and (min-width: 601px) {
-  md-toolbar, md-toolbar .nav-wrapper i, md-toolbar a.button-collapse, md-toolbar a.button-collapse i {
+  mat-toolbar, mat-toolbar .nav-wrapper i, mat-toolbar a.button-collapse, mat-toolbar a.button-collapse i {
     height: 64px;
     line-height: 64px;
   }
@@ -547,7 +547,7 @@ md-toolbar ul.left {
   }
 }
 
-md-toolbar .brand-logo {
+mat-toolbar .brand-logo {
   position: absolute;
   color: #fff;
   display: inline-block;
@@ -556,34 +556,34 @@ md-toolbar .brand-logo {
   white-space: nowrap;
 }
 
-md-toolbar .brand-logo.center {
+mat-toolbar .brand-logo.center {
   left: 50%;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
 }
 
 @media only screen and (max-width: 992px) {
-  md-toolbar .brand-logo {
+  mat-toolbar .brand-logo {
     left: 50%;
     -webkit-transform: translateX(-50%);
             transform: translateX(-50%);
   }
-  md-toolbar .brand-logo.left, md-toolbar .brand-logo.right {
+  mat-toolbar .brand-logo.left, mat-toolbar .brand-logo.right {
     padding: 0;
     -webkit-transform: none;
             transform: none;
   }
-  md-toolbar .brand-logo.left {
+  mat-toolbar .brand-logo.left {
     left: 0.5rem;
   }
-  md-toolbar .brand-logo.right {
+  mat-toolbar .brand-logo.right {
     right: 0.5rem;
     left: auto;
   }
 }
 
-md-toolbar ul a,
-md-toolbar .brand-logo {
+mat-toolbar ul a,
+mat-toolbar .brand-logo {
   color: #444;
 }
 

@@ -1,16 +1,16 @@
-<md-card *ngIf="validatePeriodDays()">
-    <md-card-title>{{'REACTIVATE_RESTAURANT.TITLE' | translate }}</md-card-title>
-    <md-card-subtitle>{{'REACTIVATE_RESTAURANT.SUBTITLE' | translate}}</md-card-subtitle>
-    <md-card-subtitle>
+<mat-card *ngIf="validatePeriodDays()">
+    <mat-card-title>{{'REACTIVATE_RESTAURANT.TITLE' | translate }}</mat-card-title>
+    <mat-card-subtitle>{{'REACTIVATE_RESTAURANT.SUBTITLE' | translate}}</mat-card-subtitle>
+    <mat-card-subtitle>
         <h3>{{'REACTIVATE_RESTAURANT.SUBTITLE_2' | translate}}</h3>
-    </md-card-subtitle>
-    <md-card-content style="background: #FFF">
+    </mat-card-subtitle>
+    <mat-card-content style="background: #FFF">
         <div *ngFor="let currency of _currencies | async">
-            <md-toolbar color="primary">
+            <mat-toolbar color="primary">
                 <span>{{getCountryByCurrency(currency._id) | translate}}</span>
                 <span class="app-flex-filler"></span>
                 <span> {{'REACTIVATE_RESTAURANT.PRICE_BY_TABLE' | translate}} {{getUnitTablePrice(currency._id)}} {{currency.code}}</span>
-            </md-toolbar>
+            </mat-toolbar>
             <table class="striped" width="100%" style="border:0.5px solid; border-color: lightgrey">
                 <thead>
                     <tr>
@@ -31,18 +31,18 @@
                         <td *ngIf="restaurant.currencyId === currency._id">{{getTotalRestaurant(restaurant)}} {{currency.code}}</td>
                         <td>
                             <div align="center">
-                                <button md-raised-button (click)="goToPayByRestaurant(restaurant, currency.code)">{{'REACTIVATE_RESTAURANT.PAY_BTN' | translate}}</button>
+                                <button mat-raised-button (click)="goToPayByRestaurant(restaurant, currency.code)">{{'REACTIVATE_RESTAURANT.PAY_BTN' | translate}}</button>
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>
 
-<md-card *ngIf="!_thereAreRestaurants" md-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
-    <md-card-content>
+<mat-card *ngIf="!_thereAreRestaurants" mat-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
+    <mat-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
                 <div class="card_initial-image-container">
@@ -55,5 +55,5 @@
                 </div>
             </div>
         </div>
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>

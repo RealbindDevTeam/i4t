@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { MdSnackBar, MdDialogRef } from '@angular/material';
+import { MatSnackBar, MatDialogRef } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
@@ -23,13 +23,10 @@ import { User } from '../../../../../../../both/models/auth/user.model';
 import { Accounts } from '../../../../../../../both/collections/restaurant/account.collection';
 import { Account } from '../../../../../../../both/models/restaurant/account.model';
 
-import template from './restaurant-exit-confirm.component.html';
-import style from './restaurant-exit-confirm.component.scss';
-
 @Component({
     selector: 'restaurant-exit-confirm',
-    template,
-    styles: [ style ],
+    templateUrl: './restaurant-exit-confirm.component.html',
+    styleUrls: [ './restaurant-exit-confirm.component.scss' ],
     providers: [ UserLanguageService ]
 })
 export class RestaurantExitConfirmComponent implements OnInit, OnDestroy {
@@ -59,16 +56,16 @@ export class RestaurantExitConfirmComponent implements OnInit, OnDestroy {
     /**
      * ExitTableConfirmComponent constructor
      * @param {TranslateService} translate
-     * @param {MdDialogRef<any>} _dialogRef
+     * @param {MatDialogRef<any>} _dialogRef
      * @param {NgZone} _ngZone
      * @param {UserLanguageService} _userLanguageService
-     * @param {MdSnackBar} _snackBar
+     * @param {MatSnackBar} _snackBar
      */
     constructor( private _translate: TranslateService, 
-        public _dialogRef: MdDialogRef<any>, 
+        public _dialogRef: MatDialogRef<any>, 
         private _ngZone: NgZone,
         private _userLanguageService: UserLanguageService,
-        public _snackBar: MdSnackBar ){
+        public _snackBar: MatSnackBar ){
             _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
             _translate.setDefaultLang( 'en' );
     }

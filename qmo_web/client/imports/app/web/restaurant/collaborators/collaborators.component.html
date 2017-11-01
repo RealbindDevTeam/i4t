@@ -1,5 +1,5 @@
-<md-card md-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
-    <md-card-content>
+<mat-card mat-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
+    <mat-card-content>
         <div class="card_initial">
             <div class="card_initial has-image">
                 <div class="card_initial-image-container">
@@ -15,20 +15,20 @@
                     </div>
                 </div>
                 <div class="card_initial-button">
-                    <button md-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
+                    <button mat-raised-button (click)="goToAddRestaurant()">{{'SECTIONS.RESTAURANT_REGISTER' | translate}}</button>
                 </div>
             </div>
         </div>
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>
     
 <div *ngIf="_thereAreRestaurants" class="global-div">
     <div class="div-whitout-overflow">
         <div class="cards-div">
-            <md-card style="margin: 24px;">
-                <md-card-title>{{'COLLABORATORS.COLLABORATORS_SEARCH' | translate}}</md-card-title>
-                <md-card-subtitle>{{'COLLABORATORS.COLLABORATORS_TEXT' | translate}}</md-card-subtitle>
-                <md-card-content style="background: #FFF">
+            <mat-card style="margin: 24px;">
+                <mat-card-title>{{'COLLABORATORS.COLLABORATORS_SEARCH' | translate}}</mat-card-title>
+                <mat-card-subtitle>{{'COLLABORATORS.COLLABORATORS_TEXT' | translate}}</mat-card-subtitle>
+                <mat-card-content style="background: #FFF">
                     <form [formGroup]="_form" (ngSubmit)="collaboratorsSearch();">
                         <table style="width: 100%">
                             <tr>
@@ -36,24 +36,24 @@
                                     <label>{{'TABLES.RESTAURANT' | translate}}</label>
                                 </th>
                                 <td style="width: 35%">
-                                    <md-select formControlName="restaurant" placeholder="{{'TABLES.SELECT_RESTAURANT' | translate}}" style="width: 95%;">
-                                        <md-option *ngFor="let rest of _restaurants | async" value="{{rest._id}}">{{rest.name}}</md-option>
-                                    </md-select>
+                                    <mat-select formControlName="restaurant" placeholder="{{'TABLES.SELECT_RESTAURANT' | translate}}" style="width: 95%;">
+                                        <mat-option *ngFor="let rest of _restaurants | async" value="{{rest._id}}">{{rest.name}}</mat-option>
+                                    </mat-select>
                                 </td>
                                 <td style="width: 25%; text-align:center">
-                                    <button md-raised-button class="button-primary" type="submit">
-                                        <md-icon>search</md-icon>
+                                    <button mat-raised-button class="button-primary" type="submit">
+                                        <mat-icon>search</mat-icon>
                                         {{'SEARCH' | translate}}
                                     </button>
                                 </td>
                             </tr>
                         </table>
                     </form>
-                </md-card-content>
-            </md-card>
+                </mat-card-content>
+            </mat-card>
             
-            <md-card *ngIf="_thereAreRestaurants && (_userDetails | async)?.length <= 0" md-cell="12" class="demo-card demo-basic" style="margin: 24px;">
-                <md-card-content>
+            <mat-card *ngIf="_thereAreRestaurants && (_userDetails | async)?.length <= 0" mat-cell="12" class="demo-card demo-basic" style="margin: 24px;">
+                <mat-card-content>
                     <div class="card_initial">
                         <div class="card_initial has-image">
                             <div class="card_initial-image-container">
@@ -69,63 +69,63 @@
                                 </div>
                             </div>
                             <div class="card_initial-button">
-                                <button md-raised-button (click)="openCollaboratorstRegister()">{{'COLLABORATORS.BTN' | translate}}</button>
+                                <button mat-raised-button (click)="openCollaboratorstRegister()">{{'COLLABORATORS.BTN' | translate}}</button>
                             </div>
                         </div>
                     </div>
-                </md-card-content>
-            </md-card>
+                </mat-card-content>
+            </mat-card>
             
-            <md-card *ngFor="let userdetail of _userDetails | async" class="cards">
+            <mat-card *ngFor="let userdetail of _userDetails | async" class="cards">
                 <div *ngFor="let user of _users | async">
                     <div *ngIf="userdetail.user_id == user._id">
-                        <md-card-header style="height: 80px; background: #eee;">
-                            <img class="img" md-list-avatar src="/images/user_default_image.png">
-                            <md-list>
-                                <md-list-item>
-                                    <h3 md-line> {{user.profile.first_name}} {{user.profile.last_name}} </h3>
-                                    <p md-line>
+                        <mat-card-header style="height: 80px; background: #eee;">
+                            <img class="img" mat-list-avatar src="/images/user_default_image.png">
+                            <mat-list>
+                                <mat-list-item>
+                                    <h3 mat-line> {{user.profile.first_name}} {{user.profile.last_name}} </h3>
+                                    <p mat-line>
                                         <span> {{user.username}} </span>
                                     </p>
-                                </md-list-item>
-                            </md-list>
-                        </md-card-header>
+                                </mat-list-item>
+                            </mat-list>
+                        </mat-card-header>
             
-                        <md-card-content>
-                            <button md-mini-fab class="btn_edit" (click)="editCollaborator(userdetail, user)"> 
-                                <md-icon style="color: white;">edit</md-icon>
+                        <mat-card-content>
+                            <button mat-mini-fab class="btn_edit" (click)="editCollaborator(userdetail, user)"> 
+                                <mat-icon style="color: white;">edit</mat-icon>
                             </button>
                             <ul class="list">
                                 <li *ngFor="let role of _roles | async">
                                     <ng-template [ngIf]="role._id == userdetail.role_id">
-                                        <md-icon md-tooltip="{{'JOB' | translate}}" style="vertical-align: middle">assignment ind</md-icon>
+                                        <mat-icon matTooltip="{{'JOB' | translate}}" style="vertical-align: middle">assignment ind</mat-icon>
                                         <label> {{ role.name | translate }} </label>
                                     </ng-template>
                                 </li>
                                 <li *ngIf="user.emails">
-                                    <md-icon style="vertical-align: middle" md-tooltip="{{'EMAIL' | translate}}">mail outline</md-icon>
+                                    <mat-icon style="vertical-align: middle" matTooltip="{{'EMAIL' | translate}}">mail outline</mat-icon>
                                     <span> {{user.emails[0].address}} </span>
                                 </li>
                                 <li *ngIf="userdetail.phone">
-                                    <md-icon style="vertical-align: middle" md-tooltip="{{ 'PHONE' | translate }}">phone</md-icon>
+                                    <mat-icon style="vertical-align: middle" matTooltip="{{ 'PHONE' | translate }}">phone</mat-icon>
                                     <span> {{userdetail.phone}} </span>
                                 </li>
                                 <li *ngIf="userdetail.birthdate">
-                                    <md-icon style="vertical-align: middle" md-tooltip="{{ 'BIRTHDATE' | translate }}">event</md-icon>
+                                    <mat-icon style="vertical-align: middle" matTooltip="{{ 'BIRTHDATE' | translate }}">event</mat-icon>
                                     <span> {{userdetail.birthdate | date: 'dd/MM/yyyy'}} </span>
                                 </li>
                                 <li>
-                                    <md-slide-toggle [(checked)]="userdetail.is_active" (change)="changeUserState(userdetail)">
+                                    <mat-slide-toggle [(checked)]="userdetail.is_active" (change)="changeUserState(userdetail)">
                                         {{ 'STATE' | translate }}
-                                    </md-slide-toggle>
+                                    </mat-slide-toggle>
                                 </li>
                             </ul>
-                        </md-card-content>
+                        </mat-card-content>
                     </div>
                 </div>
-            </md-card>
-            <button *ngIf="(_userDetails | async)?.length > 0" class="fixed-action-btn" md-fab (click)="openCollaboratorstRegister()">
-                <md-icon style="color: white;">add</md-icon>
+            </mat-card>
+            <button *ngIf="(_userDetails | async)?.length > 0" class="fixed-action-btn" mat-fab (click)="openCollaboratorstRegister()">
+                <mat-icon style="color: white;">add</mat-icon>
             </button>
         </div>
     </div>

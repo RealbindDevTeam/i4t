@@ -1,5 +1,5 @@
 import { Component, NgZone, Inject, OnInit, OnDestroy } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA, MdSnackBar } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { MeteorObservable } from "meteor-rxjs";
 import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,13 +9,10 @@ import { Restaurants } from '../../../../../../../../both/collections/restaurant
 import { Item } from '../../../../../../../../both/models/administration/item.model';
 import { Items } from '../../../../../../../../both/collections/administration/item.collection';
 
-import template from './enable-confirm.component.html';
-import style from './enable-confirm.component.scss';
-
 @Component({
     selector: 'enable-confirm',
-    template,
-    styles: [style],
+    templateUrl: './enable-confirm.component.html',
+    styleUrls: [ './enable-confirm.component.scss' ],
     providers: [UserLanguageService]
 })
 
@@ -23,12 +20,12 @@ export class EnableConfirmComponent implements OnInit, OnDestroy {
 
     private _restaurantSub: Subscription;
 
-    constructor(public _dialogRef: MdDialogRef<any>,
+    constructor(public _dialogRef: MatDialogRef<any>,
         private _zone: NgZone,
-        @Inject(MD_DIALOG_DATA) public data: any,
+        @Inject(MAT_DIALOG_DATA) public data: any,
         private translate: TranslateService,
         private _userLanguageService: UserLanguageService,
-        public snackBar: MdSnackBar) {
+        public snackBar: MatSnackBar) {
         translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         translate.setDefaultLang('en');
     }

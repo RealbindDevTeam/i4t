@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { Router } from "@angular/router";
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Restaurant, RestaurantImage } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantImages } from '../../../../../../both/collections/restaurant/restaurant.collection';
@@ -16,13 +16,10 @@ import { Meteor } from 'meteor/meteor';
 import { RestaurantScheduleComponent } from './restaurant-schedule/restaurant-schedule.component';
 import { RestaurantEditionComponent } from './restaurant-edition/restaurant-edition.component';
 
-import template from './restaurant.component.html';
-import style from './restaurant.component.scss';
-
 @Component({
     selector: 'restaurant',
-    template,
-    styles: [style]
+    templateUrl: './restaurant.component.html',
+    styleUrls: [ './restaurant.component.scss' ]
 })
 export class RestaurantComponent implements OnInit, OnDestroy {
 
@@ -35,7 +32,7 @@ export class RestaurantComponent implements OnInit, OnDestroy {
     private citiesSub               : Subscription;
     private _restaurantImagesSub    : Subscription;
 
-    public _dialogRef               : MdDialogRef<any>;
+    public _dialogRef               : MatDialogRef<any>;
     private _thereAreRestaurants    : boolean = true;
 
     /**
@@ -43,14 +40,14 @@ export class RestaurantComponent implements OnInit, OnDestroy {
      * @param {Router} router 
      * @param {FormBuilder} _formBuilder 
      * @param {TranslateService} translate 
-     * @param {MdDialog} _dialog
+     * @param {MatDialog} _dialog
      * @param {NgZone} _ngZone
      * @param {UserLanguageService} _userLanguageService
      */
     constructor( private router: Router, 
                  private _formBuilder: FormBuilder, 
                  private translate: TranslateService, 
-                 public _dialog: MdDialog,
+                 public _dialog: MatDialog,
                  private _ngZone: NgZone,
                  private _userLanguageService: UserLanguageService ) {
         translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
