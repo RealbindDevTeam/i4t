@@ -7,7 +7,7 @@ import { Invoice } from 'qmo_web/both/models/restaurant/invoice.model';
 import { Invoices } from 'qmo_web/both/collections/restaurant/invoice.collection';
 import { Parameters } from 'qmo_web/both/collections/general/parameter.collection';
 import { PaymentsHistoryDetailPage } from "./payments-history-detail/payments-history-detail";
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../../providers/user-language-service/user-language-service';
 
 @Component({
   selector: 'payments-history-page',
@@ -28,7 +28,7 @@ export class PaymentsHistoryPage implements OnInit, OnDestroy {
    */
   constructor(public _navCtrl : NavController,
               public _translate: TranslateService,
-              private _userLanguageService: UserLanguageService,
+              private _userLanguageService: UserLanguageServiceProvider,
               private _ngZone : NgZone){
     _translate.setDefaultLang('en');
   }

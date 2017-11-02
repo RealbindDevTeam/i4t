@@ -114,9 +114,3 @@ export const routes: Route[] = [
     { path: '404', component: NotFoundWebComponent },
     { path: '**', redirectTo: '/404' }
 ];
-
-export const ROUTES_PROVIDERS = [{
-    provide: 'canActivateForLoggedIn',
-    useValue: () => !!Meteor.userId()
-}
-];

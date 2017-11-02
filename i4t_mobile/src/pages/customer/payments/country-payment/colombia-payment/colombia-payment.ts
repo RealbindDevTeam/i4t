@@ -12,7 +12,7 @@ import { ColombiaPaymentDetailsPage } from "./colombia-payment-details/colombia-
 import { ColombiaPayInfoPage } from "./colombia-pay-info/colombia-pay-info";
 import { ModalColombiaPayment } from "./modal-colombia-payment";
 import { OrderPaymentTranslatePage } from "../order-payment-translate/order-payment-translate";
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../../../providers/user-language-service/user-language-service';
 
 /*
   Generated class for the Colombia Payments page.
@@ -81,7 +81,7 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
               public _modalCtrl: ModalController,
               public _loadingCtrl: LoadingController,
               public _alertCtrl: AlertController,
-              private _userLanguageService: UserLanguageService) {
+              private _userLanguageService: UserLanguageServiceProvider) {
     _translate.setDefaultLang('en');
   }
 

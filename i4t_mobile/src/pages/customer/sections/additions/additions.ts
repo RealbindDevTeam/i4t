@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Addition } from 'qmo_web/both/models/administration/addition.model';
 import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
 import { OrderAddition } from 'qmo_web/both/models/restaurant/order.model';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../../providers/user-language-service/user-language-service';
 
 @Component({
   selector: 'page-add-additions',
@@ -30,7 +30,7 @@ export class AdditionsPage implements OnInit, OnDestroy {
                  public _navParams  : NavParams,
                  private _translate : TranslateService,
                  private _toastCtrl : ToastController,
-                 private _userLanguageService: UserLanguageService ){
+                 private _userLanguageService: UserLanguageServiceProvider ){
         _translate.setDefaultLang('en');
         this._restaurantId = this._navParams.get("res_id");
         this._tableId      = this._navParams.get("table_id");

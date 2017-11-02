@@ -5,10 +5,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
 import { MomentModule } from 'angular2-moment';
-import { HttpModule, Http } from '@angular/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
 
 import { MyApp } from './app.component';
 import { PAGES_DECLARATIONS } from './index';
@@ -16,8 +15,9 @@ import { PAGES_DECLARATIONS } from './index';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Facebook } from '@ionic-native/facebook';
 import { Device } from '@ionic-native/device';
+import { UserLanguageServiceProvider } from '../providers/user-language-service/user-language-service';
 
-export function createTranslateLoader(http: Http) {
+export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
@@ -43,12 +43,12 @@ export function createTranslateLoader(http: Http) {
     }),
     IonicStorageModule.forRoot(),
     MomentModule,
-    HttpModule,
+    HttpClientModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: (createTranslateLoader),
-        deps: [Http]
+        deps: [HttpClient]
       }
     })
   ],
@@ -61,10 +61,10 @@ export function createTranslateLoader(http: Http) {
     StatusBar,
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    UserLanguageService,
     BarcodeScanner,
     Facebook,
-    Device
+    Device,
+    UserLanguageServiceProvider
   ]
 })
 export class AppModule { }
