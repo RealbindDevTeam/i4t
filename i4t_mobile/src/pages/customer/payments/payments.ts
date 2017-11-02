@@ -5,7 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
 import { Restaurants } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 
 /*
   Generated class for the Payments page.
@@ -38,7 +38,7 @@ export class PaymentsPage implements OnInit, OnDestroy {
   constructor(public _navCtrl: NavController,
     public _navParams: NavParams,
     public _translate: TranslateService,
-    private _userLanguageService: UserLanguageService,
+    private _userLanguageService: UserLanguageServiceProvider,
     private _ngZone: NgZone) {
     _translate.setDefaultLang('en');
   }

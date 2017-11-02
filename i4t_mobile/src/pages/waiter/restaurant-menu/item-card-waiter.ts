@@ -6,7 +6,7 @@ import { Item } from 'qmo_web/both/models/administration/item.model';
 import { Currencies } from 'qmo_web/both/collections/general/currency.collection';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 
 @Component({
   selector: 'item-card-waiter',
@@ -31,7 +31,7 @@ export class ItemCardWaiterComponent implements OnInit, OnDestroy {
 
 
   constructor(public _translate: TranslateService,
-              private _userLanguageService: UserLanguageService) {
+              private _userLanguageService: UserLanguageServiceProvider) {
     _translate.setDefaultLang('en');
   }
 

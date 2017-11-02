@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { Items } from 'qmo_web/both/collections/administration/item.collection';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../../../../providers/user-language-service/user-language-service';
 
 /*
   Generated class for the AddOrderPayment page.
@@ -45,7 +45,7 @@ export class AddOrderPaymentPage implements OnInit, OnDestroy {
               public _translate   : TranslateService,
               public _loadingCtrl : LoadingController,
               private _toastCtrl  : ToastController,
-              private _userLanguageService: UserLanguageService) {
+              private _userLanguageService: UserLanguageServiceProvider) {
     _translate.setDefaultLang('en');
     this._restaurantId = this._navParams.get("restaurant");
     this._tableId      = this._navParams.get("table");
@@ -129,9 +129,8 @@ export class AddOrderPaymentPage implements OnInit, OnDestroy {
       if( _order.status === 'ORDER_STATUS.DELIVERED' ){
         let _lOrderTranslate = { firstOrderOwner: _order.creation_user, markedToTranslate: true, lastOrderOwner: Meteor.userId(), confirmedToTranslate: false };
         Orders.update({ _id: _order._id }, { $set: { status: 'ORDER_STATUS.PENDING_CONFIRM', modification_user: Meteor.userId(),
-                                                      modification_date: new Date(), translateInfo: _lOrderTranslate }}, () => {
-          loading.dismiss();
-        });
+                                                      modification_date: new Date(), translateInfo: _lOrderTranslate } } );
+        loading.dismiss();
         msg = this.itemNameTraduction('MOBILE.PAYMENTS.CONFIRM_OWNER_ORDER');
         this.presentToast(msg);
       } else {

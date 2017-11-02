@@ -5,7 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
 import { Table } from 'qmo_web/both/models/restaurant/table.model';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { AlphanumericCodePage } from '../alphanumeric-code/alphanumeric-code';
 import { SectionsPage } from '../sections/sections';
@@ -38,7 +38,7 @@ export class CodeTypeSelectPage {
     public _alertCtrl: AlertController,
     public _loadingCtrl: LoadingController,
     public _app: App,
-    private _userLanguageService: UserLanguageService,
+    private _userLanguageService: UserLanguageServiceProvider,
     private barcodeScanner: BarcodeScanner) {
     _translate.setDefaultLang('en');
   }
