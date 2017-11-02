@@ -681,6 +681,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
      * This function generate the register for invoice
      */
     generateInvoiceInfo() {
+
         let var_resolution: string;
         let var_prefix: string;
         let var_start_value: number;
@@ -689,19 +690,23 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         let var_start_date: Date;
         let var_end_date: Date;
         let var_enable_two: boolean;
+        let var_start_new: boolean;
 
         let invoiceInfo = InvoicesInfo.findOne({ country_id: this._selectedCountry._id });
-        console.log(JSON.stringify(invoiceInfo));
         if (invoiceInfo) {
-            //for resolution one
             if (invoiceInfo.enable_two == false) {
-                console.log('invoiceInfo.enable_two = false');
-                if (invoiceInfo.current_value == null) {
+                if (invoiceInfo.start_new_value == true) {
                     var_current_value = invoiceInfo.start_value_one;
+                    var_enable_two = false;
+                    var_start_new = false;
                 } else {
                     var_current_value = invoiceInfo.current_value + 1;
                     if (var_current_value == invoiceInfo.end_value_one) {
                         var_enable_two = true;
+                        var_start_new = true;
+                    } else {
+                        var_enable_two = false;
+                        var_start_new = false;
                     }
                 }
                 var_resolution = invoiceInfo.resolution_one;
@@ -710,7 +715,46 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 var_end_value = invoiceInfo.end_value_one;
                 var_start_date = invoiceInfo.start_date_one;
                 var_end_date = invoiceInfo.end_date_one;
+            } else {
+                if (invoiceInfo.start_new_value == true) {
+                    var_current_value = invoiceInfo.start_value_two;
+                    var_enable_two = true;
+                    var_start_new = false;
+                } else {
+                    var_current_value = invoiceInfo.current_value + 1;
+                    if (var_current_value == invoiceInfo.end_value_two) {
+                        var_enable_two = false;
+                        var_start_new = true;
+                    } else {
+                        var_enable_two = true;
+                        var_start_new = false;
+                    }
+                }
+                var_resolution = invoiceInfo.resolution_two;
+                var_prefix = invoiceInfo.prefix_two;
+                var_start_value = invoiceInfo.start_value_two;
+                var_end_value = invoiceInfo.end_value_two;
+                var_start_date = invoiceInfo.start_date_two;
+                var_end_date = invoiceInfo.end_date_two;
             }
+            console.log('var_resolution ' + var_resolution);
+            console.log('var_prefix ' + var_prefix);
+            console.log('var_start_date ' + var_start_date);
+            console.log('var_end_date ' + var_end_date);
+            console.log('var_start_value ' + var_start_value);
+            console.log('var_end_value ' + var_end_value);
+            console.log('var_enable_two ' + var_enable_two);
+            console.log('var_current_value ' + var_current_value);
+            console.log('var_start_new ' + var_start_new);
+
+            InvoicesInfo.collection.update({ _id: invoiceInfo._id },
+                {
+                    $set: {
+                        current_value: var_current_value,
+                        enable_two: var_enable_two,
+                        start_new_value: var_start_new
+                    }
+                });
         }
     }
 

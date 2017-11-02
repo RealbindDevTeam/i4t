@@ -4,6 +4,7 @@ import { CollectionObject } from '../collection-object.model';
  * Iurest Invoice Model
  */
 export interface IurestInvoice extends CollectionObject {
+    payment_history_id: string;
     number: string;
     generation_date: string;
     payment_method: string;

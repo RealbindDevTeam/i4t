@@ -20,7 +20,8 @@ export function loadInvoicesInfo() {
                 start_value_two: null,
                 end_value_two: null,
                 enable_two: false,
-                current_value: null
+                current_value: null,
+                start_new_value: true
             }
         ];
 

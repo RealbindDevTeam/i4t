@@ -18,4 +18,5 @@ export interface InvoiceInfo {
     end_value_two?: number;
     enable_two?: boolean;
     current_value?: number;
+    start_new_value?: boolean;
 }
