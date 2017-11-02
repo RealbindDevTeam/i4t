@@ -31,6 +31,8 @@ import { CcRequestColombia, Merchant, Transaction, Order, Payer, TX_VALUE, TX_TA
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
+import { InvoicesInfo } from '../../../../../../both/collections/payment/invoices-info.collection';
+import { IurestInvoices } from '../../../../../../both/collections/payment/iurest-invoices.collection';
 import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
 
 let md5 = require('md5');
@@ -38,7 +40,7 @@ let md5 = require('md5');
 @Component({
     selector: 'payu-payment-form',
     templateUrl: './payu-payment-form.component.html',
-    styleUrls: [ './payu-payment-form.component.scss' ]
+    styleUrls: ['./payu-payment-form.component.scss']
 })
 export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 
@@ -46,7 +48,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _selectedPaymentMethod: string;
     private _selectedCardMonth: string;
     private _selectedCardYear: string;
-    private _selectedCountry: string;
+    private _selectedCountry: Country;
     private _selectedCity: string = "";
     private _selectedAddress: string;
     private _selectedPhone: string;
@@ -59,6 +61,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _parameterSub: Subscription;
     private _restaurantSub: Subscription;
     private _userDetailSub: Subscription;
+    private _invoiceInfoSub: Subscription;
 
     private _cCPaymentMethods: Observable<CcPaymentMethod[]>;
     private _countries: Observable<Country[]>;
@@ -248,8 +251,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                         let auxCountry = Countries.findOne({ _id: auxUsrDetail.country_id });
                         this._paymentForm.get('country').setValue(this.itemNameTraduction(auxCountry.name));
                         this._paymentForm.get('country').disable();
-
-                        this._selectedCountry = auxCountry.name;
+                        this._selectedCountry = auxCountry;
+                        this._invoiceInfoSub = MeteorObservable.subscribe('getInvoicesInfoByCountry', auxCountry._id).subscribe();
                     });
                 });
 
@@ -304,6 +307,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         if (this._parameterSub) { this._parameterSub.unsubscribe(); }
         if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
         if (this._userDetailSub) { this._userDetailSub.unsubscribe(); }
+        if (this._invoiceInfoSub) { this._invoiceInfoSub.unsubscribe(); }
     }
 
     /**
@@ -329,7 +333,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     */
     openConfirmDialog() {
         let auxstreet: string = this._paymentForm.value.streetOne;
-
+        this.generateInvoiceInfo();
         this._restaurantsNamesArray = [];
 
         if (this._mode === 'normal') {
@@ -347,7 +351,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             data: {
                 streetone: this._selectedAddress,
                 city: this._selectedCity,
-                country: this._selectedCountry,
+                country: this._selectedCountry.name,
                 fullname: this._paymentForm.value.fullName,
                 telephone: this._selectedPhone,
                 ccmethod: this._paymentLogoName,
@@ -651,7 +655,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             month: (this._currentDate.getMonth() + 1).toString(),
             year: (this._currentDate.getFullYear()).toString(),
             status: 'TRANSACTION_STATUS.' + _response.transactionResponse.state,
-            transactionId: transactionId,
+            paymentTransactionId: transactionId,
             paymentValue: Number(this._valueToPay),
             currency: this._currency,
             creation_date: new Date(),
@@ -669,6 +673,43 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 this._restaurantsIdsArray.forEach((resId: string) => {
                     Restaurants.collection.update({ _id: resId }, { $set: { isActive: true, firstPay: false } });
                 });
+            }
+        }
+    }
+
+    /**
+     * This function generate the register for invoice
+     */
+    generateInvoiceInfo() {
+        let var_resolution: string;
+        let var_prefix: string;
+        let var_start_value: number;
+        let var_current_value: number;
+        let var_end_value: number;
+        let var_start_date: Date;
+        let var_end_date: Date;
+        let var_enable_two: boolean;
+
+        let invoiceInfo = InvoicesInfo.findOne({ country_id: this._selectedCountry._id });
+        console.log(JSON.stringify(invoiceInfo));
+        if (invoiceInfo) {
+            //for resolution one
+            if (invoiceInfo.enable_two == false) {
+                console.log('invoiceInfo.enable_two = false');
+                if (invoiceInfo.current_value == null) {
+                    var_current_value = invoiceInfo.start_value_one;
+                } else {
+                    var_current_value = invoiceInfo.current_value + 1;
+                    if (var_current_value == invoiceInfo.end_value_one) {
+                        var_enable_two = true;
+                    }
+                }
+                var_resolution = invoiceInfo.resolution_one;
+                var_prefix = invoiceInfo.prefix_one;
+                var_start_value = invoiceInfo.start_value_one;
+                var_end_value = invoiceInfo.end_value_one;
+                var_start_date = invoiceInfo.start_date_one;
+                var_end_date = invoiceInfo.end_date_one;
             }
         }
     }

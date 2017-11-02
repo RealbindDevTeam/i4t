@@ -33,7 +33,7 @@ export function loadParameters() {
             { _id: '9100', name: 'payu_test_state', value: 'APPROVED', description: 'Test state for payu payment transaction' },
             { _id: '2100', name: 'max_user_penalties', value: '3', description: 'Max number of user penalties' },
             { _id: '2200', name: 'penalty_days', value: '30', description: 'User penalty days' },
-            { _id: '8000', name: 'date_test_monthly_pay', value: "October 3, 2017", description: 'Date test for monthly payment of iurest service' }
+            { _id: '8000', name: 'date_test_monthly_pay', value: "November 1, 2017", description: 'Date test for monthly payment of iurest service' }
         ];
 
         parameters.forEach((parameter: Parameter) => Parameters.insert(parameter));
