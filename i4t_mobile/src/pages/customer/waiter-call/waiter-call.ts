@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
 import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-call-detail.collection';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 
 @Component({
   selector: 'page-waiter-call',
@@ -36,7 +36,7 @@ export class WaiterCallPage implements OnInit, OnDestroy {
               public _navParams: NavParams,
               public _translate: TranslateService,
               public _loadingCtrl: LoadingController,
-              private _userLanguageService: UserLanguageService) {
+              private _userLanguageService: UserLanguageServiceProvider) {
     _translate.setDefaultLang('en');
   }
 

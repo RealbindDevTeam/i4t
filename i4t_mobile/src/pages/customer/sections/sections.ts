@@ -15,7 +15,7 @@ import { ItemDetailPage } from '../item-detail/item-detail';
 import { AdditionsPage } from './additions/additions';
 import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 import { Storage } from '@ionic/storage';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 
 @Component({
   selector: 'page-sections',
@@ -58,7 +58,7 @@ export class SectionsPage implements OnInit, OnDestroy {
               public _navParams: NavParams, 
               public _translate: TranslateService, 
               public _storage: Storage,
-              private _userLanguageService: UserLanguageService,
+              private _userLanguageService: UserLanguageServiceProvider,
               private _ngZone: NgZone) {
     _translate.setDefaultLang('en');
     this._res_code = this._navParams.get("res_id");

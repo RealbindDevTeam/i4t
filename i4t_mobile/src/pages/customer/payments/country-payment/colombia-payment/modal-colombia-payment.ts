@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Restaurants } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { PaymentMethods } from 'qmo_web/both/collections/general/paymentMethod.collection';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../../../providers/user-language-service/user-language-service';
 
 @Component({
   selector: 'modal-colombia-payment',
@@ -41,7 +41,7 @@ export class ModalColombiaPayment implements OnInit, OnDestroy {
   constructor(public _viewCtrl : ViewController, 
               public _translate : TranslateService, 
               public _params : NavParams,
-              private _userLanguageService: UserLanguageService,
+              private _userLanguageService: UserLanguageServiceProvider,
               private _ngZone : NgZone) {
     _translate.setDefaultLang('en');
     this._tipTotal      = this._params.get('tip');

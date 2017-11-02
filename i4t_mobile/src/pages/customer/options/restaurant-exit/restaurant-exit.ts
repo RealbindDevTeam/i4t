@@ -3,7 +3,7 @@ import { AlertController, LoadingController, NavController, NavParams, ToastCont
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../../providers/user-language-service/user-language-service';
 import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 import { Restaurants, RestaurantImages, RestaurantImageThumbs } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
@@ -44,7 +44,7 @@ export class RestaurantExitPage implements OnInit, OnDestroy {
         public _loadingCtrl: LoadingController,
         private _toastCtrl: ToastController,
         private _translate: TranslateService,
-        private _userLanguageService: UserLanguageService,
+        private _userLanguageService: UserLanguageServiceProvider,
         private _ngZone: NgZone) {
         _translate.setDefaultLang('en');
 

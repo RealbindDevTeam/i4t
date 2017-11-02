@@ -5,7 +5,6 @@ import {HttpModule} from '@angular/http';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import { MatCardModule } from '@angular/material';
 import {WidgetComponent} from './layout/widget/widget.component';
-import {ChipComponent} from './layout/chip/chip.component';
 import {ColorService} from './services/color.service';
 import {CodeHighlighterDirective} from './layout/code-highlighter/code-highlighter.directive';
 import {SearchService} from './services/search.service';

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Invoice } from 'qmo_web/both/models/restaurant/invoice.model';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../../../providers/user-language-service/user-language-service';
 
 @Component({
     selector: 'payments-history-detail-page',
@@ -21,7 +21,7 @@ export class PaymentsHistoryDetailPage implements OnInit, OnDestroy {
     constructor( public _navParams : NavParams,
                  public _navCtrl   : NavController,
                  public _translate: TranslateService,
-                 private _userLanguageService: UserLanguageService ){
+                 private _userLanguageService: UserLanguageServiceProvider ){
         this._invoice = this._navParams.get("invoice");
     }
 

@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { AddOrderPaymentPage } from "./add-order-payment/add-order-payment";
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../../../providers/user-language-service/user-language-service';
 import { OrderTranslateInfo } from 'qmo_web/both/models/restaurant/order.model';
 
 /*
@@ -38,7 +38,7 @@ export class OrderPaymentTranslatePage implements OnInit, OnDestroy {
     * @param _userLanguageService 
     * @param _translate 
     */
-  constructor(private _userLanguageService: UserLanguageService,
+  constructor(private _userLanguageService: UserLanguageServiceProvider,
               private _toastCtrl  : ToastController,
               public _navParams: NavParams, 
               public _alertCtrl   : AlertController,

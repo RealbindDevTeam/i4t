@@ -8,7 +8,7 @@ import { MatSnackBarModule, MatDatepickerModule, MatNativeDateModule, MatDialogM
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { routes, ROUTES_PROVIDERS } from './app.routes';
+import { routes } from './app.routes';
 import { Ng2PageScrollModule } from 'ng2-page-scroll';
 //import { AgmCoreModule } from '@agm/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -37,13 +37,11 @@ const defaultOptions: AppConfigOptions = {
   closedSidenavStyle: 'icon overlay'
 };
 
-let moduleDefinition;
-
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '/i18n/', '.json');
 }
 
-moduleDefinition = {
+@NgModule({
   imports: [
     BrowserModule,
     FormsModule,
@@ -95,7 +93,7 @@ moduleDefinition = {
   providers: [
     ColorService,
     { provide: 'AppConfigOptions', useValue: defaultOptions },
-    ...ROUTES_PROVIDERS,
+    { provide: 'canActivateForLoggedIn', useValue: () => !!Meteor.userId() },
     CustomerGuard,
     AdminGuard,
     WaiterGuard,
@@ -111,9 +109,7 @@ moduleDefinition = {
     AppComponent,
     ...MODAL_DIALOG_DECLARATIONS
   ]
-}
-
-@NgModule(moduleDefinition)
+})
 export class AppModule {
   static forRoot(): ModuleWithProviders {
     return {

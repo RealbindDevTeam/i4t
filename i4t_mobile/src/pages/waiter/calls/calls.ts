@@ -12,7 +12,7 @@ import { RestaurantImageThumb } from 'qmo_web/both/models/restaurant/restaurant.
 import { PaymentConfirmPage } from "./payment-confirm/payment-confirm";
 import { SendOrderDetailsPage } from './send-order-detail/send-order-detail';
 import { RestaurantExitConfirmPage } from './restaurant-exit-confirm/restaurant-exit-confirm';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 
 @Component({
   selector: 'calls-page',
@@ -47,7 +47,7 @@ export class CallsPage implements OnInit, OnDestroy {
     public _loadingCtrl: LoadingController,
     private _toastCtrl: ToastController,
     public _navCtrl: NavController,
-    private _userLanguageService: UserLanguageService) {
+    private _userLanguageService: UserLanguageServiceProvider) {
     _translate.setDefaultLang('en');
   }
 
