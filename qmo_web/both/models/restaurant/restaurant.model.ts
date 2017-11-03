@@ -151,3 +151,19 @@ export interface RestaurantLegality {
     self_accepting_date?: Date;
     text_at_the_end?: string;
 }
+
+/**
+ * Restaurant Profile Model
+ */
+export interface RestaurantProfile {
+    _id?: string;
+    restaurant_id: string;
+    restaurant_description: string;
+    web_page?: string;
+    phone?: string;
+    email?: string;
+    schedule: RestaurantSchedule;
+    social_networks?: RestaurantSocialNetwork;
+    location: RestaurantLocation;
+    images?: string[];
+}

@@ -1,0 +1,23 @@
+<mat-card mat-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
+    <mat-card-content>
+        <div class="card_initial">
+            <div class="card_initial has-image">
+                <div class="card_initial-image-container">
+                    <img class="card_initial-image" 
+                        src="/images/employees.png"/>
+                </div>
+                <div class="card_initial-copy">
+                    <div class="card_initial-tagline">
+                        No se Encuentran Restaurantes
+                    </div>
+                    <div class="card_initial-additional-links">
+                        No se Encuentran Restaurantes
+                    </div>
+                </div>
+                <div class="card_initial-button">
+                    <button mat-raised-button (click)="goToAddRestaurant()">Crear Restaurante</button>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

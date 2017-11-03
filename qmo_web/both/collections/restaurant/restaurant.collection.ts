@@ -1,5 +1,5 @@
 import { MongoObservable } from 'meteor-rxjs';
-import { Restaurant, RestaurantImage, RestaurantImageThumb, RestaurantTurn, RestaurantLegality } from '../../models/restaurant/restaurant.model';
+import { Restaurant, RestaurantImage, RestaurantImageThumb, RestaurantTurn, RestaurantLegality, RestaurantProfile } from '../../models/restaurant/restaurant.model';
 import { Meteor } from 'meteor/meteor';
 
 /**
@@ -76,4 +76,17 @@ export const RestaurantsLegality = new MongoObservable.Collection<RestaurantLega
 RestaurantsLegality.allow({
     insert: loggedIn,
     update: loggedIn
-})
+});
+
+/**
+ * Restaurant Profile Collection
+ */
+export const RestaurantsProfile = new MongoObservable.Collection<RestaurantProfile>('restaurants_profile');
+
+/**
+ * Allow Restaurant Profile collection insert and update functions
+ */
+RestaurantsProfile.allow({
+    insert: loggedIn,
+    update: loggedIn
+});
