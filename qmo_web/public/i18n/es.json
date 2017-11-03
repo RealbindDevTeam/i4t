@@ -252,7 +252,8 @@
             "COLLABORATORS": "Colaboradores",
             "MONTHLY_CONFIG": "Configuración mensual",
             "TABLE_CONTROL": "Control de Mesas",
-            "INVOICES_DOWNLOAD": "Descarga de facturas"
+            "INVOICES_DOWNLOAD": "Descarga de facturas",
+            "PROFILE": "Perfil de Restaurante"
         },
         "PAYMENTS": {
             "PAYMENTS": "Pagos",

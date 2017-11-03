@@ -252,7 +252,8 @@
             "COLLABORATORS": "Employees",
             "MONTHLY_CONFIG": "Monthly config",
             "TABLE_CONTROL": "Tables Control",
-            "INVOICES_DOWNLOAD" : "Invoices download"
+            "INVOICES_DOWNLOAD" : "Invoices download",
+            "PROFILE": "Restaurant Profile"
         },
         "PAYMENTS": {
             "PAYMENTS": "Payments",

@@ -21,3 +21,109 @@
         </div>
     </mat-card-content>
 </mat-card>
+
+<div *ngIf="_thereAreRestaurants">        
+    <mat-card>
+        <mat-card-title>Perfil de Restaurantes</mat-card-title>
+        <mat-card-subtitle>Crea el perfil de tus restaurantes para que todos lo vean</mat-card-subtitle>
+        <mat-card-content>
+            <mat-select placeholder="Selecciona restaurante">
+                <mat-option *ngFor="let res of _restaurants | async" (click)="changeRestaurant(res._id, res.name);" value="{{res._id}}"> {{res.name}}</mat-option>
+            </mat-select>
+        </mat-card-content>
+    </mat-card>
+    <mat-card *ngIf="_thereAreRestaurants && !_anyRestaurantIsSelected" mat-cell="12" class="demo-card demo-basic">
+        <mat-card-content>
+            <div class="card_initial">
+                <div class="card_initial has-image">
+                    <div class="card_initial-image-container">
+                        <img class="card_initial-image" 
+                            src="/images/employees.png"/>
+                    </div>
+                    <div class="card_initial-copy">
+                        <div class="card_initial-tagline">
+                            Por favor selecciona un restaurante para crear o modificar su perfil
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <mat-card *ngIf="_thereAreRestaurants && _anyRestaurantIsSelected">
+        <mat-card-title>{{_restaurantName}}</mat-card-title>
+        <mat-card-subtitle>Ingresa la siguiente informacion para que las personas te conozcan mas al momento de buscarte en iurest</mat-card-subtitle>
+        <mat-card-content>
+            <form [formGroup]="_profileForm">
+                <div style="width: 99%;">
+                    <p>Escribe sobre tu restaurante. Cuentanos sobre tu historia, lo que te motiva, tu comida y tus servicios:</p>
+                    <mat-form-field style="width: 100%;">
+                        <textarea matInput required formControlName="restaurant_description" placeholder="Descripcion de tu restaurante" minlength="1" maxlength="200" #inputDescription></textarea>
+                        <mat-hint align="end">{{inputDescription.value.length}} / 200</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <div style="width: 49%;display: inline-block;">
+                        <p>Si tienes pagina de internet, escribe la URL (www.mirestaurante.com):</p>
+                        <mat-form-field style="width: 95%;">
+                            <input matInput formControlName="web_page" placeholder="Pagina de intenet" minlength="1" maxlength="40" #inputWebpage>
+                            <mat-hint align="end">{{inputWebpage.value.length}} / 40</mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div style="width: 49%;display: inline-block;">
+                        <p>Ingresa el numero de telefono de tu restaurante (si tienes):</p>
+                        <mat-form-field style="width: 100%;">
+                            <input matInput formControlName="phone" placeholder="Telefono" minlength="1" maxlength="30" #inputPhone>
+                            <mat-hint align="end">{{inputPhone.value.length}} / 30</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div>
+                    <div style="width: 49%;display: inline-block;">
+                        <p>Ingresa un correo electronico de contacto (Si tienes):</p>
+                        <mat-form-field style="width: 95%;">
+                            <input matInput formControlName="email" placeholder="Email" minlength="1" maxlength="40" #inputEmail>
+                            <mat-hint align="end">{{inputEmail.value.length}} / 40</mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div style="width: 49%;display: inline-block;">
+                        <p>Si tienes pagina en Facebook para tu restaurante, ingresa el link aqui:</p>
+                        <mat-form-field style="width: 100%;">
+                            <input matInput formControlName="facebookLink" placeholder="Link de Facebook" minlength="1" maxlength="60" #inputFacebooklink>
+                            <mat-hint align="end">{{inputFacebooklink.value.length}} / 60</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div>
+                    <div style="width: 49%;display: inline-block;">
+                        <p>Si tienes pagina en Instagram para tu restaurante, ingresa el link aqui:</p>
+                        <mat-form-field style="width: 95%;">
+                            <input matInput formControlName="instagramLink" placeholder="Link de Instagram" minlength="1" maxlength="60" #inputInstagramlink>
+                            <mat-hint align="end">{{inputInstagramlink.value.length}} / 60</mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div style="width: 49%;display: inline-block;">
+                        <p>Si tienes pagina en Twitter para tu restaurante, ingresa el link aqui:</p>
+                        <mat-form-field style="width: 100%;">
+                            <input matInput formControlName="twitterLink" placeholder="Link de Twitter" minlength="1" maxlength="60" #inputTwitterlink>
+                            <mat-hint align="end">{{inputTwitterlink.value.length}} / 60</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+            <div *ngIf="!_scheduleInEditMode" style="padding-top: 15px;text-align: -webkit-center;">
+                <p>Ingresa el horario de atencion del restaurante</p>
+                <iu-schedule (finalSchedule)="receiveSchedule($event)"></iu-schedule>
+            </div>
+            <div *ngIf="_scheduleInEditMode" style="padding-top: 15px;text-align: -webkit-center;">
+                <p>Ingresa el horario de atencion del restaurante</p>
+                <iu-schedule [scheduleToEdit]="_scheduleToEdit" (finalSchedule)="receiveSchedule($event)"></iu-schedule>
+            </div>
+            <div>
+                <p>Ingresa la ubicacion del restaurante</p>
+                <agm-map>
+                    <agm-marker></agm-marker>
+                </agm-map>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

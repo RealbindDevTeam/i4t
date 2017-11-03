@@ -162,8 +162,8 @@ export interface RestaurantProfile {
     web_page?: string;
     phone?: string;
     email?: string;
-    schedule: RestaurantSchedule;
     social_networks?: RestaurantSocialNetwork;
+    schedule: RestaurantSchedule;
     location: RestaurantLocation;
     images?: string[];
 }
