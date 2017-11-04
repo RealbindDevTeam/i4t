@@ -20,7 +20,6 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
     private _profileForm            : FormGroup;
-
     private _restaurants            : Observable<Restaurant[]>;
     
     private _restaurantsSub         : Subscription;
@@ -34,9 +33,10 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
     private _anyRestaurantIsSelected: boolean = false;
     private _scheduleInEditMode     : boolean = false;
     private _restaurantName         : string = '';
+    private _filesToUpload          : Array<File> = [];
 
-    lat: number = 0;
-    lng: number = 0;
+    private _lat: number = 4.5981;
+    private _lng: number = -74.0758;
     
     /**
      * RestaurantProfileComponent Constructor
@@ -151,6 +151,8 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                     this._profileForm.controls['twitterLink'].setValue( this._restaurantProfile.social_networks.twitter === undefined || this._restaurantProfile.social_networks.twitter === null ? '' : this._restaurantProfile.social_networks.twitter );
                     this._scheduleInEditMode = true;
                     this._scheduleToEdit = this._restaurantProfile.schedule;
+                    this._lat = this._restaurantProfile.location.lat;
+                    this._lng = this._restaurantProfile.location.lng;
                 }
             });
         });
@@ -162,6 +164,44 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
      */
     receiveSchedule(_event: any): void {
         this._schedule = _event;
+    }
+
+    /**
+     * Set restaurant position
+     * @param {MouseEvent} $event
+     */
+    mapClicked( $event: MouseEvent ) {
+        this._lat = $event.coords.lat;
+        this._lng = $event.coords.lng;
+    }
+
+    /**
+     * Set marker in the map
+     * @param {MouseEvent} event 
+     */
+    markerDragEnd( $event: MouseEvent ) {
+        this._lat = $event.coords.lat;
+        this._lng = $event.coords.lng;
+    }
+
+    /**
+     * When user change Image, this function allow insert in the store
+     * @param {any} _fileInput
+     */
+    onChangeImage(_fileInput: any): void {
+        let _lImages: Array<File> = [];
+        _lImages = <Array<File>>_fileInput.target.files;
+        for( let img of _lImages ){
+            this._filesToUpload.push( img );
+        }
+    }
+
+    /**
+     * Remove image from files to upload
+     * @param {number} _pIndex
+     */
+    removeImageList( _pIndex: number ):void{
+        this._filesToUpload.splice( _pIndex, 1 );
     }
 
     /**

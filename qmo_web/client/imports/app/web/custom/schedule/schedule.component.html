@@ -1,14 +1,18 @@
 <div>
-    <div style="width: 15%;display: inline-block;">
-        <mat-select placeholder="{{'SCHEDULE.SELECT_OPENING_HOUR' | translate}}">
-            <mat-option *ngFor="let hour of _hours | async" value="{{hour.hour}}" (click)="changeOpenTime(hour.hour)">{{hour.hour}}</mat-option>
-        </mat-select>
+    <div style="display: inline-block;">
+        <mat-form-field>
+            <mat-select placeholder="{{'SCHEDULE.SELECT_OPENING_HOUR' | translate}}">
+                <mat-option *ngFor="let hour of _hours | async" value="{{hour.hour}}" (click)="changeOpenTime(hour.hour)">{{hour.hour}}</mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
     <label style="padding-left: 20px; padding-right: 20px;font-size: 1.2rem;display: inline-block;"> - </label>
-    <div style="width: 15%;display: inline-block;">
-        <mat-select placeholder="{{'SCHEDULE.SELECT_CLOSING_HOUR' | translate}}">
-            <mat-option *ngFor="let hour of _hours | async" value="{{hour.hour}}" (click)="changeCloseTime(hour.hour)">{{hour.hour}}</mat-option>
-        </mat-select>
+    <div style="display: inline-block;">
+        <mat-form-field>
+            <mat-select placeholder="{{'SCHEDULE.SELECT_CLOSING_HOUR' | translate}}">
+                <mat-option *ngFor="let hour of _hours | async" value="{{hour.hour}}" (click)="changeCloseTime(hour.hour)">{{hour.hour}}</mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
 </div>
 <br/>
