@@ -33,11 +33,12 @@ export interface CompanyInfo {
     regime?: string;
     contribution?: string;
     retainer?: string;
+    agent_retainter?: string;
     generated_computer_msg?: string;
     resolution_number?: string;
     resolution_prefix?: string;
-    resolution_start_date?: string;
-    resolution_end_date?: string;
+    resolution_start_date?: Date;
+    resolution_end_date?: Date;
     resolution_start_value?: string;
     resolution_end_value?: string;
 }

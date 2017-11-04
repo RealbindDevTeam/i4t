@@ -756,9 +756,42 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                     }
                 });
 
+            let company_name = Parameters.findOne({ name: 'company_name' }).value;
+            let company_address = Parameters.findOne({ name: 'company_address' }).value;
+            let company_phone = Parameters.findOne({ name: 'company_phone' }).value;
+            let company_country = Parameters.findOne({ name: 'company_country' }).value;
+            let company_city = Parameters.findOne({ name: 'company_city' }).value;
+            let company_nit = Parameters.findOne({ name: 'company_nit' }).value;
+            let company_regime = Parameters.findOne({ name: 'company_regime' }).value;
+            let company_contribution = Parameters.findOne({ name: 'company_contribution' }).value;
+            let company_retainer = Parameters.findOne({ name: 'company_retainer' }).value;
+            let company_agent_retainer = Parameters.findOne({ name: 'company_agent_retainer' }).value;
+            let invoice_generated_msg = Parameters.findOne({ name: 'invoice_generated_msg' }).value;
+
             let company_info: CompanyInfo = {
-                name: 'Realbind'
+                name: company_name,
+                address: company_address,
+                phone: company_phone,
+                country: company_country,
+                city: company_city,
+                nit: company_nit,
+                regime: company_regime,
+                contribution: company_contribution,
+                retainer: company_retainer,
+                agent_retainter: company_agent_retainer,
+                generated_computer_msg: invoice_generated_msg,
+                resolution_number: var_resolution,
+                resolution_prefix: var_prefix,
+                resolution_start_date: var_start_date,
+                resolution_end_date: var_end_date,
+                resolution_start_value: var_start_value.toString(),
+                resolution_end_value: var_end_value.toString()
             };
+
+            let client_info: ClientInfo = {
+                
+            };
+
 
             IurestInvoices.collection.insert({
                 payment_history_id: _paymentHistoryId,
