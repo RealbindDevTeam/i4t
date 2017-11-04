@@ -27,9 +27,11 @@
         <mat-card-title>{{'TABLES.TABLES_SEARCH' | translate}}</mat-card-title>
         <mat-card-subtitle>{{'TABLES.SEARCH_TABLES' | translate}}</mat-card-subtitle>
         <mat-card-content>
-            <mat-select placeholder="{{'TABLES.SELECT_RESTAURANT' | translate}}" style="width: 95%; margin-bottom: 30px">
-                <mat-option *ngFor="let rest of restaurants | async" (click)="changeRestaurantFilter(rest._id);" value="{{rest._id}}">{{rest.name}}</mat-option>
-            </mat-select>
+            <mat-form-field style="width: 95%; margin-bottom: 30px">
+                <mat-select placeholder="{{'TABLES.SELECT_RESTAURANT' | translate}}">
+                    <mat-option *ngFor="let rest of restaurants | async" (click)="changeRestaurantFilter(rest._id);" value="{{rest._id}}">{{rest.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
             <div *ngIf="show_cards">
                 <mat-checkbox [(ngModel)]="all_checked" [disabled]="enable_print" matTooltip="{{tooltip_msg}}">{{'TABLES.SELECT_ALL' | translate}}
 

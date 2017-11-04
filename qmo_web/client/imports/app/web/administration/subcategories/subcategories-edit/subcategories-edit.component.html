@@ -6,9 +6,11 @@
           <input matInput required formControlName="editName" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #editInputName>
           <mat-hint align="end">{{editInputName.value.length}} / 50</mat-hint>
       </mat-form-field>
-      <mat-select class="select" formControlName="editCategory" placeholder="{{'SUBCATEGORIES.CATEGORY_SELECTION' | translate}}">
+      <mat-form-field class="select">
+        <mat-select formControlName="editCategory" placeholder="{{'SUBCATEGORIES.CATEGORY_SELECTION' | translate}}">
           <mat-option *ngFor="let category of _categories | async" value="{{category._id}}" (click)="changeCategoryEdit(category._id);" ng-selected="_subcategoryCategory === category._id">{{category.name}}</mat-option>
-      </mat-select>
+        </mat-select>
+      </mat-form-field>
       <mat-slide-toggle formControlName="editActive">{{'STATE' | translate}}</mat-slide-toggle>
       <br/>
       <div>

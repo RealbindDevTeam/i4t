@@ -1,3 +1,4 @@
+
 <mat-card>
     <mat-card-title>{{'CATEGORIES.CATEGORY_EDIT' | translate}}</mat-card-title>
     <mat-card-content>
@@ -6,9 +7,11 @@
                 <input matInput required formControlName="editName" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #editInputName>
                 <mat-hint align="end">{{editInputName.value.length}} / 50</mat-hint>
             </mat-form-field>
-            <mat-select class="select" formControlName="editSection" placeholder="{{'CATEGORIES.SECCION_SELECTION' | translate}}">
-                <mat-option *ngFor="let section of _sections | async" value="{{section._id}}" (click)="changeSectionEdit(section._id);" ng-selected="_categorySection === section._id">{{section.name}}</mat-option>
-            </mat-select>
+            <mat-form-field class="select">
+                <mat-select formControlName="editSection" placeholder="{{'CATEGORIES.SECCION_SELECTION' | translate}}">
+                    <mat-option *ngFor="let section of _sections | async" value="{{section._id}}" (click)="changeSectionEdit(section._id);" ng-selected="_categorySection === section._id">{{section.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
             <mat-slide-toggle formControlName="editIsActive">{{'STATE' | translate}}</mat-slide-toggle>
             <br/>
             <div>

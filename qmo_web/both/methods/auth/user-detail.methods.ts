@@ -5,9 +5,11 @@ import { UserDetail } from '../../models/auth/user-detail.model';
 if (Meteor.isServer) {
     Meteor.methods({
         getRole: function () {
-            let role: string;
+            let role: string = "";
             let userDetail = UserDetails.collection.findOne({ user_id: this.userId });
-            role = userDetail.role_id;
+            if(userDetail){
+                role = userDetail.role_id;
+            }
             return role;
         },
         validateAdmin: function () {

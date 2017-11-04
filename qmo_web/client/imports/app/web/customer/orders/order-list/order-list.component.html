@@ -60,11 +60,13 @@
                                 </mat-list-item>
                             </mat-list>
                         </mat-card>
-                        <mat-select placeholder="{{'ORDER_LIST.TABLE_ORDERS' | translate}}" class="orders-bar" [(ngModel)]="_initialValue">
-                            <mat-option (click)="changeOrderFilter('all')" value="all">{{'ORDER_LIST.ALL_ORDERS' | translate}}</mat-option>
-                            <mat-option (click)="changeOrderFilter('customer')" value="customer">{{'ORDER_LIST.MY_ORDERS' | translate}}</mat-option>
-                            <mat-option (click)="changeOrderFilter('other')" value="other">{{'ORDER_LIST.OTHER_ORDERS' | translate}}</mat-option>
-                        </mat-select>
+                        <mat-form-field class="orders-bar">
+                            <mat-select placeholder="{{'ORDER_LIST.TABLE_ORDERS' | translate}}" [(ngModel)]="_initialValue">
+                                <mat-option (click)="changeOrderFilter('all')" value="all">{{'ORDER_LIST.ALL_ORDERS' | translate}}</mat-option>
+                                <mat-option (click)="changeOrderFilter('customer')" value="customer">{{'ORDER_LIST.MY_ORDERS' | translate}}</mat-option>
+                                <mat-option (click)="changeOrderFilter('other')" value="other">{{'ORDER_LIST.OTHER_ORDERS' | translate}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                         <div *ngIf="_showCustomerOrders || _showAllOrders">
                             <div *ngFor="let or of _orders | async; let i = index">
                                 <mat-toolbar class="customer-order" (click)="showCustomerOrderDetail(or,i)">

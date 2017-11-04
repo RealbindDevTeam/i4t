@@ -39,10 +39,11 @@
           <input matInput required formControlName="name" placeholder="{{'NAME' | translate}}" minlength="1" maxlength="50" #inputName>
           <mat-hint align="end">{{inputName.value.length}} / 50</mat-hint>
         </mat-form-field>
-        <mat-select class="select" formControlName="category" required id="categorySelect" placeholder="{{'SUBCATEGORIES.CATEGORY_SELECTION' | translate}}"
-          [(ngModel)]="_selectedValue">
-          <mat-option *ngFor="let category of _categories | async" value="{{category._id}}" (click)="changeCategory(category._id);">{{category.name}}</mat-option>
-        </mat-select>
+        <mat-form-field  class="select">
+          <mat-select formControlName="category" required id="categorySelect" placeholder="{{'SUBCATEGORIES.CATEGORY_SELECTION' | translate}}" [(ngModel)]="_selectedValue">
+            <mat-option *ngFor="let category of _categories | async" value="{{category._id}}" (click)="changeCategory(category._id);">{{category.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
       <br/>
       <button mat-raised-button class="secondary-button" [disabled]="!_subcategoryForm.valid" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>

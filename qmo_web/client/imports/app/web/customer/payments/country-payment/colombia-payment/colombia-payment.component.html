@@ -51,9 +51,11 @@
                                 </mat-form-field>{{_currencyCode}}                
                             </div>
                         </div>
-                        <mat-select class="payment-method" placeholder="{{'PAYMENTS.COLOMBIA.SELECT_PAYMENT_METHOD' | translate}}" [(ngModel)]="_paymentMethodId">
-                            <mat-option *ngFor="let paymentMethod of _paymentMethods | async" (click)="setPaymentMethod(paymentMethod._id);" value="{{paymentMethod._id}}">{{paymentMethod.name | translate}}</mat-option>
-                        </mat-select>
+                        <mat-form-field class="payment-method">
+                            <mat-select placeholder="{{'PAYMENTS.COLOMBIA.SELECT_PAYMENT_METHOD' | translate}}" [(ngModel)]="_paymentMethodId">
+                                <mat-option *ngFor="let paymentMethod of _paymentMethods | async" (click)="setPaymentMethod(paymentMethod._id);" value="{{paymentMethod._id}}">{{paymentMethod.name | translate}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                         <div>
                             <div class="block">
                                 <div class="item-inner">
