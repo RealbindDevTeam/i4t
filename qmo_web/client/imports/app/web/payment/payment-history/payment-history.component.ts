@@ -33,7 +33,7 @@ let base64 = require('base-64');
 @Component({
     selector: 'payment-history',
     templateUrl: './payment-history.component.html',
-    styleUrls: [ './payment-history.component.scss' ]
+    styleUrls: ['./payment-history.component.scss']
 })
 export class PaymentHistoryComponent implements OnInit, OnDestroy {
 
@@ -430,12 +430,6 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
 
         var myImage = new Image();
         myImage.src = '/images/logo_iurest.png';
-
-        // Nit encima de empresa
-        // Que diga resolución de la DIan y consecutivo
-        // Revisar mensajes de habeas data
-        // Esta factura es un titulo valor...
-        // Registrar la BD en la superintendencia financiera ***
 
         myImage.onload = function () {
             qr_pdf.addImage(myImage, 'png', 13, 13, 35, 10);

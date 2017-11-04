@@ -1084,7 +1084,9 @@
         "AUTH_ERROR_MSG": "Los datos ingresados de tu tarjeta no coinciden, por favor verifícalos",
         "FIRST_NAME": "Nombres",
         "LAST_NAME": "Apellidos",
-        "UNAVAILABLE_PAYMENT": "La opción de pago no esta disponible por el momento, por favor intenta mas tarde"
+        "UNAVAILABLE_PAYMENT": "La opción de pago no esta disponible por el momento, por favor intenta mas tarde",
+        "CC_PAYMENT_METHOD": "Tarjeta de crédito",
+        "DESCRIPTION": "Servicio mensual de Iurest"
     },
     "RES_PAYMENT_HISTORY": {
         "TITLE": "Historial de pagos",

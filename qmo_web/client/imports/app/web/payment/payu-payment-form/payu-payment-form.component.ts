@@ -33,6 +33,7 @@ import { UserDetail } from '../../../../../../both/models/auth/user-detail.model
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 import { InvoicesInfo } from '../../../../../../both/collections/payment/invoices-info.collection';
 import { IurestInvoices } from '../../../../../../both/collections/payment/iurest-invoices.collection';
+import { CompanyInfo, ClientInfo } from '../../../../../../both/models/payment/iurest-invoice.model';
 import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
 
 let md5 = require('md5');
@@ -333,7 +334,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     */
     openConfirmDialog() {
         let auxstreet: string = this._paymentForm.value.streetOne;
-        this.generateInvoiceInfo();
         this._restaurantsNamesArray = [];
 
         if (this._mode === 'normal') {
@@ -648,7 +648,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             });
         }
 
-        PaymentsHistory.collection.insert({
+        let payment_history: string = PaymentsHistory.collection.insert({
             restaurantIds: this._restaurantsIdsArray,
             startDate: this._firstMonthDay,
             endDate: this._lastMonthDay,
@@ -674,14 +674,14 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                     Restaurants.collection.update({ _id: resId }, { $set: { isActive: true, firstPay: false } });
                 });
             }
+            this.generateInvoiceInfo(payment_history);
         }
     }
 
     /**
      * This function generate the register for invoice
      */
-    generateInvoiceInfo() {
-
+    generateInvoiceInfo(_paymentHistoryId: string) {
         let var_resolution: string;
         let var_prefix: string;
         let var_start_value: number;
@@ -755,6 +755,27 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                         start_new_value: var_start_new
                     }
                 });
+
+            let company_info: CompanyInfo = {
+                name: 'Realbind'
+            };
+
+            IurestInvoices.collection.insert({
+                payment_history_id: _paymentHistoryId,
+                country_id: this._selectedCountry._id,
+                number: var_current_value,
+                generation_date: new Date(),
+                payment_method: this.itemNameTraduction('PAYU_PAYMENT_FORM.CC_PAYMENT_METHOD'),
+                description: this.itemNameTraduction('PAYU_PAYMENT_FORM.DESCRIPTION'),
+                period: this._firstMonthDay.getDate() + '/' + (this._firstMonthDay.getMonth() + 1) + '/' + this._firstMonthDay.getFullYear() +
+                ' - ' + this._lastMonthDay.getDate() + '/' + (this._lastMonthDay.getMonth() + 1) + '/' + this._lastMonthDay.getFullYear(),
+                amount_no_iva: this.getReturnBase(),
+                subtotal: this.getReturnBase(),
+                iva: this.getValueTax(),
+                total: this._valueToPay,
+                currency: this._currency,
+                company_info: company_info
+            });
         }
     }
 

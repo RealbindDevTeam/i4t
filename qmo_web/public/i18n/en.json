@@ -1084,7 +1084,9 @@
         "AUTH_ERROR_MSG": "the entered card info does not match, please check",
         "FIRST_NAME": "Firstname",
         "LAST_NAME": "Lastname",
-        "UNAVAILABLE_PAYMENT": "The payment option is not available at this moment, please try later"
+        "UNAVAILABLE_PAYMENT": "The payment option is not available at this moment, please try later",
+        "CC_PAYMENT_METHOD": "Credit card",
+        "DESCRIPTION": "Monthly Iurest service"
     },
     "RES_PAYMENT_HISTORY": {
         "TITLE": "Payment history",
