@@ -8,7 +8,7 @@ import { WaiterCallPage } from '../waiter-call/waiter-call';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
 import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-call-detail.collection';
 
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 import { ChangeTablePage } from './table-change/table-change';
 import { RestaurantExitPage } from './restaurant-exit/restaurant-exit';
 
@@ -42,7 +42,7 @@ export class OptionsPage implements OnInit, OnDestroy {
                public _loadingCtrl: LoadingController,
                private _ngZone: NgZone,
                private _translate: TranslateService,
-               private _userLanguageService: UserLanguageService ) {
+               private _userLanguageService: UserLanguageServiceProvider ) {
     _translate.setDefaultLang('en');
   }
 

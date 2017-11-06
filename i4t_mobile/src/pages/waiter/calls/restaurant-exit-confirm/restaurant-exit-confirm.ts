@@ -10,7 +10,7 @@ import { Users } from 'qmo_web/both/collections/auth/user.collection';
 import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
 import { Table } from 'qmo_web/both/models/restaurant/table.model';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../../providers/user-language-service/user-language-service';
 
 @Component({
     selector: 'restaurant-exit-confirm',
@@ -39,7 +39,7 @@ export class RestaurantExitConfirmPage implements OnInit, OnDestroy {
         public _translate: TranslateService,
         private _toastCtrl: ToastController,
         private _alertCtrl: AlertController,
-        private _userLanguageService: UserLanguageService,
+        private _userLanguageService: UserLanguageServiceProvider,
         private _ngZone: NgZone) {
         _translate.setDefaultLang('en');
         this._call = this._params.get('call');

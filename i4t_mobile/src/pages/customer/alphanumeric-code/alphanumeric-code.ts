@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
 import { Table } from 'qmo_web/both/models/restaurant/table.model';
 import { SectionsPage } from '../sections/sections';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 
 @Component({
   selector: 'page-alphanumeric-code',
@@ -24,7 +24,7 @@ export class AlphanumericCodePage {
               private _viewCtrl: ViewController, 
               public _navParams: NavParams, 
               public _translate: TranslateService,
-              private _userLanguageService: UserLanguageService) {
+              private _userLanguageService: UserLanguageServiceProvider) {
     _translate.setDefaultLang('en');
   }
 

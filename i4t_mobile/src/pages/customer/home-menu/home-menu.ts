@@ -13,7 +13,7 @@ import { TabsPage } from '../tabs/tabs';
 import { UserProfileImage } from 'qmo_web/both/models/auth/user-profile.model';
 import { Users, UserImages } from 'qmo_web/both/collections/auth/user.collection';
 import { User } from 'qmo_web/both/models/auth/user.model';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 
 @Component({
     templateUrl: 'home-menu.html'
@@ -46,7 +46,7 @@ export class HomeMenu implements OnInit, OnDestroy {
                public _loadingCtrl: LoadingController,
                private _translate: TranslateService,
                private _ngZone: NgZone,
-               private _userLanguageService: UserLanguageService ){
+               private _userLanguageService: UserLanguageServiceProvider ){
         _translate.setDefaultLang('en');
         this.initializeApp();
         let _lHome = this.itemNameTraduction('MOBILE.HOME-MENU.HOME');

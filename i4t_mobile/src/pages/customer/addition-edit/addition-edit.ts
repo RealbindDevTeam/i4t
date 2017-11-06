@@ -8,7 +8,7 @@ import { Addition } from 'qmo_web/both/models/administration/addition.model';
 import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
 import { Order, OrderAddition } from 'qmo_web/both/models/restaurant/order.model';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 
 @Component({
     selector: 'page-additions-page',
@@ -47,7 +47,7 @@ export class AdditionEditPage implements OnInit, OnDestroy {
         private _formBuilder: FormBuilder,
         private _translate: TranslateService,
         private _toastCtrl: ToastController,
-        private _userLanguageService: UserLanguageService) {
+        private _userLanguageService: UserLanguageServiceProvider) {
         _translate.setDefaultLang('en');
         this._orderAddition = this._navParams.get("order_addition");
         this._currentOrder = this._navParams.get("order");

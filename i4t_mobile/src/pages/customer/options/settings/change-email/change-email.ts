@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AlertController, NavController, NavParams, ViewController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../../../providers/user-language-service/user-language-service';
 
 import { CustomValidators } from '../../../../../validators/custom-validator';
 
@@ -32,7 +32,7 @@ export class ChangeEmailPage {
                 protected _translate: TranslateService, 
                 public viewCtrl: ViewController,
                 private _alertCtrl: AlertController,
-                private _userLanguageService: UserLanguageService) {
+                private _userLanguageService: UserLanguageServiceProvider) {
         _translate.setDefaultLang('en');
     }
     

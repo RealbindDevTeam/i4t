@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { Order, OrderTranslateInfo } from 'qmo_web/both/models/restaurant/order.model';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { Users } from 'qmo_web/both/collections/auth/user.collection';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../../../../providers/user-language-service/user-language-service';
 import { RestaurantsLegality } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 
 /*
@@ -53,7 +53,7 @@ export class ColombiaPaymentDetailsPage implements OnInit, OnDestroy {
                 public _loadingCtrl: LoadingController,
                 private _toastCtrl: ToastController,
                 public _navParams: NavParams,
-                private _userLanguageService: UserLanguageService,
+                private _userLanguageService: UserLanguageServiceProvider,
                 private _ngZone: NgZone){
         _translate.setDefaultLang('en');
     }

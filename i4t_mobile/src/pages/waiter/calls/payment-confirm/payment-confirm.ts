@@ -10,7 +10,7 @@ import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 import { Users } from 'qmo_web/both/collections/auth/user.collection';
 import { WaiterCallDetail } from 'qmo_web/both/models/restaurant/waiter-call-detail.model';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../../providers/user-language-service/user-language-service';
 
 @Component({
   selector : 'payment-confirm-page',
@@ -50,7 +50,7 @@ export class PaymentConfirmPage implements OnInit, OnDestroy {
                public _loadingCtrl: LoadingController,
                public _navCtrl: NavController,
                private _toastCtrl: ToastController,
-               private _userLanguageService: UserLanguageService ) {
+               private _userLanguageService: UserLanguageServiceProvider ) {
     _translate.setDefaultLang('en');
     this._call        = this._params.get('call');
     this._restauranId = this._call.restaurant_id;
