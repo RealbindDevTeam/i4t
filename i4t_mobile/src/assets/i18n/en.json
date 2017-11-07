@@ -166,8 +166,8 @@
             "ADDITION_EDITED": "Addition edited successfullIy",
             "QUANT": "Units",
             "TABLE_NOT_EXISTS": "The table doesn't exist. Please check the code",
-            "TABLE_NO_ACTIVE": "The restaurant doesn't have this table active for the service of Iurest",
-            "IUREST_NO_ACTIVE": "The restaurant doesn't have the Iurest service active. It is not possible to enter.",
+            "TABLE_NO_ACTIVE": "The restaurant doesn't have this table active for the service of iurest",
+            "IUREST_NO_ACTIVE": "The restaurant doesn't have the iurest service active. It is not possible to enter.",
             "TABLE": "Table",
             "RESTAURANT_NOT_EXISTS": "The restaurant doen't exist. It is not possible to enter.",
             "MSG_1": "You can order what you prefer",
@@ -356,7 +356,7 @@
             "DIALOG_ALERT": "System alert",
             "CHANGE_TABLE_OK": "Table change applied successfully",
             "TABLE_DESTINY_NOT_EXISTS": "The code for the new table does not exist. Please try again.",
-            "TABLE_DESTINY_NO_ACTIVE": "The table entered is not active for the Iurest service",
+            "TABLE_DESTINY_NO_ACTIVE": "The table entered is not active for the iurest service",
             "TABLE_DESTINY_NO_RESTAURANT": "The code of the table entered does not belong to the restaurant where you are located. Please try again.",
             "PENDING_ORDERS": "You have orders pending to confirm affecting your payment. Please check and try again.",
             "ORDERS_PAY_PROCESS": "You have orders in process of payment. It is not possible to change of table.",
@@ -401,14 +401,14 @@
         },
         "SIGN_OUT": {
             "TITLE_CONFIRM": "Sign Out",
-            "CONTENT_CONFIRM": "Are you sure to leave Iurest?",
+            "CONTENT_CONFIRM": "Are you sure to leave iurest?",
             "NO_BTN": "No",
             "YES_BTN": "Yes",
             "LOADING": "Please wait..."
         },
         "HOME": {
             "SLIDE-1": {
-                "WELCOME": "Welcome to Iurest",
+                "WELCOME": "Welcome to iurest",
                 "TEXT": "Order fast and easy in your favorite restaurant"
             },
             "SLIDE-2": {

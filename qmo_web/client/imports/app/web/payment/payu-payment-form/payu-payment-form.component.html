@@ -10,10 +10,11 @@
                 <mat-card-content>
                     <form [formGroup]="_paymentForm" (ngSubmit)="openConfirmDialog()">
                         <div style="margin-top: 2%">
-                            <mat-select formControlName="paymentMethod" [(ngModel)]="_selectedPaymentMethod" placeholder="{{'PAYU_PAYMENT_FORM.SELECT_METHOD' | translate}}"
-                                style="width: 43%">
-                                <mat-option *ngFor="let cCPaymentMethod of _cCPaymentMethods | async" value="{{cCPaymentMethod.payu_code}}" (click)="changeCcPaymentLogo(cCPaymentMethod.logo_name)">{{cCPaymentMethod.name}}</mat-option>
-                            </mat-select>
+                            <mat-form-field style="width: 43%">
+                                <mat-select formControlName="paymentMethod" [(ngModel)]="_selectedPaymentMethod" placeholder="{{'PAYU_PAYMENT_FORM.SELECT_METHOD' | translate}}">
+                                    <mat-option *ngFor="let cCPaymentMethod of _cCPaymentMethods | async" value="{{cCPaymentMethod.payu_code}}" (click)="changeCcPaymentLogo(cCPaymentMethod.logo_name)">{{cCPaymentMethod.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
                             <mat-form-field style="width: 54%; margin-left: 2%;">
                                 <input matInput formControlName="fullName" placeholder="{{'PAYU_PAYMENT_FORM.PAYER_FULLNAME' | translate}}">
                             </mat-form-field>
@@ -22,14 +23,16 @@
                             <mat-form-field style="width: 43%">
                                 <input matInput formControlName="cardNumber" placeholder="{{'PAYU_PAYMENT_FORM.CARD_NUMBER' | translate}}">
                             </mat-form-field>
-                            <mat-select formControlName="expirationMonth" [(ngModel)]="_selectedCardMonth" placeholder="{{'PAYU_PAYMENT_FORM.EXPIRATION_MONTH' | translate}}"
-                                style="width: 18%; margin-left: 2%;">
-                                <mat-option *ngFor="let month of _monthsArray" value="{{month.value}}">{{month.viewValue}}</mat-option>
-                            </mat-select>
-                            <mat-select formControlName="expirationYear" [(ngModel)]="_selectedCardYear" placeholder="{{'PAYU_PAYMENT_FORM.EXPIRATION_YEAR' | translate}}"
-                                style="width: 18%;">
-                                <mat-option *ngFor="let year of _yearsArray" value="{{year.value}}">{{year.viewValue}}</mat-option>
-                            </mat-select>
+                            <mat-form-field style="width: 18%; margin-left: 2%;">
+                                <mat-select formControlName="expirationMonth" [(ngModel)]="_selectedCardMonth" placeholder="{{'PAYU_PAYMENT_FORM.EXPIRATION_MONTH' | translate}}">
+                                    <mat-option *ngFor="let month of _monthsArray" value="{{month.value}}">{{month.viewValue}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field style="width: 18%;">
+                                <mat-select formControlName="expirationYear" [(ngModel)]="_selectedCardYear" placeholder="{{'PAYU_PAYMENT_FORM.EXPIRATION_YEAR' | translate}}">
+                                    <mat-option *ngFor="let year of _yearsArray" value="{{year.value}}">{{year.viewValue}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
                             <mat-form-field style="width: 15%; margin-left: 2%;">
                                 <input matInput formControlName="securityCode" placeholder="{{'PAYU_PAYMENT_FORM.SECURITY_CODE' | translate}}">
                             </mat-form-field>

@@ -1,3 +1,4 @@
+/*
 ServiceConfiguration.configurations.remove({
     service: 'facebook'
 });
@@ -27,3 +28,4 @@ ServiceConfiguration.configurations.insert({
     clientId: '665007448748-0pk8688jqp2874f81ev1q78efalfb2lu.apps.googleusercontent.com',
     secret: 'E0RV1a7mQvBtXgjqFoSrzV8L'
 });
+*/

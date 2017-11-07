@@ -174,7 +174,7 @@ export class HomeMenu implements OnInit, OnDestroy {
      */
     getUserImage(): string {
         if (this._user && this._user.services.facebook) {
-            return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
+            return "https://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
         } else {
             let _lUserImage: UserProfileImage = UserImages.findOne({ userId: Meteor.userId() });
             if (_lUserImage) {
