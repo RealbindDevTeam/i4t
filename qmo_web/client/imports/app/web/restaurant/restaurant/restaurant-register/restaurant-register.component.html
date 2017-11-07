@@ -11,15 +11,17 @@
                                     <mat-card-subtitle>{{'RESTAURANT_REGISTER.GENERAL_INFO_TEXT' | translate}}</mat-card-subtitle>
                                     <mat-card-content>
                                         <div style="margin-top: 3%;">
-                                            <mat-select formControlName="country" placeholder="{{'RESTAURANT_REGISTER.SELECT_COUNTRY' | translate}}" style="width: 48%;"
-                                                [(ngModel)]="_selectedCountryValue">
-                                                <mat-option *ngFor="let country of _countries | async" (click)="changeCountry(country._id);" value="{{country._id}}"> {{country.alfaCode3}} - {{country.name | translate}}</mat-option>
-                                            </mat-select>
-                                            <mat-select formControlName="city" placeholder="{{'RESTAURANT_REGISTER.SELECT_CITY' | translate}}" style="width: 48%;margin-left: 2%;"
-                                                [(ngModel)]="_selectedCityValue">
-                                                <mat-option *ngFor="let city of _cities | async" (click)="changeCity(city._id);" value="{{city._id}}">{{city.name}}</mat-option>
-                                                <mat-option *ngIf="(_cities | async)?.length > 0" (click)="changeCity('0000');" value="0000">{{'OTHER' | translate}}</mat-option>
-                                            </mat-select>
+                                            <mat-form-field style="width: 48%;">
+                                                <mat-select formControlName="country" placeholder="{{'RESTAURANT_REGISTER.SELECT_COUNTRY' | translate}}" [(ngModel)]="_selectedCountryValue">
+                                                    <mat-option *ngFor="let country of _countries | async" (click)="changeCountry(country._id);" value="{{country._id}}"> {{country.alfaCode3}} - {{country.name | translate}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <mat-form-field style="width: 48%;margin-left: 2%;">
+                                                <mat-select formControlName="city" placeholder="{{'RESTAURANT_REGISTER.SELECT_CITY' | translate}}" [(ngModel)]="_selectedCityValue">
+                                                    <mat-option *ngFor="let city of _cities | async" (click)="changeCity(city._id);" value="{{city._id}}">{{city.name}}</mat-option>
+                                                    <mat-option *ngIf="(_cities | async)?.length > 0" (click)="changeCity('0000');" value="0000">{{'OTHER' | translate}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
                                         </div>
 
                                         <div>
@@ -52,7 +54,7 @@
                                             <mat-form-field style="width: 48%;margin-left: 2%;">
                                                 <input matInput required formControlName="phone" type="tel" placeholder="{{'RESTAURANT_REGISTER.PHONE' | translate}}" minlength="1"
                                                     maxlength="30" #inputPhone>
-                                                <div mdPrefix>{{_countryIndicative}}&nbsp;</div>
+                                                <div matPrefix>{{_countryIndicative}}&nbsp;</div>
                                                 <mat-hint align="end">{{inputPhone.value.length}} / 30</mat-hint>
                                             </mat-form-field>
                                         </div>

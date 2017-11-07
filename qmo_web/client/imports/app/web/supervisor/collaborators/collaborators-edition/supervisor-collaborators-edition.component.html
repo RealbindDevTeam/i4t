@@ -6,9 +6,11 @@
             <table style="width: 100%" cellspacing="0">
                 <tr>
                     <td>
-                        <mat-select required formControlName="role" placeholder="{{'COLLABORATORS_REGISTER.SELECT_ROLE' | translate}}" style="width: 100%;" [disabled]="true">
-                            <mat-option *ngFor="let rol of _roles | async" value="{{rol._id}}">{{rol.name | translate}}</mat-option>
-                        </mat-select>
+                        <mat-form-field style="width: 100%;" >
+                            <mat-select required formControlName="role" placeholder="{{'COLLABORATORS_REGISTER.SELECT_ROLE' | translate}}" [disabled]="true">
+                                <mat-option *ngFor="let rol of _roles | async" value="{{rol._id}}">{{rol.name | translate}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </td>
                 </tr>
             </table>
@@ -52,17 +54,21 @@
                             <input matInput value="{{_tableInit}}" placeholder="{{'COLLABORATORS.TABLE_INIT' | translate}}" disabled="true"/>
                         </mat-form-field>
                         
-                        <mat-select style="width: 100px;" formControlName="table_init" *ngIf="!_disabledTablesAssignment">
-                            <mat-option *ngFor="let index of _tablesNumber" value="{{index}}" ng-selected="_tableInit">{{index}}</mat-option>
-                        </mat-select>
+                        <mat-form-field style="width: 100px;">
+                            <mat-select formControlName="table_init" *ngIf="!_disabledTablesAssignment">
+                                <mat-option *ngFor="let index of _tablesNumber" value="{{index}}" ng-selected="_tableInit">{{index}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                         &nbsp;
                         <mat-form-field *ngIf="_disabledTablesAssignment" style="width: 100px">
                             <input matInput value="{{_tableEnd}}" placeholder="{{'COLLABORATORS.TABLE_END' | translate}}" disabled="true"/>
                         </mat-form-field>
 
-                        <mat-select style="width: 100px;" formControlName="table_end" *ngIf="!_disabledTablesAssignment">
-                            <mat-option *ngFor="let index of _tablesNumber" value="{{index}}" ng-selected="_tableEnd">{{index}}</mat-option>
-                        </mat-select>
+                        <mat-form-field style="width: 100px;">
+                            <mat-select formControlName="table_end" *ngIf="!_disabledTablesAssignment">
+                                <mat-option *ngFor="let index of _tablesNumber" value="{{index}}" ng-selected="_tableEnd">{{index}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </td>
                 </tr>
             </table>

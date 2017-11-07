@@ -36,9 +36,11 @@
                                     <label>{{'TABLES.RESTAURANT' | translate}}</label>
                                 </th>
                                 <td style="width: 35%">
-                                    <mat-select formControlName="restaurant" placeholder="{{'TABLES.SELECT_RESTAURANT' | translate}}" style="width: 95%;">
-                                        <mat-option *ngFor="let rest of _restaurants | async" value="{{rest._id}}">{{rest.name}}</mat-option>
-                                    </mat-select>
+                                    <mat-form-field  style="width: 95%;">
+                                        <mat-select formControlName="restaurant" placeholder="{{'TABLES.SELECT_RESTAURANT' | translate}}">
+                                            <mat-option *ngFor="let rest of _restaurants | async" value="{{rest._id}}">{{rest.name}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
                                 </td>
                                 <td style="width: 25%; text-align:center">
                                     <button mat-raised-button class="button-primary" type="submit">

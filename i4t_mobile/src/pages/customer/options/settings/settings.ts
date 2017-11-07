@@ -203,7 +203,7 @@ export class SettingsPage implements OnInit, OnDestroy {
    */
   getUsetImage():string{
     if(this._user.services && this._user.services.facebook){
-      return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
+      return "https://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
     } else {
       let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() });
       if( _lUserImage ){
