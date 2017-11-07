@@ -499,11 +499,8 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
             qr_pdf.setFontStyle('normal');
             qr_pdf.text(iurest_invoice.total.toString(), 185, 150, 'right');
             qr_pdf.text(iurest_invoice.currency, 195, 150, 'right');
-
             qr_pdf.text(iurest_invoice.generated_computer_msg, 195, 290, 'right');
-
-            //qr_pdf.output('save', fileName + '_' + dateFormated + '.pdf');
-            qr_pdf.output('datauri');
+            qr_pdf.output('save', fileName + '_' + dateFormated + '.pdf');
         }
     }
 
