@@ -7,3 +7,8 @@ import { IurestInvoices } from '../../../../both/collections/payment/iurest-invo
 Meteor.publish('getAllIurestInvoices', function () {
     return IurestInvoices.find({});
 });
+
+Meteor.publish('getIurestInvoiceByUser', function (_userId: string) {
+    check(_userId, String);
+    return IurestInvoices.find({ creation_user: _userId });
+});

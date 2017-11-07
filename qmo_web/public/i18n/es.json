@@ -1122,7 +1122,16 @@
         "SUBTOTAL": "SubTotal: ",
         "IVA": "IVA: ",
         "TOTAL": "Total: ",
-        "UNAVAILABLE_REPORT": "La opción de consulta de estado no está disponible en este momento, inténtalo más tarde"
+        "UNAVAILABLE_REPORT": "La opción de consulta de estado no está disponible en este momento, inténtalo más tarde",
+        "RESOLUTION_MSG": "Resolución DIAN No",
+        "INVOICE_START_DATE": "del",
+        "INVOICE_END_DATE": "hasta",
+        "INVOICE_START_VALUE": "desde el No",
+        "INVOICE_END_VALUE": "hasta",
+        "PAYMENT_METHOD": "Forma de pago: ",
+        "IDENTIFICATION_NUMBER": "Identificación: ",
+        "TELEPHONE_NUMBER": "Teléfono: ",
+        "EMAIL": "Email: "
     },
     "TRANSACTION_STATUS": {
         "APPROVED": "Aprobado",

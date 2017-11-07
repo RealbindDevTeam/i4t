@@ -18,6 +18,7 @@ export interface IurestInvoice extends CollectionObject {
     currency?: string;
     company_info?: CompanyInfo;
     client_info?: ClientInfo;
+    generated_computer_msg?: string;
 }
 
 /**
@@ -34,7 +35,6 @@ export interface CompanyInfo {
     contribution?: string;
     retainer?: string;
     agent_retainter?: string;
-    generated_computer_msg?: string;
     resolution_number?: string;
     resolution_prefix?: string;
     resolution_start_date?: Date;

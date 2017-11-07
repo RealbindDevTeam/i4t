@@ -737,15 +737,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 var_start_date = invoiceInfo.start_date_two;
                 var_end_date = invoiceInfo.end_date_two;
             }
-            console.log('var_resolution ' + var_resolution);
-            console.log('var_prefix ' + var_prefix);
-            console.log('var_start_date ' + var_start_date);
-            console.log('var_end_date ' + var_end_date);
-            console.log('var_start_value ' + var_start_value);
-            console.log('var_end_value ' + var_end_value);
-            console.log('var_enable_two ' + var_enable_two);
-            console.log('var_current_value ' + var_current_value);
-            console.log('var_start_new ' + var_start_new);
 
             InvoicesInfo.collection.update({ _id: invoiceInfo._id },
                 {
@@ -779,7 +770,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 contribution: company_contribution,
                 retainer: company_retainer,
                 agent_retainter: company_agent_retainer,
-                generated_computer_msg: invoice_generated_msg,
                 resolution_number: var_resolution,
                 resolution_prefix: var_prefix,
                 resolution_start_date: var_start_date,
@@ -789,11 +779,18 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             };
 
             let client_info: ClientInfo = {
-                
+                name: Meteor.user().profile.first_name + ' ' + Meteor.user().profile.last_name,
+                address: this._selectedAddress,
+                city: this._selectedCity,
+                country: this.itemNameTraduction(this._selectedCountry.name),
+                identification: this._selectedDniNumber,
+                phone: this._selectedPhone,
+                email: Meteor.user().emails[0].address
             };
 
-
             IurestInvoices.collection.insert({
+                creation_user: Meteor.userId(),
+                creation_date: new Date(),
                 payment_history_id: _paymentHistoryId,
                 country_id: this._selectedCountry._id,
                 number: var_current_value,
@@ -807,7 +804,9 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 iva: this.getValueTax(),
                 total: this._valueToPay,
                 currency: this._currency,
-                company_info: company_info
+                company_info: company_info,
+                client_info: client_info,
+                generated_computer_msg: invoice_generated_msg
             });
         }
     }

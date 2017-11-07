@@ -25,6 +25,8 @@ import { City } from '../../../../../../both/models/settings/city.model';
 import { Cities } from '../../../../../../both/collections/settings/city.collection';
 import { Country } from '../../../../../../both/models/settings/country.model';
 import { Countries } from '../../../../../../both/collections/settings/country.collection';
+import { IurestInvoices } from '../../../../../../both/collections/payment/iurest-invoices.collection';
+import { IurestInvoice } from '../../../../../../both/models/payment/iurest-invoice.model';
 import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
 
 let jsPDF = require('jspdf');
@@ -44,6 +46,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
     private _userDetailSub: Subscription;
     private _countrySub: Subscription;
     private _citySub: Subscription;
+    private _iurestInvoiceSub: Subscription;
 
     private _historyPayments: Observable<PaymentHistory[]>;
     private _historyPayments2: Observable<PaymentHistory[]>;
@@ -114,7 +117,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
             });
         });
 
-
+        this._iurestInvoiceSub = MeteorObservable.subscribe('getIurestInvoiceByUser', Meteor.userId()).subscribe();
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
         this._paymentTransactionSub = MeteorObservable.subscribe('getTransactionsByUser', Meteor.userId()).subscribe();
 
@@ -396,11 +399,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
      * This function generates de invoice
      */
     generateInvoice(_paymentHistory: PaymentHistory) {
-        let company_name = Parameters.findOne({ name: 'company_name' }).value;
-        let company_address = Parameters.findOne({ name: 'company_address' }).value;
-        let company_city = Parameters.findOne({ name: 'company_city' }).value;
-        let company_country = Parameters.findOne({ name: 'company_country' }).value;
-        let company_rut = Parameters.findOne({ name: 'company_nit' }).value;
+        let iurest_invoice: IurestInvoice = IurestInvoices.findOne({ payment_history_id: _paymentHistory._id });
         let parameterTax = Parameters.findOne({ name: 'colombia_tax_iva' });
         let invoice_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.INVOICE_LBL');
         let number_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.NUMBER_LBL');
@@ -414,17 +413,15 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         let iva_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.IVA');
         let total_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.TOTAL');
         let fileName = this.itemNameTraduction('RES_PAYMENT_HISTORY.INVOICE');
-        let auxCity: string;
-
-        let user_detail: UserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
-        let country: Country = Countries.findOne({ _id: user_detail.country_id });
-        let countryTraduced = this.itemNameTraduction(country.name);
-        let city: City = Cities.findOne({ _id: user_detail.city_id });
-        if (city) {
-            auxCity = city.name;
-        } else {
-            auxCity = user_detail.other_city;
-        }
+        let resolution_msg = this.itemNameTraduction('RES_PAYMENT_HISTORY.RESOLUTION_MSG');
+        let res_from_date = this.itemNameTraduction('RES_PAYMENT_HISTORY.INVOICE_START_DATE');
+        let res_to_date = this.itemNameTraduction('RES_PAYMENT_HISTORY.INVOICE_END_DATE');
+        let res_from_value = this.itemNameTraduction('RES_PAYMENT_HISTORY.INVOICE_START_VALUE');
+        let res_to_value = this.itemNameTraduction('RES_PAYMENT_HISTORY.INVOICE_END_VALUE');
+        let payment_method_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.PAYMENT_METHOD')
+        let identication_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.IDENTIFICATION_NUMBER');
+        let phone_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.TELEPHONE_NUMBER');
+        let email_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.EMAIL');
 
         let qr_pdf = new jsPDF("portrait", "mm", "a4");
 
@@ -435,64 +432,78 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
             qr_pdf.addImage(myImage, 'png', 13, 13, 35, 10);
 
             qr_pdf.setFontSize(10);
-            qr_pdf.text(company_name, 155, 15);
-            qr_pdf.text(company_address, 155, 20);
-            qr_pdf.text(company_city + ', ' + company_country, 155, 25);
-            qr_pdf.text(company_rut, 155, 30);
+            qr_pdf.text(iurest_invoice.company_info.name, 195, 15, 'right');
+            qr_pdf.text(iurest_invoice.company_info.address, 195, 20, 'right');
+            qr_pdf.text(iurest_invoice.company_info.city + ', ' + iurest_invoice.company_info.country, 195, 25, 'right');
+            qr_pdf.text(iurest_invoice.company_info.phone, 195, 30, 'right');
+            qr_pdf.text(iurest_invoice.company_info.nit, 195, 35, 'right');
+            qr_pdf.text(iurest_invoice.company_info.regime, 195, 40, 'right');
+            qr_pdf.text(iurest_invoice.company_info.contribution, 195, 45, 'right');
+            qr_pdf.text(iurest_invoice.company_info.retainer, 195, 50, 'right');
+            qr_pdf.text(iurest_invoice.company_info.agent_retainter, 195, 55, 'right');
+            qr_pdf.text(resolution_msg + ' ' + iurest_invoice.company_info.resolution_number, 195, 60, 'right');
+
+            let from_date_formatted = iurest_invoice.company_info.resolution_start_date.getDate() + '/' +
+                (iurest_invoice.company_info.resolution_start_date.getMonth() + 1) + '/' +
+                iurest_invoice.company_info.resolution_start_date.getFullYear();
+            let to_date_formatted = iurest_invoice.company_info.resolution_end_date.getDate() + '/' +
+                (iurest_invoice.company_info.resolution_end_date.getMonth() + 1) + '/' +
+                iurest_invoice.company_info.resolution_end_date.getFullYear();
+            qr_pdf.text(res_from_date + ' ' + from_date_formatted + ' ' + res_to_date + ' ' + to_date_formatted, 195, 65, 'right');
+
+            qr_pdf.text(res_from_value + ' ' + iurest_invoice.company_info.resolution_prefix + '-' + iurest_invoice.company_info.resolution_start_value + ' ' +
+                res_to_value + ' ' + iurest_invoice.company_info.resolution_prefix + '-' + iurest_invoice.company_info.resolution_end_value, 195, 70, 'right');
 
             qr_pdf.setFontSize(12);
             qr_pdf.setFontStyle('bold');
             qr_pdf.text(invoice_lbl, 15, 45);
             qr_pdf.setFontStyle('normal');
-            qr_pdf.text(number_lbl + '1234567890', 15, 50);
+            qr_pdf.text(number_lbl + iurest_invoice.number, 15, 50);
 
-            let dateFormated = _paymentHistory.creation_date.getDate() + '/' + (_paymentHistory.creation_date.getMonth() + 1) + '/' + _paymentHistory.creation_date.getFullYear();
+            let dateFormated = iurest_invoice.creation_date.getDate() + '/' + (iurest_invoice.creation_date.getMonth() + 1) + '/' + iurest_invoice.creation_date.getFullYear();
             qr_pdf.text(date_lbl + dateFormated, 15, 55);
-
+            qr_pdf.text(payment_method_lbl + iurest_invoice.payment_method, 15, 60);
             qr_pdf.setFontSize(12);
             qr_pdf.setFontStyle('bold');
-            qr_pdf.text(customer_lbl, 15, 65);
+            qr_pdf.text(customer_lbl, 15, 70);
             qr_pdf.setFontStyle('normal');
-            qr_pdf.text(Meteor.user().profile.first_name + ' ' + Meteor.user().profile.last_name, 15, 70);
-            qr_pdf.text(user_detail.address, 15, 75);
-            qr_pdf.text(auxCity + ', ' + countryTraduced, 15, 80);
-
+            qr_pdf.text(iurest_invoice.client_info.name, 15, 75);
+            qr_pdf.text(iurest_invoice.client_info.address, 15, 80);
+            qr_pdf.text(iurest_invoice.client_info.city + ', ' + iurest_invoice.client_info.country, 15, 85);
+            qr_pdf.text(identication_lbl + '' + iurest_invoice.client_info.identification, 15, 90);
+            qr_pdf.text(phone_lbl + '' + iurest_invoice.client_info.phone, 15, 95);
+            qr_pdf.text(email_lbl + '' + iurest_invoice.client_info.email, 15, 100);
             qr_pdf.setFontStyle('bold');
-            qr_pdf.text(desc_lbl, 15, 95);
-            qr_pdf.text(period_lbl, 110, 95);
-            qr_pdf.text(amount_lbl, 195, 95, 'right');
-            qr_pdf.line(15, 97, 195, 97);
+            qr_pdf.text(desc_lbl, 15, 115);
+            qr_pdf.text(period_lbl, 90, 115);
+            qr_pdf.text(amount_lbl, 195, 115, 'right');
+            qr_pdf.line(15, 117, 195, 117);
             qr_pdf.setFontStyle('normal');
-            qr_pdf.text(description, 15, 105);
-            let datePeriod = _paymentHistory.startDate.getDate() + '/' + (_paymentHistory.startDate.getMonth() + 1) + '/' + _paymentHistory.startDate.getFullYear() +
-                ' - ' + _paymentHistory.endDate.getDate() + '/' + (_paymentHistory.endDate.getMonth() + 1) + '/' + _paymentHistory.endDate.getFullYear();
-            qr_pdf.text(datePeriod, 110, 105);
-
-            let percentValue = Number(parameterTax.value);
-            let baseValue = (Number(_paymentHistory.paymentValue) - ((Number(_paymentHistory.paymentValue) * percentValue) / 100)).toString();
-            let taxValue = ((Number(_paymentHistory.paymentValue) * percentValue) / 100).toString();
-
-            qr_pdf.text(baseValue, 185, 105, 'right');
-            qr_pdf.text(_paymentHistory.currency, 195, 105, 'right');
-            qr_pdf.line(15, 110, 195, 110);
-
+            qr_pdf.text(description, 15, 125);
+            qr_pdf.text(iurest_invoice.period, 90, 125);
+            qr_pdf.text(iurest_invoice.amount_no_iva.toString(), 185, 125, 'right');
+            qr_pdf.text(iurest_invoice.currency, 195, 125, 'right');
+            qr_pdf.line(15, 130, 195, 130);
             qr_pdf.setFontStyle('bold');
-            qr_pdf.text(subtotal_lbl, 110, 120);
+            qr_pdf.text(subtotal_lbl, 110, 140);
             qr_pdf.setFontStyle('normal');
-            qr_pdf.text(baseValue, 185, 120, 'right');
-            qr_pdf.text(_paymentHistory.currency, 195, 120, 'right');
+            qr_pdf.text(iurest_invoice.subtotal.toString(), 185, 140, 'right');
+            qr_pdf.text(iurest_invoice.currency, 195, 140, 'right');
             qr_pdf.setFontStyle('bold');
-            qr_pdf.text(iva_lbl, 110, 125);
+            qr_pdf.text(iva_lbl, 110, 145);
             qr_pdf.setFontStyle('normal');
-            qr_pdf.text(taxValue, 185, 125, 'right');
-            qr_pdf.text(_paymentHistory.currency, 195, 125, 'right');
+            qr_pdf.text(iurest_invoice.iva.toString(), 185, 145, 'right');
+            qr_pdf.text(iurest_invoice.currency, 195, 145, 'right');
             qr_pdf.setFontStyle('bold');
-            qr_pdf.text(total_lbl, 110, 130);
+            qr_pdf.text(total_lbl, 110, 150);
             qr_pdf.setFontStyle('normal');
-            qr_pdf.text(_paymentHistory.paymentValue.toString(), 185, 130, 'right');
-            qr_pdf.text(_paymentHistory.currency, 195, 130, 'right');
+            qr_pdf.text(iurest_invoice.total.toString(), 185, 150, 'right');
+            qr_pdf.text(iurest_invoice.currency, 195, 150, 'right');
 
-            qr_pdf.output('save', fileName + '_' + dateFormated + '.pdf');
+            qr_pdf.text(iurest_invoice.generated_computer_msg, 195, 290, 'right');
+
+            //qr_pdf.output('save', fileName + '_' + dateFormated + '.pdf');
+            qr_pdf.output('datauri');
         }
     }
 
