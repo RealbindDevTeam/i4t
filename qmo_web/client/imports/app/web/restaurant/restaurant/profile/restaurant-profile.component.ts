@@ -8,8 +8,8 @@ import { MouseEvent } from "@agm/core";
 import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { Restaurant, RestaurantProfile, RestaurantImage, RestaurantSchedule, RestaurantLocation, RestaurantSocialNetwork } from '../../../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants, RestaurantsProfile, RestaurantImages } from '../../../../../../../both/collections/restaurant/restaurant.collection';
+import { Restaurant, RestaurantProfile, RestaurantImage, RestaurantSchedule, RestaurantLocation, RestaurantSocialNetwork, RestaurantProfileImageThumb } from '../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants, RestaurantsProfile, RestaurantProfileImages, RestaurantProfileImageThumbs } from '../../../../../../../both/collections/restaurant/restaurant.collection';
 import { uploadRestaurantProfileImages } from '../../../../../../../both/methods/restaurant/restaurant.methods';
 import { AlertConfirmComponent } from '../../../general/alert-confirm/alert-confirm.component';
 
@@ -23,9 +23,12 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
     private _user = Meteor.userId();
     private _profileForm            : FormGroup;
     private _restaurants            : Observable<Restaurant[]>;
+    private _restaurantProfileThumbs: Observable<RestaurantProfileImageThumb[]>;
     
     private _restaurantsSub         : Subscription;
     private _restaurantProfileSub   : Subscription;
+    private _restaurantProImgSub    : Subscription;
+    private _restaurantProImgThumSub: Subscription;
     
     private _restaurantProfile      : RestaurantProfile;
     private _schedule               : RestaurantSchedule;
@@ -35,10 +38,12 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
     private _anyRestaurantIsSelected: boolean = false;
     private _scheduleInEditMode     : boolean = false;
     private _newImagesToInsert      : boolean = false;
+
     private _restaurantName         : string = '';
     private _restaurantId           : string = '';
-    private titleMsg                : string;
-    private btnAcceptLbl            : string;
+    private _titleMsg               : string;
+    private _btnAcceptLbl           : string;
+    private _selectedIndex          : number = 0;
 
     private _filesToUpload          : Array<File> = [];
     private _mdDialogRef            : MatDialogRef<any>;
@@ -65,8 +70,8 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                  private _mdDialog: MatDialog ) {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
-        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
-        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
+        this._titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this._btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -131,6 +136,8 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
     removeSubscriptions():void{
         if( this._restaurantsSub ){ this._restaurantsSub.unsubscribe(); }
         if( this._restaurantProfileSub ){ this._restaurantProfileSub.unsubscribe(); }
+        if( this._restaurantProImgSub ){ this._restaurantProImgSub.unsubscribe(); }
+        if( this._restaurantProImgThumSub ){ this._restaurantProImgThumSub.unsubscribe(); }
     }
 
     /**
@@ -173,6 +180,20 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                     this._scheduleToEdit = this._restaurantProfile.schedule;
                     this._lat = this._restaurantProfile.location.lat;
                     this._lng = this._restaurantProfile.location.lng;
+                    this._restaurantProImgSub = MeteorObservable.subscribe( 'getRestaurantProfileImages', this._user ).subscribe();
+                    this._restaurantProImgThumSub = MeteorObservable.subscribe( 'getRestaurantProfileImageThumbs', this._user ).subscribe( () => {
+                        this._ngZone.run( () => {
+                            this._restaurantProfileThumbs = RestaurantProfileImageThumbs.find( { restaurantId: _pRestaurantId } ).zone();
+                        });
+                    });
+                } else {
+                    this._profileForm.reset();
+                    this._scheduleInEditMode = false;
+                    this._scheduleToEdit = {};
+                    this._lat = 4.5981;
+                    this._lng = -74.0758;
+                    if( this._restaurantProImgSub ){ this._restaurantProImgSub.unsubscribe(); }
+                    if( this._restaurantProImgThumSub ){ this._restaurantProImgThumSub.unsubscribe(); }
                 }
             });
         });
@@ -287,7 +308,7 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                     this._snackBar.open( _lMessage, '', { duration: 2500 } );
                 }).catch( ( err ) => {
                     var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
-                    this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                    this.openDialog(this._titleMsg, '', error, '', this._btnAcceptLbl, false);
                 });
             } else {
                 let _lMessage: string = 'Perfil del Restaurante Actualizado';//this.itemNameTraduction('SECTIONS.SECTION_CREATED');
@@ -317,7 +338,7 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                         this._snackBar.open( _lMessage, '', { duration: 2500 } );
                     }).catch( ( err ) => {
                         var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
-                        this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                        this.openDialog(this._titleMsg, '', error, '', this._btnAcceptLbl, false);
                     });
                 } else {
                     let _lMessage: string = 'Perfil del Restaurante Creado';//this.itemNameTraduction('SECTIONS.SECTION_CREATED');
@@ -325,6 +346,34 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                 }
             }
         }
+    }
+
+    /**
+     * Remove restaurant image profile
+     * @param {string} _pImageProfileId 
+     */
+    removeImageProfile( _pImageProfileId:string ){
+        this._mdDialogRef = this._mdDialog.open( AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: 'Eliminar Imagen',//this.itemNameTraduction( 'EXIT_TABLE.RESTAURANT_EXIT' ),
+                subtitle: '',
+                content: 'Esta seguro de eliminar la imagen?',//,this.itemNameTraduction( 'EXIT_TABLE.RESTAURANT_EXIT_CONFIRM' ),
+                buttonCancel: this.itemNameTraduction( 'NO' ),
+                buttonAccept: this.itemNameTraduction( 'YES' ),
+                showCancel: true
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe( result => {
+            this._mdDialogRef = result;
+            if ( result.success ){
+                let _lImageId:string = RestaurantProfileImageThumbs.findOne( { _id: _pImageProfileId } ).originalId;
+                RestaurantProfileImages.remove( { _id: _lImageId } );
+                RestaurantProfileImageThumbs.remove( { _id: _pImageProfileId } );
+                let _lMessage: string = 'Imagen Eliminada';//this.itemNameTraduction('SECTIONS.SECTION_CREATED');
+                this._snackBar.open( _lMessage, '', { duration: 2500 } );
+            }
+        });
     }
 
     /**

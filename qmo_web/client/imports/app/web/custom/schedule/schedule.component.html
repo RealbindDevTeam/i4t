@@ -1,6 +1,6 @@
 <div>
     <div style="display: inline-block;">
-        <mat-form-field>
+        <mat-form-field style="width: 220px;">
             <mat-select placeholder="{{'SCHEDULE.SELECT_OPENING_HOUR' | translate}}">
                 <mat-option *ngFor="let hour of _hours | async" value="{{hour.hour}}" (click)="changeOpenTime(hour.hour)">{{hour.hour}}</mat-option>
             </mat-select>
