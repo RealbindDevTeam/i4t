@@ -250,6 +250,15 @@ $menu-navegation-color : #F5F5F5;
             overflow: hidden;
             z-index: 4;
 
+            .header-detail {
+                padding: 24px 24px 0;
+                width: 348px;
+
+                label {
+                    font-size: 20px;
+                }
+            }
+
             .btn-close {
                 position: absolute;
                 top: 16px;
@@ -295,7 +304,6 @@ $menu-navegation-color : #F5F5F5;
     position: fixed;
     background-color: white;
     color: #3d4247;
-    top: 0;
     z-index: 999;
     -webkit-transition: all 0.5s;
     -moz-transition: all 0.5s;

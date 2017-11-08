@@ -73,13 +73,13 @@
             "TITLE3": "Test Test Test",
             "TEXT3": "Test Test Test Test Test Test Test Test Test Test Test Test"
         },
-        "STEPS" : {
-            "EASY_AND_FAST" : "Test Test Test Test Test Test Test Test Test Test Test Test",
-            "ONE" : "Test Test Test Test Test Test Test Test Test Test Test Test",
-            "TWO" : "Test Test Test Test Test Test Test Test Test Test Test Test",
-            "THREE" : "Test Test Test Test Test Test Test Test Test Test Test Test",
-            "FOUR" : "Test Test Test Test Test Test Test Test Test Test Test Test",
-            "FIVE" : "Test Test Test Test Test Test Test Test Test Test Test Test"
+        "STEPS": {
+            "EASY_AND_FAST": "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "ONE": "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "TWO": "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "THREE": "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "FOUR": "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "FIVE": "Test Test Test Test Test Test Test Test Test Test Test Test"
         },
         "OWNER_CONTENT": {
             "TITLE1": "Test Test Test",
@@ -89,8 +89,8 @@
         "COMPLEMENTARY": {
             "TITLE": "Sal y disfruta de una buena comida acompañado de amigos, pareja o familia"
         },
-        "FOOTER" : {
-            "ALL_RIGHT_RESERVED" : "All right reserved"
+        "FOOTER": {
+            "ALL_RIGHT_RESERVED": "All right reserved"
         }
     },
     "SIGNUP": {
@@ -100,7 +100,7 @@
         "REQUIRED_USERNAME": "You must include a username",
         "MIN_LENGTH_USERNAME": "Your username must be at least 6 characters long",
         "MAX_LENGTH_USERNAME": "Your username cannot exceed 20 characters long",
-        "NO_SPACES" : "White space is not allowed",
+        "NO_SPACES": "White space is not allowed",
         "REQUIRED_EMAIL": "Invalid email format",
         "MIN_LENGTH_EMAIL": "Your email must be at least 6 characters long",
         "MAX_LENGTH_EMAIL": "Your email cannot exceed 255 characters long",
@@ -333,7 +333,7 @@
         "GENERAL_INFO_TEXT": "Please enter the information of the restaurant. This information will be displayed to people on the internet and will give you greater visibility",
         "LEGAL_LABEL": "Legal",
         "LEGAL_INFO": "Restaurant's Legal Information",
-        "LEGAL_INFO_TEXT": "The legal information of the restaurant will be managed according to the regulations of the country to which it belongs. This will allow Iurest to help you with the accounts and expenses of your business.",
+        "LEGAL_INFO_TEXT": "The legal information of the restaurant will be managed according to the regulations of the country to which it belongs. This will allow iurest to help you with the accounts and expenses of your business.",
         "ADD_LOCATION": "Enter the location of the establishment",
         "SCHEDULE_LABEL": "Schedule",
         "SCHEDULE_INFO": "Timing hours",
@@ -350,8 +350,8 @@
         "TABLES": "tables",
         "MORE": "more",
         "RESTAURANT_CREATION": "Restaurant creation",
-        "ACTIVATION_MESSAGE": "The monthly Iurest service charge will be activated per restaurant",
-        "CLARIFICATION_MESSAGE_1": "Iurest charges the service fee on the ",
+        "ACTIVATION_MESSAGE": "The monthly iurest service charge will be activated per restaurant",
+        "CLARIFICATION_MESSAGE_1": "iurest charges the service fee on the ",
         "CLARIFICATION_MESSAGE_2": " day of each month, the first charge is up to",
         "ACCEPT_CREATION": "Accept",
         "CANCEL_CREATION": "Cancel",
@@ -679,7 +679,7 @@
         "EMAIL": "Email",
         "LEGAL_LABEL": "Legal",
         "LEGAL_INFO": "Restaurant's Legal Information",
-        "LEGAL_INFO_TEXT": "Edit the legal information of the restaurant. This will allow Iurest to help you with business accounts and expenses",
+        "LEGAL_INFO_TEXT": "Edit the legal information of the restaurant. This will allow iurest to help you with business accounts and expenses",
         "INVOICE_CODE": "Invoice code",
         "TIP_PERCENTAGE": "Tip Percentage",
         "TAX_PERCENTAGE": "Tax Percentage",
@@ -821,7 +821,7 @@
             "FULL_PAYMENT": "Total order payment",
             "RETURN_ORDER_USER": "Do you want to return the order to the user ",
             "ORDER_PENDING_STATUS": "You have orders pending to confirm. You must confirm them or wait til someone confirm",
-            "NO_ONLINE_PAYMENT": "Online payment is not available in Iurest yet",
+            "NO_ONLINE_PAYMENT": "Online payment is not available in iurest yet",
             "PLEASE_SELECT_PAYMENT_METHOD": "Please select payment method",
             "PAYMENT_UNAVAILABLE": "Payment option is currently unavailable.",
             "WAITER_ATTEND": "A waiter/waitress will attend at your table soon",
@@ -892,7 +892,7 @@
     },
     "FINANCIAL_INFO": {
         "COLOMBIA": {
-            "INC": "According to Colombian laws, restaurants must discriminate in the pre invoice, cash receipt, invoice or equivalent document, the National Consumption Tax (INC), therefore, Iurest will calculate the INC equivalent to 8% at time to request the total value of the account for the customer.",
+            "INC": "According to Colombian laws, restaurants must discriminate in the pre invoice, cash receipt, invoice or equivalent document, the National Consumption Tax (INC), therefore, iurest will calculate the INC equivalent to 8% at time to request the total value of the account for the customer.",
             "BUSINESS_NAME": "Enter surname and firstname (if natural person) or legal name (if legal person):",
             "BUSINESS_NAME_LABEL": "Names - Legal name",
             "NIT": "Enter NIT of who sells the ods or Services. Please include verification digit:",
@@ -912,14 +912,14 @@
         "MSG_1": "You can order what you prefer",
         "NO_ORDERS": "You do not have any orders yet, you can create a new order",
         "ORDER": "Order",
-        "TABLE_NO_ACTIVE": "The restaurant does not have this table active for the service of Iurest",
+        "TABLE_NO_ACTIVE": "The restaurant does not have this table active for the service of iurest",
         "TABLE_NOT_EXISTS": "The table does not exist. Please check the code.",
-        "IUREST_NO_ACTIVE": "The restaurant does not have the Iurest service active. It is not possible to enter.",
+        "IUREST_NO_ACTIVE": "The restaurant does not have the iurest service active. It is not possible to enter.",
         "RESTAURANT_NOT_EXISTS": "The restaurant does not exist. It is not possible to enter.",
         "PENALTY": "At the moment you do not have available the option to create orders. Try later"
     },
     "MONTHLY_PAYMENT": {
-        "TITLE": "Iurest services",
+        "TITLE": "iurest services",
         "SUBTITLE": "Here you can see the charges by restaurant and number of tables",
         "RESTAURANT_NAME": "Restaurant name",
         "RESTAURANT_PRICE": "Restaurant price",
@@ -1060,11 +1060,11 @@
         "ADDRESS_MAX": "The address cannot exceed 100 characters long",
         "PHONE_NUMBER": "Phone number *",
         "PHONE_NUMBER_MAX": "The phone number cannot exceed 20 characteres long",
-        "SECURITY_MSG": "* For security, Iurest doesn't save your credit card info",
+        "SECURITY_MSG": "* For security, iurest doesn't save your credit card info",
         "CONTINUE_PAYMENT": "Continue",
         "DIALOG_TITLE": "Payment Confirm",
         "DIALOG_PLEASE": "Please verify the information before to confirm",
-        "IUREST_SERVICE": "Iurest service",
+        "IUREST_SERVICE": "iurest service",
         "MONTHLY_SERVICE": "Monthly",
         "PERSONAL_INFO": "Billing information",
         "PERSONAL_TEL": "Tel. ",
@@ -1073,7 +1073,7 @@
         "PRICE": "Price: ",
         "PAY_CONFIRM": "Confirm",
         "PAY_CANCEL": "Cancel",
-        "ORDER_DESCRIPTION": "Monthly payment for Iurest service",
+        "ORDER_DESCRIPTION": "Monthly payment for iurest service",
         "TRANSACTION_STATUS": "Transaction status",
         "TRANSACTION_APPROVED": "Payment has been approved",
         "TRANSACTION_DECLINED": "Payment has been rejected",
@@ -1085,7 +1085,9 @@
         "AUTH_ERROR_MSG": "the entered card info does not match, please check",
         "FIRST_NAME": "Firstname",
         "LAST_NAME": "Lastname",
-        "UNAVAILABLE_PAYMENT": "The payment option is not available at this moment, please try later"
+        "UNAVAILABLE_PAYMENT": "The payment option is not available at this moment, please try later",
+        "CC_PAYMENT_METHOD": "Credit card",
+        "DESCRIPTION": "Monthly Iurest service"
     },
     "RES_PAYMENT_HISTORY": {
         "TITLE": "Payment history",
@@ -1115,13 +1117,22 @@
         "DATE_LBL": "Date: ",
         "CUSTOMER_LBL": "Customer",
         "DESCRIPTION_LBL": "Description",
-        "DESCRIPTION": "Monthly Iurest Service",
+        "DESCRIPTION": "Monthly iurest Service",
         "PERIOD_LBL": "Period",
         "AMOUNT_LBL": "Amount (no IVA)",
         "SUBTOTAL": "SubTotal: ",
         "IVA": "IVA: ",
         "TOTAL": "Total: ",
-        "UNAVAILABLE_REPORT": "The status option is not available at this moment, please try later"
+        "UNAVAILABLE_REPORT": "The status option is not available at this moment, please try later",
+        "RESOLUTION_MSG": "Resolution DIAN No",
+        "INVOICE_START_DATE": "from",
+        "INVOICE_END_DATE": "to",
+        "INVOICE_START_VALUE": "from No",
+        "INVOICE_END_VALUE": "to",
+        "PAYMENT_METHOD": "Payment method: ",
+        "IDENTIFICATION_NUMBER": "Identification: ",
+        "TELEPHONE_NUMBER": "Phone: ",
+        "EMAIL": "Email: "
     },
     "TRANSACTION_STATUS": {
         "APPROVED": "Approved",
@@ -1170,7 +1181,7 @@
         "REQUIRED_USERNAME": "You must include a username",
         "MIN_LENGTH_USERNAME": "Your username must be at least 6 characters long",
         "MAX_LENGTH_USERNAME": "Your username cannot exceed 20 characters",
-        "NO_SPACES" : "White space is not allowed",
+        "NO_SPACES": "White space is not allowed",
         "EMAIL": "Email",
         "REQUIRED_EMAIL": "Invalid email format",
         "MIN_LENGTH_EMAIL": "Your email must be at least 6 characters long",
@@ -1214,7 +1225,7 @@
         "LABEL_LEGAL_END": "you agree the terms and conditions."
     },
     "ADMIN_DASHBOARD": {
-        "TITLE": "Welcome to Iurest",
+        "TITLE": "Welcome to iurest",
         "CARD_CONTENT": "Your best investment. Enjoy a new experience with the platform that will grow your business.",
         "LINK": {
             "NEW_RESTAURANT": "Restaurants",
@@ -1265,7 +1276,7 @@
         "ENTER": "Enter Code",
         "CHANGE_TABLE_OK": "Table change applied successfully",
         "TABLE_DESTINY_NOT_EXISTS": "The code for the new table does not exist. Please try again.",
-        "TABLE_DESTINY_NO_ACTIVE": "The table entered is not active for the Iurest service",
+        "TABLE_DESTINY_NO_ACTIVE": "The table entered is not active for the iurest service",
         "TABLE_DESTINY_NO_RESTAURANT": "The code of the table entered does not belong to the restaurant where you are located. Please try again.",
         "PENDING_ORDERS": "You have orders pending to confirm affecting your payment. Please check and try again.",
         "ORDERS_PAY_PROCESS": "You have orders in process of payment. It is not possible to change of table.",
@@ -1349,32 +1360,32 @@
         "ORDER_PREPARED": "Cooked",
         "ORDER_DELIVERED": "Delivered",
         "ORDER_TRANSLATE": "In Transfer",
-        "PENALIZE_MSG": "Creating a penalty, will mark the user on Iurest system for notify the administrator when his/her is in establishment again",
+        "PENALIZE_MSG": "Creating a penalty, will mark the user on iurest system for notify the administrator when his/her is in establishment again",
         "PENALIZE_TABLE": "The penalty will remove the user of the table",
         "PENALIZE_CONFIRM_MSG": "and cancel all his/her orders. Do you want to continue creating the penalty?",
         "ACCOUNT_ERROR": "An error has occurred with the user account. Please check if the user is still at the table with the option ADMINISTRATION -> TABLES CONTROL",
         "GENERAL_ERROR": "An error has occurred while penalizing the user. Please try later.",
         "PENALTY_CREATED": "Penalty created"
     },
-    "INVOICES_DOWNLOAD" : {
-        "TITLE" : "Invoices download",
-        "TEXT" : "It consults the invoices of your restaurant",
-        "FROM" : "From",
-        "INITIAL_DATE" : "Initial date",
-        "TO_DATE" : "To date",
-        "END_DATE" : "End date",
+    "INVOICES_DOWNLOAD": {
+        "TITLE": "Invoices download",
+        "TEXT": "It consults the invoices of your restaurant",
+        "FROM": "From",
+        "INITIAL_DATE": "Initial date",
+        "TO_DATE": "To date",
+        "END_DATE": "End date",
         "SYSTEM_MSG": "System alert",
         "SELECT_RANGE_VALID_DATES": "Select a valid range of dates",
-        "RANGE_DAYS" : "The date range cannot exceed 31 days",
+        "RANGE_DAYS": "The date range cannot exceed 31 days",
         "THERE_NOT_RESTAURANTS": "No restaurants registered yet",
         "MESSAGE": "Register at least one restaurant to enable this option",
         "RESTAURANT_REGISTER": "Register Restaurant",
         "YEAR_FILTER": "Year",
         "MONTH_FILTER": "Month",
         "SELECT_RESTAURANT": "Select restaurant",
-        "NO_INVOICES" : "There are no invoices"
+        "NO_INVOICES": "There are no invoices"
     },
-    "RESTAURANT_LEGALITY":{
+    "RESTAURANT_LEGALITY": {
         "COLOMBIA": {
             "SELECT_REGIME": "Select restaurant regime",
             "REGIME_CO": "Comun regime",

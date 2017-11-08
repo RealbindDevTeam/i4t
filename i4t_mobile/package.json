@@ -40,7 +40,7 @@
         "cordova-plugin-compat": "1.2.0",
         "cordova-plugin-console": "1.1.0",
         "cordova-plugin-device": "1.1.6",
-        "cordova-plugin-facebook4": "1.9.1",
+        "cordova-plugin-facebook4": "1.7.4",
         "cordova-plugin-splashscreen": "4.0.3",
         "cordova-plugin-statusbar": "2.2.3",
         "cordova-plugin-whitelist": "1.3.2",
@@ -82,11 +82,11 @@
             "phonegap-plugin-barcodescanner": {
                 "CAMERA_USAGE_DESCRIPTION": " "
             },
+            "cordova-plugin-device": {},
             "cordova-plugin-facebook4": {
-                "APP_ID": "314288159042610",
-                "APP_NAME": "Iurest"
-            },
-            "cordova-plugin-device": {}
+                "APP_ID": "128565331134597",
+                "APP_NAME": "iurest"
+            }
         },
         "platforms": [
             "android",

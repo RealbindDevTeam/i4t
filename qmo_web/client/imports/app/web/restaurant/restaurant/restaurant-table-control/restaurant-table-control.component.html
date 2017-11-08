@@ -24,10 +24,12 @@
     <mat-card-title>{{ 'RESTAURANT_TABLE_CONTROL.TABLE_CONTROL' | translate }}</mat-card-title>
     <mat-card-subtitle>{{ 'RESTAURANT_TABLE_CONTROL.TABLE_CONTROL_MSG' | translate }}</mat-card-subtitle>
     <mat-card-content>
-        <mat-select placeholder="{{ 'RESTAURANT_TABLE_CONTROL.SELECT_RESTAURANT' | translate }}" class="select">
-            <mat-option (click)="changeRestaurantFilter('All');" value="All">{{ 'RESTAURANT_TABLE_CONTROL.ALL_RESTAURANTS' | translate }}</mat-option>
-            <mat-option *ngFor="let rest of _restaurantsFilter | async" (click)="changeRestaurantFilter(rest._id);" value="{{rest._id}}">{{rest.name}}</mat-option>
-        </mat-select>
+        <mat-form-field class="select">
+            <mat-select placeholder="{{ 'RESTAURANT_TABLE_CONTROL.SELECT_RESTAURANT' | translate }}">
+                <mat-option (click)="changeRestaurantFilter('All');" value="All">{{ 'RESTAURANT_TABLE_CONTROL.ALL_RESTAURANTS' | translate }}</mat-option>
+                <mat-option *ngFor="let rest of _restaurantsFilter | async" (click)="changeRestaurantFilter(rest._id);" value="{{rest._id}}">{{rest.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
         <div *ngFor="let restaurant of _restaurants | async">
             <mat-toolbar color="primary">
                 <span>{{restaurant.name}} - {{getRestaurantUsers(restaurant._id)}} {{ 'RESTAURANT_TABLE_CONTROL.USERS' | translate }}</span>

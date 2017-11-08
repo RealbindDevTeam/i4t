@@ -50,7 +50,7 @@
             <div *ngFor="let cur of _restaurantCurrencies">
                 <mat-form-field *ngIf="currency._id === cur" class="currency">
                   <input matInput required [formControlName]="cur" [class.invalid]="!_garnishFoodForm.controls.currencies.valid" type="number" placeholder="{{'GARNISHFOOD.GARNISHFOOD_PRICE' | translate}}" min="0" [step]="currency.decimal">
-                  <span mdSuffix>{{currency.code}} - {{currency.name | translate}} </span>
+                  <span matSuffix>{{currency.code}} - {{currency.name | translate}} </span>
                 </mat-form-field>
             </div>
           </div>
@@ -58,7 +58,7 @@
             <div *ngFor="let tax of _restaurantTaxes">
               <mat-form-field *ngIf="currency._id === tax" class="tax">
                 <input matInput required [formControlName]="tax" [class.invalid]="!_garnishFoodForm.controls.taxes.valid" type="number" placeholder="{{'GARNISHFOOD.TAXES' | translate}}" min="0" max="100">
-                <span mdSuffix>% {{currency.code}} - {{currency.name | translate}} </span>
+                <span matSuffix>% {{currency.code}} - {{currency.name | translate}} </span>
               </mat-form-field>
             </div>
           </div>

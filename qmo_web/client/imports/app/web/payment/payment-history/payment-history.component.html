@@ -5,14 +5,17 @@
                 <mat-card-title>{{'RES_PAYMENT_HISTORY.TITLE' | translate }}</mat-card-title>
                 <mat-card-subtitle>{{'RES_PAYMENT_HISTORY.SUBTITLE' | translate}}</mat-card-subtitle>
                 <mat-card-content style="background: #FFF">
-                    <mat-select [(ngModel)]="_selectedYear" placeholder="{{'RES_PAYMENT_HISTORY.YEAR_FILTER' | translate}}" style="width: 25%;">
-                        <mat-option *ngFor="let year of _yearsArray" value="{{year.value}}" (click)="changeHistoryPaymentYear()">{{year.viewValue}}</mat-option>
-                    </mat-select>
-                    <mat-select [(ngModel)]="_selectedMonth" placeholder="{{'RES_PAYMENT_HISTORY.MONTH_FILTER' | translate}}" style="width: 25%; margin-left: 2%;"
-                        [disabled]="_activateMonth">
-                        <mat-option value="0" (click)="changeHistoryPaymentMonth()">{{'RES_PAYMENT_HISTORY.ALL_FILTER' | translate}}</mat-option>
-                        <mat-option *ngFor="let month of _monthsArray" value="{{month.value}}" (click)="changeHistoryPaymentMonth()">{{month.viewValue}}</mat-option>
-                    </mat-select>
+                    <mat-form-field  style="width: 25%;">
+                        <mat-select [(ngModel)]="_selectedYear" placeholder="{{'RES_PAYMENT_HISTORY.YEAR_FILTER' | translate}}">
+                            <mat-option *ngFor="let year of _yearsArray" value="{{year.value}}" (click)="changeHistoryPaymentYear()">{{year.viewValue}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field  style="width: 25%; margin-left: 2%;">
+                        <mat-select [(ngModel)]="_selectedMonth" placeholder="{{'RES_PAYMENT_HISTORY.MONTH_FILTER' | translate}}" [disabled]="_activateMonth">
+                            <mat-option value="0" (click)="changeHistoryPaymentMonth()">{{'RES_PAYMENT_HISTORY.ALL_FILTER' | translate}}</mat-option>
+                            <mat-option *ngFor="let month of _monthsArray" value="{{month.value}}" (click)="changeHistoryPaymentMonth()">{{month.viewValue}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                     <table class="striped" width="100%" style="border:0.5px solid; border-color: lightgrey; margin-top: 15px">
                         <thead>
                             <tr>

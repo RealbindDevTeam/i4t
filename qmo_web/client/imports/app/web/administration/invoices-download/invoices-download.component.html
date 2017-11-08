@@ -25,18 +25,24 @@
     <mat-card-title>{{ 'INVOICES_DOWNLOAD.TITLE' | translate }}</mat-card-title>
     <mat-card-subtitle>{{ 'INVOICES_DOWNLOAD.TEXT' | translate }}</mat-card-subtitle>
         <mat-card-content>
-            <mat-select [(ngModel)]="_selectedYear" placeholder="{{'INVOICES_DOWNLOAD.YEAR_FILTER' | translate}}" style="width: 25%;">
-                <mat-option *ngFor="let year of _yearsArray" value="{{year.value}}" (click)="monthChange()">{{year.viewValue}}</mat-option>
-            </mat-select>
+            <mat-form-field style="width: 25%;">
+                <mat-select [(ngModel)]="_selectedYear" placeholder="{{'INVOICES_DOWNLOAD.YEAR_FILTER' | translate}}">
+                    <mat-option *ngFor="let year of _yearsArray" value="{{year.value}}" (click)="monthChange()">{{year.viewValue}}</mat-option>
+                </mat-select>
+            </mat-form-field>
             
-            <mat-select [(ngModel)]="_selectedMonth" placeholder="{{'INVOICES_DOWNLOAD.MONTH_FILTER' | translate}}" style="width: 25%; margin-left: 2%;">
-                <mat-option *ngFor="let month of _monthsArray" value="{{month.value}}" (click)="monthChange()">{{month.viewValue}}</mat-option>
-            </mat-select>
+            <mat-form-field style="width: 25%; margin-left: 2%;">
+                <mat-select [(ngModel)]="_selectedMonth" placeholder="{{'INVOICES_DOWNLOAD.MONTH_FILTER' | translate}}">
+                    <mat-option *ngFor="let month of _monthsArray" value="{{month.value}}" (click)="monthChange()">{{month.viewValue}}</mat-option>
+                </mat-select>
+            </mat-form-field>
         </mat-card-content>
 
-        <mat-select [(ngModel)]="_selectedRestaurantId" class="select" placeholder="{{ 'INVOICES_DOWNLOAD.SELECT_RESTAURANT' | translate }}">
-            <mat-option *ngFor="let rest of _restaurantsFilter | async" (click)="monthChange();" value="{{rest._id}}">{{rest.name}}</mat-option>
-        </mat-select>
+        <mat-form-field class="select">
+            <mat-select [(ngModel)]="_selectedRestaurantId" placeholder="{{ 'INVOICES_DOWNLOAD.SELECT_RESTAURANT' | translate }}">
+                <mat-option *ngFor="let rest of _restaurantsFilter | async" (click)="monthChange();" value="{{rest._id}}">{{rest.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
 </mat-card>
 
 <mat-card mat-cell="12" class="demo-card demo-basic" *ngIf="_thereAreRestaurants && (_invoices | async)?.length <= 0">

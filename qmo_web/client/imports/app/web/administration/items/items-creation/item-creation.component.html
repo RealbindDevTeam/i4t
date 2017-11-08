@@ -8,15 +8,21 @@
                         <mat-card-subtitle class="subtitle">{{'ITEMS.SECTIONS_CATEGORIES_TEXT' | translate}}</mat-card-subtitle>
                         <mat-card-content>
                             <div>
-                                <mat-select formControlName="section" placeholder="{{'ITEMS.SELECT_SECTION' | translate}}" [(ngModel)]="_selectedSectionValue" style="width: 30%;">
-                                    <mat-option *ngFor="let sec of _sections | async" (click)="changeSection(sec._id);" value="{{sec._id}}">{{sec.name}}</mat-option>
-                                </mat-select>
-                                <mat-select formControlName="category" placeholder="{{'ITEMS.SELECT_CATEGORY' | translate}}" [(ngModel)]="_selectedCategoryValue" style="width: 30%;margin-left: 3%;">
-                                    <mat-option *ngFor="let cat of _categories | async" (click)="changeCategory(cat._id);" value="{{cat._id}}">{{cat.name}}</mat-option>
-                                </mat-select>
-                                <mat-select formControlName="subcategory" placeholder="{{'ITEMS.SELECT_SUBCATEGORY' | translate}}" [(ngModel)]="_selectedSubcategoryValue" style="width: 30%;margin-left: 3%;">
-                                    <mat-option *ngFor="let subcat of _subcategories | async" (click)="changeSubcategory(subcat._id);" value="{{subcat._id}}">{{subcat.name}}</mat-option>
-                                </mat-select>
+                                <mat-form-field  style="width: 30%;">
+                                    <mat-select formControlName="section" placeholder="{{'ITEMS.SELECT_SECTION' | translate}}" [(ngModel)]="_selectedSectionValue">
+                                        <mat-option *ngFor="let sec of _sections | async" (click)="changeSection(sec._id);" value="{{sec._id}}">{{sec.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field style="width: 30%;margin-left: 3%;">
+                                    <mat-select formControlName="category" placeholder="{{'ITEMS.SELECT_CATEGORY' | translate}}" [(ngModel)]="_selectedCategoryValue">
+                                        <mat-option *ngFor="let cat of _categories | async" (click)="changeCategory(cat._id);" value="{{cat._id}}">{{cat.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field style="width: 30%;margin-left: 3%;">
+                                    <mat-select formControlName="subcategory" placeholder="{{'ITEMS.SELECT_SUBCATEGORY' | translate}}" [(ngModel)]="_selectedSubcategoryValue">
+                                        <mat-option *ngFor="let subcat of _subcategories | async" (click)="changeSubcategory(subcat._id);" value="{{subcat._id}}">{{subcat.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
                             </div>
                         </mat-card-content>
                         <mat-card-actions align="end">
@@ -52,18 +58,20 @@
                                 </div>
                             </div>
                             <div>
-                                <mat-select formControlName="cookingTime" placeholder="{{'ITEMS.COOKING_TIME' | translate}}" style="width: 30%;margin-top: 2%;">
-                                    <mat-option value="5 min aprox">5 min aprox</mat-option>
-                                    <mat-option value="15 min aprox">15 min aprox</mat-option>
-                                    <mat-option value="30 min aprox">30 min aprox</mat-option>
-                                    <mat-option value="45 min aprox">45 min aprox</mat-option>
-                                    <mat-option value="1 h aprox">1 h aprox</mat-option>
-                                    <mat-option value="1 h 15 min aprox">1 h 15 min aprox</mat-option>
-                                    <mat-option value="1 h 30 min aprox">1 h 30 min aprox</mat-option>
-                                    <mat-option value="1 h 45 min aprox">1 h 45 min aprox</mat-option>
-                                    <mat-option value="2 h aprox">2 h aprox</mat-option>
-                                    <mat-option value="+ 2 h aprox">+ 2 h aprox</mat-option>                                                                        
-                                </mat-select>
+                                <mat-form-field  style="width: 30%;margin-top: 2%;">
+                                    <mat-select formControlName="cookingTime" placeholder="{{'ITEMS.COOKING_TIME' | translate}}">
+                                        <mat-option value="5 min aprox">5 min aprox</mat-option>
+                                        <mat-option value="15 min aprox">15 min aprox</mat-option>
+                                        <mat-option value="30 min aprox">30 min aprox</mat-option>
+                                        <mat-option value="45 min aprox">45 min aprox</mat-option>
+                                        <mat-option value="1 h aprox">1 h aprox</mat-option>
+                                        <mat-option value="1 h 15 min aprox">1 h 15 min aprox</mat-option>
+                                        <mat-option value="1 h 30 min aprox">1 h 30 min aprox</mat-option>
+                                        <mat-option value="1 h 45 min aprox">1 h 45 min aprox</mat-option>
+                                        <mat-option value="2 h aprox">2 h aprox</mat-option>
+                                        <mat-option value="+ 2 h aprox">+ 2 h aprox</mat-option>                                                                        
+                                    </mat-select>
+                                </mat-form-field>
                             </div>
                             <div class="restaurants">
                                 <p *ngIf="!_showRestaurants">{{'ITEMS.NO_RESTAURANTS' | translate}}</p>
@@ -80,7 +88,7 @@
                                         <div *ngFor="let cur of _restaurantCurrencies">
                                             <mat-form-field *ngIf="currency._id === cur" class="currency">
                                                 <input matInput required [formControlName]="cur" [class.invalid]="!_itemForm.controls.currencies.valid" type="number" placeholder="{{'ITEMS.ITEM_PRICE' | translate}}" min="0" [step]="currency.decimal">
-                                                <span mdSuffix>{{currency.code}} - {{currency.name | translate}} </span>
+                                                <span matSuffix>{{currency.code}} - {{currency.name | translate}} </span>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -88,7 +96,7 @@
                                         <div *ngFor="let tax of _restaurantTaxes">
                                             <mat-form-field *ngIf="currency._id === tax" class="tax">
                                                 <input matInput required [formControlName]="tax" [class.invalid]="!_itemForm.controls.taxes.valid" type="number" placeholder="{{'ITEMS.TAXES' | translate}}" min="0" max="100">
-                                                <span mdSuffix>% {{currency.code}} - {{currency.name | translate}} </span>
+                                                <span matSuffix>% {{currency.code}} - {{currency.name | translate}} </span>
                                             </mat-form-field>
                                         </div>
                                     </div>
