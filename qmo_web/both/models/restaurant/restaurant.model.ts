@@ -56,7 +56,7 @@ export interface RestaurantImageThumb extends RestaurantImage {
 /**
  * RestaurantLocation model
  */
-interface RestaurantLocation {
+export interface RestaurantLocation {
     lat: number;
     lng: number;
 }
@@ -155,7 +155,7 @@ export interface RestaurantLegality {
 /**
  * Restaurant Profile Model
  */
-export interface RestaurantProfile {
+export interface RestaurantProfile extends CollectionObject {
     _id?: string;
     restaurant_id: string;
     restaurant_description: string;
@@ -165,5 +165,32 @@ export interface RestaurantProfile {
     social_networks?: RestaurantSocialNetwork;
     schedule: RestaurantSchedule;
     location: RestaurantLocation;
-    images?: string[];
+}
+
+/**
+ * RestaurantProfileImage model
+ */
+export interface RestaurantProfileImage {
+    _id?: string;
+    complete: boolean;
+    extension: string;
+    name: string;
+    progress: number;
+    size: number;
+    store: string;
+    token: string;
+    type: string;
+    uploadedAt: Date;
+    uploading: boolean;
+    url: string;
+    userId: string;
+    restaurantId: string;
+}
+
+/**
+ * RestaurantProfile Image Thumbs model
+ */
+export interface RestaurantProfileImageThumb extends RestaurantImage {
+    originalStore?: string;
+    originalId?: string;
 }

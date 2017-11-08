@@ -150,7 +150,7 @@
                     <mat-list-item>
                         <mat-icon mat-list-icon>image</mat-icon>
                         <p mat-line>{{file.name}}</p>
-                        <button mat-icon-button (click)="removeImageList(i)">
+                        <button mat-icon-button matTooltip="Eliminar imagen" (click)="removeImageList(i)">
                             <mat-icon>clear</mat-icon>
                         </button>
                     </mat-list-item>
@@ -159,8 +159,7 @@
             </mat-list>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-raised-button (click)="open(section)">Cancelar</button>
-            <button mat-raised-button (click)="updateStatus(section)">Guardar Informacion</button>
+            <button mat-raised-button class="primary-button" [disabled]="!_profileForm.valid" (click)="setRestaurantProfile()">Guardar Informacion</button>
         </mat-card-actions>
     </mat-card>
 </div>
