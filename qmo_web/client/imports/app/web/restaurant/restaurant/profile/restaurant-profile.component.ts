@@ -5,11 +5,12 @@ import { Router } from "@angular/router";
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { MouseEvent } from "@agm/core";
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Restaurant, RestaurantProfile, RestaurantImage, RestaurantSchedule, RestaurantLocation, RestaurantSocialNetwork } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantsProfile, RestaurantImages } from '../../../../../../../both/collections/restaurant/restaurant.collection';
+import { uploadRestaurantProfileImages } from '../../../../../../../both/methods/restaurant/restaurant.methods';
 import { AlertConfirmComponent } from '../../../general/alert-confirm/alert-confirm.component';
 
 @Component({
@@ -33,9 +34,14 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
     private _thereAreRestaurants    : boolean = true;
     private _anyRestaurantIsSelected: boolean = false;
     private _scheduleInEditMode     : boolean = false;
+    private _newImagesToInsert      : boolean = false;
     private _restaurantName         : string = '';
     private _restaurantId           : string = '';
+    private titleMsg                : string;
+    private btnAcceptLbl            : string;
+
     private _filesToUpload          : Array<File> = [];
+    private _mdDialogRef            : MatDialogRef<any>;
 
     private _lat: number = 4.5981;
     private _lng: number = -74.0758;
@@ -48,15 +54,19 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
      * @param {NgZone} _ngZone 
      * @param {UserLanguageService} _userLanguageService
      * @param {MatSnackBar} _snackBar
+     * @param {MatDialog} _mdDialog
      */
     constructor( private _router: Router, 
                  private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
                  private _ngZone: NgZone,
                  private _userLanguageService: UserLanguageService,
-                 private _snackBar: MatSnackBar ) {
+                 private _snackBar: MatSnackBar,
+                 private _mdDialog: MatDialog ) {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
+        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
 
     /**
@@ -204,6 +214,7 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
         for( let img of _lImages ){
             this._filesToUpload.push( img );
         }
+        this._newImagesToInsert = true;
     }
 
     /**
@@ -212,6 +223,7 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
      */
     removeImageList( _pIndex: number ):void{
         this._filesToUpload.splice( _pIndex, 1 );
+        if( this._filesToUpload.length <= 0 ){ this._newImagesToInsert = false; }
     }
 
     /**
@@ -267,8 +279,20 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                 RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $set: { social_networks: {} } } );
             }
 
-            let _lMessage: string = 'Perfil del Restaurante Actualizado';//this.itemNameTraduction('SECTIONS.SECTION_CREATED');
-            this._snackBar.open( _lMessage, '', { duration: 2500 } );
+            if( this._newImagesToInsert ){
+                uploadRestaurantProfileImages( this._filesToUpload, this._user, this._restaurantId ).then( ( result ) => {
+                    this._filesToUpload = [];
+                    this._newImagesToInsert = false;
+                    let _lMessage: string = 'Perfil del Restaurante Actualizado';//this.itemNameTraduction('SECTIONS.SECTION_CREATED');
+                    this._snackBar.open( _lMessage, '', { duration: 2500 } );
+                }).catch( ( err ) => {
+                    var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
+                    this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                });
+            } else {
+                let _lMessage: string = 'Perfil del Restaurante Actualizado';//this.itemNameTraduction('SECTIONS.SECTION_CREATED');
+                this._snackBar.open( _lMessage, '', { duration: 2500 } );
+            }
         } else {
             if( this._profileForm.valid ){
                 if( this._profileForm.controls['web_page'].value !== '' && this._profileForm.controls['web_page'].value !== null ){ _lRestaurantProfile.web_page = this._profileForm.value.web_page; }
@@ -281,10 +305,24 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                 _lRestaurantProfile.creation_date = new Date();
                 _lRestaurantProfile.modification_user = '-';
                 _lRestaurantProfile.modification_date = new Date();
+
                 let _newProfileId:string = RestaurantsProfile.collection.insert( _lRestaurantProfile );
                 this._restaurantProfile = RestaurantsProfile.findOne( { _id: _newProfileId } );
-                let _lMessage: string = 'Perfil del Restaurante Creado';//this.itemNameTraduction('SECTIONS.SECTION_CREATED');
-                this._snackBar.open( _lMessage, '', { duration: 2500 } );
+
+                if( this._newImagesToInsert ){
+                    uploadRestaurantProfileImages( this._filesToUpload, this._user, this._restaurantId ).then( ( result ) => {
+                        this._filesToUpload = [];
+                        this._newImagesToInsert = false;
+                        let _lMessage: string = 'Perfil del Restaurante Creado';//this.itemNameTraduction('SECTIONS.SECTION_CREATED');
+                        this._snackBar.open( _lMessage, '', { duration: 2500 } );
+                    }).catch( ( err ) => {
+                        var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
+                        this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                    });
+                } else {
+                    let _lMessage: string = 'Perfil del Restaurante Creado';//this.itemNameTraduction('SECTIONS.SECTION_CREATED');
+                    this._snackBar.open( _lMessage, '', { duration: 2500 } );
+                }
             }
         }
     }
@@ -306,6 +344,36 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
             wordTraduced = res;
         });
         return wordTraduced;
+    }
+
+    /**
+    * This function open de error dialog according to parameters 
+    * @param {string} title
+    * @param {string} subtitle
+    * @param {string} content
+    * @param {string} btnCancelLbl
+    * @param {string} btnAcceptLbl
+    * @param {boolean} showBtnCancel
+    */
+    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
+        
+        this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
+            disableClose: true,
+            data: {
+                title: title,
+                subtitle: subtitle,
+                content: content,
+                buttonCancel: btnCancelLbl,
+                buttonAccept: btnAcceptLbl,
+                showBtnCancel: showBtnCancel
+            }
+        });
+        this._mdDialogRef.afterClosed().subscribe(result => {
+            this._mdDialogRef = result;
+            if (result.success) {
+
+            }
+        });
     }
 
     /**
