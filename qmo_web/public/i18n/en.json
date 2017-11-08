@@ -73,13 +73,13 @@
             "TITLE3": "Test Test Test",
             "TEXT3": "Test Test Test Test Test Test Test Test Test Test Test Test"
         },
-        "STEPS" : {
-            "EASY_AND_FAST" : "Test Test Test Test Test Test Test Test Test Test Test Test",
-            "ONE" : "Test Test Test Test Test Test Test Test Test Test Test Test",
-            "TWO" : "Test Test Test Test Test Test Test Test Test Test Test Test",
-            "THREE" : "Test Test Test Test Test Test Test Test Test Test Test Test",
-            "FOUR" : "Test Test Test Test Test Test Test Test Test Test Test Test",
-            "FIVE" : "Test Test Test Test Test Test Test Test Test Test Test Test"
+        "STEPS": {
+            "EASY_AND_FAST": "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "ONE": "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "TWO": "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "THREE": "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "FOUR": "Test Test Test Test Test Test Test Test Test Test Test Test",
+            "FIVE": "Test Test Test Test Test Test Test Test Test Test Test Test"
         },
         "OWNER_CONTENT": {
             "TITLE1": "Test Test Test",
@@ -89,8 +89,8 @@
         "COMPLEMENTARY": {
             "TITLE": "Sal y disfruta de una buena comida acompañado de amigos, pareja o familia"
         },
-        "FOOTER" : {
-            "ALL_RIGHT_RESERVED" : "All right reserved"
+        "FOOTER": {
+            "ALL_RIGHT_RESERVED": "All right reserved"
         }
     },
     "SIGNUP": {
@@ -100,7 +100,7 @@
         "REQUIRED_USERNAME": "You must include a username",
         "MIN_LENGTH_USERNAME": "Your username must be at least 6 characters long",
         "MAX_LENGTH_USERNAME": "Your username cannot exceed 20 characters long",
-        "NO_SPACES" : "White space is not allowed",
+        "NO_SPACES": "White space is not allowed",
         "REQUIRED_EMAIL": "Invalid email format",
         "MIN_LENGTH_EMAIL": "Your email must be at least 6 characters long",
         "MAX_LENGTH_EMAIL": "Your email cannot exceed 255 characters long",
@@ -252,7 +252,7 @@
             "COLLABORATORS": "Employees",
             "MONTHLY_CONFIG": "Monthly config",
             "TABLE_CONTROL": "Tables Control",
-            "INVOICES_DOWNLOAD" : "Invoices download"
+            "INVOICES_DOWNLOAD": "Invoices download"
         },
         "PAYMENTS": {
             "PAYMENTS": "Payments",
@@ -1084,7 +1084,9 @@
         "AUTH_ERROR_MSG": "the entered card info does not match, please check",
         "FIRST_NAME": "Firstname",
         "LAST_NAME": "Lastname",
-        "UNAVAILABLE_PAYMENT": "The payment option is not available at this moment, please try later"
+        "UNAVAILABLE_PAYMENT": "The payment option is not available at this moment, please try later",
+        "CC_PAYMENT_METHOD": "Credit card",
+        "DESCRIPTION": "Monthly Iurest service"
     },
     "RES_PAYMENT_HISTORY": {
         "TITLE": "Payment history",
@@ -1120,7 +1122,16 @@
         "SUBTOTAL": "SubTotal: ",
         "IVA": "IVA: ",
         "TOTAL": "Total: ",
-        "UNAVAILABLE_REPORT": "The status option is not available at this moment, please try later"
+        "UNAVAILABLE_REPORT": "The status option is not available at this moment, please try later",
+        "RESOLUTION_MSG": "Resolution DIAN No",
+        "INVOICE_START_DATE": "from",
+        "INVOICE_END_DATE": "to",
+        "INVOICE_START_VALUE": "from No",
+        "INVOICE_END_VALUE": "to",
+        "PAYMENT_METHOD": "Payment method: ",
+        "IDENTIFICATION_NUMBER": "Identification: ",
+        "TELEPHONE_NUMBER": "Phone: ",
+        "EMAIL": "Email: "
     },
     "TRANSACTION_STATUS": {
         "APPROVED": "Approved",
@@ -1169,7 +1180,7 @@
         "REQUIRED_USERNAME": "You must include a username",
         "MIN_LENGTH_USERNAME": "Your username must be at least 6 characters long",
         "MAX_LENGTH_USERNAME": "Your username cannot exceed 20 characters",
-        "NO_SPACES" : "White space is not allowed",
+        "NO_SPACES": "White space is not allowed",
         "EMAIL": "Email",
         "REQUIRED_EMAIL": "Invalid email format",
         "MIN_LENGTH_EMAIL": "Your email must be at least 6 characters long",
@@ -1355,25 +1366,25 @@
         "GENERAL_ERROR": "An error has occurred while penalizing the user. Please try later.",
         "PENALTY_CREATED": "Penalty created"
     },
-    "INVOICES_DOWNLOAD" : {
-        "TITLE" : "Invoices download",
-        "TEXT" : "It consults the invoices of your restaurant",
-        "FROM" : "From",
-        "INITIAL_DATE" : "Initial date",
-        "TO_DATE" : "To date",
-        "END_DATE" : "End date",
+    "INVOICES_DOWNLOAD": {
+        "TITLE": "Invoices download",
+        "TEXT": "It consults the invoices of your restaurant",
+        "FROM": "From",
+        "INITIAL_DATE": "Initial date",
+        "TO_DATE": "To date",
+        "END_DATE": "End date",
         "SYSTEM_MSG": "System alert",
         "SELECT_RANGE_VALID_DATES": "Select a valid range of dates",
-        "RANGE_DAYS" : "The date range cannot exceed 31 days",
+        "RANGE_DAYS": "The date range cannot exceed 31 days",
         "THERE_NOT_RESTAURANTS": "No restaurants registered yet",
         "MESSAGE": "Register at least one restaurant to enable this option",
         "RESTAURANT_REGISTER": "Register Restaurant",
         "YEAR_FILTER": "Year",
         "MONTH_FILTER": "Month",
         "SELECT_RESTAURANT": "Select restaurant",
-        "NO_INVOICES" : "There are no invoices"
+        "NO_INVOICES": "There are no invoices"
     },
-    "RESTAURANT_LEGALITY":{
+    "RESTAURANT_LEGALITY": {
         "COLOMBIA": {
             "SELECT_REGIME": "Select restaurant regime",
             "REGIME_CO": "Comun regime",

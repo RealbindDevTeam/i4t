@@ -36,6 +36,8 @@ import './imports/publications/payment/payment-history';
 import './imports/publications/payment/cc-payment-method';
 import './imports/publications/payment/payment-transaction';
 import './imports/publications/restaurant/invoice';
+import './imports/publications/payment/invoice-info';
+import './imports/publications/payment/iurest-invoices';
 
 import { removeFixtures } from './imports/fixtures/remove-fixtures';
 import { loadRoles } from './imports/fixtures/auth/roles';
@@ -49,6 +51,7 @@ import { loadLanguages } from './imports/fixtures/settings/languages';
 import { loadEmailContents } from './imports/fixtures/general/email-contents';
 import { loadParameters } from './imports/fixtures/general/parameters';
 import { loadCcPaymentMethods } from './imports/fixtures/payments/cc-payment-methods';
+import { loadInvoicesInfo } from './imports/fixtures/payments/invoices-info';
 import { createdbindexes } from './imports/indexes/indexdb';
 import { createCrons } from './cron';
 
@@ -66,5 +69,6 @@ Meteor.startup(() => {
     loadEmailContents();
     loadParameters();
     loadCcPaymentMethods();
+    loadInvoicesInfo();
     createCrons();
 });

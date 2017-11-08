@@ -31,6 +31,9 @@ import { CcRequestColombia, Merchant, Transaction, Order, Payer, TX_VALUE, TX_TA
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
+import { InvoicesInfo } from '../../../../../../both/collections/payment/invoices-info.collection';
+import { IurestInvoices } from '../../../../../../both/collections/payment/iurest-invoices.collection';
+import { CompanyInfo, ClientInfo } from '../../../../../../both/models/payment/iurest-invoice.model';
 import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
 
 let md5 = require('md5');
@@ -38,7 +41,7 @@ let md5 = require('md5');
 @Component({
     selector: 'payu-payment-form',
     templateUrl: './payu-payment-form.component.html',
-    styleUrls: [ './payu-payment-form.component.scss' ]
+    styleUrls: ['./payu-payment-form.component.scss']
 })
 export class PayuPaymentFormComponent implements OnInit, OnDestroy {
 
@@ -46,7 +49,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _selectedPaymentMethod: string;
     private _selectedCardMonth: string;
     private _selectedCardYear: string;
-    private _selectedCountry: string;
+    private _selectedCountry: Country;
     private _selectedCity: string = "";
     private _selectedAddress: string;
     private _selectedPhone: string;
@@ -59,6 +62,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     private _parameterSub: Subscription;
     private _restaurantSub: Subscription;
     private _userDetailSub: Subscription;
+    private _invoiceInfoSub: Subscription;
 
     private _cCPaymentMethods: Observable<CcPaymentMethod[]>;
     private _countries: Observable<Country[]>;
@@ -248,8 +252,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                         let auxCountry = Countries.findOne({ _id: auxUsrDetail.country_id });
                         this._paymentForm.get('country').setValue(this.itemNameTraduction(auxCountry.name));
                         this._paymentForm.get('country').disable();
-
-                        this._selectedCountry = auxCountry.name;
+                        this._selectedCountry = auxCountry;
+                        this._invoiceInfoSub = MeteorObservable.subscribe('getInvoicesInfoByCountry', auxCountry._id).subscribe();
                     });
                 });
 
@@ -304,6 +308,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         if (this._parameterSub) { this._parameterSub.unsubscribe(); }
         if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
         if (this._userDetailSub) { this._userDetailSub.unsubscribe(); }
+        if (this._invoiceInfoSub) { this._invoiceInfoSub.unsubscribe(); }
     }
 
     /**
@@ -329,7 +334,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
     */
     openConfirmDialog() {
         let auxstreet: string = this._paymentForm.value.streetOne;
-
         this._restaurantsNamesArray = [];
 
         if (this._mode === 'normal') {
@@ -347,7 +351,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             data: {
                 streetone: this._selectedAddress,
                 city: this._selectedCity,
-                country: this._selectedCountry,
+                country: this._selectedCountry.name,
                 fullname: this._paymentForm.value.fullName,
                 telephone: this._selectedPhone,
                 ccmethod: this._paymentLogoName,
@@ -644,14 +648,14 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             });
         }
 
-        PaymentsHistory.collection.insert({
+        let payment_history: string = PaymentsHistory.collection.insert({
             restaurantIds: this._restaurantsIdsArray,
             startDate: this._firstMonthDay,
             endDate: this._lastMonthDay,
             month: (this._currentDate.getMonth() + 1).toString(),
             year: (this._currentDate.getFullYear()).toString(),
             status: 'TRANSACTION_STATUS.' + _response.transactionResponse.state,
-            transactionId: transactionId,
+            paymentTransactionId: transactionId,
             paymentValue: Number(this._valueToPay),
             currency: this._currency,
             creation_date: new Date(),
@@ -670,6 +674,140 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                     Restaurants.collection.update({ _id: resId }, { $set: { isActive: true, firstPay: false } });
                 });
             }
+            this.generateInvoiceInfo(payment_history);
+        }
+    }
+
+    /**
+     * This function generate the register for invoice
+     */
+    generateInvoiceInfo(_paymentHistoryId: string) {
+        let var_resolution: string;
+        let var_prefix: string;
+        let var_start_value: number;
+        let var_current_value: number;
+        let var_end_value: number;
+        let var_start_date: Date;
+        let var_end_date: Date;
+        let var_enable_two: boolean;
+        let var_start_new: boolean;
+
+        let invoiceInfo = InvoicesInfo.findOne({ country_id: this._selectedCountry._id });
+        if (invoiceInfo) {
+            if (invoiceInfo.enable_two == false) {
+                if (invoiceInfo.start_new_value == true) {
+                    var_current_value = invoiceInfo.start_value_one;
+                    var_enable_two = false;
+                    var_start_new = false;
+                } else {
+                    var_current_value = invoiceInfo.current_value + 1;
+                    if (var_current_value == invoiceInfo.end_value_one) {
+                        var_enable_two = true;
+                        var_start_new = true;
+                    } else {
+                        var_enable_two = false;
+                        var_start_new = false;
+                    }
+                }
+                var_resolution = invoiceInfo.resolution_one;
+                var_prefix = invoiceInfo.prefix_one;
+                var_start_value = invoiceInfo.start_value_one;
+                var_end_value = invoiceInfo.end_value_one;
+                var_start_date = invoiceInfo.start_date_one;
+                var_end_date = invoiceInfo.end_date_one;
+            } else {
+                if (invoiceInfo.start_new_value == true) {
+                    var_current_value = invoiceInfo.start_value_two;
+                    var_enable_two = true;
+                    var_start_new = false;
+                } else {
+                    var_current_value = invoiceInfo.current_value + 1;
+                    if (var_current_value == invoiceInfo.end_value_two) {
+                        var_enable_two = false;
+                        var_start_new = true;
+                    } else {
+                        var_enable_two = true;
+                        var_start_new = false;
+                    }
+                }
+                var_resolution = invoiceInfo.resolution_two;
+                var_prefix = invoiceInfo.prefix_two;
+                var_start_value = invoiceInfo.start_value_two;
+                var_end_value = invoiceInfo.end_value_two;
+                var_start_date = invoiceInfo.start_date_two;
+                var_end_date = invoiceInfo.end_date_two;
+            }
+
+            InvoicesInfo.collection.update({ _id: invoiceInfo._id },
+                {
+                    $set: {
+                        current_value: var_current_value,
+                        enable_two: var_enable_two,
+                        start_new_value: var_start_new
+                    }
+                });
+
+            let company_name = Parameters.findOne({ name: 'company_name' }).value;
+            let company_address = Parameters.findOne({ name: 'company_address' }).value;
+            let company_phone = Parameters.findOne({ name: 'company_phone' }).value;
+            let company_country = Parameters.findOne({ name: 'company_country' }).value;
+            let company_city = Parameters.findOne({ name: 'company_city' }).value;
+            let company_nit = Parameters.findOne({ name: 'company_nit' }).value;
+            let company_regime = Parameters.findOne({ name: 'company_regime' }).value;
+            let company_contribution = Parameters.findOne({ name: 'company_contribution' }).value;
+            let company_retainer = Parameters.findOne({ name: 'company_retainer' }).value;
+            let company_agent_retainer = Parameters.findOne({ name: 'company_agent_retainer' }).value;
+            let invoice_generated_msg = Parameters.findOne({ name: 'invoice_generated_msg' }).value;
+
+            let company_info: CompanyInfo = {
+                name: company_name,
+                address: company_address,
+                phone: company_phone,
+                country: company_country,
+                city: company_city,
+                nit: company_nit,
+                regime: company_regime,
+                contribution: company_contribution,
+                retainer: company_retainer,
+                agent_retainter: company_agent_retainer,
+                resolution_number: var_resolution,
+                resolution_prefix: var_prefix,
+                resolution_start_date: var_start_date,
+                resolution_end_date: var_end_date,
+                resolution_start_value: var_start_value.toString(),
+                resolution_end_value: var_end_value.toString()
+            };
+
+            let client_info: ClientInfo = {
+                name: Meteor.user().profile.first_name + ' ' + Meteor.user().profile.last_name,
+                address: this._selectedAddress,
+                city: this._selectedCity,
+                country: this.itemNameTraduction(this._selectedCountry.name),
+                identification: this._selectedDniNumber,
+                phone: this._selectedPhone,
+                email: Meteor.user().emails[0].address
+            };
+
+            IurestInvoices.collection.insert({
+                creation_user: Meteor.userId(),
+                creation_date: new Date(),
+                payment_history_id: _paymentHistoryId,
+                country_id: this._selectedCountry._id,
+                number: var_current_value,
+                generation_date: new Date(),
+                payment_method: this.itemNameTraduction('PAYU_PAYMENT_FORM.CC_PAYMENT_METHOD'),
+                description: this.itemNameTraduction('PAYU_PAYMENT_FORM.DESCRIPTION'),
+                period: this._firstMonthDay.getDate() + '/' + (this._firstMonthDay.getMonth() + 1) + '/' + this._firstMonthDay.getFullYear() +
+                ' - ' + this._lastMonthDay.getDate() + '/' + (this._lastMonthDay.getMonth() + 1) + '/' + this._lastMonthDay.getFullYear(),
+                amount_no_iva: this.getReturnBase(),
+                subtotal: this.getReturnBase(),
+                iva: this.getValueTax(),
+                total: this._valueToPay,
+                currency: this._currency,
+                company_info: company_info,
+                client_info: client_info,
+                generated_computer_msg: invoice_generated_msg
+            });
         }
     }
 

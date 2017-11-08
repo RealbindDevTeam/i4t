@@ -18,10 +18,16 @@ export function loadParameters() {
             { _id: '3000', name: 'ip_public_service_url', value: 'https://api.ipify.org?format=json', description: 'url for retrieve the client public ip' },
             { _id: '4000', name: 'payu_pay_info_url', value: 'http://192.168.0.3:9000/api/getCusPayInfo', description: 'url for retrieve credentials for payu payment' },
             { _id: '1100', name: 'company_name', value: 'Realbind S.A.S', description: 'Realbind company name for invoice' },
+            { _id: '1150', name: 'company_phone', value: 'Tel: (57 1) 6959537', description: 'Realbind phone' },
             { _id: '1200', name: 'company_address', value: 'Cra 6 # 58-43 Of 201', description: 'Realbind company address' },
             { _id: '1300', name: 'company_country', value: 'Colombia', description: 'Realbind country location' },
             { _id: '1400', name: 'company_city', value: 'Bogotá', description: 'Realbind city location' },
-            { _id: '1500', name: 'company_nit', value: 'NIT: 901036585-0', description: 'Realbind NIT' },
+            { _id: '1500', name: 'company_nit', value: 'NIT: 901.036.585-0', description: 'Realbind NIT' },
+            { _id: '1510', name: 'company_regime', value: 'Régimen común', description: 'Realbind regime in Colombia'},
+            { _id: '1520', name: 'company_contribution', value: 'No somos grandes contribuyentes', description: 'Realbind contribution in Colombia'},
+            { _id: '1530', name: 'company_retainer', value: 'No somos autoretenedores por ventas ni servicios', description: 'Realbind retention in Colombia'},
+            { _id: '1540', name: 'company_agent_retainer', value: 'No somos agentes retenedores de IVA e ICA', description: 'Realbind iva and ica agent retention in Colombia'},
+            { _id: '1550', name: 'invoice_generated_msg', value: 'Factura emitida por computador', description: 'Invoice message for invoice'},
             { _id: '1600', name: 'iurest_url', value: 'https://www.iurest.com', description: 'iurest url page' },
             { _id: '1700', name: 'facebook_link', value: 'https://www.facebook.com', description: 'facebook link for iurest' },
             { _id: '1800', name: 'twitter_link', value: 'https://www.twitter.com', description: 'twitter link for iurest' },
@@ -33,7 +39,7 @@ export function loadParameters() {
             { _id: '9100', name: 'payu_test_state', value: 'APPROVED', description: 'Test state for payu payment transaction' },
             { _id: '2100', name: 'max_user_penalties', value: '3', description: 'Max number of user penalties' },
             { _id: '2200', name: 'penalty_days', value: '30', description: 'User penalty days' },
-            { _id: '8000', name: 'date_test_monthly_pay', value: "October 3, 2017", description: 'Date test for monthly payment of iurest service' }
+            { _id: '8000', name: 'date_test_monthly_pay', value: "November 1, 2017", description: 'Date test for monthly payment of iurest service' }
         ];
 
         parameters.forEach((parameter: Parameter) => Parameters.insert(parameter));
