@@ -152,36 +152,13 @@ export class TopnavComponent implements OnInit, OnDestroy {
     });
 
     MeteorObservable.call('getRole').subscribe((role) => {
-      if (role == "100") {
-      }
-      switch (role) {
-        case '100': {
-          this._showToggleSidenav = true;
-          this.showMenuName = false;
-          break;
-        }
-        case '200': {
-          this._itemsTopMenu = 'waiter';
-          this.showMenuName = true;
-          this.menuName = this.itemNameTraduction('TOPNAV.CALLS');
-          break;
-        }
-        case '400': {
-          this._itemsTopMenu = 'customer';
-          this.showMenuName = true;
-          this.menuName = this.itemNameTraduction('TOPNAV.ORDERS');
-          break;
-        }
-        case '500': {
-          this._itemsTopMenu = 'chef';
-          this.showMenuName = true;
-          this.menuName = this.itemNameTraduction('TOPNAV.ORDERS');
-          break;
-        }
-        case '600': {
-          this._showToggleSidenav = true;
-          this.showMenuName = false;
-        }
+      if (role === "400") {
+        this._itemsTopMenu = 'customer';
+        this.showMenuName = true;
+        this.menuName = this.itemNameTraduction('TOPNAV.ORDERS');
+      } else {
+        this._showToggleSidenav = true;
+        this.showMenuName = false;
       }
     }, (error) => {
       alert(`Failed to to load layout ${error}`);

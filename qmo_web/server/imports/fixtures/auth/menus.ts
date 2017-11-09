@@ -231,11 +231,35 @@ export function loadMenus() {
             {
                 _id: "7000",
                 is_active: true,
-                name: "MENUS.ADMINISTRATION.ORDERS_CHEF",
+                name: "MENUS.MENU_DEFINITION.ORDERS_CHEF",
                 url: "/app/chef-orders",
-                icon_name: "dns",
+                icon_name: "list",
                 order: 7000
-            }
+            },
+            {
+                _id: "8000",
+                is_active: true,
+                name: "MENUS.CALLS",
+                url: "/app/calls",
+                icon_name: "pan_tool",
+                order: 8000
+            },
+            {
+                _id: "9000",
+                is_active: true,
+                name: "MENUS.MENU_DEFINITION.MENU_DEFINITION",
+                url: "/app/menu-list",
+                icon_name: "restaurant_menu",
+                order: 9000
+            },
+            {
+                _id: "10000",
+                is_active: true,
+                name: "MENUS.SETTINGS",
+                url: "/app/settings",
+                icon_name: "settings",
+                order: 10000
+            },
         ];
         menus.forEach((menu: Menu) => Menus.insert(menu));
     }

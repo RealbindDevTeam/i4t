@@ -273,7 +273,9 @@
             "ORDERS_CHEF": "Orders"
         },
         "ORDERS": "Orders",
-        "WAITER_CALL": "Waiter/waitress call"
+        "WAITER_CALL": "Waiter/waitress call",
+        "CALLS": "Calls",
+        "SETTINGS": "Settings"
     },
     "PROMOTIONS": {
         "PROMOTION_CREATION": "Creation promotion",

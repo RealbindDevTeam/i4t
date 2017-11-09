@@ -10,13 +10,13 @@ export function loadRoles() {
             is_active: true,
             name: "ROLE.ADMINISTRATOR",
             description: "restaurant administrator",
-            menus: ["900","1000", "2000", "3000"]
+            menus: ["900","1000", "2000", "3000", "10000"]
         },{
             _id: "200",
             is_active: true,
             name: "ROLE.WAITER",
             description: "restaurant waiter",
-            menus: [],
+            menus: ["8000","9000", "10000"],
             user_prefix: 'wa'
         },{
             _id: "300",
@@ -36,14 +36,14 @@ export function loadRoles() {
             is_active: true,
             name: "ROLE.CHEF",
             description: "restaurant chef",
-            menus: ["7000"],
+            menus: ["7000","9000", "10000"],
             user_prefix: 'cf'            
         },{
             _id: "600",
             is_active: true,
             name: "ROLE.SUPERVISOR",
             description: "restaurant supervisor",
-            menus: ["910","1100","3100", "1200", "1300"],
+            menus: ["910","1100","3100", "1200", "1300", "10000"],
             user_prefix: 'sp'            
         }];
 

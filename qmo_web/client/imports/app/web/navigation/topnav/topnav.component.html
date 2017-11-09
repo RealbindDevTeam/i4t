@@ -24,8 +24,8 @@
   <span class="app-flex-filler"></span>
 
   <c-customer-menu *ngIf="!_showToggleSidenav && _itemsTopMenu === 'customer'" (menuname)="getMenuName($event)"></c-customer-menu>
-  <c-chef-menu *ngIf="!_showToggleSidenav && _itemsTopMenu === 'chef'" (menuname)="getMenuName($event)"></c-chef-menu>
-  <c-waiter-menu *ngIf="!_showToggleSidenav && _itemsTopMenu === 'waiter'" (menuname)="getMenuName($event)"></c-waiter-menu>
+  <!--c-chef-menu *ngIf="!_showToggleSidenav && _itemsTopMenu === 'chef'" (menuname)="getMenuName($event)"></c-chef-menu>
+  <c-waiter-menu *ngIf="!_showToggleSidenav && _itemsTopMenu === 'waiter'" (menuname)="getMenuName($event)"></c-waiter-menu-->
 
   <div class="buttom-profile">
     <button mat-icon-button [mat-menu-trigger-for]="menu" id="user-dropdown-toggler" style="padding: 0;">

@@ -55,7 +55,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     MeteorObservable.call('getRole').subscribe((role) => {
-      if(role == "100" || role == "600"){
+      if(role !== "400"){
         this.showSidenav();
       }
     }, (error) => {
