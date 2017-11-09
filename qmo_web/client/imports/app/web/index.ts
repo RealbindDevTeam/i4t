@@ -28,9 +28,7 @@ import { CollaboratorsComponent } from './restaurant/collaborators/collaborators
 import { CollaboratorsRegisterComponent } from './restaurant/collaborators/collaborators-register/collaborators-register.component';
 import { ItemComponent } from './administration/items/item.component';
 import { ItemEditionComponent } from './administration/items/items-edition/item-edition.component';
-import { RestaurantScheduleComponent } from './restaurant/restaurant/restaurant-schedule/restaurant-schedule.component';
 import { RestaurantEditionComponent } from './restaurant/restaurant/restaurant-edition/restaurant-edition.component';
-import { RestaurantLocationComponent } from './restaurant/restaurant/restaurant-location/restaurant-location.component';
 import { IurestScheduleComponent } from './custom/schedule/schedule.component';
 import { CollaboratorsEditionComponent } from './restaurant/collaborators/collaborators-edition/collaborators-edition.component';
 import { RestaurantInfoComponent } from './restaurant/restaurant/restaurant-info/restaurant-info.component';
@@ -78,9 +76,6 @@ import { SupervisorCollaboratorsComponent } from './supervisor/collaborators/sup
 import { SupervisorCollaboratorsEditionComponent } from './supervisor/collaborators/collaborators-edition/supervisor-collaborators-edition.component';
 import { SupervisorCollaboratorsRegisterComponent } from './supervisor/collaborators/collaborators-register/supervisor-collaborators-register.component';
 import { SupervisorTableComponent } from './supervisor/tables/supervisor-tables.component';
-import { RestaurantFacebookComponent } from './restaurant/restaurant/social-network/facebook/restaurant-facebook.component';
-import { RestaurantInstagramComponent } from './restaurant/restaurant/social-network/instagram/restaurant-instagram.component';
-import { RestaurantTwitterComponent } from './restaurant/restaurant/social-network/twitter/restaurant-twitter.component';
 import { RecoverConfirmComponent } from './auth/recover-password/recover-confirm.component';
 import { TableChangeComponent } from './customer/table-change/table-change.component';
 import { RestaurantExitComponent } from './customer/restaurant-exit/restaurant-exit.component';
@@ -169,9 +164,7 @@ export const MODAL_DIALOG_DECLARATIONS = [
     SubcategoryEditComponent,
     RecoverWebComponent,
     ItemEditionComponent,
-    RestaurantLocationComponent,
     RestaurantLocationInfoComponent,
-    RestaurantScheduleComponent,
     CallCloseConfirmComponent,
     OrderToTranslateComponent,
     CreateConfirmComponent,
@@ -185,9 +178,6 @@ export const MODAL_DIALOG_DECLARATIONS = [
     AlertConfirmComponent,
     EnableConfirmComponent,
     SupervisorCollaboratorsEditionComponent,
-    RestaurantFacebookComponent,
-    RestaurantInstagramComponent,
-    RestaurantTwitterComponent,
     RecoverConfirmComponent,
     RestaurantExitConfirmComponent,
     PenalizeCustomerComponent

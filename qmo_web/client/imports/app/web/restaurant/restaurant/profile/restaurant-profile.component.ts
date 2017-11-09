@@ -156,6 +156,7 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
         this._restaurantId = _pRestaurantId;
         this._restaurantName = _pRestaurantName;
         this._anyRestaurantIsSelected = true;
+        this._selectedIndex = 0;
         this._profileForm = new FormGroup({
             restaurant_description: new FormControl( '', [ Validators.required ] ),
             web_page: new FormControl( '' ),
@@ -304,14 +305,14 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                 uploadRestaurantProfileImages( this._filesToUpload, this._user, this._restaurantId ).then( ( result ) => {
                     this._filesToUpload = [];
                     this._newImagesToInsert = false;
-                    let _lMessage: string = 'Perfil del Restaurante Actualizado';//this.itemNameTraduction('SECTIONS.SECTION_CREATED');
+                    let _lMessage: string = this.itemNameTraduction( 'RESTAURANT_PROFILE.PROFILE_UPDATED' );
                     this._snackBar.open( _lMessage, '', { duration: 2500 } );
                 }).catch( ( err ) => {
                     var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
                     this.openDialog(this._titleMsg, '', error, '', this._btnAcceptLbl, false);
                 });
             } else {
-                let _lMessage: string = 'Perfil del Restaurante Actualizado';//this.itemNameTraduction('SECTIONS.SECTION_CREATED');
+                let _lMessage: string = this.itemNameTraduction( 'RESTAURANT_PROFILE.PROFILE_UPDATED' );
                 this._snackBar.open( _lMessage, '', { duration: 2500 } );
             }
         } else {
@@ -334,14 +335,14 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                     uploadRestaurantProfileImages( this._filesToUpload, this._user, this._restaurantId ).then( ( result ) => {
                         this._filesToUpload = [];
                         this._newImagesToInsert = false;
-                        let _lMessage: string = 'Perfil del Restaurante Creado';//this.itemNameTraduction('SECTIONS.SECTION_CREATED');
+                        let _lMessage: string = this.itemNameTraduction( 'RESTAURANT_PROFILE.PROFILE_CREATED' );
                         this._snackBar.open( _lMessage, '', { duration: 2500 } );
                     }).catch( ( err ) => {
                         var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
                         this.openDialog(this._titleMsg, '', error, '', this._btnAcceptLbl, false);
                     });
                 } else {
-                    let _lMessage: string = 'Perfil del Restaurante Creado';//this.itemNameTraduction('SECTIONS.SECTION_CREATED');
+                    let _lMessage: string = this.itemNameTraduction( 'RESTAURANT_PROFILE.PROFILE_CREATED' );
                     this._snackBar.open( _lMessage, '', { duration: 2500 } );
                 }
             }
@@ -356,9 +357,9 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
         this._mdDialogRef = this._mdDialog.open( AlertConfirmComponent, {
             disableClose: true,
             data: {
-                title: 'Eliminar Imagen',//this.itemNameTraduction( 'EXIT_TABLE.RESTAURANT_EXIT' ),
+                title: this.itemNameTraduction( 'RESTAURANT_PROFILE.REMOVE_IMAGE' ),
                 subtitle: '',
-                content: 'Esta seguro de eliminar la imagen?',//,this.itemNameTraduction( 'EXIT_TABLE.RESTAURANT_EXIT_CONFIRM' ),
+                content: this.itemNameTraduction( 'RESTAURANT_PROFILE.REMOVE_IMAGE_CONFIRM' ),
                 buttonCancel: this.itemNameTraduction( 'NO' ),
                 buttonAccept: this.itemNameTraduction( 'YES' ),
                 showCancel: true
@@ -370,7 +371,7 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                 let _lImageId:string = RestaurantProfileImageThumbs.findOne( { _id: _pImageProfileId } ).originalId;
                 RestaurantProfileImages.remove( { _id: _lImageId } );
                 RestaurantProfileImageThumbs.remove( { _id: _pImageProfileId } );
-                let _lMessage: string = 'Imagen Eliminada';//this.itemNameTraduction('SECTIONS.SECTION_CREATED');
+                let _lMessage: string = this.itemNameTraduction( 'RESTAURANT_PROFILE.IMAGE_REMOVED' );
                 this._snackBar.open( _lMessage, '', { duration: 2500 } );
             }
         });

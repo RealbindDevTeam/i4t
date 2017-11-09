@@ -8,14 +8,14 @@
                 </div>
                 <div class="card_initial-copy">
                     <div class="card_initial-tagline">
-                        No se Encuentran Restaurantes
+                        {{ 'RESTAURANT_PROFILE.PROFILE_TXT' | translate }}
                     </div>
                     <div class="card_initial-additional-links">
-                        No se Encuentran Restaurantes
+                        {{ 'RESTAURANT_PROFILE.NO_RESTAURANTS' | translate }}
                     </div>
                 </div>
                 <div class="card_initial-button">
-                    <button mat-raised-button (click)="goToAddRestaurant()">Crear Restaurante</button>
+                    <button mat-raised-button (click)="goToAddRestaurant()">{{ 'RESTAURANT_PROFILE.REGISTER_RESTAURANT' | translate }}</button>
                 </div>
             </div>
         </div>
@@ -24,11 +24,11 @@
 
 <div class="main" *ngIf="_thereAreRestaurants">        
     <mat-card>
-        <mat-card-title>Perfil de Restaurantes</mat-card-title>
-        <mat-card-subtitle>Crea el perfil de tus restaurantes para que todos lo vean</mat-card-subtitle>
+        <mat-card-title>{{ 'RESTAURANT_PROFILE.RESTAURANTS_PROFILE' | translate }}</mat-card-title>
+        <mat-card-subtitle>{{ 'RESTAURANT_PROFILE.RESTAURANTS_PROFILE_MSG' | translate }}</mat-card-subtitle>
         <mat-card-content>
             <mat-form-field class="restaurant-select">
-                <mat-select placeholder="Selecciona restaurante">
+                <mat-select placeholder="{{ 'RESTAURANT_PROFILE.SELECT_RESTAURANT' | translate }}">
                     <mat-option *ngFor="let res of _restaurants | async" (click)="changeRestaurant(res._id, res.name);" value="{{res._id}}"> {{res.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
@@ -39,12 +39,11 @@
             <div class="card_initial">
                 <div class="card_initial has-image">
                     <div class="card_initial-image-container">
-                        <img class="card_initial-image" 
-                            src="/images/employees.png"/>
+                        <img class="card_initial-image" src="/images/employees.png"/>
                     </div>
                     <div class="card_initial-copy">
                         <div class="card_initial-tagline">
-                            Por favor selecciona un restaurante para crear o modificar su perfil
+                            {{ 'RESTAURANT_PROFILE.SELECT_RESTAURANT_TO_MODIFY' | translate }}
                         </div>
                     </div>
                 </div>
@@ -53,64 +52,64 @@
     </mat-card>
     <mat-card *ngIf="_thereAreRestaurants && _anyRestaurantIsSelected">
         <mat-card-title class="restaurant-name">{{_restaurantName}}</mat-card-title>
-        <mat-card-subtitle>Ingresa la siguiente informacion para que las personas te conozcan mas al momento de buscarte en iurest. En cualquier momento puedes modificarla para mantenerla actualizada.</mat-card-subtitle>
-        <mat-tab-group [(selectedIndex)]="selectedIndex">
-            <mat-tab label="Informacion General">
+        <mat-card-subtitle>{{ 'RESTAURANT_PROFILE.PROFILE_SUBTITLE' | translate }}</mat-card-subtitle>
+        <mat-tab-group [(selectedIndex)]="_selectedIndex">
+            <mat-tab label="{{ 'RESTAURANT_PROFILE.GENERAL_INFO' | translate }}">
                 <mat-card class="general-info">
-                    <mat-card-title>- Informacion General</mat-card-title>
+                    <mat-card-title>- {{ 'RESTAURANT_PROFILE.GENERAL_INFO' | translate }}</mat-card-title>
                     <mat-card-content>
                         <form [formGroup]="_profileForm">
                             <div class="description">
-                                <p>Escribe sobre tu restaurante. Cuentanos sobre tu historia, lo que te motiva, tu comida y tus servicios:</p>
+                                <p>{{ 'RESTAURANT_PROFILE.DESCRIPTION' | translate }}:</p>
                                 <mat-form-field class="description-detail">
-                                    <textarea matInput required formControlName="restaurant_description" placeholder="Descripcion de tu restaurante" minlength="1" maxlength="200" #inputDescription></textarea>
+                                    <textarea matInput required formControlName="restaurant_description" placeholder="{{ 'RESTAURANT_PROFILE.DESCRIPTION_LBL' | translate }}" minlength="1" maxlength="200" #inputDescription></textarea>
                                     <mat-hint align="end">{{inputDescription.value.length}} / 200</mat-hint>
                                 </mat-form-field>
                             </div>
                             <div>
                                 <div class="input">
-                                    <p>Si tienes pagina de internet, escribe la URL (www.mirestaurante.com):</p>
+                                    <p>{{ 'RESTAURANT_PROFILE.WEB_PAGE' | translate }}:</p>
                                     <mat-form-field class="input-left">
-                                        <input matInput formControlName="web_page" placeholder="Pagina de intenet" minlength="1" maxlength="40" #inputWebpage>
+                                        <input matInput formControlName="web_page" placeholder="{{ 'RESTAURANT_PROFILE.WEB_PAGE_LBL' | translate }}" minlength="1" maxlength="40" #inputWebpage>
                                         <mat-hint align="end">{{inputWebpage.value.length}} / 40</mat-hint>
                                     </mat-form-field>
                                 </div>
                                 <div class="input">
-                                    <p>Ingresa el numero de telefono de tu restaurante (si tienes):</p>
+                                    <p>{{ 'RESTAURANT_PROFILE.PHONE' | translate }}:</p>
                                     <mat-form-field class="input-right">
-                                        <input matInput formControlName="phone" placeholder="Telefono" minlength="1" maxlength="30" #inputPhone>
+                                        <input matInput formControlName="phone" placeholder="{{ 'RESTAURANT_PROFILE.PHONE_LBL' | translate }}" minlength="1" maxlength="30" #inputPhone>
                                         <mat-hint align="end">{{inputPhone.value.length}} / 30</mat-hint>
                                     </mat-form-field>
                                 </div>
                             </div>
                             <div>
                                 <div class="input">
-                                    <p>Ingresa un correo electronico de contacto (Si tienes):</p>
+                                    <p>{{ 'RESTAURANT_PROFILE.EMAIL' | translate }}:</p>
                                     <mat-form-field class="input-left">
-                                        <input matInput formControlName="email" placeholder="Email" minlength="1" maxlength="40" #inputEmail>
+                                        <input matInput formControlName="email" placeholder="{{ 'RESTAURANT_PROFILE.EMAIL_LBL' | translate }}" minlength="1" maxlength="40" #inputEmail>
                                         <mat-hint align="end">{{inputEmail.value.length}} / 40</mat-hint>
                                     </mat-form-field>
                                 </div>
                                 <div class="input">
-                                    <p>Si tienes pagina en Facebook para tu restaurante, ingresa el link aqui:</p>
+                                    <p>{{ 'RESTAURANT_PROFILE.FACEBOOK_LINK' | translate }}:</p>
                                     <mat-form-field class="input-right">
-                                        <input matInput formControlName="facebookLink" placeholder="Link de Facebook" minlength="1" maxlength="60" #inputFacebooklink>
+                                        <input matInput formControlName="facebookLink" placeholder="{{ 'RESTAURANT_PROFILE.FACEBOOK_LINK_LBL' | translate }}" minlength="1" maxlength="60" #inputFacebooklink>
                                         <mat-hint align="end">{{inputFacebooklink.value.length}} / 60</mat-hint>
                                     </mat-form-field>
                                 </div>
                             </div>
                             <div>
                                 <div class="input">
-                                    <p>Si tienes pagina en Instagram para tu restaurante, ingresa el link aqui:</p>
+                                    <p>{{ 'RESTAURANT_PROFILE.INSTAGRAM_LINK' | translate }}:</p>
                                     <mat-form-field class="input-left">
-                                        <input matInput formControlName="instagramLink" placeholder="Link de Instagram" minlength="1" maxlength="60" #inputInstagramlink>
+                                        <input matInput formControlName="instagramLink" placeholder="{{ 'RESTAURANT_PROFILE.INSTAGRAM_LINK_LBL' | translate }}" minlength="1" maxlength="60" #inputInstagramlink>
                                         <mat-hint align="end">{{inputInstagramlink.value.length}} / 60</mat-hint>
                                     </mat-form-field>
                                 </div>
                                 <div class="input">
-                                    <p>Si tienes pagina en Twitter para tu restaurante, ingresa el link aqui:</p>
+                                    <p>{{ 'RESTAURANT_PROFILE.TWITTER_LINK' | translate }}:</p>
                                     <mat-form-field class="input-right">
-                                        <input matInput formControlName="twitterLink" placeholder="Link de Twitter" minlength="1" maxlength="60" #inputTwitterlink>
+                                        <input matInput formControlName="twitterLink" placeholder="{{ 'RESTAURANT_PROFILE.TWITTER_LINK_LBL' | translate }}" minlength="1" maxlength="60" #inputTwitterlink>
                                         <mat-hint align="end">{{inputTwitterlink.value.length}} / 60</mat-hint>
                                     </mat-form-field>
                                 </div>
@@ -119,10 +118,10 @@
                     </mat-card-content>
                 </mat-card>
             </mat-tab>
-            <mat-tab label="Horario">
+            <mat-tab label="{{ 'RESTAURANT_PROFILE.SCHEDULE' | translate }}">
                 <mat-card>
-                    <mat-card-title>- Horario</mat-card-title>
-                    <p>Ingresa el horario de atencion del restaurante</p>
+                    <mat-card-title>- {{ 'RESTAURANT_PROFILE.SCHEDULE' | translate }}</mat-card-title>
+                    <p>{{ 'RESTAURANT_PROFILE.SCHEDULE_TXT' | translate }}</p>
                     <div *ngIf="!_scheduleInEditMode" class="schedule">
                         <iu-schedule (finalSchedule)="receiveSchedule($event)"></iu-schedule>
                     </div>
@@ -131,11 +130,11 @@
                     </div>
                 </mat-card>
             </mat-tab>
-            <mat-tab label="Imagenes">
+            <mat-tab label="{{ 'RESTAURANT_PROFILE.IMAGES' | translate }}">
                 <mat-card class="images">
-                    <mat-card-title>- Imagenes</mat-card-title>
-                    <p>Ingresa o actualiza las imagenes de tu restaurante para que te conozcan en internet (se aceptan formatos .png, .jpg, .jpeg):</p>
-                    <p *ngIf="(_restaurantProfileThumbs | async)?.length <= 0" class="no-image-msg">No se han ingresado imagenes del restaurante</p>
+                    <mat-card-title>- {{ 'RESTAURANT_PROFILE.IMAGES' | translate }}</mat-card-title>
+                    <p>{{ 'RESTAURANT_PROFILE.IMAGES_TXT' | translate }}:</p>
+                    <p *ngIf="(_restaurantProfileThumbs | async)?.length <= 0" class="no-image-msg">{{ 'RESTAURANT_PROFILE.NO_RESTAURANT_IMAGES' | translate }}</p>
                     <div class="img-thumb" *ngFor="let thumb of _restaurantProfileThumbs | async;" (click)="removeImageProfile(thumb._id)">
                         <label>
                             <div class="wrapper">
@@ -157,14 +156,14 @@
                     </div>
                     <mat-list>
                         <mat-list-item *ngIf="(_filesToUpload)?.length <= 0">
-                            <p mat-line>No se han seleccionado imagenes nuevas</p>
+                            <p mat-line>{{ 'RESTAURANT_PROFILE.NO_NEW_IMAGES' | translate }}</p>
                         </mat-list-item>
-                        <h3 mat-subheader *ngIf="(_filesToUpload)?.length > 0">Imagenes para guardar</h3>
+                        <h3 mat-subheader *ngIf="(_filesToUpload)?.length > 0">{{ 'RESTAURANT_PROFILE.IMAGES_TO_SAVE' | translate }}</h3>
                         <span *ngFor="let file of _filesToUpload; let i = index">
                             <mat-list-item>
                                 <mat-icon mat-list-icon>image</mat-icon>
                                 <p mat-line>{{file.name}}</p>
-                                <button mat-icon-button matTooltip="Eliminar imagen" (click)="removeImageList(i)">
+                                <button mat-icon-button matTooltip="{{ 'RESTAURANT_PROFILE.REMOVE_IMAGE' | translate }}" (click)="removeImageList(i)">
                                     <mat-icon>clear</mat-icon>
                                 </button>
                             </mat-list-item>
@@ -176,8 +175,8 @@
         </mat-tab-group>
         <br/>
         <mat-card-content>
-            <mat-card-title>- Ubicacion</mat-card-title>                      
-            <p>Ingresa la ubicacion del restaurante. Puedes mover la marca en el mapa para ubicar con mayor exactitud la posicion</p>
+            <mat-card-title>- {{ 'RESTAURANT_PROFILE.LOCATION' | translate }}</mat-card-title>                      
+            <p>{{ 'RESTAURANT_PROFILE.LOCATION_TXT' | translate }}</p>
             <div class="location">
                 <agm-map [latitude]="_lat" [longitude]="_lng" (mapClick)="mapClicked($event)">
                     <agm-marker [latitude]="_lat" [longitude]="_lng" [markerDraggable]="true" (dragEnd)="markerDragEnd($event)"></agm-marker>
@@ -185,7 +184,7 @@
             </div>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-raised-button class="primary-button" [disabled]="!_profileForm.valid" (click)="setRestaurantProfile()">Guardar Informacion</button>
+            <button mat-raised-button class="primary-button" [disabled]="!_profileForm.valid" (click)="setRestaurantProfile()">{{ 'RESTAURANT_PROFILE.SAVE_INFO' | translate }}</button>
         </mat-card-actions>
     </mat-card>
 </div>
