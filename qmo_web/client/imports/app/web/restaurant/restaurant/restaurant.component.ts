@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialogRef, MatDialog } from '@angular/material';
+import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Restaurant, RestaurantImage } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantImages } from '../../../../../../both/collections/restaurant/restaurant.collection';
@@ -12,9 +13,6 @@ import { Country } from '../../../../../../both/models/settings/country.model';
 import { Countries } from '../../../../../../both/collections/settings/country.collection';
 import { City } from '../../../../../../both/models/settings/city.model';
 import { Cities } from '../../../../../../both/collections/settings/city.collection';
-import { Meteor } from 'meteor/meteor';
-import { RestaurantScheduleComponent } from './restaurant-schedule/restaurant-schedule.component';
-import { RestaurantEditionComponent } from './restaurant-edition/restaurant-edition.component';
 
 @Component({
     selector: 'restaurant',

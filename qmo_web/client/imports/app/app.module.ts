@@ -10,7 +10,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
 import { Ng2PageScrollModule } from 'ng2-page-scroll';
-//import { AgmCoreModule } from '@agm/core';
+import { AgmCoreModule } from '@agm/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './web/app.web.component';
@@ -80,10 +80,10 @@ export function createTranslateLoader(http: HttpClient) {
     MatToolbarModule,
     MatMenuModule,
     MatButtonToggleModule,
-    MatRadioModule
-    /*AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBXJSlwWRSHoRiZdqlOfHPqxxDRdqm8_Jk'
-    })*/
+    MatRadioModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCFXGTI9kCa4U7YyMd2USL9LCV_JlQinyw'
+    })
   ],
   declarations: [
     ...WEB_DECLARATIONS,

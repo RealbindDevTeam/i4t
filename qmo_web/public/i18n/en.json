@@ -252,7 +252,8 @@
             "COLLABORATORS": "Employees",
             "MONTHLY_CONFIG": "Monthly config",
             "TABLE_CONTROL": "Tables Control",
-            "INVOICES_DOWNLOAD": "Invoices download"
+            "INVOICES_DOWNLOAD" : "Invoices download",
+            "PROFILE": "Restaurant Profile"
         },
         "PAYMENTS": {
             "PAYMENTS": "Payments",
@@ -1418,5 +1419,45 @@
             "ENTER_BIG_CONTRIBUTOR_FILES": "Please fill in big contributor fields",
             "ENTER_SELF_ACCEPTING_FILES": "Please fill in self accepting fields"
         }
+    },
+    "RESTAURANT_PROFILE": {
+        "PROFILE_TXT": "Create the profile of your restaurants to be seen by your customers",
+        "NO_RESTAURANTS": "There are not restaurants created on the platform",
+        "REGISTER_RESTAURANT": "Register Restaurant",
+        "RESTAURANTS_PROFILE": "Restaurants Profile",
+        "RESTAURANTS_PROFILE_MSG": "Create the profile of your restaurants for everyone to see",
+        "SELECT_RESTAURANT": "Select Restaurant",
+        "SELECT_RESTAURANT_TO_MODIFY": "Please select a restaurant to create or modify your profile",
+        "PROFILE_SUBTITLE": "Enter the following information so that people know you more when looking for you in iurest. You can modify the information to keep it updated.",
+        "GENERAL_INFO": "General Information",
+        "DESCRIPTION": "Write about your restaurant. Tell us about your story, what motivates you, your food and your services",
+        "DESCRIPTION_LBL": "Restaurant Description",
+        "WEB_PAGE": "If you have a web page, type the URL (www.myrestaurant.com)",
+        "WEB_PAGE_LBL": "Web page",
+        "PHONE": "Enter the phone number of your restaurant (if you have one)",
+        "PHONE_LBL": "Phone",
+        "EMAIL": "Enter the email (if you have one)",
+        "EMAIL_LBL": "Email",
+        "FACEBOOK_LINK": "If you have a Facebook page for your restaurant, enter the link here",
+        "FACEBOOK_LINK_LBL": "Facebook Link",
+        "INSTAGRAM_LINK": "If you have a Instagram page for your restaurant, enter the link here",
+        "INSTAGRAM_LINK_LBL": "Instagram Link",
+        "TWITTER_LINK": "If you have a Twitter page for your restaurant, enter the link here",
+        "TWITTER_LINK_LBL": "Twitter Link",
+        "SCHEDULE": "Schedule",
+        "SCHEDULE_TXT": "Enter the attending hours of the establishment",
+        "IMAGES": "Images",
+        "IMAGES_TXT": "Enter or update restaurant images (Only format .png, .jpg, .jpeg)",
+        "NO_RESTAURANT_IMAGES": "No images of the restaurant have been entered",
+        "NO_NEW_IMAGES": "No new images selected",
+        "IMAGES_TO_SAVE": "Images to save",
+        "REMOVE_IMAGE": "Remove image",
+        "LOCATION": "Location",
+        "LOCATION_TXT": "Enter the location of the restaurant. You can move the mark on the map to locate it with the highest position",
+        "SAVE_INFO": "Save information",
+        "PROFILE_UPDATED": "Restaurant Profile Updated",
+        "PROFILE_CREATED": "Restaurant Profile Created",
+        "REMOVE_IMAGE_CONFIRM": "are you sure to remove the image?",
+        "IMAGE_REMOVED": "Image removed"
     }
 }

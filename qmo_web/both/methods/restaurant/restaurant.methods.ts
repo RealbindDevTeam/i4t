@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { UploadFS } from 'meteor/jalik:ufs';
-import { RestaurantImagesStore } from '../../stores/restaurant/restaurant.store';
+import { RestaurantImagesStore, RestaurantProfileImagesStore } from '../../stores/restaurant/restaurant.store';
 import { CodeGenerator } from './QR/codeGenerator';
 import { Table } from '../../models/restaurant/table.model';
 import { Tables } from '../../collections/restaurant/table.collection';
@@ -47,6 +47,37 @@ export function uploadRestaurantImage(data: File,
             onComplete: resolve
         });
         upload.start();
+    });
+}
+
+/**
+ * Function allow upload restaurant profile images
+ * @param {Array<File>} data
+ * @param {string} user
+ * @return {Promise<any>} uploadRestaurantImage
+ */
+export function uploadRestaurantProfileImages(dataImages: Array<File>,
+    user: string,
+    restaurantId: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        for( let data of dataImages ){
+            const file = {
+                name: data.name,
+                type: data.type,
+                size: data.size,
+                userId: user,
+                restaurantId: restaurantId
+            };
+    
+            const upload = new UploadFS.Uploader({
+                data,
+                file,
+                store: RestaurantProfileImagesStore,
+                onError: reject,
+                onComplete: resolve
+            });
+            upload.start();
+        }
     });
 }
 
