@@ -50,8 +50,8 @@ export class SigninWebComponent extends AuthClass implements OnInit {
      * This function login the user at the iurest system
      */
     login() {
-        let respLogin = this.devicesValidate();
-        if (respLogin) {
+        //let respLogin = this.devicesValidate();
+        //if (respLogin) {
             if (this.signinForm.valid) {
                 Meteor.loginWithPassword(this.transformToLower(this.signinForm.value.email), this.signinForm.value.password, (err) => {
                     let confirmMsg: string;
@@ -76,9 +76,13 @@ export class SigninWebComponent extends AuthClass implements OnInit {
                                         break;
                                     }
                                     case '400': {
-                                        this.insertUserInfo();
-                                        this.router.navigate(['app/orders']);
-                                        break;
+                                        if(this.devicesValidate()){
+                                            this.insertUserInfo();
+                                            this.router.navigate(['app/orders']);
+                                            break;
+                                        } else {
+                                            this.router.navigate(['go-to-store']);
+                                        }
                                     }
                                     case '500': {
                                         this.validateUserIsActive('app/chef-orders');
@@ -97,10 +101,10 @@ export class SigninWebComponent extends AuthClass implements OnInit {
                     });
                 });
             }
-        }
-        else {
-            this.router.navigate(['go-to-store']);
-        }
+        //}
+        //else {
+        //    this.router.navigate(['go-to-store']);
+        //}
     }
 
     /**

@@ -237,10 +237,12 @@ export class NavigationService {
     this._sidenavOpened.next(sidenavOpened);
     this.updateViewport();
     localStorage.setItem('sidenavOpened', ''+sidenavOpened);
-    if(localStorage.getItem('sidenavOpened').match('true')){
-      document.getElementsByClassName("mat-drawer-content")[0].style.marginLeft = "225px";
-    } else {
-      document.getElementsByClassName("mat-drawer-content")[0].style.marginLeft = "48px";
+    if(window.innerWidth > 992){
+      if(localStorage.getItem('sidenavOpened').match('true')){
+        document.getElementsByClassName("mat-drawer-content")[0].style.marginLeft = "225px";
+      } else {
+        document.getElementsByClassName("mat-drawer-content")[0].style.marginLeft = "48px";
+      }
     }
   }
 

@@ -50,3 +50,13 @@
         }
     }
 }
+
+.mat-raised-button {
+    min-width: unset !important;
+}
+
+@media only screen and (max-width: 376px){
+    .primary-button {
+        width: 130px !important;
+    }
+}

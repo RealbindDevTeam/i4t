@@ -38,7 +38,6 @@ export class CallsComponent implements OnInit, OnDestroy {
     private _userDetail                 : UserDetail;
     private _restaurants                : any;
     private _waiterCallDetail           : any;
-    private _tables                     : any;
     private _imgRestaurant              : any;
 
     private _loading  : boolean;
@@ -83,11 +82,7 @@ export class CallsComponent implements OnInit, OnDestroy {
             });
         });
 
-        this._tableSubscription = MeteorObservable.subscribe( 'getTablesByRestaurantWork', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._tables = Tables.find( { } ).zone();
-            });
-        });
+        this._tableSubscription = MeteorObservable.subscribe( 'getTablesByRestaurantWork', this._user ).subscribe();
     }
 
     /**
@@ -166,8 +161,8 @@ export class CallsComponent implements OnInit, OnDestroy {
     showSendOrder( _call:WaiterCallDetail ):void{
         this._mdDialogRef = this._mdDialog.open( SendOrderConfirmComponent, {
             disableClose : true,
-            width: '50%',
-            height: '90%'
+            //width: '50%',
+            //height: '90%'
         });
         this._mdDialogRef.componentInstance.call = _call;
         this._mdDialogRef.afterClosed().subscribe( result => {
@@ -188,6 +183,15 @@ export class CallsComponent implements OnInit, OnDestroy {
         this._mdDialogRef.afterClosed().subscribe( result => {
             this._mdDialogRef = null;
         });
+    }
+
+    getTableNumber( _idTable : string) : number{
+        let lTable = Tables.findOne({ _id : _idTable });
+        if(lTable){
+            return lTable._number;
+        } else {
+            return 0;
+        }
     }
 
     /**
