@@ -23,15 +23,18 @@
 
   <span class="app-flex-filler"></span>
 
-  <c-customer-menu *ngIf="!_showToggleSidenav && _itemsTopMenu === 'customer'" (menuname)="getMenuName($event)"></c-customer-menu>
-  <!--c-chef-menu *ngIf="!_showToggleSidenav && _itemsTopMenu === 'chef'" (menuname)="getMenuName($event)"></c-chef-menu>
-  <c-waiter-menu *ngIf="!_showToggleSidenav && _itemsTopMenu === 'waiter'" (menuname)="getMenuName($event)"></c-waiter-menu-->
+  <c-customer-menu *ngIf="!_showToggleSidenav" (menuname)="getMenuName($event)"></c-customer-menu>
 
   <div class="buttom-profile">
-    <button mat-icon-button [mat-menu-trigger-for]="menu" id="user-dropdown-toggler" style="padding: 0;">
+    <button *ngIf="!_showToggleSidenav" mat-icon-button [mat-menu-trigger-for]="menu" id="user-dropdown-toggler" style="padding: 0;">
       <img class="profile-img" mat-list-avatar src="{{ getUsetImage() }}">
       {{ _userName }}
       <mat-icon>keyboard_arrow_down</mat-icon>
+    </button>
+    <button *ngIf="_showToggleSidenav" mat-icon-button id="user-dropdown-toggler" style="padding: 0;">
+      <img class="profile-img" mat-list-avatar src="{{ getUsetImage() }}">
+      {{ _userName }}
+      <mat-icon></mat-icon>
     </button>
   </div>
 

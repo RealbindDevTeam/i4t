@@ -1,4 +1,6 @@
 import { Component, Input, OnInit, OnDestroy, QueryList, ViewChildren } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { NavigationService } from '../navigation.service';
 import { MenuItem } from '../menu-item';
 import { SidenavItemComponent } from './sidenav-item/sidenav-item.component';
@@ -22,7 +24,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
   private _this: SidenavComponent = this;
   private _subscriptions: Subscription[] = [];
 
-  constructor(private _navigation: NavigationService) {
+  constructor(private _navigation: NavigationService, private _router: Router) {
   }
 
   ngOnDestroy() {
@@ -73,6 +75,11 @@ export class SidenavComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  signOut() {
+    Meteor.logout();
+    this._router.navigate(['signin']);
   }
 
 }
