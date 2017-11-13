@@ -54,7 +54,7 @@ export class AdditionComponent implements OnInit, OnDestroy {
     private _showTaxes: boolean = false;
     private _thereAreRestaurants: boolean = true;
 
-    private _thereAreUsers: boolean = true;
+    private _thereAreUsers: boolean = false;
     private _usersCount: number;
 
     /**

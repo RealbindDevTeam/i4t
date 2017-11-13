@@ -45,7 +45,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
     public _dialogRef: MatDialogRef<any>;
     private _thereAreRestaurants: boolean = true;
 
-    private _thereAreUsers: boolean = true;
+    private _thereAreUsers: boolean = false;
     private _usersCount: number;
 
     /**

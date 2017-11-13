@@ -42,7 +42,7 @@ export class ItemComponent implements OnInit, OnDestroy {
     private _thereAreRestaurants: boolean = true;
     private _thereAreItems: boolean = true;
 
-    private _thereAreUsers: boolean = true;
+    private _thereAreUsers: boolean = false;
     private _usersCount: number;
 
     /**

@@ -248,12 +248,14 @@
         "ADMINISTRATION": {
             "MANAGEMENT": "Management",
             "RESTAURANTS": "Restaurants",
-            "TABLES": "Tables Search",
+            "TABLES": "Tables",
             "COLLABORATORS": "Employees",
-            "MONTHLY_CONFIG": "Monthly config",
+            "MONTHLY_CONFIG": "Configuration",
             "TABLE_CONTROL": "Tables Control",
             "INVOICES_DOWNLOAD" : "Invoices download",
-            "PROFILE": "Restaurant Profile"
+            "PROFILE": "Profiles",
+            "TABLES_SEARCH": "Tables search",
+            "MY_RESTAURANTS": "My Restaurants"
         },
         "PAYMENTS": {
             "PAYMENTS": "Payments",
@@ -358,7 +360,8 @@
         "ACCEPT_CREATION": "Accept",
         "CANCEL_CREATION": "Cancel",
         "INITIAL_TABLES_NUMBER": "Initial tables number, ",
-        "MAX_TABLES": "max "
+        "MAX_TABLES": "max ",
+        "TABLES_MSG": "In case you need more tables for your restaurant, in the option Management -> Restaurants -> Configuration, you can add more."
     },
     "WEEK": {
         "MONDAY": "Monday",

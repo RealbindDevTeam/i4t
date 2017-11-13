@@ -248,12 +248,14 @@
         "ADMINISTRATION": {
             "MANAGEMENT": "Administración",
             "RESTAURANTS": "Restaurantes",
-            "TABLES": "Buscar mesas",
+            "TABLES": "Mesas",
             "COLLABORATORS": "Colaboradores",
-            "MONTHLY_CONFIG": "Configuración mensual",
+            "MONTHLY_CONFIG": "Configuración",
             "TABLE_CONTROL": "Control de Mesas",
             "INVOICES_DOWNLOAD": "Descarga de facturas",
-            "PROFILE": "Perfil de Restaurante"
+            "PROFILE": "Perfiles",
+            "TABLES_SEARCH": "Búscar mesas",
+            "MY_RESTAURANTS": "Mis Restaurantes"
         },
         "PAYMENTS": {
             "PAYMENTS": "Pagos",
@@ -358,7 +360,8 @@
         "ACCEPT_CREATION": "Aceptar",
         "CANCEL_CREATION": "Cancelar",
         "INITIAL_TABLES_NUMBER": "Número inicial de mesas, ",
-        "MAX_TABLES": "máximo "
+        "MAX_TABLES": "máximo ",
+        "TABLES_MSG": "En caso de necesitar más mesas para tu restaurante, en la opción Administración -> Restaurantes -> Configuración, podrás agregar las que necesites."
     },
     "WEEK": {
         "MONDAY": "Lunes",
