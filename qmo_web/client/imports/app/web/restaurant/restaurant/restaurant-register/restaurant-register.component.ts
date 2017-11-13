@@ -30,7 +30,7 @@ import * as QRious from 'qrious';
 @Component({
     selector: 'restaurant-register',
     templateUrl: './restaurant-register.component.html',
-    styleUrls: [ './restaurant-register.component.scss' ]
+    styleUrls: ['./restaurant-register.component.scss']
 })
 export class RestaurantRegisterComponent implements OnInit, OnDestroy {
 
@@ -189,6 +189,13 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             case 1:
                 let arrPay: any[] = Object.keys(this._restaurantForm.value.paymentMethods);
                 let _lPaymentMethods: string[] = [];
+                let _validNumber: boolean;
+
+                if (this._restaurantForm.value.tables_number <= this.max_table_number) {
+                    _validNumber = true;
+                } else {
+                    _validNumber = false;
+                }
 
                 arrPay.forEach((pay) => {
                     if (this._restaurantForm.value.paymentMethods[pay]) {
@@ -199,7 +206,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                 if (this._restaurantForm.controls['country'].valid && this._restaurantForm.controls['city'].valid
                     && this._restaurantForm.controls['name'].valid && this._restaurantForm.controls['address'].valid
                     && this._restaurantForm.controls['phone'].valid && this._restaurantForm.controls['tables_number'].valid
-                    && _lPaymentMethods.length > 0) {
+                    && _lPaymentMethods.length > 0 && _validNumber) {
                     return true;
                 } else {
                     return false;

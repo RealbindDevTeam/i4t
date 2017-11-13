@@ -252,7 +252,8 @@
             "COLLABORATORS": "Colaboradores",
             "MONTHLY_CONFIG": "Configuración mensual",
             "TABLE_CONTROL": "Control de Mesas",
-            "INVOICES_DOWNLOAD": "Descarga de facturas"
+            "INVOICES_DOWNLOAD": "Descarga de facturas",
+            "PROFILE": "Perfil de Restaurante"
         },
         "PAYMENTS": {
             "PAYMENTS": "Pagos",
@@ -1086,7 +1087,9 @@
         "AUTH_ERROR_MSG": "Los datos ingresados de tu tarjeta no coinciden, por favor verifícalos",
         "FIRST_NAME": "Nombres",
         "LAST_NAME": "Apellidos",
-        "UNAVAILABLE_PAYMENT": "La opción de pago no esta disponible por el momento, por favor intenta mas tarde"
+        "UNAVAILABLE_PAYMENT": "La opción de pago no esta disponible por el momento, por favor intenta mas tarde",
+        "CC_PAYMENT_METHOD": "Tarjeta de crédito",
+        "DESCRIPTION": "Servicio mensual de Iurest"
     },
     "RES_PAYMENT_HISTORY": {
         "TITLE": "Historial de pagos",
@@ -1122,7 +1125,16 @@
         "SUBTOTAL": "SubTotal: ",
         "IVA": "IVA: ",
         "TOTAL": "Total: ",
-        "UNAVAILABLE_REPORT": "La opción de consulta de estado no está disponible en este momento, inténtalo más tarde"
+        "UNAVAILABLE_REPORT": "La opción de consulta de estado no está disponible en este momento, inténtalo más tarde",
+        "RESOLUTION_MSG": "Resolución DIAN No",
+        "INVOICE_START_DATE": "del",
+        "INVOICE_END_DATE": "hasta",
+        "INVOICE_START_VALUE": "desde el No",
+        "INVOICE_END_VALUE": "hasta",
+        "PAYMENT_METHOD": "Forma de pago: ",
+        "IDENTIFICATION_NUMBER": "Identificación: ",
+        "TELEPHONE_NUMBER": "Teléfono: ",
+        "EMAIL": "Email: "
     },
     "TRANSACTION_STATUS": {
         "APPROVED": "Aprobado",
@@ -1409,5 +1421,45 @@
             "ENTER_BIG_CONTRIBUTOR_FILES": "Por favor ingrese los datos de gran contribuyente",
             "ENTER_SELF_ACCEPTING_FILES": "Por favor ingrese los datos de autoretenedor"
         }
+    },
+    "RESTAURANT_PROFILE": {
+        "PROFILE_TXT": "Crea el perfil de tus restaurantes para ser visto por tus clientes",
+        "NO_RESTAURANTS": "No se encuentran restaurantes creados",
+        "REGISTER_RESTAURANT": "Registrar restaurante",
+        "RESTAURANTS_PROFILE": "Perfil de Restaurantes",
+        "RESTAURANTS_PROFILE_MSG": "Crea el perfil de tus restaurantes para que todos lo vean",
+        "SELECT_RESTAURANT": "Selecciona restaurante",
+        "SELECT_RESTAURANT_TO_MODIFY": "Por favor selecciona un restaurante para crear o modificar su perfil",
+        "PROFILE_SUBTITLE": "Ingresa la siguiente información para que las personas te conozcan más al momento de buscarte en iurest. Puedes modificar la información para mantenerla actualizada.",
+        "GENERAL_INFO": "Información General",
+        "DESCRIPTION": "Escribe sobre tu restaurante. Cuéntanos sobre tu historia, lo que te motiva, tu comida y tus servicios",
+        "DESCRIPTION_LBL": "Descripción de tu restaurante",
+        "WEB_PAGE": "Si tienes página web, escribe la URL (www.mirestaurante.com)",
+        "WEB_PAGE_LBL": "Página Web",
+        "PHONE": "Ingresa el número de teléfono de tu restaurante (si tienes)",
+        "PHONE_LBL": "Teléfono",
+        "EMAIL": "Ingresa un correo electrónico de contácto (Si tienes)",
+        "EMAIL_LBL": "Email",
+        "FACEBOOK_LINK": "Si tienes página en Facebook para tu restaurante, ingresa el link aquí",
+        "FACEBOOK_LINK_LBL": "Link de Facebook",
+        "INSTAGRAM_LINK": "Si tienes página en Instagram para tu restaurante, ingresa el link aquí",
+        "INSTAGRAM_LINK_LBL": "Link de Instagram",
+        "TWITTER_LINK": "Si tienes página en Twitter para tu restaurante, ingresa el link aquí",
+        "TWITTER_LINK_LBL": "Link de Twitter",
+        "SCHEDULE": "Horario",
+        "SCHEDULE_TXT": "Ingresa el horario de atención del restaurante",
+        "IMAGES": "Imágenes",
+        "IMAGES_TXT": "Ingresa o actualiza las imágenes de tu restaurante para que te conozcan en internet (se aceptan formatos .png, .jpg, .jpeg)",
+        "NO_RESTAURANT_IMAGES": "No se han ingresado imágenes del restaurante",
+        "NO_NEW_IMAGES": "No se han seleccionado imágenes nuevas",
+        "IMAGES_TO_SAVE": "Imágenes para guardar",
+        "REMOVE_IMAGE": "Eliminar imágen",
+        "LOCATION": "Ubicación",
+        "LOCATION_TXT": "Ingresa la ubicación del restaurante. Puedes mover la marca en el mapa para ubicar con mayor exactitud la posición",
+        "SAVE_INFO": "Guardar Información",
+        "PROFILE_UPDATED": "Perfil del Restaurante Actualizado",
+        "PROFILE_CREATED": "Perfil del Restaurante Creado",
+        "REMOVE_IMAGE_CONFIRM": "Esta seguro de eliminar la imágen?",
+        "IMAGE_REMOVED": "Imágen Eliminada"
     }
 }

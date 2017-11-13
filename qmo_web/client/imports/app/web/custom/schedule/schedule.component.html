@@ -1,11 +1,20 @@
-<mat-select placeholder="{{'SCHEDULE.SELECT_OPENING_HOUR' | translate}}">
-    <mat-option *ngFor="let hour of _hours | async" value="{{hour.hour}}" (click)="changeOpenTime(hour.hour)">{{hour.hour}}</mat-option>
-</mat-select>
-<label style="padding-left: 20px; padding-right: 20px;font-size: 1.2rem"> - </label>
-<mat-select placeholder="{{'SCHEDULE.SELECT_CLOSING_HOUR' | translate}}">
-    <mat-option *ngFor="let hour of _hours | async" value="{{hour.hour}}" (click)="changeCloseTime(hour.hour)">{{hour.hour}}</mat-option>
-</mat-select>
-<br/>
+<div>
+    <div style="display: inline-block;">
+        <mat-form-field style="width: 220px;">
+            <mat-select placeholder="{{'SCHEDULE.SELECT_OPENING_HOUR' | translate}}">
+                <mat-option *ngFor="let hour of _hours | async" value="{{hour.hour}}" (click)="changeOpenTime(hour.hour)">{{hour.hour}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <label style="padding-left: 20px; padding-right: 20px;font-size: 1.2rem;display: inline-block;"> - </label>
+    <div style="display: inline-block;">
+        <mat-form-field>
+            <mat-select placeholder="{{'SCHEDULE.SELECT_CLOSING_HOUR' | translate}}">
+                <mat-option *ngFor="let hour of _hours | async" value="{{hour.hour}}" (click)="changeCloseTime(hour.hour)">{{hour.hour}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
 <br/>
 <mat-button-toggle matTooltip="{{'SCHEDULE.MONDAY' | translate}}" [(checked)]="schedule.monday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Mon">{{'SCHEDULE.MONDAY_LETTER' | translate}}</mat-button-toggle>
 <mat-button-toggle matTooltip="{{'SCHEDULE.TUESDAY' | translate}}" [(checked)]="schedule.tuesday.isActive" [(disabled)]="!_allowWeekButtons" (change)="evalueDays($event)" value="Tues">{{'SCHEDULE.TUESDAY_LETTER' | translate}}</mat-button-toggle>
