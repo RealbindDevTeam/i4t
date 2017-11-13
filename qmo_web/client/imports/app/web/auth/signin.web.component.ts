@@ -50,61 +50,55 @@ export class SigninWebComponent extends AuthClass implements OnInit {
      * This function login the user at the iurest system
      */
     login() {
-        //let respLogin = this.devicesValidate();
-        //if (respLogin) {
-            if (this.signinForm.valid) {
-                Meteor.loginWithPassword(this.transformToLower(this.signinForm.value.email), this.signinForm.value.password, (err) => {
-                    let confirmMsg: string;
-                    this.zone.run(() => {
-                        if (err) {
-                            if (err.reason === 'User not found' || err.reason === 'Incorrect password') {
-                                confirmMsg = 'SIGNIN.USER_PASS_INCORRECT';
-                            } else {
-                                confirmMsg = 'SIGNIN.ERROR';
-                            }
-                            this.openDialog(this.titleMsg, '', confirmMsg, '', this.btnAcceptLbl, false);
+        if (this.signinForm.valid) {
+            Meteor.loginWithPassword(this.transformToLower(this.signinForm.value.email), this.signinForm.value.password, (err) => {
+                let confirmMsg: string;
+                this.zone.run(() => {
+                    if (err) {
+                        if (err.reason === 'User not found' || err.reason === 'Incorrect password') {
+                            confirmMsg = 'SIGNIN.USER_PASS_INCORRECT';
                         } else {
-                            MeteorObservable.call('getRole').subscribe((role) => {
-                                switch (role) {
-                                    case '100': {
+                            confirmMsg = 'SIGNIN.ERROR';
+                        }
+                        this.openDialog(this.titleMsg, '', confirmMsg, '', this.btnAcceptLbl, false);
+                    } else {
+                        MeteorObservable.call('getRole').subscribe((role) => {
+                            switch (role) {
+                                case '100': {
+                                    this.insertUserInfo();
+                                    this.router.navigate(['app/dashboard']);
+                                    break;
+                                }
+                                case '200': {
+                                    this.validateUserIsActive('app/calls');
+                                    break;
+                                }
+                                case '400': {
+                                    if(this.devicesValidate()){
                                         this.insertUserInfo();
-                                        this.router.navigate(['app/dashboard']);
+                                        this.router.navigate(['app/orders']);
                                         break;
-                                    }
-                                    case '200': {
-                                        this.validateUserIsActive('app/calls');
-                                        break;
-                                    }
-                                    case '400': {
-                                        if(this.devicesValidate()){
-                                            this.insertUserInfo();
-                                            this.router.navigate(['app/orders']);
-                                            break;
-                                        } else {
-                                            this.router.navigate(['go-to-store']);
-                                        }
-                                    }
-                                    case '500': {
-                                        this.validateUserIsActive('app/chef-orders');
-                                        break;
-                                    }
-                                    case '600': {
-                                        this.validateUserIsActive('app/dashboards');
-                                        break;
+                                    } else {
+                                        this.router.navigate(['go-to-store']);
                                     }
                                 }
-                            }, (error) => {
-                                confirmMsg = 'SIGNIN.ERROR';
-                                this.openDialog(this.titleMsg, '', confirmMsg, '', this.btnAcceptLbl, false);
-                            });
-                        }
-                    });
+                                case '500': {
+                                    this.validateUserIsActive('app/chef-orders');
+                                    break;
+                                }
+                                case '600': {
+                                    this.validateUserIsActive('app/dashboards');
+                                    break;
+                                }
+                            }
+                        }, (error) => {
+                            confirmMsg = 'SIGNIN.ERROR';
+                            this.openDialog(this.titleMsg, '', confirmMsg, '', this.btnAcceptLbl, false);
+                        });
+                    }
                 });
-            }
-        //}
-        //else {
-        //    this.router.navigate(['go-to-store']);
-        //}
+            });
+        }
     }
 
     /**

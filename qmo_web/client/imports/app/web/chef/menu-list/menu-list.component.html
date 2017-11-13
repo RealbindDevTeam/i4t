@@ -1,6 +1,6 @@
 <div class="order-form-1">
         <div class="order-form-2">
-            <div class="sidenav">
+            <!--div class="sidenav">
                 <div class="sidenav-content">
                     <div class="sidenav-list">
                         <mat-nav-list [ngStyle]="{'height': auto}">
@@ -13,10 +13,17 @@
                         </mat-nav-list>
                     </div>
                 </div>
-            </div>
+            </div-->
             <div class="menu-items">
                 <div class="menu-items-content">
                     <div class="items">
+                        <mat-form-field>
+                            <mat-select placeholder="{{'RES_PAYMENT_HISTORY.YEAR_FILTER' | translate}}">
+                                <mat-option (click)="showAllItems()">{{'ORDER_CREATE.SHOW_ALL' | translate}}</mat-option>
+                                <mat-option *ngFor="let menu of _orderMenus">{{menu}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
                         <span *ngFor="let section of _sections | async" >
                             <span *ngFor="let item of _items | async">
                                 <ng-template [ngIf]="item.sectionId === section._id && item.categoryId === '' && item.subcategoryId === ''">
@@ -110,7 +117,7 @@
                         </span>
                     </div>
     
-                    <div id="item-selected" class="item-detail">
+                    <div id="item-selected" class="item-detail animated">
                         <div *ngFor="let itemDet of _itemDetail | async">
                             <div class="header-detail" #headerDetailCard>
                                 <label>{{itemDet.name}}</label>
@@ -133,7 +140,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="addition-detail" class="item-detail">
+                    <!--div id="addition-detail" class="item-detail">
                         <div class="header-detail" #headerDetailCard>
                             <label>{{'ORDER_CREATE.ADDITIONS' | translate}}</label>
                             <button class="btn-close" mat-raised-button (click)="viewAdditionDetail(true)">
@@ -155,7 +162,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div-->
                 </div>
             </div>
         </div>
