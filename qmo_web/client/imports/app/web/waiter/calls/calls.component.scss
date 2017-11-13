@@ -1,8 +1,13 @@
-.cards{
-    margin-right: 10px;
-    width: 320px; 
-    vertical-align: top; 
-    padding: 0px;
+@media only screen and (min-width: 961px){
+    .cards{
+        width: 270px;
+        float: left;
+        margin-right: 20px;
+    }
+}
+
+.active-button{
+    margin-left: 5px;
 }
 
 .img {
@@ -13,7 +18,6 @@
 }
 
 .call-card {
-    width: 990px;
     margin: 0 auto;
     background-color: transparent;
     box-shadow: none;
@@ -51,7 +55,7 @@
 .img-list {
     width: 45px;
     height: 45px;
-    margin-right: 12px;
+    margin-right: 5px;
 }
 
 .header-title {
@@ -92,3 +96,6 @@
     }
 }
 
+.mat-dialog-container {
+    max-height: 90vw !important;
+}

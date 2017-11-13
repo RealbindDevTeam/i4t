@@ -274,7 +274,9 @@
             "ORDERS_CHEF": "Ordenes"
         },
         "ORDERS": "Ordenes",
-        "WAITER_CALL": "Llamar mesero"
+        "WAITER_CALL": "Llamar mesero",
+        "CALLS": "Llamados",
+        "SETTINGS": "Ajustes"
     },
     "PROMOTIONS": {
         "PROMOTION_CREATION": "Creación de promociones",

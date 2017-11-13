@@ -439,7 +439,7 @@ mat-ink-bar {
 
 .custom-cards {
     display: inline-block !important; 
-    margin: 20px 0 10px 20px !important;
+    margin-right: 20px;
     width: 260px !important;
     vertical-align: top !important;
 
@@ -469,4 +469,8 @@ mat-ink-bar {
 
 .vertical-align-middle {
     vertical-align: middle !important;
+}
+
+.mat-dialog-container {
+    max-height: 80vw !important;
 }
