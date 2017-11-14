@@ -35,46 +35,68 @@ export function loadMenus() {
                         _id: "1001",
                         is_active: true,
                         name: "MENUS.ADMINISTRATION.RESTAURANTS",
-                        url: "/app/restaurant",
+                        url: "",
                         icon_name: "",
-                        order: 1001
+                        order: 1001,
+                        children: 
+                        [
+                            {
+                                _id: "10011",
+                                is_active: true,
+                                name: "MENUS.ADMINISTRATION.MY_RESTAURANTS",
+                                url: "/app/restaurant",
+                                icon_name: "",
+                                order: 10011
+                            }, {
+                                _id: "10012",
+                                is_active: true,
+                                name: "MENUS.ADMINISTRATION.PROFILE",
+                                url: "/app/restaurant-profile",
+                                icon_name: "",
+                                order: 10012
+                            }, {
+                                _id: "10013",
+                                is_active: true,
+                                name: "MENUS.ADMINISTRATION.MONTHLY_CONFIG",
+                                url: "/app/monthly-config",
+                                icon_name: "",
+                                order: 10013
+                            }
+                        ]
                     }, {
                         _id: "1002",
                         is_active: true,
                         name: "MENUS.ADMINISTRATION.TABLES",
-                        url: "/app/tables",
+                        url: "",
                         icon_name: "",
-                        order: 1002
-                    },{
+                        order: 1002,
+                        children:
+                        [
+                            {
+                                _id: "10021",
+                                is_active: true,
+                                name: "MENUS.ADMINISTRATION.TABLES_SEARCH",
+                                url: "/app/tables",
+                                icon_name: "",
+                                order: 10021
+                            }, {
+                                _id: "10022",
+                                is_active: true,
+                                name: "MENUS.ADMINISTRATION.TABLE_CONTROL",
+                                url: "/app/restaurant-table-control",
+                                icon_name: "",
+                                order: 10022
+                            }
+                        ]
+                    }, {
                         _id: "1003",
-                        is_active: true,
-                        name: "MENUS.ADMINISTRATION.PROFILE",
-                        url: "/app/restaurant-profile",
-                        icon_name: "",
-                        order: 1003
-                    }, {
-                        _id: "1004",
-                        is_active: true,
-                        name: "MENUS.ADMINISTRATION.TABLE_CONTROL",
-                        url: "/app/restaurant-table-control",
-                        icon_name: "",
-                        order: 1004
-                    }, {
-                        _id: "1005",
                         is_active: true,
                         name: "MENUS.ADMINISTRATION.COLLABORATORS",
                         url: "/app/collaborators",
                         icon_name: "",
                         order: 1005
                     }, {
-                        _id: "1006",
-                        is_active: true,
-                        name: "MENUS.ADMINISTRATION.MONTHLY_CONFIG",
-                        url: "/app/monthly-config",
-                        icon_name: "",
-                        order: 1006
-                    }, {
-                        _id: "1007",
+                        _id: "1004",
                         is_active: true,
                         name: "MENUS.ADMINISTRATION.INVOICES_DOWNLOAD",
                         url: "/app/invoices-download",

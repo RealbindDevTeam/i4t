@@ -28,29 +28,12 @@
             <mat-card style="margin: 24px;">
                 <mat-card-title>{{'COLLABORATORS.COLLABORATORS_SEARCH' | translate}}</mat-card-title>
                 <mat-card-subtitle>{{'COLLABORATORS.COLLABORATORS_TEXT' | translate}}</mat-card-subtitle>
-                <mat-card-content style="background: #FFF">
-                    <form [formGroup]="_form" (ngSubmit)="collaboratorsSearch();">
-                        <table style="width: 100%">
-                            <tr>
-                                <th style="width: 10%">
-                                    <label>{{'TABLES.RESTAURANT' | translate}}</label>
-                                </th>
-                                <td style="width: 35%">
-                                    <mat-form-field  style="width: 95%;">
-                                        <mat-select formControlName="restaurant" placeholder="{{'TABLES.SELECT_RESTAURANT' | translate}}">
-                                            <mat-option *ngFor="let rest of _restaurants | async" value="{{rest._id}}">{{rest.name}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </td>
-                                <td style="width: 25%; text-align:center">
-                                    <button mat-raised-button class="button-primary" type="submit">
-                                        <mat-icon>search</mat-icon>
-                                        {{'SEARCH' | translate}}
-                                    </button>
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
+                <mat-card-content>
+                    <mat-form-field  style="width: 100%;">
+                        <mat-select placeholder="{{'TABLES.SELECT_RESTAURANT' | translate}}">
+                            <mat-option *ngFor="let rest of _restaurants | async" (click)="collaboratorsSearch(rest._id);" value="{{rest._id}}">{{rest.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </mat-card-content>
             </mat-card>
             

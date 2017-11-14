@@ -27,14 +27,14 @@
                                     </td>
                                     <td style="width: 30%">
                                         <mat-form-field style="width: 95%">
-                                            <input matInput required formControlName="tables_number" placeholder="{{'TABLES.NUMBER_TABLES' | translate}}" minlength="1"
+                                            <input matInput required formControlName="tables_number" placeholder="{{'MONTHLY_CONFIG.NUMBER_TABLES' | translate}} {{max_table_number}}" minlength="1"
                                                 maxlength="3" [disabled]="!restaurant.isActive" #inputTables>
                                             <mat-hint align="end">{{inputTables.value.length}} / 3</mat-hint>
                                         </mat-form-field>
                                     </td>
                                     <td style="width: 25%; text-align:center">
-                                        <button mat-raised-button class="secondary-button" type="button" (click)="cancel()" [disabled]="!restaurant.isActive">{{'CANCEL' | translate}}</button>
-                                        <button mat-raised-button class="primary-button" type="submit" [disabled]="!restaurant.isActive">{{'CREATE' | translate}}</button>
+                                        <button mat-raised-button class="secondary-button" type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
+                                        <button mat-raised-button class="primary-button" type="submit" [disabled]="!_tableForm.valid">{{'CREATE' | translate}}</button>
                                     </td>
                                 </tr>
                             </table>

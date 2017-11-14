@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { MatSnackBar } from '@angular/material';
@@ -14,6 +14,8 @@ import { Restaurants } from '../../../../../../both/collections/restaurant/resta
 import { Table } from '../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
+import { Country } from '../../../../../../both/models/settings/country.model';
+import { Countries } from '../../../../../../both/collections/settings/country.collection';
 
 import * as QRious from 'qrious';
 
@@ -33,6 +35,7 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
     private _tableForm              : FormGroup;
     private _restaurantSub          : Subscription;
     private _tableSub               : Subscription;
+    private _countrySub             : Subscription;
     
     private _restaurants            : Observable<Restaurant[]>;
     private _tables                 : Observable<Table[]>;
@@ -42,6 +45,8 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
     private selectedRestaurantValue : string;
     private restaurantCode          : string = '';
     private tables_count            : number = 0;
+    private max_table_number        : number;
+    private _restaurant             : Restaurant;
 
     private _mdDialogRef            : MatDialogRef<any>;
 
@@ -51,11 +56,13 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
      * @param {MatSnackBar} snackBar 
      * @param {MatDialog} _mdDialog 
      * @param {UserLanguageService} _userLanguageService 
+     * @param {NgZone} _ngZone
      */
     constructor( private translate: TranslateService, 
                  public snackBar: MatSnackBar,
                  public _mdDialog: MatDialog, 
-                 private _userLanguageService: UserLanguageService, ) {
+                 private _userLanguageService: UserLanguageService,
+                 private _ngZone:NgZone ) {
         translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         translate.setDefaultLang( 'en' );
         this.selectedRestaurantValue = "";
@@ -69,10 +76,22 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
             tables_number: new FormControl('', [Validators.required])
         });
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe(() => {
-            this._restaurants = Restaurants.find({ _id: this.restaurantId }).zone();
+            this._ngZone.run( () => {
+                this._restaurants = Restaurants.find({ _id: this.restaurantId }).zone();
+                this._restaurant = Restaurants.findOne( { _id: this.restaurantId } );
+                this._countrySub = MeteorObservable.subscribe( 'getCountryByRestaurantId', this.restaurantId ).subscribe( () => {
+                    this._ngZone.run( () => {
+                        let _lRestaurantCountry:Country = Countries.findOne( { _id: this._restaurant.countryId } );
+                        this.max_table_number = _lRestaurantCountry.max_number_tables;
+                        this._tableForm.controls['tables_number'].setValidators( Validators.max(this.max_table_number) );
+                    });
+                });
+            });
         });
         this._tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe(() => {
-            this._tables = this._tables = Tables.find({ restaurantId: this.restaurantId }).zone();
+            this._ngZone.run( () => {
+                this._tables = this._tables = Tables.find({ restaurantId: this.restaurantId }).zone();
+            });
         });
     }
 
@@ -82,6 +101,7 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
     removeSubscriptions():void{
         if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
         if( this._tableSub ){ this._tableSub.unsubscribe(); }
+        if( this._countrySub ){ this._countrySub.unsubscribe(); }
     }
 
     /**

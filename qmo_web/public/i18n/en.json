@@ -248,12 +248,14 @@
         "ADMINISTRATION": {
             "MANAGEMENT": "Management",
             "RESTAURANTS": "Restaurants",
-            "TABLES": "Tables Search",
+            "TABLES": "Tables",
             "COLLABORATORS": "Employees",
-            "MONTHLY_CONFIG": "Monthly config",
+            "MONTHLY_CONFIG": "Configuration",
             "TABLE_CONTROL": "Tables Control",
             "INVOICES_DOWNLOAD" : "Invoices download",
-            "PROFILE": "Restaurant Profile"
+            "PROFILE": "Profiles",
+            "TABLES_SEARCH": "Tables search",
+            "MY_RESTAURANTS": "My Restaurants"
         },
         "PAYMENTS": {
             "PAYMENTS": "Payments",
@@ -358,7 +360,8 @@
         "ACCEPT_CREATION": "Accept",
         "CANCEL_CREATION": "Cancel",
         "INITIAL_TABLES_NUMBER": "Initial tables number, ",
-        "MAX_TABLES": "max "
+        "MAX_TABLES": "max ",
+        "TABLES_MSG": "In case you need more tables for your restaurant, in the option Management -> Restaurants -> Configuration, you can add more."
     },
     "WEEK": {
         "MONDAY": "Monday",
@@ -871,7 +874,8 @@
         "CALL_LABEL_CUSTOMER_PAYMENT": "Payment from customer",
         "BTN_CALL_WAITER": "Request waiter/waitress",
         "BTN_CANCEL_WAITER": "Cancel",
-        "CALL_LABEL_EXIT_TABLE": "User Output"
+        "CALL_LABEL_EXIT_TABLE": "User Output",
+        "NO_CALLS": "There are no pending calls"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Orders Confirmed",
@@ -1016,7 +1020,8 @@
         "DIALOG_SURE_ACTION": "Are you sure you want to do this action?",
         "RESTAURANT_MODIFIED": "Restaurant modified",
         "TABLES_CREATE": "Tables created",
-        "TABLE_MODIFIED": "Table modified"
+        "TABLE_MODIFIED": "Table modified",
+        "NUMBER_TABLES": "Number of tables, Max "
     },
     "SEND_ORDER": {
         "ORDER": "Order",

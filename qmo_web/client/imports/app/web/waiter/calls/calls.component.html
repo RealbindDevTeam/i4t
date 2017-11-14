@@ -17,7 +17,7 @@
     </mat-card>
 </div>
 
-<mat-card mat-cell="12" class="demo-card demo-basic" style="width: 76%; margin: 0 auto" *ngIf="!_thereAreCalls">
+<mat-card mat-cell="12" class="demo-card demo-basic" style="margin: 0 auto" *ngIf="!_thereAreCalls">
     <mat-card-content>
         <div class="card_initial">
             <div class="card_initial has-image" style="margin: auto;">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="card_initial-copy">
                     <div class="card_initial-tagline">
-                        No hay llamados pendientes
+                        {{ 'WAITER_CALL.NO_CALLS' | translate }}
                     </div>
                 </div>
             </div>

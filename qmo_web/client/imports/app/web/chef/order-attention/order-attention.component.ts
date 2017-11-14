@@ -39,9 +39,11 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     private _imgRestaurantSub               : Subscription;
 
     private _ordersInProcess                : Observable<Order[]>;    
-    private _ordersInProcessDetail          : Observable<Order[]>;
     private _ordersCanceled                 : Observable<Order[]>;
     private _ordersCanceledByAdmin          : Observable<Order[]>;
+    private _ordersInProcessDetail          : Observable<Order[]>;
+    private _ordersCanceledDetail           : Observable<Order[]>;
+    private _ordersCanceledByAdminDetail    : Observable<Order[]>;
     private _items                          : Observable<Item[]>;
     private _tables                         : Observable<Table[]>;
     private _garnishFoodCol                 : Observable<GarnishFood[]>;
@@ -56,6 +58,10 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     public _dialogRef                       : MatDialogRef<any>;
     private _thereAreOrders                 : boolean = true;
     private _userDetail                     : UserDetail;
+
+    private _ordersInProcessIndex           : number = -1;
+    private _ordersCanceledIndex            : number = -1;
+    private _ordersCanceledByAdminIndex     : number = -1;
 
     /**
      * OrderAttentionComponent Constructor
@@ -149,13 +155,61 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Show Order in process detail
+     * @param {Order} _pOrder 
+     * @param {number} _pIndex 
+     */
+    showOrderInProcessDetail( _pOrder: Order, _pIndex: number ):void{
+        if( this._ordersInProcessIndex === _pIndex ) {
+            this._ordersInProcessIndex = -1;
+        } else {
+            this._ordersInProcessIndex = _pIndex;
+        }
+        this._ordersCanceledIndex = -1;
+        this._ordersCanceledByAdminIndex = -1;
+        this._ordersInProcessDetail = Orders.find( { _id: _pOrder._id } ).zone();
+    }
+
+    /**
+     * Show order canceled detail
+     * @param {Order} _pOrder 
+     * @param {number} _pIndex 
+     */
+    showOrderCanceledDetail( _pOrder: Order, _pIndex: number ):void{
+        if( this._ordersCanceledIndex === _pIndex ){
+            this._ordersCanceledIndex = -1;
+        } else {
+            this._ordersCanceledIndex = _pIndex;
+        }
+        this._ordersInProcessIndex = -1;
+        this._ordersCanceledByAdminIndex = -1;
+        this._ordersCanceledDetail = Orders.find( { _id: _pOrder._id } ).zone();
+    }
+
+    /**
+     * Show order canceled by admin detail
+     * @param {Order} _pOrder 
+     * @param {number} _pIndex 
+     */
+    showOrdersCanceledByAdminDetail( _pOrder: Order, _pIndex: number ):void{
+        if( this._ordersCanceledByAdminIndex === _pIndex ){
+            this._ordersCanceledByAdminIndex = -1;
+        } else {
+            this._ordersCanceledByAdminIndex = _pIndex;
+        }
+        this._ordersInProcessIndex = -1;
+        this._ordersCanceledIndex = -1;
+        this._ordersCanceledByAdminDetail = Orders.find( { _id: _pOrder._id } ).zone();
+    }
+
+    /**
      * Show Order In Process Details
      * @param {Order} _pOrder 
-     */
-    showOrderInProcessDetail( _pOrder: Order ):void{
+     
+    showOrderDetail( _pOrder: Order ):void{
         this._ordersInProcessDetail = Orders.find( { _id: _pOrder._id } ).zone();
         this._showDetailsInProcess = true;
-    }
+    }*/
 
     /**
      * Set status order to PREPARED
