@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Countries } from '../../../../both/collections/settings/country.collection';
 import { Restaurants } from '../../../../both/collections/restaurant/restaurant.collection';
 import { Restaurant } from '../../../../both/models/restaurant/restaurant.model';
+import { check } from 'meteor/check';
 
 /**
  * Meteor publication countries

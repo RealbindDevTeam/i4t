@@ -1019,7 +1019,8 @@
         "DIALOG_SURE_ACTION": "Are you sure you want to do this action?",
         "RESTAURANT_MODIFIED": "Restaurant modified",
         "TABLES_CREATE": "Tables created",
-        "TABLE_MODIFIED": "Table modified"
+        "TABLE_MODIFIED": "Table modified",
+        "NUMBER_TABLES": "Number of tables, Max "
     },
     "SEND_ORDER": {
         "ORDER": "Order",

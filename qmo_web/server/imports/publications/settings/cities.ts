@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Cities } from '../../../../both/collections/settings/city.collection';
 import { Restaurants } from '../../../../both/collections/restaurant/restaurant.collection';
+import { check } from 'meteor/check';
 
 /**
  * Meteor publication cities
