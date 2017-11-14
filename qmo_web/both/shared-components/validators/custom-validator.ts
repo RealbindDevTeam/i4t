@@ -68,10 +68,12 @@ export class CustomValidators {
   }
 
   public static noSpacesValidator(control: AbstractControl) {
-    if (control.value.match(/^\S*$/)) {
-      return null;
-    } else {
-      return { 'invalidNoSpacesValidator': true };
+    if(control.value !== null && control.value !== undefined){
+      if (control.value.match(/^\S*$/)) {
+        return null;
+      } else {
+        return { 'invalidNoSpacesValidator': true };
+      }
     }
   }
 

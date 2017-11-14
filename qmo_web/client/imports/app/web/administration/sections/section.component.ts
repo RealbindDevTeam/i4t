@@ -42,7 +42,7 @@ export class SectionComponent implements OnInit, OnDestroy {
     private titleMsg: string;
     private btnAcceptLbl: string;
     private _thereAreRestaurants: boolean = true;
-    private _thereAreUsers: boolean = true;
+    private _thereAreUsers: boolean = false;
 
     private _usersCount: number;
 

@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -35,7 +34,7 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
     private _roleSub                : Subscription;
     private _usersSub               : Subscription;
 
-    private _form                   : FormGroup;
+    //private _form                   : FormGroup;
     public _dialogRef               : MatDialogRef<any>;
     private _mdDialogRef            : MatDialogRef<any>;
     private titleMsg                : string;
@@ -45,13 +44,12 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
     /**
      * CollaboratorsComponent Constructor
      * @param {Router} _router 
-     * @param {FormBuilder} _formBuilder 
      * @param {TranslateService} _translate 
      * @param {MatDialog} _dialog 
      * @param {UserLanguageService} _userLanguageService 
+     * @param {NgZone} _ngZone
      */
     constructor( private _router: Router, 
-                 private _formBuilder: FormBuilder, 
                  private _translate: TranslateService, 
                  public _dialog: MatDialog,
                  private _userLanguageService: UserLanguageService,
@@ -69,9 +67,6 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
      */
     ngOnInit() {
         this.removeSubscriptions();
-        this._form = new FormGroup({
-            restaurant: new FormControl('', [Validators.required]),
-        });
         this._restaurantSub = MeteorObservable.subscribe('restaurants', this._user ).subscribe( () => {
             this._ngZone.run( () => {
                 this._restaurants = Restaurants.find({}).zone();
@@ -106,22 +101,14 @@ export class CollaboratorsComponent implements OnInit, OnDestroy{
     /**
      * This method allow search collaborators by restaurant id
      */
-    collaboratorsSearch(){
-        if ( this._form.valid ) {
-            let id_restaurant : string;
-            id_restaurant = this._form.value.restaurant;
-            this._userDetailsSub = MeteorObservable.subscribe('getUsersDetailsForRestaurant', id_restaurant ).subscribe(() => {
-                this._userDetails = UserDetails.find({restaurant_work : id_restaurant}).zone();
-            });
-            
-            this._usersSub = MeteorObservable.subscribe( 'getUsersByRestaurant' , id_restaurant ).subscribe( () => {
-                this._users = Users.find({}).zone();
-            });
-
-        } else {
-            var message_translate = this.itemNameTraduction('COLLABORATORS.COLLABORATORS_TEXT');
-            this.openDialog(this.titleMsg, '', message_translate, '', this.btnAcceptLbl, false);
-        }
+    collaboratorsSearch( _pRestaurantId: string ){
+        this._userDetailsSub = MeteorObservable.subscribe('getUsersDetailsForRestaurant', _pRestaurantId ).subscribe(() => {
+            this._userDetails = UserDetails.find({restaurant_work : _pRestaurantId}).zone();
+        });
+        
+        this._usersSub = MeteorObservable.subscribe( 'getUsersByRestaurant' , _pRestaurantId ).subscribe( () => {
+            this._users = Users.find({}).zone();
+        });
     }
 
     /**

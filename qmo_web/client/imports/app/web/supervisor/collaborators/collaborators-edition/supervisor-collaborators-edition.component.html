@@ -35,9 +35,9 @@
                     <td colspan="1" style="padding-top: 10px; width: 50%">
                         <mat-form-field style="width: 100%">
                             <input matInput [matDatepicker]="picker" placeholder="{{'BIRTHDATE' | translate}}" formControlName="birthdate">
-                            <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
-                        <mat-datepicker #picker></mat-datepicker>
                     </td>
                     <td colspan="2" style="padding-top: 10px;">
                         <mat-form-field style="width: 100%">
