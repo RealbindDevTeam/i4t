@@ -874,7 +874,8 @@
         "CALL_LABEL_CUSTOMER_PAYMENT": "Payment from customer",
         "BTN_CALL_WAITER": "Request waiter/waitress",
         "BTN_CANCEL_WAITER": "Cancel",
-        "CALL_LABEL_EXIT_TABLE": "User Output"
+        "CALL_LABEL_EXIT_TABLE": "User Output",
+        "NO_CALLS": "There are no pending calls"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Orders Confirmed",

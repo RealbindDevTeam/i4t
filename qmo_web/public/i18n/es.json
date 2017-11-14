@@ -874,7 +874,8 @@
         "CALL_LABEL_CUSTOMER_PAYMENT": "Pago de cliente",
         "BTN_CALL_WAITER": "Solicitar mesero",
         "BTN_CANCEL_WAITER": "Cancelar",
-        "CALL_LABEL_EXIT_TABLE": "Salida de Usuario"
+        "CALL_LABEL_EXIT_TABLE": "Salida de Usuario",
+        "NO_CALLS": "No hay llamados pendientes"
     },
     "ORDER_ATTENTION": {
         "ORDERS_CONFIRMED": "Ordenes confirmadas",
