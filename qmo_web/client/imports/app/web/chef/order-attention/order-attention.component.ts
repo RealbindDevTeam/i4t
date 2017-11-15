@@ -52,7 +52,6 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
 
     private _showDetails                    : boolean = false;
     private _loading                        : boolean;
-    private _showDetailsInProcess           : boolean = false;
     private titleMsg                        : string;
     private btnAcceptLbl                    : string;
     public _dialogRef                       : MatDialogRef<any>;
@@ -203,15 +202,6 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Show Order In Process Details
-     * @param {Order} _pOrder 
-     
-    showOrderDetail( _pOrder: Order ):void{
-        this._ordersInProcessDetail = Orders.find( { _id: _pOrder._id } ).zone();
-        this._showDetailsInProcess = true;
-    }*/
-
-    /**
      * Set status order to PREPARED
      * @param {Order} _pOrder 
      */
@@ -222,13 +212,9 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this._showDetailsInProcess = false;
-        var restaurant_id = _pOrder.restaurantId;
-        var table_id = _pOrder.tableId;
-
         var data : any = {
-          restaurants : restaurant_id,
-          tables : table_id,
+          restaurants : _pOrder.restaurantId,
+          tables : _pOrder.tableId,
           user : this._user,
           waiter_id : "",
           status : "waiting",
