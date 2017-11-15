@@ -386,7 +386,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
             });
         }
 
-        if (GarnishFoodCol.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).zone().isEmpty) {
+        if (!GarnishFoodCol.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).zone().isEmpty()) {
             this._showGarnishFood = true;
             GarnishFoodCol.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).fetch().forEach((gar) => {
                 if (this._garnishFormGroup.contains(gar._id)) {
@@ -399,7 +399,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
             this._garnishFoodList = GarnishFoodCol.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).fetch();
         }
 
-        if (Additions.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).zone().isEmpty) {
+        if (!Additions.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).zone().isEmpty()) {
             this._showAddition = true;
             Additions.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).fetch().forEach((ad) => {
                 if (this._additionsFormGroup.contains(ad._id)) {
