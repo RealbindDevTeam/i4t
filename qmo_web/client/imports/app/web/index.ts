@@ -32,7 +32,6 @@ import { RestaurantEditionComponent } from './restaurant/restaurant/restaurant-e
 import { IurestScheduleComponent } from './custom/schedule/schedule.component';
 import { CollaboratorsEditionComponent } from './restaurant/collaborators/collaborators-edition/collaborators-edition.component';
 import { RestaurantInfoComponent } from './restaurant/restaurant/restaurant-info/restaurant-info.component';
-import { RestaurantLocationInfoComponent } from './restaurant/restaurant/restaurant-location-info/restaurant-location-info.component';
 import { OrderNavigationService } from './customer/orders/order-navigation/order-navigation.service';
 import { OrderMenuOptionComponent } from './customer/orders/order-navigation/order-menu-option.component';
 import { OrderCreateComponent } from './customer/orders/order-create/order-create.component';
@@ -167,7 +166,6 @@ export const MODAL_DIALOG_DECLARATIONS = [
     SubcategoryEditComponent,
     RecoverWebComponent,
     ItemEditionComponent,
-    RestaurantLocationInfoComponent,
     CallCloseConfirmComponent,
     OrderToTranslateComponent,
     CreateConfirmComponent,

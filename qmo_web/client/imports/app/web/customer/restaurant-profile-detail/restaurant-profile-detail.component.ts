@@ -89,28 +89,33 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
                 this._ngZone.run( () => {
                     this._restaurants = Restaurants.find( { _id: this.restaurantId } ).zone();
                     let _lRestaurant:Restaurant = Restaurants.findOne( { _id: this.restaurantId } );
-                    this._countriesSub = MeteorObservable.subscribe( 'getCountryByRestaurantId', this.restaurantId ).subscribe( () => {
-                        this._ngZone.run( () => {
-                            let _lCountry:Country = Countries.findOne( { _id: _lRestaurant.countryId } );
-                            this._restaurantCountry = this.itemNameTraduction( _lCountry.name );
-                        });
-                    });
-                    this._citiesSub = MeteorObservable.subscribe( 'getCityByRestaurantId', this.restaurantId ).subscribe( () => {
-                        this._ngZone.run( () => {
-                            let _lCity:City = Cities.findOne( { _id: _lRestaurant.cityId } );
-                            this._restaurantCity = this.itemNameTraduction( _lCity.name );
-                        });
-                    });
-                    this._currencySub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', [ this.restaurantId ] ).subscribe( () => {
-                        this._ngZone.run( () => {
-                            let find: Currency = Currencies.findOne( { _id: _lRestaurant.currencyId } );
-                            this._restaurantCurrency = find.code + ' - ' + this.itemNameTraduction( find.name );
-                        });
-                    });
-                    this._paymentMethodSub = MeteorObservable.subscribe( 'getPaymentMethodsByrestaurantId', this.restaurantId ).subscribe( () => {
-                        this._ngZone.run( () => {
-                            this._restaurantPaymentMethods = PaymentMethods.find( { _id: { $in: _lRestaurant.paymentMethods } , isActive: true } ).zone();
-                        });
+                    this._restaurants.subscribe( () => { 
+                        _lRestaurant = Restaurants.findOne( { _id: this.restaurantId } );
+                        if( _lRestaurant ){
+                            this._countriesSub = MeteorObservable.subscribe( 'getCountryByRestaurantId', this.restaurantId ).subscribe( () => {
+                                this._ngZone.run( () => {
+                                    let _lCountry:Country = Countries.findOne( { _id: _lRestaurant.countryId } );
+                                    this._restaurantCountry = this.itemNameTraduction( _lCountry.name );
+                                });
+                            });
+                            this._citiesSub = MeteorObservable.subscribe( 'getCityByRestaurantId', this.restaurantId ).subscribe( () => {
+                                this._ngZone.run( () => {
+                                    let _lCity:City = Cities.findOne( { _id: _lRestaurant.cityId } );
+                                    this._restaurantCity = this.itemNameTraduction( _lCity.name );
+                                });
+                            });
+                            this._currencySub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', [ this.restaurantId ] ).subscribe( () => {
+                                this._ngZone.run( () => {
+                                    let find: Currency = Currencies.findOne( { _id: _lRestaurant.currencyId } );
+                                    this._restaurantCurrency = find.code + ' - ' + this.itemNameTraduction( find.name );
+                                });
+                            });
+                            this._paymentMethodSub = MeteorObservable.subscribe( 'getPaymentMethodsByrestaurantId', this.restaurantId ).subscribe( () => {
+                                this._ngZone.run( () => {
+                                    this._restaurantPaymentMethods = PaymentMethods.find( { _id: { $in: _lRestaurant.paymentMethods } , isActive: true } ).zone();
+                                });
+                            });
+                        }
                     });
                 });
             });
@@ -171,6 +176,21 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Return web page url
+     * @param {string} _pWebPage 
+     */
+    getWebPageUrl( _pWebPage: string ):string{
+        let _lLink:string = _pWebPage;
+        let _lHttpPrefix = 'http://';
+        let _lHttpsPrefix = 'https://';
+
+        if ( !_pWebPage.startsWith( _lHttpPrefix ) && !_pWebPage.startsWith( _lHttpsPrefix ) ){
+            _lLink = _lHttpPrefix + _pWebPage
+        }
+        return _lLink;
+    }
+
+    /**
      * Set restaurant profile thumbs array
      */
     setRestaurantProfileImageThumbs():void{
@@ -219,6 +239,24 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
     openInstagramLink( _pInstagramLink: string ):void{
         window.open( _pInstagramLink, "_blank" );
     }
+
+    /**
+     * Return payment method image
+     * @param {string} _pPaymentMethodName 
+     */
+    getPaymentMethodImg( _pPaymentMethodName: string ):string{
+        if(_pPaymentMethodName){
+            if( _pPaymentMethodName === 'PAYMENT_METHODS.CASH' ){
+                return '/images/cash-payment.png';
+            } else if( _pPaymentMethodName === 'PAYMENT_METHODS.CREDIT_CARD' ){
+                return '/images/credit-card-payment.png';
+            } else if( _pPaymentMethodName === 'PAYMENT_METHODS.DEBIT_CARD' ){
+                return '/images/debit-card-payment.png';
+            } else if( _pPaymentMethodName === 'PAYMENT_METHODS.ONLINE' ){
+                return '/images/payment-online.png';
+            }
+        }
+    } 
 
     /**
      * Function to translate information
