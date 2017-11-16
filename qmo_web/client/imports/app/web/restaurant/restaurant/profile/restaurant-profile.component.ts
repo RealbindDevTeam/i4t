@@ -159,12 +159,12 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
         this._selectedIndex = 0;
         this._profileForm = new FormGroup({
             restaurant_description: new FormControl( '', [ Validators.required ] ),
-            web_page: new FormControl( '' ),
-            phone: new FormControl( '' ),
-            email: new FormControl( '' ),
-            facebookLink: new FormControl( '' ),
-            instagramLink: new FormControl( '' ),
-            twitterLink: new FormControl( '' )
+            web_page: new FormControl( ),
+            phone: new FormControl( ),
+            email: new FormControl( ),
+            facebookLink: new FormControl( ),
+            instagramLink: new FormControl( ),
+            twitterLink: new FormControl( )
         });
         this._restaurantProfileSub = MeteorObservable.subscribe( 'getRestaurantProfile', _pRestaurantId ).subscribe( () => {
             this._ngZone.run( () => {
@@ -174,9 +174,11 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                     this._profileForm.controls['web_page'].setValue( this._restaurantProfile.web_page === undefined || this._restaurantProfile.web_page === null ? '' : this._restaurantProfile.web_page );
                     this._profileForm.controls['phone'].setValue( this._restaurantProfile.phone === undefined || this._restaurantProfile.phone === null ? '' : this._restaurantProfile.phone );
                     this._profileForm.controls['email'].setValue( this._restaurantProfile.email === undefined || this._restaurantProfile.email === null ? '' : this._restaurantProfile.email );
-                    this._profileForm.controls['facebookLink'].setValue( this._restaurantProfile.social_networks.facebook === undefined || this._restaurantProfile.social_networks.facebook === null ? '' : this._restaurantProfile.social_networks.facebook );
-                    this._profileForm.controls['instagramLink'].setValue( this._restaurantProfile.social_networks.instagram === undefined || this._restaurantProfile.social_networks.instagram === null ? '' : this._restaurantProfile.social_networks.instagram );
-                    this._profileForm.controls['twitterLink'].setValue( this._restaurantProfile.social_networks.twitter === undefined || this._restaurantProfile.social_networks.twitter === null ? '' : this._restaurantProfile.social_networks.twitter );
+                    if( this._restaurantProfile.social_networks ){
+                        this._profileForm.controls['facebookLink'].setValue( this._restaurantProfile.social_networks.facebook === undefined || this._restaurantProfile.social_networks.facebook === null ? '' : this._restaurantProfile.social_networks.facebook );
+                        this._profileForm.controls['instagramLink'].setValue( this._restaurantProfile.social_networks.instagram === undefined || this._restaurantProfile.social_networks.instagram === null ? '' : this._restaurantProfile.social_networks.instagram );
+                        this._profileForm.controls['twitterLink'].setValue( this._restaurantProfile.social_networks.twitter === undefined || this._restaurantProfile.social_networks.twitter === null ? '' : this._restaurantProfile.social_networks.twitter );
+                    }
                     this._scheduleInEditMode = true;
                     this._scheduleToEdit = this._restaurantProfile.schedule;
                     this._lat = this._restaurantProfile.location.lat;
@@ -277,28 +279,28 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                 }
             });
 
-            if( this._profileForm.controls['web_page'].value !== '' ){
+            if( this._profileForm.controls['web_page'].value !== '' && this._profileForm.controls['web_page'].value !== null ){
                 RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $set: { web_page: this._profileForm.controls['web_page'].value } } );
             } else if( ( this._profileForm.controls['web_page'].value === '' || this._profileForm.controls['web_page'].value === null ) && ( this._restaurantProfile.web_page !== undefined && this._restaurantProfile.web_page !== null ) ) {
-                RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $set: { web_page: '' } } );
+                RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $unset: { web_page: true } } );
             }
     
-            if( this._profileForm.controls['phone'].value !== '' ){
+            if( this._profileForm.controls['phone'].value !== '' && this._profileForm.controls['phone'].value !== null ){
                 RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $set: { phone: this._profileForm.controls['phone'].value } } );
             } else if( ( this._profileForm.controls['phone'].value === '' || this._profileForm.controls['phone'].value === null ) && ( this._restaurantProfile.phone !== undefined && this._restaurantProfile.phone !== null ) ) {
-                RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $set: { phone: '' } } );
+                RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $unset: { phone: true } } );
             }
     
-            if( this._profileForm.controls['email'].value !== '' ){
+            if( this._profileForm.controls['email'].value !== '' && this._profileForm.controls['email'].value !== null ){
                 RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $set: { email: this._profileForm.controls['email'].value } } );
             } else if( ( this._profileForm.controls['email'].value === '' || this._profileForm.controls['email'].value === null ) && ( this._restaurantProfile.email !== undefined && this._restaurantProfile.email !== null ) ) {
-                RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $set: { email: '' } } );
+                RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $unset: { email: true } } );
             }
 
             if( Object.keys( _lRestaurantSocialNetwork ).length !== 0 ){ 
                 RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $set: { social_networks: _lRestaurantSocialNetwork } } ); 
             } else if( Object.keys( _lRestaurantSocialNetwork ).length === 0 && ( this._restaurantProfile.social_networks !== undefined && this._restaurantProfile.social_networks !== null ) ){
-                RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $set: { social_networks: {} } } );
+                RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $unset: { social_networks: true } } );
             }
 
             if( this._newImagesToInsert ){
@@ -317,16 +319,16 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
             }
         } else {
             if( this._profileForm.valid ){
+                _lRestaurantProfile.creation_user = this._user;
+                _lRestaurantProfile.creation_date = new Date();
+                _lRestaurantProfile.modification_user = '-';
+                _lRestaurantProfile.modification_date = new Date();
+
                 if( this._profileForm.controls['web_page'].value !== '' && this._profileForm.controls['web_page'].value !== null ){ _lRestaurantProfile.web_page = this._profileForm.value.web_page; }
                 if( this._profileForm.controls['phone'].value !== '' && this._profileForm.controls['phone'].value !== null ){ _lRestaurantProfile.phone = this._profileForm.value.phone; }
                 if( this._profileForm.controls['email'].value !== '' && this._profileForm.controls['email'].value !== null ){ _lRestaurantProfile.email = this._profileForm.value.email; }
 
                 if( Object.keys( _lRestaurantSocialNetwork ).length !== 0 ){ _lRestaurantProfile.social_networks = _lRestaurantSocialNetwork; }
-
-                _lRestaurantProfile.creation_user = this._user;
-                _lRestaurantProfile.creation_date = new Date();
-                _lRestaurantProfile.modification_user = '-';
-                _lRestaurantProfile.modification_date = new Date();
 
                 let _newProfileId:string = RestaurantsProfile.collection.insert( _lRestaurantProfile );
                 this._restaurantProfile = RestaurantsProfile.findOne( { _id: _newProfileId } );
