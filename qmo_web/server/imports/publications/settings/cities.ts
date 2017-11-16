@@ -17,7 +17,7 @@ Meteor.publish('getCityByRestaurantId', function (_restaurantId: string) {
     if (restaurant) {
         return Cities.collection.find({ _id: restaurant.cityId });
     } else {
-        return;
+        return Cities.find({ is_active: true });
     }
 });
 

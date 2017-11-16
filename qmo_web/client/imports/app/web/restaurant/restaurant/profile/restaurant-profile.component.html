@@ -62,8 +62,8 @@
                             <div class="description">
                                 <p>{{ 'RESTAURANT_PROFILE.DESCRIPTION' | translate }}:</p>
                                 <mat-form-field class="description-detail">
-                                    <textarea matInput required formControlName="restaurant_description" placeholder="{{ 'RESTAURANT_PROFILE.DESCRIPTION_LBL' | translate }}" minlength="1" maxlength="200" #inputDescription></textarea>
-                                    <mat-hint align="end">{{inputDescription.value.length}} / 200</mat-hint>
+                                    <textarea matInput required formControlName="restaurant_description" placeholder="{{ 'RESTAURANT_PROFILE.DESCRIPTION_LBL' | translate }}" minlength="1" maxlength="2000" #inputDescription></textarea>
+                                    <mat-hint align="end">{{inputDescription.value.length}} / 2000</mat-hint>
                                 </mat-form-field>
                             </div>
                             <div>

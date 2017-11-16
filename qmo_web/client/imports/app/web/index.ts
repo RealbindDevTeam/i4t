@@ -88,6 +88,7 @@ import { InvoicesDownloadPage } from './administration/invoices-download/invoice
 import { RestaurantLegalityComponent } from './restaurant/restaurant/legality/restaurant-legality.component';
 import { ColombiaLegalityComponent } from './restaurant/restaurant/legality/country-legality/colombia-legality/colombia-legality.component';
 import { RestaurantProfileComponent } from './restaurant/restaurant/profile/restaurant-profile.component';
+import { RestaurantProFileDetailComponent } from './customer/restaurant-profile-detail/restaurant-profile-detail.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -151,7 +152,8 @@ export const WEB_DECLARATIONS = [
     InvoicesDownloadPage,
     RestaurantLegalityComponent,
     ColombiaLegalityComponent,
-    RestaurantProfileComponent
+    RestaurantProfileComponent,
+    RestaurantProFileDetailComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [

@@ -1,0 +1,52 @@
+<div style="width: 80%; margin: 0 auto;">
+    <div *ngFor="let restaurant of _restaurants | async">
+        <mat-card>
+            <mat-list>
+                <mat-list-item>
+                    <img mat-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{ getRestaurantImage( restaurant._id ) }}">
+                    <h2 mat-line style="font-size: 1.3rem;"> {{restaurant.name}} </h2>
+                    <p mat-line style="font-size: 1rem;">
+                        <mat-icon style="vertical-align: middle">location_on</mat-icon>
+                        <span>{{_restaurantCountry}}, {{_restaurantCity}}</span>
+                    </p>
+                    <button mat-raised-button class="primary-button" style="width: 35%;">Ver Menu</button>
+                </mat-list-item>
+            </mat-list>
+        </mat-card>
+        <div *ngIf="(_restaurantsProfile | async)?.length <= 0">
+            <mat-card mat-cell="12" class="demo-card demo-basic" style="margin: 0 auto">
+                <mat-card-content>
+                    <div class="card_initial">
+                        <div class="card_initial has-image">
+                            <div class="card_initial-image-container">
+                                <img class="card_initial-image" 
+                                    src="/images/restaurantes.png"/>
+                            </div>
+                            <div class="card_initial-copy">
+                                <div class="card_initial-tagline">
+                                    Lo sentimos. Este restaurante no ha configurado su perfil. =(
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <span *ngFor="let restaurantProfile of _restaurantsProfile | async">
+            <ng-template [ngIf]="restaurant._id === restaurantProfile.restaurant_id">
+                <div>
+                    <mat-card style="width: 40%;height: 300px;overflow: scroll;display: inline-block;">
+                        <mat-card-title>Sobre el Restaurante</mat-card-title>
+                        <mat-card-content>{{restaurantProfile.restaurant_description}}</mat-card-content>
+                    </mat-card>
+                    <mat-card style="width: 48%;display: inline-block;">
+                        <mat-card-title>Fotos</mat-card-title>
+                        <mat-card-content>
+                            <img *ngFor="let restProfileImgeThumb of _restaurantProfileImgThumbs | async" md-card-image src="{{restProfileImgeThumb.url}}">
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </ng-template>
+        </span>
+    </div>
+</div>
