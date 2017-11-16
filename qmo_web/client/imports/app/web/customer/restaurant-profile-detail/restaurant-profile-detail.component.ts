@@ -4,6 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Restaurant, RestaurantProfile, RestaurantImageThumb, RestaurantProfileImage, RestaurantProfileImageThumb } from '../../../../../../both/models/restaurant/restaurant.model';
@@ -16,6 +17,7 @@ import { Currency } from '../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../both/collections/general/currency.collection';
 import { PaymentMethod } from '../../../../../../both/models/general/paymentMethod.model';
 import { PaymentMethods } from '../../../../../../both/collections/general/paymentMethod.collection';
+import { ScheduleDetailComponent } from './schedule-detail/schedule-detail.component';
 
 @Component({
     selector: 'restaurant-profile-detail',
@@ -46,6 +48,8 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
     private _restaurantCountry          : string;
     private _restaurantCity             : string;
     private _restaurantCurrency         : string = '';
+    private _profileImgsThumbs          : RestaurantImageThumb[] =[];
+    public _dialogRef                   : MatDialogRef<any>;
     
     /**
      * RestaurantProFileDetailComponent Constructor
@@ -60,7 +64,8 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
                  private _userLanguageService: UserLanguageService,
                  private _activatedRoute: ActivatedRoute,
                  private _router: Router,
-                 private readonly _location: Location ){
+                 private readonly _location: Location,
+                 public _dialog: MatDialog ){
         if( Meteor.user() !== undefined && Meteor.user() !== null ){
             _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
             _translate.setDefaultLang('en');
@@ -123,6 +128,8 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
             this._restaurantProfileImgThumSub = MeteorObservable.subscribe( 'getRestaurantProfileImageThumbsByRestaurantId', this.restaurantId ).subscribe( () => {
                 this._ngZone.run( () => {
                     this._restaurantProfileImgThumbs = RestaurantProfileImageThumbs.find( { restaurantId: this.restaurantId } ).zone();
+                    this.setRestaurantProfileImageThumbs();
+                    this._restaurantProfileImgThumbs.subscribe( () => { this.setRestaurantProfileImageThumbs(); });
                 });
             });
         } else {
@@ -161,6 +168,56 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
         } else {
             return '/images/default-restaurant.png';
         }
+    }
+
+    /**
+     * Set restaurant profile thumbs array
+     */
+    setRestaurantProfileImageThumbs():void{
+        RestaurantProfileImageThumbs.find( { restaurantId: this.restaurantId } ).fetch().forEach( ( thumb ) => {
+            if( thumb ){
+                this._profileImgsThumbs.push( thumb );
+            }
+        });
+    }
+
+    /**
+     * Open restaurant schedule
+     * @param {RestaurantProfile} _pRestaurantProfile 
+     */
+    openSchedule( _pRestaurantProfile:RestaurantProfile ):void{
+        this._dialogRef = this._dialog.open( ScheduleDetailComponent, {
+            disableClose: true,
+            width: '40%'
+        });
+        this._dialogRef.componentInstance._restaurantSchedule = _pRestaurantProfile;
+        this._dialogRef.afterClosed().subscribe(result => {
+            this._dialogRef = null;
+        });
+    }
+
+    /**
+     * Open Facebook link
+     * @param {string} _pFacebookLink 
+     */
+    openFacebookLink( _pFacebookLink: string ):void{
+        window.open( _pFacebookLink, "_blank" );
+    }
+
+    /**
+     * Open Twitter link
+     * @param {string} _pTwitterLink 
+     */
+    openTwitterLink( _pTwitterLink: string ):void{
+        window.open( _pTwitterLink, "_blank" );
+    }
+
+    /**
+     * Open Instagram link
+     * @param {string} _pInstagramLink 
+     */
+    openInstagramLink( _pInstagramLink: string ):void{
+        window.open( _pInstagramLink, "_blank" );
     }
 
     /**

@@ -89,6 +89,7 @@ import { RestaurantLegalityComponent } from './restaurant/restaurant/legality/re
 import { ColombiaLegalityComponent } from './restaurant/restaurant/legality/country-legality/colombia-legality/colombia-legality.component';
 import { RestaurantProfileComponent } from './restaurant/restaurant/profile/restaurant-profile.component';
 import { RestaurantProFileDetailComponent } from './customer/restaurant-profile-detail/restaurant-profile-detail.component';
+import { ScheduleDetailComponent } from './customer/restaurant-profile-detail/schedule-detail/schedule-detail.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -182,7 +183,8 @@ export const MODAL_DIALOG_DECLARATIONS = [
     SupervisorCollaboratorsEditionComponent,
     RecoverConfirmComponent,
     RestaurantExitConfirmComponent,
-    PenalizeCustomerComponent
+    PenalizeCustomerComponent,
+    ScheduleDetailComponent
 ];
 
 export const SERVICES_DECLARATIONS = [
