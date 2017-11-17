@@ -145,8 +145,6 @@ export class CallsComponent implements OnInit, OnDestroy {
     showPayment( _call: WaiterCallDetail ){
         this._mdDialogRef = this._mdDialog.open( PaymentConfirmComponent, {
             disableClose : true,
-            width: '50%',
-            height: '90%'
         });
         this._mdDialogRef.componentInstance.call = _call;
         this._mdDialogRef.afterClosed().subscribe( result => {
@@ -161,8 +159,6 @@ export class CallsComponent implements OnInit, OnDestroy {
     showSendOrder( _call:WaiterCallDetail ):void{
         this._mdDialogRef = this._mdDialog.open( SendOrderConfirmComponent, {
             disableClose : true,
-            //width: '50%',
-            //height: '90%'
         });
         this._mdDialogRef.componentInstance.call = _call;
         this._mdDialogRef.afterClosed().subscribe( result => {

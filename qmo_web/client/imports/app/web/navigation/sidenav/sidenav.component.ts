@@ -1,10 +1,13 @@
-import { Component, Input, OnInit, OnDestroy, QueryList, ViewChildren } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, QueryList, ViewChildren, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-
-import { NavigationService } from '../navigation.service';
+import { MeteorObservable } from 'meteor-rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { MenuItem } from '../menu-item';
 import { SidenavItemComponent } from './sidenav-item/sidenav-item.component';
-import { Observable, Subscription } from 'rxjs';
+import { NavigationService } from '../navigation.service';
+import { Users, UserImages } from '../../../../../../both/collections/auth/user.collection';
+import { User } from '../../../../../../both/models/auth/user.model';
+import { UserProfileImage } from '../../../../../../both/models/auth/user-profile.model';
 
 @Component({
   selector : 'app-sidenav',
@@ -15,16 +18,20 @@ export class SidenavComponent implements OnInit, OnDestroy {
   @ViewChildren(SidenavItemComponent) children: QueryList<SidenavItemComponent>;
   @Input() isHovering: boolean = false;
 
-  private sidenavStyle: string;
+  private _subscriptions    : Subscription[] = [];
+  private _userImageSub     : Subscription;
+  private _userSubscription : Subscription;
+  private _this             : SidenavComponent = this;
+  private menuItems         : MenuItem[] = [];
 
-  private showSidenav: boolean = false;
-  private menuItems: MenuItem[] = [];
-  private _screenWidth: number = NavigationService.largeViewportWidth;
-  private _initialLoad: boolean = true; // Used to show slide in effect on page load for sidenav
-  private _this: SidenavComponent = this;
-  private _subscriptions: Subscription[] = [];
+  private _user         : User;//Meteor.User;
+  private sidenavStyle  : string;
+  private _userName     : string;
+  private showSidenav   : boolean = false;
+  private _initialLoad  : boolean = true;
+  private _screenWidth  : number = NavigationService.largeViewportWidth;
 
-  constructor(private _navigation: NavigationService, private _router: Router) {
+  constructor(private _navigation: NavigationService, private _router: Router, private _ngZone: NgZone) {
   }
 
   ngOnDestroy() {
@@ -52,7 +59,37 @@ export class SidenavComponent implements OnInit, OnDestroy {
     this._navigation.menuItems.subscribe(menuItems => {
       this.menuItems = menuItems;
     });
+
+    this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() => {
+      this._ngZone.run(() => {
+        this._user = Users.collection.findOne({ _id: Meteor.userId() });
+        if (this._user.username) {
+          this._userName = this._user.username;
+        }
+        else if (this._user.profile.name) {
+          this._userName = this._user.profile.name;
+        }
+        this._userImageSub = MeteorObservable.subscribe('getUserImages', Meteor.userId()).subscribe();
+      });
+    });
     
+  }
+
+  /**
+   * Return user image
+   */
+  getUsetImage(): string {
+    if (this._user && this._user.services.facebook) {
+      return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
+    } else {
+      let _lUserImage: UserProfileImage = UserImages.findOne({ userId: Meteor.userId() });
+      if (_lUserImage) {
+        return _lUserImage.url;
+      }
+      else {
+        return '/images/user_default_image.png';
+      }
+    }
   }
 
   /*get height(): number {

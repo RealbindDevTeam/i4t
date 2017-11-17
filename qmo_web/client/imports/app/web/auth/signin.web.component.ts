@@ -65,9 +65,13 @@ export class SigninWebComponent extends AuthClass implements OnInit {
                         MeteorObservable.call('getRole').subscribe((role) => {
                             switch (role) {
                                 case '100': {
-                                    this.insertUserInfo();
-                                    this.router.navigate(['app/dashboard']);
-                                    break;
+                                    if(this.devicesValidate()){
+                                        this.insertUserInfo();
+                                        this.router.navigate(['app/dashboard']);
+                                        break;
+                                    } else {
+                                        this.router.navigate(['go-to-store']);
+                                    }
                                 }
                                 case '200': {
                                     this.validateUserIsActive('app/calls');
@@ -87,8 +91,12 @@ export class SigninWebComponent extends AuthClass implements OnInit {
                                     break;
                                 }
                                 case '600': {
-                                    this.validateUserIsActive('app/dashboards');
-                                    break;
+                                    if(this.devicesValidate()){
+                                        this.validateUserIsActive('app/dashboards');
+                                        break;
+                                    } else {
+                                        this.router.navigate(['go-to-store']);
+                                    }
                                 }
                             }
                         }, (error) => {

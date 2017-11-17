@@ -24,7 +24,7 @@
 
 <div class="global-div" *ngIf="_thereAreRestaurants">
     <div class="div-whitout-overflow">
-        <div class="cards-div">
+        <div class="cards-div" style="padding: 20px 0 0 20px;">
             <mat-card *ngFor="let restaurant of restaurants | async" class="custom-cards">
                 <div class="header-card">
                     <img src="{{ getRestaurantImage(restaurant._id) }}">

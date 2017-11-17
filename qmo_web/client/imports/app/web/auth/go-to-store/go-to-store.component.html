@@ -1,29 +1,32 @@
-<div id="page" class="mobile">
-    <header class="section" id="section">
-        <div class="container">
-            <img class="signup-logo" src="/images/logo_iurest_white.png" [routerLink]="['/']">
+<div class="page">
+    <div>
+        <div class="signup-logo">
+            <a [routerLink]="['/']">
+                <img src="/images/logo_iurest_190_x_60.png">
+            </a>
         </div>
-
-    </header>
+    </div>
 
     <div class="content">
-        <div class="heading">
-            <h1>
-                {{'GO_TO_STORE.TITTLE' | translate}}
-                <br class="visible-phone"/>
-                {{'GO_TO_STORE.SUB_TITTLE' | translate}}
-            </h1>
-            <h2>
-                {{'GO_TO_STORE.CONTENT' | translate}}
-            </h2>
+        <h1>
+            {{'GO_TO_STORE.TITTLE' | translate}}
+            <br class="visible-phone"/>
+            {{'GO_TO_STORE.SUB_TITTLE' | translate}}
+        </h1>
+        <h3>
+            {{'GO_TO_STORE.CONTENT' | translate}}
+        </h3>
+        
+        <div class="dwtl opacity animated fadeInDown" data-animation="fadeInUp" data-timeout="1000">
+            <a href="">
+                <img *ngIf="_userLang === 'en'" alt="" src="/images/asd-en.png"/>
+                <img *ngIf="_userLang === 'es'" alt="" src="/images/asd-es.png"/>
+            </a>
+            <a href="">
+                <img *ngIf="_userLang === 'en'" alt="" src="/images/psd-en.png"/>
+                <img *ngIf="_userLang === 'es'" alt="" src="/images/psd-es.png"/>
+            </a>
         </div>
     </div>
     
-    <mat-card style="background-color: transparent; box-shadow: 0 0">
-        <mat-card-content>
-            <button mat-raised-button class="primary-button" type="submit">
-                {{'GO_TO_STORE.BUTTON' | translate}} Iurest
-            </button>
-        </mat-card-content>
-    </mat-card>
 </div>

@@ -1,4 +1,12 @@
-<mat-nav-list class="side-navigation" [ngStyle]="{'height': auto}">
+<div class="buttom-profile">
+  <button mat-icon-button>
+    <img class="profile-img" mat-list-avatar src="{{ getUsetImage() }}">
+    {{ _userName }}
+    <mat-icon></mat-icon>
+  </button>
+</div>
+
+<mat-nav-list class="side-navigation">
   <c-sidenav-item *ngFor="let menuItem of menuItems" [menuItem]="menuItem" [parent]="_this"></c-sidenav-item>
   
   <a class="so" mat-list-item (click)="signOut()">

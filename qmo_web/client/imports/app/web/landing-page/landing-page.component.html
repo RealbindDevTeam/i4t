@@ -66,9 +66,6 @@
                     </mat-menu>
                 </div>
             </li>
-            <!--li>
-                <a href="#"></a>
-            </li-->
             <li>
                 <a [routerLink]="['/signup']">{{'LANDING.SIGNUP' | translate}}</a>
             </li>
@@ -76,11 +73,6 @@
                 <a [routerLink]="['/signin']">{{'LANDING.SIGNIN' | translate}}</a>
             </li>
         </ul>
-
-        <!--div class="row center">
-            <button md-raised-button class="primary-button" style="width: 45%" [routerLink]="['/signup']">{{'LANDING.SIGNUP' | translate}}</button>
-            <button md-raised-button class="secondary-button" style="width: 45%" [routerLink]="['/signin']" >{{'LANDING.SIGNIN' | translate}}</button>
-        </div-->
     </div>
 </div>
 
@@ -277,9 +269,11 @@
                         </div>
                     </div>
                     <div class="dwtl opacity revealOnScroll" data-animation="fadeInUp" data-timeout="1000">
-                        <button mat-raised-button class="primary-button bv" style="font-size: .9rem" [routerLink]="['/admin-signup']">
-                            {{'LANDING.ADMIN_SIGNUP' | translate}}
-                        </button>
+                        <a mat-raised-button class="primary-button bv" href="/admin-signup">
+                            <button mat-raised-button class="primary-button bv" style="font-size: .9rem">
+                                {{'LANDING.ADMIN_SIGNUP' | translate}}
+                            </button>
+                        </a>
                     </div>
                 </div>
                 <div class="dwi">

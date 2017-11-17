@@ -21,11 +21,43 @@ $primary-color: #EF5350;
 	margin: 0 auto;
 }
 
+.pau {
+	display: block;
+}
+
+.dr {
+	display: -webkit-inline-box;
+	width: 100%;
+	margin: 16px 0;
+}
+
+.dr .drl {
+	width: 60%;
+	padding: 0 10px;
+	word-break: break-word;
+}
+
+.da {
+	width: 100%;
+}
+
+@media only screen and (min-width: 600px){
+	.pau {
+		display: flex;
+	}
+
+	.da {
+		width: 20%;
+	}
+}
+
 .avatar {
 	background-color: #edebe1;
 	border-radius: 100%;
 	height: 100px;
 	width: 100px;
+	margin: 0 auto;
+
 	&.active {
 		border-radius: 100% 0 20px 100%;
 		background-color: $primary-color;

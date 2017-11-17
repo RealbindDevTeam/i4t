@@ -1,62 +1,50 @@
-.order{
-    .name{
-        margin-bottom: 0%;
+.name{
+    margin-bottom: 0%;
+}
+
+.observations{
+    margin-bottom: 0%;
+}
+
+.no-garnish{
+    display: inline-block;
+    color: green;
+    font-weight: bold;
+    margin-bottom: 0%;
+}
+
+.garnish-food{
+    .garnish-title{
+        display: inline-block;
+        color: green;
+        font-weight: bold;
+        margin-bottom: 0%
     }
 
-    .observations{
-        margin-bottom: 0%;
-    }
-
-    .no-garnish{
+    .garnish-name{
         display: inline-block;
         color: green;
         font-weight: bold;
         margin-bottom: 0%;
     }
+}
 
-    .garnish-food{
-        .garnish-title{
-            display: inline-block;
-            color: green;
-            font-weight: bold;
-            margin-bottom: 0%
-        }
+.no-addition{
+    display: inline-block;
+    color: darkgoldenrod;
+    font-weight: bold;
+}
 
-        .garnish-name{
-            display: inline-block;
-            color: green;
-            font-weight: bold;
-            margin-bottom: 0%;
-        }
-    }
-
-    .no-addition{
+.addition{
+    .addition-title{
         display: inline-block;
         color: darkgoldenrod;
         font-weight: bold;
     }
 
-    .addition{
-        .addition-title{
-            display: inline-block;
-            color: darkgoldenrod;
-            font-weight: bold;
-        }
-
-        .addition-name{
-            display: inline-block;
-            color: darkgoldenrod;
-            font-weight: bold;
-        }
-    }
-}
-
-.mat-raised-button {
-    min-width: unset !important;
-}
-
-@media only screen and (max-width: 376px){
-    .primary-button {
-        width: 130px !important;
+    .addition-name{
+        display: inline-block;
+        color: darkgoldenrod;
+        font-weight: bold;
     }
 }

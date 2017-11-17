@@ -11,6 +11,8 @@ import { UserLanguageService } from '../../../shared/services/user-language.serv
 
 export class GoToStoreComponent {
 
+    private _userLang     : string  = "";
+
     /**
      * GoToStoreComponent Constructor
      * @param {TranslateService} translate 
@@ -18,7 +20,8 @@ export class GoToStoreComponent {
      */
     public constructor( private translate: TranslateService,
                         public _userLanguageService: UserLanguageService ) {
-        translate.use( this._userLanguageService.getNavigationLanguage() );
-        translate.setDefaultLang( 'en' );
+        this._userLang = navigator.language.split('-')[0];
+        translate.setDefaultLang('en');
+        translate.use( this._userLang );
     }
 }
