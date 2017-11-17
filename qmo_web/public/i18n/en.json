@@ -1466,5 +1466,20 @@
         "PROFILE_CREATED": "Restaurant Profile Created",
         "REMOVE_IMAGE_CONFIRM": "are you sure to remove the image?",
         "IMAGE_REMOVED": "Image removed"
+    },
+    "RESTAURANT_PROFILE_DETAIL": {
+        "VIEW_MENU": "View Menu",
+        "NO_PROFILE": "This restaurant has not configured its profile",
+        "ABOUT_RESTAURANT": "About the restaurant",
+        "PHOTOS": "Photos",
+        "NO_PHOTOS": "Photos not found",
+        "CONTACT": "Contact",
+        "NO_WEB_PAGE": "There are no web page",
+        "NO_PHONE": "There are no phone",
+        "NO_EMAIL": "There are no email",
+        "PAYMENT_METHODS": "Payment methods",
+        "CURRENCY_ACCEPTED": "Currency accepted",
+        "LOCATION": "Location",
+        "ADDRESS": "Address"
     }
 }

@@ -63,7 +63,11 @@
       <div *ngFor="let secRest of section.restaurants">
         <div *ngIf="rst._id == secRest">
           <div>
-            <mat-icon>store</mat-icon> {{rst.name}}</div>
+            <p mat-line style="font-size: 1rem;">
+              <mat-icon style="vertical-align: middle">store</mat-icon>
+              <span> {{rst.name}} </span>
+            </p>
+          </div>
         </div>
       </div>
     </div>

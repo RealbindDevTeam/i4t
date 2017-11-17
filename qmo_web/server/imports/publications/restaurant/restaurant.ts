@@ -226,3 +226,21 @@ Meteor.publish('getRestaurantProfileImageThumbs', function (_userId: string) {
     check(_userId, String);
     return RestaurantProfileImageThumbs.find( { userId: _userId } );
 });
+
+/**
+ * Meteor publication return restaurant profile images with user restaurant id condition
+ * @param {string} _restaurantId 
+ */
+Meteor.publish('getRestaurantProfileImagesByRestaurantId', function (_restaurantId: string) {
+    check(_restaurantId, String);
+    return RestaurantProfileImages.find( { restaurantId: _restaurantId } );
+});
+
+/**
+ * Meteor publication return restaurant profile image thumbs with restaurant Id condition
+ * @param {string} _restaurantId 
+ */
+Meteor.publish('getRestaurantProfileImageThumbsByRestaurantId', function (_restaurantId: string) {
+    check(_restaurantId, String);
+    return RestaurantProfileImageThumbs.find( { restaurantId: _restaurantId } );
+});

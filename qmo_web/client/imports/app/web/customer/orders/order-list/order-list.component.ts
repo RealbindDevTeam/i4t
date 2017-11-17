@@ -5,6 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
+import { Router } from "@angular/router";
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Order, OrderItem, OrderAddition } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
@@ -97,11 +98,12 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {MatSnackBar} snackBar
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor(private _translate: TranslateService,
-        private _ngZone: NgZone,
-        public snackBar: MatSnackBar,
-        private _userLanguageService: UserLanguageService,
-        protected _mdDialog: MatDialog) {
+    constructor( private _translate: TranslateService,
+                 private _ngZone: NgZone,
+                 public snackBar: MatSnackBar,
+                 private _userLanguageService: UserLanguageService,
+                 protected _mdDialog: MatDialog, 
+                 private _router: Router ) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
@@ -994,6 +996,14 @@ export class OrdersListComponent implements OnInit, OnDestroy {
 
             }
         });
+    }
+
+    /**
+     * Open Restaurant profile detail
+     * @param {string} _pRestaurantId 
+     */
+    openRestaurantProfileDetail( _pRestaurantId: string ):void{
+        this._router.navigate( [ 'app/restaurant-detail', _pRestaurantId ] );        
     }
 
     /**

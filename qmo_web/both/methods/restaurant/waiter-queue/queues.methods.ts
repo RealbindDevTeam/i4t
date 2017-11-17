@@ -48,7 +48,11 @@ if (Meteor.isServer) {
                         Meteor.call('waiterCall', queueName, false, _data);
                     }
                 });
+            } else {
+                throw new Error("Error in call the waiter/waitress");           
             }
+        } else {
+            throw new Error("Error in call the waiter/waitress");           
         }
     },
 
@@ -58,8 +62,8 @@ if (Meteor.isServer) {
      */
     queueValidate : function ( _queue : string ) {
         let queueNew        : QueueName = { name : _queue };;
-        let queues          : Queue = Queues.findOne({});
-        if(queues){
+        let queues          : Queue = Queues.findOne({});        
+        if(queues){       
             let doc = Queues.findOne({ queues : { $elemMatch: { name : _queue } } });
             if(!doc){
                 Queues.update({ _id : queues._id }, 
@@ -67,10 +71,8 @@ if (Meteor.isServer) {
                 });
                 Meteor.call('initProcessJobs', queueNew);
             }
-        } else {
-            Queues.insert({
-                 queues : [queueNew]
-            });
+        } else {                   
+            Queues.insert( { queues : [ queueNew ] } );
             Meteor.call('initProcessJobs', queueNew);
         }
     },
