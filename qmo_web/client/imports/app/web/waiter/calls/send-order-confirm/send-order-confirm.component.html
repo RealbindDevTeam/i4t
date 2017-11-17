@@ -1,4 +1,4 @@
-<div *ngFor="let order of _orders | async" class="order">
+<div *ngFor="let order of _orders | async">
     <mat-card-title>{{ 'SEND_ORDER.ORDER' | translate }} # {{order.code}} - {{ 'SEND_ORDER.TABLE' | translate }} {{_tableNumber}} ( {{ 'SEND_ORDER.CODE' | translate }} {{_tableQRCode}} )</mat-card-title>
     <mat-card-subtitle>{{ 'SEND_ORDER.CUSTOMER' | translate }}: {{ getUserName(order.creation_user) }}</mat-card-subtitle>
     <mat-card-content>
@@ -43,10 +43,10 @@
             </span>
         </span>
     </mat-card-content>
-    <div>
+    <mat-card-actions class="mobile">
         <button mat-raised-button class="button-second" (click)="close()">{{ 'CLOSE' | translate }}</button>
         <button mat-raised-button class="primary-button" (click)="closeCall()">{{ 'SEND_ORDER.ORDER_DELIVERED' | translate }}</button>
-    </div>
+    </mat-card-actions>
 </div>
 <div class="loading" *ngIf="_loading">
     <mat-spinner></mat-spinner>

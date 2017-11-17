@@ -4,22 +4,8 @@ mat-toolbar {
 }
 
 .so {
-    position: absolute !important;
-    bottom: 0;
     width: 225px;
-    background-color: white;
     z-index: 999;
-    
-    &:before {
-        content: "";
-        top: 0;
-        left: 0;
-        position: absolute;
-        width: 225px;
-        height: 2px;
-        z-index: 3;
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, transparent 100%);
-    }
 }
 
 .buttom-profile {

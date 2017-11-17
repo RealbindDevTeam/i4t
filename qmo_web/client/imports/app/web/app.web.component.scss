@@ -359,6 +359,43 @@ mat-ink-bar {
     align-self: stretch;
 }
 
+@media only screen and (max-width: 600px){
+    .card_initial {
+        width: 100%;
+        height: 128px;
+        margin-bottom: 12px;
+    }
+
+
+    .card_initial.has-image {
+        padding: 0;
+        margin: 0 auto;
+        width: 256px;
+    }
+
+    .card_initial .card_initial-image-container {
+        position: relative;
+        width: 100%;
+        height: 128px;
+        margin-bottom: 12px;
+    }
+
+    .card_initial .card_initial-image {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        display: block;
+        margin: 0 auto;
+        left: 0;
+        top: 0;
+    }
+
+    .card_initial .card_initial-copy {
+        text-align: center;
+        margin-bottom: 12px;
+    }
+}
+
 .card_initial .card_initial-tagline {
     color: rgba(0,0,0,0.87);
     font-size: 20px;
@@ -472,5 +509,37 @@ mat-ink-bar {
 }
 
 .mat-dialog-container {
-    max-height: 80vw !important;
+    max-height: 80vh !important;
+    max-width:   60vw !important;
+}
+
+@media only screen and (max-width: 600px) {
+    .mat-checkbox-layout {
+        white-space: normal !important;
+        text-align: left !important;
+    }
+
+    .mat-dialog-container {
+        max-height: 100vh !important;
+        max-width:   90vw !important;
+    }
+
+    mat-card-actions.mobile {
+        -webkit-align-items: center;
+        align-items: center;
+        display: -webkit-box;
+        display: -moz-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        -webkit-box-flex: 0 0 auto;
+        -webkit-flex: 0 0 auto;
+        flex: 0 0 auto;
+        -webkit-flex-wrap: wrap-reverse;
+        flex-wrap: wrap-reverse;
+        -webkit-justify-content: flex-end;
+        justify-content: flex-end;
+    }
 }

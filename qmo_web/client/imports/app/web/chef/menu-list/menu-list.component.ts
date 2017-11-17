@@ -336,7 +336,6 @@ export class MenuListComponent implements OnInit, OnDestroy {
      */
     viewItemDetail(_boolean: boolean): void {
         var card = document.getElementById("item-selected");
-
         if (!_boolean) {
             card.classList.add('item-detail-show');
             card.classList.remove('item-detail-hidden');
@@ -353,10 +352,10 @@ export class MenuListComponent implements OnInit, OnDestroy {
         var card = document.getElementById("addition-detail");
         if(card){
             if (!_boolean) {
-                card.style.width = "396px";
+                card.classList.add('item-detail-show');
+                card.classList.remove('item-detail-hidden');
             } else {
-                card.style.width = "0";
-                card.removeAttribute("style");
+                card.classList.add('item-detail-hidden');
             }
         }
     }

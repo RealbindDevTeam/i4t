@@ -5,7 +5,7 @@
             {{ 'WAITER_CALL.CONTENT_PROMPT' | translate }}
         </div>
     </mat-card-content>
-    <mat-card-actions align="end">
+    <mat-card-actions class="mobile">
         <button mat-raised-button class="secondary-button" (click)="cancel()">{{ 'WAITER_CALL.NO_ANSWER' | translate }}</button>
         <button mat-raised-button class="primary-button" (click)="closeWaiterCall()" type="submit">{{ 'WAITER_CALL.YES_ANSWER' | translate }}</button>
     </mat-card-actions>

@@ -17,10 +17,10 @@
     </mat-card>
 </div>
 
-<mat-card mat-cell="12" class="demo-card demo-basic" style="width: 80%; margin: 0 auto" *ngIf="!_thereAreOrders">
+<mat-card *ngIf="!_thereAreOrders">
     <mat-card-content>
         <div class="card_initial">
-            <div class="card_initial has-image" style="margin: auto;">
+            <div class="card_initial has-image">
                 <div class="card_initial-image-container">
                     <img class="card_initial-image" 
                         src="/images/categories.png"/>
@@ -52,8 +52,10 @@
             <mat-card>
                 <div *ngFor="let order of _ordersInProcessDetail | async;">
                     <mat-card-title class="title">{{'ORDER_ATTENTION.TITLE' | translate}} # {{order.code}}</mat-card-title>
-                    <button mat-raised-button *ngIf="!orderMarkedToCancel(order)" class="primary-button prepared-button" (click)="setPreparedState(order)">{{'ORDER_ATTENTION.ORDER_PREPARED' | translate}}</button>
-                    <button mat-raised-button *ngIf="orderMarkedToCancel(order)" class="primary-button prepared-button" (click)="deleteOrder(order)">{{'ORDER_ATTENTION.DELETE_ORDER' | translate}}</button>
+                    <div class="button-actions">
+                        <button mat-raised-button *ngIf="!orderMarkedToCancel(order)" class="primary-button prepared-button" (click)="setPreparedState(order)">{{'ORDER_ATTENTION.ORDER_PREPARED' | translate}}</button>
+                        <button mat-raised-button *ngIf="orderMarkedToCancel(order)" class="primary-button prepared-button" (click)="deleteOrder(order)">{{'ORDER_ATTENTION.DELETE_ORDER' | translate}}</button>
+                    </div>
                     <p *ngIf="orderMarkedToCancel(order)" class="waiter-cancel-order-msg">{{'ORDER_ATTENTION.ORDER_CANCELED_MSG' | translate}}</p>
                     <mat-card-content>
                         <mat-divider></mat-divider>
@@ -97,6 +99,10 @@
                             </span>
                         </span>
                     </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-raised-button *ngIf="!orderMarkedToCancel(order)" class="primary-button prepared-button" (click)="setPreparedState(order)">{{'ORDER_ATTENTION.ORDER_PREPARED' | translate}}</button>
+                        <button mat-raised-button *ngIf="orderMarkedToCancel(order)" class="primary-button prepared-button" (click)="deleteOrder(order)">{{'ORDER_ATTENTION.DELETE_ORDER' | translate}}</button>
+                    </mat-card-actions>
                 </div>
             </mat-card>
         </div>

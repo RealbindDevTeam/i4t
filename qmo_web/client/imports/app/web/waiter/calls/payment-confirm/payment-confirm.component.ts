@@ -280,6 +280,15 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy{
         return _pAddition.restaurants.filter( a => a.restaurantId === this.call.restaurant_id )[0].price * _pOrderItemQuantity;
     }
 
+    getPaymentMethod( _pPayId : string ) : string {
+        let _lPayment = PaymentMethods.findOne({ _id : _pPayId });
+        if(_lPayment){
+            return _lPayment.name;
+        } else {
+            return '';
+        }
+    }
+
     /**
      * ngOnDestroy Implementation
      */

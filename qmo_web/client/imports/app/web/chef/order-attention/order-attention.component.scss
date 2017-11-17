@@ -1,9 +1,33 @@
+.restaurant-card {
+    margin: 0 auto;
+    background-color: transparent;
+    box-shadow: none;
+}
+
 .order-content {
-    width: 84%;
     margin: 0 auto;
 
     .order-code {
         margin-right: 1rem;
+    }
+}
+
+.button-actions {
+    float: right;
+    display: none;
+}
+
+mat-card-actions {
+    display: block;
+}
+
+@media only screen and (min-width: 600px){
+    .button-actions {
+        display: block;
+    }
+    
+    mat-card-actions {
+        display: none;
     }
 }
 
@@ -94,13 +118,6 @@
             font-weight: bold;
         }
     }
-}
-
-.restaurant-card {
-    width: 84%;
-    margin: 0 auto;
-    background-color: transparent;
-    box-shadow: none;
 }
 
 .card_image {

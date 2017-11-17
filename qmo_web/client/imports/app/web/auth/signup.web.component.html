@@ -1,4 +1,4 @@
-<div class="main">
+<div class="main main-height">
     <div class="main-w3lsrow animated fadeIn">
         <div class="login-form login-form-image signup">
             <div class="signup-logo">
@@ -12,12 +12,10 @@
                 <button mat-raised-button class="btn-facebook" type="submit" (click)="loginWithFacebook()">
                     <i class="fa fa-facebook" aria-hidden="true"></i>Facebook
                 </button>
-                <div style="width: 100%; text-align: center">
-                    <div class="display-inline-block" style="width: 90%">
-                        <hr/>
-                        <span style="color: #e0e0e0">{{'SIGNUP.OR' | translate}}</span>
-                        <hr/>
-                    </div>
+                <div class="display-inline-block">
+                    <hr/>
+                    <span style="color: #e0e0e0">{{'SIGNUP.OR' | translate}}</span>
+                    <hr/>
                 </div>
                 <div>
                     <form [formGroup]="signupForm" (ngSubmit)="register()" novalidate>

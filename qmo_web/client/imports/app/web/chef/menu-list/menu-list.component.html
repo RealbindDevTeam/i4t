@@ -27,87 +27,87 @@
                         <span *ngFor="let section of _sections | async" >
                             <span *ngFor="let item of _items | async">
                                 <ng-template [ngIf]="item.sectionId === section._id && item.categoryId === '' && item.subcategoryId === ''">
-                                        <mat-card class="custom-cards">
-                                            <div class="header-card">
-                                                <img src="{{ getItemImageThumb(item._id) }}">
-                                                <span class="mat-card-title">{{item.name}}</span>
-                                                <button matTooltip="{{'ORDER_CREATE.VIEW_DETAIL' | translate}}" mat-fab class="btn-position-edition" (click)="showItemInformation(item)">
-                                                    <mat-icon style="color: white;" class="mat-24">search</mat-icon>
-                                                </button>
-                                            </div>
-                                            <mat-card-content>
-                                                <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
-                                                <p *ngIf="item.description.length <= 50">{{item.description}}</p>
-                                                <ul class="list">
-                                                    <li *ngIf="!getItemAvailability(item._id)" class="available-button">
-                                                        <mat-icon class="mat-24" class="vertical-align-middle">clear</mat-icon>
-                                                        <span>{{'ORDER_CREATE.UNAVAILABLE' | translate}}</span>
-                                                    </li>
-                                                    <li *ngIf="getItemAvailability(item._id)" class="price-button">
-                                                        <mat-icon class="mat-24" class="vertical-align-middle">done</mat-icon>
-                                                        <span>{{ getItemPrice( item ) }} {{_currencyCode}}</span>
-                                                    </li>
-                                                </ul>
-                                            </mat-card-content>
-                                        </mat-card>
+                                    <mat-card class="custom-cards">
+                                        <div class="header-card">
+                                            <img src="{{ getItemImageThumb(item._id) }}">
+                                            <span class="mat-card-title">{{item.name}}</span>
+                                            <button mat-fab class="btn-position-edition" (click)="showItemInformation(item)">
+                                                <mat-icon style="color: white;" class="mat-24">search</mat-icon>
+                                            </button>
+                                        </div>
+                                        <mat-card-content>
+                                            <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
+                                            <p *ngIf="item.description.length <= 50">{{item.description}}</p>
+                                            <ul class="list">
+                                                <li *ngIf="!getItemAvailability(item._id)" class="available-button">
+                                                    <mat-icon class="mat-24" class="vertical-align-middle">clear</mat-icon>
+                                                    <span>{{'ORDER_CREATE.UNAVAILABLE' | translate}}</span>
+                                                </li>
+                                                <li *ngIf="getItemAvailability(item._id)" class="price-button">
+                                                    <mat-icon class="mat-24" class="vertical-align-middle">done</mat-icon>
+                                                    <span>{{ getItemPrice( item ) }} {{_currencyCode}}</span>
+                                                </li>
+                                            </ul>
+                                        </mat-card-content>
+                                    </mat-card>
                                 </ng-template>
                             </span>
                             <span *ngFor="let category of _categories | async">
                                 <ng-template [ngIf]="category.section === section._id">
                                     <span *ngFor="let item of _items | async">
                                         <ng-template [ngIf]="item.sectionId === section._id && item.categoryId === category._id && item.subcategoryId === ''">
-                                                <mat-card class="custom-cards">
-                                                    <div class="header-card">
-                                                        <img src="{{ getItemImageThumb(item._id) }}">
-                                                        <span class="mat-card-title">{{item.name}}</span>
-                                                        <button matTooltip="{{'ORDER_CREATE.VIEW_DETAIL' | translate}}" mat-fab class="btn-position-edition" (click)="showItemInformation(item)">
-                                                            <mat-icon style="color: white;" class="mat-24">search</mat-icon>
-                                                        </button>
-                                                    </div>
-                                                    <mat-card-content>
-                                                        <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
-                                                        <p *ngIf="item.description.length <= 50">{{item.description}}</p>
-                                                        <ul class="list">
-                                                            <li *ngIf="!getItemAvailability(item._id)" class="available-button">
-                                                                <mat-icon class="mat-24" class="vertical-align-middle">clear</mat-icon>
-                                                                <span>{{'ORDER_CREATE.UNAVAILABLE' | translate}}</span>
-                                                            </li>
-                                                            <li *ngIf="getItemAvailability(item._id)" class="price-button">
-                                                                <mat-icon class="mat-24" class="vertical-align-middle">done</mat-icon>
-                                                                <span>{{ getItemPrice( item ) }} {{_currencyCode}}</span>
-                                                            </li>
-                                                        </ul>
-                                                    </mat-card-content>
-                                                </mat-card>
+                                            <mat-card class="custom-cards">
+                                                <div class="header-card">
+                                                    <img src="{{ getItemImageThumb(item._id) }}">
+                                                    <span class="mat-card-title">{{item.name}}</span>
+                                                    <button mat-fab class="btn-position-edition" (click)="showItemInformation(item)">
+                                                        <mat-icon style="color: white;" class="mat-24">search</mat-icon>
+                                                    </button>
+                                                </div>
+                                                <mat-card-content>
+                                                    <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
+                                                    <p *ngIf="item.description.length <= 50">{{item.description}}</p>
+                                                    <ul class="list">
+                                                        <li *ngIf="!getItemAvailability(item._id)" class="available-button">
+                                                            <mat-icon class="mat-24" class="vertical-align-middle">clear</mat-icon>
+                                                            <span>{{'ORDER_CREATE.UNAVAILABLE' | translate}}</span>
+                                                        </li>
+                                                        <li *ngIf="getItemAvailability(item._id)" class="price-button">
+                                                            <mat-icon class="mat-24" class="vertical-align-middle">done</mat-icon>
+                                                            <span>{{ getItemPrice( item ) }} {{_currencyCode}}</span>
+                                                        </li>
+                                                    </ul>
+                                                </mat-card-content>
+                                            </mat-card>
                                         </ng-template>
                                     </span>
                                     <span *ngFor="let subcategory of _subcategories | async">
                                         <ng-template [ngIf]="subcategory.category === category._id">
                                             <span *ngFor="let item of _items | async">
                                                 <ng-template [ngIf]="item.sectionId === section._id && item.categoryId === category._id && item.subcategoryId === subcategory._id">
-                                                        <mat-card class="custom-cards">
-                                                            <div class="header-card">
-                                                                <img src="{{ getItemImageThumb(item._id) }}">
-                                                                <span class="mat-card-title">{{item.name}}</span>
-                                                                <button matTooltip="{{'ORDER_CREATE.VIEW_DETAIL' | translate}}" mat-fab class="btn-position-edition" (click)="showItemInformation(item)">
-                                                                    <mat-icon style="color: white;" class="mat-24">search</mat-icon>
-                                                                </button>
-                                                            </div>
-                                                            <mat-card-content>
-                                                                <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
-                                                                <p *ngIf="item.description.length <= 50">{{item.description}}</p>
-                                                                <ul class="list">
-                                                                    <li *ngIf="!getItemAvailability(item._id)" class="available-button">
-                                                                        <mat-icon class="mat-24" class="vertical-align-middle">clear</mat-icon>
-                                                                        <span>{{'ORDER_CREATE.UNAVAILABLE' | translate}}</span>
-                                                                    </li>
-                                                                    <li *ngIf="getItemAvailability(item._id)" class="price-button">
-                                                                        <mat-icon class="mat-24" class="vertical-align-middle">done</mat-icon>
-                                                                        <span>{{ getItemPrice( item ) }} {{_currencyCode}}</span>
-                                                                    </li>
-                                                                </ul>
-                                                            </mat-card-content>
-                                                        </mat-card>
+                                                    <mat-card class="custom-cards">
+                                                        <div class="header-card">
+                                                            <img src="{{ getItemImageThumb(item._id) }}">
+                                                            <span class="mat-card-title">{{item.name}}</span>
+                                                            <button mat-fab class="btn-position-edition" (click)="showItemInformation(item)">
+                                                                <mat-icon style="color: white;" class="mat-24">search</mat-icon>
+                                                            </button>
+                                                        </div>
+                                                        <mat-card-content>
+                                                            <p *ngIf="item.description.length > 50">{{item.description.substring(1, 50)}}...</p>
+                                                            <p *ngIf="item.description.length <= 50">{{item.description}}</p>
+                                                            <ul class="list">
+                                                                <li *ngIf="!getItemAvailability(item._id)" class="available-button">
+                                                                    <mat-icon class="mat-24" class="vertical-align-middle">clear</mat-icon>
+                                                                    <span>{{'ORDER_CREATE.UNAVAILABLE' | translate}}</span>
+                                                                </li>
+                                                                <li *ngIf="getItemAvailability(item._id)" class="price-button">
+                                                                    <mat-icon class="mat-24" class="vertical-align-middle">done</mat-icon>
+                                                                    <span>{{ getItemPrice( item ) }} {{_currencyCode}}</span>
+                                                                </li>
+                                                            </ul>
+                                                        </mat-card-content>
+                                                    </mat-card>
                                                 </ng-template>
                                             </span>
                                         </ng-template>
@@ -140,7 +140,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--div id="addition-detail" class="item-detail">
+                    <div id="addition-detail" class="item-detail animated">
                         <div class="header-detail" #headerDetailCard>
                             <label>{{'ORDER_CREATE.ADDITIONS' | translate}}</label>
                             <button class="btn-close" mat-raised-button (click)="viewAdditionDetail(true)">
@@ -162,7 +162,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div-->
+                    </div>
                 </div>
             </div>
         </div>

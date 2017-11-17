@@ -6,7 +6,7 @@
   </button>
 </div>
 
-<mat-nav-list class="side-navigation" [ngStyle]="{'height': auto}">
+<mat-nav-list class="side-navigation">
   <c-sidenav-item *ngFor="let menuItem of menuItems" [menuItem]="menuItem" [parent]="_this"></c-sidenav-item>
   
   <a class="so" mat-list-item (click)="signOut()">

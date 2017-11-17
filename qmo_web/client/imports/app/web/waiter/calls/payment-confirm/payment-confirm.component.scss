@@ -2,117 +2,116 @@
     text-align: center;
     margin-bottom: 2%;
     font-weight: bold;
+}
 
-    .table-info{
-        margin-bottom: 2%;
+.table-info{
+    margin-bottom: 2%;
+}
 
-        .table{
-            font-family: Roboto,'Helvetica Neue',sans-serif;
-            font-size: 20px;
-            display: inline;
-        }
+.table{
+    font-family: Roboto,'Helvetica Neue',sans-serif;
+    font-size: 20px;
+    display: inline;
+}
 
-        .total-table{
-            font-family: Roboto,'Helvetica Neue',sans-serif;
-            font-size: 20px;
-            display: inline;
-            margin-left: 3%;
-        }
+.total-table{
+    font-family: Roboto,'Helvetica Neue',sans-serif;
+    font-size: 20px;
+    display: inline;
+    margin-left: 3%;
+}
+
+.ui {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ui p {
+    width: 30%;
+    color: darkgoldenrod;
+    font-weight: bold;
+}
+
+.uh {
+    display: flex;
+    justify-content: space-between;
+}
+
+.uhl {
+    display: -webkit-inline-box;
+}
+
+@media only screen and (max-width: 600px) {
+    .ui {
+        display: block;
+    }
+    
+    .ui h3 {
+        -webkit-margin-before: .5em;
+        -webkit-margin-after: .5em;
+    }
+    
+    .ui p {
+        width: 100%;
+    }
+    
+    .uhl {
+        display: inline-grid;
+        margin-right: 10px;
+    }
+
+    .uhl p {
+        -webkit-margin-before: 0;
+        -webkit-margin-after: 0;
     }
 }
 
-.cards{
-    .user-name{
-        width: 40%;
-        display: inline-block;
-        text-align: center
-    }
+.total-payment{
+    color: green;
+}
 
-    .total-payment{
-        width: 35%;
-        display: inline-block;
-        text-align: center;
-        color: green;
-    }
+.received{
+    background-color: green;
+    color: white;
+}
 
-    .received-button{
-        display: inline-block;
-        vertical-align: middle;
+.no-received{
+    background-color: red;
+    color: white;
+}
 
-        .received{
-            background-color: green;
-            color: white;
-        }
+.order{
+    width: 55%;
+    display: inline-block;
 
-        .no-received{
-            background-color: red;
-            color: white;
-        }
-    }
+}
 
-    .payment-method{
-        display: inline-block;
-        width: 35%;
-        text-align: center;
+.order-info{
+    color: black;
+}
 
-        .method{
-            color: darkgoldenrod;
-            font-weight: bold;
-        }
-    }
+.order-payment{
+    width: 35%;
+    text-align: right;
+    display: inline-block;
+}
 
-    .total-tip{
-        display: inline-block;
-        width: 30%;
-        text-align: center;
-        color: darkgoldenrod;
-        font-weight: bold;
-    }
+.order-payment-info{
+    color: black;
+}
 
-    .total-orders-price{
-        display: inline-block;
-        width: 30%;
-        text-align: center;
-        color: darkgoldenrod;
-        font-weight: bold;
-    }
+.item-name{
+    width: 50%;
+    display: inline-block;
+}
 
-    .orders{
-        .order{
-            width: 55%;
-            display: inline-block;
+.item-quantity{
+    width: 15%;
+    display: inline-block;
+}
 
-            .order-info{
-                color: black;
-            }
-        }
-
-        .order-payment{
-            width: 35%;
-            text-align: right;
-            display: inline-block;
-
-            .order-payment-info{
-                color: black;
-            }
-        }
-
-        .items{
-            .item-name{
-                width: 50%;
-                display: inline-block;
-            }
-
-            .item-quantity{
-                width: 15%;
-                display: inline-block;
-            }
-
-            .item-price{
-                width: 30%;
-                display: inline-block;
-                text-align: right;
-            }
-        }
-    }
+.item-price{
+    width: 30%;
+    display: inline-block;
+    text-align: right;
 }
