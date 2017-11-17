@@ -12,6 +12,9 @@
                     <mat-icon style="vertical-align: middle">restaurant</mat-icon>
                     <span>{{'RESTAURANT_INFO_MASTER.TABLE_CODE' | translate}}: {{_tableNumber}}</span>
                 </p>
+                <button mat-icon-button (click)="openRestaurantProfileDetail(_res._id)">
+                    <mat-icon>keyboard_arrow_right</mat-icon>
+                </button>
             </mat-list-item>
         </mat-list>
     </mat-card>

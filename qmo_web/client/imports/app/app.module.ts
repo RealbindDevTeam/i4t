@@ -12,6 +12,7 @@ import { routes } from './app.routes';
 import { Ng2PageScrollModule } from 'ng2-page-scroll';
 import { AgmCoreModule } from '@agm/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Ng2CarouselamosModule } from 'ng2-carouselamos';
 
 import { AppComponent } from './web/app.web.component';
 import { SHARED_DECLARATIONS } from './shared';
@@ -83,7 +84,8 @@ export function createTranslateLoader(http: HttpClient) {
     MatRadioModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCFXGTI9kCa4U7YyMd2USL9LCV_JlQinyw'
-    })
+    }),
+    Ng2CarouselamosModule
   ],
   declarations: [
     ...WEB_DECLARATIONS,

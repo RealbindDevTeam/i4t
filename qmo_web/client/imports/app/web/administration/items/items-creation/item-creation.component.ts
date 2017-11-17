@@ -394,7 +394,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
             });
         }
 
-        if (GarnishFoodCol.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds }, is_active: true }).zone().isEmpty) {
+        if (!GarnishFoodCol.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds }, is_active: true }).zone().isEmpty()) {
             this._showGarnishFood = true;
             GarnishFoodCol.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds }, is_active: true }).fetch().forEach((gar) => {
                 let control: FormControl = new FormControl(false);
@@ -403,7 +403,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
             this._garnishFood = GarnishFoodCol.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds }, is_active: true }).fetch();
         }
 
-        if (Additions.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds }, is_active: true }).zone().isEmpty) {
+        if (!Additions.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds }, is_active: true }).zone().isEmpty()) {
             this._showAdditions = true;
             Additions.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds }, is_active: true }).fetch().forEach((ad) => {
                 let control: FormControl = new FormControl(false);

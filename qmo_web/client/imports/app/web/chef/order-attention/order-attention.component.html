@@ -121,7 +121,7 @@
         </mat-toolbar>
         <div class="order-detail" *ngIf="_ordersCanceledIndex === in">
             <mat-card>
-                <div *ngFor="let order of _ordersInProcessDetail | async;">
+                <div *ngFor="let order of _ordersCanceledDetail | async;">
                     <mat-card-title class="title">{{'ORDER_ATTENTION.TITLE' | translate}} # {{order.code}}</mat-card-title>
                     <button mat-raised-button *ngIf="!orderMarkedToCancel(order)" class="primary-button prepared-button" (click)="setPreparedState(order)">{{'ORDER_ATTENTION.ORDER_PREPARED' | translate}}</button>
                     <button mat-raised-button *ngIf="orderMarkedToCancel(order)" class="primary-button prepared-button" (click)="deleteOrder(order)">{{'ORDER_ATTENTION.DELETE_ORDER' | translate}}</button>
@@ -186,7 +186,7 @@
         </mat-toolbar>
         <div class="order-detail" *ngIf="_ordersCanceledByAdminIndex === ind">
             <mat-card>
-                <div *ngFor="let order of _ordersInProcessDetail | async;">
+                <div *ngFor="let order of _ordersCanceledByAdminDetail | async;">
                     <mat-card-title class="title">{{'ORDER_ATTENTION.TITLE' | translate}} # {{order.code}}</mat-card-title>
                     <button mat-raised-button *ngIf="!orderMarkedToCancel(order)" class="primary-button prepared-button" (click)="setPreparedState(order)">{{'ORDER_ATTENTION.ORDER_PREPARED' | translate}}</button>
                     <button mat-raised-button *ngIf="orderMarkedToCancel(order)" class="primary-button prepared-button" (click)="deleteOrder(order)">{{'ORDER_ATTENTION.DELETE_ORDER' | translate}}</button>

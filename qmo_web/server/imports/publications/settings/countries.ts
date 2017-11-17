@@ -21,7 +21,7 @@ Meteor.publish('getCountryByRestaurantId', function (_restaurantId: string) {
     if( restaurant ){
         return Countries.collection.find({ _id: restaurant.countryId });
     } else {
-        return;
+        return Countries.collection.find({ is_active: true });;
     }
 });
 

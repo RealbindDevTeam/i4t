@@ -53,7 +53,7 @@
     <mat-card *ngIf="_thereAreRestaurants && _anyRestaurantIsSelected">
         <mat-card-title class="restaurant-name">{{_restaurantName}}</mat-card-title>
         <mat-card-subtitle>{{ 'RESTAURANT_PROFILE.PROFILE_SUBTITLE' | translate }}</mat-card-subtitle>
-        <mat-tab-group [(selectedIndex)]="_selectedIndex">
+        <mat-tab-group [(selectedIndex)]="_selectedIndex" (selectedTabChange)="tabChanged($event)">
             <mat-tab label="{{ 'RESTAURANT_PROFILE.GENERAL_INFO' | translate }}">
                 <mat-card class="general-info">
                     <mat-card-title>- {{ 'RESTAURANT_PROFILE.GENERAL_INFO' | translate }}</mat-card-title>
@@ -62,8 +62,8 @@
                             <div class="description">
                                 <p>{{ 'RESTAURANT_PROFILE.DESCRIPTION' | translate }}:</p>
                                 <mat-form-field class="description-detail">
-                                    <textarea matInput required formControlName="restaurant_description" placeholder="{{ 'RESTAURANT_PROFILE.DESCRIPTION_LBL' | translate }}" minlength="1" maxlength="200" #inputDescription></textarea>
-                                    <mat-hint align="end">{{inputDescription.value.length}} / 200</mat-hint>
+                                    <textarea matInput required formControlName="restaurant_description" placeholder="{{ 'RESTAURANT_PROFILE.DESCRIPTION_LBL' | translate }}" minlength="1" maxlength="2000" #inputDescription></textarea>
+                                    <mat-hint align="end">{{inputDescription.value.length}} / 2000</mat-hint>
                                 </mat-form-field>
                             </div>
                             <div>
@@ -172,17 +172,21 @@
                     </mat-list>
                 </mat-card>
             </mat-tab>
+            <mat-tab label="{{ 'RESTAURANT_PROFILE.LOCATION' | translate }}">
+                <mat-card>
+                    <mat-card-content>
+                        <mat-card-title>- {{ 'RESTAURANT_PROFILE.LOCATION' | translate }}</mat-card-title>                      
+                        <p>{{ 'RESTAURANT_PROFILE.LOCATION_TXT' | translate }}</p>
+                        <ng-container *ngIf="_mapRender">
+                            <agm-map [latitude]="_lat" [longitude]="_lng" (mapClick)="mapClicked($event)">
+                                <agm-marker [latitude]="_lat" [longitude]="_lng" [markerDraggable]="true" (dragEnd)="markerDragEnd($event)"></agm-marker>
+                            </agm-map>
+                        </ng-container>
+                    </mat-card-content>
+                </mat-card>
+            </mat-tab>
         </mat-tab-group>
         <br/>
-        <mat-card-content>
-            <mat-card-title>- {{ 'RESTAURANT_PROFILE.LOCATION' | translate }}</mat-card-title>                      
-            <p>{{ 'RESTAURANT_PROFILE.LOCATION_TXT' | translate }}</p>
-            <div class="location">
-                <agm-map [latitude]="_lat" [longitude]="_lng" (mapClick)="mapClicked($event)">
-                    <agm-marker [latitude]="_lat" [longitude]="_lng" [markerDraggable]="true" (dragEnd)="markerDragEnd($event)"></agm-marker>
-                </agm-map>
-            </div>
-        </mat-card-content>
         <mat-card-actions>
             <button mat-raised-button class="primary-button" [disabled]="!_profileForm.valid" (click)="setRestaurantProfile()">{{ 'RESTAURANT_PROFILE.SAVE_INFO' | translate }}</button>
         </mat-card-actions>
