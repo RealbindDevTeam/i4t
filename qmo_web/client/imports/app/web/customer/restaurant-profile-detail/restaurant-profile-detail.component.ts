@@ -48,7 +48,7 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
     private _restaurantCountry          : string;
     private _restaurantCity             : string;
     private _restaurantCurrency         : string = '';
-    private _profileImgsThumbs          : RestaurantImageThumb[] =[];
+    private _profileImgsThumbs          : RestaurantProfileImageThumb[] =[];
     public _dialogRef                   : MatDialogRef<any>;
     
     /**
