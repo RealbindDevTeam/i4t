@@ -751,7 +751,8 @@
         "ADD_ADDITIONS": "Select additions of your preference",
         "ADD_ADDITION_ORDER": "Add additions to the order",
         "ITEM_AGGREGATED": "Item added successfully",
-        "ADDITON_AGGREGATED": "Addition added succesfully"
+        "ADDITON_AGGREGATED": "Addition added succesfully",
+        "SEARCH_MENU": "Search menu"
     },
     "ORDER_LIST": {
         "TABLE_ORDERS": "Table Orders",

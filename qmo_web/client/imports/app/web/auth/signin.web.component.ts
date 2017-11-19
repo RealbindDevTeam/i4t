@@ -68,10 +68,10 @@ export class SigninWebComponent extends AuthClass implements OnInit {
                                     if(this.devicesValidate()){
                                         this.insertUserInfo();
                                         this.router.navigate(['app/dashboard']);
-                                        break;
                                     } else {
                                         this.router.navigate(['go-to-store']);
                                     }
+                                    break;
                                 }
                                 case '200': {
                                     this.validateUserIsActive('app/calls');
@@ -81,10 +81,10 @@ export class SigninWebComponent extends AuthClass implements OnInit {
                                     if(this.devicesValidate()){
                                         this.insertUserInfo();
                                         this.router.navigate(['app/orders']);
-                                        break;
                                     } else {
                                         this.router.navigate(['go-to-store']);
                                     }
+                                    break;
                                 }
                                 case '500': {
                                     this.validateUserIsActive('app/chef-orders');
@@ -93,10 +93,10 @@ export class SigninWebComponent extends AuthClass implements OnInit {
                                 case '600': {
                                     if(this.devicesValidate()){
                                         this.validateUserIsActive('app/dashboards');
-                                        break;
                                     } else {
                                         this.router.navigate(['go-to-store']);
                                     }
+                                    break;
                                 }
                             }
                         }, (error) => {
