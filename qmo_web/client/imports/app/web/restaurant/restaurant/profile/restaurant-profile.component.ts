@@ -48,7 +48,6 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
 
     private _filesToUpload          : Array<File> = [];
     private _mdDialogRef            : MatDialogRef<any>;
-    private _profileImgsThumbs      : RestaurantProfileImageThumb[] =[];
 
     private _lat: number = 4.5981;
     private _lng: number = -74.0758;
@@ -394,17 +393,6 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
      */
     tabChanged( _tab: any ):void{
         this._mapRender = _tab.index === 3 ? true : false;
-    }
-
-    /**
-     * Set restaurant profile thumbs array
-     */
-    setRestaurantProfileImageThumbs( _pRestaurantId:string ):void{
-        RestaurantProfileImageThumbs.find( { restaurantId: _pRestaurantId } ).fetch().forEach( ( thumb ) => {
-            if( thumb ){
-                this._profileImgsThumbs.push( thumb );
-            }
-        });
     }
 
     /**
