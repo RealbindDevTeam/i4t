@@ -757,7 +757,8 @@
         "ADD_ADDITIONS": "Selecciona las adiciones que desees agregar a la orden e indica su cantidad",
         "ADD_ADDITION_ORDER": "Agregar adición a la orden",
         "ITEM_AGGREGATED": "Item agregado correctamente",
-        "ADDITON_AGGREGATED": "Adición agregada correctamente"
+        "ADDITON_AGGREGATED": "Adición agregada correctamente",
+        "SEARCH_MENU": "Buscar Menú"
     },
     "ORDER_LIST": {
         "TABLE_ORDERS": "Ordenes de la mesa",
