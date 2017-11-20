@@ -70,7 +70,7 @@ export class SigninWebComponent extends AuthClass implements OnInit {
                                         this.router.navigate(['app/dashboard']);
                                         break;
                                     } else {
-                                        this.router.navigate(['go-to-store']);
+                                        this.router.navigate(['go-to-store', 'f'], { skipLocationChange: true });
                                     }
                                 }
                                 case '200': {
@@ -83,7 +83,7 @@ export class SigninWebComponent extends AuthClass implements OnInit {
                                         this.router.navigate(['app/orders']);
                                         break;
                                     } else {
-                                        this.router.navigate(['go-to-store']);
+                                        this.router.navigate(['go-to-store', 't'], { skipLocationChange: true });
                                     }
                                 }
                                 case '500': {
@@ -95,7 +95,7 @@ export class SigninWebComponent extends AuthClass implements OnInit {
                                         this.validateUserIsActive('app/dashboards');
                                         break;
                                     } else {
-                                        this.router.navigate(['go-to-store']);
+                                        this.router.navigate(['go-to-store', 'f'], { skipLocationChange: true });
                                     }
                                 }
                             }

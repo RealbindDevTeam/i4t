@@ -551,10 +551,16 @@
         "FILE_NAME": "tables"
     },
     "GO_TO_STORE": {
-        "TITTLE": "What do you ",
-        "SUB_TITTLE": "like to eat?",
-        "CONTENT": "We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components",
-        "BUTTON": "Download"
+        "CLIENT" : {
+            "TITTLE": "What do you ",
+            "SUB_TITTLE": "like to eat?",
+            "CONTENT": "We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components",
+            "BUTTON": "Download"
+        },
+        "COLLABORATOR" : {
+            "TITTLE": "Please signin from computer to enjoy iurest",
+            "BUTTON": "Return"
+        }
     },
     "COLLABORATORS": {
         "COLLABORATORS_SEARCH": "Employees search",

@@ -551,10 +551,16 @@
         "FILE_NAME": "mesas"
     },
     "GO_TO_STORE": {
-        "TITTLE": "Qué te",
-        "SUB_TITTLE": "gusta comer?",
-        "CONTENT": "Hicimos la mayor parte del trabajo pesado para que usted pueda proporcionar un estilo por defecto que incorpora nuestros componentes personalizados",
-        "BUTTON": "Descargar"
+        "CLIENT" : {
+            "TITTLE": "Qué te",
+            "SUB_TITTLE": "gusta comer?",
+            "CONTENT": "Hicimos la mayor parte del trabajo pesado para que usted pueda proporcionar un estilo por defecto que incorpora nuestros componentes personalizados",
+            "BUTTON": "Descargar"
+        },
+        "COLLABORATOR" : {
+            "TITTLE": "Por favor ingresa desde tu computador, para disfrutar de iurest",
+            "BUTTON": "Regresar"
+        }
     },
     "COLLABORATORS": {
         "COLLABORATORS_SEARCH": "Consulta de colaboradores",
