@@ -17,8 +17,8 @@
         <a *ngIf="breadcrumb.link !== null" [routerLink]="breadcrumb.link" class="breadcrumb-link">{{breadcrumb.title}}</a>
         <a *ngIf="breadcrumb.link === null" class="breadcrumb-link">{{breadcrumb.title}}</a>
       </span>
-    <span class="breadcrumb" *ngIf="!showMenuName">{{ _pageTitle | translate }}</span>
-    <span class="breadcrumb" *ngIf="showMenuName">{{menuName}}</span>
+      <span class="breadcrumb" *ngIf="!showMenuName">{{ _pageTitle | translate }}</span>
+      <span class="breadcrumb" *ngIf="showMenuName">{{menuName}}</span>
     </span>
     <span *ngIf="_navigation.mediumScreenAndDown && (_breadcrumbs.length === 0 || _autoBreadcrumbs) && !_searchToggled">
       {{ _pageTitle | translate }}
@@ -29,17 +29,26 @@
 
   <c-customer-menu *ngIf="!_showToggleSidenav" (menuname)="getMenuName($event)"></c-customer-menu>
 
-  <div class="buttom-profile">
+  <div *ngIf="_showMenuButton" class="buttom-profile">
     <button *ngIf="!_showToggleSidenav" mat-icon-button [mat-menu-trigger-for]="menu" id="user-dropdown-toggler" style="padding: 0;">
-      <img class="profile-img" mat-list-avatar src="{{ getUsetImage() }}">
-      {{ _userName }}
+      <img class="profile-img" mat-list-avatar src="{{ getUsetImage() }}"> {{ _userName }}
       <mat-icon>keyboard_arrow_down</mat-icon>
     </button>
     <button *ngIf="_showToggleSidenav" mat-icon-button id="user-dropdown-toggler" style="padding: 0;">
-      <img class="profile-img" mat-list-avatar src="{{ getUsetImage() }}">
-      {{ _userName }}
+      <img class="profile-img" mat-list-avatar src="{{ getUsetImage() }}"> {{ _userName }}
       <mat-icon></mat-icon>
     </button>
+  </div>
+
+  <div *ngIf="!_showMenuButton" style="margin-right: 20px">
+    <div *ngIf="_showToggleSidenav">
+      <div style="display: inline-block; vertical-align: middle">
+        <img class="profile-img" style="display: block" src="{{ getUsetImage() }}">
+      </div>
+      <div style="display: inline-block; vertical-align: middle">
+        <p style="font-size: 14px; color: white">{{ _userName }}</p>
+      </div>
+    </div>
   </div>
 
   <mat-menu #menu="matMenu" x-position="before">
@@ -62,7 +71,7 @@
         <a *ngIf="breadcrumb.link !== null" [routerLink]="breadcrumb.link" class="breadcrumb-link">{{breadcrumb.title}}</a>
         <a *ngIf="breadcrumb.link === null" class="breadcrumb-link">{{breadcrumb.title}}</a>
       </span>
-    <span class="breadcrumb">{{ _pageTitle | translate }}</span>
+      <span class="breadcrumb">{{ _pageTitle | translate }}</span>
     </span>
   </mat-toolbar-row>
 </mat-toolbar>
