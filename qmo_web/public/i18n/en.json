@@ -61,33 +61,33 @@
         "LANGUAGE_SELECT": "Select your language",
         "ADMIN_SIGNUP": "More info",
         "HOME_CONTENT": {
-            "TITLE": "Test Test Test",
-            "TEXT1": "Test Test Test Test Test Test Test Test Test Test Test Test",
-            "TEXT2": "Test Test Test"
+            "TITLE": "A new experience to order in your favorite restaurant",
+            "TEXT1": "",
+            "TEXT2": "Free download: "
         },
         "ABOUT_CONTENT": {
-            "TITLE1": "Test Test Test",
-            "TEXT1": "Test Test Test Test Test Test Test Test Test Test Test Test",
-            "TITLE2": "Test Test Test",
-            "TEXT2": "Test Test Test Test Test Test Test Test Test Test Test Test",
-            "TITLE3": "Test Test Test",
-            "TEXT3": "Test Test Test Test Test Test Test Test Test Test Test Test"
+            "TITLE1": "Enter from mobile app or web page",
+            "TEXT1": "Use the app from your smartphone or tablet, or web page from computer",
+            "TITLE2": "Look at the menu and order directly to the kitchen",
+            "TEXT2": "Ensure your order, check the detail of your food and avoid waiting times to eat",
+            "TITLE3": "Request help of a waiter if you want",
+            "TEXT3": "Call a waiter in a simple and effective way"
         },
         "STEPS": {
-            "EASY_AND_FAST": "Test Test Test Test Test Test Test Test Test Test Test Test",
-            "ONE": "Test Test Test Test Test Test Test Test Test Test Test Test",
-            "TWO": "Test Test Test Test Test Test Test Test Test Test Test Test",
-            "THREE": "Test Test Test Test Test Test Test Test Test Test Test Test",
-            "FOUR": "Test Test Test Test Test Test Test Test Test Test Test Test",
-            "FIVE": "Test Test Test Test Test Test Test Test Test Test Test Test"
+            "EASY_AND_FAST": "Fast and easy",
+            "ONE": "Go to the restaurant and scan the code over the table",
+            "TWO": "Select what you want to eat and confirm your order",
+            "THREE": "A waiter will give to you the food when it's ready to eat",
+            "FOUR": "Review your payment detail",
+            "FIVE": "Request that you want to pay and a waiter will go to your table"
         },
         "OWNER_CONTENT": {
-            "TITLE1": "Test Test Test",
-            "TEXT1": "Test Test Test Test Test Test Test Test Test Test Test Test",
-            "TEXT2": "Test Test Test"
+            "TITLE1": "Do you have a restaurant and would you like use the Iurest service?",
+            "TEXT1": "",
+            "TEXT2": "We offer a system that improve your business"
         },
         "COMPLEMENTARY": {
-            "TITLE": "Sal y disfruta de una buena comida acompañado de amigos, pareja o familia"
+            "TITLE": "Get out to the world and enjoy good food with friends, couple or family"
         },
         "FOOTER": {
             "ALL_RIGHT_RESERVED": "All right reserved"
@@ -252,7 +252,7 @@
             "COLLABORATORS": "Employees",
             "MONTHLY_CONFIG": "Configuration",
             "TABLE_CONTROL": "Tables Control",
-            "INVOICES_DOWNLOAD" : "Invoices download",
+            "INVOICES_DOWNLOAD": "Invoices download",
             "PROFILE": "Profiles",
             "TABLES_SEARCH": "Tables search",
             "MY_RESTAURANTS": "My Restaurants"
@@ -1236,7 +1236,9 @@
         "ALREADY_ACCOUNT": "Already registered?",
         "SIGNIN": "Sign In",
         "LABEL_LEGAL": "By clicking on 'Register', ",
-        "LABEL_LEGAL_END": "you agree the terms and conditions."
+        "LABEL_LEGAL_END": "you agree the terms and conditions.",
+        "GENERAL_INFO": "Personal information",
+        "USER_PASSWD": "User and password"
     },
     "ADMIN_DASHBOARD": {
         "TITLE": "Welcome to iurest",

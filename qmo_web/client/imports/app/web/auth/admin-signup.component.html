@@ -12,7 +12,7 @@
             <div>
                 <div>
                     <div style="width: 100%; text-align: center">
-                        <span>Información personal</span>
+                        <span>{{'ADMIN_SIGNUP.GENERAL_INFO' | translate}}</span>
                     </div>
                     <form [formGroup]="signupForm" (ngSubmit)="register()" novalidate>
                         <mat-form-field style="width: 100%">
@@ -71,7 +71,7 @@
                             class="error-message">{{'ADMIN_SIGNUP.MAX_LENGTH_OTHER' | translate}}</div>
 
                         <div style="width: 100%; text-align: center; margin-top: 30px">
-                            <span>Usuario y contraseña</span>
+                            <span>{{'ADMIN_SIGNUP.USER_PASSWD' | translate}}</span>
                         </div>
                         <mat-form-field style="width: 100%;">
                             <input matInput formControlName="username" placeholder="{{'ADMIN_SIGNUP.USERNAME' | translate}}" required>
