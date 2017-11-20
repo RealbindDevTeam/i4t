@@ -115,7 +115,7 @@ export const routes: Route[] = [
     { path: 'signup', component: SignupWebComponent },
     { path: 'admin-signup', component: AdminSignupComponent },
     { path: 'reset-password/:tk', component: ResetPasswordWebComponent },
-    { path: 'go-to-store', component: GoToStoreComponent },
+    { path: 'go-to-store/:ic', component: GoToStoreComponent },
     { path: '404', component: NotFoundWebComponent },
     { path: '**', redirectTo: '/404' }
 ];

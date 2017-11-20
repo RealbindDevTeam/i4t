@@ -435,16 +435,15 @@ mat-ink-bar {
 
 /* Absolute Center Spinner */
 .loading {
-  position: fixed;
-  z-index: 999;
-  height: 2em;
-  width: 2em;
-  overflow: show;
-  margin: auto;
+  position: absolute;
   top: -100px;
   left: -100px;
   bottom: 0;
   right: 0;
+  margin: auto;
+  height: 2rem;
+  width: 2rem;
+  z-index: 999;
 }
 
 /* Transparent Overlay */

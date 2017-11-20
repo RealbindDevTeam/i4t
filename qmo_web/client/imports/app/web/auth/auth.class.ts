@@ -54,7 +54,7 @@ export class AuthClass {
             });
         }
         else {
-            this.router.navigate(['go-to-store']);
+            this.router.navigate(['go-to-store', 't'], { skipLocationChange: true });
         }
     }
 

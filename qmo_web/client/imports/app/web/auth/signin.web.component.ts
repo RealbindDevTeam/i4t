@@ -69,7 +69,7 @@ export class SigninWebComponent extends AuthClass implements OnInit {
                                         this.insertUserInfo();
                                         this.router.navigate(['app/dashboard']);
                                     } else {
-                                        this.router.navigate(['go-to-store']);
+                                        this.router.navigate(['go-to-store', 'f'], { skipLocationChange: true });
                                     }
                                     break;
                                 }
@@ -82,7 +82,7 @@ export class SigninWebComponent extends AuthClass implements OnInit {
                                         this.insertUserInfo();
                                         this.router.navigate(['app/orders']);
                                     } else {
-                                        this.router.navigate(['go-to-store']);
+                                        this.router.navigate(['go-to-store', 't'], { skipLocationChange: true });
                                     }
                                     break;
                                 }
@@ -94,7 +94,7 @@ export class SigninWebComponent extends AuthClass implements OnInit {
                                     if(this.devicesValidate()){
                                         this.validateUserIsActive('app/dashboards');
                                     } else {
-                                        this.router.navigate(['go-to-store']);
+                                        this.router.navigate(['go-to-store', 'f'], { skipLocationChange: true });
                                     }
                                     break;
                                 }

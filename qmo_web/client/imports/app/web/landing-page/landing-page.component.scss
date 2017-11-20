@@ -195,6 +195,7 @@ mat-toolbar {
 mat-toolbar .nav-wrapper {
   position: relative;
   height: 100%;
+  line-height: 64px;
 }
 
 @media only screen and (min-width: 993px) {

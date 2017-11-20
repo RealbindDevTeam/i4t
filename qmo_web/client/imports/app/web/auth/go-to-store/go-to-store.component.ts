@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 
@@ -9,19 +9,34 @@ import { UserLanguageService } from '../../../shared/services/user-language.serv
     styleUrls: [ './go-to-store.component.scss' ]
 })
 
-export class GoToStoreComponent {
+export class GoToStoreComponent implements OnInit, OnDestroy {
 
-    private _userLang     : string  = "";
+    private _subscription : any;
+    private _userLang     : string = "";
+    private _ic           : string = "";
 
     /**
      * GoToStoreComponent Constructor
      * @param {TranslateService} translate 
      * @param {UserLanguageService} _userLanguageService
      */
-    public constructor( private translate: TranslateService,
+    public constructor( private _route: ActivatedRoute,
+                        private translate: TranslateService,
                         public _userLanguageService: UserLanguageService ) {
+        
+        this._route.params.forEach((params: Params) => {
+            this._ic = params.ic;
+        });
         this._userLang = navigator.language.split('-')[0];
         translate.setDefaultLang('en');
         translate.use( this._userLang );
+    }
+
+    ngOnInit() {
+        
+    }
+    
+    ngOnDestroy() {
+        if(this._subscription){ this._subscription.unsubscribe(); }
     }
 }
