@@ -66,17 +66,17 @@
             "TEXT2": "Descargala gratis en: "
         },
         "ABOUT_CONTENT": {
-            "TITLE1": "Accede desde tu dispositivo preferido",
-            "TEXT1": "Ingresa desde tu smartphone, tablet o computador y disfruta de todas las características que tenemos para ofrecerte.",
+            "TITLE1": "Accede desde nuestra aplicación móvil o página web",
+            "TEXT1": "Ingresa a la app desde tu smartphone y tablet, o web desde computador y disfruta de todas las características que tenemos para ofrecerte.",
             "TITLE2": "Mira el menú y ordena directo a la cocina",
-            "TEXT2": "Asegura tu pedido, revisa el detalle de tus ordenes y evita tiempos de espera para comer.",
+            "TEXT2": "Asegura tu pedido, revisa el detalle de tu comida y evita tiempos de espera para comer.",
             "TITLE3": "Solicita ayuda de un mesero si deseas",
             "TEXT3": "LLama a un mesero de una forma simple y efectiva."
         },
         "STEPS": {
             "EASY_AND_FAST": "Fácil y rápido",
             "ONE": "Ve a un restaurante y escanea el código de la mesa",
-            "TWO": "Elige lo que deseas comer y confirma para que llegue directo a la cocina",
+            "TWO": "Elige lo que deseas comer y confirma tu orden",
             "THREE": "Un mesero te llevará la comida cuando este preparada",
             "FOUR": "Consulta el detalle de tu cuenta",
             "FIVE": "Indica que vas a pagar y un mesero ira a tu mesa"
@@ -1229,7 +1229,9 @@
         "ALREADY_ACCOUNT": "Ya tienes una cuenta?",
         "SIGNIN": "Iniciar Sesión",
         "LABEL_LEGAL": "Al dar clic en 'Registrarse', ",
-        "LABEL_LEGAL_END": "aceptas los términos y condiciones."
+        "LABEL_LEGAL_END": "aceptas los términos y condiciones.",
+        "GENERAL_INFO": "Información personal",
+        "USER_PASSWD": "Usuario y contraseña"
     },
     "ADMIN_DASHBOARD": {
         "TITLE": "Te damos la bienvenida a iurest",

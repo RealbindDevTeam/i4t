@@ -45,6 +45,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
   private showMenuName: boolean = true;
   private menuName: string;
   private _userLang: string  = "";
+  private _showMenuButton: boolean;
 
   /**
    * TopnavComponent Constructor
@@ -155,10 +156,12 @@ export class TopnavComponent implements OnInit, OnDestroy {
       if (role === "400") {
         this._itemsTopMenu = 'customer';
         this.showMenuName = true;
+        this._showMenuButton = true;
         this.menuName = this.itemNameTraduction('TOPNAV.ORDERS');
       } else {
         this._showToggleSidenav = true;
         this.showMenuName = false;
+        this._showMenuButton = false;
       }
     }, (error) => {
       alert(`Failed to to load layout ${error}`);

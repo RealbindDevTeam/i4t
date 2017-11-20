@@ -424,6 +424,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         let credentialArray: string[] = [];
 
         let isProd: boolean = (this.is_prod_flag == 'true');
+        let prefixTrxParam: string = Parameters.findOne({ name: 'payu_reference_code' }).value;
 
         userDetail = UserDetails.findOne({ user_id: Meteor.userId() });
 
@@ -439,7 +440,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         if (paymentTransactionF) {
             PaymentTransactions.collection.insert({
                 count: paymentTransactionF.count + 1,
-                referenceCode: 'M0NP' + (paymentTransactionF.count + 1),
+                referenceCode: prefixTrxParam + (paymentTransactionF.count + 1),
                 status: 'PREPARED',
                 creation_date: new Date(),
                 creation_user: Meteor.userId()
@@ -447,7 +448,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         } else {
             PaymentTransactions.collection.insert({
                 count: 1,
-                referenceCode: 'M0NP' + 1,
+                referenceCode: prefixTrxParam + 1,
                 status: 'PREPARED',
                 creation_date: new Date(),
                 creation_user: Meteor.userId()
@@ -798,7 +799,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 payment_method: this.itemNameTraduction('PAYU_PAYMENT_FORM.CC_PAYMENT_METHOD'),
                 description: this.itemNameTraduction('PAYU_PAYMENT_FORM.DESCRIPTION'),
                 period: this._firstMonthDay.getDate() + '/' + (this._firstMonthDay.getMonth() + 1) + '/' + this._firstMonthDay.getFullYear() +
-                ' - ' + this._lastMonthDay.getDate() + '/' + (this._lastMonthDay.getMonth() + 1) + '/' + this._lastMonthDay.getFullYear(),
+                    ' - ' + this._lastMonthDay.getDate() + '/' + (this._lastMonthDay.getMonth() + 1) + '/' + this._lastMonthDay.getFullYear(),
                 amount_no_iva: this.getReturnBase(),
                 subtotal: this.getReturnBase(),
                 iva: this.getValueTax(),
