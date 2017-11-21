@@ -21,7 +21,7 @@ import { UserDetail } from '../../../../../../both/models/auth/user-detail.model
 @Component({
     selector: 'item',
     templateUrl: './item.component.html',
-    styleUrls: [ './item.component.scss' ]
+    styleUrls: ['./item.component.scss']
 })
 export class ItemComponent implements OnInit, OnDestroy {
 
@@ -72,11 +72,11 @@ export class ItemComponent implements OnInit, OnDestroy {
     ngOnInit() {
         let _lRestaurantsId: string[] = [];
         this.removeSubscriptions();
-        this._itemsSub = MeteorObservable.subscribe( 'items',this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._items = Items.find( { } ).zone();
+        this._itemsSub = MeteorObservable.subscribe('items', this._user).subscribe(() => {
+            this._ngZone.run(() => {
+                this._items = Items.find({}).zone();
                 this.countItems();
-                this._items.subscribe( () => { this.countItems(); } );
+                this._items.subscribe(() => { this.countItems(); });
             });
         });
         this._itemImagesThumbSub = MeteorObservable.subscribe('itemImageThumbs', this._user).subscribe();
@@ -151,13 +151,13 @@ export class ItemComponent implements OnInit, OnDestroy {
      * @param {Item} _item
      */
     open(_item: Item) {
-        this._dialogRef = this._dialog.open(ItemEditionComponent, {
+        let dialogRef1 = this._dialog.open(ItemEditionComponent, {
             disableClose: true,
-            width: '75%'
+            width: '80%'
         });
-        this._dialogRef.componentInstance._itemToEdit = _item;
-        this._dialogRef.afterClosed().subscribe(result => {
-            this._dialogRef = null;
+        dialogRef1.componentInstance._itemToEdit = _item;
+        dialogRef1.afterClosed().subscribe(result => {
+            dialogRef1 = null;
         });
     }
 

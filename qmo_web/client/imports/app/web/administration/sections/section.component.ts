@@ -229,7 +229,7 @@ export class SectionComponent implements OnInit, OnDestroy {
     open(_section: Section) {
         this._dialogRef = this._dialog.open(SectionEditComponent, {
             disableClose: true,
-            width: '60%'
+            width: '50%'
         });
         this._dialogRef.componentInstance._sectionToEdit = _section;
         this._dialogRef.afterClosed().subscribe(result => {
