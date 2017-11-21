@@ -191,7 +191,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
     open(_category: Category) {
         this._dialogRef = this._dialog.open(CategoriesEditComponent, {
             disableClose: true,
-            width: '60%'
+            width: '50%'
         });
         this._dialogRef.componentInstance._categoryToEdit = _category;
         this._dialogRef.afterClosed().subscribe(result => {

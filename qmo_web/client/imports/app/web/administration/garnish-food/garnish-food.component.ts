@@ -295,7 +295,7 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
     open(_garnishFood: GarnishFood) {
         this._dialogRef = this._dialog.open(GarnishFoodEditComponent, {
             disableClose: true,
-            width: '80%'
+            width: '50%'
         });
         this._dialogRef.componentInstance._garnishFoodToEdit = _garnishFood;
         this._dialogRef.afterClosed().subscribe(result => {

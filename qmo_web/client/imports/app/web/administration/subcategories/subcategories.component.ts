@@ -219,7 +219,7 @@ export class SubcategoryComponent implements OnInit, OnDestroy {
     open(_subcategory: Subcategory) {
         this._dialogRef = this._dialog.open(SubcategoryEditComponent, {
             disableClose: true,
-            width: '60%'
+            width: '50%'
         });
         this._dialogRef.componentInstance._subcategoryToEdit = _subcategory;
         this._dialogRef.afterClosed().subscribe(result => {
