@@ -1,0 +1,31 @@
+<ion-header>
+    <ion-navbar>
+      <ion-title>{{_restaurant.name}}</ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content>
+        <ion-slides *ngIf="(_restaurantProfileImgs | async)?.length >= 0" zoom>
+            <ion-slide *ngFor="let img of _restaurantProfileImgs | async">
+                <img src="{{img.url}}"/>
+            </ion-slide>
+        </ion-slides>
+
+        <ion-card class="ion-card-custom" style="margin: 0px !important">
+            <ion-card-content>
+                <ion-card-title>{{_restaurant.name}}</ion-card-title>
+                <h2>
+                    <ion-icon name="map"></ion-icon>
+                    {{_restaurantCountry}}, {{_restaurantCity}}
+                </h2>
+                <h2>
+                    <ion-icon name="time"></ion-icon>
+                    Horario
+                </h2>
+                <p class="top" style="margin-bottom: 10px">
+                    {{_restaurantsProfile?.restaurant_description}}
+                </p>
+            </ion-card-content>
+        </ion-card>
+
+  </ion-content>

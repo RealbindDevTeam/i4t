@@ -20,6 +20,7 @@
                 <h2 *ngIf="_table">{{'MOBILE.ORDERS.TABLE' | translate}}: {{_table._number}}</h2>
                 <p>{{restaurant.address}}</p>
             </ion-item>
+            <button ion-button color="dark" clear (click)="viewRestaurantProfile(restaurant)">Ver</button>
         </ion-list>
         <ion-card>
             <ion-card-content>

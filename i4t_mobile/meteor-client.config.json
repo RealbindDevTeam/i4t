@@ -1,8 +1,8 @@
 {
   "runtime": {
     "meteorEnv": {},
-    "DDP_DEFAULT_CONNECTION_URL": "http://192.168.0.3:3000/",    
-    "ROOT_URL": "http://192.168.0.3:3000/"
+    "DDP_DEFAULT_CONNECTION_URL": "http://192.168.0.25:3000/",    
+    "ROOT_URL": "http://192.168.0.25:3000/"
   },
   "import": [
     "meteor-base@1.2.0",

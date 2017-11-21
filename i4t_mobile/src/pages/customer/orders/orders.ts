@@ -17,6 +17,7 @@ import { CodeTypeSelectPage } from '../code-type-select/code-type-select';
 import { SectionsPage } from '../sections/sections';
 import { ItemEditPage } from '../item-edit/item-edit';
 import { AdditionEditPage } from '../addition-edit/addition-edit';
+import { RestaurantProfilePage } from '../restaurant-profile/restaurant-profile';
 import { Currencies } from 'qmo_web/both/collections/general/currency.collection';
 import { ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
 
@@ -387,6 +388,10 @@ export class OrdersPage implements OnInit, OnDestroy {
         } else {
             return 'assets/img/default-restaurant.png';
         }
+    }
+
+    viewRestaurantProfile( _pRestaurant : any ){
+        this._navCtrl.push(RestaurantProfilePage, { restaurant : _pRestaurant});
     }
 
     /**

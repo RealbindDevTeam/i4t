@@ -54,7 +54,7 @@ import { ItemCardWaiterComponent } from '../pages/waiter/restaurant-menu/item-ca
 import { ItemDetailWaiterPage } from '../pages/waiter/item-detail-waiter/item-detail-waiter';
 import { AdditionsWaiterPage } from '../pages/waiter/restaurant-menu/additions-waiter/additions-waiter';
 import { RestaurantExitConfirmPage } from '../pages/waiter/calls/restaurant-exit-confirm/restaurant-exit-confirm';
-
+import { RestaurantProfilePage } from '../pages/customer/restaurant-profile/restaurant-profile';
 
 export const PAGES_DECLARATIONS = [
     InitialComponent,
@@ -112,5 +112,6 @@ export const PAGES_DECLARATIONS = [
     ItemCardWaiterComponent,
     ItemDetailWaiterPage,
     AdditionsWaiterPage,
-    RestaurantExitConfirmPage
+    RestaurantExitConfirmPage,
+    RestaurantProfilePage
 ];
