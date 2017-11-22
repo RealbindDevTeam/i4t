@@ -11,4 +11,10 @@ page-restaurant-profile {
     p.top {
         margin-top: 10px;
     }
+
+    #map_canvas{
+        display: block;
+        height: 200px;
+        width: 100%;
+    }
 }

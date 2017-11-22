@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, CameraPosition, MarkerOptions, Marker } from '@ionic-native/google-maps';
 import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams, ModalController, LoadingController, ToastController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -28,10 +29,17 @@ export class RestaurantProfilePage implements OnInit, OnDestroy {
     private _restaurantCountry                 : string;
     private _restaurantCity                    : string;
 
+    map: GoogleMap;
+
     constructor(public _navParams: NavParams,
                 public _translate: TranslateService,
+                private googleMaps: GoogleMaps,
                 private _ngZone: NgZone){
         this._restaurant = this._navParams.get("restaurant");
+    }
+
+    ionViewDidLoad(){
+        //this.loadMap();
     }
 
     ngOnInit(){
@@ -52,6 +60,7 @@ export class RestaurantProfilePage implements OnInit, OnDestroy {
         this._restaurantProfileSubscription = MeteorObservable.subscribe( 'getRestaurantProfile', this._restaurant._id ).subscribe( () => {
             this._ngZone.run( () => {
                 this._restaurantsProfile = RestaurantsProfile.findOne( { restaurant_id: this._restaurant._id } );
+                this.loadMap();
             });
         });
 
@@ -87,7 +96,43 @@ export class RestaurantProfilePage implements OnInit, OnDestroy {
           wordTraduced = res;
         });
         return wordTraduced;
-      }
+    }
+
+    loadMap() {
+        let mapOptions: GoogleMapOptions = {
+            camera: {
+                target: {
+                    lat: this._restaurantsProfile.location.lat,
+                    lng: this._restaurantsProfile.location.lng
+                },
+                zoom: 18,
+                tilt: 30
+            }
+        };
+    
+        this.map = GoogleMaps.create('map_canvas', mapOptions);
+    
+        this.map.one(GoogleMapsEvent.MAP_READY)
+            .then(() => {
+    
+            this.map.addMarker({
+                title: 'Ionic',
+                icon: 'blue',
+                animation: 'DROP',
+                position: {
+                    lat: this._restaurantsProfile.location.lat,
+                    lng: this._restaurantsProfile.location.lng
+                }
+            })
+            .then(marker => {
+                marker.on(GoogleMapsEvent.MARKER_CLICK)
+                    .subscribe(() => {
+                    alert('clicked');
+                });
+            });
+    
+        });
+    }
 
     ngOnDestroy(){
         if(this._countriesSubscription){ this._countriesSubscription };
