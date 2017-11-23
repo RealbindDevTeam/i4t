@@ -422,6 +422,38 @@
             "ORDER_RESTAURANT": "Ordering in a restaurant",
             "PAYMENTS_HISTORY": "Payments history",
             "SETTINGS": "Settings"
+        },
+        "RESTAURANT_PROFILE" : {
+            "MENU_BTN" : "Menu",
+            "PAYMENT_METHODS" : "Payment methods"
+        },
+        "SCHEDULE": {
+            "SCHEDULE": "Schedule",
+            "SELECT_OPENING_HOUR": "Select Opening Hour",
+            "SELECT_CLOSING_HOUR": "Select Closing Hour",
+            "MONDAY": "Monday",
+            "TUESDAY": "Tuesday",
+            "WEDNESDAY": "Wednesday",
+            "THURSDAY": "Thursday",
+            "FRIDAY": "Friday",
+            "SATURDAY": "Saturday",
+            "SUNDAY": "Sunday",
+            "HOLIDAY": "Holiday",
+            "MONDAY_LETTER": "Mo",
+            "TUESDAY_LETTER": "Tu",
+            "WEDNESDAY_LETTER": "We",
+            "THURSDAY_LETTER": "Th",
+            "FRIDAY_LETTER": "Fr",
+            "SATURDAY_LETTER": "Sa",
+            "SUNDAY_LETTER": "Su",
+            "HOLIDAY_LETTER": "Ho",
+            "ADD_SCHEDULE": "Add to Schedule",
+            "WEEKDAY": "Weekday",
+            "OPENING_HOUR": "Opening Hour",
+            "CLOSING_HOUR": "Closing Hour",
+            "NO_RESTAURANT_HOURS": "No restaurant hours have been entered",
+            "DELETE": "Delete a day of the schedule",
+            "CLOSE": "Close"
         }
     },
     "CURRENCIES": {

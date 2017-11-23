@@ -422,6 +422,38 @@
             "ORDER_RESTAURANT": "Ordena en un Restaurante",
             "PAYMENTS_HISTORY": "Historial de Pagos",
             "SETTINGS": "Ajustes"
+        },
+        "RESTAURANT_PROFILE" : {
+            "MENU_BTN" : "Menú",
+            "PAYMENT_METHODS" : "Métodos de pago"
+        },
+        "SCHEDULE": {
+            "SCHEDULE": "Horario de atención",
+            "SELECT_OPENING_HOUR": "Selecciona hora de apertura",
+            "SELECT_CLOSING_HOUR": "Selecciona hora de cierre",
+            "MONDAY": "Lunes",
+            "TUESDAY": "Martes",
+            "WEDNESDAY": "Miércoles",
+            "THURSDAY": "Jueves",
+            "FRIDAY": "Viernes",
+            "SATURDAY": "Sábado",
+            "SUNDAY": "Domingo",
+            "HOLIDAY": "Festivo",
+            "MONDAY_LETTER": "Lu",
+            "TUESDAY_LETTER": "Ma",
+            "WEDNESDAY_LETTER": "Mi",
+            "THURSDAY_LETTER": "Ju",
+            "FRIDAY_LETTER": "Vi",
+            "SATURDAY_LETTER": "Sa",
+            "SUNDAY_LETTER": "Do",
+            "HOLIDAY_LETTER": "Fe",
+            "ADD_SCHEDULE": "Agregar al horario",
+            "WEEKDAY": "Día de la semana",
+            "OPENING_HOUR": "Hora de apertura",
+            "CLOSING_HOUR": "Hora de cierre",
+            "NO_RESTAURANT_HOURS": "No se ha ingresado horario del restaurante",
+            "DELETE": "Eliminar día del horario",
+            "CLOSE": "Cerrar"
         }
     },
     "CURRENCIES": {

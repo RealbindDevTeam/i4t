@@ -1,33 +1,90 @@
 <ion-header>
     <ion-navbar>
-      <ion-title>{{_restaurant.name}}</ion-title>
+        <ion-title>{{_restaurant.name}}</ion-title>
     </ion-navbar>
-  </ion-header>
+</ion-header>
   
-  <ion-content>
-        <ion-slides *ngIf="(_restaurantProfileImgs | async)?.length >= 0" zoom>
-            <ion-slide *ngFor="let img of _restaurantProfileImgs | async">
-                <img src="{{img.url}}"/>
-            </ion-slide>
-        </ion-slides>
+<ion-content>
+    <ion-slides *ngIf="(_restaurantProfileImgs | async)?.length >= 0" zoom>
+        <ion-slide *ngFor="let img of _restaurantProfileImgs | async">
+            <img src="{{img.url}}"/>
+        </ion-slide>
+    </ion-slides>
 
-        <ion-card class="ion-card-custom" style="margin: 0px !important">
-            <ion-card-content>
+    <ion-card class="ion-card-custom" style="margin: 0px !important">
+        <ion-card-content>
+            <ion-item>
                 <ion-card-title>{{_restaurant.name}}</ion-card-title>
-                <h2>
+                <button ion-button outline item-end>{{'MOBILE.RESTAURANT_PROFILE.MENU_BTN' | translate}}</button>
+            </ion-item>
+            
+            <ion-list inset class="margin" no-lines>
+                <button ion-item>
                     <ion-icon name="map"></ion-icon>
                     {{_restaurantCountry}}, {{_restaurantCity}}
-                </h2>
-                <h2>
+                </button>
+                <button ion-item (click)="openSchedule()">
                     <ion-icon name="time"></ion-icon>
-                    Horario
-                </h2>
-                <p class="top" style="margin-bottom: 10px">
+                    {{'MOBILE.SCHEDULE.SCHEDULE' | translate}}
+                </button>
+            </ion-list>
+
+            <p *ngIf="_restaurantsProfile?.restaurant_description.length <= 20" class="margin">
+                {{_restaurantsProfile?.restaurant_description}}
+            </p>
+            <div *ngIf="_restaurantsProfile?.restaurant_description.length > 20">
+                <p *ngIf="!_showDescription" class="margin">
+                    {{_restaurantsProfile?.restaurant_description.substring(0, 70)}}...
+                </p>
+                <p *ngIf="_showDescription" class="margin">
                     {{_restaurantsProfile?.restaurant_description}}
                 </p>
+            </div>
+            <a *ngIf="!_showDescription" (click)="showInformation()">
+                Ver más
+            </a>
 
-            </ion-card-content>
-        </ion-card>
-        
-        <div id="map_canvas"></div>
+            
+            <div class="pm">
+                <h2>{{'MOBILE.RESTAURANT_PROFILE.PAYMENT_METHODS' | translate}}</h2>
+                <ion-list no-lines>
+                    <ion-item *ngFor="let pm of _paymentMethods | async">
+                        <ion-avatar item-start class="custom">
+                            <img *ngIf="pm.name === 'PAYMENT_METHODS.CASH'" src="assets/img/cash-payment.png">
+                            <img *ngIf="pm.name === 'PAYMENT_METHODS.CREDIT_CARD'" src="assets/img/credit-card-payment.png">
+                            <img *ngIf="pm.name === 'PAYMENT_METHODS.DEBIT_CARD'" src="assets/img/debit-card-payment.png">
+                            <img *ngIf="pm.name === 'PAYMENT_METHODS.ONLINE'" src="assets/img/payment-online.png">
+                        </ion-avatar>
+                        <h2>{{pm.name | translate}}</h2>
+                    </ion-item>
+                </ion-list>
+            </div>
+
+            <ion-list inset class="margin" no-lines>
+                <button ion-item *ngIf="_restaurant.phone">
+                    <ion-icon name="call"></ion-icon>
+                    {{_restaurant.indicative}} {{_restaurant.phone}}
+                </button>
+                <button ion-item *ngIf="_restaurantsProfile?.email">
+                    <ion-icon name="chatbubbles"></ion-icon>
+                    {{_restaurantsProfile?.email}}
+                </button>
+                <button ion-item *ngIf="_restaurant.address">
+                    <ion-icon name="locate"></ion-icon>
+                    {{_restaurant.address}}
+                </button>
+            </ion-list>
+
+            <ion-fab *ngIf="_restaurantsProfile?.social_networks?.facebook || _restaurantsProfile?.social_networks?.twitter  || _restaurantsProfile?.social_networks?.instagram" bottom right class="fixed">
+                <button ion-fab color="vibrant" mini><ion-icon name="add"></ion-icon></button>
+                <ion-fab-list side="top">
+                    <a ion-fab *ngIf="_restaurantsProfile?.social_networks?.instagram" href="{{_restaurantsProfile?.social_networks?.instagram}}"><ion-icon name="logo-instagram"></ion-icon></a>
+                    <a ion-fab *ngIf="_restaurantsProfile?.social_networks?.twitter" href="{{_restaurantsProfile?.social_networks?.twitter}}"><ion-icon name="logo-twitter"></ion-icon></a>
+                    <a ion-fab *ngIf="_restaurantsProfile?.social_networks?.facebook" href="{{_restaurantsProfile?.social_networks?.facebook}}"><ion-icon name="logo-facebook"></ion-icon></a>
+                </ion-fab-list>
+            </ion-fab>
+
+        </ion-card-content>
+    </ion-card>
+    <div id="map_canvas"></div>
   </ion-content>

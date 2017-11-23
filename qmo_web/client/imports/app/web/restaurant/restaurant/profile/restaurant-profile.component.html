@@ -34,7 +34,8 @@
             </mat-form-field>
         </mat-card-content>
     </mat-card>
-    <mat-card *ngIf="_thereAreRestaurants && !_anyRestaurantIsSelected" mat-cell="12" class="demo-card demo-basic">
+    
+    <mat-card *ngIf="_thereAreRestaurants && !_anyRestaurantIsSelected">
         <mat-card-content>
             <div class="card_initial">
                 <div class="card_initial has-image">
@@ -50,6 +51,7 @@
             </div>
         </mat-card-content>
     </mat-card>
+    
     <mat-card *ngIf="_thereAreRestaurants && _anyRestaurantIsSelected">
         <mat-card-title class="restaurant-name">{{_restaurantName}}</mat-card-title>
         <mat-card-subtitle>{{ 'RESTAURANT_PROFILE.PROFILE_SUBTITLE' | translate }}</mat-card-subtitle>

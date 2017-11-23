@@ -8,40 +8,54 @@ import { Country } from 'qmo_web/both/models/settings/country.model';
 import { Countries } from 'qmo_web/both/collections/settings/country.collection';
 import { City } from 'qmo_web/both/models/settings/city.model';
 import { Cities } from 'qmo_web/both/collections/settings/city.collection';
+import { PaymentMethod } from 'qmo_web/both/models/general/paymentMethod.model';
+import { PaymentMethods } from 'qmo_web/both/collections/general/paymentMethod.collection';
 import { Restaurant, RestaurantProfile, RestaurantImageThumb, RestaurantProfileImage } from 'qmo_web/both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantsProfile, RestaurantImageThumbs, RestaurantProfileImages } from 'qmo_web/both/collections/restaurant/restaurant.collection';
+import { ModalSchedule } from './modal-schedule/modal-schedule';
 
 @Component({
     selector: 'page-restaurant-profile',
     templateUrl: 'restaurant-profile.html'
 })
 export class RestaurantProfilePage implements OnInit, OnDestroy {
-
+    
+    private _map                               : GoogleMap;
     private _countriesSubscription             : Subscription;
     private _citiesSubscription                : Subscription;
     private _restaurantProfileSubscription     : Subscription;
     private _restaurantProfileImgsSubscription : Subscription;
+    private _paymentMethodsSubscription        : Subscription;
+
     private _restaurantsProfile                : RestaurantProfile;
     private _restaurantProfileImgs             : Observable<RestaurantProfileImage[]>;
+    private _paymentMethods                    : Observable<PaymentMethod[]>;
     private _profileImgs                       : RestaurantProfileImage[] =[];
     private _restaurant                        : Restaurant = null;
 
     private _restaurantCountry                 : string;
     private _restaurantCity                    : string;
+    private _showDescription                   : boolean = false;
 
-    map: GoogleMap;
 
+    /**
+     * Constructor implementation
+     * @param _navParams 
+     * @param _translate 
+     * @param googleMaps 
+     * @param _ngZone 
+     */
     constructor(public _navParams: NavParams,
                 public _translate: TranslateService,
+                public _modalCtrl  : ModalController,
                 private googleMaps: GoogleMaps,
                 private _ngZone: NgZone){
         this._restaurant = this._navParams.get("restaurant");
     }
 
-    ionViewDidLoad(){
-        //this.loadMap();
-    }
-
+    /**
+     * ngOnInit implementation
+     */
     ngOnInit(){
         this._countriesSubscription = MeteorObservable.subscribe( 'getCountryByRestaurantId', this._restaurant._id ).subscribe( () => {
             this._ngZone.run( () => {
@@ -73,6 +87,12 @@ export class RestaurantProfilePage implements OnInit, OnDestroy {
                 });
             });
         });
+
+        this._paymentMethodsSubscription = MeteorObservable.subscribe('getPaymentMethodsByrestaurantId', this._restaurant._id).subscribe(()=>{
+            this._ngZone.run( () => {
+                this._paymentMethods = PaymentMethods.find({}).zone();
+            });
+        });
     }
 
     /**
@@ -98,46 +118,67 @@ export class RestaurantProfilePage implements OnInit, OnDestroy {
         return wordTraduced;
     }
 
+    /**
+     * Load map whit restaurant location
+     */
     loadMap() {
-        let mapOptions: GoogleMapOptions = {
-            camera: {
-                target: {
-                    lat: this._restaurantsProfile.location.lat,
-                    lng: this._restaurantsProfile.location.lng
-                },
-                zoom: 18,
-                tilt: 30
-            }
-        };
-    
-        this.map = GoogleMaps.create('map_canvas', mapOptions);
-    
-        this.map.one(GoogleMapsEvent.MAP_READY)
-            .then(() => {
-    
-            this.map.addMarker({
-                title: 'Ionic',
-                icon: 'blue',
-                animation: 'DROP',
-                position: {
-                    lat: this._restaurantsProfile.location.lat,
-                    lng: this._restaurantsProfile.location.lng
+        if(this._restaurantsProfile.location.lat && this._restaurantsProfile.location.lng){
+            let mapOptions: GoogleMapOptions = {
+                camera: {
+                    target: {
+                        lat: this._restaurantsProfile.location.lat,
+                        lng: this._restaurantsProfile.location.lng
+                    },
+                    zoom: 18,
+                    tilt: 30
                 }
-            })
-            .then(marker => {
-                marker.on(GoogleMapsEvent.MARKER_CLICK)
-                    .subscribe(() => {
-                    alert('clicked');
+            };
+            this._map = GoogleMaps.create('map_canvas', mapOptions);
+            this._map.one(GoogleMapsEvent.MAP_READY).then(() => {
+                this._map.addMarker({
+                    title: 'Ionic',
+                    icon: 'blue',
+                    animation: 'DROP',
+                    position: {
+                        lat: this._restaurantsProfile.location.lat,
+                        lng: this._restaurantsProfile.location.lng
+                    }
+                })
+                .then(marker => {
+                    marker.on(GoogleMapsEvent.MARKER_CLICK)
+                        .subscribe(() => {
+                        alert('clicked');
+                    });
                 });
             });
-    
-        });
+        }
     }
 
+    /**
+     * 
+     */
+    showInformation(){
+        this._showDescription = !this._showDescription;
+    }
+
+    /**
+     * Open password change modal
+     */
+    openSchedule() {
+        let contactModal = this._modalCtrl.create(ModalSchedule, {
+            restaurant : this._restaurant
+        });
+        contactModal.present();
+    }
+
+    /**
+     * ngOndestroy implementation
+     */
     ngOnDestroy(){
         if(this._countriesSubscription){ this._countriesSubscription };
         if(this._citiesSubscription){ this._citiesSubscription };
         if(this._restaurantProfileSubscription){ this._restaurantProfileSubscription };
         if(this._restaurantProfileImgsSubscription){ this._restaurantProfileImgsSubscription };
+        if(this._paymentMethodsSubscription){ this._paymentMethodsSubscription };
     }
 }

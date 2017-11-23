@@ -3,5 +3,10 @@ mat-sidenav {
 }
 
 mat-sidenav-container{
-    top: 64px
+    top: 64px;
+}
+
+main {
+    background-color: #eceff1;
+    height: calc(100% - 3px);
 }
