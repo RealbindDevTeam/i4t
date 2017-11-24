@@ -29,7 +29,7 @@
         </ion-slide>
     </ion-slides>
 
-    <ion-card *ngFor="let _restaurant of _restaurants | async;">
+    <ion-card *ngFor="let _restaurant of _restaurants | async;" class="wm">
         <ion-card-content>
             <ion-item>
                 <ion-card-title>{{_restaurant?.name}}</ion-card-title>
