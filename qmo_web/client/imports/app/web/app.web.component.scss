@@ -542,3 +542,8 @@ mat-ink-bar {
         justify-content: flex-end;
     }
 }
+
+
+.mat-dialog-container {
+    max-width: none !important;
+}

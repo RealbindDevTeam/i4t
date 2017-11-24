@@ -295,7 +295,7 @@ export class AdditionComponent implements OnInit, OnDestroy {
     open(_addition: Addition) {
         this._dialogRef = this._dialog.open(AdditionEditComponent, {
             disableClose: true,
-            width: '80%'
+            width: '50%'
         });
         this._dialogRef.componentInstance._additionToEdit = _addition;
         this._dialogRef.afterClosed().subscribe(result => {
