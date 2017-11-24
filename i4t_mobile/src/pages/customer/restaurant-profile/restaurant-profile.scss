@@ -1,4 +1,30 @@
 page-restaurant-profile {
+    ion-card{
+        margin: 0px !important
+    }
+
+    ion-fab {
+        top: -56px !important;
+    }
+
+    .fb {
+        color: #4B67A1;
+    }
+
+    .tw{
+        color: #00B6F1;
+    }
+
+    .im{
+        color: #C32AA3;
+    }
+
+    ion-fab button.custom {
+        background-color: transparent !important;
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+    }
+
     ion-slides {
         max-height: 200px;
     }

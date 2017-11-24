@@ -1,5 +1,6 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
+import { Observable } from 'rxjs';
 import { Restaurant, RestaurantProfile } from 'qmo_web/both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantsProfile } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 
@@ -9,6 +10,7 @@ import { Restaurants, RestaurantsProfile } from 'qmo_web/both/collections/restau
 })
 export class ModalSchedule implements OnInit {
 
+    private _restaurantsProfiles               : Observable<RestaurantProfile[]>;;
     private _restaurantsProfile                : RestaurantProfile;
     private _restaurant                        : Restaurant = null;
 
@@ -29,7 +31,10 @@ export class ModalSchedule implements OnInit {
      */
     ngOnInit(){
         this._ngZone.run( () => {
-            this._restaurantsProfile = RestaurantsProfile.findOne( { restaurant_id: this._restaurant._id } );
+            this._restaurantsProfiles = RestaurantsProfile.find( { restaurant_id: this._restaurant._id } ).zone();
+            this._restaurantsProfiles.subscribe(() => {
+                this._restaurantsProfile = RestaurantsProfile.findOne( { restaurant_id: this._restaurant._id } );
+            });
         });
     }
 

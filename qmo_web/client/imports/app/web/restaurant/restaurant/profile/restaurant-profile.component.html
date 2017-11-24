@@ -180,7 +180,7 @@
                         <mat-card-title>- {{ 'RESTAURANT_PROFILE.LOCATION' | translate }}</mat-card-title>                      
                         <p>{{ 'RESTAURANT_PROFILE.LOCATION_TXT' | translate }}</p>
                         <ng-container *ngIf="_mapRender">
-                            <agm-map [latitude]="_lat" [longitude]="_lng" (mapClick)="mapClicked($event)">
+                            <agm-map [latitude]="_lat" [longitude]="_lng" (mapClick)="mapClicked($event)" [zoom]="16">
                                 <agm-marker [latitude]="_lat" [longitude]="_lng" [markerDraggable]="true" (dragEnd)="markerDragEnd($event)"></agm-marker>
                             </agm-map>
                         </ng-container>

@@ -390,6 +390,10 @@ export class OrdersPage implements OnInit, OnDestroy {
         }
     }
 
+    /**
+     * Go to restaurant profile
+     * @param _pRestaurant 
+     */
     viewRestaurantProfile( _pRestaurant : any ){
         this._navCtrl.push(RestaurantProfilePage, { restaurant : _pRestaurant});
     }

@@ -21,17 +21,20 @@ import { ModalSchedule } from './modal-schedule/modal-schedule';
 export class RestaurantProfilePage implements OnInit, OnDestroy {
     
     private _map                               : GoogleMap;
+    private _restaurantSubscription            : Subscription;
     private _countriesSubscription             : Subscription;
     private _citiesSubscription                : Subscription;
     private _restaurantProfileSubscription     : Subscription;
     private _restaurantProfileImgsSubscription : Subscription;
     private _paymentMethodsSubscription        : Subscription;
 
-    private _restaurantsProfile                : RestaurantProfile;
+    private _restaurantsProfiles               : Observable<RestaurantProfile[]>;
     private _restaurantProfileImgs             : Observable<RestaurantProfileImage[]>;
     private _paymentMethods                    : Observable<PaymentMethod[]>;
+    private _restaurants                       : Observable<Restaurant[]> = null;
     private _profileImgs                       : RestaurantProfileImage[] =[];
-    private _restaurant                        : Restaurant = null;
+    private _restaurantParam                   : Restaurant = null;
+    private _restaurantProfile                 : RestaurantProfile = null;
 
     private _restaurantCountry                 : string;
     private _restaurantCity                    : string;
@@ -50,47 +53,56 @@ export class RestaurantProfilePage implements OnInit, OnDestroy {
                 public _modalCtrl  : ModalController,
                 private googleMaps: GoogleMaps,
                 private _ngZone: NgZone){
-        this._restaurant = this._navParams.get("restaurant");
+        this._restaurantParam = this._navParams.get("restaurant");
     }
 
     /**
      * ngOnInit implementation
      */
     ngOnInit(){
-        this._countriesSubscription = MeteorObservable.subscribe( 'getCountryByRestaurantId', this._restaurant._id ).subscribe( () => {
+        this._restaurantSubscription = MeteorObservable.subscribe('getRestaurantById', this._restaurantParam._id).subscribe(()=>{
             this._ngZone.run( () => {
-                let _lCountry : Country = Countries.findOne( { _id: this._restaurant.countryId } );
-                this._restaurantCountry = this.itemNameTraduction( _lCountry.name );
-            });
-        });
-        
-        this._citiesSubscription = MeteorObservable.subscribe( 'getCityByRestaurantId', this._restaurant._id ).subscribe( () => {
-            this._ngZone.run( () => {
-                let _lCity:City = Cities.findOne( { _id: this._restaurant.cityId } );
-                this._restaurantCity = this.itemNameTraduction( _lCity.name );
-            });
-        });
-
-        this._restaurantProfileSubscription = MeteorObservable.subscribe( 'getRestaurantProfile', this._restaurant._id ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._restaurantsProfile = RestaurantsProfile.findOne( { restaurant_id: this._restaurant._id } );
-                this.loadMap();
-            });
-        });
-
-        this._restaurantProfileImgsSubscription = MeteorObservable.subscribe( 'getRestaurantProfileImagesByRestaurantId', this._restaurant._id ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._restaurantProfileImgs = RestaurantProfileImages.find( { restaurantId: this._restaurant._id } ).zone();
-                this.setRestaurantProfileImageThumbs();
-                this._restaurantProfileImgs.subscribe( () => { 
-                    this.setRestaurantProfileImageThumbs(); 
+                this._restaurants = Restaurants.find({_id : this._restaurantParam._id}).zone();
+                this._restaurants.subscribe(()=> {
+                    let restaurant = Restaurants.findOne({_id : this._restaurantParam._id});
+                    this._paymentMethodsSubscription = MeteorObservable.subscribe('getPaymentMethodsByrestaurantId', restaurant._id).subscribe(()=>{
+                        this._paymentMethods = PaymentMethods.find({ _id: { $in: restaurant.paymentMethods } , isActive: true }).zone();
+                    });
                 });
             });
         });
 
-        this._paymentMethodsSubscription = MeteorObservable.subscribe('getPaymentMethodsByrestaurantId', this._restaurant._id).subscribe(()=>{
+        this._countriesSubscription = MeteorObservable.subscribe( 'getCountryByRestaurantId', this._restaurantParam._id ).subscribe( () => {
             this._ngZone.run( () => {
-                this._paymentMethods = PaymentMethods.find({}).zone();
+                let _lCountry : Country = Countries.findOne( { _id: this._restaurantParam.countryId } );
+                this._restaurantCountry = this.itemNameTraduction( _lCountry.name );
+            });
+        });
+        
+        this._citiesSubscription = MeteorObservable.subscribe( 'getCityByRestaurantId', this._restaurantParam._id ).subscribe( () => {
+            this._ngZone.run( () => {
+                let _lCity:City = Cities.findOne( { _id: this._restaurantParam.cityId } );
+                this._restaurantCity = this.itemNameTraduction( _lCity.name );
+            });
+        });
+
+        this._restaurantProfileSubscription = MeteorObservable.subscribe( 'getRestaurantProfile', this._restaurantParam._id ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._restaurantsProfiles = RestaurantsProfile.find( { restaurant_id: this._restaurantParam._id } ).zone();
+                this._restaurantsProfiles.subscribe(() => {
+                    this._restaurantProfile = RestaurantsProfile.findOne({ restaurant_id: this._restaurantParam._id });
+                });
+                this.loadMap();
+            });
+        });
+
+        this._restaurantProfileImgsSubscription = MeteorObservable.subscribe( 'getRestaurantProfileImagesByRestaurantId', this._restaurantParam._id ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._restaurantProfileImgs = RestaurantProfileImages.find( { restaurantId: this._restaurantParam._id } ).zone();
+                this.setRestaurantProfileImageThumbs();
+                this._restaurantProfileImgs.subscribe( () => { 
+                    this.setRestaurantProfileImageThumbs(); 
+                });
             });
         });
     }
@@ -99,7 +111,7 @@ export class RestaurantProfilePage implements OnInit, OnDestroy {
      * Set restaurant profile thumbs array
      */
     setRestaurantProfileImageThumbs():void{
-        RestaurantProfileImages.find( { restaurantId: this._restaurant._id } ).fetch().forEach( ( img ) => {
+        RestaurantProfileImages.find( { restaurantId: this._restaurantParam._id } ).fetch().forEach( ( img ) => {
             if( img ){
                 this._profileImgs.push( img );
             }
@@ -122,12 +134,13 @@ export class RestaurantProfilePage implements OnInit, OnDestroy {
      * Load map whit restaurant location
      */
     loadMap() {
-        if(this._restaurantsProfile.location.lat && this._restaurantsProfile.location.lng){
+        if(this._restaurantProfile.location.lat && this._restaurantProfile.location.lng){
+
             let mapOptions: GoogleMapOptions = {
                 camera: {
                     target: {
-                        lat: this._restaurantsProfile.location.lat,
-                        lng: this._restaurantsProfile.location.lng
+                        lat: this._restaurantProfile.location.lat,
+                        lng: this._restaurantProfile.location.lng
                     },
                     zoom: 18,
                     tilt: 30
@@ -136,20 +149,14 @@ export class RestaurantProfilePage implements OnInit, OnDestroy {
             this._map = GoogleMaps.create('map_canvas', mapOptions);
             this._map.one(GoogleMapsEvent.MAP_READY).then(() => {
                 this._map.addMarker({
-                    title: 'Ionic',
-                    icon: 'blue',
+                    title: this._restaurantParam.name,
+                    icon: 'red',
                     animation: 'DROP',
                     position: {
-                        lat: this._restaurantsProfile.location.lat,
-                        lng: this._restaurantsProfile.location.lng
+                        lat: this._restaurantProfile.location.lat,
+                        lng: this._restaurantProfile.location.lng
                     }
                 })
-                .then(marker => {
-                    marker.on(GoogleMapsEvent.MARKER_CLICK)
-                        .subscribe(() => {
-                        alert('clicked');
-                    });
-                });
             });
         }
     }
@@ -166,7 +173,7 @@ export class RestaurantProfilePage implements OnInit, OnDestroy {
      */
     openSchedule() {
         let contactModal = this._modalCtrl.create(ModalSchedule, {
-            restaurant : this._restaurant
+            restaurant : this._restaurantParam
         });
         contactModal.present();
     }
@@ -175,6 +182,7 @@ export class RestaurantProfilePage implements OnInit, OnDestroy {
      * ngOndestroy implementation
      */
     ngOnDestroy(){
+        if(this._restaurantSubscription){ this._restaurantSubscription };
         if(this._countriesSubscription){ this._countriesSubscription };
         if(this._citiesSubscription){ this._citiesSubscription };
         if(this._restaurantProfileSubscription){ this._restaurantProfileSubscription };
