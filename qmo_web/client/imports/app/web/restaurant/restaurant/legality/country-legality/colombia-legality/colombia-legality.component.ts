@@ -123,7 +123,7 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
                         this._prefixValue2 = this._restaurantLegalityInEditMode.prefix2 === undefined || this._restaurantLegalityInEditMode.prefix2 === null ? false : this._restaurantLegalityInEditMode.prefix2;
                         this._colombiaLegalityForm.controls['prefix_name_two'].setValue(this._restaurantLegalityInEditMode.prefix_name2 === undefined || this._restaurantLegalityInEditMode.prefix_name2 === null ? '' : this._restaurantLegalityInEditMode.prefix_name2);
                         this._colombiaLegalityForm.controls['numeration_from_two'].setValue(this._restaurantLegalityInEditMode.numeration_from2 === undefined || this._restaurantLegalityInEditMode.numeration_from2 === null ? '' : this._restaurantLegalityInEditMode.numeration_from2);
-                        this._colombiaLegalityForm.controls['numeration_to_two'].setValue(this._restaurantLegalityInEditMode.numeration_to2 === undefined || this._restaurantLegalityInEditMode.numeration_to2 === null ?  '' : this._restaurantLegalityInEditMode.numeration_to2);
+                        this._colombiaLegalityForm.controls['numeration_to_two'].setValue(this._restaurantLegalityInEditMode.numeration_to2 === undefined || this._restaurantLegalityInEditMode.numeration_to2 === null ? '' : this._restaurantLegalityInEditMode.numeration_to2);
 
                         if (this._restaurantLegalityInEditMode.regime === 'regime_co') {
                             this._showForcedToInvoice = false;
@@ -333,6 +333,41 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
             }
             this._restaurantLegality.numeration_from = this._colombiaLegalityForm.value.numeration_from;
             this._restaurantLegality.numeration_to = this._colombiaLegalityForm.value.numeration_to;
+
+            //info to next resolution
+
+            if (this._restaurantLegalityInEditMode) {
+                this._restaurantLegality.invoice_resolution2 = this._colombiaLegalityForm.value.invoice_resolution_two;
+                this._restaurantLegality.invoice_resolution_date2 = this._colombiaLegalityForm.value.invoice_resolution_date_two;
+                this._restaurantLegality.prefix2 = this._colombiaLegalityForm.value.prefix_two;
+                if (this._restaurantLegality.prefix2) {
+                    this._restaurantLegality.prefix_name2 = this._colombiaLegalityForm.value.prefix_name_two;
+                    if (this._restaurantLegality.prefix_name2 == null || this._restaurantLegality.prefix_name2 === undefined || this._restaurantLegality.prefix_name2 === '') {
+                        this._dialogRef = this._mdDialog.open(AlertConfirmComponent, {
+                            disableClose: true,
+                            data: {
+                                title: this.itemNameTraduction('RESTAURANT_LEGALITY.COLOMBIA.INVALID_DATA'),
+                                subtitle: '',
+                                content: this.itemNameTraduction('RESTAURANT_LEGALITY.COLOMBIA.ENTER_PREFIX'),
+                                buttonCancel: '',
+                                buttonAccept: this.itemNameTraduction('RESTAURANT_LEGALITY.COLOMBIA.ACCEPT'),
+                                showCancel: false
+                            }
+                        });
+                        _validator = false;
+                    }
+                } else {
+                    this._restaurantLegality.prefix_name2 = null;
+                }
+                this._restaurantLegality.numeration_from2 = this._colombiaLegalityForm.value.numeration_from_two;
+                this._restaurantLegality.numeration_to2 = this._colombiaLegalityForm.value.numeration_to_two;
+            } else {
+                this._restaurantLegality.enable_two = false;
+                this._restaurantLegality.current_value = null;
+                this._restaurantLegality.start_new_value = true;
+            }
+            //info to next resolution
+
             this._restaurantLegality.is_big_contributor = this._colombiaLegalityForm.value.is_big_contributor;
             if (this._restaurantLegality.is_big_contributor) {
                 this._restaurantLegality.big_contributor_resolution = this._colombiaLegalityForm.value.big_contributor_resolution;
@@ -425,6 +460,40 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
                 }
                 this._restaurantLegality.numeration_from = this._colombiaLegalityForm.value.numeration_from;
                 this._restaurantLegality.numeration_to = this._colombiaLegalityForm.value.numeration_to;
+
+                //info to next resolution
+                if (this._restaurantLegalityInEditMode) {
+                    this._restaurantLegality.invoice_resolution2 = this._colombiaLegalityForm.value.invoice_resolution_two;
+                    this._restaurantLegality.invoice_resolution_date2 = this._colombiaLegalityForm.value.invoice_resolution_date_two;
+                    this._restaurantLegality.prefix2 = this._colombiaLegalityForm.value.prefix_two;
+                    if (this._restaurantLegality.prefix2) {
+                        this._restaurantLegality.prefix_name2 = this._colombiaLegalityForm.value.prefix_name_two;
+                        if (this._restaurantLegality.prefix_name2 == null || this._restaurantLegality.prefix_name2 === undefined || this._restaurantLegality.prefix_name2 === '') {
+                            this._dialogRef = this._mdDialog.open(AlertConfirmComponent, {
+                                disableClose: true,
+                                data: {
+                                    title: this.itemNameTraduction('RESTAURANT_LEGALITY.COLOMBIA.INVALID_DATA'),
+                                    subtitle: '',
+                                    content: this.itemNameTraduction('RESTAURANT_LEGALITY.COLOMBIA.ENTER_PREFIX'),
+                                    buttonCancel: '',
+                                    buttonAccept: this.itemNameTraduction('RESTAURANT_LEGALITY.COLOMBIA.ACCEPT'),
+                                    showCancel: false
+                                }
+                            });
+                            _validator = false;
+                        }
+                    } else {
+                        this._restaurantLegality.prefix_name2 = null;
+                    }
+                    this._restaurantLegality.numeration_from2 = this._colombiaLegalityForm.value.numeration_from_two;
+                    this._restaurantLegality.numeration_to2 = this._colombiaLegalityForm.value.numeration_to_two;
+                } else {
+                    this._restaurantLegality.enable_two = false;
+                    this._restaurantLegality.current_value = null;
+                    this._restaurantLegality.start_new_value = true;
+                }
+                //info to next resolution
+
                 this._restaurantLegality.text_at_the_end = this._colombiaLegalityForm.value.text_at_the_end;
                 if (this._colombiaLegalityForm.valid) {
                     if (_validator) {

@@ -25,52 +25,52 @@ import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/ale
 @Component({
     selector: 'restaurant-edition',
     templateUrl: './restaurant-edition.component.html',
-    styleUrls: [ './restaurant-edition.component.scss' ]
+    styleUrls: ['./restaurant-edition.component.scss']
 })
 export class RestaurantEditionComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    private _restaurantToEdit               : Restaurant;
-    private _restaurantEditionForm          : FormGroup;
-    private _paymentsFormGroup              : FormGroup = new FormGroup({});
-    private _mdDialogRef                    : MatDialogRef<any>;
-    
-    private _restaurantSub                  : Subscription;
-    private _currencySub                    : Subscription;
-    private _countriesSub                   : Subscription;
-    private _citiesSub                      : Subscription;
-    private _paymentMethodsSub              : Subscription;
-    private _restaurantImagesSub            : Subscription;
-    private _restaurantImageThumbsSub       : Subscription;
-    private _parameterSub                   : Subscription;
+    private _restaurantToEdit: Restaurant;
+    private _restaurantEditionForm: FormGroup;
+    private _paymentsFormGroup: FormGroup = new FormGroup({});
+    private _mdDialogRef: MatDialogRef<any>;
 
-    private _countries                      : Observable<Country[]>;
-    private _cities                         : Observable<City[]>;
-    private _currencies                     : Observable<Currency[]>;
-    private _parameterDaysTrial             : Observable<Parameter[]>;
+    private _restaurantSub: Subscription;
+    private _currencySub: Subscription;
+    private _countriesSub: Subscription;
+    private _citiesSub: Subscription;
+    private _paymentMethodsSub: Subscription;
+    private _restaurantImagesSub: Subscription;
+    private _restaurantImageThumbsSub: Subscription;
+    private _parameterSub: Subscription;
 
-    private _paymentMethods                 : PaymentMethod[] = [];
-    private _paymentMethodsList             : PaymentMethod[] = [];
-    private _restaurantPaymentMethods       : string[] = [];
+    private _countries: Observable<Country[]>;
+    private _cities: Observable<City[]>;
+    private _currencies: Observable<Currency[]>;
+    private _parameterDaysTrial: Observable<Parameter[]>;
 
-    private _filesToUpload                  : Array<File>;
-    private _restaurantImageToEdit          : File;
-    private _editImage                      : boolean = false;
-    private _nameImageFileEdit              : string = "";
-    public _selectedIndex                   : number = 0;
-    private _restaurantEditImage            : string;
+    private _paymentMethods: PaymentMethod[] = [];
+    private _paymentMethodsList: PaymentMethod[] = [];
+    private _restaurantPaymentMethods: string[] = [];
 
-    private _queue                          : string[] = [];
-    private _selectedCountryValue           : string = "";
-    private _selectedCityValue              : string = "";
+    private _filesToUpload: Array<File>;
+    private _restaurantImageToEdit: File;
+    private _editImage: boolean = false;
+    private _nameImageFileEdit: string = "";
+    public _selectedIndex: number = 0;
+    private _restaurantEditImage: string;
 
-    private _restaurantCountryValue         : string;
-    private _restaurantCityValue            : string;
+    private _queue: string[] = [];
+    private _selectedCountryValue: string = "";
+    private _selectedCityValue: string = "";
 
-    private _restaurantCurrency             : string = '';
-    private _countryIndicative              : string;
-    private titleMsg                        : string;
-    private btnAcceptLbl                    : string;
+    private _restaurantCountryValue: string;
+    private _restaurantCityValue: string;
+
+    private _restaurantCurrency: string = '';
+    private _countryIndicative: string;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
 
     private _showOtherCity: boolean;
     private _restaurantLegalityToEdit: RestaurantLegality;
@@ -186,12 +186,12 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
 
         this._selectedCountryValue = this._restaurantToEdit.countryId;
         this._restaurantCountryValue = this._restaurantToEdit.countryId;
-        if( ( this._restaurantToEdit.cityId === null || this._restaurantToEdit.cityId === '' ) && this._restaurantToEdit.other_city !== '' ){
+        if ((this._restaurantToEdit.cityId === null || this._restaurantToEdit.cityId === '') && this._restaurantToEdit.other_city !== '') {
             this._selectedCityValue = '0000';
             this._showOtherCity = true;
         } else {
-            this._selectedCityValue = this._restaurantToEdit.cityId;   
-            this._showOtherCity = false;         
+            this._selectedCityValue = this._restaurantToEdit.cityId;
+            this._showOtherCity = false;
         }
 
         this._restaurantCityValue = this._restaurantToEdit.cityId;
@@ -204,15 +204,15 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
-        if( this._currencySub ){ this._currencySub.unsubscribe(); }
-        if( this._countriesSub ){ this._countriesSub.unsubscribe(); }
-        if( this._citiesSub ){ this._citiesSub.unsubscribe(); }
-        if( this._paymentMethodsSub ){ this._paymentMethodsSub.unsubscribe(); }
-        if( this._restaurantImagesSub ){ this._restaurantImagesSub.unsubscribe(); }
-        if( this._restaurantImageThumbsSub ){ this._restaurantImageThumbsSub.unsubscribe(); }
-        if( this._parameterSub ){ this._parameterSub.unsubscribe(); }
+    removeSubscriptions(): void {
+        if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
+        if (this._currencySub) { this._currencySub.unsubscribe(); }
+        if (this._countriesSub) { this._countriesSub.unsubscribe(); }
+        if (this._citiesSub) { this._citiesSub.unsubscribe(); }
+        if (this._paymentMethodsSub) { this._paymentMethodsSub.unsubscribe(); }
+        if (this._restaurantImagesSub) { this._restaurantImagesSub.unsubscribe(); }
+        if (this._restaurantImageThumbsSub) { this._restaurantImageThumbsSub.unsubscribe(); }
+        if (this._parameterSub) { this._parameterSub.unsubscribe(); }
     }
 
     /**
@@ -262,8 +262,8 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         });
 
         // Colombia
-        if( this._restaurantEditionForm.value.country === '1900' ){
-            RestaurantsLegality.update( { _id: this._restaurantLegalityToEdit._id }, {
+        if (this._restaurantEditionForm.value.country === '1900') {
+            RestaurantsLegality.update({ _id: this._restaurantLegalityToEdit._id }, {
                 $set: {
                     regime: this._restaurantLegalityToEdit.regime,
                     forced_to_invoice: this._restaurantLegalityToEdit.forced_to_invoice === undefined || this._restaurantLegalityToEdit.forced_to_invoice === null ? false : this._restaurantLegalityToEdit.forced_to_invoice,
@@ -282,7 +282,14 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                     is_self_accepting: this._restaurantLegalityToEdit.is_self_accepting === undefined || this._restaurantLegalityToEdit.is_self_accepting === null ? false : this._restaurantLegalityToEdit.is_self_accepting,
                     self_accepting_resolution: this._restaurantLegalityToEdit.self_accepting_resolution === undefined || this._restaurantLegalityToEdit.self_accepting_resolution === null ? '' : this._restaurantLegalityToEdit.self_accepting_resolution,
                     self_accepting_date: this._restaurantLegalityToEdit.self_accepting_date === undefined || this._restaurantLegalityToEdit.self_accepting_date === null ? '' : this._restaurantLegalityToEdit.self_accepting_date,
-                    text_at_the_end: this._restaurantLegalityToEdit.text_at_the_end === undefined || this._restaurantLegalityToEdit.text_at_the_end === null ? '' : this._restaurantLegalityToEdit.text_at_the_end
+                    text_at_the_end: this._restaurantLegalityToEdit.text_at_the_end === undefined || this._restaurantLegalityToEdit.text_at_the_end === null ? '' : this._restaurantLegalityToEdit.text_at_the_end,
+                    //second resolution
+                    invoice_resolution2: this._restaurantLegalityToEdit.invoice_resolution2 === undefined || this._restaurantLegalityToEdit.invoice_resolution2 === null ? '' : this._restaurantLegalityToEdit.invoice_resolution2,
+                    invoice_resolution_date2: this._restaurantLegalityToEdit.invoice_resolution_date2 === undefined || this._restaurantLegalityToEdit.invoice_resolution_date2 === null ? '' : this._restaurantLegalityToEdit.invoice_resolution_date2,
+                    prefix2: this._restaurantLegalityToEdit.prefix2 === undefined || this._restaurantLegalityToEdit.prefix2 === null ? false : this._restaurantLegalityToEdit.prefix2,
+                    prefix_name2: this._restaurantLegalityToEdit.prefix_name2 === undefined || this._restaurantLegalityToEdit.prefix_name2 === null ? '' : this._restaurantLegalityToEdit.prefix_name2,
+                    numeration_from2: this._restaurantLegalityToEdit.numeration_from2 === undefined || this._restaurantLegalityToEdit.numeration_from2 === null ? '' : this._restaurantLegalityToEdit.numeration_from2,
+                    numeration_to2: this._restaurantLegalityToEdit.numeration_to2 === undefined || this._restaurantLegalityToEdit.numeration_to2 === null ? '' : this._restaurantLegalityToEdit.numeration_to2
                 }
             });
         }
@@ -298,7 +305,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                 this._restaurantEditionForm.value.editId).then((result) => {
 
                 }).catch((err) => {
-                    var error : string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
+                    var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
                     this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
                 });
         }
@@ -441,7 +448,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
      * Set restaurant legality
      * @param {RestaurantLegality} _event
      */
-    setRestaurantLegality( _event: RestaurantLegality ):void {
+    setRestaurantLegality(_event: RestaurantLegality): void {
         this._restaurantLegalityToEdit = _event;
         this.editRestaurant();
     }
@@ -450,8 +457,8 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
      * Run previous function
      * @param {boolean} _event 
      */
-    runPrevious( _event : boolean ):void{
-        if( _event ){
+    runPrevious(_event: boolean): void {
+        if (_event) {
             this.previous();
         }
     }
@@ -460,17 +467,17 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
      * Run cancel function
      * @param {boolean} _event
      */
-    runCancel( _event: boolean ):void{
-        if( _event ){
+    runCancel(_event: boolean): void {
+        if (_event) {
             this.cancel();
         }
     }
-    
+
     /**
      * Set restaurant tip value
      * @param {number} _event
      */
-    setTipValue( _event: number ):void{
+    setTipValue(_event: number): void {
         this._tipValue = _event;
     }
 
@@ -484,7 +491,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     * @param {boolean} showBtnCancel
     */
     openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
-        
+
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
@@ -508,6 +515,6 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
      * ngOnDestroy implementation
      */
     ngOnDestroy() {
-        this.removeSubscriptions();   
+        this.removeSubscriptions();
     }
 }
