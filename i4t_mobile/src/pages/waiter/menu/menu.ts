@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { App, AlertController, LoadingController, Nav, Platform } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -31,7 +30,6 @@ export class Menu {
    * Menu constructor
    * @param _app 
    * @param platform 
-   * @param statusBar 
    * @param splashScreen 
    * @param _alertCtrl 
    * @param _loadingCtrl 
@@ -39,7 +37,6 @@ export class Menu {
    */
   constructor(public _app: App,
     public platform: Platform,
-    public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     public _alertCtrl: AlertController,
     public _loadingCtrl: LoadingController,
@@ -64,7 +61,6 @@ export class Menu {
    * Here you can do any higher level native things you might need.
    */
   initializeApp() {
-    this.statusBar.styleDefault();
     this.splashScreen.hide();
   }
 

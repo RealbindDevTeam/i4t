@@ -34,7 +34,7 @@ export class MyApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       if (platform.is('cordova')) {
-        statusBar.styleDefault();
+        statusBar.styleLightContent();
         splashScreen.hide();
       }
     });
