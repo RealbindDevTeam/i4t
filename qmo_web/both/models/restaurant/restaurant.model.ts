@@ -150,6 +150,17 @@ export interface RestaurantLegality {
     self_accepting_resolution?: string;
     self_accepting_date?: Date;
     text_at_the_end?: string;
+    //second resolution info
+    invoice_resolution2?: string;
+    invoice_resolution_date2?: Date;
+    prefix2?: boolean;
+    prefix_name2?: string;
+    numeration_from2?: number;
+    numeration_to2?: number;
+    //validation flags
+    enable_two?: boolean;
+    current_value?: number;
+    start_new_value?: boolean;
 }
 
 /**
