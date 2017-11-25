@@ -36,14 +36,14 @@ export class HomeMenu implements OnInit, OnDestroy {
     * @param _loadingCtrl 
     * @param _translate 
     */
-  constructor( public _app : App,
-               public platform: Platform, 
-               public splashScreen: SplashScreen,
-               public _alertCtrl: AlertController,
-               public _loadingCtrl: LoadingController,
-               private _translate: TranslateService,
-               private _ngZone: NgZone,
-               private _userLanguageService: UserLanguageServiceProvider ){
+    constructor(public _app: App,
+        public platform: Platform,
+        public splashScreen: SplashScreen,
+        public _alertCtrl: AlertController,
+        public _loadingCtrl: LoadingController,
+        private _translate: TranslateService,
+        private _ngZone: NgZone,
+        private _userLanguageService: UserLanguageServiceProvider) {
         _translate.setDefaultLang('en');
         this.initializeApp();
         let _lHome = this.itemNameTraduction('MOBILE.HOME-MENU.HOME');
@@ -59,9 +59,9 @@ export class HomeMenu implements OnInit, OnDestroy {
     /**
      * ngOnInit Implementation
      */
-    ngOnInit(){
+    ngOnInit() {
         this._translate.use(this._userLanguageService.getLanguage(Meteor.user()));
-        this._userImageSubscription = MeteorObservable.subscribe( 'getUserImages', Meteor.userId() ).subscribe();
+        this._userImageSubscription = MeteorObservable.subscribe('getUserImages', Meteor.userId()).subscribe();
         this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() => {
             this._ngZone.run(() => {
                 this._user = Users.findOne({ _id: Meteor.userId() });
