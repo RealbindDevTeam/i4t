@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { MeteorObservable } from 'meteor-rxjs';
 import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
+import { UserLogin } from '../../../../../both/models/auth/user-login.model';
 import { AlertConfirmComponent } from '../../web/general/alert-confirm/alert-confirm.component';
 
 export class AuthClass {
@@ -116,6 +117,7 @@ export class AuthClass {
                     current_table: ''
                 });
             }
+            this.insertUserInfo();
             this.router.navigate(['app/orders']);
         }, (error) => {
             //this.error;
@@ -183,5 +185,21 @@ export class AuthClass {
     */
     transformToLower(_word: string): string {
         return _word.toLowerCase();
+    }
+
+    /**
+     * Insert User Info
+     */
+    insertUserInfo():void{
+        let _lUserLogin:UserLogin = new UserLogin();
+        _lUserLogin.user_id = Meteor.userId();
+        _lUserLogin.login_date = new Date();
+        _lUserLogin.app_code_name = navigator.appCodeName;
+        _lUserLogin.app_name = navigator.appName;
+        _lUserLogin.app_version = navigator.appVersion;
+        _lUserLogin.cookie_enabled = navigator.cookieEnabled;
+        _lUserLogin.language = navigator.language;
+        _lUserLogin.platform = navigator.platform;
+        MeteorObservable.call( 'insertUserLoginInfo', _lUserLogin ).subscribe();
     }
 }
