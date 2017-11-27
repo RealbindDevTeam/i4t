@@ -33,96 +33,105 @@
             <mat-hint align="end">{{inputDocument.value.length}} / 20</mat-hint>
         </mat-form-field>
 
-        <h3>Información de resolución actual</h3>
-        <div class="cust-resolution-sty">
-            <div>
-                <p>{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION' | translate}}</p>
-            </div>
-            <mat-form-field class="hundred">
-                <input matInput formControlName="invoice_resolution" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_PLACEHOLDER' | translate}} *"
-                    minlength="1" maxlength="20" #inputInvoiceResolution>
-                <mat-hint align="end">{{inputInvoiceResolution.value.length}} / 20</mat-hint>
-            </mat-form-field>
-        </div>
+        <div id="flexdiv" [ngClass]="{'flexdivcust': _isEnableTwoResolution }">
 
-        <div class="cust-resolution-sty">
-            <div>
-                <p>{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_DATE' | translate}}</p>
-            </div>
-            <mat-form-field class="hundred">
-                <input matInput [matDatepicker]="pickerInvoiceResol" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_DATE_PLACEHOLDER' | translate}} *"
-                    formControlName="invoice_resolution_date">
-                <mat-datepicker-toggle matSuffix [for]="pickerInvoiceResol"></mat-datepicker-toggle>
-                <mat-datepicker #pickerInvoiceResol></mat-datepicker>
-            </mat-form-field>
-        </div>
-        <div class="cust-resolution-sty">
-            <mat-checkbox formControlName="prefix" style="margin-top: 14px" (change)="evaluatePrefixCheck($event)" [(ngModel)]="_prefrixValue">{{'RESTAURANT_LEGALITY.COLOMBIA.PREFIX' | translate}}</mat-checkbox>
-            <mat-form-field class="hundred" *ngIf="_showPrefixName">
-                <input matInput formControlName="prefix_name" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.PREFIX_PLACEHOLDER' | translate}}"
-                    minlength="1" maxlength="10" #inputPrefix>
-                <mat-hint align="end">{{inputPrefix.value.length}} / 10</mat-hint>
-            </mat-form-field>
-        </div>
-        <div class="cust-resolution-sty">
-            <div>
-                <p>{{'RESTAURANT_LEGALITY.COLOMBIA.DIAN_NUMERATION' | translate}}:</p>
-            </div>
-            <div class="hundred">
-                <mat-form-field class="hundred">
-                    <input matInput type="number" formControlName="numeration_from" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.NUMERATION_FROM' | translate}} *"
-                        minlength="1">
-                </mat-form-field>
-                <mat-form-field class="hundred">
-                    <input matInput type="number" formControlName="numeration_to" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.NUMERATION_TO' | translate}} *"
-                        minlength="1">
-                </mat-form-field>
-            </div>
-        </div>
-        <div *ngIf="_showNextResolution">
-            <h3>Información de siguiente resolución</h3>
-            <div class="cust-resolution-sty">
-                <div>
-                    <p>{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION' | translate}}</p>
-                </div>
-                <mat-form-field class="hundred">
-                    <input matInput formControlName="invoice_resolution_two" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_PLACEHOLDER' | translate}} *"
-                        minlength="1" maxlength="20" #inputInvoiceResolution>
-                    <mat-hint align="end">{{inputInvoiceResolution.value.length}} / 20</mat-hint>
-                </mat-form-field>
-            </div>
-            <div class="cust-resolution-sty">
-                <div>
-                    <p>{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_DATE' | translate}}</p>
-                </div>
-                <mat-form-field class="hundred">
-                    <input matInput [matDatepicker]="pickerInvoiceResol" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_DATE_PLACEHOLDER' | translate}} *"
-                        formControlName="invoice_resolution_date_two">
-                    <mat-datepicker-toggle matSuffix [for]="pickerInvoiceResol"></mat-datepicker-toggle>
-                    <mat-datepicker #pickerInvoiceResol></mat-datepicker>
-                </mat-form-field>
-            </div>
-            <div class="cust-resolution-sty">
-                <mat-checkbox formControlName="prefix_two" style="margin-top: 14px" (change)="evaluatePrefix2Check($event)" [(ngModel)]="_prefixValue2">{{'RESTAURANT_LEGALITY.COLOMBIA.PREFIX' | translate}}</mat-checkbox>
-                <mat-form-field class="hundred" *ngIf="_showPrefixName2">
-                    <input matInput formControlName="prefix_name_two" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.PREFIX_PLACEHOLDER' | translate}}"
-                        minlength="1" maxlength="10" #inputPrefix>
-                    <mat-hint align="end">{{inputPrefix.value.length}} / 10</mat-hint>
-                </mat-form-field>
-            </div>
-            <div class="cust-resolution-sty">
-                <div>
-                    <p>{{'RESTAURANT_LEGALITY.COLOMBIA.DIAN_NUMERATION' | translate}}:</p>
-                </div>
-                <div class="hundred">
+            <div id="diva">
+                <h3>{{'RESTAURANT_LEGALITY.COLOMBIA.CURRENT_RESOLUTION_TITLE' | translate}}</h3>
+                <div class="cust-resolution-sty">
+                    <div>
+                        <p>{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION' | translate}}</p>
+                    </div>
                     <mat-form-field class="hundred">
-                        <input matInput type="number" formControlName="numeration_from_two" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.NUMERATION_FROM' | translate}} *"
-                            minlength="1">
+                        <input matInput formControlName="invoice_resolution" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_PLACEHOLDER' | translate}} *"
+                            minlength="1" maxlength="20" #inputInvoiceResolution>
+                        <mat-hint align="end">{{inputInvoiceResolution.value.length}} / 20</mat-hint>
                     </mat-form-field>
+                </div>
+
+                <div class="cust-resolution-sty">
+                    <div>
+                        <p>{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_DATE' | translate}}</p>
+                    </div>
                     <mat-form-field class="hundred">
-                        <input matInput type="number" formControlName="numeration_to_two" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.NUMERATION_TO' | translate}} *"
-                            minlength="1">
+                        <input matInput [matDatepicker]="pickerInvoiceResol" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_DATE_PLACEHOLDER' | translate}} *"
+                            formControlName="invoice_resolution_date">
+                        <mat-datepicker-toggle matSuffix [for]="pickerInvoiceResol"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerInvoiceResol></mat-datepicker>
                     </mat-form-field>
+                </div>
+                <div class="cust-resolution-sty">
+                    <mat-checkbox formControlName="prefix" style="margin-top: 14px" (change)="evaluatePrefixCheck($event)" [(ngModel)]="_prefrixValue">{{'RESTAURANT_LEGALITY.COLOMBIA.PREFIX' | translate}}</mat-checkbox>
+                    <mat-form-field class="hundred" *ngIf="_showPrefixName">
+                        <input matInput formControlName="prefix_name" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.PREFIX_PLACEHOLDER' | translate}}"
+                            minlength="1" maxlength="10" #inputPrefix>
+                        <mat-hint align="end">{{inputPrefix.value.length}} / 10</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="cust-resolution-sty">
+                    <div>
+                        <p>{{'RESTAURANT_LEGALITY.COLOMBIA.DIAN_NUMERATION' | translate}}:</p>
+                    </div>
+                    <div class="hundred">
+                        <mat-form-field class="hundred">
+                            <input matInput type="number" formControlName="numeration_from" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.NUMERATION_FROM' | translate}} *"
+                                minlength="1">
+                        </mat-form-field>
+                        <mat-form-field class="hundred">
+                            <input matInput type="number" formControlName="numeration_to" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.NUMERATION_TO' | translate}} *"
+                                minlength="1">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div id="divb" *ngIf="_showNextResolution">
+                <h3>{{'RESTAURANT_LEGALITY.COLOMBIA.NEXT_RESOLUTION_TITLE' | translate}}</h3>
+                <div class="cust-resolution-sty">
+                    <div>
+                        <p>{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION' | translate}}</p>
+                    </div>
+                    <mat-form-field class="hundred">
+                        <input matInput formControlName="invoice_resolution_two" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_PLACEHOLDER' | translate}} *"
+                            minlength="1" maxlength="20" #inputInvoiceResolution>
+                        <mat-hint align="end">{{inputInvoiceResolution.value.length}} / 20</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="cust-resolution-sty">
+                    <div>
+                        <p>{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_DATE' | translate}}</p>
+                    </div>
+                    <mat-form-field class="hundred">
+                        <input matInput [matDatepicker]="pickerInvoiceResol" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION_DATE_PLACEHOLDER' | translate}} *"
+                            formControlName="invoice_resolution_date_two">
+                        <mat-datepicker-toggle matSuffix [for]="pickerInvoiceResol"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerInvoiceResol></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="cust-resolution-sty">
+                    <mat-checkbox formControlName="prefix_two" style="margin-top: 14px" (change)="evaluatePrefix2Check($event)" [(ngModel)]="_prefixValue2">{{'RESTAURANT_LEGALITY.COLOMBIA.PREFIX' | translate}}</mat-checkbox>
+                    <mat-form-field class="hundred" *ngIf="_showPrefixName2">
+                        <input matInput formControlName="prefix_name_two" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.PREFIX_PLACEHOLDER' | translate}}"
+                            minlength="1" maxlength="10" #inputPrefix>
+                        <mat-hint align="end">{{inputPrefix.value.length}} / 10</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="cust-resolution-sty">
+                    <div>
+                        <p>{{'RESTAURANT_LEGALITY.COLOMBIA.DIAN_NUMERATION' | translate}}:</p>
+                    </div>
+                    <div class="hundred">
+                        <mat-form-field class="hundred">
+                            <input matInput type="number" formControlName="numeration_from_two" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.NUMERATION_FROM' | translate}} *"
+                                minlength="1">
+                        </mat-form-field>
+                        <mat-form-field class="hundred">
+                            <input matInput type="number" formControlName="numeration_to_two" placeholder="{{'RESTAURANT_LEGALITY.COLOMBIA.NUMERATION_TO' | translate}} *"
+                                minlength="1">
+                        </mat-form-field>
+                    </div>
                 </div>
             </div>
         </div>

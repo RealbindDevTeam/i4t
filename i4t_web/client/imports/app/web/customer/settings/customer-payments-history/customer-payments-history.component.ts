@@ -145,7 +145,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         pdf.setFontType("bold");
         pdf.text( 'Factura de venta', 10, y);
         //TODO Invoice number
-        pdf.text( '9811261128', 120, y);
+        pdf.text( _pInvoice.legal_information.number, 120, y);
         
         y = this.calculateY(y, 10);
         pdf.setFontType("normal");
@@ -356,7 +356,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             title: this.itemNameTraduction('PAYMENTS_HISTORY.INVOICE_SALE'),
             author: this.itemNameTraduction('PAYMENTS_HISTORY.SOFTWARE_BY_REALBIND'),
         });
-        pdf.save('9811261128-' + this.dateFormater(_pInvoice.creation_date, false) +'.pdf');
+        pdf.save(_pInvoice.legal_information.number + '_' + this.dateFormater(_pInvoice.creation_date, false) +'.pdf');
     }
 
     /**
