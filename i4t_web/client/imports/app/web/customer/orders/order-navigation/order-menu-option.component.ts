@@ -2,31 +2,10 @@ import { Component, AfterViewInit, OnDestroy, Input, ViewChildren, QueryList, Ou
 import { OrderMenu } from './order-menu';
 import { OrderNavigationService } from './order-navigation.service';
 import { Subscription } from 'rxjs';
-import { StringUtils } from '../../../../shared/utils/string-utils';
 
 @Component({
   selector : 'order-menu-option',
-  template : `
-    <a *ngIf="!hasChildren && !hasQuery" (toggle)="true" (click)="clicked($event)" class="mat-list-item">
-        <div class="mat-list-item-content">
-            <div class="mat-list-text">
-                <span class="title">{{ orderMenu.title }}</span>
-            </div>
-        </div>
-    </a>
-    <a *ngIf="!hasChildren && hasQuery" (toggle)="true">{{ orderMenu.title }}</a>
-    <a class="nav-dropdown mat-list-item" *ngIf="hasChildren" (click)="toggleDropdown(!active)" [ngClass]="{ 'active' : active }" (click)="clicked($event)">
-        <div class="mat-list-item-content">
-            <div class="mat-list-text"></div>
-            {{ orderMenu?.title }}
-            <span class="app-flex-filler"></span>
-            <i class="material-icons"></i>
-        </div>    
-    </a>
-    <mat-nav-list *ngIf="hasChildren" class="nav-children {{levelClass}}" [ngClass]="{ 'active' : active }" [ngStyle]="{'height.px': auto}">
-      <order-menu-option *ngFor="let orderMenuChild of orderMenu.children" (idToEvaluate)="evaluateId($event)" [orderMenu]="orderMenuChild" [level]="level + 1" [parent]="_this"></order-menu-option>
-    </mat-nav-list>
-  `,
+  templateUrl: './order-menu-option.component.html',
   styleUrls: [ './order-menu-option.component.scss' ]
 })
 export class OrderMenuOptionComponent implements AfterViewInit, OnDestroy{
