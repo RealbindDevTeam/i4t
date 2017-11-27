@@ -6,7 +6,6 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { RecoverWebComponent } from './recover-password/recover.web.component';
 import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
-import { UserLogin } from '../../../../../both/models/auth/user-login.model';
 import { AuthClass } from './auth.class';
 
 @Component({
@@ -131,22 +130,6 @@ export class SigninWebComponent extends AuthClass implements OnInit {
                 this.openDialog(this.titleMsg, '', confirmMsg, '', this.btnAcceptLbl, false);
             }
         });
-    }
-
-    /**
-     * Insert User Info
-     */
-    insertUserInfo():void{
-        let _lUserLogin:UserLogin = new UserLogin();
-        _lUserLogin.user_id = Meteor.userId();
-        _lUserLogin.login_date = new Date();
-        _lUserLogin.app_code_name = navigator.appCodeName;
-        _lUserLogin.app_name = navigator.appName;
-        _lUserLogin.app_version = navigator.appVersion;
-        _lUserLogin.cookie_enabled = navigator.cookieEnabled;
-        _lUserLogin.language = navigator.language;
-        _lUserLogin.platform = navigator.platform;
-        MeteorObservable.call( 'insertUserLoginInfo', _lUserLogin ).subscribe();
     }
 
     /**
