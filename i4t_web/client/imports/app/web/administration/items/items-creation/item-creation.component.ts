@@ -3,13 +3,12 @@ import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { MatDialogRef, MatDialog } from '@angular/material';
+import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { Item, ItemRestaurant, ItemPrice } from '../../../../../../../both/models/administration/item.model';
+import { ItemRestaurant, ItemPrice } from '../../../../../../../both/models/administration/item.model';
 import { Items } from '../../../../../../../both/collections/administration/item.collection';
-import { uploadItemImage } from '../../../../../../../both/methods/administration/item.methods';
 import { Sections } from '../../../../../../../both/collections/administration/section.collection';
 import { Section } from '../../../../../../../both/models/administration/section.model';
 import { Categories } from '../../../../../../../both/collections/administration/category.collection';
@@ -27,64 +26,65 @@ import { Currencies } from '../../../../../../../both/collections/general/curren
 import { Country } from '../../../../../../../both/models/settings/country.model';
 import { Countries } from '../../../../../../../both/collections/settings/country.collection';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
+import { ImageService } from '../../../../shared/services/image.service';
 
 @Component({
     selector: 'item-creation',
     templateUrl: './item-creation.component.html',
-    styleUrls: [ './item-creation.component.scss' ]
+    styleUrls: ['./item-creation.component.scss']
 })
 
 export class ItemCreationComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    private _itemForm                       : FormGroup;
-    private _garnishFormGroup               : FormGroup = new FormGroup({});
-    private _additionsFormGroup             : FormGroup = new FormGroup({});
-    private _restaurantsFormGroup           : FormGroup = new FormGroup({});
-    private _currenciesFormGroup            : FormGroup = new FormGroup({});
-    private _taxesFormGroup                 : FormGroup = new FormGroup({});
-    private _mdDialogRef                    : MatDialogRef<any>;
+    private _itemForm: FormGroup;
+    private _garnishFormGroup: FormGroup = new FormGroup({});
+    private _additionsFormGroup: FormGroup = new FormGroup({});
+    private _restaurantsFormGroup: FormGroup = new FormGroup({});
+    private _currenciesFormGroup: FormGroup = new FormGroup({});
+    private _taxesFormGroup: FormGroup = new FormGroup({});
+    private _mdDialogRef: MatDialogRef<any>;
 
-    private _sections                       : Observable<Section[]>;
-    private _categories                     : Observable<Category[]>;
-    private _subcategories                  : Observable<Subcategory[]>;
-    private _currencies                     : Observable<Currency[]>;
+    private _sections: Observable<Section[]>;
+    private _categories: Observable<Category[]>;
+    private _subcategories: Observable<Subcategory[]>;
+    private _currencies: Observable<Currency[]>;
 
-    private _itemsSub                       : Subscription;
-    private _sectionsSub                    : Subscription;
-    private _categorySub                    : Subscription;
-    private _subcategorySub                 : Subscription;
-    private _restaurantSub                  : Subscription;
-    private _garnishFoodSub                 : Subscription;
-    private _additionSub                    : Subscription;
-    private _currenciesSub                  : Subscription;
-    private _countriesSub                   : Subscription;
+    private _itemsSub: Subscription;
+    private _sectionsSub: Subscription;
+    private _categorySub: Subscription;
+    private _subcategorySub: Subscription;
+    private _restaurantSub: Subscription;
+    private _garnishFoodSub: Subscription;
+    private _additionSub: Subscription;
+    private _currenciesSub: Subscription;
+    private _countriesSub: Subscription;
 
-    private _restaurantList                 : Restaurant[] = [];
-    private _restaurantCurrencies           : string[] = [];
-    private _restaurantTaxes                : string[] = [];
-    private _garnishFood                    : GarnishFood[] = [];
-    private _additions                      : Addition[] = [];
+    private _restaurantList: Restaurant[] = [];
+    private _restaurantCurrencies: string[] = [];
+    private _restaurantTaxes: string[] = [];
+    private _garnishFood: GarnishFood[] = [];
+    private _additions: Addition[] = [];
 
-    private _showGarnishFood                : boolean = false;
-    private _createImage                    : boolean = false;
-    private _showAdditions                  : boolean = false;
-    private _showRestaurants                : boolean = false;
-    private _showCurrencies                 : boolean = false;
-    private _showTaxes                      : boolean = false;
-    private _loading                        : boolean = false;
+    private _showGarnishFood: boolean = false;
+    private _createImage: boolean = false;
+    private _showAdditions: boolean = false;
+    private _showRestaurants: boolean = false;
+    private _showCurrencies: boolean = false;
+    private _showTaxes: boolean = false;
+    private _loading: boolean = false;
 
-    public _selectedIndex                   : number = 0;
-    private _filesToUpload                  : Array<File>;
-    private _itemImageToInsert              : File;
-    private _nameImageFile                  : string;
-    private _restaurantsSelectedCount       : number = 0;
+    public _selectedIndex: number = 0;
+    private _filesToUpload: Array<File>;
+    private _itemImageToInsert: File;
+    private _nameImageFile: string;
+    private _restaurantsSelectedCount: number = 0;
 
-    private _selectedSectionValue           : string;
-    private _selectedCategoryValue          : string;
-    private _selectedSubcategoryValue       : string;
-    private titleMsg                        : string;  
-    private btnAcceptLbl                    : string;
+    private _selectedSectionValue: string;
+    private _selectedCategoryValue: string;
+    private _selectedSubcategoryValue: string;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
 
     /**
      * ItemComponent constructor
@@ -99,7 +99,9 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
         private _ngZone: NgZone,
         private _router: Router,
         private _userLanguageService: UserLanguageService,
-        protected _mdDialog: MatDialog) {
+        protected _mdDialog: MatDialog,
+        private _imageService: ImageService,
+        private _snackBar: MatSnackBar) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
         this._selectedSectionValue = "";
@@ -158,16 +160,16 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._sectionsSub ){ this._sectionsSub.unsubscribe(); }
-        if( this._categorySub ){ this._categorySub.unsubscribe(); }
-        if( this._subcategorySub ){ this._subcategorySub.unsubscribe(); }
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
-        if( this._garnishFoodSub ){ this._garnishFoodSub.unsubscribe(); }
-        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
-        if( this._additionSub ){ this._additionSub.unsubscribe(); }
-        if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
-        if( this._countriesSub ){ this._countriesSub.unsubscribe(); }
+    removeSubscriptions(): void {
+        if (this._sectionsSub) { this._sectionsSub.unsubscribe(); }
+        if (this._categorySub) { this._categorySub.unsubscribe(); }
+        if (this._subcategorySub) { this._subcategorySub.unsubscribe(); }
+        if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
+        if (this._garnishFoodSub) { this._garnishFoodSub.unsubscribe(); }
+        if (this._itemsSub) { this._itemsSub.unsubscribe(); }
+        if (this._additionSub) { this._additionSub.unsubscribe(); }
+        if (this._currenciesSub) { this._currenciesSub.unsubscribe(); }
+        if (this._countriesSub) { this._countriesSub.unsubscribe(); }
     }
 
     /**
@@ -242,7 +244,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
     /**
      * Show Garnish Food Quantity Message
      */
-    showGarnishFoodQuantityMsg():boolean {
+    showGarnishFoodQuantityMsg(): boolean {
         let arrGarnishFood: any[] = Object.keys(this._itemForm.value.garnishFood);
         let _lGarnish: string[] = [];
         let _lGarnishQuantOk: boolean = false;
@@ -269,7 +271,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
      */
     addItem(): void {
         if (!Meteor.userId()) {
-            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+            var error: string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
@@ -277,6 +279,39 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
         if (this._itemForm.valid) {
             this._loading = true;
             setTimeout(() => {
+                this.createNewItem().then((item_id) => {
+                    if (this._createImage) {
+                        this._imageService.uploadItemImage(this._itemImageToInsert,
+                            this._user,
+                            item_id).then((result) => { }).catch((err) => {
+                                this._loading = false;
+                                this._router.navigate(['app/items']);
+                                var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
+                                this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                            });
+                    }
+                    this._loading = false;
+                    this._router.navigate(['app/items']);
+                    let _lMessage: string = this.itemNameTraduction('ITEMS.ITEM_CREATED');
+                    this._snackBar.open(_lMessage, '', { duration: 2500 });
+                }).catch((err) => {
+                    this._loading = false;
+                    this._router.navigate(['app/items']);
+                    var error: string = this.itemNameTraduction('ITEMS.CREATION_ERROR');
+                    this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                });
+            }, 2300);
+        } else {
+            this.cancel();
+        }
+    }
+
+    /**
+     * Promise to create new item
+     */
+    createNewItem(): Promise<string> {
+        return new Promise((resolve, reject) => {
+            try {
                 let arrCur: any[] = Object.keys(this._itemForm.value.currencies);
                 let _lItemRestaurantsToInsert: ItemRestaurant[] = [];
                 let _lItemPricesToInsert: ItemPrice[] = [];
@@ -285,7 +320,6 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
                     let find: Restaurant[] = this._restaurantList.filter(r => r.currencyId === cur);
                     for (let res of find) {
                         if (this._itemForm.value.restaurants[res._id]) {
-                            //let _lItemRestaurant: ItemRestaurant = { restaurantId: '', price: 0 };
                             let _lItemRestaurant: ItemRestaurant = { restaurantId: '', price: 0, isAvailable: true };
 
                             _lItemRestaurant.restaurantId = res._id;
@@ -344,26 +378,13 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
                     observations: this._itemForm.value.observations,
                     garnishFoodQuantity: this._itemForm.value.garnishFoodQuantity,
                     garnishFood: _lGarnishFoodToInsert,
-                    additions: _lAdditionsToInsert,
-                    //isAvailable: true
+                    additions: _lAdditionsToInsert
                 });
-
-                if (this._createImage) {
-                    uploadItemImage(this._itemImageToInsert,
-                        this._user,
-                        _lNewItem).then((result) => {
-
-                        }).catch((err) => {
-                            var error : string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
-                            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
-                        });
-                }
-                this._loading = false;
-                this.cancel();
-            }, 2200);
-        } else {
-            this.cancel();
-        }
+                resolve(_lNewItem);
+            } catch (e) {
+                reject(e);
+            }
+        });
     }
 
     /**
@@ -378,8 +399,8 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
 
         this._categories = Categories.find({ section: _section, is_active: true }).zone();
         if (this._categories.isEmpty) { this._selectedCategoryValue = ""; }
-        if( this._subcategories ){
-            if ( this._subcategories.isEmpty ){ this._selectedSubcategoryValue = ""; }
+        if (this._subcategories) {
+            if (this._subcategories.isEmpty) { this._selectedSubcategoryValue = ""; }
         }
 
         let _lSection: Section = Sections.findOne({ _id: _section });
@@ -563,7 +584,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
     * @param {boolean} showBtnCancel
     */
     openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
-        
+
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {

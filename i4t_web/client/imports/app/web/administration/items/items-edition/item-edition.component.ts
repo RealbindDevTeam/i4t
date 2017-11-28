@@ -10,7 +10,6 @@ import { MatSnackBar } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Item, ItemImage, ItemImageThumb, ItemRestaurant, ItemPrice } from '../../../../../../../both/models/administration/item.model';
 import { Items, ItemImages, ItemImagesThumbs } from '../../../../../../../both/collections/administration/item.collection';
-import { uploadItemImage } from '../../../../../../../both/methods/administration/item.methods';
 import { Sections } from '../../../../../../../both/collections/administration/section.collection';
 import { Section } from '../../../../../../../both/models/administration/section.model';
 import { Categories } from '../../../../../../../both/collections/administration/category.collection';
@@ -28,6 +27,7 @@ import { Currencies } from '../../../../../../../both/collections/general/curren
 import { Country } from '../../../../../../../both/models/settings/country.model';
 import { Countries } from '../../../../../../../both/collections/settings/country.collection';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
+import { ImageService } from '../../../../shared/services/image.service';
 
 @Component({
     selector: 'item-edition',
@@ -113,7 +113,8 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         public _dialogRef: MatDialogRef<any>,
         public snackBar: MatSnackBar,
         private _userLanguageService: UserLanguageService,
-        protected _mdDialog: MatDialog) {
+        protected _mdDialog: MatDialog,
+        private _imageService: ImageService) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
         this._itemGarnishFood = [];
@@ -528,7 +529,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                     ItemImagesThumbs.remove({ _id: _lItemImageThumb._id });
                 }
 
-                uploadItemImage(this._editItemImageToInsert,
+                this._imageService.uploadItemImage(this._editItemImageToInsert,
                     Meteor.userId(),
                     this._itemEditionForm.value.editId).then((result) => {
 
