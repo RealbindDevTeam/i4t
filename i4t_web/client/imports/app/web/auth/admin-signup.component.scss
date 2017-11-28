@@ -7,9 +7,6 @@ admin-signup {
 
 mat-toolbar {
     background: transparent;
-    //position: absolute;
-    //top: 0;
-    //z-index: 1000;
 }
 
 .pm {
@@ -140,10 +137,18 @@ mat-toolbar {
 
 .dwf {
     color: #3c4146;
-    background-color: #F8F8F9 !important;
+    background-color: #F8F8F9;
     padding: 3em 3em;
     box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
     -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+
+    .primary-button {
+        background-color: transparent !important;
+    }
+}
+
+.dwfm {
+    display: none;
 }
   
 .id {
@@ -189,14 +194,50 @@ mat-toolbar {
     margin: 26px 0;
 }
   
+.bcr {
+    display: flex;
+    font-size: 1.5rem;
+}
+
+.bcr img {
+    margin: 1em 1em 1em 0;
+    width: 100px;
+    height: 100px;
+}
+
 @media only screen and (max-width : 600px){
     .br {
         width: 100%;
+    }
+
+    .bcr {
+        display: block;
+    }
+
+    .dimg {
+        width: 100%;
+        justify-content: center;
+        display: flex;    
+    }
+
+    .bcr img {
+        width: 200px;
+        height: 200px;
+    }
+
+    .bcr img {
+        margin: 0 auto;
     }
   
     .bc {
         width: 90%;
         margin: 0 auto;
         padding: 26px 0;
+    }
+
+    .dwfm {
+        display: block;
+        padding: 2em;
+        background-color: white;
     }
 }
