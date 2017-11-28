@@ -553,13 +553,13 @@
         "FILE_NAME": "tables"
     },
     "GO_TO_STORE": {
-        "CLIENT" : {
+        "CLIENT": {
             "TITTLE": "What do you ",
             "SUB_TITTLE": "like to eat?",
             "CONTENT": "We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components",
             "BUTTON": "Download"
         },
-        "COLLABORATOR" : {
+        "COLLABORATOR": {
             "TITTLE": "Please signin from computer to enjoy iurest",
             "BUTTON": "Return"
         }
@@ -1189,7 +1189,8 @@
         "INVOICE_SALE": "Factura de venta",
         "DATE": "Fecha-Hora",
         "TOOLTIP_DOWNLOAD_INVOICE": "Download invoice",
-        "NO_PAYS": "You have no payments yet"
+        "NO_PAYS": "You have no payments yet",
+        "INVOICE_GENERATED_BY": "FACTURA EMITIDA POR COMPUTADOR"
     },
     "ADMIN_SIGNUP": {
         "SLOGAN": "Administrator register",
@@ -1435,7 +1436,10 @@
             "ACCEPT": "Accept",
             "ENTER_PREFIX": "Please fill in prefix name",
             "ENTER_BIG_CONTRIBUTOR_FILES": "Please fill in big contributor fields",
-            "ENTER_SELF_ACCEPTING_FILES": "Please fill in self accepting fields"
+            "ENTER_SELF_ACCEPTING_FILES": "Please fill in self accepting fields",
+            "CURRENT_RESOLUTION_TITLE": "Current resolution information",
+            "NEXT_RESOLUTION_TITLE": "Next resolution information",
+            "IS_RETAINING_AGENT": "Is retaining agent"
         }
     },
     "RESTAURANT_PROFILE": {

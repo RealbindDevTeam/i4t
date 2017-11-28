@@ -161,6 +161,7 @@ export interface RestaurantLegality {
     enable_two?: boolean;
     current_value?: number;
     start_new_value?: boolean;
+    is_retaining_agent?: boolean;
 }
 
 /**

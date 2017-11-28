@@ -38,6 +38,7 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
     private _showNextResolution: boolean = false;
     private _showPrefixName2: boolean = false;
     private _prefixValue2: boolean = false;
+    private _isEnableTwoResolution: boolean = false;
 
     private _restaurantLegalitySub: Subscription;
     private _restaurantLegality: RestaurantLegality = { restaurant_id: '' };
@@ -124,10 +125,13 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
                         this._colombiaLegalityForm.controls['prefix_name_two'].setValue(this._restaurantLegalityInEditMode.prefix_name2 === undefined || this._restaurantLegalityInEditMode.prefix_name2 === null ? '' : this._restaurantLegalityInEditMode.prefix_name2);
                         this._colombiaLegalityForm.controls['numeration_from_two'].setValue(this._restaurantLegalityInEditMode.numeration_from2 === undefined || this._restaurantLegalityInEditMode.numeration_from2 === null ? '' : this._restaurantLegalityInEditMode.numeration_from2);
                         this._colombiaLegalityForm.controls['numeration_to_two'].setValue(this._restaurantLegalityInEditMode.numeration_to2 === undefined || this._restaurantLegalityInEditMode.numeration_to2 === null ? '' : this._restaurantLegalityInEditMode.numeration_to2);
+                        this._isEnableTwoResolution = this._restaurantLegalityInEditMode.enable_two;
 
                         if (this._restaurantLegalityInEditMode.regime === 'regime_co') {
                             this._showForcedToInvoice = false;
                             this._showGeneralInvoice = true;
+                            
+
                             if (this._restaurantLegalityInEditMode.prefix) {
                                 this._showPrefixName = true;
                             } else {

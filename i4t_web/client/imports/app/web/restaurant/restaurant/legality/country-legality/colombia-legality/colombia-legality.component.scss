@@ -129,3 +129,13 @@ mat-form-field.hundred{
         }
     }
 }
+
+.flexdivcust { 
+    display: flex; 
+    /* Optional, if you want the DIVs 100% width: */ 
+    flex-direction: column;
+  }
+
+  .flexdivcust > #diva { order: 2; }
+  .flexdivcust > #divb { order: 1; }
+
