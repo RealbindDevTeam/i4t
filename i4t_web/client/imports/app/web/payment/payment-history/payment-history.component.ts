@@ -263,7 +263,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         let details = new Details();
         let credentialArray: string[] = [];
         let historyPayment = PaymentsHistory.collection.findOne({ transactionId: _transactionId });
-        let paymentTransaction = PaymentTransactions.collection.findOne({ _id: historyPayment.transactionId });
+        let paymentTransaction = PaymentTransactions.collection.findOne({ _id: historyPayment.paymentTransactionId });
 
         this._loading = true;
         setTimeout(() => {
@@ -500,7 +500,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
             qr_pdf.text(iurest_invoice.total.toString(), 185, 150, 'right');
             qr_pdf.text(iurest_invoice.currency, 195, 150, 'right');
             qr_pdf.text(iurest_invoice.generated_computer_msg, 195, 290, 'right');
-            qr_pdf.output('save', fileName + '_' + dateFormated + '.pdf');
+            qr_pdf.output('save', iurest_invoice.number + '_' + dateFormated + '.pdf');
         }
     }
 
