@@ -1187,7 +1187,8 @@
         "INVOICE_SALE": "Factura de venta",
         "DATE": "Fecha-Hora",
         "TOOLTIP_DOWNLOAD_INVOICE": "Download invoice",
-        "NO_PAYS": "You have no payments yet"
+        "NO_PAYS": "You have no payments yet",
+        "INVOICE_GENERATED_BY": "FACTURA EMITIDA POR COMPUTADOR"
     },
     "ADMIN_SIGNUP": {
         "SLOGAN": "Administrator register",
@@ -1435,7 +1436,8 @@
             "ENTER_BIG_CONTRIBUTOR_FILES": "Please fill in big contributor fields",
             "ENTER_SELF_ACCEPTING_FILES": "Please fill in self accepting fields",
             "CURRENT_RESOLUTION_TITLE": "Current resolution information",
-            "NEXT_RESOLUTION_TITLE": "Next resolution information"
+            "NEXT_RESOLUTION_TITLE": "Next resolution information",
+            "IS_RETAINING_AGENT": "Is retaining agent"
         }
     },
     "RESTAURANT_PROFILE": {

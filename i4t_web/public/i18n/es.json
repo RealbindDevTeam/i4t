@@ -1187,7 +1187,8 @@
         "INVOICE_SALE": "Factura de venta",
         "DATE": "Fecha-Hora",
         "TOOLTIP_DOWNLOAD_INVOICE": "Descargar factura",
-        "NO_PAYS": "Aún no tiene pagos realizados"
+        "NO_PAYS": "Aún no tiene pagos realizados",
+        "INVOICE_GENERATED_BY": "FACTURA EMITIDA POR COMPUTADOR"
     },
     "ADMIN_SIGNUP": {
         "SLOGAN": "Registro de administrador",
@@ -1435,7 +1436,8 @@
             "ENTER_BIG_CONTRIBUTOR_FILES": "Por favor ingrese los datos de gran contribuyente",
             "ENTER_SELF_ACCEPTING_FILES": "Por favor ingrese los datos de autoretenedor",
             "CURRENT_RESOLUTION_TITLE": "Información de resolución actual",
-            "NEXT_RESOLUTION_TITLE": "Información de siguiente resolución"
+            "NEXT_RESOLUTION_TITLE": "Información de siguiente resolución",
+            "IS_RETAINING_AGENT": "Es agente retenedor"
         }
     },
     "RESTAURANT_PROFILE": {

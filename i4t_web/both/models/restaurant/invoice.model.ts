@@ -66,4 +66,5 @@ export interface InvoiceLegalInformation {
     self_accepting_date?: Date;
     text_at_the_end?: string;
     number?: string;
+    is_retaining_agent: boolean;
 }

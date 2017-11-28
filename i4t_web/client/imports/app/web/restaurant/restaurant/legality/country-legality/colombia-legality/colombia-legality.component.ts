@@ -40,6 +40,7 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
     private _prefixValue2: boolean = false;
     private _isEnableTwoResolution: boolean = false;
     private _showDivider: boolean = false;
+    private _retainingAgent: boolean = false;
 
     private _restaurantLegalitySub: Subscription;
     private _restaurantLegality: RestaurantLegality = { restaurant_id: '' };
@@ -87,7 +88,8 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
             prefix_two: new FormControl(false),
             prefix_name_two: new FormControl(''),
             numeration_from_two: new FormControl(''),
-            numeration_to_two: new FormControl('')
+            numeration_to_two: new FormControl(''),
+            is_retaining_agent: new FormControl(false)
         });
         if (this.restaurantId !== null && this.restaurantId !== undefined) {
             this._restaurantLegalitySub = MeteorObservable.subscribe('getRestaurantLegality', this.restaurantId).subscribe(() => {
@@ -129,10 +131,13 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
                         this._colombiaLegalityForm.controls['numeration_to_two'].setValue(this._restaurantLegalityInEditMode.numeration_to2 === undefined || this._restaurantLegalityInEditMode.numeration_to2 === null ? '' : this._restaurantLegalityInEditMode.numeration_to2);
                         this._isEnableTwoResolution = this._restaurantLegalityInEditMode.enable_two;
 
+                        this._colombiaLegalityForm.controls['is_retaining_agent'].setValue(this._restaurantLegalityInEditMode.is_retaining_agent === undefined || this._restaurantLegalityInEditMode.is_retaining_agent === null ? false : this._restaurantLegalityInEditMode.is_retaining_agent);
+                        this._retainingAgent = this._restaurantLegalityInEditMode.is_retaining_agent === undefined || this._restaurantLegalityInEditMode.is_retaining_agent === null ? false : this._restaurantLegalityInEditMode.is_retaining_agent;
+
                         if (this._restaurantLegalityInEditMode.regime === 'regime_co') {
                             this._showForcedToInvoice = false;
                             this._showGeneralInvoice = true;
-                            
+
                             if (this._restaurantLegalityInEditMode.prefix) {
                                 this._showPrefixName = true;
                             } else {
@@ -213,6 +218,7 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
             this._prefrixValue = false;
             this._prefixValue2 = false;
             this._showDivider = true;
+            this._retainingAgent = false;
         } else if (_event.value === 'regime_si') {
             this._restaurantLegality.regime = _event.value;
             this._restaurantLegality.forced_to_invoice = false;
@@ -231,6 +237,7 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
             this._prefrixValue = false;
             this._prefixValue2 = false;
             this._showDivider = false;
+            this._retainingAgent = false;
         }
     }
 
@@ -302,9 +309,21 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
     evaluateSelfAcceptingCheck(_event: any) {
         if (_event.checked) {
             this._showSeltAcceptingDetail = true;
+            this._restaurantLegality.is_self_accepting = true;
         } else {
             this._showSeltAcceptingDetail = false;
             this._restaurantLegality.is_self_accepting = false;
+        }
+    }
+
+    /**
+     * Evaluate retaining agent changes
+     */
+    evaluateRetainingCheck(_event: any) {
+        if (_event.checked) {
+            this._restaurantLegality.is_retaining_agent = true;
+        } else {
+            this._restaurantLegality.is_retaining_agent = false;
         }
     }
 
@@ -421,6 +440,7 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
                 this._restaurantLegality.self_accepting_resolution = null;
                 this._restaurantLegality.self_accepting_date = null;
             }
+            this._restaurantLegality.is_retaining_agent = this._colombiaLegalityForm.value.is_retaining_agent;
             this._restaurantLegality.text_at_the_end = this._colombiaLegalityForm.value.text_at_the_end;
             if (this._colombiaLegalityForm.valid) {
                 if (_validator) {

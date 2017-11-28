@@ -182,6 +182,8 @@
                 </mat-form-field>
             </div>
         </div>
+        <mat-divider *ngIf="_showDivider" style="margin-bottom: 15px; margin-top: 15px"></mat-divider>
+        <mat-checkbox formControlName="is_retaining_agent" (change)="evaluateRetainingCheck($event)" [(ngModel)]="_retainingAgent">{{'RESTAURANT_LEGALITY.COLOMBIA.IS_RETAINING_AGENT' | translate}}</mat-checkbox>
     </div>
     <mat-divider *ngIf="_showDivider" style="margin-bottom: 15px; margin-top: 15px"></mat-divider>
     <div *ngIf="_showInvoiceFinalPart">

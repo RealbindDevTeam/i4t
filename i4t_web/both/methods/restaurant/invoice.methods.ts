@@ -164,6 +164,7 @@ if (Meteor.isServer) {
                         lInvoiceLegalInformation.self_accepting_resolution = lRestaurantLegality.self_accepting_resolution;
                         lInvoiceLegalInformation.self_accepting_date = lRestaurantLegality.self_accepting_date;
                     }
+                    lInvoiceLegalInformation.is_retaining_agent = lRestaurantLegality.is_retaining_agent;
                     lInvoiceLegalInformation.text_at_the_end = lRestaurantLegality.text_at_the_end;
                     lInvoiceLegalInformation.number = var_current_value.toString();
                 } else if (lInvoiceLegalInformation.regime === 'regime_si') {

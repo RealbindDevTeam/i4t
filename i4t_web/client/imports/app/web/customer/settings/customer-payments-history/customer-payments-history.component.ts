@@ -320,6 +320,16 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             y = this.calculateY(y, 10);
         }
 
+        if( _pInvoice.legal_information.is_retaining_agent) {
+            let splitRetainingAgent = pdf.splitTextToSize('Agentes Retenedores de IVA e ICA', widthText);
+            pdf.text( splitRetainingAgent,x, y, alignCenter);
+            y = this.calculateY(y, 20);
+        } else {
+            let splitRetainingAgent = pdf.splitTextToSize('No somos Agentes Retenedores de IVA e ICA', widthText);
+            pdf.text( splitRetainingAgent,x, y, alignCenter);
+            y = this.calculateY(y, 20);
+        } 
+        
         pdf.text( x, y, '==========================================', alignCenter );
 
         if( _pInvoice.legal_information.text_at_the_end !== null && _pInvoice.legal_information.text_at_the_end !== undefined 
@@ -350,6 +360,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
 
         pdf.setFontType("bold");
         y = this.calculateY(y, 10);
+        
         pdf.text( x, y, 'FACTURA EMITIDA POR COMPUTADOR', alignCenter );
 
         pdf.setProperties({
