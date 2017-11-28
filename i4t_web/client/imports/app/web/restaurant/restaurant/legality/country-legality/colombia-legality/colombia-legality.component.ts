@@ -39,6 +39,7 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
     private _showPrefixName2: boolean = false;
     private _prefixValue2: boolean = false;
     private _isEnableTwoResolution: boolean = false;
+    private _showDivider: boolean = false;
 
     private _restaurantLegalitySub: Subscription;
     private _restaurantLegality: RestaurantLegality = { restaurant_id: '' };
@@ -93,6 +94,7 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
                 this._ngZone.run(() => {
                     this._restaurantLegalityInEditMode = RestaurantsLegality.findOne({ restaurant_id: this.restaurantId });
                     if (this._restaurantLegalityInEditMode) {
+                        this._showDivider = true;
                         this._showNextResolution = true;
                         this._restaurantLegality = this._restaurantLegalityInEditMode;
                         this._regimeSelected = this._restaurantLegalityInEditMode.regime;
@@ -131,7 +133,6 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
                             this._showForcedToInvoice = false;
                             this._showGeneralInvoice = true;
                             
-
                             if (this._restaurantLegalityInEditMode.prefix) {
                                 this._showPrefixName = true;
                             } else {
@@ -211,6 +212,7 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
             this._showPrefixName2 = false;
             this._prefrixValue = false;
             this._prefixValue2 = false;
+            this._showDivider = true;
         } else if (_event.value === 'regime_si') {
             this._restaurantLegality.regime = _event.value;
             this._restaurantLegality.forced_to_invoice = false;
@@ -228,6 +230,7 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
             this._showPrefixName2 = false;
             this._prefrixValue = false;
             this._prefixValue2 = false;
+            this._showDivider = false;
         }
     }
 

@@ -36,7 +36,8 @@
         <div id="flexdiv" [ngClass]="{'flexdivcust': _isEnableTwoResolution }">
 
             <div id="diva">
-                <h3>{{'RESTAURANT_LEGALITY.COLOMBIA.CURRENT_RESOLUTION_TITLE' | translate}}</h3>
+                <h3 *ngIf="!_isEnableTwoResolution">{{'RESTAURANT_LEGALITY.COLOMBIA.CURRENT_RESOLUTION_TITLE' | translate}}</h3>
+                <h3 *ngIf="_isEnableTwoResolution">{{'RESTAURANT_LEGALITY.COLOMBIA.NEXT_RESOLUTION_TITLE' | translate}}</h3>
                 <div class="cust-resolution-sty">
                     <div>
                         <p>{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION' | translate}}</p>
@@ -84,11 +85,9 @@
                 </div>
             </div>
 
-
-
-
             <div id="divb" *ngIf="_showNextResolution">
-                <h3>{{'RESTAURANT_LEGALITY.COLOMBIA.NEXT_RESOLUTION_TITLE' | translate}}</h3>
+                <h3 *ngIf="_isEnableTwoResolution">{{'RESTAURANT_LEGALITY.COLOMBIA.CURRENT_RESOLUTION_TITLE' | translate}}</h3>
+                <h3 *ngIf="!_isEnableTwoResolution">{{'RESTAURANT_LEGALITY.COLOMBIA.NEXT_RESOLUTION_TITLE' | translate}}</h3>
                 <div class="cust-resolution-sty">
                     <div>
                         <p>{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION' | translate}}</p>
@@ -136,7 +135,7 @@
             </div>
         </div>
     </div>
-    <mat-divider style="margin-bottom: 15px; margin-top: 15px"></mat-divider>
+    <mat-divider *ngIf="_showDivider" style="margin-bottom: 15px; margin-top: 15px"></mat-divider>
     <div *ngIf="_showInvoiceSecondPart">
         <mat-checkbox formControlName="is_big_contributor" (change)="evaluateBigContributorCheck($event)" [(ngModel)]="_bigContributorValue">{{'RESTAURANT_LEGALITY.COLOMBIA.IS_BIG_CONTRIBUTOR' | translate}}</mat-checkbox>
         <div *ngIf="_showBigContributorDetail">
@@ -160,7 +159,7 @@
                 </mat-form-field>
             </div>
         </div>
-        <mat-divider style="margin-bottom: 15px; margin-top: 15px"></mat-divider>
+        <mat-divider *ngIf="_showDivider" style="margin-bottom: 15px; margin-top: 15px"></mat-divider>
         <mat-checkbox formControlName="is_self_accepting" (change)="evaluateSelfAcceptingCheck($event)" [(ngModel)]="_selfAcceptingValue">{{'RESTAURANT_LEGALITY.COLOMBIA.IS_SELF_ACCEPTING' | translate}}</mat-checkbox>
         <div *ngIf="_showSeltAcceptingDetail">
             <div class="cust-resolution-sty">
@@ -184,7 +183,7 @@
             </div>
         </div>
     </div>
-    <mat-divider style="margin-bottom: 15px; margin-top: 15px"></mat-divider>
+    <mat-divider *ngIf="_showDivider" style="margin-bottom: 15px; margin-top: 15px"></mat-divider>
     <div *ngIf="_showInvoiceFinalPart">
         <p>{{'RESTAURANT_LEGALITY.COLOMBIA.FINAL_TEXT' | translate}}:</p>
         <mat-form-field class="final-text">
