@@ -361,7 +361,9 @@
         "CANCEL_CREATION": "Cancel",
         "INITIAL_TABLES_NUMBER": "Initial tables number, ",
         "MAX_TABLES": "max ",
-        "TABLES_MSG": "In case you need more tables for your restaurant, in the option Management -> Restaurants -> Configuration, you can add more."
+        "TABLES_MSG": "In case you need more tables for your restaurant, in the option Management -> Restaurants -> Configuration, you can add more.",
+        "CREATION_ERROR": "An error has occurred creating the restaurant. Please try again.",
+        "RESTAURANT_CREATED": "Restaurant created"
     },
     "WEEK": {
         "MONDAY": "Monday",

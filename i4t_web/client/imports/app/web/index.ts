@@ -89,6 +89,7 @@ import { ColombiaLegalityComponent } from './restaurant/restaurant/legality/coun
 import { RestaurantProfileComponent } from './restaurant/restaurant/profile/restaurant-profile.component';
 import { RestaurantProFileDetailComponent } from './customer/restaurant-profile-detail/restaurant-profile-detail.component';
 import { ScheduleDetailComponent } from './customer/restaurant-profile-detail/schedule-detail/schedule-detail.component';
+import { ImageService } from '../shared/services/image.service';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -187,5 +188,6 @@ export const MODAL_DIALOG_DECLARATIONS = [
 
 export const SERVICES_DECLARATIONS = [
     OrderNavigationService,
-    UserLanguageService
+    UserLanguageService,
+    ImageService
 ]; 
