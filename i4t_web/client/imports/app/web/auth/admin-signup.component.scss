@@ -70,7 +70,7 @@ mat-toolbar {
 
 .dw {
     box-sizing: border-box;
-    padding: 170px 0;
+    padding: 10rem 0;
     position: relative; 
 }
   
@@ -103,20 +103,28 @@ mat-toolbar {
     -webkit-font-smoothing: antialiased;
 }
   
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 600px) {
     .dwt-1 {
         font-size: 2rem;
+        line-height: 1em; 
         max-width: 100%;
     }
 }
   
 .dwt-2 {
     box-sizing: border-box;
-    font-size: 16px;
+    font-size: 22px;
     line-height: 24px;
-    max-width: 400px;
-    padding: 10px 50px 40px 0;
+    max-width: 50%;
+    padding: 1em 1em 1em 0;;
     -webkit-font-smoothing: antialiased;
+}
+
+@media only screen and (max-width: 600px) {
+    .dwt-2 {
+        max-width: 100%;
+        padding: 1em 0;
+    }
 }
   
 .dwt-3 {
@@ -187,7 +195,7 @@ mat-toolbar {
 
 .br {
     margin: 65px 0;
-    width: 50%;
+    width: 55%;
 }
   
 .bc {
@@ -201,8 +209,8 @@ mat-toolbar {
 
 .bcr img {
     margin: 1em 1em 1em 0;
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
 }
 
 @media only screen and (max-width : 600px){
@@ -221,16 +229,13 @@ mat-toolbar {
     }
 
     .bcr img {
+        margin: 0 auto;
         width: 200px;
         height: 200px;
     }
-
-    .bcr img {
-        margin: 0 auto;
-    }
   
     .bc {
-        width: 90%;
+        width: 100%;
         margin: 0 auto;
         padding: 26px 0;
     }
