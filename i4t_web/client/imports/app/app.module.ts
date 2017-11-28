@@ -13,14 +13,9 @@ import { NgxPageScrollModule } from 'ngx-page-scroll';
 import { routes } from './app.routes';
 import { AppComponent } from './web/app.component';
 import { CustomLoader } from './shared/utils/custom-loader';
-
-import { SHARED_DECLARATIONS } from './shared';
 import { WEB_DECLARATIONS, MODAL_DIALOG_DECLARATIONS, SERVICES_DECLARATIONS } from './web/index';
 
-import { SharedModule } from './shared/shared.module';
 import { NavigationModule } from './web/navigation/navigation.module';
-import { ColorService } from './shared/services/color.service';
-import { UserLanguageService } from './shared/services/user-language.service';
 import { PayuPaymenteService } from './web/payment/payu-payment-service/payu-payment.service';
 
 import { RouteGuard } from './web/auth/navigation/route-guard.service';
@@ -47,7 +42,6 @@ import { CashierGuard } from './web/auth/navigation/cashier-guard.service';
         useClass: CustomLoader
       }
     }),
-    SharedModule.forRoot(),
     NgxPageScrollModule,
     BrowserAnimationsModule,
     MatSnackBarModule,
@@ -77,12 +71,9 @@ import { CashierGuard } from './web/auth/navigation/cashier-guard.service';
   ],
   declarations: [
     ...WEB_DECLARATIONS,
-    ...MODAL_DIALOG_DECLARATIONS,
-    ...SHARED_DECLARATIONS
+    ...MODAL_DIALOG_DECLARATIONS
   ],
   providers: [
-    ColorService,
-    UserLanguageService,
     RouteGuard,
     CustomerGuard,
     AdminGuard,
