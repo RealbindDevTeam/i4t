@@ -27,7 +27,8 @@
         <div class="cards-div" style="padding: 20px 0 0 20px;">
             <mat-card *ngFor="let restaurant of restaurants | async" class="custom-cards">
                 <div class="header-card">
-                    <img src="{{ getRestaurantImage(restaurant._id) }}">
+                    <img *ngIf="restaurant.image" src="{{ restaurant.image.url }}">
+                    <img *ngIf="!restaurant.image" src="/images/default-restaurant.png">
                     <span class="mat-card-title">{{restaurant.name}}</span>
                     <span class="mat-card-subtitle">{{restaurant.address}}</span>
                     <button matTooltip="{{'RESTAURANT.EDIT_RESTAURANT' | translate}}" mat-fab class="btn-position-edition" (click)="openRestaurantEdition(restaurant)">

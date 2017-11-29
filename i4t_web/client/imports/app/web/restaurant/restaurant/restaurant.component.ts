@@ -8,7 +8,7 @@ import { MatDialogRef, MatDialog } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Restaurant, RestaurantImage } from '../../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants, RestaurantImages } from '../../../../../../both/collections/restaurant/restaurant.collection';
+import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { Country } from '../../../../../../both/models/settings/country.model';
 import { Countries } from '../../../../../../both/collections/settings/country.collection';
 import { City } from '../../../../../../both/models/settings/city.model';
@@ -17,21 +17,20 @@ import { Cities } from '../../../../../../both/collections/settings/city.collect
 @Component({
     selector: 'restaurant',
     templateUrl: './restaurant.component.html',
-    styleUrls: [ './restaurant.component.scss' ]
+    styleUrls: ['./restaurant.component.scss']
 })
 export class RestaurantComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    private restaurants             : Observable<Restaurant[]>;
-    private _restaurantImages       : Observable<RestaurantImage[]>;
+    private restaurants: Observable<Restaurant[]>;
+    private _restaurantImages: Observable<RestaurantImage[]>;
 
-    private restaurantSub           : Subscription;
-    private countriesSub            : Subscription;
-    private citiesSub               : Subscription;
-    private _restaurantImagesSub    : Subscription;
+    private restaurantSub: Subscription;
+    private countriesSub: Subscription;
+    private citiesSub: Subscription;
 
-    public _dialogRef               : MatDialogRef<any>;
-    private _thereAreRestaurants    : boolean = true;
+    public _dialogRef: MatDialogRef<any>;
+    private _thereAreRestaurants: boolean = true;
 
     /**
      * RestaurantComponent Constructor
@@ -42,14 +41,14 @@ export class RestaurantComponent implements OnInit, OnDestroy {
      * @param {NgZone} _ngZone
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor( private router: Router, 
-                 private _formBuilder: FormBuilder, 
-                 private translate: TranslateService, 
-                 public _dialog: MatDialog,
-                 private _ngZone: NgZone,
-                 private _userLanguageService: UserLanguageService ) {
-        translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        translate.setDefaultLang( 'en' );
+    constructor(private router: Router,
+        private _formBuilder: FormBuilder,
+        private translate: TranslateService,
+        public _dialog: MatDialog,
+        private _ngZone: NgZone,
+        private _userLanguageService: UserLanguageService) {
+        translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        translate.setDefaultLang('en');
     }
 
     /**
@@ -57,37 +56,31 @@ export class RestaurantComponent implements OnInit, OnDestroy {
      */
     ngOnInit() {
         this.removeSubscriptions();
-        this.restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe( () => {
-            this._ngZone.run( () => {
-                this.restaurants = Restaurants.find({ creation_user: this._user}).zone();
+        this.restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe(() => {
+            this._ngZone.run(() => {
+                this.restaurants = Restaurants.find({ creation_user: this._user }).zone();
                 this.countRestaurants();
-                this.restaurants.subscribe( () => { this.countRestaurants(); });
+                this.restaurants.subscribe(() => { this.countRestaurants(); });
             });
         });
         this.countriesSub = MeteorObservable.subscribe('countries').subscribe();
         this.citiesSub = MeteorObservable.subscribe('cities').subscribe();
-        this._restaurantImagesSub = MeteorObservable.subscribe('restaurantImages', this._user).subscribe( () => {
-            this._ngZone.run( () => {
-                this._restaurantImages = RestaurantImages.find({}).zone();
-            });
-        });
     }
 
     /**
      * Validate if restaurants exists
      */
-    countRestaurants():void{
-        Restaurants.collection.find({ creation_user: this._user}).count() > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
+    countRestaurants(): void {
+        Restaurants.collection.find({ creation_user: this._user }).count() > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
     }
 
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this.restaurantSub ){ this.restaurantSub.unsubscribe(); }
-        if( this.countriesSub ){ this.countriesSub.unsubscribe(); }
-        if( this.citiesSub ){ this.citiesSub.unsubscribe(); }
-        if( this._restaurantImagesSub ){ this._restaurantImagesSub.unsubscribe(); }
+    removeSubscriptions(): void {
+        if (this.restaurantSub) { this.restaurantSub.unsubscribe(); }
+        if (this.countriesSub) { this.countriesSub.unsubscribe(); }
+        if (this.citiesSub) { this.citiesSub.unsubscribe(); }
     }
 
     /**
@@ -102,15 +95,7 @@ export class RestaurantComponent implements OnInit, OnDestroy {
      * @param {Restaurant} _restaurant 
      */
     openRestaurantEdition(_restaurant: Restaurant) {
-        this.router.navigate( [ 'app/restaurant-edition', JSON.stringify(_restaurant) ], { skipLocationChange: true } );
-    }
-
-    /**
-     * Get Restaurant Image
-     * @param {string} _pRestaurantId
-     */
-    getRestaurantImage(_pRestaurantId: string): string {
-        return RestaurantImages.getRestaurantImageUrl( _pRestaurantId );
+        this.router.navigate(['app/restaurant-edition', JSON.stringify(_restaurant)], { skipLocationChange: true });
     }
 
     /**
@@ -129,7 +114,7 @@ export class RestaurantComponent implements OnInit, OnDestroy {
      * @param {string} _pCityId 
      * @param {string} _pOtherCity
      */
-    getRestaurantCity(_pCityId: string, _pOtherCity:string): string {
+    getRestaurantCity(_pCityId: string, _pOtherCity: string): string {
         let _lCity: City = Cities.findOne({ _id: _pCityId });
         if (_lCity) {
             return _lCity.name;
@@ -142,6 +127,6 @@ export class RestaurantComponent implements OnInit, OnDestroy {
      * ngOnDestroy implementation
      */
     ngOnDestroy() {
-        this.removeSubscriptions();   
+        this.removeSubscriptions();
     }
 }

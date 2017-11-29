@@ -7,8 +7,8 @@ import { MatDialogRef, MatDialog } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { Restaurants, RestaurantImages, RestaurantImageThumbs, RestaurantsLegality } from '../../../../../../../both/collections/restaurant/restaurant.collection';
-import { Restaurant, RestaurantImage, RestaurantImageThumb, RestaurantLegality } from '../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants, RestaurantsLegality } from '../../../../../../../both/collections/restaurant/restaurant.collection';
+import { Restaurant, RestaurantImage, RestaurantLegality } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Currency } from '../../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
 import { PaymentMethod } from '../../../../../../../both/models/general/paymentMethod.model';
@@ -40,8 +40,6 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     private _countriesSub: Subscription;
     private _citiesSub: Subscription;
     private _paymentMethodsSub: Subscription;
-    private _restaurantImagesSub: Subscription;
-    private _restaurantImageThumbsSub: Subscription;
     private _parameterSub: Subscription;
 
     private _countries: Observable<Country[]>;
@@ -54,7 +52,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     private _restaurantPaymentMethods: string[] = [];
 
     private _filesToUpload: Array<File>;
-    private _restaurantImageToEdit: File;
+    private _restaurantImageToEdit: RestaurantImage;
     private _editImage: boolean = false;
     private _nameImageFileEdit: string = "";
     public _selectedIndex: number = 0;
@@ -94,12 +92,14 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         private _userLanguageService: UserLanguageService,
         protected _mdDialog: MatDialog,
         private _imageService: ImageService) {
+        let _lng: string = this._userLanguageService.getLanguage(Meteor.user());
+        _translate.use(_lng);
+        _translate.setDefaultLang('en');
+        this._imageService.setPickOptionsLang(_lng);
 
         this._route.params.forEach((params: Params) => {
             this._restaurantToEdit = JSON.parse(params['param1']);
         });
-        _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
-        _translate.setDefaultLang('en');
 
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';
@@ -110,7 +110,11 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
      */
     ngOnInit() {
         this.removeSubscriptions();
-        this._restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe();
+        this._restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe(() => {
+            this._ngZone.run(() => {
+                this._restaurantEditImage = Restaurants.findOne({ _id: this._restaurantToEdit._id }).image.url || '/images/default-restaurant.png';
+            });
+        });
 
         this._countriesSub = MeteorObservable.subscribe('countries').subscribe(() => {
             this._ngZone.run(() => {
@@ -122,13 +126,6 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         this._citiesSub = MeteorObservable.subscribe('citiesByCountry', this._restaurantToEdit.countryId).subscribe(() => {
             this._ngZone.run(() => {
                 this._cities = Cities.find({}).zone();
-            });
-        });
-
-        this._restaurantImagesSub = MeteorObservable.subscribe('restaurantImages', this._user).subscribe();
-        this._restaurantImageThumbsSub = MeteorObservable.subscribe('restaurantImageThumbs', this._user).subscribe(() => {
-            this._ngZone.run(() => {
-                this._restaurantEditImage = RestaurantImageThumbs.getRestaurantImageThumbUrl(this._restaurantToEdit._id);
             });
         });
 
@@ -207,8 +204,6 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         if (this._countriesSub) { this._countriesSub.unsubscribe(); }
         if (this._citiesSub) { this._citiesSub.unsubscribe(); }
         if (this._paymentMethodsSub) { this._paymentMethodsSub.unsubscribe(); }
-        if (this._restaurantImagesSub) { this._restaurantImagesSub.unsubscribe(); }
-        if (this._restaurantImageThumbsSub) { this._restaurantImageThumbsSub.unsubscribe(); }
         if (this._parameterSub) { this._parameterSub.unsubscribe(); }
     }
 
@@ -294,7 +289,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         }
 
         if (this._editImage) {
-            let _lRestaurantImage: RestaurantImage = RestaurantImages.findOne({ restaurantId: this._restaurantEditionForm.value.editId });
+            /*let _lRestaurantImage: RestaurantImage = RestaurantImages.findOne({ restaurantId: this._restaurantEditionForm.value.editId });
             let _lRestaurantImageThumb: RestaurantImageThumb = RestaurantImageThumbs.findOne({ restaurantId: this._restaurantEditionForm.value.editId });
             if (_lRestaurantImage) { RestaurantImages.remove({ _id: _lRestaurantImage._id }); }
             if (_lRestaurantImageThumb) { RestaurantImageThumbs.remove({ _id: _lRestaurantImageThumb._id }); }
@@ -306,7 +301,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                 }).catch((err) => {
                     var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
                     this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
-                });
+                });*/
         }
         this.cancel();
     }
@@ -421,14 +416,18 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * When user change Image, this function allow update in the store
-     * @param {any} _fileInput
+     * Function to insert new image
      */
-    onChangeImage(_fileInput: any): void {
-        this._editImage = true;
-        this._filesToUpload = <Array<File>>_fileInput.target.files;
-        this._restaurantImageToEdit = this._filesToUpload[0];
-        this._nameImageFileEdit = this._restaurantImageToEdit.name;
+    changeImage(): void {
+        this._imageService.client.pick(this._imageService.pickOptions).then((res) => {
+            let _imageToUpload: any = res.filesUploaded[0];
+            this._nameImageFileEdit = _imageToUpload.filename;
+            this._restaurantImageToEdit = _imageToUpload;
+            this._editImage = true;
+        }).catch((err) => {
+            var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+        });
     }
 
     /**

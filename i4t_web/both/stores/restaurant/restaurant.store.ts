@@ -1,5 +1,5 @@
 import { UploadFS } from 'meteor/jalik:ufs';
-import { RestaurantImages, RestaurantImageThumbs, RestaurantProfileImages, RestaurantProfileImageThumbs } from '../../collections/restaurant/restaurant.collection';
+import { RestaurantProfileImages, RestaurantProfileImageThumbs } from '../../collections/restaurant/restaurant.collection';
 import { Meteor } from 'meteor/meteor';
 
 /**
@@ -11,7 +11,7 @@ function loggedIn(){
 
 /**
  * Create store to restaurant image thumbs
- */
+ 
 export const RestaurantImageThumbsStore = new UploadFS.store.GridFS({
     collection: RestaurantImageThumbs.collection,
     name: 'restaurantImageThumbsStore',
@@ -33,11 +33,11 @@ export const RestaurantImageThumbsStore = new UploadFS.store.GridFS({
         .pipe(to);
   
     }
-  });
+  });*/
 
 /**
  * Create store to restaurant images
- */
+ 
 export const RestaurantImagesStore = new UploadFS.store.GridFS({
     collection: RestaurantImages.collection,
     name: 'restaurantImagesStore',
@@ -67,7 +67,7 @@ export const RestaurantImagesStore = new UploadFS.store.GridFS({
         .stream()
         .pipe(to);
     }
-  });
+  });*/
 
 /**
  * Create store to restaurant profile image thumbs

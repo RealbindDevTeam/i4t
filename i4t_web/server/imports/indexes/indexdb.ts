@@ -1,4 +1,4 @@
-import { Restaurants, RestaurantImages, RestaurantImageThumbs } from '../../../both/collections/restaurant/restaurant.collection';
+import { Restaurants } from '../../../both/collections/restaurant/restaurant.collection';
 import { UserDetails } from '../../../both/collections/auth/user-detail.collection';
 import { Sections } from '../../../both/collections/administration/section.collection';
 import { Categories } from '../../../both/collections/administration/category.collection';
@@ -26,14 +26,6 @@ export function createdbindexes(){
     Restaurants.collection._ensureIndex( { creation_user: 1 } );
     Restaurants.collection._ensureIndex( { name: 1 } );    
     Restaurants.collection._ensureIndex( { isActive: 1 } );    
-
-    // Restaurant Image Collection Indexes
-    RestaurantImages.collection._ensureIndex( { userId: 1 } );
-    RestaurantImages.collection._ensureIndex( { restaurantId: 1 } );
-
-    // Restaurant Image Thumb Collection Indexes
-    RestaurantImageThumbs.collection._ensureIndex( { userId: 1 } );
-    RestaurantImageThumbs.collection._ensureIndex( { restaurantId: 1 } );
 
     // User Collections Indexes
     UserDetails.collection._ensureIndex( { user_id: 1 } );
