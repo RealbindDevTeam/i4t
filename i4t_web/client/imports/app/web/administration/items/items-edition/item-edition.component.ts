@@ -32,7 +32,8 @@ import { ImageService } from '../../../../shared/services/image.service';
 @Component({
     selector: 'item-edition',
     templateUrl: './item-edition.component.html',
-    styleUrls: ['./item-edition.component.scss']
+    styleUrls: ['./item-edition.component.scss'],
+    providers:[ UserLanguageService, ImageService ]
 })
 export class ItemEditionComponent implements OnInit, OnDestroy {
 
