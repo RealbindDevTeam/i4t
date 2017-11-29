@@ -47,6 +47,11 @@ agm-map {
         .photos {
             height: 150px;
 
+            .content {
+                overflow: auto;
+                white-space: nowrap;
+            }
+
             .img-thumb {
                 margin-right: 1%;
             }

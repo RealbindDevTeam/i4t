@@ -48,7 +48,6 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
     private _restaurantCountry          : string;
     private _restaurantCity             : string;
     private _restaurantCurrency         : string = '';
-    private _profileImgsThumbs          : RestaurantProfileImageThumb[] =[];
     public _dialogRef                   : MatDialogRef<any>;
     
     /**
@@ -133,8 +132,6 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
             this._restaurantProfileImgThumSub = MeteorObservable.subscribe( 'getRestaurantProfileImageThumbsByRestaurantId', this.restaurantId ).subscribe( () => {
                 this._ngZone.run( () => {
                     this._restaurantProfileImgThumbs = RestaurantProfileImageThumbs.find( { restaurantId: this.restaurantId } ).zone();
-                    this.setRestaurantProfileImageThumbs();
-                    this._restaurantProfileImgThumbs.subscribe( () => { this.setRestaurantProfileImageThumbs(); });
                 });
             });
         } else {
@@ -188,17 +185,6 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
             _lLink = _lHttpPrefix + _pWebPage
         }
         return _lLink;
-    }
-
-    /**
-     * Set restaurant profile thumbs array
-     */
-    setRestaurantProfileImageThumbs():void{
-        RestaurantProfileImageThumbs.find( { restaurantId: this.restaurantId } ).fetch().forEach( ( thumb ) => {
-            if( thumb ){
-                this._profileImgsThumbs.push( thumb );
-            }
-        });
     }
 
     /**

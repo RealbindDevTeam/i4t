@@ -289,7 +289,9 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                     prefix2: this._restaurantLegalityToEdit.prefix2 === undefined || this._restaurantLegalityToEdit.prefix2 === null ? false : this._restaurantLegalityToEdit.prefix2,
                     prefix_name2: this._restaurantLegalityToEdit.prefix_name2 === undefined || this._restaurantLegalityToEdit.prefix_name2 === null ? '' : this._restaurantLegalityToEdit.prefix_name2,
                     numeration_from2: this._restaurantLegalityToEdit.numeration_from2 === undefined || this._restaurantLegalityToEdit.numeration_from2 === null ? '' : this._restaurantLegalityToEdit.numeration_from2,
-                    numeration_to2: this._restaurantLegalityToEdit.numeration_to2 === undefined || this._restaurantLegalityToEdit.numeration_to2 === null ? '' : this._restaurantLegalityToEdit.numeration_to2
+                    numeration_to2: this._restaurantLegalityToEdit.numeration_to2 === undefined || this._restaurantLegalityToEdit.numeration_to2 === null ? '' : this._restaurantLegalityToEdit.numeration_to2,
+                    //retaining agent
+                    is_retaining_agent: this._restaurantLegalityToEdit.is_retaining_agent === undefined || this._restaurantLegalityToEdit.is_retaining_agent === null ? false : this._restaurantLegalityToEdit.is_retaining_agent
                 }
             });
         }

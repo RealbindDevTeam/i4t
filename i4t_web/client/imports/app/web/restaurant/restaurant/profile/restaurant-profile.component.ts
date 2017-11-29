@@ -8,7 +8,7 @@ import { MouseEvent } from "@agm/core";
 import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { Restaurant, RestaurantProfile, RestaurantImage, RestaurantSchedule, RestaurantLocation, RestaurantSocialNetwork, RestaurantProfileImageThumb } from '../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurant, RestaurantProfile, RestaurantSchedule, RestaurantLocation, RestaurantSocialNetwork, RestaurantProfileImageThumb } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantsProfile, RestaurantProfileImages, RestaurantProfileImageThumbs } from '../../../../../../../both/collections/restaurant/restaurant.collection';
 import { uploadRestaurantProfileImages } from '../../../../../../../both/methods/restaurant/restaurant.methods';
 import { AlertConfirmComponent } from '../../../general/alert-confirm/alert-confirm.component';
@@ -39,6 +39,7 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
     private _scheduleInEditMode     : boolean = false;
     private _newImagesToInsert      : boolean = false;
     private _mapRender              : boolean = false;
+    private _loading                : boolean = false; 
 
     private _restaurantName         : string = '';
     private _restaurantId           : string = '';
@@ -55,15 +56,13 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
     /**
      * RestaurantProfileComponent Constructor
      * @param {Router} _router 
-     * @param {FormBuilder} _formBuilder 
      * @param {TranslateService} _translate 
      * @param {NgZone} _ngZone 
      * @param {UserLanguageService} _userLanguageService
      * @param {MatSnackBar} _snackBar
      * @param {MatDialog} _mdDialog
      */
-    constructor( private _router: Router, 
-                 private _formBuilder: FormBuilder, 
+    constructor( private _router: Router,
                  private _translate: TranslateService, 
                  private _ngZone: NgZone,
                  private _userLanguageService: UserLanguageService,
@@ -182,14 +181,9 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                     }
                     this._scheduleInEditMode = true;
                     this._scheduleToEdit = this._restaurantProfile.schedule;
+                    this._schedule = this._restaurantProfile.schedule;
                     this._lat = this._restaurantProfile.location.lat;
                     this._lng = this._restaurantProfile.location.lng;
-                    this._restaurantProImgSub = MeteorObservable.subscribe( 'getRestaurantProfileImages', this._user ).subscribe();
-                    this._restaurantProImgThumSub = MeteorObservable.subscribe( 'getRestaurantProfileImageThumbs', this._user ).subscribe( () => {
-                        this._ngZone.run( () => {
-                            this._restaurantProfileThumbs = RestaurantProfileImageThumbs.find( { restaurantId: _pRestaurantId } ).zone();
-                        });
-                    });
                 } else {
                     this._profileForm.reset();
                     this._scheduleInEditMode = false;
@@ -199,6 +193,12 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                     if( this._restaurantProImgSub ){ this._restaurantProImgSub.unsubscribe(); }
                     if( this._restaurantProImgThumSub ){ this._restaurantProImgThumSub.unsubscribe(); }
                 }
+            });
+        });
+        this._restaurantProImgSub = MeteorObservable.subscribe( 'getRestaurantProfileImages', this._user ).subscribe();
+        this._restaurantProImgThumSub = MeteorObservable.subscribe( 'getRestaurantProfileImageThumbs', this._user ).subscribe( () => {
+            this._ngZone.run( () => {
+                this._restaurantProfileThumbs = RestaurantProfileImageThumbs.find( { restaurantId: _pRestaurantId } ).zone();
             });
         });
     }
@@ -269,87 +269,91 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
         if( this._profileForm.value.instagramLink !== '' && this._profileForm.value.instagramLink !== null ){ _lRestaurantSocialNetwork.instagram = this._profileForm.value.instagramLink;}
         if( this._profileForm.value.twitterLink !== '' && this._profileForm.value.twitterLink !== null ){ _lRestaurantSocialNetwork.twitter = this._profileForm.value.twitterLink; }
 
-        if( this._restaurantProfile ){
-            _lRestaurantProfile.modification_date = new Date();
-            _lRestaurantProfile.modification_user = this._user;
-            RestaurantsProfile.update( { _id: this._restaurantProfile._id }, {
-                $set: {
-                    restaurant_description: _lRestaurantProfile.restaurant_description,
-                    schedule: _lRestaurantProfile.schedule,
-                    location: _lRestaurantProfile.location,
-                }
-            });
-
-            if( this._profileForm.controls['web_page'].value !== '' && this._profileForm.controls['web_page'].value !== null ){
-                RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $set: { web_page: this._profileForm.controls['web_page'].value } } );
-            } else if( ( this._profileForm.controls['web_page'].value === '' || this._profileForm.controls['web_page'].value === null ) && ( this._restaurantProfile.web_page !== undefined && this._restaurantProfile.web_page !== null ) ) {
-                RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $unset: { web_page: true } } );
-            }
-    
-            if( this._profileForm.controls['phone'].value !== '' && this._profileForm.controls['phone'].value !== null ){
-                RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $set: { phone: this._profileForm.controls['phone'].value } } );
-            } else if( ( this._profileForm.controls['phone'].value === '' || this._profileForm.controls['phone'].value === null ) && ( this._restaurantProfile.phone !== undefined && this._restaurantProfile.phone !== null ) ) {
-                RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $unset: { phone: true } } );
-            }
-    
-            if( this._profileForm.controls['email'].value !== '' && this._profileForm.controls['email'].value !== null ){
-                RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $set: { email: this._profileForm.controls['email'].value } } );
-            } else if( ( this._profileForm.controls['email'].value === '' || this._profileForm.controls['email'].value === null ) && ( this._restaurantProfile.email !== undefined && this._restaurantProfile.email !== null ) ) {
-                RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $unset: { email: true } } );
-            }
-
-            if( Object.keys( _lRestaurantSocialNetwork ).length !== 0 ){ 
-                RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $set: { social_networks: _lRestaurantSocialNetwork } } ); 
-            } else if( Object.keys( _lRestaurantSocialNetwork ).length === 0 && ( this._restaurantProfile.social_networks !== undefined && this._restaurantProfile.social_networks !== null ) ){
-                RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $unset: { social_networks: true } } );
-            }
-
-            if( this._newImagesToInsert ){
-                uploadRestaurantProfileImages( this._filesToUpload, this._user, this._restaurantId ).then( ( result ) => {
-                    this._filesToUpload = [];
-                    this._newImagesToInsert = false;
-                    let _lMessage: string = this.itemNameTraduction( 'RESTAURANT_PROFILE.PROFILE_UPDATED' );
-                    this._snackBar.open( _lMessage, '', { duration: 2500 } );
-                }).catch( ( err ) => {
-                    var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
-                    this.openDialog(this._titleMsg, '', error, '', this._btnAcceptLbl, false);
-                });
-            } else {
-                let _lMessage: string = this.itemNameTraduction( 'RESTAURANT_PROFILE.PROFILE_UPDATED' );
-                this._snackBar.open( _lMessage, '', { duration: 2500 } );
-            }
-        } else {
-            if( this._profileForm.valid ){
-                _lRestaurantProfile.creation_user = this._user;
-                _lRestaurantProfile.creation_date = new Date();
-                _lRestaurantProfile.modification_user = '-';
+        this._loading = true;
+        setTimeout( () => {
+            if( this._restaurantProfile ){
                 _lRestaurantProfile.modification_date = new Date();
-
-                if( this._profileForm.controls['web_page'].value !== '' && this._profileForm.controls['web_page'].value !== null ){ _lRestaurantProfile.web_page = this._profileForm.value.web_page; }
-                if( this._profileForm.controls['phone'].value !== '' && this._profileForm.controls['phone'].value !== null ){ _lRestaurantProfile.phone = this._profileForm.value.phone; }
-                if( this._profileForm.controls['email'].value !== '' && this._profileForm.controls['email'].value !== null ){ _lRestaurantProfile.email = this._profileForm.value.email; }
-
-                if( Object.keys( _lRestaurantSocialNetwork ).length !== 0 ){ _lRestaurantProfile.social_networks = _lRestaurantSocialNetwork; }
-
-                let _newProfileId:string = RestaurantsProfile.collection.insert( _lRestaurantProfile );
-                this._restaurantProfile = RestaurantsProfile.findOne( { _id: _newProfileId } );
-
+                _lRestaurantProfile.modification_user = this._user;
+                RestaurantsProfile.update( { _id: this._restaurantProfile._id }, {
+                    $set: {
+                        restaurant_description: _lRestaurantProfile.restaurant_description,
+                        schedule: _lRestaurantProfile.schedule,
+                        location: _lRestaurantProfile.location,
+                    }
+                });
+    
+                if( this._profileForm.controls['web_page'].value !== '' && this._profileForm.controls['web_page'].value !== null ){
+                    RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $set: { web_page: this._profileForm.controls['web_page'].value } } );
+                } else if( ( this._profileForm.controls['web_page'].value === '' || this._profileForm.controls['web_page'].value === null ) && ( this._restaurantProfile.web_page !== undefined && this._restaurantProfile.web_page !== null ) ) {
+                    RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $unset: { web_page: true } } );
+                }
+        
+                if( this._profileForm.controls['phone'].value !== '' && this._profileForm.controls['phone'].value !== null ){
+                    RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $set: { phone: this._profileForm.controls['phone'].value } } );
+                } else if( ( this._profileForm.controls['phone'].value === '' || this._profileForm.controls['phone'].value === null ) && ( this._restaurantProfile.phone !== undefined && this._restaurantProfile.phone !== null ) ) {
+                    RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $unset: { phone: true } } );
+                }
+        
+                if( this._profileForm.controls['email'].value !== '' && this._profileForm.controls['email'].value !== null ){
+                    RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $set: { email: this._profileForm.controls['email'].value } } );
+                } else if( ( this._profileForm.controls['email'].value === '' || this._profileForm.controls['email'].value === null ) && ( this._restaurantProfile.email !== undefined && this._restaurantProfile.email !== null ) ) {
+                    RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $unset: { email: true } } );
+                }
+    
+                if( Object.keys( _lRestaurantSocialNetwork ).length !== 0 ){ 
+                    RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $set: { social_networks: _lRestaurantSocialNetwork } } ); 
+                } else if( Object.keys( _lRestaurantSocialNetwork ).length === 0 && ( this._restaurantProfile.social_networks !== undefined && this._restaurantProfile.social_networks !== null ) ){
+                    RestaurantsProfile.update( { _id: this._restaurantProfile._id }, { $unset: { social_networks: true } } );
+                }
+    
                 if( this._newImagesToInsert ){
                     uploadRestaurantProfileImages( this._filesToUpload, this._user, this._restaurantId ).then( ( result ) => {
                         this._filesToUpload = [];
                         this._newImagesToInsert = false;
-                        let _lMessage: string = this.itemNameTraduction( 'RESTAURANT_PROFILE.PROFILE_CREATED' );
+                        let _lMessage: string = this.itemNameTraduction( 'RESTAURANT_PROFILE.PROFILE_UPDATED' );
                         this._snackBar.open( _lMessage, '', { duration: 2500 } );
                     }).catch( ( err ) => {
                         var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
                         this.openDialog(this._titleMsg, '', error, '', this._btnAcceptLbl, false);
                     });
                 } else {
-                    let _lMessage: string = this.itemNameTraduction( 'RESTAURANT_PROFILE.PROFILE_CREATED' );
+                    let _lMessage: string = this.itemNameTraduction( 'RESTAURANT_PROFILE.PROFILE_UPDATED' );
                     this._snackBar.open( _lMessage, '', { duration: 2500 } );
                 }
+            } else {
+                if( this._profileForm.valid ){
+                    _lRestaurantProfile.creation_user = this._user;
+                    _lRestaurantProfile.creation_date = new Date();
+                    _lRestaurantProfile.modification_user = '-';
+                    _lRestaurantProfile.modification_date = new Date();
+    
+                    if( this._profileForm.controls['web_page'].value !== '' && this._profileForm.controls['web_page'].value !== null ){ _lRestaurantProfile.web_page = this._profileForm.value.web_page; }
+                    if( this._profileForm.controls['phone'].value !== '' && this._profileForm.controls['phone'].value !== null ){ _lRestaurantProfile.phone = this._profileForm.value.phone; }
+                    if( this._profileForm.controls['email'].value !== '' && this._profileForm.controls['email'].value !== null ){ _lRestaurantProfile.email = this._profileForm.value.email; }
+    
+                    if( Object.keys( _lRestaurantSocialNetwork ).length !== 0 ){ _lRestaurantProfile.social_networks = _lRestaurantSocialNetwork; }
+    
+                    let _newProfileId:string = RestaurantsProfile.collection.insert( _lRestaurantProfile );
+                    this._restaurantProfile = RestaurantsProfile.findOne( { _id: _newProfileId } );
+    
+                    if( this._newImagesToInsert ){
+                        uploadRestaurantProfileImages( this._filesToUpload, this._user, this._restaurantId ).then( ( result ) => {
+                            this._filesToUpload = [];
+                            this._newImagesToInsert = false;
+                            let _lMessage: string = this.itemNameTraduction( 'RESTAURANT_PROFILE.PROFILE_CREATED' );
+                            this._snackBar.open( _lMessage, '', { duration: 2500 } );
+                        }).catch( ( err ) => {
+                            var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
+                            this.openDialog(this._titleMsg, '', error, '', this._btnAcceptLbl, false);
+                        });
+                    } else {
+                        let _lMessage: string = this.itemNameTraduction( 'RESTAURANT_PROFILE.PROFILE_CREATED' );
+                        this._snackBar.open( _lMessage, '', { duration: 2500 } );
+                    }
+                }
             }
-        }
+            this._loading = false;
+        }, 1500);
     }
 
     /**

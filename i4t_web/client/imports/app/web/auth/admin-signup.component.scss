@@ -153,6 +153,11 @@ mat-toolbar {
     .primary-button {
         background-color: transparent !important;
     }
+    
+    .primary-button:hover{
+        background-color: #EF5350 !important;
+        color: white !important;
+    }
 }
 
 .dwfm {

@@ -100,7 +100,7 @@
         "REQUIRED_USERNAME": "El nombre de usuario no puede estar vacío",
         "MIN_LENGTH_USERNAME": "El nombre de usuario debe tener mínimo 6 caracteres",
         "MAX_LENGTH_USERNAME": "El nombre de usuario debe tener máximo 20 caracteres",
-        "NO_SPACES" : "No se permiten espacios",
+        "NO_SPACES": "No se permiten espacios",
         "REQUIRED_EMAIL": "Formato de correo electrónico incorrecto",
         "MIN_LENGTH_EMAIL": "El correo electrónico debe tener mínimo 6 caracteres",
         "MAX_LENGTH_EMAIL": "EL correo electrónico debe tener máximo 40 caracteres",
@@ -551,13 +551,13 @@
         "FILE_NAME": "mesas"
     },
     "GO_TO_STORE": {
-        "CLIENT" : {
+        "CLIENT": {
             "TITTLE": "Qué te",
             "SUB_TITTLE": "gusta comer?",
             "CONTENT": "Hicimos la mayor parte del trabajo pesado para que usted pueda proporcionar un estilo por defecto que incorpora nuestros componentes personalizados",
             "BUTTON": "Descargar"
         },
-        "COLLABORATOR" : {
+        "COLLABORATOR": {
             "TITTLE": "Por favor ingresa desde tu computador, para disfrutar de iurest",
             "BUTTON": "Regresar"
         }
@@ -1187,7 +1187,8 @@
         "INVOICE_SALE": "Factura de venta",
         "DATE": "Fecha-Hora",
         "TOOLTIP_DOWNLOAD_INVOICE": "Descargar factura",
-        "NO_PAYS": "Aún no tiene pagos realizados"
+        "NO_PAYS": "Aún no tiene pagos realizados",
+        "INVOICE_GENERATED_BY": "FACTURA EMITIDA POR COMPUTADOR"
     },
     "ADMIN_SIGNUP": {
         "HOME_CONTENT" : {
@@ -1205,7 +1206,7 @@
         "REQUIRED_USERNAME": "El nombre de usuario no puede estar vacío",
         "MIN_LENGTH_USERNAME": "El nombre de usuario debe tener mínimo 6 caracteres",
         "MAX_LENGTH_USERNAME": "El nombre de usuario debe tener máximo 20 caracteres",
-        "NO_SPACES" : "No se permiten espacios",
+        "NO_SPACES": "No se permiten espacios",
         "EMAIL": "Correo electrónico",
         "REQUIRED_EMAIL": "Formato de correo electrónico incorrecto",
         "MIN_LENGTH_EMAIL": "El correo electrónico debe tener mínimo 6 caracteres",
@@ -1443,7 +1444,10 @@
             "ACCEPT": "Aceptar",
             "ENTER_PREFIX": "Por favor indique el nombre del prefijo",
             "ENTER_BIG_CONTRIBUTOR_FILES": "Por favor ingrese los datos de gran contribuyente",
-            "ENTER_SELF_ACCEPTING_FILES": "Por favor ingrese los datos de autoretenedor"
+            "ENTER_SELF_ACCEPTING_FILES": "Por favor ingrese los datos de autoretenedor",
+            "CURRENT_RESOLUTION_TITLE": "Información de resolución actual",
+            "NEXT_RESOLUTION_TITLE": "Información de siguiente resolución",
+            "IS_RETAINING_AGENT": "Es agente retenedor"
         }
     },
     "RESTAURANT_PROFILE": {
