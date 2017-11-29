@@ -1,12 +1,46 @@
 <mat-tab-group>
-    <mat-tab label="Como funciona">
-        Como funciona
+    <mat-tab label="{{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.HOW_ITS_WORKS' | translate}}">
+        <mat-card>
+            <mat-card-content>
+                <mat-card-title>{{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.FIRST_DAYS_TITLE' | translate}}</mat-card-title>
+                <p>
+                    {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.FIRST_DAYS_CONTENT' | translate}}
+                </p>
+                <p>
+                    {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.FIRST_DAYS_SUGGEST' | translate}}
+                </p>
+    
+                <mat-card-title class="margin-top">{{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT' | translate}}</mat-card-title>
+                <p>
+                    {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_1' | translate}}
+                </p>
+                <p>
+                    {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_2' | translate}}
+                </p>
+                <p>
+                    {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_3' | translate}} 
+                </p>
+
+                <ul>
+                    <li>
+                        {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_4' | translate}}
+                    </li>
+                    <li>
+                        {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_5' | translate}}
+                    </li>
+                </ul>
+
+                <mat-card-title class="margin-top">{{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.REACTIVATE_IUREST_SERVICE' | translate}}</mat-card-title>
+                <p>
+                    {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.REACTIVATE_IUREST_SERVICE_CONTENT' | translate}}
+                </p>
+            </mat-card-content>
+            <mat-card-actions align="end">
+                <button mat-raised-button class="secondary-button" (click)="cancel()">{{'OK' | translate}}</button>
+            </mat-card-actions>
+        </mat-card>
     </mat-tab>
     <mat-tab label="Simulador">
         Simulador
     </mat-tab>
 </mat-tab-group>
-
-<mat-card-actions align="end">
-    <button mat-raised-button class="secondary-button" (click)="cancel()">{{'CANCEL' | translate}}</button>
-</mat-card-actions>

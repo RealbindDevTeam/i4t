@@ -5,7 +5,7 @@ import { UserLanguageService } from '../../../shared/services/user-language.serv
 @Component({
   selector: 'payment-plan-info',
   templateUrl: './payment-plan-info.component.html',
-  styleUrls: [],
+  styleUrls: [ './payment-plan-info.component.scss' ],
   providers: [ UserLanguageService ]
 })
 export class PaymentPlanInfo {

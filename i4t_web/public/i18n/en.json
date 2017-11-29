@@ -1249,7 +1249,21 @@
         "LABEL_LEGAL": "By clicking on 'Register', ",
         "LABEL_LEGAL_END": "you agree the terms and conditions.",
         "GENERAL_INFO": "Personal information",
-        "USER_PASSWD": "User and password"
+        "USER_PASSWD": "User and password",
+        "PAYMENT_PLAN_INFO" : {
+            "HOW_ITS_WORKS" : "How its works?",
+            "FIRST_DAYS_TITLE" : "First days",
+            "FIRST_DAYS_CONTENT" : "Starting from the day of register your restaurant, to the first day of the following month. you can be use iurest completely free.",
+            "FIRST_DAYS_SUGGEST" : "We recommend that you register in the first days of the month to order enjoy more the service.",
+            "ABOUT_MONTHLY_PAYMENT" : "About montly payment",
+            "ABOUT_MONTHLY_PAYMENT_TEXT_1" : "Starting from 1 to 5 of each month, after you configure the tables quantity that uses to restaurant, you can able to pay only for the restaurants and tables that you are going to use during this month.",
+            "ABOUT_MONTHLY_PAYMENT_TEXT_2" : "Keep in mind that since it is not a recurring payment, when changing the configuration of your restaurants and number of tables the value will change.",
+            "ABOUT_MONTHLY_PAYMENT_TEXT_3" : "The price charged consist of:",
+            "ABOUT_MONTHLY_PAYMENT_TEXT_4" : "The price by establishment (Restaurant)",
+            "ABOUT_MONTHLY_PAYMENT_TEXT_5" : "The price by tables number (Unit value for quantity) by restaurant",
+            "REACTIVATE_IUREST_SERVICE" : "Reactivate iurest service",
+            "REACTIVATE_IUREST_SERVICE_CONTENT" : "If you can't able to pay between the prescribed period (1 to 5 of each month), you have the possibility the reactivate your restaurants in the remaining days of the month, the charge would be realized by the total value of the month until 1 of the following month."
+        }
     },
     "ADMIN_DASHBOARD": {
         "TITLE": "Welcome to iurest",
