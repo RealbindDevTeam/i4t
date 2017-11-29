@@ -29,7 +29,7 @@
         </ion-slide>
     </ion-slides>
 
-    <ion-card *ngFor="let _restaurant of _restaurants | async;" class="wm">
+    <ion-card *ngFor="let _restaurant of _restaurants | async;" class="card-nm">
         <ion-card-content>
             <ion-item>
                 <ion-card-title>{{_restaurant?.name}}</ion-card-title>
@@ -37,10 +37,10 @@
             </ion-item>
             
             <ion-list inset class="margin" no-lines>
-                <button ion-item>
+                <ion-item>
                     <ion-icon name="map"></ion-icon>
                     {{_restaurantCountry}}, {{_restaurantCity}}
-                </button>
+                </ion-item>
                 <button ion-item (click)="openSchedule()" *ngIf="_restaurantProfile?.schedule.monday.isActive || _restaurantProfile?.schedule.tuesday.isActive || 
                 _restaurantProfile?.schedule.wednesday.isActive || _restaurantProfile?.schedule.thursday.isActive ||
                 _restaurantProfile?.schedule.friday.isActive || _restaurantProfile?.schedule.saturday.isActive || 
@@ -49,13 +49,13 @@
                     {{'MOBILE.SCHEDULE.SCHEDULE' | translate}}
                 </button>
 
-                <button ion-item *ngIf="!_restaurantProfile?.schedule?.monday.isActive && !_restaurantProfile?.schedule?.tuesday.isActive && 
+                <ion-item *ngIf="!_restaurantProfile?.schedule?.monday.isActive && !_restaurantProfile?.schedule?.tuesday.isActive && 
                 !_restaurantProfile?.schedule?.wednesday.isActive && !_restaurantProfile?.schedule?.thursday.isActive && 
                 !_restaurantProfile?.schedule?.friday.isActive && !_restaurantProfile?.schedule?.saturday.isActive && 
                 !_restaurantProfile?.schedule?.sunday.isActive && !_restaurantProfile?.schedule?.holiday.isActive">
                     <ion-icon name="time"></ion-icon>
                     {{'MOBILE.SCHEDULE.NO_RESTAURANT_HOURS' | translate}}
-                </button>
+                </ion-item>
             </ion-list>
 
             <p *ngIf="_restaurantProfile?.restaurant_description.length <= 20" class="margin">
@@ -90,18 +90,18 @@
             </div>
 
             <ion-list inset class="margin" no-lines>
-                <button ion-item *ngIf="_restaurant?.phone">
+                <ion-item *ngIf="_restaurant?.phone">
                     <ion-icon name="call"></ion-icon>
                     {{_restaurant.indicative}} {{_restaurant.phone}}
-                </button>
-                <button ion-item *ngIf="_restaurantProfile?.email">
+                </ion-item>
+                <ion-item *ngIf="_restaurantProfile?.email">
                     <ion-icon name="chatbubbles"></ion-icon>
                     {{_restaurantProfile?.email}}
-                </button>
-                <button ion-item *ngIf="_restaurant?.address">
+                </ion-item>
+                <ion-item *ngIf="_restaurant?.address">
                     <ion-icon name="pin"></ion-icon>
                     {{_restaurant.address}}
-                </button>
+                </ion-item>
             </ion-list>
         </ion-card-content>
     </ion-card>

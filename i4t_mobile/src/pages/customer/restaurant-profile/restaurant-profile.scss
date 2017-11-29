@@ -1,7 +1,4 @@
 page-restaurant-profile {
-    ion-card.wm {
-        margin: 0 !important
-    }
 
     ion-fab {
         top: -56px !important;
@@ -27,6 +24,7 @@ page-restaurant-profile {
 
     ion-slides {
         max-height: 200px;
+        margin-bottom: -10px;
     }
 
     ion-label, ion-list.margin {

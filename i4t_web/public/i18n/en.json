@@ -1195,6 +1195,16 @@
         "INVOICE_GENERATED_BY": "FACTURA EMITIDA POR COMPUTADOR"
     },
     "ADMIN_SIGNUP": {
+        "HOME_CONTENT" : {
+            "TITLE" : "It improves the service of your restaurant and the attention to your clients with our system",
+            "SUB_TITLE" : "It reduces time receiving and delivering the orders of your diners"
+        },
+        "ABOUT_CONTENT" : {
+            "MSG_1" : "Add the detailed information of the menu, in order to the clients can see it, and ordering from his phones, tablets or computers",
+            "MSG_2" : "Creating collaborators and assign them a role (chef, waiter/waitress or supervisor) to interact with the system",
+            "MSG_3" : "You can use the complete free service by limited time, later you pay that you need.",
+            "REF" : "Pricing"
+        },
         "SLOGAN": "Administrator register",
         "USERNAME": "Username",
         "REQUIRED_USERNAME": "You must include a username",

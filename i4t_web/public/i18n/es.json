@@ -1195,6 +1195,16 @@
         "INVOICE_GENERATED_BY": "FACTURA EMITIDA POR COMPUTADOR"
     },
     "ADMIN_SIGNUP": {
+        "HOME_CONTENT" : {
+            "TITLE" : "Mejora el servicio de tu restaurante y la atención a tus clientes con nuestro sistema",
+            "SUB_TITLE" : "Reduce el tiempo en recibir y entregar las ordenes de tus comensales"
+        },
+        "ABOUT_CONTENT" : {
+            "MSG_1" : "Ingresa información detallada del menú, para que los clientes puedan verlo, y ordenar desde sus celulares, tablets o computadores",
+            "MSG_2" : "Crea colaboradores y asignales un rol (chef, mesero ó supervisor) para interactuar con el sistema",
+            "MSG_3" : "Usa el servicio completo gratis por tiempo limitado, después paga de acuerdo a lo que necesites.",
+            "REF" : "Consulta nuestro plan de pagos"
+        },
         "SLOGAN": "Registro de administrador",
         "USERNAME": "Usuario",
         "REQUIRED_USERNAME": "El nombre de usuario no puede estar vacío",
