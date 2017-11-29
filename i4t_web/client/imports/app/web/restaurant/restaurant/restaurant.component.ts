@@ -110,12 +110,7 @@ export class RestaurantComponent implements OnInit, OnDestroy {
      * @param {string} _pRestaurantId
      */
     getRestaurantImage(_pRestaurantId: string): string {
-        let _lRestaurantImage: RestaurantImage = RestaurantImages.findOne({ restaurantId: _pRestaurantId });
-        if (_lRestaurantImage) {
-            return _lRestaurantImage.url
-        } else {
-            return '/images/default-restaurant.png';
-        }
+        return RestaurantImages.getRestaurantImageUrl( _pRestaurantId );
     }
 
     /**

@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
-import { Item, ItemImageThumb, ItemPrice } from '../../../../../../both/models/administration/item.model';
+import { Item, ItemPrice } from '../../../../../../both/models/administration/item.model';
 import { Items, ItemImagesThumbs } from '../../../../../../both/collections/administration/item.collection';
 import { ItemEditionComponent } from './items-edition/item-edition.component';
 import { Currency } from '../../../../../../both/models/general/currency.model';
@@ -227,12 +227,7 @@ export class ItemComponent implements OnInit, OnDestroy {
      * @param {string} _itemId
      */
     getItemImage(_itemId: string): string {
-        let _lItemImageThumb: ItemImageThumb = ItemImagesThumbs.findOne({ itemId: _itemId });
-        if (_lItemImageThumb) {
-            return _lItemImageThumb.url;
-        } else {
-            return '/images/default-plate.png';
-        }
+        return ItemImagesThumbs.getItemImageThumbUrl(_itemId);
     }
 
     /**

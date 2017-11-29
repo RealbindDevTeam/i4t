@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatDialogRef, MatDialog } from '@angular/material';
-import { Accounts } from 'meteor/accounts-base';
 import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from 'meteor-rxjs';
-import { Subscription, Subject, Observable } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Countries } from '../../../../../../both/collections/settings/country.collection';
 import { Country } from '../../../../../../both/models/settings/country.model';
@@ -18,52 +17,52 @@ import { UserDetails } from '../../../../../../both/collections/auth/user-detail
 import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 import { ChangeEmailWebComponent } from './modal-dialog/change-email.web.component';
 import { ChangePasswordWebComponent } from '../../../web/customer/settings/modal-dialog/change-password.web.component';
-import { uploadUserImage } from '../../../../../../both/methods/auth/user-profile.methods';
 import { UserProfileImage } from '../../../../../../both/models/auth/user-profile.model';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
+import { ImageService } from '../../../shared/services/image.service';
 
 @Component({
     selector: 'settings',
     templateUrl: './settings.web.component.html',
-    styleUrls: [ './settings.web.component.scss' ]
+    styleUrls: ['./settings.web.component.scss']
 })
 export class SettingsWebComponent implements OnInit, OnDestroy {
 
-    private _userForm               : FormGroup;
+    private _userForm: FormGroup;
 
-    private _userSubscription       : Subscription;
-    private _userDetailSubscription : Subscription;
-    private _subscription           : Subscription;
-    private _countrySubscription    : Subscription;
-    private _citySubscription       : Subscription;
+    private _userSubscription: Subscription;
+    private _userDetailSubscription: Subscription;
+    private _subscription: Subscription;
+    private _countrySubscription: Subscription;
+    private _citySubscription: Subscription;
 
-    private _countries              : Observable<Country[]>;
-    private _cities                 : Observable<City[]>;
-    private _languages              : Observable<Language[]>;
+    private _countries: Observable<Country[]>;
+    private _cities: Observable<City[]>;
+    private _languages: Observable<Language[]>;
 
-    private _mdDialogRef            : MatDialogRef<any>;
-    private _user                   : User;
-    private _userDetail             : UserDetail;
+    private _mdDialogRef: MatDialogRef<any>;
+    private _user: User;
+    private _userDetail: UserDetail;
 
-    private _userName               : string;
-    private _firstName              : string;
-    private _lastName               : string;
-    private _message                : string;
-    private _languageCode           : string;
-    private _imageProfile           : string;
-    private _lang_code              : string;
+    private _userName: string;
+    private _firstName: string;
+    private _lastName: string;
+    private _message: string;
+    private _languageCode: string;
+    private _imageProfile: string;
+    private _lang_code: string;
 
-    private titleMsg                : string;
-    private btnAcceptLbl            : string;
-    private _disabled               : boolean = true;
-    private _showOtherCity          : boolean = false;
-    private _validateChangeEmail    : boolean = true;
-    private _validateChangePass     : boolean = true;
-    private _createImage            : boolean = false;
-    private _loading                : boolean = false;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
+    private _disabled: boolean = true;
+    private _showOtherCity: boolean = false;
+    private _validateChangeEmail: boolean = true;
+    private _validateChangePass: boolean = true;
+    private _createImage: boolean = false;
+    private _loading: boolean = false;
 
-    private _filesToUpload          : Array<File>;
-    private _itemImageToInsert      : File;
+    private _filesToUpload: Array<File>;
+    private _itemImageToInsert: File;
 
     /**
      * SettingsWebComponent Constructor
@@ -72,23 +71,24 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
      * @param {UserLanguageService} _userLanguageService 
      * @param {NgZone} _ngZone
      */
-    constructor ( private _translate: TranslateService, 
-                  public _mdDialog: MatDialog,
-                  private _userLanguageService: UserLanguageService,
-                  private _ngZone: NgZone ){
-        let _lUserLanguage = this._userLanguageService.getLanguage( Meteor.user() );
-        _translate.use( _lUserLanguage );  
-        _translate.setDefaultLang( 'en' ); 
+    constructor(private _translate: TranslateService,
+        public _mdDialog: MatDialog,
+        private _userLanguageService: UserLanguageService,
+        private _ngZone: NgZone,
+        private _imageService: ImageService) {
+        let _lUserLanguage = this._userLanguageService.getLanguage(Meteor.user());
+        _translate.use(_lUserLanguage);
+        _translate.setDefaultLang('en');
         this._languageCode = _lUserLanguage;
         this._lang_code = _lUserLanguage;
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
-    
+
     /**
      * ngOnInit implementation
      */
-    ngOnInit(){
+    ngOnInit() {
         this.removeSubscriptions();
 
         this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe();
@@ -100,59 +100,59 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
         });
 
         this._citySubscription = MeteorObservable.subscribe('cities').subscribe();
-        
-        this._subscription = MeteorObservable.subscribe('languages').subscribe(()=>{
+
+        this._subscription = MeteorObservable.subscribe('languages').subscribe(() => {
             this._ngZone.run(() => {
                 this._languages = Languages.find({}).zone();
             });
         });
 
-        this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe(()=>{
-            this._ngZone.run( ()=> {
-                
-                this._user = Users.findOne({_id: Meteor.userId()});;
-                this._userDetail = UserDetails.findOne({user_id: Meteor.userId()});
+        this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe(() => {
+            this._ngZone.run(() => {
 
-                if(this._user.services.facebook){
+                this._user = Users.findOne({ _id: Meteor.userId() });;
+                this._userDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+
+                if (this._user.services.facebook) {
                     this._userForm = new FormGroup({
-                        username: new FormControl({value: this._user.services.facebook.name, disabled : true}),
-                        first_name: new FormControl({value: this._user.services.facebook.first_name, disabled : true}),
-                        last_name: new FormControl({value: this._user.services.facebook.last_name, disabled : true}),
+                        username: new FormControl({ value: this._user.services.facebook.name, disabled: true }),
+                        first_name: new FormControl({ value: this._user.services.facebook.first_name, disabled: true }),
+                        last_name: new FormControl({ value: this._user.services.facebook.last_name, disabled: true }),
                     });
                 }
-                
-                if(this._user.username){
+
+                if (this._user.username) {
                     this._userForm = new FormGroup({
-                        username: new FormControl({value: this._user.username, disabled : true}),
-                        first_name: new FormControl({value: this._user.profile.first_name, disabled : false}),
-                        last_name: new FormControl({value: this._user.profile.last_name, disabled : false}),
-                        language_code: new FormControl({value: this._user.profile.language_code, disabled : false})
+                        username: new FormControl({ value: this._user.username, disabled: true }),
+                        first_name: new FormControl({ value: this._user.profile.first_name, disabled: false }),
+                        last_name: new FormControl({ value: this._user.profile.last_name, disabled: false }),
+                        language_code: new FormControl({ value: this._user.profile.language_code, disabled: false })
                     });
                     this._validateChangePass = false;
-                    if(this._userDetail.role_id === '400') {
+                    if (this._userDetail.role_id === '400') {
                         this._validateChangeEmail = false;
-                    } else if(this._userDetail.role_id === '100') {
+                    } else if (this._userDetail.role_id === '100') {
                         this._validateChangeEmail = false;
-                        let dniNumber : FormControl =  new FormControl({value: this._userDetail.dni_number, disabled : false}, [Validators.required, Validators.minLength(1), Validators.maxLength(20)]);
+                        let dniNumber: FormControl = new FormControl({ value: this._userDetail.dni_number, disabled: false }, [Validators.required, Validators.minLength(1), Validators.maxLength(20)]);
                         this._userForm.addControl('dniNumber', dniNumber);
-                        
-                        let contactPhone : FormControl = new FormControl({value: this._userDetail.contact_phone, disabled : false}, [Validators.required, Validators.minLength(1), Validators.maxLength(20)]);
+
+                        let contactPhone: FormControl = new FormControl({ value: this._userDetail.contact_phone, disabled: false }, [Validators.required, Validators.minLength(1), Validators.maxLength(20)]);
                         this._userForm.addControl('contactPhone', contactPhone);
-                        
-                        let shippingAddress : FormControl = new FormControl({value: this._userDetail.address, disabled : false}, [Validators.required, Validators.minLength(1), Validators.maxLength(150)]);
+
+                        let shippingAddress: FormControl = new FormControl({ value: this._userDetail.address, disabled: false }, [Validators.required, Validators.minLength(1), Validators.maxLength(150)]);
                         this._userForm.addControl('shippingAddress', shippingAddress);
-                        
-                        let country : FormControl = new FormControl({value: this._userDetail.country_id, disabled : false}, [Validators.required]);
+
+                        let country: FormControl = new FormControl({ value: this._userDetail.country_id, disabled: false }, [Validators.required]);
                         this._userForm.addControl('country', country);
-                        
+
                         this.changeCountry(this._userDetail.country_id);
-                        
-                        let city : FormControl = new FormControl({value: this._userDetail.city_id, disabled : false}, [Validators.required]);
+
+                        let city: FormControl = new FormControl({ value: this._userDetail.city_id, disabled: false }, [Validators.required]);
                         this._userForm.addControl('city', city);
-                        
-                        let otherCity : FormControl =  new FormControl();
+
+                        let otherCity: FormControl = new FormControl();
                         this._userForm.addControl('otherCity', otherCity);
-                        
+
                         if (this._userDetail.other_city) {
                             this._showOtherCity = true;
                             this._userForm.controls['city'].setValue('0000');
@@ -170,12 +170,12 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._userSubscription ){ this._userSubscription.unsubscribe(); }
-        if( this._userDetailSubscription ){ this._userDetailSubscription.unsubscribe(); }
-        if( this._subscription ){ this._subscription.unsubscribe(); }
-        if( this._countrySubscription ){ this._countrySubscription.unsubscribe(); }
-        if( this._citySubscription ){ this._citySubscription.unsubscribe() }
+    removeSubscriptions(): void {
+        if (this._userSubscription) { this._userSubscription.unsubscribe(); }
+        if (this._userDetailSubscription) { this._userDetailSubscription.unsubscribe(); }
+        if (this._subscription) { this._subscription.unsubscribe(); }
+        if (this._countrySubscription) { this._countrySubscription.unsubscribe(); }
+        if (this._citySubscription) { this._citySubscription.unsubscribe() }
     }
 
     /**
@@ -206,14 +206,14 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     /**
      * Return user image
      */
-    getUsetImage():string{
-        if(this._user && this._user.services.facebook){
+    getUsetImage(): string {
+        if (this._user && this._user.services.facebook) {
             return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
         } else {
-            let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() });
-            if( _lUserImage ){
+            let _lUserImage: UserProfileImage = UserImages.findOne({ userId: Meteor.userId() });
+            if (_lUserImage) {
                 return _lUserImage.url;
-            } 
+            }
             else {
                 return '/images/user_default_image.png';
             }
@@ -223,39 +223,45 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     /**
      * User detail edition 
      */
-    editUserDetail():void {
-        if( !Meteor.userId() ){
-            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+    editUserDetail(): void {
+        if (!Meteor.userId()) {
+            var error: string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
-        
-        if(this._userForm.valid){
-            Users.update({_id: Meteor.userId()}, { $set: {
-                profile: {  first_name: this._userForm.value.first_name,
-                            last_name: this._userForm.value.last_name,
-                            language_code: this._userForm.value.language_code }}
+
+        if (this._userForm.valid) {
+            Users.update({ _id: Meteor.userId() }, {
+                $set: {
+                    profile: {
+                        first_name: this._userForm.value.first_name,
+                        last_name: this._userForm.value.last_name,
+                        language_code: this._userForm.value.language_code
+                    }
+                }
             });
 
-            if(this._userDetail.role_id === '100'){
-                let citySelected      : string = '';
-                let othercitySelected : string = '';
-                if(this._userForm.value.city === '0000'){
+            if (this._userDetail.role_id === '100') {
+                let citySelected: string = '';
+                let othercitySelected: string = '';
+                if (this._userForm.value.city === '0000') {
                     othercitySelected = this._userForm.value.otherCity;
                 } else {
                     citySelected = this._userForm.value.city;
                 }
-                UserDetails.update({_id : this._userDetail._id},{ $set : {
-                    contact_phone : this._userForm.value.contactPhone,
-                    dni_number : this._userForm.value.dniNumber,
-                    address : this._userForm.value.shippingAddress,
-                    country_id : this._userForm.value.country,
-                    city_id : citySelected,
-                    other_city : othercitySelected }
+                UserDetails.update({ _id: this._userDetail._id }, {
+                    $set: {
+                        contact_phone: this._userForm.value.contactPhone,
+                        dni_number: this._userForm.value.dniNumber,
+                        address: this._userForm.value.shippingAddress,
+                        country_id: this._userForm.value.country,
+                        city_id: citySelected,
+                        other_city: othercitySelected
+                    }
                 });
             }
-            
-            let message : string;
+
+            let message: string;
             message = this.itemNameTraduction('SETTINGS.USER_DETAIL_UPDATED');
             this.openDialog(this.titleMsg, '', message, '', this.btnAcceptLbl, false);
         }
@@ -266,7 +272,7 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
      */
     open() {
         this._mdDialogRef = this._mdDialog.open(ChangeEmailWebComponent, {
-            disableClose : true 
+            disableClose: true
         });
         this._mdDialogRef.afterClosed().subscribe(result => {
             this._mdDialogRef = null;
@@ -277,9 +283,9 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
      * ChangePasswordWebComponent show
      */
     openModalChangePassword() {
-        
-        this._mdDialogRef = this._mdDialog.open( ChangePasswordWebComponent, {
-            disableClose : true
+
+        this._mdDialogRef = this._mdDialog.open(ChangePasswordWebComponent, {
+            disableClose: true
         });
         this._mdDialogRef.afterClosed().subscribe(result => {
             this._mdDialogRef = null;
@@ -290,10 +296,10 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
      * Traduction of the strings
      * @param itemName 
      */
-    itemNameTraduction(itemName: string): string{
+    itemNameTraduction(itemName: string): string {
         var wordTraduced: string;
         this._translate.get(itemName).subscribe((res: string) => {
-            wordTraduced = res; 
+            wordTraduced = res;
         });
         return wordTraduced;
     }
@@ -309,20 +315,20 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
             this._filesToUpload = <Array<File>>_fileInput.target.files;
             this._itemImageToInsert = this._filesToUpload[0];
 
-            let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() } );
-            if( _lUserImage ){
-                UserImages.remove( { _id: _lUserImage._id } );
+            let _lUserImage: UserProfileImage = UserImages.findOne({ userId: Meteor.userId() });
+            if (_lUserImage) {
+                UserImages.remove({ _id: _lUserImage._id });
             }
-            uploadUserImage( this._itemImageToInsert, Meteor.userId() ).then((result) => {
+            this._imageService.uploadUserImage(this._itemImageToInsert, Meteor.userId()).then((result) => {
                 this._createImage = false;
             }).catch((err) => {
-                var error : string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
+                var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
                 this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             });
             this._loading = false;
         }, 3000);
     }
-    
+
     /** 
     * This function open de error dialog according to parameters 
     * @param {string} title
@@ -333,7 +339,7 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     * @param {boolean} showBtnCancel
     */
     openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
-        
+
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
@@ -356,7 +362,7 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     /**
      * ngOnDestroy implementation
      */
-    ngOnDestroy(){
+    ngOnDestroy() {
         this.removeSubscriptions();
     }
 }

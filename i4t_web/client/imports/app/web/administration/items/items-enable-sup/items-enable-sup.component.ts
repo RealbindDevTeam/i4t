@@ -5,7 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { Item, ItemImageThumb, ItemPrice, ItemRestaurant } from '../../../../../../../both/models/administration/item.model';
+import { Item } from '../../../../../../../both/models/administration/item.model';
 import { Items, ItemImagesThumbs } from '../../../../../../../both/collections/administration/item.collection';
 import { UserDetail } from '../../../../../../../both/models/auth/user-detail.model';
 import { UserDetails } from '../../../../../../../both/collections/auth/user-detail.collection';
@@ -13,19 +13,19 @@ import { UserDetails } from '../../../../../../../both/collections/auth/user-det
 @Component({
     selector: 'item-enable-sup',
     templateUrl: './items-enable-sup.component.html',
-    styleUrls: [ '../item.component.scss' ]
+    styleUrls: ['../item.component.scss']
 })
 export class ItemEnableSupComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    private _itemsSub               : Subscription;
-    private _itemImagesThumbSub     : Subscription;
-    private _userDetailSub          : Subscription;
+    private _itemsSub: Subscription;
+    private _itemImagesThumbSub: Subscription;
+    private _userDetailSub: Subscription;
 
-    private _items                  : Observable<Item[]>;
-    private _itemsFilter            : Item[] = [];
-    private _userDetail             : UserDetail;
-    private _thereAreItems          : boolean = true;
+    private _items: Observable<Item[]>;
+    private _itemsFilter: Item[] = [];
+    private _userDetail: UserDetail;
+    private _thereAreItems: boolean = true;
 
     /**
      * ItemEnableSupComponent Constructor
@@ -47,17 +47,17 @@ export class ItemEnableSupComponent implements OnInit, OnDestroy {
      */
     ngOnInit() {
         this.removeSubscriptions();
-        this._itemsSub = MeteorObservable.subscribe( 'getItemsByUserRestaurantWork', this._user ).subscribe(() => {
+        this._itemsSub = MeteorObservable.subscribe('getItemsByUserRestaurantWork', this._user).subscribe(() => {
             this._ngZone.run(() => {
                 this._items = Items.find({}).zone();
                 this._itemsFilter = Items.collection.find({}).fetch();
                 this.countItems();
-                this._items.subscribe( () => { this.countItems(); } );
+                this._items.subscribe(() => { this.countItems(); });
             });
         });
 
-        this._itemImagesThumbSub = MeteorObservable.subscribe( 'getItemImageThumbsByRestaurantWork', this._user ).subscribe();
-        this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', this._user ).subscribe(() => {
+        this._itemImagesThumbSub = MeteorObservable.subscribe('getItemImageThumbsByRestaurantWork', this._user).subscribe();
+        this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', this._user).subscribe(() => {
             this._ngZone.run(() => {
                 this._userDetail = UserDetails.collection.findOne({ user_id: this._user });
             });
@@ -67,17 +67,17 @@ export class ItemEnableSupComponent implements OnInit, OnDestroy {
     /**
      * Validate if items exists
      */
-    countItems():void{
-        Items.collection.find( { } ).count() > 0 ? this._thereAreItems = true : this._thereAreItems = false;
+    countItems(): void {
+        Items.collection.find({}).count() > 0 ? this._thereAreItems = true : this._thereAreItems = false;
     }
 
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
-        if( this._itemImagesThumbSub ){ this._itemImagesThumbSub.unsubscribe(); }
-        if( this._userDetailSub ){ this._userDetailSub.unsubscribe(); }
+    removeSubscriptions(): void {
+        if (this._itemsSub) { this._itemsSub.unsubscribe(); }
+        if (this._itemImagesThumbSub) { this._itemImagesThumbSub.unsubscribe(); }
+        if (this._userDetailSub) { this._userDetailSub.unsubscribe(); }
     }
 
     /**
@@ -116,13 +116,7 @@ export class ItemEnableSupComponent implements OnInit, OnDestroy {
      * @param {string} _itemId
      */
     getItemImage(_itemId: string): string {
-        let _lItemImageThumb: ItemImageThumb = ItemImagesThumbs.findOne({ itemId: _itemId });
-        if (_lItemImageThumb) {
-            return _lItemImageThumb.url;
-
-        } else {
-            return '/images/default-plate.png';
-        }
+        return ItemImagesThumbs.getItemImageThumbUrl(_itemId);
     }
 
     /**
@@ -142,6 +136,6 @@ export class ItemEnableSupComponent implements OnInit, OnDestroy {
      * ngOnDestroy Implementation
      */
     ngOnDestroy() {
-        this.removeSubscriptions();       
+        this.removeSubscriptions();
     }
 }

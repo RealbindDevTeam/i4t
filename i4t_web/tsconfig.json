@@ -17,7 +17,9 @@
       "target": "es2015",
       "skipLibCheck": true,
       "stripInternal": true,
-      "noImplicitAny": true
+      "noImplicitAny": false,
+      "isolatedModules": false,
+      "removeComments": false
     },
     "include": [
       "both/**/*.ts",

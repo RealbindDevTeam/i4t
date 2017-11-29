@@ -4,10 +4,11 @@ import { Router, Event, NavigationStart, NavigationEnd } from '@angular/router';
 import 'hammerjs';
 import { OrderNavigationService } from './customer/orders/order-navigation/order-navigation.service';
 import { UserLanguageService } from '../shared/services/user-language.service';
+import { ImageService } from '../shared/services/image.service';
 
 @Component({
     selector: 'app',
-    providers: [OrderNavigationService, UserLanguageService],
+    providers: [OrderNavigationService, UserLanguageService, ImageService],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
     encapsulation: ViewEncapsulation.None
@@ -19,7 +20,8 @@ export class AppComponent implements OnInit {
         private _router: Router,
         private _elementRef: ElementRef,
         private _orderNavigationService: OrderNavigationService,
-        private _userLanguageService: UserLanguageService) {
+        private _userLanguageService: UserLanguageService,
+        private ImageService: ImageService) {
         var stopStyle = ['font-family: Roboto, "Helvetica Neue", sans-serif',
             'font-size: 1.7rem',
             'color: Red',

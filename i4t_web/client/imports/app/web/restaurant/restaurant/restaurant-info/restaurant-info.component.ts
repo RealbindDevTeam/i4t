@@ -81,12 +81,7 @@ export class RestaurantInfoComponent implements OnInit, OnDestroy {
      * @param {string} _pRestaurantId
      */
     getRestaurantImage(_pRestaurantId: string): string {
-        let _lRestaurantImageThumb: RestaurantImageThumb = RestaurantImageThumbs.findOne({ restaurantId: _pRestaurantId });
-        if ( _lRestaurantImageThumb ) {
-            return _lRestaurantImageThumb.url
-        } else {
-            return '/images/default-restaurant.png';
-        }
+        return RestaurantImageThumbs.getRestaurantImageThumbUrl(_pRestaurantId);
     }
 
     /**

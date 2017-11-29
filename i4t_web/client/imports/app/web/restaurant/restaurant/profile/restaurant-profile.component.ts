@@ -10,8 +10,8 @@ import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Restaurant, RestaurantProfile, RestaurantSchedule, RestaurantLocation, RestaurantSocialNetwork, RestaurantProfileImageThumb } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantsProfile, RestaurantProfileImages, RestaurantProfileImageThumbs } from '../../../../../../../both/collections/restaurant/restaurant.collection';
-import { uploadRestaurantProfileImages } from '../../../../../../../both/methods/restaurant/restaurant.methods';
 import { AlertConfirmComponent } from '../../../general/alert-confirm/alert-confirm.component';
+import { ImageService } from '../../../../shared/services/image.service';
 
 @Component({
     selector: 'restaurant-profile',
@@ -67,7 +67,8 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                  private _ngZone: NgZone,
                  private _userLanguageService: UserLanguageService,
                  private _snackBar: MatSnackBar,
-                 private _mdDialog: MatDialog ) {
+                 private _mdDialog: MatDialog,
+                 private _imageService: ImageService ) {
         _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
         _translate.setDefaultLang( 'en' );
         this._titleMsg = 'SIGNUP.SYSTEM_MSG';
@@ -307,7 +308,7 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                 }
     
                 if( this._newImagesToInsert ){
-                    uploadRestaurantProfileImages( this._filesToUpload, this._user, this._restaurantId ).then( ( result ) => {
+                    this._imageService.uploadRestaurantProfileImages( this._filesToUpload, this._user, this._restaurantId ).then( ( result ) => {
                         this._filesToUpload = [];
                         this._newImagesToInsert = false;
                         let _lMessage: string = this.itemNameTraduction( 'RESTAURANT_PROFILE.PROFILE_UPDATED' );
@@ -337,7 +338,7 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                     this._restaurantProfile = RestaurantsProfile.findOne( { _id: _newProfileId } );
     
                     if( this._newImagesToInsert ){
-                        uploadRestaurantProfileImages( this._filesToUpload, this._user, this._restaurantId ).then( ( result ) => {
+                        this._imageService.uploadRestaurantProfileImages( this._filesToUpload, this._user, this._restaurantId ).then( ( result ) => {
                             this._filesToUpload = [];
                             this._newImagesToInsert = false;
                             let _lMessage: string = this.itemNameTraduction( 'RESTAURANT_PROFILE.PROFILE_CREATED' );
