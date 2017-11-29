@@ -4,7 +4,7 @@ import { Item, ItemImage, ItemImageThumb } from '../../models/administration/ite
 /**
  * Function to validate if user exists
  */
-function loggedIn(){
+function loggedIn() {
     return !!Meteor.user();
 }
 
@@ -22,9 +22,16 @@ Items.allow({
 });
 
 /**
+ * Item Image Thumbs Interface
+ */
+export interface ItemImageThumbsCollection<T> extends MongoObservable.Collection<T> {
+    getItemImageThumbUrl(selector?: Object | string): string;
+}
+
+/**
  * Item Image Thumbs Collection
  */
-export const ItemImagesThumbs = new MongoObservable.Collection<ItemImageThumb>('itemImageThumbs');
+export const ItemImagesThumbs = new MongoObservable.Collection<ItemImageThumb>('itemImageThumbs') as ItemImageThumbsCollection<ItemImageThumb>;
 
 /**
  * Allow Item Image Thumbs Collection insert, update and remove functions
@@ -36,9 +43,24 @@ ItemImagesThumbs.allow({
 });
 
 /**
+ * Function to return item image thumb
+ */
+ItemImagesThumbs.getItemImageThumbUrl = function (_id: string) {
+    const image = this.findOne({ itemId: _id }) || {};
+    return image.url || '/images/default-plate.png';
+}
+
+/**
+ * Item Images Interface
+ */
+export interface ItemImagesCollection<T> extends MongoObservable.Collection<T> {
+    getItemImageUrl(selector?: Object | string): string;
+}
+
+/**
  * Item Images Collection
  */
-export const ItemImages = new MongoObservable.Collection<ItemImage>('itemImages');
+export const ItemImages = new MongoObservable.Collection<ItemImage>('itemImages') as ItemImagesCollection<ItemImage>;
 
 /**
  * Allow Item Images collection insert, update and remove functions
@@ -48,3 +70,11 @@ ItemImages.allow({
     update: loggedIn,
     remove: loggedIn
 });
+
+/**
+ * Function to return item image thumb
+ */
+ItemImages.getItemImageUrl = function (_id: string) {
+    const image = this.findOne({ itemId: _id }) || {};
+    return image.url || '/images/default-plate.png';
+}

@@ -150,8 +150,12 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
      */
     calculateValues():void{
         this._totalValue = 0;
+        let _orderItemsCount = 0;
+        let _orderAdditionsCount = 0;
         Orders.collection.find( { creation_user: this._user, restaurantId: this.restId, tableId: this.tabId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] }, toPay : false } ).fetch().forEach( ( order ) => {
             this._totalValue += order.totalPayment;
+            _orderItemsCount += order.items.length;
+            _orderAdditionsCount += order.additions.length;
         });
 
         let _lRestaurant:Restaurant = Restaurants.findOne( { _id: this.restId } );
@@ -164,7 +168,7 @@ export class ColombiaPaymentComponent implements OnInit, OnDestroy {
 
         this._tipTotalString   = (this._tipTotal).toFixed(2);
         this._totalToPayment   = this._totalValue;
-        this._totalToPayment > 0 ? this._OutstandingBalance = false : this._OutstandingBalance = true;
+        _orderItemsCount > 0 || _orderAdditionsCount > 0 ? this._OutstandingBalance = false : this._OutstandingBalance = true;
     }
 
     /**

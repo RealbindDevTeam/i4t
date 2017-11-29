@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -17,30 +17,30 @@ import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-
 @Component({
     selector: 'orders',
     templateUrl: './order.component.html',
-    styleUrls: [ './order.component.scss' ]
+    styleUrls: ['./order.component.scss']
 })
 export class OrdersComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    private _ordersForm                 : FormGroup;
-    private _mdDialogRef                : MatDialogRef<any>;
+    private _ordersForm: FormGroup;
+    private _mdDialogRef: MatDialogRef<any>;
 
-    private _tablesSub                  : Subscription;
-    private _userDetailsSub             : Subscription;
-    private _restaurantSub              : Subscription;
+    private _tablesSub: Subscription;
+    private _userDetailsSub: Subscription;
+    private _restaurantSub: Subscription;
 
-    private _currentRestaurant          : Restaurant;
-    private _currentQRCode              : string;
-    private titleMsg                    : string;
-    private btnAcceptLbl                : string;
+    private _currentRestaurant: Restaurant;
+    private _currentQRCode: string;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
 
-    private _showError                  : boolean = false;
-    private _showAlphanumericCodeCard   : boolean = false;
-    private _showNewOrderButton         : boolean = false;
-    private _showOrderCreation          : boolean = false;
-    private _showOrderList              : boolean = false;
-    private _showTableIsNotActiveError  : boolean = false;
-    private _loading                    : boolean = false;
+    private _showError: boolean = false;
+    private _showAlphanumericCodeCard: boolean = false;
+    private _showNewOrderButton: boolean = false;
+    private _showOrderCreation: boolean = false;
+    private _showOrderList: boolean = false;
+    private _showTableIsNotActiveError: boolean = false;
+    private _loading: boolean = false;
 
     /**
      * OrdersComponent Constructor
@@ -48,12 +48,12 @@ export class OrdersComponent implements OnInit, OnDestroy {
      * @param {NgZone} _ngZone 
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor( private _translate: TranslateService, 
-                 private _ngZone: NgZone,
-                 private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MatDialog ) {
-        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        _translate.setDefaultLang( 'en' );
+    constructor(private _translate: TranslateService,
+        private _ngZone: NgZone,
+        private _userLanguageService: UserLanguageService,
+        protected _mdDialog: MatDialog) {
+        _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        _translate.setDefaultLang('en');
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
@@ -64,16 +64,16 @@ export class OrdersComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.removeSubscriptions();
         this._ordersForm = new FormGroup({
-            qrCode: new FormControl( '', [ Validators.required, Validators.minLength( 1 ) ] )
+            qrCode: new FormControl('', [Validators.required, Validators.minLength(1)])
         });
-        this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByUser', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                let _lUserDetail: UserDetail = UserDetails.findOne( { user_id: this._user } );
-                if( _lUserDetail.current_restaurant !== "" && _lUserDetail.current_table !== "" ){
-                    this._restaurantSub = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', this._user ).subscribe( () => {
-                        this._ngZone.run( () => {
-                            let _lRestaurant: Restaurant = Restaurants.findOne( { _id: _lUserDetail.current_restaurant } );
-                            let _lTable:Table = Tables.findOne( { _id: _lUserDetail.current_table } );
+        this._userDetailsSub = MeteorObservable.subscribe('getUserDetailsByUser', this._user).subscribe(() => {
+            this._ngZone.run(() => {
+                let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: this._user });
+                if (_lUserDetail.current_restaurant !== "" && _lUserDetail.current_table !== "") {
+                    this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', this._user).subscribe(() => {
+                        this._ngZone.run(() => {
+                            let _lRestaurant: Restaurant = Restaurants.findOne({ _id: _lUserDetail.current_restaurant });
+                            let _lTable: Table = Tables.findOne({ _id: _lUserDetail.current_table });
                             this._currentRestaurant = _lRestaurant;
                             this._currentQRCode = _lTable.QR_code;
                             this._showAlphanumericCodeCard = false;
@@ -88,59 +88,59 @@ export class OrdersComponent implements OnInit, OnDestroy {
                 }
             });
         });
-        this._tablesSub = MeteorObservable.subscribe( 'getAllTables' ).subscribe();
+        this._tablesSub = MeteorObservable.subscribe('getAllTables').subscribe();
     }
 
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._tablesSub ){ this._tablesSub.unsubscribe(); }
-        if( this._userDetailsSub ){ this._userDetailsSub.unsubscribe(); }
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+    removeSubscriptions(): void {
+        if (this._tablesSub) { this._tablesSub.unsubscribe(); }
+        if (this._userDetailsSub) { this._userDetailsSub.unsubscribe(); }
+        if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
     }
 
     /**
      * This function validate if QR Code exists
      */
-    validateQRCodeExists(){
-        if( !Meteor.userId() ){
-            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+    validateQRCodeExists() {
+        if (!Meteor.userId()) {
+            var error: string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
-        
-        if( this._ordersForm.valid ){
-            let _lTable:Table = Tables.findOne( { QR_code: this._ordersForm.value.qrCode } );
-            if( _lTable ){
-                if( _lTable.is_active ){
+
+        if (this._ordersForm.valid) {
+            let _lTable: Table = Tables.findOne({ QR_code: this._ordersForm.value.qrCode });
+            if (_lTable) {
+                if (_lTable.is_active) {
                     this._loading = true;
-                    setTimeout(() => { 
-                        MeteorObservable.call( 'getRestaurantByQRCode', _lTable.QR_code, this._user ).subscribe( ( _result: Restaurant ) => {
+                    setTimeout(() => {
+                        MeteorObservable.call('getRestaurantByQRCode', _lTable.QR_code, this._user).subscribe((_result: Restaurant) => {
                             this._currentRestaurant = _result;
                             this._currentQRCode = _lTable.QR_code;
                             this._showAlphanumericCodeCard = false;
                             this._showOrderList = true;
                             this._showNewOrderButton = true;
                             this._loading = false;
-                        }, ( error ) => {
-                            if( error.error === '400' ){
-                                this._loading = false;                        
-                                this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.TABLE_NOT_EXISTS' ), '', this.btnAcceptLbl, false);
-                            } else if( error.error === '300' ){
-                                this._loading = false;                        
-                                this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.RESTAURANT_NOT_EXISTS' ), '', this.btnAcceptLbl, false);                            
-                            } else if( error.error === '200' ){
-                                this._loading = false;                        
-                                this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.IUREST_NO_ACTIVE' ), '', this.btnAcceptLbl, false);                            
-                            } else if( error.error === '500' ){
-                                this._loading = false;                        
-                                this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'ORDERS.PENALTY' ) + error.reason, '', this.btnAcceptLbl, false);                            
-                            } else{
-                            this._loading = false;                        
+                        }, (error) => {
+                            if (error.error === '400') {
+                                this._loading = false;
+                                this.openDialog(this.titleMsg, '', this.itemNameTraduction('ORDERS.TABLE_NOT_EXISTS'), '', this.btnAcceptLbl, false);
+                            } else if (error.error === '300') {
+                                this._loading = false;
+                                this.openDialog(this.titleMsg, '', this.itemNameTraduction('ORDERS.RESTAURANT_NOT_EXISTS'), '', this.btnAcceptLbl, false);
+                            } else if (error.error === '200') {
+                                this._loading = false;
+                                this.openDialog(this.titleMsg, '', this.itemNameTraduction('ORDERS.IUREST_NO_ACTIVE'), '', this.btnAcceptLbl, false);
+                            } else if (error.error === '500') {
+                                this._loading = false;
+                                this.openDialog(this.titleMsg, '', this.itemNameTraduction('ORDERS.PENALTY') + error.reason, '', this.btnAcceptLbl, false);
+                            } else {
+                                this._loading = false;
                             }
                         });
-                    }, 1500 );
+                    }, 1500);
                 } else {
                     this._showTableIsNotActiveError = true;
                 }
@@ -156,14 +156,14 @@ export class OrdersComponent implements OnInit, OnDestroy {
     /**
      * This function allow user create new order
      */
-    createNewOrder( _event?:any ):void{
+    createNewOrder(_event?: any): void {
         this._showOrderCreation = true;
         this._showOrderList = false;
         this._showNewOrderButton = false;
     }
 
-    validateFinishOrderCreation( _event:any ):void{
-        if( _event ){
+    validateFinishOrderCreation(_event: any): void {
+        if (_event) {
             this._showOrderCreation = false;
             this._showOrderList = true;
             this._showNewOrderButton = true;
@@ -177,7 +177,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     /**
      * Function hide message error
      */
-    hideMessageError(){
+    hideMessageError() {
         this._showError = false;
         this._showTableIsNotActiveError = false;
     }
@@ -185,7 +185,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     /**
      * Function to cancel operation
      */
-    cancel():void{
+    cancel(): void {
         this._ordersForm.reset();
     }
 
@@ -199,7 +199,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     * @param {boolean} showBtnCancel
     */
     openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
-        
+
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
@@ -223,10 +223,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
      * Return traduction
      * @param {string} itemName 
      */
-    itemNameTraduction(itemName: string): string{
+    itemNameTraduction(itemName: string): string {
         var wordTraduced: string;
         this._translate.get(itemName).subscribe((res: string) => {
-            wordTraduced = res; 
+            wordTraduced = res;
         });
         return wordTraduced;
     }
@@ -234,7 +234,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     /**
      * ngOnDestroy implementation
      */
-    ngOnDestroy(){
+    ngOnDestroy() {
         this.removeSubscriptions();
     }
 }

@@ -167,12 +167,7 @@ export class ColombiaPayInfoComponent implements OnInit, OnDestroy{
      * @param {string} _pItemId
      */
     getItemImage( _pItemId: string ):string{
-        let _lItemImage: ItemImageThumb = ItemImagesThumbs.findOne( { itemId: _pItemId } );
-        if( _lItemImage ){
-            return _lItemImage.url;
-        } else{
-            return '/images/default-plate.png';
-        }
+        return ItemImagesThumbs.getItemImageThumbUrl(_pItemId);
     }
 
     /**

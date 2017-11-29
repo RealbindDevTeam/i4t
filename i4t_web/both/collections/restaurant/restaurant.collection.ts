@@ -5,14 +5,14 @@ import { Meteor } from 'meteor/meteor';
 /**
  * Function to validate if user exists
  */
-function loggedIn(){
+function loggedIn() {
     return !!Meteor.user();
 }
 
 /**
  * Restaurants Collection
  */
-export const Restaurants =  new MongoObservable.Collection<Restaurant>('restaurants');
+export const Restaurants = new MongoObservable.Collection<Restaurant>('restaurants');
 
 /**
  * Allow Restaurant collecion insert and update functions
@@ -23,9 +23,16 @@ Restaurants.allow({
 });
 
 /**
+ * Restaurant Image Thumbs Interface
+ */
+export interface RestaurantImageThumbsCollection<T> extends MongoObservable.Collection<T> {
+    getRestaurantImageThumbUrl(selector?: Object | string): string;
+}
+
+/**
  * Restaurant Image Thumbs Collection
  */
-export const RestaurantImageThumbs = new MongoObservable.Collection<RestaurantImageThumb>('restaurantImageThumbs');
+export const RestaurantImageThumbs = new MongoObservable.Collection<RestaurantImageThumb>('restaurantImageThumbs') as RestaurantImageThumbsCollection<RestaurantImageThumb>;
 
 /**
  * Allow Restaurant Image Thumbs Collection insert, update and remove functions
@@ -37,9 +44,32 @@ RestaurantImageThumbs.allow({
 });
 
 /**
+ * Function to return restaurant image thumb
+ */
+RestaurantImageThumbs.getRestaurantImageThumbUrl = function( _id:string ){
+    const image = this.findOne({ restaurantId: _id }) || {};
+    return image.url || '/images/default-restaurant.png';
+}
+
+/**
+ * Restaurant Images Interface
+ */
+export interface RestaurantImagesCollection<T> extends MongoObservable.Collection<T> {
+    getRestaurantImageUrl(selector?: Object | string): string;
+}
+
+/**
  * Restaurant Images Collection
  */
-export const RestaurantImages = new MongoObservable.Collection<RestaurantImage>('restaurantImages');
+export const RestaurantImages = new MongoObservable.Collection<RestaurantImage>('restaurantImages') as RestaurantImagesCollection<RestaurantImage>;
+
+/**
+ * Function to return restaurant image
+ */
+RestaurantImages.getRestaurantImageUrl = function( _id:string ){
+    const image = this.findOne({ restaurantId: _id }) || {};
+    return image.url || '/images/default-restaurant.png';
+}
 
 /**
  * Allow Restaurant Images collection insert, update and remove functions
