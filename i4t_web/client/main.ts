@@ -4,7 +4,6 @@ import { enableProdMode } from '@angular/core';
 import { AppModule } from './imports/app/app.module';
 import { Meteor } from 'meteor/meteor';
 
-import '../both/methods/administration/promotion.methods';
 import '../both/methods/administration/collaborators.methods';
 import '../both/methods/administration/item.methods';
 import '../both/methods/auth/menu.methods';
