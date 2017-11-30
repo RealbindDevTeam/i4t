@@ -51,12 +51,11 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
     private _paymentMethodsList: PaymentMethod[] = [];
     private _restaurantPaymentMethods: string[] = [];
 
-    private _filesToUpload: Array<File>;
     private _restaurantImageToEdit: RestaurantImage;
     private _editImage: boolean = false;
     private _nameImageFileEdit: string = "";
     public _selectedIndex: number = 0;
-    private _restaurantEditImage: string;
+    private _restaurantEditImageUrl: string;
 
     private _queue: string[] = [];
     private _selectedCountryValue: string = "";
@@ -112,7 +111,12 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         this.removeSubscriptions();
         this._restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe(() => {
             this._ngZone.run(() => {
-                this._restaurantEditImage = Restaurants.findOne({ _id: this._restaurantToEdit._id }).image.url || '/images/default-restaurant.png';
+                let _restaurantImg = Restaurants.findOne({ _id: this._restaurantToEdit._id }).image;
+                if (_restaurantImg) {
+                    this._restaurantEditImageUrl = Restaurants.findOne({ _id: this._restaurantToEdit._id }).image.url;
+                } else {
+                    this._restaurantEditImageUrl = '/images/default-restaurant.png';
+                }
             });
         });
 
@@ -237,21 +241,49 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             cityAux = '';
         }
 
-        Restaurants.update(this._restaurantEditionForm.value.editId, {
-            $set: {
-                modification_user: Meteor.userId(),
-                modification_date: new Date(),
-                countryId: this._restaurantEditionForm.value.country,
-                cityId: cityIdAux,
-                other_city: cityAux,
-                name: this._restaurantEditionForm.value.name,
-                address: this._restaurantEditionForm.value.address,
-                phone: this._restaurantEditionForm.value.phone,
-                paymentMethods: _lPaymentMethodsToInsert,
-                tip_percentage: this._tipValue,
-                queue: this._queue
-            }
-        });
+        if (this._editImage) {
+            /*let _lRestaurantImage: RestaurantImage = Restaurants.findOne({ _id: this._restaurantToEdit._id }).image;
+            if (_lRestaurantImage) {
+                this._imageService.client.remove(_lRestaurantImage.handle).then((res) => {
+                    console.log(res);
+                }).catch((err) => {
+                    var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
+                    this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                });
+            }*/
+            Restaurants.update(this._restaurantEditionForm.value.editId, {
+                $set: {
+                    modification_user: Meteor.userId(),
+                    modification_date: new Date(),
+                    countryId: this._restaurantEditionForm.value.country,
+                    cityId: cityIdAux,
+                    other_city: cityAux,
+                    name: this._restaurantEditionForm.value.name,
+                    address: this._restaurantEditionForm.value.address,
+                    phone: this._restaurantEditionForm.value.phone,
+                    paymentMethods: _lPaymentMethodsToInsert,
+                    tip_percentage: this._tipValue,
+                    queue: this._queue,
+                    image: this._restaurantImageToEdit
+                }
+            });
+        } else {
+            Restaurants.update(this._restaurantEditionForm.value.editId, {
+                $set: {
+                    modification_user: Meteor.userId(),
+                    modification_date: new Date(),
+                    countryId: this._restaurantEditionForm.value.country,
+                    cityId: cityIdAux,
+                    other_city: cityAux,
+                    name: this._restaurantEditionForm.value.name,
+                    address: this._restaurantEditionForm.value.address,
+                    phone: this._restaurantEditionForm.value.phone,
+                    paymentMethods: _lPaymentMethodsToInsert,
+                    tip_percentage: this._tipValue,
+                    queue: this._queue
+                }
+            });
+        }
 
         // Colombia
         if (this._restaurantEditionForm.value.country === '1900') {
@@ -286,22 +318,6 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
                     is_retaining_agent: this._restaurantLegalityToEdit.is_retaining_agent === undefined || this._restaurantLegalityToEdit.is_retaining_agent === null ? false : this._restaurantLegalityToEdit.is_retaining_agent
                 }
             });
-        }
-
-        if (this._editImage) {
-            /*let _lRestaurantImage: RestaurantImage = RestaurantImages.findOne({ restaurantId: this._restaurantEditionForm.value.editId });
-            let _lRestaurantImageThumb: RestaurantImageThumb = RestaurantImageThumbs.findOne({ restaurantId: this._restaurantEditionForm.value.editId });
-            if (_lRestaurantImage) { RestaurantImages.remove({ _id: _lRestaurantImage._id }); }
-            if (_lRestaurantImageThumb) { RestaurantImageThumbs.remove({ _id: _lRestaurantImageThumb._id }); }
-
-            this._imageService.uploadRestaurantImage(this._restaurantImageToEdit,
-                Meteor.userId(),
-                this._restaurantEditionForm.value.editId).then((result) => {
-
-                }).catch((err) => {
-                    var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
-                    this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
-                });*/
         }
         this.cancel();
     }

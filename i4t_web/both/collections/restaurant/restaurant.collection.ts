@@ -23,35 +23,6 @@ Restaurants.allow({
 });
 
 /**
- * Restaurant Images Interface
- 
-export interface RestaurantImagesCollection<T> extends MongoObservable.Collection<T> {
-    getRestaurantImageUrl(selector?: Object | string): string;
-}
-*/
-/**
- * Restaurant Images Collection
- 
-export const RestaurantImages = new MongoObservable.Collection<RestaurantImage>('restaurant_images') as RestaurantImagesCollection<RestaurantImage>;
-*/
-/**
- * Function to return restaurant image
- 
-RestaurantImages.getRestaurantImageUrl = function( _id:string ){
-    const image = this.findOne({ restaurantId: _id }) || {};
-    return image.url || '/images/default-restaurant.png';
-}
-*/
-/**
- * Allow Restaurant Images collection insert, update and remove functions
- 
-RestaurantImages.allow({
-    insert: loggedIn,
-    update: loggedIn,
-    remove: loggedIn
-});
-*/
-/**
  * Restaurants Collection
  */
 

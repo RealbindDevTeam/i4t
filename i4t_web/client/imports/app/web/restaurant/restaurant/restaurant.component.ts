@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
-import { Restaurant, RestaurantImage } from '../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { Country } from '../../../../../../both/models/settings/country.model';
 import { Countries } from '../../../../../../both/collections/settings/country.collection';
@@ -23,7 +23,6 @@ export class RestaurantComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
     private restaurants: Observable<Restaurant[]>;
-    private _restaurantImages: Observable<RestaurantImage[]>;
 
     private restaurantSub: Subscription;
     private countriesSub: Subscription;

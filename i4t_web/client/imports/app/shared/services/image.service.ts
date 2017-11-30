@@ -10,7 +10,10 @@ import * as filestack from 'filestack-js';
 @Injectable()
 export class ImageService {
 
-    private _client: any = filestack.init('AxKKZ4GYkRXC2tSdhZSf8z');
+    private _apikey = "Ap3hOg05TtWuYxXU4E2gJz";
+    //private _security = { policy: 'eyJtaW5TaXplIjoiMSIsIm1heFNpemUiOiIxMDQ4NTc2IiwiY2FsbCI6WyJwaWNrIl19',signature: '2a1fa9ed15d987fd62f2134b481b0307120664e8f2534967e585892858fce95b' };
+    //private _client: any = filestack.init(this._apikey, this._security);
+    private _client: any = filestack.init(this._apikey);
     private _pickOptions: PickOptions = {
         fromSources: ["local_file_system", "imagesearch", "facebook", "instagram"],
         lang: "en",
@@ -23,11 +26,11 @@ export class ImageService {
         return this._client;
     }
 
-    get pickOptions():Object{
+    get pickOptions(): Object {
         return this._pickOptions;
     }
 
-    setPickOptionsLang( _pLanguage:string ):void{
+    setPickOptionsLang(_pLanguage: string): void {
         this._pickOptions.lang = _pLanguage;
     }
 

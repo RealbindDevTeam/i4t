@@ -24,7 +24,7 @@ import { UserDetail } from '../../../../../../both/models/auth/user-detail.model
 @Component({
     selector: 'garnish-food',
     templateUrl: './garnish-food.component.html',
-    styleUrls: [ './garnish-food.component.scss' ]
+    styleUrls: ['./garnish-food.component.scss']
 })
 export class GarnishFoodComponent implements OnInit, OnDestroy {
 

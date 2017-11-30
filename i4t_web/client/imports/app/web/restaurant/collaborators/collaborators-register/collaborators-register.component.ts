@@ -25,32 +25,32 @@ import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/ale
 })
 export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
 
-    private _collaboratorRegisterForm : FormGroup;
-    private _mdDialogRef              : MatDialogRef<any>;
-    private _restaurantSub            : Subscription;
-    private _roleSub                  : Subscription;
-    private _tableSub                 : Subscription;
+    private _collaboratorRegisterForm: FormGroup;
+    private _mdDialogRef: MatDialogRef<any>;
+    private _restaurantSub: Subscription;
+    private _roleSub: Subscription;
+    private _tableSub: Subscription;
 
-    private _restaurants              : Observable<Restaurant[]>;
-    private _roles                    : Observable<Role[]>;
-    private _tables                   : Observable<Table[]>;
-    
-    private _userProfile              = new UserProfile();
+    private _restaurants: Observable<Restaurant[]>;
+    private _roles: Observable<Role[]>;
+    private _tables: Observable<Table[]>;
 
-    private _tablesNumber              : number[] = [];
-    public _selectedIndex              : number = 0;
-    private _userLang                  : string;
-    private _error                     : string;
-    private _selectedRestaurant        : string;
-    private _message                   : string;
-    private titleMsg                   : string;
-    private btnAcceptLbl               : string;
-    private _userPrefix                : string = '';
-    private _selectedRol               : string;
-    private _showConfirmError          : boolean = false;
-    private _showTablesSelect          : boolean = false;
-    private _showTablesSelectByRest    : boolean = false;
-    private _disabledTablesAssignment  : boolean = true;
+    private _userProfile = new UserProfile();
+
+    private _tablesNumber: number[] = [];
+    public _selectedIndex: number = 0;
+    private _userLang: string;
+    private _error: string;
+    private _selectedRestaurant: string;
+    private _message: string;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
+    private _userPrefix: string = '';
+    private _selectedRol: string;
+    private _showConfirmError: boolean = false;
+    private _showTablesSelect: boolean = false;
+    private _showTablesSelectByRest: boolean = false;
+    private _disabledTablesAssignment: boolean = true;
 
     /**
      * CollaboratorsRegisterComponent constructor
@@ -60,13 +60,12 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
      * @param {NgZone} _zone 
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor( private _router: Router,
-                 private _formBuilder: FormBuilder,
-                 private _translate: TranslateService,
-                 private _zone: NgZone,
-                 private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MatDialog ) 
-    {
+    constructor(private _router: Router,
+        private _formBuilder: FormBuilder,
+        private _translate: TranslateService,
+        private _zone: NgZone,
+        private _userLanguageService: UserLanguageService,
+        protected _mdDialog: MatDialog) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
         this._userLang = this._userLanguageService.getNavigationLanguage();
@@ -106,18 +105,18 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
-        if( this._roleSub ){ this._roleSub.unsubscribe(); }
-        if( this._tableSub ){ this._tableSub.unsubscribe(); }
+    removeSubscriptions(): void {
+        if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
+        if (this._roleSub) { this._roleSub.unsubscribe(); }
+        if (this._tableSub) { this._tableSub.unsubscribe(); }
     }
 
     /**
      * Validate restaurantId is select to enabled tables assignment
      * @param _pRestaurantId 
      */
-    validateRestaurantSelection(_pRestaurantId : string){
-        if(_pRestaurantId){
+    validateRestaurantSelection(_pRestaurantId: string) {
+        if (_pRestaurantId) {
             this._showTablesSelectByRest = true;
         } else {
             this._showTablesSelectByRest = false;
@@ -136,7 +135,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
             this._showTablesSelect = false;
             this._disabledTablesAssignment = true;
         }
-        if( _role.user_prefix !== undefined && _role.user_prefix !== null ){
+        if (_role.user_prefix !== undefined && _role.user_prefix !== null) {
             this._userPrefix = _role.user_prefix + '-';
             this._selectedRol = _role.name;
         }
@@ -151,7 +150,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
         if (_pEvent.checked) {
             this._disabledTablesAssignment = false;
             let tablesCount: number = 0;
-            tablesCount = Tables.collection.find({restaurantId : this._collaboratorRegisterForm.value.restaurant_work}).count();
+            tablesCount = Tables.collection.find({ restaurantId: this._collaboratorRegisterForm.value.restaurant_work }).count();
             for (var index = 1; index <= tablesCount; index++) {
                 this._tablesNumber.push(index);
             }
@@ -226,7 +225,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
 
                         if (this._collaboratorRegisterForm.value.role === '200') {
                             if (this._disabledTablesAssignment || (this._collaboratorRegisterForm.value.table_init === 0 && this._collaboratorRegisterForm.value.table_end === 0)) {
-                                this._collaboratorRegisterForm.value.table_end = Tables.collection.find({restaurantId : this._collaboratorRegisterForm.value.restaurant_work}).count();
+                                this._collaboratorRegisterForm.value.table_end = Tables.collection.find({ restaurantId: this._collaboratorRegisterForm.value.restaurant_work }).count();
                                 if (this._collaboratorRegisterForm.value.table_end > 0) {
                                     this._collaboratorRegisterForm.value.table_init = 1;
                                 }
@@ -254,7 +253,7 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                                     is_active: true,
                                     restaurant_work: this._collaboratorRegisterForm.value.restaurant_work,
                                     jobs: 0,
-                                    birthdate : this._collaboratorRegisterForm.value.birthdate,
+                                    birthdate: this._collaboratorRegisterForm.value.birthdate,
                                     phone: this._collaboratorRegisterForm.value.phone,
                                     enabled: true,
                                     table_assignment_init: Number.parseInt(this._collaboratorRegisterForm.value.table_init),
@@ -285,9 +284,9 @@ export class CollaboratorsRegisterComponent implements OnInit, OnDestroy {
                                 this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
                             }
                         }, (error) => {
-                            if( error.error === 403 ){
+                            if (error.error === 403) {
                                 this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.USER_EXISTS');
-                                this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);                             
+                                this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
                             } else {
                                 this.openDialog(this.titleMsg, '', error.reason, '', this.btnAcceptLbl, false);
                             }

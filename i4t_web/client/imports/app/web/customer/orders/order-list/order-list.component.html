@@ -2,7 +2,8 @@
     <mat-card>
         <mat-list>
             <mat-list-item *ngFor="let _res of _restaurants | async">
-                <img mat-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{ getRestaurantImage( _res._id ) }}">
+                <img mat-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" *ngIf="_res.image" src="{{ _res.image.url }}">
+                <img mat-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" *ngIf="!_res.image" src="/images/default-restaurant.png">
                 <h2 mat-line style="font-size: 1.3rem;"> {{_res.name}} </h2>
                 <p mat-line style="font-size: 1rem;">
                     <mat-icon style="vertical-align: middle">location_on</mat-icon>
@@ -50,7 +51,7 @@
                         <mat-card>
                             <mat-list>
                                 <mat-list-item *ngFor="let _res of _restaurants | async">
-                                    <img mat-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{ getRestaurantImage( _res._id ) }}">
+                                    <img mat-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{ _res.image.url }}">
                                     <h2 mat-line style="font-size: 1.3rem;"> {{_res.name}} </h2>
                                     <p mat-line style="font-size: 1rem;">
                                         <mat-icon style="vertical-align: middle">location_on</mat-icon>

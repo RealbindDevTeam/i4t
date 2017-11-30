@@ -16,22 +16,22 @@ import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-
 @Component({
     selector: 'table-change',
     templateUrl: './table-change.component.html',
-    styleUrls: [ './table-change.component.scss' ]
+    styleUrls: ['./table-change.component.scss']
 })
 export class TableChangeComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    private _changeTableForm            : FormGroup;
+    private _changeTableForm: FormGroup;
 
-    private _userDetailsSub             : Subscription;
-    private _tableSub                   : Subscription;
+    private _userDetailsSub: Subscription;
+    private _tableSub: Subscription;
 
-    private _userDetails                : Observable<UserDetail[]>
-    private _tables                     : Observable<Table[]>;
+    private _userDetails: Observable<UserDetail[]>
+    private _tables: Observable<Table[]>;
 
-    private _mdDialogRef                : MatDialogRef<any>;
-    private titleMsg                    : string;
-    private btnAcceptLbl                : string;
+    private _mdDialogRef: MatDialogRef<any>;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
 
     /**
      * ChangeTableComponent Constructor
@@ -41,13 +41,13 @@ export class TableChangeComponent implements OnInit, OnDestroy {
      * @param {MatDialog} _mdDialog
      * @param {Router} _router
      */
-    constructor( private _translate: TranslateService, 
-                 private _ngZone: NgZone,
-                 private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MatDialog,
-                 private _router: Router ) {
-        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        _translate.setDefaultLang( 'en' );
+    constructor(private _translate: TranslateService,
+        private _ngZone: NgZone,
+        private _userLanguageService: UserLanguageService,
+        protected _mdDialog: MatDialog,
+        private _router: Router) {
+        _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        _translate.setDefaultLang('en');
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
@@ -55,19 +55,19 @@ export class TableChangeComponent implements OnInit, OnDestroy {
     /**
      * ngOnInit Implementation
      */
-    ngOnInit(){
+    ngOnInit() {
         this.removeSubscriptions();
         this._changeTableForm = new FormGroup({
-            qrCodeDestiny: new FormControl( '', [ Validators.required, Validators.minLength( 1 ) ] )
+            qrCodeDestiny: new FormControl('', [Validators.required, Validators.minLength(1)])
         });
-        this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByUser', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._userDetails = UserDetails.find( { } ).zone();
+        this._userDetailsSub = MeteorObservable.subscribe('getUserDetailsByUser', this._user).subscribe(() => {
+            this._ngZone.run(() => {
+                this._userDetails = UserDetails.find({}).zone();
             });
         });
-        this._tableSub = MeteorObservable.subscribe( 'getTableByCurrentTable', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._tables = Tables.find( { } ).zone();
+        this._tableSub = MeteorObservable.subscribe('getTableByCurrentTable', this._user).subscribe(() => {
+            this._ngZone.run(() => {
+                this._tables = Tables.find({}).zone();
             });
         });
     }
@@ -75,44 +75,44 @@ export class TableChangeComponent implements OnInit, OnDestroy {
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._userDetailsSub ){ this._userDetailsSub.unsubscribe(); }
-        if( this._tableSub ){ this._tableSub.unsubscribe(); }
+    removeSubscriptions(): void {
+        if (this._userDetailsSub) { this._userDetailsSub.unsubscribe(); }
+        if (this._tableSub) { this._tableSub.unsubscribe(); }
     }
 
     /**
      * This function allow change user current table
      */
-    changeUserTable( _pCurrentRestaurant:string, _pCurrentQRCodeTable:string ):void{
-        if( !Meteor.userId() ){
-            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+    changeUserTable(_pCurrentRestaurant: string, _pCurrentQRCodeTable: string): void {
+        if (!Meteor.userId()) {
+            var error: string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
 
-        if( this._changeTableForm.valid ){
-            MeteorObservable.call( 'changeCurrentTable', this._user, _pCurrentRestaurant, _pCurrentQRCodeTable, this._changeTableForm.value.qrCodeDestiny ).subscribe( () => {
-                this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.CHANGE_TABLE_OK' ), '', this.btnAcceptLbl, false);
+        if (this._changeTableForm.valid) {
+            MeteorObservable.call('changeCurrentTable', this._user, _pCurrentRestaurant, _pCurrentQRCodeTable, this._changeTableForm.value.qrCodeDestiny).subscribe(() => {
+                this.openDialog(this.titleMsg, '', this.itemNameTraduction('CHANGE_TABLE.CHANGE_TABLE_OK'), '', this.btnAcceptLbl, false);
                 this._router.navigate(['/app/orders']);
-            }, ( error ) => {
-                if( error.error === '200' ){
-                    this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.TABLE_DESTINY_NOT_EXISTS' ), '', this.btnAcceptLbl, false);
-                } else if( error.error === '201' ){
-                    this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.TABLE_DESTINY_NO_ACTIVE' ), '', this.btnAcceptLbl, false);
-                } else if( error.error === '202' ){
-                    this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.TABLE_DESTINY_NO_RESTAURANT' ), '', this.btnAcceptLbl, false);
-                } else if( error.error === '203' ){
-                    this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.PENDING_ORDERS' ), '', this.btnAcceptLbl, false);
-                } else if( error.error === '204' ){
-                    this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.ORDERS_PAY_PROCESS' ), '', this.btnAcceptLbl, false);
-                } else if( error.error === '205' ){
-                    this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.WAITER_CALL_PENDING' ), '', this.btnAcceptLbl, false);
-                } else if( error.error === '206' ){
-                    this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.TABLE_DESTINY_STATUS_ERROR' ), '', this.btnAcceptLbl, false);
-                } else if( error.error === '207' ){
-                    this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.SAME_TABLE_ERROR' ), '', this.btnAcceptLbl, false);
+            }, (error) => {
+                if (error.error === '200') {
+                    this.openDialog(this.titleMsg, '', this.itemNameTraduction('CHANGE_TABLE.TABLE_DESTINY_NOT_EXISTS'), '', this.btnAcceptLbl, false);
+                } else if (error.error === '201') {
+                    this.openDialog(this.titleMsg, '', this.itemNameTraduction('CHANGE_TABLE.TABLE_DESTINY_NO_ACTIVE'), '', this.btnAcceptLbl, false);
+                } else if (error.error === '202') {
+                    this.openDialog(this.titleMsg, '', this.itemNameTraduction('CHANGE_TABLE.TABLE_DESTINY_NO_RESTAURANT'), '', this.btnAcceptLbl, false);
+                } else if (error.error === '203') {
+                    this.openDialog(this.titleMsg, '', this.itemNameTraduction('CHANGE_TABLE.PENDING_ORDERS'), '', this.btnAcceptLbl, false);
+                } else if (error.error === '204') {
+                    this.openDialog(this.titleMsg, '', this.itemNameTraduction('CHANGE_TABLE.ORDERS_PAY_PROCESS'), '', this.btnAcceptLbl, false);
+                } else if (error.error === '205') {
+                    this.openDialog(this.titleMsg, '', this.itemNameTraduction('CHANGE_TABLE.WAITER_CALL_PENDING'), '', this.btnAcceptLbl, false);
+                } else if (error.error === '206') {
+                    this.openDialog(this.titleMsg, '', this.itemNameTraduction('CHANGE_TABLE.TABLE_DESTINY_STATUS_ERROR'), '', this.btnAcceptLbl, false);
+                } else if (error.error === '207') {
+                    this.openDialog(this.titleMsg, '', this.itemNameTraduction('CHANGE_TABLE.SAME_TABLE_ERROR'), '', this.btnAcceptLbl, false);
                 } else {
-                    this.openDialog(this.titleMsg, '', this.itemNameTraduction( 'CHANGE_TABLE.GENERAL_ERROR' ), '', this.btnAcceptLbl, false);
+                    this.openDialog(this.titleMsg, '', this.itemNameTraduction('CHANGE_TABLE.GENERAL_ERROR'), '', this.btnAcceptLbl, false);
                 }
             });
         }
@@ -128,7 +128,7 @@ export class TableChangeComponent implements OnInit, OnDestroy {
     * @param {boolean} showBtnCancel
     */
     openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
-        
+
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
@@ -152,10 +152,10 @@ export class TableChangeComponent implements OnInit, OnDestroy {
      * Return traduction
      * @param {string} itemName 
      */
-    itemNameTraduction(itemName: string): string{
+    itemNameTraduction(itemName: string): string {
         var wordTraduced: string;
         this._translate.get(itemName).subscribe((res: string) => {
-            wordTraduced = res; 
+            wordTraduced = res;
         });
         return wordTraduced;
     }
@@ -163,21 +163,21 @@ export class TableChangeComponent implements OnInit, OnDestroy {
     /**
      * Function to cancel operation
      */
-    cancel():void{
+    cancel(): void {
         this._changeTableForm.reset();
     }
 
     /**
      * This function allow go to Orders
      */
-    goToOrders(){
+    goToOrders() {
         this._router.navigate(['/app/orders']);
     }
 
     /**
      * ngOnDestroy Implementation
      */
-    ngOnDestroy(){
+    ngOnDestroy() {
         this.removeSubscriptions();
     }
 }

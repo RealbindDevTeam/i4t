@@ -43,7 +43,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _countriesSub: Subscription;
     private _citiesSub: Subscription;
     private _paymentMethodsSub: Subscription;
-    private _restaurantImagesSub: Subscription;
 
     private _countries: Observable<Country[]>;
     private _cities: Observable<City[]>;
@@ -136,7 +135,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             });
         });
         this._citiesSub = MeteorObservable.subscribe('cities').subscribe();
-        this._restaurantImagesSub = MeteorObservable.subscribe('restaurantImages', this._user).subscribe();
         this._currencySub = MeteorObservable.subscribe('currencies').subscribe();
         this._currentDate = new Date();
         this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
@@ -152,7 +150,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
         if (this._countriesSub) { this._countriesSub.unsubscribe(); }
         if (this._citiesSub) { this._citiesSub.unsubscribe(); }
-        if (this._restaurantImagesSub) { this._restaurantImagesSub.unsubscribe(); }
         if (this._currencySub) { this._currencySub.unsubscribe(); }
         if (this._paymentMethodsSub) { this._paymentMethodsSub.unsubscribe(); }
     }

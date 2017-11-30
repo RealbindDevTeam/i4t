@@ -20,7 +20,7 @@ import { UserDetail } from '../../../../../../both/models/auth/user-detail.model
 @Component({
     selector: 'section',
     templateUrl: './section.component.html',
-    styleUrls: [ './section.component.scss' ]
+    styleUrls: ['./section.component.scss']
 })
 export class SectionComponent implements OnInit, OnDestroy {
 

@@ -3,7 +3,7 @@
         <mat-card class="restaurant-info">
             <mat-list>
                 <mat-list-item>
-                    <img mat-list-avatar class="img" src="{{ getRestaurantImage( restaurant._id ) }}">
+                    <img mat-list-avatar class="img" src="{{ restaurant.image.url }}">
                     <h2 mat-line class="name"> {{restaurant.name}} </h2>
                     <p mat-line class="location">
                         <mat-icon class="location-icon">location_on</mat-icon>

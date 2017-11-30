@@ -13,27 +13,27 @@ import { WaiterCallDetails } from '../../../../../../both/collections/restaurant
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
 @Component({
-    selector: 'waiter-call',
-    templateUrl: './waiter-call.component.html',
-    styleUrls: [ './waiter-call.component.scss' ]
+  selector: 'waiter-call',
+  templateUrl: './waiter-call.component.html',
+  styleUrls: ['./waiter-call.component.scss']
 })
 export class WaiterCallComponent implements OnInit, OnDestroy {
 
-  private _userDetailSubscription       : Subscription;
-  private _waiterCallDetailSubscription : Subscription;
-  public _dialogRef                     : MatDialogRef<any>;
+  private _userDetailSubscription: Subscription;
+  private _waiterCallDetailSubscription: Subscription;
+  public _dialogRef: MatDialogRef<any>;
 
-  private _restaurants      : any;
-  private _userDetail       : any;
-  private _userDetails      : any;
-  private _waiterCallDetail : any;
+  private _restaurants: any;
+  private _userDetail: any;
+  private _userDetails: any;
+  private _waiterCallDetail: any;
 
-  private _countDetails       : number;
-  private _userRestaurant     : boolean;
-  private _validatedWaterCall : boolean;
-  private _loading            : boolean;
-  private titleMsg            : string;
-  private btnAcceptLbl        : string;
+  private _countDetails: number;
+  private _userRestaurant: boolean;
+  private _validatedWaterCall: boolean;
+  private _loading: boolean;
+  private titleMsg: string;
+  private btnAcceptLbl: string;
 
   /**
    * WaiterCallPage Constructor
@@ -43,15 +43,15 @@ export class WaiterCallComponent implements OnInit, OnDestroy {
    * @param {UserLanguageService} _userLanguageService
    * @param {MatDialog} _mdDialog
    */
-  constructor ( protected _translate: TranslateService, 
-                public _viewContainerRef: ViewContainerRef,
-                private _ngZone: NgZone, 
-                private _userLanguageService: UserLanguageService,
-                protected _mdDialog: MatDialog) {
-        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        _translate.setDefaultLang( 'en' );
-        this.titleMsg = 'SIGNUP.SYSTEM_MSG';
-        this.btnAcceptLbl = 'SIGNUP.ACCEPT';
+  constructor(protected _translate: TranslateService,
+    public _viewContainerRef: ViewContainerRef,
+    private _ngZone: NgZone,
+    private _userLanguageService: UserLanguageService,
+    protected _mdDialog: MatDialog) {
+    _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+    _translate.setDefaultLang('en');
+    this.titleMsg = 'SIGNUP.SYSTEM_MSG';
+    this.btnAcceptLbl = 'SIGNUP.ACCEPT';
   }
 
   /**
@@ -64,16 +64,16 @@ export class WaiterCallComponent implements OnInit, OnDestroy {
 
     MeteorObservable.autorun().subscribe(() => {
       this._userDetails = UserDetails.find({ user_id: Meteor.userId() });
-      this._userDetail  = UserDetails.collection.findOne({ user_id: Meteor.userId()});
-      if(this._userDetail){
+      this._userDetail = UserDetails.collection.findOne({ user_id: Meteor.userId() });
+      if (this._userDetail) {
         if (this._userDetail.current_table == "" && this._userDetail.current_restaurant == "") {
           this._userRestaurant = false;
         } else {
           this._userRestaurant = true;
         }
-        if ( this._userRestaurant ) {
-          this._countDetails = WaiterCallDetails.collection.find({user_id : Meteor.userId(), type: 'CALL_OF_CUSTOMER', restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).count();
-          if ( this._countDetails > 0 ){
+        if (this._userRestaurant) {
+          this._countDetails = WaiterCallDetails.collection.find({ user_id: Meteor.userId(), type: 'CALL_OF_CUSTOMER', restaurant_id: this._userDetail.current_restaurant, status: { $in: ["waiting", "completed"] } }).count();
+          if (this._countDetails > 0) {
             this._validatedWaterCall = true;
           } else {
             this._validatedWaterCall = false;
@@ -86,49 +86,49 @@ export class WaiterCallComponent implements OnInit, OnDestroy {
   /**
    * Remove all subscriptions
    */
-  removeSubscriptions():void{
-    if( this._waiterCallDetailSubscription ){ this._waiterCallDetailSubscription.unsubscribe(); }
-    if( this._userDetailSubscription ){ this._userDetailSubscription.unsubscribe(); }
+  removeSubscriptions(): void {
+    if (this._waiterCallDetailSubscription) { this._waiterCallDetailSubscription.unsubscribe(); }
+    if (this._userDetailSubscription) { this._userDetailSubscription.unsubscribe(); }
   }
 
   /**
    * Function that allows add calls to waiters enabled
    */
-  addWaiterCall(){
+  addWaiterCall() {
     if (this._userDetail.current_table == "" && this._userDetail.current_restaurant == "") {
       return;
     } else {
-        var restaurant_id = this._userDetail.current_restaurant;
-        var table_id = this._userDetail.current_table;
-        var usrId = Meteor.userId();
+      var restaurant_id = this._userDetail.current_restaurant;
+      var table_id = this._userDetail.current_table;
+      var usrId = Meteor.userId();
 
-        var data : any = {
-          restaurants : restaurant_id,
-          tables : table_id,
-          user : usrId,
-          waiter_id : "",
-          status : "waiting",
-          type : "CALL_OF_CUSTOMER",
-        }
-        
-        this._loading = true;
-        setTimeout(() => {
-          MeteorObservable.call('findQueueByRestaurant', data).subscribe(() => {
-              this._loading = false;
-          }, (error) => {
-            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
-          });
-        }, 1500);
+      var data: any = {
+        restaurants: restaurant_id,
+        tables: table_id,
+        user: usrId,
+        waiter_id: "",
+        status: "waiting",
+        type: "CALL_OF_CUSTOMER",
+      }
+
+      this._loading = true;
+      setTimeout(() => {
+        MeteorObservable.call('findQueueByRestaurant', data).subscribe(() => {
+          this._loading = false;
+        }, (error) => {
+          this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+        });
+      }, 1500);
     }
   }
 
   /**
    * Function taht allow cancel calls to waiter
    */
-  cancelWaiterCall(){
+  cancelWaiterCall() {
     this._loading = true;
     setTimeout(() => {
-      let waiterCall = WaiterCallDetails.collection.find({ user_id : Meteor.userId(), type: 'CALL_OF_CUSTOMER', restaurant_id: this._userDetail.current_restaurant, status : { $in : ["waiting", "completed"] }}).fetch()[0];
+      let waiterCall = WaiterCallDetails.collection.find({ user_id: Meteor.userId(), type: 'CALL_OF_CUSTOMER', restaurant_id: this._userDetail.current_restaurant, status: { $in: ["waiting", "completed"] } }).fetch()[0];
       MeteorObservable.call('cancelCallClient', waiterCall, Meteor.userId()).subscribe(() => {
         this._loading = false;
       });
@@ -144,31 +144,31 @@ export class WaiterCallComponent implements OnInit, OnDestroy {
     * @param {string} btnAcceptLbl
     * @param {boolean} showBtnCancel
     */
-    openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
-      
-      this._dialogRef = this._mdDialog.open(AlertConfirmComponent, {
-          disableClose: true,
-          data: {
-              title: title,
-              subtitle: subtitle,
-              content: content,
-              buttonCancel: btnCancelLbl,
-              buttonAccept: btnAcceptLbl,
-              showBtnCancel: showBtnCancel
-          }
-      });
-      this._dialogRef.afterClosed().subscribe(result => {
-          this._dialogRef = result;
-          if (result.success) {
+  openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
 
-          }
-      });
+    this._dialogRef = this._mdDialog.open(AlertConfirmComponent, {
+      disableClose: true,
+      data: {
+        title: title,
+        subtitle: subtitle,
+        content: content,
+        buttonCancel: btnCancelLbl,
+        buttonAccept: btnAcceptLbl,
+        showBtnCancel: showBtnCancel
+      }
+    });
+    this._dialogRef.afterClosed().subscribe(result => {
+      this._dialogRef = result;
+      if (result.success) {
+
+      }
+    });
   }
 
   /**
    * ngOnDestroy implementation
    */
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.removeSubscriptions();
   }
 }

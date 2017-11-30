@@ -24,7 +24,7 @@ import { UserDetail } from '../../../../../../both/models/auth/user-detail.model
 @Component({
     selector: 'addition',
     templateUrl: './addition.component.html',
-    styleUrls: [ './addition.component.scss' ]
+    styleUrls: ['./addition.component.scss']
 })
 export class AdditionComponent implements OnInit, OnDestroy {
 

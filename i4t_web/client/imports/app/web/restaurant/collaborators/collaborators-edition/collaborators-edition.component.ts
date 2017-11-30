@@ -23,36 +23,36 @@ import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/ale
 @Component({
     selector: 'collaborators-edition',
     templateUrl: './collaborators-edition.component.html',
-    providers: [ UserLanguageService ]
+    providers: [UserLanguageService]
 })
 export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
 
-    private _tableSub                 : Subscription;
-    private _collaboratorEditionForm  : FormGroup;
-    private _mdDialogRef              : MatDialogRef<any>;
+    private _tableSub: Subscription;
+    private _collaboratorEditionForm: FormGroup;
+    private _mdDialogRef: MatDialogRef<any>;
 
-    private _restaurants              : Observable<Restaurant[]>;
-    private _roles                    : Observable<Role[]>;
-    private _tables                   : Observable<Table[]>;
-    
-    private _userProfile              = new UserProfile();
-    private _userProfileImage         = new UserProfileImage();
-    private selectUser                : User;  
-    private selectUserDetail          : UserDetail;
+    private _restaurants: Observable<Restaurant[]>;
+    private _roles: Observable<Role[]>;
+    private _tables: Observable<Table[]>;
 
-    private _tablesNumber             : number[] = [];
-    private _selectedIndex            : number = 0;
-    private _tableInit                : number = 0;
-    private _tableEnd                 : number = 0;
-    private titleMsg                  : string;
-    private btnAcceptLbl              : string;
-    private _userLang                 : string;
-    private _error                    : string
-    private _message                  : string;
-    private _selectedRestaurant       : string;
-    private _showConfirmError         : boolean = false;
-    private _showTablesSelect         : boolean = false;
-    private _disabledTablesAssignment : boolean = true;
+    private _userProfile = new UserProfile();
+    private _userProfileImage = new UserProfileImage();
+    private selectUser: User;
+    private selectUserDetail: UserDetail;
+
+    private _tablesNumber: number[] = [];
+    private _selectedIndex: number = 0;
+    private _tableInit: number = 0;
+    private _tableEnd: number = 0;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
+    private _userLang: string;
+    private _error: string
+    private _message: string;
+    private _selectedRestaurant: string;
+    private _showConfirmError: boolean = false;
+    private _showTablesSelect: boolean = false;
+    private _disabledTablesAssignment: boolean = true;
 
     /**
      * CollaboratorsEditionComponent constructor
@@ -63,16 +63,15 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
      * @param {MatDialogRef<any>} _dialogRef 
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor( private _router: Router, 
-                 private _formBuilder: FormBuilder, 
-                 private _translate: TranslateService,
-                 private _zone: NgZone,
-                 public _dialogRef: MatDialogRef<any>,
-                 private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MatDialog )
-    {
-        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        _translate.setDefaultLang( 'en' );
+    constructor(private _router: Router,
+        private _formBuilder: FormBuilder,
+        private _translate: TranslateService,
+        private _zone: NgZone,
+        public _dialogRef: MatDialogRef<any>,
+        private _userLanguageService: UserLanguageService,
+        protected _mdDialog: MatDialog) {
+        _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        _translate.setDefaultLang('en');
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
@@ -84,21 +83,21 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
         this.removeSubscriptions();
         this.validateWaiterRole(this.selectUserDetail.role_id);
         this._collaboratorEditionForm = this._formBuilder.group({
-            name: [ this.selectUser.profile.first_name, [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 70 ) ] ],
-            last_name: [ this.selectUser.profile.last_name, [ Validators.required, Validators.minLength( 1 ), Validators.maxLength( 70 ) ] ],
-            birthdate: [ this.selectUserDetail.birthdate, [ Validators.required ] ],
-            restaurant_work: [ this.selectUserDetail.restaurant_work ],
-            role: [ this.selectUserDetail.role_id ],
-            phone: [ this.selectUserDetail.phone ],
-            username: [ this.selectUser.username ],
-            email : [],
+            name: [this.selectUser.profile.first_name, [Validators.required, Validators.minLength(1), Validators.maxLength(70)]],
+            last_name: [this.selectUser.profile.last_name, [Validators.required, Validators.minLength(1), Validators.maxLength(70)]],
+            birthdate: [this.selectUserDetail.birthdate, [Validators.required]],
+            restaurant_work: [this.selectUserDetail.restaurant_work],
+            role: [this.selectUserDetail.role_id],
+            phone: [this.selectUserDetail.phone],
+            username: [this.selectUser.username],
+            email: [],
             password: [],
             confirmPassword: [],
-            table_init : [ this.selectUserDetail.table_assignment_init ],
-            table_end : [ this.selectUserDetail.table_assignment_end ],
+            table_init: [this.selectUserDetail.table_assignment_init],
+            table_end: [this.selectUserDetail.table_assignment_end],
         });
         this._tableInit = this.selectUserDetail.table_assignment_init;
-        this._tableEnd  = this.selectUserDetail.table_assignment_end;
+        this._tableEnd = this.selectUserDetail.table_assignment_end;
         this._restaurants = Restaurants.find({}).zone();
         this._roles = Roles.find({}).zone();
         this._tableSub = MeteorObservable.subscribe('getTablesByRestaurantWork', this.selectUser._id).subscribe();
@@ -107,21 +106,21 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._tableSub ){ this._tableSub.unsubscribe(); }
+    removeSubscriptions(): void {
+        if (this._tableSub) { this._tableSub.unsubscribe(); }
     }
-    
+
     /**
      * Validate waiter role is select to enabled tables assignment
      * @param _roleId 
      */
-    validateWaiterRole( _roleId : string ) {
-        if(_roleId === '200') {
+    validateWaiterRole(_roleId: string) {
+        if (_roleId === '200') {
             this._showTablesSelect = true;
         } else {
-             this._showConfirmError = false ;
-             this._showTablesSelect = false ;
-             this._disabledTablesAssignment = true ;
+            this._showConfirmError = false;
+            this._showTablesSelect = false;
+            this._disabledTablesAssignment = true;
         }
     }
 
@@ -129,11 +128,11 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
      * Enabled tables assignment
      * @param _pEvent 
      */
-    pushSelectArray( _pEvent : any ){
+    pushSelectArray(_pEvent: any) {
         this._tablesNumber = [];
-        if(_pEvent.checked){
+        if (_pEvent.checked) {
             this._disabledTablesAssignment = false;
-            let tablesCount : number = 0;
+            let tablesCount: number = 0;
             tablesCount = Tables.collection.find({}).count();
             for (var index = 1; index <= tablesCount; index++) {
                 this._tablesNumber.push(index);
@@ -146,55 +145,60 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
     /**
      * This function validate date format
      */
-    validateFormatDate(){
+    validateFormatDate() {
         let re = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
     }
 
     /**
      * Collaborator update
      */
-    updateUser(){
-        if(Meteor.userId()){
-            if(this._collaboratorEditionForm.valid){
+    updateUser() {
+        if (Meteor.userId()) {
+            if (this._collaboratorEditionForm.valid) {
                 if (this._collaboratorEditionForm.value.password == this._collaboratorEditionForm.value.confirmPassword) {
                     if (this._collaboratorEditionForm.valid) {
 
-                        if( this._collaboratorEditionForm.value.role === '200' ) {
-                            
-                            if ( this._disabledTablesAssignment || (this._collaboratorEditionForm.value.table_init === 0 && this._collaboratorEditionForm.value.table_end === 0) ){
+                        if (this._collaboratorEditionForm.value.role === '200') {
+
+                            if (this._disabledTablesAssignment || (this._collaboratorEditionForm.value.table_init === 0 && this._collaboratorEditionForm.value.table_end === 0)) {
                                 this._collaboratorEditionForm.value.table_end = Tables.collection.find({}).count();
-                                if (this._collaboratorEditionForm.value.table_end > 0 ){
+                                if (this._collaboratorEditionForm.value.table_end > 0) {
                                     this._collaboratorEditionForm.value.table_init = 1;
                                 }
                             }
-                            if(!this._disabledTablesAssignment && this._collaboratorEditionForm.value.table_end < this._collaboratorEditionForm.value.table_init){
+                            if (!this._disabledTablesAssignment && this._collaboratorEditionForm.value.table_end < this._collaboratorEditionForm.value.table_init) {
                                 this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.SELECT_RANGE_VALID_TABLES');
                                 this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
                                 return;
                             }
                         }
 
-                        Users.update({ _id : this.selectUser._id }, { $set : {
-                                profile: {  first_name: this._collaboratorEditionForm.value.name,
-                                            last_name: this._collaboratorEditionForm.value.last_name,
-                                            language_code: this.selectUser.profile.language_code,
-                                            image: this.selectUser.profile.image  }
+                        Users.update({ _id: this.selectUser._id }, {
+                            $set: {
+                                profile: {
+                                    first_name: this._collaboratorEditionForm.value.name,
+                                    last_name: this._collaboratorEditionForm.value.last_name,
+                                    language_code: this.selectUser.profile.language_code,
+                                    image: this.selectUser.profile.image
+                                }
                             }
                         });
-                        if ( this._collaboratorEditionForm.value.role === '200' ) {
-                            UserDetails.update({ _id : this.selectUserDetail._id }, { $set : {
+                        if (this._collaboratorEditionForm.value.role === '200') {
+                            UserDetails.update({ _id: this.selectUserDetail._id }, {
+                                $set: {
                                     restaurant_work: this._collaboratorEditionForm.value.restaurant_work,
-                                    birthdate : this._collaboratorEditionForm.value.birthdate,
-                                    phone : this._collaboratorEditionForm.value.phone,
-                                    table_assignment_init : Number.parseInt(this._collaboratorEditionForm.value.table_init.toString()),
-                                    table_assignment_end  : Number.parseInt(this._collaboratorEditionForm.value.table_end.toString())
+                                    birthdate: this._collaboratorEditionForm.value.birthdate,
+                                    phone: this._collaboratorEditionForm.value.phone,
+                                    table_assignment_init: Number.parseInt(this._collaboratorEditionForm.value.table_init.toString()),
+                                    table_assignment_end: Number.parseInt(this._collaboratorEditionForm.value.table_end.toString())
                                 }
                             });
                         } else {
-                            UserDetails.update({ _id : this.selectUserDetail._id }, { $set : {
+                            UserDetails.update({ _id: this.selectUserDetail._id }, {
+                                $set: {
                                     restaurant_work: this._collaboratorEditionForm.value.restaurant_work,
-                                    birthdate : this._collaboratorEditionForm.value.birthdate,
-                                    phone : this._collaboratorEditionForm.value.phone
+                                    birthdate: this._collaboratorEditionForm.value.birthdate,
+                                    phone: this._collaboratorEditionForm.value.phone
                                 }
                             });
                         }
@@ -221,7 +225,7 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
     /**
      * Form reset
      */
-    cancel(){
+    cancel() {
         this._collaboratorEditionForm.controls['name'].reset();
         this._collaboratorEditionForm.controls['last_name'].reset();
         this._collaboratorEditionForm.controls['birthdate'].reset();
@@ -232,7 +236,7 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
         this._collaboratorEditionForm.controls['password'].reset();
         this._collaboratorEditionForm.controls['confirmPassword'].reset();
 
-        this._router.navigate( [ 'app/collaborators' ] );
+        this._router.navigate(['app/collaborators']);
     }
 
     /**
@@ -242,7 +246,7 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
     itemNameTraduction(itemName: string): string {
         var wordTraduced: string;
         this._translate.get(itemName).subscribe((res: string) => {
-            wordTraduced = res; 
+            wordTraduced = res;
         });
         return wordTraduced;
     }
@@ -257,7 +261,7 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
     * @param {boolean} showBtnCancel
     */
     openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
-        
+
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
@@ -280,7 +284,7 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
     /**
      * ngOnDestroy implementation
      */
-    ngOnDestroy(){
-        this.removeSubscriptions();   
+    ngOnDestroy() {
+        this.removeSubscriptions();
     }
 }

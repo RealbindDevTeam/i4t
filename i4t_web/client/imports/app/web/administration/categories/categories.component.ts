@@ -22,7 +22,7 @@ import { UserDetail } from '../../../../../../both/models/auth/user-detail.model
 @Component({
     selector: 'category',
     templateUrl: './categories.component.html',
-    styleUrls: [ './categories.component.scss' ]
+    styleUrls: ['./categories.component.scss']
 })
 export class CategoryComponent implements OnInit, OnDestroy {
 
