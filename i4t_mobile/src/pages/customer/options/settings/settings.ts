@@ -14,7 +14,7 @@ import { Languages } from 'qmo_web/both/collections/settings/language.collection
 import { Users, UserImages } from 'qmo_web/both/collections/auth/user.collection';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
 import { UserDetail } from 'qmo_web/both/models/auth/user-detail.model';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../../providers/user-language-service/user-language-service';
 
 @Component({
   selector: 'page-settings',
@@ -62,7 +62,7 @@ export class SettingsPage implements OnInit, OnDestroy {
               public _loadingCtrl: LoadingController,
               private formBuilder: FormBuilder,
               private _toastCtrl : ToastController,
-              private _userLanguageService: UserLanguageService,
+              private _userLanguageService: UserLanguageServiceProvider,
               private _ngZone : NgZone) {
     _translate.setDefaultLang('en');
     this._user = Meteor.user();
@@ -203,7 +203,7 @@ export class SettingsPage implements OnInit, OnDestroy {
    */
   getUsetImage():string{
     if(this._user.services && this._user.services.facebook){
-      return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
+      return "https://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
     } else {
       let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() });
       if( _lUserImage ){

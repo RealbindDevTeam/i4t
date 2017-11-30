@@ -2,7 +2,8 @@ import { Component, NgZone } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AlertController, NavController, NavParams, ViewController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../../../providers/user-language-service/user-language-service';
+import { Accounts } from 'meteor/accounts-base';
 
 @Component({
   selector: 'page-change-password',
@@ -29,7 +30,7 @@ export class ChangePasswordPage {
                 public viewCtrl: ViewController, 
                 private _alertCtrl: AlertController, 
                 protected _translate: TranslateService,
-                private _userLanguageService: UserLanguageService) 
+                private _userLanguageService: UserLanguageServiceProvider) 
     { 
         _translate.setDefaultLang('en');
     }

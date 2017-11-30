@@ -1,6 +1,5 @@
 import { Component, ViewChild, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { App, AlertController, LoadingController, Nav, Platform } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -13,7 +12,7 @@ import { TabsPage } from '../tabs/tabs';
 import { UserProfileImage } from 'qmo_web/both/models/auth/user-profile.model';
 import { Users, UserImages } from 'qmo_web/both/collections/auth/user.collection';
 import { User } from 'qmo_web/both/models/auth/user.model';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 
 @Component({
     templateUrl: 'home-menu.html'
@@ -32,21 +31,19 @@ export class HomeMenu implements OnInit, OnDestroy {
     * Menu constructor
     * @param _app 
     * @param platform 
-    * @param statusBar 
     * @param splashScreen 
     * @param _alertCtrl 
     * @param _loadingCtrl 
     * @param _translate 
     */
-  constructor( public _app : App,
-               public platform: Platform, 
-               public statusBar: StatusBar, 
-               public splashScreen: SplashScreen,
-               public _alertCtrl: AlertController,
-               public _loadingCtrl: LoadingController,
-               private _translate: TranslateService,
-               private _ngZone: NgZone,
-               private _userLanguageService: UserLanguageService ){
+    constructor(public _app: App,
+        public platform: Platform,
+        public splashScreen: SplashScreen,
+        public _alertCtrl: AlertController,
+        public _loadingCtrl: LoadingController,
+        private _translate: TranslateService,
+        private _ngZone: NgZone,
+        private _userLanguageService: UserLanguageServiceProvider) {
         _translate.setDefaultLang('en');
         this.initializeApp();
         let _lHome = this.itemNameTraduction('MOBILE.HOME-MENU.HOME');
@@ -62,9 +59,9 @@ export class HomeMenu implements OnInit, OnDestroy {
     /**
      * ngOnInit Implementation
      */
-    ngOnInit(){
+    ngOnInit() {
         this._translate.use(this._userLanguageService.getLanguage(Meteor.user()));
-        this._userImageSubscription = MeteorObservable.subscribe( 'getUserImages', Meteor.userId() ).subscribe();
+        this._userImageSubscription = MeteorObservable.subscribe('getUserImages', Meteor.userId()).subscribe();
         this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() => {
             this._ngZone.run(() => {
                 this._user = Users.findOne({ _id: Meteor.userId() });
@@ -85,7 +82,6 @@ export class HomeMenu implements OnInit, OnDestroy {
      * Here you can do any higher level native things you might need.
      */
     initializeApp() {
-        this.statusBar.styleDefault();
         this.splashScreen.hide();
     }
 
@@ -174,7 +170,7 @@ export class HomeMenu implements OnInit, OnDestroy {
      */
     getUserImage(): string {
         if (this._user && this._user.services.facebook) {
-            return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
+            return "https://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
         } else {
             let _lUserImage: UserProfileImage = UserImages.findOne({ userId: Meteor.userId() });
             if (_lUserImage) {

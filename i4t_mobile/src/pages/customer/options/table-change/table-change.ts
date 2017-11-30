@@ -7,7 +7,7 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { TabsPage } from '../../tabs/tabs';
 import { AlphanumericCodeChangePage } from './alphanumeric-code-change/alphanumeric-code-change';
 
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../../providers/user-language-service/user-language-service';
 import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 
 @Component({
@@ -30,7 +30,7 @@ export class ChangeTablePage implements OnInit, OnDestroy {
         public _alertCtrl: AlertController,
         public _loadingCtrl: LoadingController,
         private _translate: TranslateService,
-        private _userLanguageService: UserLanguageService,
+        private _userLanguageService: UserLanguageServiceProvider,
         private _ngZone: NgZone,
         private barcodeScanner: BarcodeScanner) {
         _translate.setDefaultLang('en');

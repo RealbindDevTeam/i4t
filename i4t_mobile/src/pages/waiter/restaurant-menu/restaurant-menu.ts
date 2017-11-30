@@ -3,7 +3,7 @@ import { NavController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from "meteor-rxjs";
 import { Subscription } from "rxjs";
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 import { Restaurants, RestaurantImageThumbs } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
 import { Sections } from 'qmo_web/both/collections/administration/section.collection';
@@ -47,7 +47,7 @@ export class RestaurantMenuPage implements OnInit, OnDestroy {
 
     constructor(public _translate: TranslateService,
         public _navCtrl: NavController,
-        private _userLanguageService: UserLanguageService,
+        private _userLanguageService: UserLanguageServiceProvider,
         private _ngZone: NgZone) {
 
         _translate.setDefaultLang('en');

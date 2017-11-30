@@ -4,7 +4,7 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../../../providers/user-language-service/user-language-service';
 import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 import { TabsPage } from '../../../tabs/tabs';
 
@@ -27,7 +27,7 @@ export class AlphanumericCodeChangePage {
         private _viewCtrl: ViewController,
         public _navParams: NavParams,
         public _translate: TranslateService,
-        private _userLanguageService: UserLanguageService,
+        private _userLanguageService: UserLanguageServiceProvider,
         private _ngZone: NgZone) {
         _translate.setDefaultLang('en');
 

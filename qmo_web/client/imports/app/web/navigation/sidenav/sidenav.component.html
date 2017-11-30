@@ -1,9 +1,0 @@
-<!--md-toolbar fxLayout="row" fxLayoutAlign="space-around center">
-  <div fxFlex fxFlexFill></div>
-  <img src="/images/isotipo_footer.png" class="logo" [fxShow]="!isHovering && (sidenavStyle === 'icon' || sidenavStyle === 'icon overlay')">
-  <img src="/images/logo_iurest_white.png" class="logo" [fxShow]="isHovering || !(sidenavStyle === 'icon' || sidenavStyle === 'icon overlay')">
-  <div fxFlex fxFlexFill></div>
-</md-toolbar-->
-<md-nav-list class="side-navigation" [ngStyle]="{'height': auto}">
-  <c-sidenav-item *ngFor="let menuItem of menuItems" [menuItem]="menuItem" [parent]="_this"></c-sidenav-item>
-</md-nav-list>

@@ -3,7 +3,7 @@
         <button ion-button menuToggle icon-only>
             <ion-icon name='menu'></ion-icon>
         </button>
-        <ion-title>
+        <ion-title class="logo">
             <img class="nav-logo" src="assets/img/logo_iurest_1000_x_260.png">
         </ion-title>
     </ion-navbar>
@@ -12,14 +12,14 @@
 <ion-content>
     <div *ngIf="_thereIsRestaurant">
         <ion-list style="margin: 0 auto; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);" text-wrap *ngFor="let restaurant of _restaurants | async;">
-            <ion-item style="background-image: url(assets/img/background_waiter.png);" class="img-header">
+            <button ion-item (click)="viewRestaurantProfile(restaurant)" style="background-image: url(assets/img/background_waiter.png);" class="img-header">
                 <ion-thumbnail item-left>
                     <img src="{{ getRestaurantThumb(restaurant._id ) }}">
                 </ion-thumbnail>
                 <h2>{{restaurant.name}}</h2>
                 <h2 *ngIf="_table">{{'MOBILE.ORDERS.TABLE' | translate}}: {{_table._number}}</h2>
                 <p>{{restaurant.address}}</p>
-            </ion-item>
+            </button>
         </ion-list>
         <ion-card>
             <ion-card-content>

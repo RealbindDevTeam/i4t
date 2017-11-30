@@ -1,6 +1,6 @@
 {
-  "name": "i4t_mobile",
-  "short_name": "i4t_mobile",
+  "name": "Ionic",
+  "short_name": "Ionic",
   "start_url": "index.html",
   "display": "standalone",
   "icons": [{

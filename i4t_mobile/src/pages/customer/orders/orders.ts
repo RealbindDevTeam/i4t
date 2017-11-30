@@ -11,12 +11,13 @@ import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantImageThumbs } from 'qmo_web/both/collections/restaurant/restaurant.collection';
 import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 import { Storage } from '@ionic/storage';
 import { CodeTypeSelectPage } from '../code-type-select/code-type-select';
 import { SectionsPage } from '../sections/sections';
 import { ItemEditPage } from '../item-edit/item-edit';
 import { AdditionEditPage } from '../addition-edit/addition-edit';
+import { RestaurantProfilePage } from '../restaurant-profile/restaurant-profile';
 import { Currencies } from 'qmo_web/both/collections/general/currency.collection';
 import { ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
 
@@ -65,7 +66,7 @@ export class OrdersPage implements OnInit, OnDestroy {
         public _translate: TranslateService,
         public alertCtrl: AlertController,
         public _loadingCtrl: LoadingController,
-        private _userLanguageService: UserLanguageService,
+        private _userLanguageService: UserLanguageServiceProvider,
         private _ngZone: NgZone) {
         _translate.setDefaultLang('en');
         this._currentUserId = Meteor.userId();
@@ -387,6 +388,14 @@ export class OrdersPage implements OnInit, OnDestroy {
         } else {
             return 'assets/img/default-restaurant.png';
         }
+    }
+
+    /**
+     * Go to restaurant profile
+     * @param _pRestaurant 
+     */
+    viewRestaurantProfile( _pRestaurant : any ){
+        this._navCtrl.push(RestaurantProfilePage, { restaurant : _pRestaurant});
     }
 
     /**

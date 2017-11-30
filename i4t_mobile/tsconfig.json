@@ -9,10 +9,10 @@
       "dom",
       "es2015"
     ],
-    "module": "commonjs",
+    "module": "es2015",
     "moduleResolution": "node",
     "paths": {
-      "qmo_web/*": [ "../qmo_web/*" ]
+      "qmo_web/*": ["../qmo_web/*"]
     },
     "sourceMap": true,
     "target": "es5",
@@ -20,7 +20,7 @@
     "stripInternal": true,
     "noImplicitAny": false,
     "types": [
-      "@types/underscore"
+      "@types/meteor"
     ]
   },
   "include": [

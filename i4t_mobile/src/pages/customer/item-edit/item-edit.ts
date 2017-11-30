@@ -14,7 +14,7 @@ import { Item } from 'qmo_web/both/models/administration/item.model';
 import { Currencies } from 'qmo_web/both/collections/general/currency.collection';
 import { ModalObservationsEdit } from './modal-observations-edit';
 import { Storage } from '@ionic/storage';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 
 @Component({
   selector: 'page-item-edit',
@@ -74,7 +74,7 @@ export class ItemEditPage implements OnInit, OnDestroy {
     private _toastCtrl: ToastController,
     private _ngZone: NgZone,
     public _alertCtrl: AlertController,
-    private _userLanguageService: UserLanguageService) {
+    private _userLanguageService: UserLanguageServiceProvider) {
 
     this._userLang = navigator.language.split('-')[0];
     _translate.setDefaultLang('en');

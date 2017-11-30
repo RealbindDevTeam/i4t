@@ -9,11 +9,10 @@ import { Additions } from 'qmo_web/both/collections/administration/addition.coll
 import { Addition } from 'qmo_web/both/models/administration/addition.model';
 import { GarnishFoodCol } from 'qmo_web/both/collections/administration/garnish-food.collection';
 import { GarnishFood } from 'qmo_web/both/models/administration/garnish-food.model';
-import { ModalObservations } from './modal-observations';
 import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
 import { Item } from 'qmo_web/both/models/administration/item.model';
 import { Currencies } from 'qmo_web/both/collections/general/currency.collection';
-import { UserLanguageService } from 'qmo_web/client/imports/app/shared/services/user-language.service';
+import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 
 /*
   Generated class for the ItemDetail page.
@@ -71,7 +70,7 @@ export class ItemDetailWaiterPage implements OnInit, OnDestroy {
     public _zone: NgZone,
     public _loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
-    private _userLanguageService: UserLanguageService) {
+    private _userLanguageService: UserLanguageServiceProvider) {
     _translate.setDefaultLang('en');
     this._currentUserId = Meteor.userId();
     this._statusArray = ['ORDER_STATUS.REGISTERED'];
