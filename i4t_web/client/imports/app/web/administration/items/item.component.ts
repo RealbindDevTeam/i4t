@@ -8,7 +8,7 @@ import { Meteor } from 'meteor/meteor';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Item, ItemPrice } from '../../../../../../both/models/administration/item.model';
-import { Items, ItemImagesThumbs } from '../../../../../../both/collections/administration/item.collection';
+import { Items } from '../../../../../../both/collections/administration/item.collection';
 import { ItemEditionComponent } from './items-edition/item-edition.component';
 import { Currency } from '../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../both/collections/general/currency.collection';
@@ -27,7 +27,6 @@ export class ItemComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
     private _itemsSub: Subscription;
-    private _itemImagesThumbSub: Subscription;
     private _currenciesSub: Subscription;
     private _restaurantSub: Subscription;
     private _userDetailsSub: Subscription;
@@ -79,7 +78,6 @@ export class ItemComponent implements OnInit, OnDestroy {
                 this._items.subscribe(() => { this.countItems(); });
             });
         });
-        this._itemImagesThumbSub = MeteorObservable.subscribe('itemImageThumbs', this._user).subscribe();
         this._currenciesSub = MeteorObservable.subscribe('currencies').subscribe();
         this._restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe(() => {
             this._ngZone.run(() => {
@@ -133,7 +131,6 @@ export class ItemComponent implements OnInit, OnDestroy {
      */
     removeSubscriptions(): void {
         if (this._itemsSub) { this._itemsSub.unsubscribe(); }
-        if (this._itemImagesThumbSub) { this._itemImagesThumbSub.unsubscribe(); }
         if (this._currenciesSub) { this._currenciesSub.unsubscribe(); }
         if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
         if (this._userDetailsSub) { this._userDetailsSub.unsubscribe(); }
@@ -220,14 +217,6 @@ export class ItemComponent implements OnInit, OnDestroy {
      */
     goToAddRestaurant() {
         this._router.navigate(['/app/restaurant-register']);
-    }
-
-    /**
-     * Return item image
-     * @param {string} _itemId
-     */
-    getItemImage(_itemId: string): string {
-        return ItemImagesThumbs.getItemImageThumbUrl(_itemId);
     }
 
     /**

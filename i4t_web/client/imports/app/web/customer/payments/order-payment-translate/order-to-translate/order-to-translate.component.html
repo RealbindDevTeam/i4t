@@ -14,7 +14,8 @@
                     <span *ngFor="let it of or.items">
                         <ng-template [ngIf]="item._id === it.itemId">
                             <mat-list-item>
-                                <img mat-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" src="{{ getItemImage(item._id) }}">
+                                <img mat-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" *ngIf="item.image" src="{{ item.image.url }}">
+                                <img mat-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" *ngIf="!item.image" src="/images/default-plate.png">
                                 <h4 mat-line>{{item.name}}</h4>
                                 <h5 mat-line>
                                     {{'ORDER_TRANS.PRICE' | translate}}: {{it.paymentItem}} {{_currencyCode}} - {{'ORDER_TRANS.QUANT' | translate}} {{it.quantity}}

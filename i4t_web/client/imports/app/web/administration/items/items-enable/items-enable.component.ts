@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Item } from '../../../../../../../both/models/administration/item.model';
-import { Items, ItemImagesThumbs } from '../../../../../../../both/collections/administration/item.collection';
+import { Items } from '../../../../../../../both/collections/administration/item.collection';
 import { EnableConfirmComponent } from './enable-confirm/enable-confirm.component';
 
 @Component({
@@ -18,7 +18,6 @@ export class ItemEnableComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
     private _itemsSub: Subscription;
-    private _itemImagesThumbSub: Subscription;
 
     private _items: Observable<Item[]>;
     private _mdDialogRef: MatDialogRef<any>;
@@ -50,7 +49,6 @@ export class ItemEnableComponent implements OnInit, OnDestroy {
                 this._items.subscribe(() => { this.countItems(); });
             });
         });
-        this._itemImagesThumbSub = MeteorObservable.subscribe('itemImageThumbs', this._user).subscribe();
     }
 
     /**
@@ -65,17 +63,8 @@ export class ItemEnableComponent implements OnInit, OnDestroy {
      */
     removeSubscriptions(): void {
         if (this._itemsSub) { this._itemsSub.unsubscribe(); }
-        if (this._itemImagesThumbSub) { this._itemImagesThumbSub.unsubscribe(); }
     }
-
-    /**
-     * Return item image
-     * @param {string} _itemId
-     */
-    getItemImage(_itemId: string): string {
-        return ItemImagesThumbs.getItemImageThumbUrl(_itemId);
-    }
-
+    
     /**
      * Opens dialog to enable/disable item in restaurants
      */

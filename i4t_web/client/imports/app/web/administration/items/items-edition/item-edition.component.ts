@@ -8,8 +8,8 @@ import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
 import { MatSnackBar } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { Item, ItemImage, ItemImageThumb, ItemRestaurant, ItemPrice } from '../../../../../../../both/models/administration/item.model';
-import { Items, ItemImages, ItemImagesThumbs } from '../../../../../../../both/collections/administration/item.collection';
+import { Item, ItemImage, ItemRestaurant, ItemPrice } from '../../../../../../../both/models/administration/item.model';
+import { Items } from '../../../../../../../both/collections/administration/item.collection';
 import { Sections } from '../../../../../../../both/collections/administration/section.collection';
 import { Section } from '../../../../../../../both/models/administration/section.model';
 import { Categories } from '../../../../../../../both/collections/administration/category.collection';
@@ -33,7 +33,7 @@ import { ImageService } from '../../../../shared/services/image.service';
     selector: 'item-edition',
     templateUrl: './item-edition.component.html',
     styleUrls: ['./item-edition.component.scss'],
-    providers:[ UserLanguageService, ImageService ]
+    providers: [UserLanguageService, ImageService]
 })
 export class ItemEditionComponent implements OnInit, OnDestroy {
 
@@ -52,8 +52,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
     private _subcategories: Observable<Subcategory[]>;
     private _currencies: Observable<Currency[]>;
 
-    private _itemImagesSub: Subscription;
-    private _itemImageThumbsSub: Subscription;
+    private _itemsSub: Subscription;
     private _sectionsSub: Subscription;
     private _categorySub: Subscription;
     private _subcategorySub: Subscription;
@@ -91,10 +90,9 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
     private _restaurantTaxes: string[] = [];
 
     private _editImage: boolean = false;
-    private _editFilesToUpload: Array<File>;
-    private _editItemImageToInsert: File;
+    private _editItemImageToInsert: ItemImage;
     private _nameImageFileEdit: string;
-    private _itemEditImage: string;
+    private _itemEditImageUrl: string;
     private _restaurantsSelectedCount: number = 0;
     private titleMsg: string;
     private btnAcceptLbl: string;
@@ -116,11 +114,11 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         private _userLanguageService: UserLanguageService,
         protected _mdDialog: MatDialog,
         private _imageService: ImageService) {
-        _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        let _lng: string = this._userLanguageService.getLanguage(Meteor.user());
+        _translate.use(_lng);
         _translate.setDefaultLang('en');
         this._itemGarnishFood = [];
         this._garnishFoodList = [];
-        this._editFilesToUpload = [];
         this._restaurantsGarnishFood = [];
         this._edition_garnishFood = [];
         this._itemAdditions = [];
@@ -172,12 +170,17 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         this._restaurantsSelectedCount = this._itemToEdit.restaurants.length;
         if (this._itemToEdit.restaurants.length > 0) { this._showRestaurants = true }
 
-        this._itemImagesSub = MeteorObservable.subscribe('itemImages', this._user).subscribe();
-        this._itemImageThumbsSub = MeteorObservable.subscribe('itemImageThumbs', this._user).subscribe(() => {
+        this._itemsSub = MeteorObservable.subscribe('items', this._user).subscribe(() => {
             this._ngZone.run(() => {
-                this._itemEditImage = ItemImagesThumbs.getItemImageThumbUrl(this._itemToEdit._id);
+                let _itemImg: ItemImage = Items.findOne({ _id: this._itemToEdit._id }).image;
+                if (_itemImg) {
+                    this._itemEditImageUrl = _itemImg.url;
+                } else {
+                    this._itemEditImageUrl = '/images/default-plate.png';
+                }
             });
         });
+
         this._sectionsSub = MeteorObservable.subscribe('sections', this._user).subscribe(() => {
             this._ngZone.run(() => {
                 this._sections = Sections.find({ is_active: true }).zone();
@@ -275,8 +278,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
      * Remove all subscriptions
      */
     removeSubscriptions(): void {
-        if (this._itemImagesSub) { this._itemImagesSub.unsubscribe(); }
-        if (this._itemImageThumbsSub) { this._itemImageThumbsSub.unsubscribe(); }
+        if (this._itemsSub) { this._itemsSub.unsubscribe(); }
         if (this._sectionsSub) { this._sectionsSub.unsubscribe(); }
         if (this._categorySub) { this._categorySub.unsubscribe(); }
         if (this._subcategorySub) { this._subcategorySub.unsubscribe(); }
@@ -429,14 +431,18 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * When user wants edit item image, this function allow insert the image in the store
-     * @param {any} _fileInput
+     * Function to insert new image
      */
-    onChangeEditImage(_fileInput: any): void {
-        this._editImage = true;
-        this._editFilesToUpload = <Array<File>>_fileInput.target.files;
-        this._editItemImageToInsert = this._editFilesToUpload[0];
-        this._nameImageFileEdit = this._editItemImageToInsert.name;
+    changeImage(): void {
+        this._imageService.client.pick(this._imageService.pickOptions).then((res) => {
+            let _imageToUpload: any = res.filesUploaded[0];
+            this._nameImageFileEdit = _imageToUpload.filename;
+            this._editItemImageToInsert = _imageToUpload;
+            this._editImage = true;
+        }).catch((err) => {
+            var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+        });
     }
 
     /**
@@ -495,44 +501,58 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                 }
             });
 
-            Items.update(this._itemEditionForm.value.editId, {
-                $set: {
-                    modification_user: this._user,
-                    modification_date: new Date(),
-                    is_active: this._itemEditionForm.value.editIsActive,
-                    sectionId: this._itemEditionForm.value.editSectionId,
-                    categoryId: this._itemEditionForm.value.editCategoryId,
-                    subcategoryId: this._itemEditionForm.value.editSubcategoryId,
-                    name: this._itemEditionForm.value.editName,
-                    description: this._itemEditionForm.value.editDescription,
-                    time: this._itemEditionForm.value.editCookingTime,
-                    restaurants: _lItemRestaurantsToInsert,
-                    prices: _lItemPricesToInsert,
-                    observations: this._itemEditionForm.value.editObservations,
-                    garnishFoodQuantity: this._itemEditionForm.value.editGarnishFoodQuantity,
-                    garnishFood: this._edition_garnishFood,
-                    additions: this._edition_addition,
-                    isAvailable: this._itemEditionForm.value.editIsAvailable
-                }
-            });
-
             if (this._editImage) {
-                let _lItemImage: ItemImage = ItemImages.findOne({ itemId: this._itemEditionForm.value.editId });
-                let _lItemImageThumb: ItemImageThumb = ItemImagesThumbs.findOne({ itemId: this._itemEditionForm.value.editId });
-
-                if (_lItemImage && _lItemImageThumb) {
-                    ItemImages.remove({ _id: _lItemImage._id });
-                    ItemImagesThumbs.remove({ _id: _lItemImageThumb._id });
-                }
-
-                this._imageService.uploadItemImage(this._editItemImageToInsert,
-                    Meteor.userId(),
-                    this._itemEditionForm.value.editId).then((result) => {
-
+                /* let _lItemImage: ItemImage = Items.findOne({ _id: this._itemToEdit._id }).image;
+                if (_lItemImage) {
+                    this._imageService.client.remove(_lItemImage.handle).then((res) => {
+                        console.log(res);
                     }).catch((err) => {
-                        var error: string = 'Update image error. Only accept .png, .jpg, .jpeg files.';
+                        var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
                         this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
                     });
+                }*/
+                Items.update(this._itemEditionForm.value.editId, {
+                    $set: {
+                        modification_user: this._user,
+                        modification_date: new Date(),
+                        is_active: this._itemEditionForm.value.editIsActive,
+                        sectionId: this._itemEditionForm.value.editSectionId,
+                        categoryId: this._itemEditionForm.value.editCategoryId,
+                        subcategoryId: this._itemEditionForm.value.editSubcategoryId,
+                        name: this._itemEditionForm.value.editName,
+                        description: this._itemEditionForm.value.editDescription,
+                        time: this._itemEditionForm.value.editCookingTime,
+                        restaurants: _lItemRestaurantsToInsert,
+                        prices: _lItemPricesToInsert,
+                        observations: this._itemEditionForm.value.editObservations,
+                        image: this._editItemImageToInsert,
+                        garnishFoodQuantity: this._itemEditionForm.value.editGarnishFoodQuantity,
+                        garnishFood: this._edition_garnishFood,
+                        additions: this._edition_addition,
+                        isAvailable: this._itemEditionForm.value.editIsAvailable
+                    }
+                });
+            } else {
+                Items.update(this._itemEditionForm.value.editId, {
+                    $set: {
+                        modification_user: this._user,
+                        modification_date: new Date(),
+                        is_active: this._itemEditionForm.value.editIsActive,
+                        sectionId: this._itemEditionForm.value.editSectionId,
+                        categoryId: this._itemEditionForm.value.editCategoryId,
+                        subcategoryId: this._itemEditionForm.value.editSubcategoryId,
+                        name: this._itemEditionForm.value.editName,
+                        description: this._itemEditionForm.value.editDescription,
+                        time: this._itemEditionForm.value.editCookingTime,
+                        restaurants: _lItemRestaurantsToInsert,
+                        prices: _lItemPricesToInsert,
+                        observations: this._itemEditionForm.value.editObservations,
+                        garnishFoodQuantity: this._itemEditionForm.value.editGarnishFoodQuantity,
+                        garnishFood: this._edition_garnishFood,
+                        additions: this._edition_addition,
+                        isAvailable: this._itemEditionForm.value.editIsAvailable
+                    }
+                });
             }
 
             let _lMessage: string = this.itemNameTraduction('ITEMS.ITEM_EDITED');

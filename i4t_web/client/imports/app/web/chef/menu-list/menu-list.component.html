@@ -15,7 +15,8 @@
                                 <ng-template [ngIf]="item.sectionId === section._id">
                                     <mat-card class="custom-cards">
                                         <div class="header-card">
-                                            <img src="{{ getItemImageThumb(item._id) }}">
+                                            <img *ngIf="item.image" src="{{ item.image.url }}">
+                                            <img *ngIf="!item.image" src="/images/default-plate.png">
                                             <span class="mat-card-title">{{item.name}}</span>
                                             <button mat-fab class="btn-position-edition" (click)="showItemInformation(item)">
                                                 <mat-icon style="color: white;" class="mat-24">search</mat-icon>
@@ -51,7 +52,8 @@
                             <div class="item-detail-card">
                                 <div class="card-content">
                                     <div class="crop">
-                                        <img src="{{ getItemImage(itemDet._id) }}">
+                                        <img *ngIf="itemDet.image" src="{{ itemDet.image.url }}">
+                                        <img *ngIf="!itemDet.image" src="/images/default-plate.png">
                                     </div>
                                     <div class="content">
                                         <mat-card-subtitle class="description">{{itemDet.description}}</mat-card-subtitle>

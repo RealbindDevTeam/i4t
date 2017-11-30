@@ -111,9 +111,9 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         this.removeSubscriptions();
         this._restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe(() => {
             this._ngZone.run(() => {
-                let _restaurantImg = Restaurants.findOne({ _id: this._restaurantToEdit._id }).image;
+                let _restaurantImg: RestaurantImage = Restaurants.findOne({ _id: this._restaurantToEdit._id }).image;
                 if (_restaurantImg) {
-                    this._restaurantEditImageUrl = Restaurants.findOne({ _id: this._restaurantToEdit._id }).image.url;
+                    this._restaurantEditImageUrl = _restaurantImg.url;
                 } else {
                     this._restaurantEditImageUrl = '/images/default-restaurant.png';
                 }

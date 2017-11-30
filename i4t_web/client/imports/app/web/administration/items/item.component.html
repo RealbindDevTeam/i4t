@@ -56,7 +56,8 @@
     <div *ngIf="_thereAreRestaurants && _thereAreItems">
         <mat-card id="card-main" class="custom-cards" *ngFor="let item of _items | async">
             <div class="header-card">
-                <img src="{{ getItemImage(item._id) }}">
+                <img *ngIf="item.image" src="{{ item.image.url }}">
+                <img *ngIf="!item.image" src="/images/default-plate.png">
                 <span class="mat-card-title">{{item.name}}</span>
                 <button matTooltip="{{'ITEMS.EDIT_ITEM' | translate}}" mat-fab class="btn-position-edition" (click)="open(item)">
                         <mat-icon style="color: white;" class="mat-24">create</mat-icon>
