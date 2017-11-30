@@ -1,39 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { UploadFS } from 'meteor/jalik:ufs';
 import { Items } from '../../collections/administration/item.collection';
-import { ItemImagesStore } from '../../stores/administration/item.store';
-import { Item } from '../../models/administration/item.model';
-import { UserDetail } from '../../models/auth/user-detail.model';
-
-/**
- * Function allow upload item images
- * @param {File} data
- * @param {String} user
- * @return {Promise<any>} uploadItemImage
- */
-export function uploadItemImage(data: File,
-  user: string,
-  itemId: string): Promise<any> {
-  return new Promise((resolve, reject) => {
-    const file = {
-      name: data.name,
-      type: data.type,
-      size: data.size,
-      userId: user,
-      itemId: itemId
-    };
-
-    const upload = new UploadFS.Uploader({
-      data,
-      file,
-      store: ItemImagesStore,
-      onError: reject,
-      onComplete: resolve
-    });
-    upload.start();
-  });
-}
-
 
 if (Meteor.isServer) {
   Meteor.methods({

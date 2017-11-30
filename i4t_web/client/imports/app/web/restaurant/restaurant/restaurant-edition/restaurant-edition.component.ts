@@ -7,7 +7,6 @@ import { MatDialogRef, MatDialog } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { uploadRestaurantImage } from '../../../../../../../both/methods/restaurant/restaurant.methods';
 import { Restaurants, RestaurantImages, RestaurantImageThumbs, RestaurantsLegality } from '../../../../../../../both/collections/restaurant/restaurant.collection';
 import { Restaurant, RestaurantImage, RestaurantImageThumb, RestaurantLegality } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Currency } from '../../../../../../../both/models/general/currency.model';
@@ -21,6 +20,7 @@ import { Cities } from '../../../../../../../both/collections/settings/city.coll
 import { Parameter } from '../../../../../../../both/models/general/parameter.model';
 import { Parameters } from '../../../../../../../both/collections/general/parameter.collection';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
+import { ImageService } from '../../../../shared/services/image.service';
 
 @Component({
     selector: 'restaurant-edition',
@@ -84,6 +84,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
      * @param {ActivatedRoute} _route 
      * @param {Router} _router 
      * @param {UserLanguageService} _userLanguageService
+     * @param {ImageService} _imageService
      */
     constructor(private _formBuilder: FormBuilder,
         private _translate: TranslateService,
@@ -91,7 +92,8 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         private _route: ActivatedRoute,
         private _router: Router,
         private _userLanguageService: UserLanguageService,
-        protected _mdDialog: MatDialog) {
+        protected _mdDialog: MatDialog,
+        private _imageService: ImageService) {
 
         this._route.params.forEach((params: Params) => {
             this._restaurantToEdit = JSON.parse(params['param1']);
@@ -126,12 +128,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
         this._restaurantImagesSub = MeteorObservable.subscribe('restaurantImages', this._user).subscribe();
         this._restaurantImageThumbsSub = MeteorObservable.subscribe('restaurantImageThumbs', this._user).subscribe(() => {
             this._ngZone.run(() => {
-                let _lRestaurantImage: RestaurantImageThumb = RestaurantImageThumbs.findOne({ restaurantId: this._restaurantToEdit._id });
-                if (_lRestaurantImage) {
-                    this._restaurantEditImage = _lRestaurantImage.url
-                } else {
-                    this._restaurantEditImage = '/images/default-restaurant.png';
-                }
+                this._restaurantEditImage = RestaurantImageThumbs.getRestaurantImageThumbUrl(this._restaurantToEdit._id);
             });
         });
 
@@ -302,7 +299,7 @@ export class RestaurantEditionComponent implements OnInit, OnDestroy {
             if (_lRestaurantImage) { RestaurantImages.remove({ _id: _lRestaurantImage._id }); }
             if (_lRestaurantImageThumb) { RestaurantImageThumbs.remove({ _id: _lRestaurantImageThumb._id }); }
 
-            uploadRestaurantImage(this._restaurantImageToEdit,
+            this._imageService.uploadRestaurantImage(this._restaurantImageToEdit,
                 Meteor.userId(),
                 this._restaurantEditionForm.value.editId).then((result) => {
 

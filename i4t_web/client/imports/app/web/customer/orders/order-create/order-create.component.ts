@@ -12,7 +12,7 @@ import { Category } from '../../../../../../../both/models/administration/catego
 import { Categories } from '../../../../../../../both/collections/administration/category.collection';
 import { Subcategory } from '../../../../../../../both/models/administration/subcategory.model';
 import { Subcategories } from '../../../../../../../both/collections/administration/subcategory.collection';
-import { Item, ItemImage, ItemImageThumb } from '../../../../../../../both/models/administration/item.model';
+import { Item } from '../../../../../../../both/models/administration/item.model';
 import { Items, ItemImages, ItemImagesThumbs } from '../../../../../../../both/collections/administration/item.collection';
 import { OrderMenu } from '../order-navigation/order-menu';
 import { OrderNavigationService } from '../order-navigation/order-navigation.service';
@@ -28,54 +28,54 @@ import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/ale
 @Component({
     selector: 'order-create',
     templateUrl: './order-create.component.html',
-    styleUrls: [ './order-create.component.scss' ]
+    styleUrls: ['./order-create.component.scss']
 })
 export class OrderCreateComponent implements OnInit, OnDestroy {
 
-    @Input() restaurantId               : string;
-    @Input() tableQRCode                : string;
-    @Input() restaurantCurrency         : string;
+    @Input() restaurantId: string;
+    @Input() tableQRCode: string;
+    @Input() restaurantCurrency: string;
     @Output() finishOrdenCreation = new EventEmitter();
 
-    private _newOrderForm               : FormGroup;
-    private _garnishFormGroup           : FormGroup = new FormGroup({});
-    private _additionsFormGroup         : FormGroup = new FormGroup({});
-    private _additionsDetailFormGroup   : FormGroup = new FormGroup({});
-    private _mdDialogRef                : MatDialogRef<any>;
+    private _newOrderForm: FormGroup;
+    private _garnishFormGroup: FormGroup = new FormGroup({});
+    private _additionsFormGroup: FormGroup = new FormGroup({});
+    private _additionsDetailFormGroup: FormGroup = new FormGroup({});
+    private _mdDialogRef: MatDialogRef<any>;
 
-    private _sectionsSub                : Subscription;
-    private _categoriesSub              : Subscription;
-    private _subcategoriesSub           : Subscription;
-    private _itemsSub                   : Subscription;
-    private _garnishFoodSub             : Subscription;
-    private _additionsSub               : Subscription;
-    private _ordersSub                  : Subscription;
-    private _itemImagesSub              : Subscription;
-    private _currenciesSub              : Subscription;
-    private _itemImagesThumbSub         : Subscription;
+    private _sectionsSub: Subscription;
+    private _categoriesSub: Subscription;
+    private _subcategoriesSub: Subscription;
+    private _itemsSub: Subscription;
+    private _garnishFoodSub: Subscription;
+    private _additionsSub: Subscription;
+    private _ordersSub: Subscription;
+    private _itemImagesSub: Subscription;
+    private _currenciesSub: Subscription;
+    private _itemImagesThumbSub: Subscription;
 
-    private _sections                   : Observable<Section[]>;
-    private _categories                 : Observable<Category[]>;
-    private _subcategories              : Observable<Subcategory[]>;
-    private _items                      : Observable<Item[]>;
-    private _itemDetail                 : Observable<Item[]>;
-    private _garnishFoodCol             : Observable<GarnishFood[]>;
-    private _additions                  : Observable<Addition[]>;
+    private _sections: Observable<Section[]>;
+    private _categories: Observable<Category[]>;
+    private _subcategories: Observable<Subcategory[]>;
+    private _items: Observable<Item[]>;
+    private _itemDetail: Observable<Item[]>;
+    private _garnishFoodCol: Observable<GarnishFood[]>;
+    private _additions: Observable<Addition[]>;
 
-    private _finalPrice                 : number = 0;
-    private _maxGarnishFoodElements     : number = 0;
-    private _garnishFoodElementsCount   : number = 0;
-    private _numberColums               : number = 3;
-    private _showGarnishFoodError       : boolean = false;
-    private _unitPrice                  : number = 0;
-    private _lastQuantity               : number = 1;
-    private _quantityCount              : number = 1;
-    private _currencyCode               : string;
-    private titleMsg                    : string;
-    private btnAcceptLbl                : string;
+    private _finalPrice: number = 0;
+    private _maxGarnishFoodElements: number = 0;
+    private _garnishFoodElementsCount: number = 0;
+    private _numberColums: number = 3;
+    private _showGarnishFoodError: boolean = false;
+    private _unitPrice: number = 0;
+    private _lastQuantity: number = 1;
+    private _quantityCount: number = 1;
+    private _currencyCode: string;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
 
-    private _orderMenus                 : OrderMenu[] = [];
-    private orderMenuSetup              : OrderMenu[] = [];
+    private _orderMenus: OrderMenu[] = [];
+    private orderMenuSetup: OrderMenu[] = [];
 
     /**
      * OrderCreateComponent Constructor
@@ -102,9 +102,9 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     /**
      * Show the detail header
      */
-    showHeaderDetail(){
+    showHeaderDetail() {
         var _lScrollTop = document.getElementById("is").scrollTop;
-        if(_lScrollTop > 64){
+        if (_lScrollTop > 64) {
             document.getElementById("mt").classList.remove('menu_bar-hide');
             document.getElementById("mt").classList.add('menu_bar-show');
         } else {
@@ -124,7 +124,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
             });
         });
         this._itemImagesSub = MeteorObservable.subscribe('itemImagesByRestaurant', this.restaurantId).subscribe();
-        this._itemImagesThumbSub = MeteorObservable.subscribe( 'itemImageThumbsByRestaurant', this.restaurantId ).subscribe();
+        this._itemImagesThumbSub = MeteorObservable.subscribe('itemImageThumbsByRestaurant', this.restaurantId).subscribe();
         this._ordersSub = MeteorObservable.subscribe('getOrders', this.restaurantId, this.tableQRCode, ['ORDER_STATUS.REGISTERED']).subscribe(() => { });
         this._garnishFoodSub = MeteorObservable.subscribe('garnishFoodByRestaurant', this.restaurantId).subscribe(() => {
             this._ngZone.run(() => {
@@ -175,17 +175,17 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._sectionsSub ){ this._sectionsSub.unsubscribe(); }
-        if( this._categoriesSub ){ this._categoriesSub.unsubscribe(); }
-        if( this._subcategoriesSub ){ this._subcategoriesSub.unsubscribe(); }
-        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
-        if( this._garnishFoodSub ){ this._garnishFoodSub.unsubscribe(); }
-        if( this._additionsSub ){ this._additionsSub.unsubscribe(); }
-        if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
-        if( this._itemImagesSub ){ this._itemImagesSub.unsubscribe(); }
-        if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
-        if( this._itemImagesThumbSub ){ this._itemImagesThumbSub.unsubscribe(); }
+    removeSubscriptions(): void {
+        if (this._sectionsSub) { this._sectionsSub.unsubscribe(); }
+        if (this._categoriesSub) { this._categoriesSub.unsubscribe(); }
+        if (this._subcategoriesSub) { this._subcategoriesSub.unsubscribe(); }
+        if (this._itemsSub) { this._itemsSub.unsubscribe(); }
+        if (this._garnishFoodSub) { this._garnishFoodSub.unsubscribe(); }
+        if (this._additionsSub) { this._additionsSub.unsubscribe(); }
+        if (this._ordersSub) { this._ordersSub.unsubscribe(); }
+        if (this._itemImagesSub) { this._itemImagesSub.unsubscribe(); }
+        if (this._currenciesSub) { this._currenciesSub.unsubscribe(); }
+        if (this._itemImagesThumbSub) { this._itemImagesThumbSub.unsubscribe(); }
     }
 
     /**
@@ -304,12 +304,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * @param {string} _itemId
      */
     getItemImage(_itemId: string): string {
-        let _lItemImage: ItemImage = ItemImages.findOne({ itemId: _itemId });
-        if (_lItemImage) {
-            return _lItemImage.url;
-        } else {
-            return '/images/default-plate.png';
-        }
+        return ItemImages.getItemImageUrl(_itemId);
     }
 
     /**
@@ -317,12 +312,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * @param {string} _itemId
      */
     getItemThumbImage(_itemId: string): string {
-        let _lItemImageThumb: ItemImageThumb = ItemImagesThumbs.findOne({ itemId: _itemId });
-        if (_lItemImageThumb) {
-            return _lItemImageThumb.url;
-        } else {
-            return '/images/default-plate.png';
-        }
+        return ItemImagesThumbs.getItemImageThumbUrl(_itemId);
     }
 
     /**
@@ -330,8 +320,8 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * @param {string} _pItemToInsert 
      */
     AddItemToOrder(_pItemToInsert: string): void {
-        if( !Meteor.userId() ){
-            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+        if (!Meteor.userId()) {
+            var error: string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
@@ -378,7 +368,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
                 this.snackBar.open(_lMessage, '', {
                     duration: 2500
                 });
-            }, (error) => { 
+            }, (error) => {
                 this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             });
             this.viewItemDetail(true);
@@ -572,12 +562,12 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * Add Additions to Order
      */
     AddAdditionsToOrder(): void {
-        if( !Meteor.userId() ){
-            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+        if (!Meteor.userId()) {
+            var error: string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
-        
+
         let _lOrderAdditionsToInsert: OrderAddition[] = [];
         let _lAdditionsPrice: number = 0;
         let arrAdd: any[] = Object.keys(this._additionsDetailFormGroup.value);
@@ -599,7 +589,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
             this.snackBar.open(_lMessage, '', {
                 duration: 2500
             });
-        }, (error) => { 
+        }, (error) => {
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
         });
         this.viewAdditionDetail(true);
@@ -624,7 +614,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     * @param {boolean} showBtnCancel
     */
     openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
-        
+
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
@@ -648,6 +638,6 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * ngOnDestroy implementation
      */
     ngOnDestroy() {
-        this.removeSubscriptions();   
+        this.removeSubscriptions();
     }
 }

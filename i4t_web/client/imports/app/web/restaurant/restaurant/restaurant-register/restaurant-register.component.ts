@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { MatDialogRef, MatDialog } from '@angular/material';
+import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -17,13 +17,13 @@ import { Countries } from '../../../../../../../both/collections/settings/countr
 import { Country } from '../../../../../../../both/models/settings/country.model';
 import { City } from '../../../../../../../both/models/settings/city.model';
 import { Cities } from '../../../../../../../both/collections/settings/city.collection';
-import { uploadRestaurantImage, createRestaurantCode, generateQRCode, createTableCode } from '../../../../../../../both/methods/restaurant/restaurant.methods';
+import { createRestaurantCode, generateQRCode, createTableCode } from '../../../../../../../both/methods/restaurant/restaurant.methods';
 import { CreateConfirmComponent } from './create-confirm/create-confirm.component';
 import { Table } from '../../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
 import { PaymentsHistory } from '../../../../../../../both/collections/payment/payment-history.collection';
-import { PaymentHistory } from '../../../../../../../both/models/payment/payment-history.model';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
+import { ImageService } from '../../../../shared/services/image.service';
 
 import * as QRious from 'qrious';
 
@@ -48,7 +48,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _countries: Observable<Country[]>;
     private _cities: Observable<City[]>;
     private _paymentMethods: Observable<PaymentMethod[]>;
-    private _tables: Observable<Table[]>;
 
     private _filesToUpload: Array<File>;
     private _restaurantImageToInsert: File;
@@ -92,7 +91,9 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         private _ngZone: NgZone,
         private _router: Router,
         public _mdDialog: MatDialog,
-        private _userLanguageService: UserLanguageService) {
+        private _userLanguageService: UserLanguageService,
+        private _imageService: ImageService,
+        private _snackBar: MatSnackBar) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
         this._selectedCountryValue = "";
@@ -274,145 +275,161 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             return;
         }
 
-        let cityIdAux: string;
-        let cityAux: string;
-
         this._mdDialogRef = this._mdDialog.open(CreateConfirmComponent, {
             disableClose: true
         });
 
         this._mdDialogRef.afterClosed().subscribe(result => {
             this._mdDialogRef = result;
-
-            this._loading = true;
-            setTimeout(() => {
-                if (result.success) {
-                    let arrPay: any[] = Object.keys(this._restaurantForm.value.paymentMethods);
-                    let _lPaymentMethodsToInsert: string[] = [];
-
-                    arrPay.forEach((pay) => {
-                        if (this._restaurantForm.value.paymentMethods[pay]) {
-                            _lPaymentMethodsToInsert.push(pay);
+            if (result.success) {
+                this._loading = true;
+                setTimeout(() => {
+                    this.createNewRestaurant().then((restaurant_id) => {
+                        if (this._createImage) {
+                            this._imageService.uploadRestaurantImage(this._restaurantImageToInsert,
+                                this._user,
+                                restaurant_id).then((result) => { }).catch((err) => {
+                                    this._loading = false;
+                                    this._router.navigate(['app/restaurant']);
+                                    var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
+                                    this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                                });
                         }
+                        this._loading = false;
+                        this._router.navigate(['app/restaurant']);
+                        let _lMessage: string = this.itemNameTraduction( 'RESTAURANT_REGISTER.RESTAURANT_CREATED' );
+                        this._snackBar.open( _lMessage, '', { duration: 2500 } );
+                    }).catch((err) => {
+                        this._loading = false;
+                        this._router.navigate(['app/restaurant']);
+                        var error: string = this.itemNameTraduction('RESTAURANT_REGISTER.CREATION_ERROR');
+                        this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                    });
+                }, 3500);
+            }
+        });
+    }
+
+    /**
+     * Promise to create new restaurant
+     */
+    createNewRestaurant(): Promise<string> {
+        let cityIdAux: string;
+        let cityAux: string;
+
+        return new Promise((resolve, reject) => {
+            try {
+                let arrPay: any[] = Object.keys(this._restaurantForm.value.paymentMethods);
+                let _lPaymentMethodsToInsert: string[] = [];
+
+                arrPay.forEach((pay) => {
+                    if (this._restaurantForm.value.paymentMethods[pay]) {
+                        _lPaymentMethodsToInsert.push(pay);
+                    }
+                });
+
+                if (this._selectedCityValue === '0000') {
+                    cityIdAux = '';
+                    cityAux = this._restaurantForm.value.otherCity;
+                } else {
+                    cityIdAux = this._selectedCityValue;
+                    cityAux = '';
+                }
+
+                let _lNewRestaurant = Restaurants.collection.insert({
+                    creation_user: this._user,
+                    creation_date: new Date(),
+                    modification_user: '-',
+                    modification_date: new Date(),
+                    countryId: this._restaurantForm.value.country,
+                    cityId: cityIdAux,
+                    other_city: cityAux,
+                    name: this._restaurantForm.value.name,
+                    currencyId: this._restaurantCurrencyId,
+                    address: this._restaurantForm.value.address,
+                    indicative: this._countryIndicative,
+                    phone: this._restaurantForm.value.phone,
+                    restaurant_code: this.generateRestaurantCode(),
+                    paymentMethods: _lPaymentMethodsToInsert,
+                    tip_percentage: this._tipValue,
+                    tables_quantity: 0,
+                    orderNumberCount: 0,
+                    max_jobs: 5,
+                    queue: this._queues,
+                    isActive: true,
+                    firstPay: true,
+                    freeDays: true
+                });
+
+                this._restaurantLegality.restaurant_id = _lNewRestaurant;
+                RestaurantsLegality.insert(this._restaurantLegality);
+
+                //Insert tables
+                let _lRestau: Restaurant = Restaurants.findOne({ _id: _lNewRestaurant });
+                let _lTableNumber: number = this._restaurantForm.value.tables_number;
+                this.restaurantCode = _lRestau.restaurant_code;
+
+                for (let _i = 0; _i < _lTableNumber; _i++) {
+                    let _lRestaurantTableCode: string = '';
+                    let _lTableCode: string = '';
+
+                    _lTableCode = this.generateTableCode();
+                    _lRestaurantTableCode = this.restaurantCode + _lTableCode;
+                    let _lCodeGenerator = generateQRCode(_lRestaurantTableCode);
+
+                    let _lQrCode = new QRious({
+                        background: 'white',
+                        backgroundAlpha: 1.0,
+                        foreground: 'black',
+                        foregroundAlpha: 1.0,
+                        level: 'H',
+                        mime: 'image/svg',
+                        padding: null,
+                        size: 150,
+                        value: _lCodeGenerator.getQRCode()
                     });
 
-                    if (this._selectedCityValue === '0000') {
-                        cityIdAux = '';
-                        cityAux = this._restaurantForm.value.otherCity;
-                    } else {
-                        cityIdAux = this._selectedCityValue;
-                        cityAux = '';
-                    }
-
-                    let _lNewRestaurant = Restaurants.collection.insert({
+                    let _lNewTable: Table = {
                         creation_user: this._user,
                         creation_date: new Date(),
-                        modification_user: '-',
-                        modification_date: new Date(),
-                        countryId: this._restaurantForm.value.country,
-                        cityId: cityIdAux,
-                        other_city: cityAux,
-                        name: this._restaurantForm.value.name,
-                        currencyId: this._restaurantCurrencyId,
-                        address: this._restaurantForm.value.address,
-                        indicative: this._countryIndicative,
-                        phone: this._restaurantForm.value.phone,
-                        restaurant_code: this.generateRestaurantCode(),
-                        paymentMethods: _lPaymentMethodsToInsert,
-                        tip_percentage: this._tipValue,
-                        tables_quantity: 0,
-                        orderNumberCount: 0,
-                        max_jobs: 5,
-                        queue: this._queues,
-                        isActive: true,
-                        firstPay: true,
-                        freeDays: true
-                    });
-
-                    this._restaurantLegality.restaurant_id = _lNewRestaurant;
-                    RestaurantsLegality.insert(this._restaurantLegality);
-
-                    if (this._createImage) {
-                        uploadRestaurantImage(this._restaurantImageToInsert,
-                            this._user,
-                            _lNewRestaurant).then((result) => {
-
-                            }).catch((err) => {
-                                var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
-                                this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
-                            });
-                    }
-
-                    //Insert tables
-                    let _lRestau: Restaurant = Restaurants.findOne({ _id: _lNewRestaurant });
-                    let _lTableNumber: number = this._restaurantForm.value.tables_number;
-                    this.restaurantCode = _lRestau.restaurant_code;
-
-                    for (let _i = 0; _i < _lTableNumber; _i++) {
-                        let _lRestaurantTableCode: string = '';
-                        let _lTableCode: string = '';
-
-                        _lTableCode = this.generateTableCode();
-                        _lRestaurantTableCode = this.restaurantCode + _lTableCode;
-                        let _lCodeGenerator = generateQRCode(_lRestaurantTableCode);
-
-                        let _lQrCode = new QRious({
-                            background: 'white',
-                            backgroundAlpha: 1.0,
-                            foreground: 'black',
-                            foregroundAlpha: 1.0,
-                            level: 'H',
-                            mime: 'image/svg',
-                            padding: null,
-                            size: 150,
-                            value: _lCodeGenerator.getQRCode()
-                        });
-
-                        let _lNewTable: Table = {
-                            creation_user: this._user,
-                            creation_date: new Date(),
-                            restaurantId: _lNewRestaurant,
-                            table_code: _lTableCode,
-                            is_active: true,
-                            QR_code: _lCodeGenerator.getQRCode(),
-                            QR_information: {
-                                significativeBits: _lCodeGenerator.getSignificativeBits(),
-                                bytes: _lCodeGenerator.getFinalBytes()
-                            },
-                            amount_people: 0,
-                            status: 'FREE',
-                            QR_URI: _lQrCode.toDataURL(),
-                            _number: _i + 1
-                        };
-                        Tables.insert(_lNewTable);
-                        Restaurants.update({ _id: _lNewRestaurant }, { $set: { tables_quantity: _i + 1 } })
-                    }
-
-                    let idsRestaurants: string[] = [];
-                    idsRestaurants.push(_lNewRestaurant);
-
-                    let _lCurrency: Currency;
-                    Currencies.find({ _id: _lRestau.currencyId }).fetch().forEach((cu) => {
-                        _lCurrency = cu;
-                    });
-
-                    PaymentsHistory.collection.insert({
-                        restaurantIds: idsRestaurants,
-                        startDate: this._firstMonthDay,
-                        endDate: this._lastMonthDay,
-                        month: (this._currentDate.getMonth() + 1).toString(),
-                        year: (this._currentDate.getFullYear()).toString(),
-                        status: 'TRANSACTION_STATUS.APPROVED',
-                        creation_user: Meteor.userId(),
-                        creation_date: new Date(),
-                        paymentValue: 0,
-                        currency: _lCurrency.code
-                    });
-                    //
-                    this.cancel();
+                        restaurantId: _lNewRestaurant,
+                        table_code: _lTableCode,
+                        is_active: true,
+                        QR_code: _lCodeGenerator.getQRCode(),
+                        QR_information: {
+                            significativeBits: _lCodeGenerator.getSignificativeBits(),
+                            bytes: _lCodeGenerator.getFinalBytes()
+                        },
+                        amount_people: 0,
+                        status: 'FREE',
+                        QR_URI: _lQrCode.toDataURL(),
+                        _number: _i + 1
+                    };
+                    Tables.insert(_lNewTable);
+                    Restaurants.update({ _id: _lNewRestaurant }, { $set: { tables_quantity: _i + 1 } })
                 }
-                this._loading = false;
-            }, 3000);
+
+                let _lCurrency: Currency;
+                Currencies.find({ _id: _lRestau.currencyId }).fetch().forEach((cu) => {
+                    _lCurrency = cu;
+                });
+
+                PaymentsHistory.collection.insert({
+                    restaurantIds: [_lNewRestaurant],
+                    startDate: this._firstMonthDay,
+                    endDate: this._lastMonthDay,
+                    month: (this._currentDate.getMonth() + 1).toString(),
+                    year: (this._currentDate.getFullYear()).toString(),
+                    status: 'TRANSACTION_STATUS.APPROVED',
+                    creation_user: Meteor.userId(),
+                    creation_date: new Date(),
+                    paymentValue: 0,
+                    currency: _lCurrency.code
+                });
+                resolve(_lNewRestaurant);
+            } catch (e) {
+                reject(e);
+            }
         });
     }
 

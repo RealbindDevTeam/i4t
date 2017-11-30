@@ -40,7 +40,6 @@ import '../both/methods/auth/menu.methods';
 import '../both/methods/auth/user-detail.methods';
 import '../both/methods/auth/user-devices.methods';
 import '../both/methods/auth/user-login.methods';
-import '../both/methods/auth/user-profile.methods';
 import '../both/methods/auth/user.methods';
 import '../both/methods/general/cron.methods';
 import '../both/methods/general/email.methods';

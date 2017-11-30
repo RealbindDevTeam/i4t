@@ -5,7 +5,6 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription, Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { NavigationService } from '../navigation.service';
-import { SearchService } from '../../../shared/services/search.service';
 import { StringUtils } from '../../../shared/utils/string-utils';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
 import { Users, UserImages } from '../../../../../../both/collections/auth/user.collection';
@@ -50,7 +49,6 @@ export class TopnavComponent implements OnInit, OnDestroy {
   /**
    * TopnavComponent Constructor
    * @param {NavigationService} _navigation 
-   * @param {SearchService} _search 
    * @param {Title} _title 
    * @param {Router} _router 
    * @param {TranslateService} _translate 
@@ -58,7 +56,6 @@ export class TopnavComponent implements OnInit, OnDestroy {
    * @param {NavigationService} _navigation
    */
   constructor(private _navigation: NavigationService,
-    private _search: SearchService,
     private _title: Title,
     private _router: Router,
     private _translate: TranslateService,
@@ -133,12 +130,6 @@ export class TopnavComponent implements OnInit, OnDestroy {
       }
     }));
 
-    this._subscriptions.push(this._search.searchTerm.subscribe(searchTerm => {
-      if (searchTerm !== this._searchTerm) {
-        this._searchTerm = searchTerm;
-      }
-    }));
-
     this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() => {
       this._ngZone.run(() => {
         this._user = Users.collection.findOne({ _id: Meteor.userId() });
@@ -207,15 +198,6 @@ export class TopnavComponent implements OnInit, OnDestroy {
     if (this._userImageSub) { this._userImageSub.unsubscribe(); }
   }
 
-  get searchTerm(): string {
-    return this._searchTerm;
-  }
-
-  set searchTerm(searchTerm: string) {
-    this._searchTerm = searchTerm;
-    this._search.updateSearchTerm(searchTerm);
-  }
-
   toggleSidenav() {
     this._navigation.setSidenavOpened(!this._sidenavOpened);
   }
@@ -230,12 +212,6 @@ export class TopnavComponent implements OnInit, OnDestroy {
       window.setTimeout(() => {
         input.focus();
       }, 0);
-    }
-  }
-
-  searchBlur() {
-    if (StringUtils.isEmpty(this.searchTerm)) {
-      this._searchToggled = false;
     }
   }
 

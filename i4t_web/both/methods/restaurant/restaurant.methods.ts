@@ -1,6 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { UploadFS } from 'meteor/jalik:ufs';
-import { RestaurantImagesStore, RestaurantProfileImagesStore } from '../../stores/restaurant/restaurant.store';
 import { CodeGenerator } from './QR/codeGenerator';
 import { Table } from '../../models/restaurant/table.model';
 import { Tables } from '../../collections/restaurant/table.collection';
@@ -18,68 +16,6 @@ import { Parameters } from '../../collections/general/parameter.collection';
 import { Parameter } from '../../models/general/parameter.model';
 import { UserPenalty } from '../../models/auth/user-penalty.model';
 import { UserPenalties } from '../../collections/auth/user-penalty.collection';
-
-import * as QRious from 'qrious';
-
-/**
- * Function allow upload restaurant images
- * @param {File} data
- * @param {string} user
- * @return {Promise<any>} uploadRestaurantImage
- */
-export function uploadRestaurantImage(data: File,
-    user: string,
-    restaurantId: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-        const file = {
-            name: data.name,
-            type: data.type,
-            size: data.size,
-            userId: user,
-            restaurantId: restaurantId
-        };
-
-        const upload = new UploadFS.Uploader({
-            data,
-            file,
-            store: RestaurantImagesStore,
-            onError: reject,
-            onComplete: resolve
-        });
-        upload.start();
-    });
-}
-
-/**
- * Function allow upload restaurant profile images
- * @param {Array<File>} data
- * @param {string} user
- * @return {Promise<any>} uploadRestaurantImage
- */
-export function uploadRestaurantProfileImages(dataImages: Array<File>,
-    user: string,
-    restaurantId: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-        for( let data of dataImages ){
-            const file = {
-                name: data.name,
-                type: data.type,
-                size: data.size,
-                userId: user,
-                restaurantId: restaurantId
-            };
-    
-            const upload = new UploadFS.Uploader({
-                data,
-                file,
-                store: RestaurantProfileImagesStore,
-                onError: reject,
-                onComplete: resolve
-            });
-            upload.start();
-        }
-    });
-}
 
 /**
  * This function create random code with 9 length to restaurants
@@ -130,21 +66,21 @@ if (Meteor.isServer) {
         getRestaurantByQRCode: function (_qrcode: string, _userId: string) {
             let _table: Table = Tables.collection.findOne({ QR_code: _qrcode });
             let _restaurant: Restaurant;
-            let _lUserDetail: UserDetail = UserDetails.findOne( { user_id: _userId } );
+            let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
 
-            if( _lUserDetail.penalties.length === 0 ){
-                let _lUserPenalty: UserPenalty = UserPenalties.findOne( { user_id: _userId, is_active: true } );
-                if( _lUserPenalty ){
-                    let _lUserPenaltyDays: Parameter = Parameters.findOne( { name: 'penalty_days' } );
+            if (_lUserDetail.penalties.length === 0) {
+                let _lUserPenalty: UserPenalty = UserPenalties.findOne({ user_id: _userId, is_active: true });
+                if (_lUserPenalty) {
+                    let _lUserPenaltyDays: Parameter = Parameters.findOne({ name: 'penalty_days' });
                     let _lCurrentDate: Date = new Date();
-                    let _lDateToCompare : Date = new Date( _lUserPenalty.last_date.setDate( ( _lUserPenalty.last_date.getDate() + Number( _lUserPenaltyDays.value ) ) ) );
-                    if( _lDateToCompare.getTime() >= _lCurrentDate.getTime() ){
+                    let _lDateToCompare: Date = new Date(_lUserPenalty.last_date.setDate((_lUserPenalty.last_date.getDate() + Number(_lUserPenaltyDays.value))));
+                    if (_lDateToCompare.getTime() >= _lCurrentDate.getTime()) {
                         let _lDay: number = _lDateToCompare.getDate();
                         let _lMonth: number = _lDateToCompare.getMonth() + 1;
                         let _lYear: number = _lDateToCompare.getFullYear();
-                        throw new Meteor.Error('500', _lDay + '/' + _lMonth + '/' + _lYear );
+                        throw new Meteor.Error('500', _lDay + '/' + _lMonth + '/' + _lYear);
                     } else {
-                        UserPenalties.update( { _id: _lUserPenalty._id }, { $set: { is_active: false } } );
+                        UserPenalties.update({ _id: _lUserPenalty._id }, { $set: { is_active: false } });
                     }
                 }
             }

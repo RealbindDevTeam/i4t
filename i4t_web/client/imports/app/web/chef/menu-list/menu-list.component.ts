@@ -11,7 +11,7 @@ import { Category } from '../../../../../../both/models/administration/category.
 import { Categories } from '../../../../../../both/collections/administration/category.collection';
 import { Subcategory } from '../../../../../../both/models/administration/subcategory.model';
 import { Subcategories } from '../../../../../../both/collections/administration/subcategory.collection';
-import { Item, ItemImage, ItemImageThumb } from '../../../../../../both/models/administration/item.model';
+import { Item, ItemImageThumb } from '../../../../../../both/models/administration/item.model';
 import { Items, ItemImages, ItemImagesThumbs } from '../../../../../../both/collections/administration/item.collection';
 import { GarnishFood } from '../../../../../../both/models/administration/garnish-food.model';
 import { GarnishFoodCol } from '../../../../../../both/collections/administration/garnish-food.collection';
@@ -25,7 +25,7 @@ import { Restaurants } from '../../../../../../both/collections/restaurant/resta
 @Component({
     selector: 'menu-list',
     templateUrl: './menu-list.component.html',
-    styleUrls: [ './menu-list.component.scss' ]
+    styleUrls: ['./menu-list.component.scss']
 })
 export class MenuListComponent implements OnInit, OnDestroy {
 
@@ -58,7 +58,7 @@ export class MenuListComponent implements OnInit, OnDestroy {
     private _currencyCode: string;
     private titleMsg: string;
     private btnAcceptLbl: string;
-    private _showAdditionsOption:boolean = false;
+    private _showAdditionsOption: boolean = false;
 
     /**
      * MenuListComponent Constructor
@@ -143,28 +143,28 @@ export class MenuListComponent implements OnInit, OnDestroy {
         if (this._itemImagesSub) { this._itemImagesSub.unsubscribe(); }
         if (this._currenciesSub) { this._currenciesSub.unsubscribe(); }
         if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
-        if( this._itemImageThumbsSub ){ this._itemImageThumbsSub.unsubscribe(); }
+        if (this._itemImageThumbsSub) { this._itemImageThumbsSub.unsubscribe(); }
     }
 
     /**
      * Show All restaurant items
      */
     showAllItems(): void {
-        this._sections = Sections.find( { } ).zone();
+        this._sections = Sections.find({}).zone();
     }
 
     /**
      * Filter by specific section
      * @param {string} _pSectionId 
      */
-    changeSection( _pSectionId:string ):void{
-        this._sections = Sections.find( { _id: _pSectionId } ).zone();
+    changeSection(_pSectionId: string): void {
+        this._sections = Sections.find({ _id: _pSectionId }).zone();
     }
 
     /**
      * Show restaurant additions
      */
-    showAdditions():void{
+    showAdditions(): void {
         this.showAllItems();
         this.viewItemDetail(true);
         this.viewAdditionDetail(false);
@@ -183,7 +183,7 @@ export class MenuListComponent implements OnInit, OnDestroy {
     /**
      * Verify restaurants additions
      */
-    validateRestaurantAdditions():void{
+    validateRestaurantAdditions(): void {
         let _lAdditions: number = Additions.collection.find({}).count();
         _lAdditions > 0 ? this._showAdditionsOption = true : this._showAdditionsOption = false;
     }
@@ -202,12 +202,7 @@ export class MenuListComponent implements OnInit, OnDestroy {
      * @param {string} _itemId
      */
     getItemImage(_itemId: string): string {
-        let _lItemImage: ItemImage = ItemImages.findOne({ itemId: _itemId });
-        if (_lItemImage) {
-            return _lItemImage.url;
-        } else {
-            return '/images/default-plate.png';
-        }
+        return ItemImages.getItemImageUrl(_itemId);
     }
 
     /**
@@ -215,12 +210,7 @@ export class MenuListComponent implements OnInit, OnDestroy {
      * @param {string} _itemId
      */
     getItemImageThumb(_itemId: string): string {
-        let _lItemImageThumb: ItemImageThumb = ItemImagesThumbs.findOne({ itemId: _itemId });
-        if (_lItemImageThumb) {
-            return _lItemImageThumb.url;
-        } else {
-            return '/images/default-plate.png';
-        }
+        return ItemImagesThumbs.getItemImageThumbUrl(_itemId);
     }
 
     /**
@@ -243,7 +233,7 @@ export class MenuListComponent implements OnInit, OnDestroy {
      */
     viewAdditionDetail(_boolean: boolean): void {
         var card = document.getElementById("addition-detail");
-        if(card){
+        if (card) {
             if (!_boolean) {
                 card.classList.add('item-detail-show');
                 card.classList.remove('item-detail-hidden');
@@ -274,7 +264,7 @@ export class MenuListComponent implements OnInit, OnDestroy {
      * Return addition price
      * @param {Addition} _pAddition 
      */
-    getAdditionPrice( _pAddition:Addition ):string{
+    getAdditionPrice(_pAddition: Addition): string {
         return _pAddition.restaurants.filter(r => r.restaurantId === this.restaurantId)[0].price + ' ';
     }
 

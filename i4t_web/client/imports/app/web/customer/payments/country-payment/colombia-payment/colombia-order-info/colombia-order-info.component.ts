@@ -18,7 +18,7 @@ import { Currencies } from '../../../../../../../../../both/collections/general/
 import { Users } from '../../../../../../../../../both/collections/auth/user.collection';
 import { User } from '../../../../../../../../../both/models/auth/user.model';
 import { Items, ItemImagesThumbs } from '../../../../../../../../../both/collections/administration/item.collection';
-import { Item, ItemImageThumb } from '../../../../../../../../../both/models/administration/item.model';
+import { Item } from '../../../../../../../../../both/models/administration/item.model';
 import { GarnishFood } from '../../../../../../../../../both/models/administration/garnish-food.model';
 import { GarnishFoodCol } from '../../../../../../../../../both/collections/administration/garnish-food.collection';
 import { Addition } from '../../../../../../../../../both/models/administration/addition.model';
@@ -175,8 +175,12 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
      */
     calculateValues():void{
         this._totalValue = 0;
+        let _orderItemsCount = 0;
+        let _orderAdditionsCount = 0;
         Orders.collection.find( { creation_user: this._user, restaurantId: this._restaurantId, tableId: this._tableId, status: { $in: [ 'ORDER_STATUS.DELIVERED','ORDER_STATUS.PENDING_CONFIRM' ] }, toPay : false } ).fetch().forEach( ( order ) => {
             this._totalValue += order.totalPayment;
+            _orderItemsCount += order.items.length;
+            _orderAdditionsCount += order.additions.length;
         });
         if( this._restaurantLegality.regime === 'regime_co' ){
             this._showRegimeCoData = true;
@@ -189,7 +193,7 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
             this._showRegimeSiData = true;
             this._showRegimeCoData = false;
         }
-        this._totalValue > 0 ? this._showOrderDetails = true : this._showOrderDetails = false;
+        _orderItemsCount > 0 || _orderAdditionsCount > 0 ? this._showOrderDetails = true : this._showOrderDetails = false;
     }
 
     /**
@@ -277,12 +281,7 @@ export class ColombiaOrderInfoComponent implements OnInit, OnDestroy{
      * @param {string} _pItemId
      */
     getItemImage( _pItemId: string ):string{
-        let _lItemImage: ItemImageThumb = ItemImagesThumbs.findOne( { itemId: _pItemId } );
-        if( _lItemImage ){
-            return _lItemImage.url;
-        } else{
-            return '/images/default-plate.png';
-        }
+        return ItemImagesThumbs.getItemImageThumbUrl(_pItemId);
     }
 
     /**

@@ -361,7 +361,9 @@
         "CANCEL_CREATION": "Cancelar",
         "INITIAL_TABLES_NUMBER": "Número inicial de mesas, ",
         "MAX_TABLES": "máximo ",
-        "TABLES_MSG": "En caso de necesitar más mesas para tu restaurante, en la opción Administración -> Restaurantes -> Configuración, podrás agregar las que necesites."
+        "TABLES_MSG": "En caso de necesitar más mesas para tu restaurante, en la opción Administración -> Restaurantes -> Configuración, podrás agregar las que necesites.",
+        "CREATION_ERROR": "Se ha presentado un error creando el restaurante. Por favor intenta nuevamente.",
+        "RESTAURANT_CREATED": "Restaurante Creado"
     },
     "WEEK": {
         "MONDAY": "Lunes",
@@ -640,7 +642,9 @@
         "GARNISHFOOD_QUANTITY_MSG": "La cantidad de guarniciones debe ser diferente a 0",
         "WARNING": "Advertencia: Tienes ",
         "WARNING_2": "usuarios activos en tus restaurantes",
-        "WARNING_3": "Modificar la configuración de un item podría afectar la experiencia de los usuarios"
+        "WARNING_3": "Modificar la configuración de un item podría afectar la experiencia de los usuarios",
+        "ITEM_CREATED": "Item creado correctamente",
+        "CREATION_ERROR": "Se ha presentado un error creando el item. Por favor intenta nuevamente."
     },
     "ROLE": {
         "ADMINISTRATOR": "Administrador",

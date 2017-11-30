@@ -4,7 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from "meteor-rxjs";
 import { Subscription } from "rxjs";
 import { UserLanguageService } from '../../../shared/services/user-language.service';
-import { RestaurantImageThumb } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantImageThumbs } from "../../../../../../both/collections/restaurant/restaurant.collection";
 import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
 import { WaiterCallDetail } from '../../../../../../both/models/restaurant/waiter-call-detail.model';
@@ -109,12 +108,7 @@ export class CallsComponent implements OnInit, OnDestroy {
      * @param {string} _pRestaurantId
      */
     getRestaurantImage(_pRestaurantId: string): string {
-        let _lRestaurantImageThumb: RestaurantImageThumb = RestaurantImageThumbs.findOne({ restaurantId: _pRestaurantId });
-        if (_lRestaurantImageThumb) {
-            return _lRestaurantImageThumb.url
-        } else {
-            return '/images/default-restaurant.png';
-        }
+        return RestaurantImageThumbs.getRestaurantImageThumbUrl(_pRestaurantId);
     }
 
     /**

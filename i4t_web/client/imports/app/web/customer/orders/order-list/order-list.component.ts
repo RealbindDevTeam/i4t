@@ -9,7 +9,7 @@ import { Router } from "@angular/router";
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Order, OrderItem, OrderAddition } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
-import { Item, ItemImage, ItemImageThumb } from '../../../../../../../both/models/administration/item.model';
+import { Item } from '../../../../../../../both/models/administration/item.model';
 import { Items, ItemImages, ItemImagesThumbs } from '../../../../../../../both/collections/administration/item.collection';
 import { GarnishFood } from '../../../../../../../both/models/administration/garnish-food.model';
 import { GarnishFoodCol } from '../../../../../../../both/collections/administration/garnish-food.collection';
@@ -17,79 +17,79 @@ import { Addition } from '../../../../../../../both/models/administration/additi
 import { Additions } from '../../../../../../../both/collections/administration/addition.collection';
 import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
-import { Restaurant, RestaurantImageThumb } from '../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants, RestaurantImageThumbs } from '../../../../../../../both/collections/restaurant/restaurant.collection';
 import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
 
 @Component({
     selector: 'order-list',
     templateUrl: './order-list.component.html',
-    styleUrls: [ './order-list.component.scss' ]
+    styleUrls: ['./order-list.component.scss']
 })
 export class OrdersListComponent implements OnInit, OnDestroy {
 
-    @Input() restaurantId           : string;
-    @Input() tableQRCode            : string;
-    @Input() restaurantCurrency     : string;
+    @Input() restaurantId: string;
+    @Input() tableQRCode: string;
+    @Input() restaurantCurrency: string;
     @Output() createNewOrder = new EventEmitter();
 
     private _user = Meteor.userId();
-    private _ordersSub                  : Subscription;
-    private _itemsSub                   : Subscription;
-    private _garnishFoodSub             : Subscription;
-    private _additionsSub               : Subscription;
-    private _itemImagesSub              : Subscription;
-    private _itemImageThumbsSub         : Subscription;
-    private _currenciesSub              : Subscription;
-    private _restaurantSub              : Subscription;
-    private _restaurantThumbSub         : Subscription;
-    private _tablesSub                  : Subscription;
-    private _mdDialogRef                : MatDialogRef<any>;
+    private _ordersSub: Subscription;
+    private _itemsSub: Subscription;
+    private _garnishFoodSub: Subscription;
+    private _additionsSub: Subscription;
+    private _itemImagesSub: Subscription;
+    private _itemImageThumbsSub: Subscription;
+    private _currenciesSub: Subscription;
+    private _restaurantSub: Subscription;
+    private _restaurantThumbSub: Subscription;
+    private _tablesSub: Subscription;
+    private _mdDialogRef: MatDialogRef<any>;
 
-    private _orders                     : Observable<Order[]>;
-    private _ordersTable                : Observable<Order[]>;
-    private _items                      : Observable<Item[]>;
-    private _itemsToShowDetail          : Observable<Item[]>;
-    private _garnishFoodCol             : Observable<GarnishFood[]>;
-    private _additions                  : Observable<Addition[]>;
-    private _additionDetails            : Observable<Addition[]>;
-    private _restaurants                : Observable<Restaurant[]>;
+    private _orders: Observable<Order[]>;
+    private _ordersTable: Observable<Order[]>;
+    private _items: Observable<Item[]>;
+    private _itemsToShowDetail: Observable<Item[]>;
+    private _garnishFoodCol: Observable<GarnishFood[]>;
+    private _additions: Observable<Addition[]>;
+    private _additionDetails: Observable<Addition[]>;
+    private _restaurants: Observable<Restaurant[]>;
 
-    private _showOrderItemDetail        : boolean = false;
-    private _currentOrder               : Order;
-    private _customerCanEdit            : boolean = false;
-    private _showDetails                : boolean = false;
+    private _showOrderItemDetail: boolean = false;
+    private _currentOrder: Order;
+    private _customerCanEdit: boolean = false;
+    private _showDetails: boolean = false;
 
-    private _editOrderItemForm          : FormGroup;
-    private _garnishFormGroup           : FormGroup = new FormGroup({});
-    private _additionsFormGroup         : FormGroup = new FormGroup({});
-    private _additionsDetailFormGroup   : FormGroup = new FormGroup({});
+    private _editOrderItemForm: FormGroup;
+    private _garnishFormGroup: FormGroup = new FormGroup({});
+    private _additionsFormGroup: FormGroup = new FormGroup({});
+    private _additionsDetailFormGroup: FormGroup = new FormGroup({});
 
-    private _orderItemGarnishFood       : string[] = [];
-    private _orderItemAdditions         : string[] = [];
+    private _orderItemGarnishFood: string[] = [];
+    private _orderItemAdditions: string[] = [];
 
-    private _maxGarnishFoodElements     : number = 0;
-    private _garnishFoodElementsCount   : number = 0;
-    private _showGarnishFoodError       : boolean = false;
+    private _maxGarnishFoodElements: number = 0;
+    private _garnishFoodElementsCount: number = 0;
+    private _showGarnishFoodError: boolean = false;
 
-    private _lastQuantity               : number = 1;
-    private _quantityCount              : number = 1;
-    private _finalPrice                 : number = 0;
-    private _unitPrice                  : number = 0;
-    private _orderItemIndex             : number = -1;
-    private _currencyCode               : string;
-    private titleMsg                    : string;
-    private btnAcceptLbl                : string;
+    private _lastQuantity: number = 1;
+    private _quantityCount: number = 1;
+    private _finalPrice: number = 0;
+    private _unitPrice: number = 0;
+    private _orderItemIndex: number = -1;
+    private _currencyCode: string;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
 
     _initialValue = 'all';
-    private _showCustomerOrders         : boolean = true;
-    private _showOtherOrders            : boolean = true;
-    private _showAllOrders              : boolean = true;
-    private _orderCustomerIndex         : number = -1;
-    private _orderOthersIndex           : number = -1;
-    private _thereAreUserOrders         : boolean = true;
-    private _thereAreNotUserOrders      : boolean = true;
-    private _tableNumber                : number;
+    private _showCustomerOrders: boolean = true;
+    private _showOtherOrders: boolean = true;
+    private _showAllOrders: boolean = true;
+    private _orderCustomerIndex: number = -1;
+    private _orderOthersIndex: number = -1;
+    private _thereAreUserOrders: boolean = true;
+    private _thereAreNotUserOrders: boolean = true;
+    private _tableNumber: number;
 
     /**
      * OrdersListComponent Constructor
@@ -98,12 +98,12 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {MatSnackBar} snackBar
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor( private _translate: TranslateService,
-                 private _ngZone: NgZone,
-                 public snackBar: MatSnackBar,
-                 private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MatDialog, 
-                 private _router: Router ) {
+    constructor(private _translate: TranslateService,
+        private _ngZone: NgZone,
+        public snackBar: MatSnackBar,
+        private _userLanguageService: UserLanguageService,
+        protected _mdDialog: MatDialog,
+        private _router: Router) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
@@ -113,9 +113,9 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     /**
      * Show the detail header
      */
-    showHeaderDetail(){
+    showHeaderDetail() {
         var _lScrollTop = document.getElementById("is").scrollTop;
-        if(_lScrollTop > 64){
+        if (_lScrollTop > 64) {
             document.getElementById("mt").classList.remove('menu_bar-hide');
             document.getElementById("mt").classList.add('menu_bar-show');
         } else {
@@ -133,10 +133,10 @@ export class OrdersListComponent implements OnInit, OnDestroy {
             this._ngZone.run(() => {
                 this.countUserOrders();
                 this._orders = Orders.find({ creation_user: this._user }).zone();
-                this._orders.subscribe( () => { this.countUserOrders(); } );
+                this._orders.subscribe(() => { this.countUserOrders(); });
                 this.countNotUserOrders();
                 this._ordersTable = Orders.find({ creation_user: { $not: this._user } }).zone();
-                this._ordersTable.subscribe( () => { this.countNotUserOrders(); });
+                this._ordersTable.subscribe(() => { this.countNotUserOrders(); });
             });
         });
         this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this.restaurantId).subscribe(() => {
@@ -170,15 +170,15 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                 this._currencyCode = Currencies.findOne({ _id: this.restaurantCurrency }).code + ' ';
             });
         });
-        this._restaurantSub = MeteorObservable.subscribe( 'getRestaurantById', this.restaurantId ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._restaurants = Restaurants.find( { _id: this.restaurantId } ).zone();
+        this._restaurantSub = MeteorObservable.subscribe('getRestaurantById', this.restaurantId).subscribe(() => {
+            this._ngZone.run(() => {
+                this._restaurants = Restaurants.find({ _id: this.restaurantId }).zone();
             });
         });
-        this._restaurantThumbSub = MeteorObservable.subscribe( 'restaurantImageThumbsByRestaurantId', this.restaurantId ).subscribe();
-        this._tablesSub = MeteorObservable.subscribe( 'getTableByQRCode', this.tableQRCode ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._tableNumber = Tables.collection.findOne( { QR_code: this.tableQRCode } )._number;
+        this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByRestaurantId', this.restaurantId).subscribe();
+        this._tablesSub = MeteorObservable.subscribe('getTableByQRCode', this.tableQRCode).subscribe(() => {
+            this._ngZone.run(() => {
+                this._tableNumber = Tables.collection.findOne({ QR_code: this.tableQRCode })._number;
             });
         });
     }
@@ -186,31 +186,31 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     /**
      * Validate if user orders exists
      */
-    countUserOrders():void{
-        Orders.collection.find( { creation_user: this._user } ).count() > 0 ? this._thereAreUserOrders = true : this._thereAreUserOrders = false;
+    countUserOrders(): void {
+        Orders.collection.find({ creation_user: this._user }).count() > 0 ? this._thereAreUserOrders = true : this._thereAreUserOrders = false;
     }
 
     /**
      * Validate if not user orders exists
      */
-    countNotUserOrders():void{
-        Orders.collection.find( { creation_user: { $not: this._user } } ).count() > 0 ? this._thereAreNotUserOrders = true : this._thereAreNotUserOrders = false;
+    countNotUserOrders(): void {
+        Orders.collection.find({ creation_user: { $not: this._user } }).count() > 0 ? this._thereAreNotUserOrders = true : this._thereAreNotUserOrders = false;
     }
 
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
-        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
-        if( this._garnishFoodSub ){ this._garnishFoodSub.unsubscribe(); }
-        if( this._additionsSub ){ this._additionsSub.unsubscribe(); }
-        if( this._itemImagesSub ){ this._itemImagesSub.unsubscribe(); }
-        if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
-        if( this._itemImageThumbsSub ){ this._itemImageThumbsSub.unsubscribe(); }
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
-        if( this._restaurantThumbSub ){ this._restaurantThumbSub.unsubscribe(); }
-        if( this._tablesSub ){ this._tablesSub.unsubscribe(); }
+    removeSubscriptions(): void {
+        if (this._ordersSub) { this._ordersSub.unsubscribe(); }
+        if (this._itemsSub) { this._itemsSub.unsubscribe(); }
+        if (this._garnishFoodSub) { this._garnishFoodSub.unsubscribe(); }
+        if (this._additionsSub) { this._additionsSub.unsubscribe(); }
+        if (this._itemImagesSub) { this._itemImagesSub.unsubscribe(); }
+        if (this._currenciesSub) { this._currenciesSub.unsubscribe(); }
+        if (this._itemImageThumbsSub) { this._itemImageThumbsSub.unsubscribe(); }
+        if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
+        if (this._restaurantThumbSub) { this._restaurantThumbSub.unsubscribe(); }
+        if (this._tablesSub) { this._tablesSub.unsubscribe(); }
     }
 
     /**
@@ -240,12 +240,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {string} _pRestaurantId
      */
     getRestaurantImage(_pRestaurantId: string): string {
-        let _lRestaurantImageThumb: RestaurantImageThumb = RestaurantImageThumbs.findOne({ restaurantId: _pRestaurantId });
-        if ( _lRestaurantImageThumb ) {
-            return _lRestaurantImageThumb.url
-        } else {
-            return '/images/default-restaurant.png';
-        }
+        return RestaurantImageThumbs.getRestaurantImageThumbUrl(_pRestaurantId);
     }
 
     /**
@@ -253,12 +248,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {string} _pItemId
      */
     getItemImage(_pItemId: string): string {
-        let _lItemImage: ItemImageThumb = ItemImagesThumbs.findOne({ itemId: _pItemId });
-        if (_lItemImage) {
-            return _lItemImage.url;
-        } else {
-            return '/images/default-plate.png';
-        }
+        return ItemImagesThumbs.getItemImageThumbUrl(_pItemId);
     }
 
     /**
@@ -266,12 +256,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {string} _pItemId
      */
     getItemDetailImage(_pItemId: string): string {
-        let _lItemImage: ItemImage = ItemImages.findOne({ itemId: _pItemId });
-        if (_lItemImage) {
-            return _lItemImage.url;
-        } else {
-            return '/images/default-plate.png';
-        }
+        return ItemImages.getItemImageUrl(_pItemId);
     }
 
     /**
@@ -309,8 +294,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {string} _pItemId 
      */
     deleteOrderItem(_pItemId: string): void {
-        if( !Meteor.userId() ){
-            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+        if (!Meteor.userId()) {
+            var error: string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
@@ -318,20 +303,20 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
-                title: this.itemNameTraduction( 'ORDER_LIST.DELETE_ITEM_DLG' ),
+                title: this.itemNameTraduction('ORDER_LIST.DELETE_ITEM_DLG'),
                 subtitle: '',
                 content: this.itemNameTraduction("ORDER_LIST.DELETE_ORDER"),
-                buttonCancel: this.itemNameTraduction( 'NO' ),
-                buttonAccept: this.itemNameTraduction( 'YES' ),
+                buttonCancel: this.itemNameTraduction('NO'),
+                buttonAccept: this.itemNameTraduction('YES'),
                 showCancel: true
             }
         });
         this._mdDialogRef.afterClosed().subscribe(result => {
             this._mdDialogRef = result;
-            if ( result.success ){
+            if (result.success) {
                 let _lOrderItemToremove: OrderItem = this._currentOrder.items.filter(o => _pItemId === o.itemId && o.index === this._orderItemIndex)[0];
                 let _lNewTotalPayment: number = this._currentOrder.totalPayment - _lOrderItemToremove.paymentItem;
-    
+
                 Orders.update({ _id: this._currentOrder._id }, { $pull: { items: { itemId: _pItemId, index: this._orderItemIndex } } });
                 Orders.update({ _id: this._currentOrder._id },
                     {
@@ -344,7 +329,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                 );
                 this._showOrderItemDetail = false;
                 this._currentOrder = Orders.findOne({ _id: this._currentOrder._id });
-                if( this._currentOrder.items.length === 0 && this._currentOrder.additions.length === 0 ){
+                if (this._currentOrder.items.length === 0 && this._currentOrder.additions.length === 0) {
                     Orders.update({ _id: this._currentOrder._id }, {
                         $set: {
                             status: 'ORDER_STATUS.CANCELED', modification_user: this._user,
@@ -366,8 +351,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {string} _pAdditionId 
      */
     deleteOrderAddition(_pAdditionId: string): void {
-        if( !Meteor.userId() ){
-            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+        if (!Meteor.userId()) {
+            var error: string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
@@ -375,20 +360,20 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
-                title: this.itemNameTraduction( 'ORDER_LIST.DELETE_ADITION_DLG' ),
+                title: this.itemNameTraduction('ORDER_LIST.DELETE_ADITION_DLG'),
                 subtitle: '',
                 content: this.itemNameTraduction("ORDER_LIST.DELETE_ADDITION_CONFIRM"),
-                buttonCancel: this.itemNameTraduction( 'NO' ),
-                buttonAccept: this.itemNameTraduction( 'YES' ),
+                buttonCancel: this.itemNameTraduction('NO'),
+                buttonAccept: this.itemNameTraduction('YES'),
                 showCancel: true
             }
         });
         this._mdDialogRef.afterClosed().subscribe(result => {
             this._mdDialogRef = result;
-            if ( result.success ){
+            if (result.success) {
                 let _lOrderAdditionToremove: OrderAddition = this._currentOrder.additions.filter(ad => ad.additionId === _pAdditionId)[0];
                 let _lNewTotalPayment: number = this._currentOrder.totalPayment - _lOrderAdditionToremove.paymentAddition;
-    
+
                 Orders.update({ _id: this._currentOrder._id }, { $pull: { additions: { additionId: _pAdditionId } } });
                 Orders.update({ _id: this._currentOrder._id },
                     {
@@ -400,7 +385,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                     }
                 );
                 this._currentOrder = Orders.findOne({ _id: this._currentOrder._id });
-                if( this._currentOrder.additions.length === 0 && this._currentOrder.items.length === 0 ){
+                if (this._currentOrder.additions.length === 0 && this._currentOrder.items.length === 0) {
                     Orders.update({ _id: this._currentOrder._id }, {
                         $set: {
                             status: 'ORDER_STATUS.CANCELED', modification_user: this._user,
@@ -679,8 +664,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {string} _pItemToInsert
      */
     editOrderItem(_pItemToInsert: string): void {
-        if( !Meteor.userId() ){
-            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+        if (!Meteor.userId()) {
+            var error: string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
@@ -758,8 +743,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * Modify addition in order
      */
     editOrderAddition(): void {
-        if( !Meteor.userId() ){
-            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+        if (!Meteor.userId()) {
+            var error: string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
@@ -826,8 +811,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {Order} _pOrder 
      */
     cancelCustomerOrder(_pOrder: Order) {
-        if( !Meteor.userId() ){
-            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+        if (!Meteor.userId()) {
+            var error: string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
@@ -835,17 +820,17 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
-                title: this.itemNameTraduction( 'ORDER_LIST.CANCEL_ORDER_DLG' ),
+                title: this.itemNameTraduction('ORDER_LIST.CANCEL_ORDER_DLG'),
                 subtitle: '',
                 content: this.itemNameTraduction("ORDER_LIST.CANCEL_ORDER_CONFIRM"),
-                buttonCancel: this.itemNameTraduction( 'NO' ),
-                buttonAccept: this.itemNameTraduction( 'YES' ),
+                buttonCancel: this.itemNameTraduction('NO'),
+                buttonAccept: this.itemNameTraduction('YES'),
                 showCancel: true
             }
         });
         this._mdDialogRef.afterClosed().subscribe(result => {
             this._mdDialogRef = result;
-            if ( result.success ){
+            if (result.success) {
                 if (_pOrder.status === 'ORDER_STATUS.REGISTERED') {
                     Orders.update({ _id: _pOrder._id }, {
                         $set: {
@@ -868,8 +853,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * @param {Order} _pOrder 
      */
     confirmCustomerOrder(_pOrder: Order) {
-        if( !Meteor.userId() ){
-            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+        if (!Meteor.userId()) {
+            var error: string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
@@ -878,17 +863,17 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
-                title: this.itemNameTraduction( 'ORDER_LIST.CONFIRM_ORDER_DLG' ),
+                title: this.itemNameTraduction('ORDER_LIST.CONFIRM_ORDER_DLG'),
                 subtitle: '',
                 content: this.itemNameTraduction("ORDER_LIST.CONFIRM_ORDER_MESSAGE"),
-                buttonCancel: this.itemNameTraduction( 'NO' ),
-                buttonAccept: this.itemNameTraduction( 'YES' ),
+                buttonCancel: this.itemNameTraduction('NO'),
+                buttonAccept: this.itemNameTraduction('YES'),
                 showCancel: true
             }
         });
         this._mdDialogRef.afterClosed().subscribe(result => {
             this._mdDialogRef = result;
-            if ( result.success ){
+            if (result.success) {
                 if (_pOrder.status === 'ORDER_STATUS.REGISTERED') {
                     let _lOrderItems: OrderItem[] = _pOrder.items;
                     _lOrderItems.forEach((it) => {
@@ -978,7 +963,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     * @param {boolean} showBtnCancel
     */
     openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
-        
+
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
@@ -1002,14 +987,14 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      * Open Restaurant profile detail
      * @param {string} _pRestaurantId 
      */
-    openRestaurantProfileDetail( _pRestaurantId: string ):void{
-        this._router.navigate( [ 'app/restaurant-detail', _pRestaurantId ] );        
+    openRestaurantProfileDetail(_pRestaurantId: string): void {
+        this._router.navigate(['app/restaurant-detail', _pRestaurantId]);
     }
 
     /**
      * ngOnDestroy implementation
      */
     ngOnDestroy() {
-        this.removeSubscriptions();   
+        this.removeSubscriptions();
     }
 }

@@ -90,6 +90,7 @@ import { RestaurantProfileComponent } from './restaurant/restaurant/profile/rest
 import { RestaurantProFileDetailComponent } from './customer/restaurant-profile-detail/restaurant-profile-detail.component';
 import { ScheduleDetailComponent } from './customer/restaurant-profile-detail/schedule-detail/schedule-detail.component';
 import { PaymentPlanInfo } from './auth/payment-plan-info/payment-plan-info.component';
+import { ImageService } from '../shared/services/image.service';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -189,5 +190,6 @@ export const MODAL_DIALOG_DECLARATIONS = [
 
 export const SERVICES_DECLARATIONS = [
     OrderNavigationService,
-    UserLanguageService
+    UserLanguageService,
+    ImageService
 ]; 
