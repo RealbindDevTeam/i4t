@@ -7,7 +7,7 @@ export interface IurestInvoice extends CollectionObject {
     payment_history_id?: string;
     country_id?: string;
     number?: string;
-    generation_date?: string;
+    generation_date?: Date;
     payment_method?: string;
     description?: string;
     period?: string;

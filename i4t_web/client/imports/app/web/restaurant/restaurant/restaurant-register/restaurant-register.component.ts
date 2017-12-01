@@ -424,7 +424,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                     creation_user: Meteor.userId(),
                     creation_date: new Date(),
                     paymentValue: 0,
-                    currency: _lCurrency.code
+                    currency: _lCurrency.code,
+                    isInitial: true
                 });
                 resolve(_lNewRestaurant);
             } catch (e) {

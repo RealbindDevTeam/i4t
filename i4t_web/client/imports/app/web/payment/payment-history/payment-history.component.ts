@@ -27,10 +27,9 @@ import { Country } from '../../../../../../both/models/settings/country.model';
 import { Countries } from '../../../../../../both/collections/settings/country.collection';
 import { IurestInvoices } from '../../../../../../both/collections/payment/iurest-invoices.collection';
 import { IurestInvoice } from '../../../../../../both/models/payment/iurest-invoice.model';
-import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
+import { PayuPaymentService } from '../../../shared/services/payu-payment.service';
 
 let jsPDF = require('jspdf');
-let base64 = require('base-64');
 
 @Component({
     selector: 'payment-history',
@@ -79,7 +78,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         private _formBuilder: FormBuilder,
         private _translate: TranslateService,
         public _mdDialog: MatDialog,
-        private _payuPaymentService: PayuPaymenteService,
+        private _payuPaymentService: PayuPaymentService,
         private _ngZone: NgZone,
         private _userLanguageService: UserLanguageService) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
@@ -376,7 +375,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
                 Restaurants.collection.update({ _id: restaurantId }, { $set: { isActive: true, firstPay: false } });
 
                 Tables.collection.find({ restaurantId: restaurantId }).forEach((table: Table) => {
-                    Tables.collection.update({ _id: table._id }, { $set: { is_active: true, firstPay: true } });
+                    Tables.collection.update({ _id: table._id }, { $set: { is_active: true } });
                 });
             });
         }

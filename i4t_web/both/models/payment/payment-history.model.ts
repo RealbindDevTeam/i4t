@@ -2,7 +2,7 @@ import { CollectionObject } from '../collection-object.model';
 
 export interface PaymentHistory extends CollectionObject {
     restaurantIds: string[];
-    startDate: Date;  
+    startDate: Date;
     endDate: Date;
     month: string;
     year: string;
@@ -10,4 +10,5 @@ export interface PaymentHistory extends CollectionObject {
     paymentTransactionId?: string;
     paymentValue?: number;
     currency?: string;
+    isInitial: boolean;
 }
