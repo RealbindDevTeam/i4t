@@ -23,8 +23,9 @@ export class PaymentPlanInfo implements OnInit, OnDestroy {
     private _countrySelected: Country;
     private _countries: Observable<Country[]>;
 
-    private _restaurantsUnits: number = 1;
-    private _tablesUnits: number = 1;
+    private _countryId: string = "";
+    private _restaurantsUnits: number = 0;
+    private _tablesUnits: number = 0;
     private _total: number = 0;
 
     constructor(public _dialogRef: MatDialogRef<any>,
@@ -39,27 +40,19 @@ export class PaymentPlanInfo implements OnInit, OnDestroy {
         });
     }
 
-    findCurrency( _pContry : Country ) {
-        if(_pContry){
-            this._country = _pContry;
-            this._currency = Currencies.findOne({ _id: this._country.currencyId });
-        }
-    }
-
     calculate() {
-        if (this._country && this._restaurantsUnits > 0 && this._tablesUnits > 0) {
-            this._total = (Number.parseInt(this._country.restaurantPrice.toString()) * Number.parseInt(this._restaurantsUnits)) +
-                (Number.parseInt(this._country.tablePrice.toString()) * Number.parseInt(this._tablesUnits));
+        console.log('******************');
+        if (this._countryId && this._restaurantsUnits >= 0 && this._tablesUnits >= 0) {
+            console.log(JSON.stringify(this._countryId));
+            if(this._countryId){
+                this._country = Countries.findOne({ _id : this._countryId });
+                if(this._country){
+                    this._currency = Currencies.findOne({ _id: this._country.currencyId });
+                    this._total = (Number.parseInt(this._country.restaurantPrice.toString()) * this._restaurantsUnits) +
+                        (Number.parseInt(this._country.tablePrice.toString()) * this._tablesUnits);
+                }
+            }
         }
-    }
-
-    reset(){
-        if(this._country){ this._country = null };
-        if(this._countrySelected){ this._countrySelected = null };
-        if(this._currency){ this._currency = null };
-        if(this._restaurantsUnits){ this._restaurantsUnits = 1 };
-        if(this._tablesUnits){ this._tablesUnits = 1 };
-        if(this._total){ this._total = 0 };
     }
 
     cancel() {

@@ -1,7 +1,6 @@
 <div class="dpr">
     <div class="dp">
         <mat-card-content>
-
             <mat-vertical-stepper>
                 <mat-step>
                     <ng-template matStepLabel>
@@ -60,27 +59,18 @@
 
                     <mat-card class="cust">
                         <mat-form-field>
-                            <mat-select [(ngModel)]="_countrySelected" placeholder="{{'ADMIN_SIGNUP.COUNTRY' | translate}}">
-                                <mat-option *ngFor="let country of _countries | async" value="{{country}}" (click)="findCurrency(country)">{{country.name | translate}}</mat-option>
+                            <mat-select [(ngModel)]="_countryId" placeholder="{{'ADMIN_SIGNUP.COUNTRY' | translate}}">
+                                <mat-option *ngFor="let country of _countries | async" value="{{country._id}}" (click)="calculate($event)">{{country.name | translate}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                         
                         <mat-form-field>
-                            <input type="number" min="1" matInput placeholder="Cantidad de restaurantes" [(ngModel)]="_restaurantsUnits">
+                            <input type="number" min="0" matInput placeholder="Cantidad de restaurantes" [(ngModel)]="_restaurantsUnits" (ngModelChange)="calculate($event)">
                         </mat-form-field>
                         
                         <mat-form-field>
-                            <input type="number" min="1" matInput placeholder="Cantidad de mesas" [(ngModel)]="_tablesUnits">
+                            <input type="number" min="0" matInput placeholder="Cantidad de mesas" [(ngModel)]="_tablesUnits" (ngModelChange)="calculate($event)">
                         </mat-form-field>
-
-                        <div class="calc">
-                            <button mat-icon-button (click)="calculate()">
-                                <mat-icon class="md-24" aria-label="">check_circle</mat-icon>
-                            </button>
-                            <button mat-icon-button (click)="reset()">
-                                <mat-icon class="md-24" aria-label="">cancel</mat-icon>
-                            </button>
-                        </div>
                     </mat-card>
 
                     <h3>Precio por restaurante: {{_country?.restaurantPrice}} {{_currency?.code}}</h3>
