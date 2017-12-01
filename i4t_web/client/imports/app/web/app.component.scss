@@ -509,7 +509,7 @@ mat-ink-bar {
 
 .mat-dialog-container {
     max-height: 80vh !important;
-    max-width:   60vw !important;
+    max-width: none !important;
 }
 
 @media only screen and (max-width: 600px) {
@@ -550,9 +550,4 @@ mat-ink-bar {
         margin: 0 auto;
         display: block;
     }
-}
-
-
-.mat-dialog-container {
-    max-width: none !important;
 }

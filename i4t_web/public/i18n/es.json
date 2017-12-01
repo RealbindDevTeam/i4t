@@ -1261,12 +1261,12 @@
             "FIRST_DAYS_SUGGEST" : "Te recomendamos registrarte los primeros días del mes para disfrutar más del servicio.",
             "ABOUT_MONTHLY_PAYMENT" : "Respecto al cobro mensual",
             "ABOUT_MONTHLY_PAYMENT_TEXT_1" : "Del 1 al 5 de cada mes, después de configurar la cantidad de mesas que vas a usar por restaurante, tienes la posibilidad de realizar el pago correspondiente únicamente por los restaurantes y mesas que vayas a usar durante ese mes.",
-            "ABOUT_MONTHLY_PAYMENT_TEXT_2" : "Ten en cuenta que al no ser un pago recurrente, al cambiar la configuración de tus restaurantes y cantidad de mesas el valor cambiará.",
+            "ABOUT_MONTHLY_PAYMENT_TEXT_2" : "Ten en cuenta que al cambiar la configuración de tus restaurantes y cantidad de mesas el valor cambiará.",
             "ABOUT_MONTHLY_PAYMENT_TEXT_3" : "El valor cobrado se compone de:",
-            "ABOUT_MONTHLY_PAYMENT_TEXT_4" : "El costo por establecimiento (Restaurante)",
-            "ABOUT_MONTHLY_PAYMENT_TEXT_5" : "El costo por cantidad de mesas (Valor unitario por cantidad) por restaurante",
+            "ABOUT_MONTHLY_PAYMENT_TEXT_4" : "El costo por restaurante",
+            "ABOUT_MONTHLY_PAYMENT_TEXT_5" : "El costo de la mesa por la cantidad de mesas por restaurante",
             "REACTIVATE_IUREST_SERVICE" : "Reactivación del servicio iurest",
-            "REACTIVATE_IUREST_SERVICE_CONTENT" : "Si no realizas el pago dentro del plazo establecido (1 a 5 de cada mes), tienes la posibilidad de reactivar tus restaurantes en los días restantes del mes, pero el cobro se realizará por el valor total del mes hasta el 1 del siguiente."
+            "REACTIVATE_IUREST_SERVICE_CONTENT" : "Si no realizas el pago dentro del plazo establecido (1 a 5 de cada mes), tienes la posibilidad de reactivar tus restaurantes en los días restantes del mes, pero el cobro se realizará por el valor total del mes."
         }
     },
     "ADMIN_DASHBOARD": {

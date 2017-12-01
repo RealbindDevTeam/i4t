@@ -1,46 +1,159 @@
-<mat-tab-group>
-    <mat-tab label="{{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.HOW_ITS_WORKS' | translate}}">
-        <mat-card>
-            <mat-card-content>
-                <mat-card-title>{{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.FIRST_DAYS_TITLE' | translate}}</mat-card-title>
-                <p>
-                    {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.FIRST_DAYS_CONTENT' | translate}}
-                </p>
-                <p>
-                    {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.FIRST_DAYS_SUGGEST' | translate}}
-                </p>
-    
-                <mat-card-title class="margin-top">{{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT' | translate}}</mat-card-title>
-                <p>
-                    {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_1' | translate}}
-                </p>
-                <p>
-                    {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_2' | translate}}
-                </p>
-                <p>
-                    {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_3' | translate}} 
-                </p>
+<div class="dpr">
+    <div class="dp">
+        <mat-card-content>
 
-                <ul>
-                    <li>
-                        {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_4' | translate}}
-                    </li>
-                    <li>
-                        {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_5' | translate}}
-                    </li>
-                </ul>
+            <mat-vertical-stepper>
+                <mat-step>
+                    <ng-template matStepLabel>
+                        {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.HOW_ITS_WORKS' | translate}}
+                    </ng-template>
+                    <p>
+                        {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.FIRST_DAYS_CONTENT' | translate}}
+                    </p>
+                    <div class="inf">
+                        <div class="infb infbp">
+                            <mat-icon class="md-24 info" aria-label="">info</mat-icon>
+                            <span>
+                                {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.FIRST_DAYS_SUGGEST' | translate}}
+                            </span>
+                        </div>
+                    </div>
+                </mat-step>
+                <mat-step>
+                    <ng-template matStepLabel>
+                        {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT' | translate}}
+                    </ng-template>
+                    <p>
+                        {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_1' | translate}}
+                    </p>
+                    <p>
+                        {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_2' | translate}}
+                    </p>
+                    <p>
+                        {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_3' | translate}} 
+                    </p>
+        
+                    <ul>
+                        <li>
+                            {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_4' | translate}}
+                        </li>
+                        <li>
+                            {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_5' | translate}}
+                        </li>
+                    </ul>
+                </mat-step>
+                <mat-step>
+                    <ng-template matStepLabel>
+                        {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.REACTIVATE_IUREST_SERVICE' | translate}}
+                    </ng-template>
+                    <p>
+                        {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.REACTIVATE_IUREST_SERVICE_CONTENT' | translate}}
+                    </p>
+                </mat-step>
+                <mat-step>
+                    <ng-template matStepLabel>
+                        Simulador
+                    </ng-template>
+                    <p>
+                        Selecciona el país
+                    </p>
 
-                <mat-card-title class="margin-top">{{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.REACTIVATE_IUREST_SERVICE' | translate}}</mat-card-title>
-                <p>
-                    {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.REACTIVATE_IUREST_SERVICE_CONTENT' | translate}}
-                </p>
-            </mat-card-content>
-            <mat-card-actions align="end">
-                <button mat-raised-button class="secondary-button" (click)="cancel()">{{'OK' | translate}}</button>
-            </mat-card-actions>
-        </mat-card>
-    </mat-tab>
-    <mat-tab label="Simulador">
-        Simulador
-    </mat-tab>
-</mat-tab-group>
+                    <mat-card class="cust">
+                        <mat-form-field>
+                            <mat-select [(ngModel)]="_countrySelected" placeholder="{{'ADMIN_SIGNUP.COUNTRY' | translate}}">
+                                <mat-option *ngFor="let country of _countries | async" value="{{country}}" (click)="findCurrency(country)">{{country.name | translate}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        
+                        <mat-form-field>
+                            <input type="number" min="1" matInput placeholder="Cantidad de restaurantes" [(ngModel)]="_restaurantsUnits">
+                        </mat-form-field>
+                        
+                        <mat-form-field>
+                            <input type="number" min="1" matInput placeholder="Cantidad de mesas" [(ngModel)]="_tablesUnits">
+                        </mat-form-field>
+
+                        <div class="calc">
+                            <button mat-icon-button (click)="calculate()">
+                                <mat-icon class="md-24" aria-label="">check_circle</mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="reset()">
+                                <mat-icon class="md-24" aria-label="">cancel</mat-icon>
+                            </button>
+                        </div>
+                    </mat-card>
+
+                    <h3>Precio por restaurante: {{_country?.restaurantPrice}} {{_currency?.code}}</h3>
+                    <h3>Precio por mesa:        {{_country?.tablePrice}} {{_currency?.code}}</h3>
+                    <h2>Total: {{_total}} {{_currency?.code}}</h2>
+                
+                </mat-step>
+            </mat-vertical-stepper>
+            <!--
+            <mat-card-title class="margin-top">{{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.HOW_ITS_WORKS' | translate}}</mat-card-title>
+            <p>
+                {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.FIRST_DAYS_CONTENT' | translate}}
+            </p>
+            <p>
+                {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.FIRST_DAYS_SUGGEST' | translate}}
+            </p>
+
+            <mat-card-title class="margin-top">{{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT' | translate}}</mat-card-title>
+            <p>
+                {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_1' | translate}}
+            </p>
+            <p>
+                {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_2' | translate}}
+            </p>
+            <p>
+                {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_3' | translate}} 
+            </p>
+
+            <ul>
+                <li>
+                    {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_4' | translate}}
+                </li>
+                <li>
+                    {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_5' | translate}}
+                </li>
+            </ul>
+
+            <mat-card-title class="margin-top">{{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.REACTIVATE_IUREST_SERVICE' | translate}}</mat-card-title>
+            <p>
+                {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.REACTIVATE_IUREST_SERVICE_CONTENT' | translate}}
+            </p>
+
+            <mat-card-title class="margin-top">Simulador</mat-card-title>
+
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Simulador
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Prueba 1
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                    
+                <mat-form-field style="width: 100%; margin-top: 10px">
+                    <mat-select placeholder="{{'ADMIN_SIGNUP.COUNTRY' | translate}}">
+                        <mat-option *ngFor="let country of _countries | async" value="{{country._id}}">{{country.name | translate}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                    
+                <mat-form-field>
+                    <input matInput placeholder="Cantidad de restaurantes">
+                </mat-form-field>
+                
+                <mat-form-field>
+                    <input matInput placeholder="Cantidad de mesas">
+                </mat-form-field>
+            </mat-expansion-panel>
+        -->
+
+        </mat-card-content>
+        <mat-card-actions align="end">
+            <button mat-raised-button class="secondary-button" (click)="cancel()">{{'CLOSE' | translate}}</button>
+        </mat-card-actions>
+    </div>
+</div>
