@@ -5,9 +5,10 @@ import { Observable, Subscription } from 'rxjs';
 import { MenuItem } from '../menu-item';
 import { SidenavItemComponent } from './sidenav-item/sidenav-item.component';
 import { NavigationService } from '../navigation.service';
-import { Users, UserImages } from '../../../../../../both/collections/auth/user.collection';
+import { Users } from '../../../../../../both/collections/auth/user.collection';
 import { User } from '../../../../../../both/models/auth/user.model';
-import { UserProfileImage } from '../../../../../../both/models/auth/user-profile.model';
+import { UserDetailImage } from '../../../../../../both/models/auth/user-detail.model';
+import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 
 @Component({
   selector : 'app-sidenav',
@@ -19,8 +20,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
   @Input() isHovering: boolean = false;
 
   private _subscriptions    : Subscription[] = [];
-  private _userImageSub     : Subscription;
   private _userSubscription : Subscription;
+  private _userDetailSubscription : Subscription;
   private _this             : SidenavComponent = this;
   private menuItems         : MenuItem[] = [];
 
@@ -69,7 +70,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
         else if (this._user.profile.name) {
           this._userName = this._user.profile.name;
         }
-        this._userImageSub = MeteorObservable.subscribe('getUserImages', Meteor.userId()).subscribe();
+        this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe(() => {});
       });
     });
     
@@ -78,11 +79,11 @@ export class SidenavComponent implements OnInit, OnDestroy {
   /**
    * Return user image
    */
-  getUsetImage(): string {
+  getUserImage(): string {
     if (this._user && this._user.services.facebook) {
       return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
     } else {
-      let _lUserImage: UserProfileImage = UserImages.findOne({ userId: Meteor.userId() });
+      let _lUserImage: UserDetailImage = UserDetails.findOne({ userId: Meteor.userId() }).image;
       if (_lUserImage) {
         return _lUserImage.url;
       }

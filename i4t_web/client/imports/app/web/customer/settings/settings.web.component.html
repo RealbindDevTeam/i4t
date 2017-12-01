@@ -3,7 +3,7 @@
     <mat-card-content class="pau">
         <div *ngIf="_user" class="da">
             <div>
-            <input [attr.disabled]="_user.services.facebook && _loading" accept=".png, .jpg, .jpeg" (change)="onChangeImage($event)" style="display: none" type="file" name="file-1[]" id="file-1" data-multiple-caption="{count} files selected"/>
+            <input [attr.disabled]="_user.services.facebook && _loading" (click)="changeImage()" style="display: none" name="file-1[]" id="file-1" data-multiple-caption="{count} files selected"/>
             <label for="file-1">
                 <div class="avatarWrapper">
                     <div class="avatar cursor-pointer">

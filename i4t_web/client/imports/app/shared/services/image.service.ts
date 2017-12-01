@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UploadFS } from 'meteor/jalik:ufs';
 import { RestaurantProfileImagesStore } from '../../../../../both/stores/restaurant/restaurant.store';
-import { UserImagesStore } from '../../../../../both/stores/auth/user.store';
 
 import { PickOptions } from '../../../../../both/models/general/pick-options.model';
 import * as filestack from 'filestack-js';
@@ -61,33 +60,6 @@ export class ImageService {
                 });
                 upload.start();
             }
-        });
-    }
-
-    /**
-     * Function allow upload user images
-     * @param {File} data
-     * @param {String} user
-     * @return {Promise<any>} uploadUserImage
-     */
-    uploadUserImage(data: File,
-        user: string): Promise<any> {
-        return new Promise((resolve, reject) => {
-            const file = {
-                name: data.name,
-                type: data.type,
-                size: data.size,
-                userId: user
-            };
-
-            const upload = new UploadFS.Uploader({
-                data,
-                file,
-                store: UserImagesStore,
-                onError: reject,
-                onComplete: resolve
-            });
-            upload.start();
         });
     }
 }
