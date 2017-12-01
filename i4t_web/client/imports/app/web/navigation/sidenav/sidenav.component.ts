@@ -39,6 +39,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
     this._subscriptions.forEach(sub => {
       if (sub) { sub.unsubscribe(); }
     })
+    if (this._userSubscription) { this._userSubscription.unsubscribe(); }
+    if (this._userDetailSubscription) { this._userDetailSubscription.unsubscribe(); }
   }
 
   ngOnInit() {

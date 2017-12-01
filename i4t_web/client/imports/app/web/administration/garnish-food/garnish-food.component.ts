@@ -53,7 +53,7 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
     private _restaurantTaxes: string[] = [];
     private _showTaxes: boolean = false;
     private _thereAreRestaurants: boolean = true;
-
+    private _lRestaurantsId: string[] = [];
     private _thereAreUsers: boolean = false;
     private _usersCount: number;
 
@@ -85,7 +85,6 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
      * Implements ngOnInit function
      */
     ngOnInit() {
-        let _lRestaurantsId: string[] = [];
         this.removeSubscriptions();
         this._garnishFoodForm = new FormGroup({
             name: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]),
@@ -97,10 +96,10 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
             this._ngZone.run(() => {
                 this._restaurants = Restaurants.find({}).zone();
                 Restaurants.collection.find({}).fetch().forEach((restaurant: Restaurant) => {
-                    _lRestaurantsId.push(restaurant._id);
+                    this._lRestaurantsId.push(restaurant._id);
                 });
-                this._userDetailsSub = MeteorObservable.subscribe('getUsersByRestaurantsId', _lRestaurantsId).subscribe(() => {
-                    this._userDetails = UserDetails.find({}).zone();
+                this._userDetailsSub = MeteorObservable.subscribe('getUsersByRestaurantsId', this._lRestaurantsId).subscribe(() => {
+                    this._userDetails = UserDetails.find({ current_restaurant: { $in: this._lRestaurantsId } }).zone();
                     this.countRestaurantsUsers();
                     this._userDetails.subscribe(() => { this.countRestaurantsUsers(); });
                 });
@@ -128,7 +127,7 @@ export class GarnishFoodComponent implements OnInit, OnDestroy {
      */
     countRestaurantsUsers(): void {
         let auxUserCount: number;
-        auxUserCount = UserDetails.collection.find({}).count();
+        auxUserCount = UserDetails.collection.find({ current_restaurant: { $in: this._lRestaurantsId } }).count();
 
         if (auxUserCount > 0) {
             this._thereAreUsers = true
