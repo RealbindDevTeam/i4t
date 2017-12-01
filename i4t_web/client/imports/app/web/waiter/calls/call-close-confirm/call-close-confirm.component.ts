@@ -7,10 +7,10 @@ import { UserLanguageService } from '../../../../shared/services/user-language.s
 @Component({
     selector: 'call-close-confirm',
     templateUrl: './call-close-confirm.component.html',
-    styleUrls: [ './call-close-confirm.component.scss' ],
-    providers: [ UserLanguageService ]
+    styleUrls: ['./call-close-confirm.component.scss'],
+    providers: [UserLanguageService]
 })
-export class CallCloseConfirmComponent{
+export class CallCloseConfirmComponent {
 
     /**
      * CallCloseConfirmComponent constructor
@@ -19,25 +19,25 @@ export class CallCloseConfirmComponent{
      * @param {TranslateService} _translate 
      * @param {UserLanguageService} _userLanguageService 
      */
-    constructor( public _dialogRef: MatDialogRef<any>,  
-                 private _zone: NgZone,
-                 public _translate: TranslateService,
-                 private _userLanguageService: UserLanguageService ){
-        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        _translate.setDefaultLang( 'en' );
+    constructor(public _dialogRef: MatDialogRef<any>,
+        private _zone: NgZone,
+        public _translate: TranslateService,
+        private _userLanguageService: UserLanguageService) {
+        _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        _translate.setDefaultLang('en');
     }
 
     /**
      * Function that returns true to Parent component
      */
-    closeWaiterCall(){
-        this._dialogRef.close({success : true});
+    closeWaiterCall() {
+        this._dialogRef.close({ success: true });
     }
 
     /**
      * This function allow closed the modal dialog
      */
     cancel() {
-        this._dialogRef.close({success : false});
+        this._dialogRef.close({ success: false });
     }
 }

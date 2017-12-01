@@ -25,30 +25,30 @@ import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/ale
 })
 export class SupervisorCollaboratorsRegisterComponent implements OnInit, OnDestroy {
 
-    private _collaboratorRegisterForm   : FormGroup;
-    private _mdDialogRef                : MatDialogRef<any>;
-    private _roleSubscription           : Subscription;
-    private _tableSubscription          : Subscription;
-    private _userDetailSubscription     : Subscription;
+    private _collaboratorRegisterForm: FormGroup;
+    private _mdDialogRef: MatDialogRef<any>;
+    private _roleSubscription: Subscription;
+    private _tableSubscription: Subscription;
+    private _userDetailSubscription: Subscription;
 
-    private _restaurants              : Observable<Restaurant[]>;
-    private _roles                    : Observable<Role[]>;
-    private _tables                   : Observable<Table[]>;
-    
-    private _userProfile              = new UserProfile();
-    private _userDetail               : UserDetail;
+    private _restaurants: Observable<Restaurant[]>;
+    private _roles: Observable<Role[]>;
+    private _tables: Observable<Table[]>;
 
-    private _tablesNumber              : number[] = [];
-    public _selectedIndex              : number = 0;
-    private _userLang                  : string;
-    private _error                     : string;
-    private _selectedRestaurant        : string;
-    private _message                   : string;
-    private titleMsg                   : string;
-    private btnAcceptLbl               : string;
-    private _showConfirmError          : boolean = false;
-    private _showTablesSelect          : boolean = false;
-    private _disabledTablesAssignment  : boolean = true;
+    private _userProfile = new UserProfile();
+    private _userDetail: UserDetail;
+
+    private _tablesNumber: number[] = [];
+    public _selectedIndex: number = 0;
+    private _userLang: string;
+    private _error: string;
+    private _selectedRestaurant: string;
+    private _message: string;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
+    private _showConfirmError: boolean = false;
+    private _showTablesSelect: boolean = false;
+    private _disabledTablesAssignment: boolean = true;
 
     /**
      * SupervisorCollaboratorsRegisterComponent constructor
@@ -58,13 +58,12 @@ export class SupervisorCollaboratorsRegisterComponent implements OnInit, OnDestr
      * @param {NgZone} _zone 
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor( private _router: Router,
-                 private _formBuilder: FormBuilder,
-                 private _translate: TranslateService,
-                 private _ngZone: NgZone,
-                 private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MatDialog ) 
-    {
+    constructor(private _router: Router,
+        private _formBuilder: FormBuilder,
+        private _translate: TranslateService,
+        private _ngZone: NgZone,
+        private _userLanguageService: UserLanguageService,
+        protected _mdDialog: MatDialog) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
         this._userLang = this._userLanguageService.getNavigationLanguage();
@@ -91,32 +90,32 @@ export class SupervisorCollaboratorsRegisterComponent implements OnInit, OnDestr
             table_init: new FormControl(0),
             table_end: new FormControl(0),
         });
-        
-        this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe(()=>{
-            this._ngZone.run(()=>{
+
+        this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe(() => {
+            this._ngZone.run(() => {
                 this._userDetail = UserDetails.findOne({ user_id: Meteor.userId() });
-                if(this._userDetail){
-                    this._tableSubscription = MeteorObservable.subscribe('getTablesByRestaurant', this._userDetail.restaurant_work).subscribe(()=> {
+                if (this._userDetail) {
+                    this._tableSubscription = MeteorObservable.subscribe('getTablesByRestaurant', this._userDetail.restaurant_work).subscribe(() => {
                     });
                 }
             });
         });
-        
-        this._roleSubscription = MeteorObservable.subscribe('getRoleCollaborators').subscribe(()=>{
-            this._ngZone.run(()=>{
-                this._roles = Roles.find({_id : {$in :  ["200","500"] }}).zone();
+
+        this._roleSubscription = MeteorObservable.subscribe('getRoleCollaborators').subscribe(() => {
+            this._ngZone.run(() => {
+                this._roles = Roles.find({ _id: { $in: ["200", "500"] } }).zone();
             });
         });
-        
+
     }
 
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._roleSubscription ){ this._roleSubscription.unsubscribe(); }
-        if( this._tableSubscription ){ this._tableSubscription.unsubscribe(); }
-        if( this._userDetailSubscription ){ this._userDetailSubscription.unsubscribe(); }
+    removeSubscriptions(): void {
+        if (this._roleSubscription) { this._roleSubscription.unsubscribe(); }
+        if (this._tableSubscription) { this._tableSubscription.unsubscribe(); }
+        if (this._userDetailSubscription) { this._userDetailSubscription.unsubscribe(); }
     }
 
     /**
@@ -143,7 +142,7 @@ export class SupervisorCollaboratorsRegisterComponent implements OnInit, OnDestr
             this._disabledTablesAssignment = false;
             let tablesCount: number = 0;
             console.log(this._userDetail.restaurant_work);
-            tablesCount = Tables.collection.find({restaurantId : this._userDetail.restaurant_work}).count();
+            tablesCount = Tables.collection.find({ restaurantId: this._userDetail.restaurant_work }).count();
             console.log(tablesCount);
             for (var index = 1; index <= tablesCount; index++) {
                 this._tablesNumber.push(index);
@@ -218,7 +217,7 @@ export class SupervisorCollaboratorsRegisterComponent implements OnInit, OnDestr
 
                         if (this._collaboratorRegisterForm.value.role === '200') {
                             if (this._disabledTablesAssignment || (this._collaboratorRegisterForm.value.table_init === 0 && this._collaboratorRegisterForm.value.table_end === 0)) {
-                                this._collaboratorRegisterForm.value.table_end = Tables.collection.find({restaurantId : this._userDetail.restaurant_work}).count();
+                                this._collaboratorRegisterForm.value.table_end = Tables.collection.find({ restaurantId: this._userDetail.restaurant_work }).count();
                                 if (this._collaboratorRegisterForm.value.table_end > 0) {
                                     this._collaboratorRegisterForm.value.table_init = 1;
                                 }
@@ -249,7 +248,7 @@ export class SupervisorCollaboratorsRegisterComponent implements OnInit, OnDestr
                                     penalties: [],
                                     current_restaurant: "",
                                     current_table: '',
-                                    birthdate : this._collaboratorRegisterForm.value.birthdate,
+                                    birthdate: this._collaboratorRegisterForm.value.birthdate,
                                     phone: this._collaboratorRegisterForm.value.phone,
                                     enabled: true,
                                     table_assignment_init: Number.parseInt(this._collaboratorRegisterForm.value.table_init),

@@ -15,8 +15,8 @@ import { GarnishFood } from '../../../../../../both/models/administration/garnis
 import { GarnishFoodCol } from '../../../../../../both/collections/administration/garnish-food.collection';
 import { Addition } from '../../../../../../both/models/administration/addition.model';
 import { Additions } from '../../../../../../both/collections/administration/addition.collection';
-import { Restaurant, RestaurantImageThumb } from '../../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants, RestaurantImageThumbs } from "../../../../../../both/collections/restaurant/restaurant.collection";
+import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants } from "../../../../../../both/collections/restaurant/restaurant.collection";
 import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
@@ -36,7 +36,6 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
     private _additionsSub                   : Subscription;
     private _userDetailSub                  : Subscription;
     private _userRestaurantSub              : Subscription;
-    private _imgRestaurantSub               : Subscription;
 
     private _ordersInProcess                : Observable<Order[]>;    
     private _ordersCanceled                 : Observable<Order[]>;
@@ -94,8 +93,6 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
             }
         });
 
-        this._imgRestaurantSub = MeteorObservable.subscribe( 'getRestaurantImageThumbByRestaurantWork', this._user ).subscribe();
-
         this._ordersSub = MeteorObservable.subscribe( 'getOrdersByRestaurantWork', this._user, [ 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.CANCELED' ] ).subscribe( () => {
             this._ngZone.run( () => {
                 this._ordersInProcess = Orders.find( { status: 'ORDER_STATUS.IN_PROCESS' } ).zone();
@@ -150,7 +147,6 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
         if( this._additionsSub ){ this._additionsSub.unsubscribe(); }
         if( this._userDetailSub ){ this._userDetailSub.unsubscribe(); }
         if( this._userRestaurantSub ){ this._userRestaurantSub.unsubscribe(); }
-        if( this._imgRestaurantSub ){ this._imgRestaurantSub.unsubscribe(); }
     }
 
     /**
@@ -335,19 +331,6 @@ export class OrderAttentionComponent implements OnInit, OnDestroy {
 
             }
         });
-    }
-
-    /**
-     * Get Restaurant Image
-     * @param {string} _pRestaurantId
-     */
-    getRestaurantImage(_pRestaurantId: string): string {
-        let _lRestaurantImageThumb: RestaurantImageThumb = RestaurantImageThumbs.findOne({ restaurantId: _pRestaurantId });
-        if (_lRestaurantImageThumb) {
-            return _lRestaurantImageThumb.url
-        } else {
-            return '/images/default-restaurant.png';
-        }
     }
     
     /**

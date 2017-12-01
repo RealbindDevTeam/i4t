@@ -1,125 +1,55 @@
 import { Injectable } from '@angular/core';
-import { UploadFS } from 'meteor/jalik:ufs';
-import { RestaurantImagesStore, RestaurantProfileImagesStore } from '../../../../../both/stores/restaurant/restaurant.store';
-import { ItemImagesStore } from '../../../../../both/stores/administration/item.store';
-import { UserImagesStore } from '../../../../../both/stores/auth/user.store';
+import { PickOptions } from '../../../../../both/models/general/pick-options.model';
+import * as filestack from 'filestack-js';
 
 @Injectable()
 export class ImageService {
 
-    /**
-     * Function allow upload restaurant images
-     * @param {File} data
-     * @param {string} user
-     * @return {Promise<any>} uploadRestaurantImage
-     */
-    uploadRestaurantImage(data: File,
-        user: string,
-        restaurantId: string): Promise<any> {
-        return new Promise((resolve, reject) => {
-            const file = {
-                name: data.name,
-                type: data.type,
-                size: data.size,
-                userId: user,
-                restaurantId: restaurantId
-            };
-
-            const upload = new UploadFS.Uploader({
-                data,
-                file,
-                store: RestaurantImagesStore,
-                onError: reject,
-                onComplete: resolve
-            });
-            upload.start();
-        });
+    private _apikey = Meteor.settings.public.filepicker.key;
+    //private _security = Meteor.settings.public.filepicker.security;
+    //private _client: any = filestack.init(this._apikey, this._security);
+    private _client: any = filestack.init(this._apikey);
+    private _pickOptions: PickOptions = {
+        fromSources: ["local_file_system", "imagesearch", "facebook", "instagram"],
+        lang: "en",
+        maxSize: 1048576,
+        maxFiles: 1,
+        minFiles: 1
+    }
+    private _pickOptionsMultipleFiles: PickOptions = {
+        fromSources: ["local_file_system", "imagesearch", "facebook", "instagram"],
+        lang: "en",
+        maxSize: 1048576,
+        maxFiles: 15,
+        minFiles: 1
     }
 
     /**
-     * Function allow upload restaurant profile images
-     * @param {Array<File>} data
-     * @param {string} user
-     * @return {Promise<any>} uploadRestaurantImage
+     * Return filestack client
      */
-    uploadRestaurantProfileImages(dataImages: Array<File>,
-        user: string,
-        restaurantId: string): Promise<any> {
-        return new Promise((resolve, reject) => {
-            for (let data of dataImages) {
-                const file = {
-                    name: data.name,
-                    type: data.type,
-                    size: data.size,
-                    userId: user,
-                    restaurantId: restaurantId
-                };
-
-                const upload = new UploadFS.Uploader({
-                    data,
-                    file,
-                    store: RestaurantProfileImagesStore,
-                    onError: reject,
-                    onComplete: resolve
-                });
-                upload.start();
-            }
-        });
+    get client(): any {
+        return this._client;
     }
 
     /**
-     * Function allow upload item images
-     * @param {File} data
-     * @param {String} user
-     * @return {Promise<any>} uploadItemImage
+     * Return pickOptions to filestack client
      */
-    uploadItemImage(data: File,
-        user: string,
-        itemId: string): Promise<any> {
-        return new Promise((resolve, reject) => {
-            const file = {
-                name: data.name,
-                type: data.type,
-                size: data.size,
-                userId: user,
-                itemId: itemId
-            };
-
-            const upload = new UploadFS.Uploader({
-                data,
-                file,
-                store: ItemImagesStore,
-                onError: reject,
-                onComplete: resolve
-            });
-            upload.start();
-        });
+    get pickOptions(): Object {
+        return this._pickOptions;
     }
 
     /**
-     * Function allow upload user images
-     * @param {File} data
-     * @param {String} user
-     * @return {Promise<any>} uploadUserImage
+     * Return pickOptions with multiple files to filestack client
      */
-    uploadUserImage(data: File,
-        user: string): Promise<any> {
-        return new Promise((resolve, reject) => {
-            const file = {
-                name: data.name,
-                type: data.type,
-                size: data.size,
-                userId: user
-            };
+    get pickOptionsMultipleFiles(): Object{
+        return this._pickOptionsMultipleFiles;
+    }
 
-            const upload = new UploadFS.Uploader({
-                data,
-                file,
-                store: UserImagesStore,
-                onError: reject,
-                onComplete: resolve
-            });
-            upload.start();
-        });
+    /**
+     * Set language in pickOptions
+     * @param {string} _pLanguage 
+     */
+    setPickOptionsLang(_pLanguage: string): void {
+        this._pickOptions.lang = _pLanguage;
     }
 }
