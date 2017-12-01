@@ -5,8 +5,8 @@ import * as filestack from 'filestack-js';
 @Injectable()
 export class ImageService {
 
-    private _apikey = "Ap3hOg05TtWuYxXU4E2gJz";
-    //private _security = { policy: 'eyJtaW5TaXplIjoiMSIsIm1heFNpemUiOiIxMDQ4NTc2IiwiY2FsbCI6WyJwaWNrIl19',signature: '2a1fa9ed15d987fd62f2134b481b0307120664e8f2534967e585892858fce95b' };
+    private _apikey = Meteor.settings.public.filepicker.key;
+    //private _security = Meteor.settings.public.filepicker.security;
     //private _client: any = filestack.init(this._apikey, this._security);
     private _client: any = filestack.init(this._apikey);
     private _pickOptions: PickOptions = {
@@ -24,18 +24,31 @@ export class ImageService {
         minFiles: 1
     }
 
+    /**
+     * Return filestack client
+     */
     get client(): any {
         return this._client;
     }
 
+    /**
+     * Return pickOptions to filestack client
+     */
     get pickOptions(): Object {
         return this._pickOptions;
     }
 
+    /**
+     * Return pickOptions with multiple files to filestack client
+     */
     get pickOptionsMultipleFiles(): Object{
         return this._pickOptionsMultipleFiles;
     }
 
+    /**
+     * Set language in pickOptions
+     * @param {string} _pLanguage 
+     */
     setPickOptionsLang(_pLanguage: string): void {
         this._pickOptions.lang = _pLanguage;
     }
