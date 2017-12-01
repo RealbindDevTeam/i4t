@@ -1,5 +1,5 @@
 import { MongoObservable } from 'meteor-rxjs';
-import { Restaurant, RestaurantTurn, RestaurantLegality, RestaurantProfile, RestaurantProfileImage, RestaurantProfileImageThumb } from '../../models/restaurant/restaurant.model';
+import { Restaurant, RestaurantTurn, RestaurantLegality, RestaurantProfile, RestaurantProfileImage } from '../../models/restaurant/restaurant.model';
 import { Meteor } from 'meteor/meteor';
 
 /**
@@ -61,32 +61,4 @@ export const RestaurantsProfile = new MongoObservable.Collection<RestaurantProfi
 RestaurantsProfile.allow({
     insert: loggedIn,
     update: loggedIn
-});
-
-/**
- * Restaurant Profile Images Collection
- */
-export const RestaurantProfileImages = new MongoObservable.Collection<RestaurantProfileImage>('restaurant_profile_Images');
-
-/**
- * Allow Restaurant Profile Images collection insert, update and remove functions
- */
-RestaurantProfileImages.allow({
-    insert: loggedIn,
-    update: loggedIn,
-    remove: loggedIn
-});
-
-/**
- * Restaurant Profile Image Thumbs Collection
- */
-export const RestaurantProfileImageThumbs = new MongoObservable.Collection<RestaurantProfileImageThumb>('restaurant_profile_Image_Thumbs');
-
-/**
- * Allow Restaurant Profile Image Thumbs Collection insert, update and remove functions
- */
-RestaurantProfileImageThumbs.allow({
-    insert: loggedIn,
-    update: loggedIn,
-    remove: loggedIn
 });

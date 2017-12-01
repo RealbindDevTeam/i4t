@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-import { UploadFS } from 'meteor/jalik:ufs';
-import { RestaurantProfileImagesStore } from '../../../../../both/stores/restaurant/restaurant.store';
-
 import { PickOptions } from '../../../../../both/models/general/pick-options.model';
 import * as filestack from 'filestack-js';
 
@@ -19,6 +16,13 @@ export class ImageService {
         maxFiles: 1,
         minFiles: 1
     }
+    private _pickOptionsMultipleFiles: PickOptions = {
+        fromSources: ["local_file_system", "imagesearch", "facebook", "instagram"],
+        lang: "en",
+        maxSize: 1048576,
+        maxFiles: 15,
+        minFiles: 1
+    }
 
     get client(): any {
         return this._client;
@@ -28,38 +32,11 @@ export class ImageService {
         return this._pickOptions;
     }
 
-    setPickOptionsLang(_pLanguage: string): void {
-        this._pickOptions.lang = _pLanguage;
+    get pickOptionsMultipleFiles(): Object{
+        return this._pickOptionsMultipleFiles;
     }
 
-    /**
-     * Function allow upload restaurant profile images
-     * @param {Array<File>} data
-     * @param {string} user
-     * @return {Promise<any>} uploadRestaurantImage
-     */
-    uploadRestaurantProfileImages(dataImages: Array<File>,
-        user: string,
-        restaurantId: string): Promise<any> {
-        return new Promise((resolve, reject) => {
-            for (let data of dataImages) {
-                const file = {
-                    name: data.name,
-                    type: data.type,
-                    size: data.size,
-                    userId: user,
-                    restaurantId: restaurantId
-                };
-
-                const upload = new UploadFS.Uploader({
-                    data,
-                    file,
-                    store: RestaurantProfileImagesStore,
-                    onError: reject,
-                    onComplete: resolve
-                });
-                upload.start();
-            }
-        });
+    setPickOptionsLang(_pLanguage: string): void {
+        this._pickOptions.lang = _pLanguage;
     }
 }

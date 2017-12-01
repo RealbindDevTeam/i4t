@@ -13,7 +13,7 @@ import { Role } from '../../../../../../../both/models/auth/role.model';
 import { Roles } from '../../../../../../../both/collections/auth/role.collection';
 import { Table } from '../../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
-import { UserProfile, UserProfileImage } from '../../../../../../../both/models/auth/user-profile.model';
+import { UserProfile } from '../../../../../../../both/models/auth/user-profile.model';
 import { UserDetails } from '../../../../../../../both/collections/auth/user-detail.collection';
 import { UserDetail } from '../../../../../../../both/models/auth/user-detail.model';
 import { User } from '../../../../../../../both/models/auth/user.model';
@@ -36,7 +36,6 @@ export class CollaboratorsEditionComponent implements OnInit, OnDestroy {
     private _tables: Observable<Table[]>;
 
     private _userProfile = new UserProfile();
-    private _userProfileImage = new UserProfileImage();
     private selectUser: User;
     private selectUserDetail: UserDetail;
 

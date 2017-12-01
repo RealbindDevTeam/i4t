@@ -43,9 +43,9 @@
                         </mat-card>
                         <mat-card class="photos">
                             <mat-card-title>{{'RESTAURANT_PROFILE_DETAIL.PHOTOS' | translate}}</mat-card-title>
-                            <p *ngIf="(_restaurantProfileImgThumbs | async)?.length <= 0">{{'RESTAURANT_PROFILE_DETAIL.NO_PHOTOS' | translate}}</p>
+                            <p *ngIf="restaurantProfile.images.length <= 0">{{'RESTAURANT_PROFILE_DETAIL.NO_PHOTOS' | translate}}</p>
                             <mat-card-content class="content">
-                                <img *ngFor="let restProfileImgeThumb of _restaurantProfileImgThumbs | async" md-card-image class="img-thumb" src="{{restProfileImgeThumb.url}}">
+                                <img *ngFor="let restProfileImgeThumb of restaurantProfile.images" md-card-image class="img-thumb" src="{{restProfileImgeThumb.url}}">
                             </mat-card-content>
                         </mat-card>
                     </div>

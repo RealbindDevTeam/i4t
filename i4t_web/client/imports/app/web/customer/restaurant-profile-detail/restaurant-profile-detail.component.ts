@@ -7,8 +7,8 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
-import { Restaurant, RestaurantProfile, RestaurantProfileImage, RestaurantProfileImageThumb } from '../../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants, RestaurantsProfile, RestaurantProfileImages, RestaurantProfileImageThumbs } from '../../../../../../both/collections/restaurant/restaurant.collection';
+import { Restaurant, RestaurantProfile, RestaurantProfileImage } from '../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants, RestaurantsProfile } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { Country } from '../../../../../../both/models/settings/country.model';
 import { Countries } from '../../../../../../both/collections/settings/country.collection';
 import { City } from '../../../../../../both/models/settings/city.model';
@@ -30,8 +30,6 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
 
     private _restaurantSub: Subscription;
     private _restaurantProfileSub: Subscription;
-    private _restaurantProfileImgsub: Subscription;
-    private _restaurantProfileImgThumSub: Subscription;
     private _countriesSub: Subscription;
     private _citiesSub: Subscription;
     private _currencySub: Subscription;
@@ -39,8 +37,6 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
 
     private _restaurants: Observable<Restaurant[]>;;
     private _restaurantsProfile: Observable<RestaurantProfile[]>;
-    private _restaurantProfileImages: Observable<RestaurantProfileImage[]>;
-    private _restaurantProfileImgThumbs: Observable<RestaurantProfileImageThumb[]>;
     private _restaurantPaymentMethods: Observable<PaymentMethod[]>;
 
     private _restaurantCountry: string;
@@ -121,16 +117,6 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
                     this._restaurantsProfile = RestaurantsProfile.find({ restaurant_id: this.restaurantId }).zone();
                 });
             });
-            this._restaurantProfileImgsub = MeteorObservable.subscribe('getRestaurantProfileImagesByRestaurantId', this.restaurantId).subscribe(() => {
-                this._ngZone.run(() => {
-                    this._restaurantProfileImages = RestaurantProfileImages.find({ restaurantId: this.restaurantId }).zone();
-                });
-            });
-            this._restaurantProfileImgThumSub = MeteorObservable.subscribe('getRestaurantProfileImageThumbsByRestaurantId', this.restaurantId).subscribe(() => {
-                this._ngZone.run(() => {
-                    this._restaurantProfileImgThumbs = RestaurantProfileImageThumbs.find({ restaurantId: this.restaurantId }).zone();
-                });
-            });
         } else {
             if (Meteor.user() !== undefined && Meteor.user() !== null) {
                 this._router.navigate(['/app/orders']);
@@ -147,8 +133,6 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
     removeSubscriptions(): void {
         if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
         if (this._restaurantProfileSub) { this._restaurantProfileSub.unsubscribe(); }
-        if (this._restaurantProfileImgsub) { this._restaurantProfileImgsub.unsubscribe(); }
-        if (this._restaurantProfileImgThumSub) { this._restaurantProfileImgThumSub.unsubscribe(); }
         if (this._countriesSub) { this._countriesSub.unsubscribe(); }
         if (this._citiesSub) { this._citiesSub.unsubscribe(); }
         if (this._currencySub) { this._currencySub.unsubscribe(); }
