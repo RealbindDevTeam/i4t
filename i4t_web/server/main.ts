@@ -4,7 +4,6 @@ import './imports/publications/administration/sections';
 import './imports/publications/administration/categories';
 import './imports/publications/administration/subcategories';
 import './imports/publications/administration/additions';
-import './imports/publications/administration/promotions';
 import './imports/publications/administration/garnish-food';
 import './imports/publications/administration/item';
 import './imports/publications/auth/users';
@@ -33,7 +32,6 @@ import './imports/publications/settings/cities';
 import './imports/publications/settings/countries';
 import './imports/publications/settings/languages';
 
-import '../both/methods/administration/promotion.methods';
 import '../both/methods/administration/collaborators.methods';
 import '../both/methods/administration/item.methods';
 import '../both/methods/auth/menu.methods';

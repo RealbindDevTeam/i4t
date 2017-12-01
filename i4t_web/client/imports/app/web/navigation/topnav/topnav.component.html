@@ -31,11 +31,11 @@
 
   <div *ngIf="_showMenuButton" class="buttom-profile">
     <button *ngIf="!_showToggleSidenav" mat-icon-button [mat-menu-trigger-for]="menu" id="user-dropdown-toggler" style="padding: 0;">
-      <img class="profile-img" mat-list-avatar src="{{ getUsetImage() }}"> {{ _userName }}
+      <img class="profile-img" mat-list-avatar src="{{ getUserImage() }}"> {{ _userName }}
       <mat-icon>keyboard_arrow_down</mat-icon>
     </button>
     <button *ngIf="_showToggleSidenav" mat-icon-button id="user-dropdown-toggler" style="padding: 0;">
-      <img class="profile-img" mat-list-avatar src="{{ getUsetImage() }}"> {{ _userName }}
+      <img class="profile-img" mat-list-avatar src="{{ getUserImage() }}"> {{ _userName }}
       <mat-icon></mat-icon>
     </button>
   </div>
@@ -43,7 +43,7 @@
   <div *ngIf="!_showMenuButton" style="margin-right: 20px">
     <div *ngIf="_showToggleSidenav">
       <div style="display: inline-block; vertical-align: middle">
-        <img class="profile-img" style="display: block" src="{{ getUsetImage() }}">
+        <img class="profile-img" style="display: block" src="{{ getUserImage() }}">
       </div>
       <div style="display: inline-block; vertical-align: middle">
         <p style="font-size: 14px; color: white">{{ _userName }}</p>

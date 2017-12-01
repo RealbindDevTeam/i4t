@@ -19,7 +19,8 @@
     <div class="main-overflow">
         <mat-card class="custom-cards" *ngFor="let item of _items | async">
             <div class="header-card">
-                <img src="{{ getItemImage(item._id) }}">
+                <img *ngIf="item.image" src="{{item.image.url}}">
+                <img *ngIf="!item.image" src="/images/default-plate.png">
                 <span class="mat-card-title">{{item.name}}</span>
             </div>
             <mat-card-content style="margin-bottom: 0px">

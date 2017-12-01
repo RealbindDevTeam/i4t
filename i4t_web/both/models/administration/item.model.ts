@@ -14,10 +14,10 @@ export interface Item extends CollectionObject {
     restaurants: ItemRestaurant[];
     prices: ItemPrice[];
     observations: boolean;
+    image?: ItemImage;
     garnishFoodQuantity: number;
     garnishFood: string[];
     additions: string[];
-    //isAvailable: boolean;
 }
 
 /**
@@ -25,27 +25,18 @@ export interface Item extends CollectionObject {
  */
 export interface ItemImage {
     _id?: string;
-    complete: boolean;
-    extension: string;
-    name: string;
-    progress: number;
-    size: number;
-    store: string;
-    token: string;
-    type: string;
-    uploadedAt: Date;
-    uploading: boolean;
+    filename: string;
+    handle: string;
+    mimetype: string;
+    originalPath: string;
+    size: string;
+    source: string;
     url: string;
-    userId: string;
-    itemId: string;
-}
-
-/**
- * Item Image Thumbs model
- */
-export interface ItemImageThumb extends ItemImage {
-    originalStore?: string;
-    originalId?: string;
+    originalFile?: Object;
+    status?: string;
+    key?: string;
+    container?: string;
+    uploadId: string;
 }
 
 /**

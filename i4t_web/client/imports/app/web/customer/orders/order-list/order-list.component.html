@@ -2,7 +2,8 @@
     <mat-card>
         <mat-list>
             <mat-list-item *ngFor="let _res of _restaurants | async">
-                <img mat-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{ getRestaurantImage( _res._id ) }}">
+                <img mat-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" *ngIf="_res.image" src="{{ _res.image.url }}">
+                <img mat-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" *ngIf="!_res.image" src="/images/default-restaurant.png">
                 <h2 mat-line style="font-size: 1.3rem;"> {{_res.name}} </h2>
                 <p mat-line style="font-size: 1rem;">
                     <mat-icon style="vertical-align: middle">location_on</mat-icon>
@@ -50,7 +51,7 @@
                         <mat-card>
                             <mat-list>
                                 <mat-list-item *ngFor="let _res of _restaurants | async">
-                                    <img mat-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{ getRestaurantImage( _res._id ) }}">
+                                    <img mat-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{ _res.image.url }}">
                                     <h2 mat-line style="font-size: 1.3rem;"> {{_res.name}} </h2>
                                     <p mat-line style="font-size: 1rem;">
                                         <mat-icon style="vertical-align: middle">location_on</mat-icon>
@@ -90,7 +91,8 @@
                                                 <span *ngFor="let it of or.items">
                                                     <ng-template [ngIf]="item._id === it.itemId">
                                                         <mat-list-item>
-                                                            <img mat-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" src="{{ getItemImage(item._id) }}">
+                                                            <img mat-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" *ngIf="item.image" src="{{ item.image.url }}">
+                                                            <img mat-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" *ngIf="!item.image" src="/images/default-plate.png">
                                                             <h4 mat-line>{{item.name}}</h4>
                                                             <h5 mat-line>
                                                                 {{'ORDER_LIST.PRICE' | translate}}: {{it.paymentItem}} {{_currencyCode}} - {{'ORDER_LIST.QUANT' | translate}} {{it.quantity}}
@@ -152,7 +154,8 @@
                                                 <span *ngFor="let it of or.items">
                                                     <ng-template [ngIf]="item._id === it.itemId">
                                                         <mat-list-item>
-                                                            <img mat-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" src="{{ getItemImage(item._id) }}">
+                                                            <img mat-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" *ngIf="item.image" src="{{ item.image.url }}">
+                                                            <img mat-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" *ngIf="!item.image" src="/images/default-plate.png">
                                                             <h4 mat-line>{{item.name}}</h4>
                                                             <h5 mat-line>
                                                                 {{'ORDER_LIST.PRICE' | translate}}: {{it.paymentItem}} {{_currencyCode}} - {{'ORDER_LIST.QUANT' | translate}} {{it.quantity}}
@@ -209,7 +212,8 @@
                                 <div id="is" class="item-detail-card" (scroll)="showHeaderDetail()">
                                     <div class="card-content">
                                         <div class="crop">
-                                            <img src="{{ getItemDetailImage(item._id) }}">
+                                            <img *ngIf="item.image" src="{{ item.image.url }}">
+                                            <img *ngIf="!item.image" src="/images/default-plate.png">
                                         </div>
                                         <div class="content">
                                             <mat-card-subtitle class="description">{{item.description}}</mat-card-subtitle>

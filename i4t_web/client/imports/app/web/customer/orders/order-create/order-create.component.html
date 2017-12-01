@@ -22,7 +22,8 @@
                             <ng-template [ngIf]="item.sectionId === section._id && item.categoryId === '' && item.subcategoryId === ''">
                                 <mat-card class="custom-cards">
                                     <div class="header-card">
-                                        <img src="{{ getItemThumbImage(item._id) }}">
+                                        <img *ngIf="item.image" src="{{ item.image.url }}">
+                                        <img *ngIf="!item.image" src="/images/default-plate.png">
                                         <span class="mat-card-title">{{item.name}}</span>
                                         <button matTooltip="{{'ORDER_CREATE.VIEW_DETAIL' | translate}}" mat-fab class="btn-position-edition" (click)="showItemInformation(item)">
                                             <mat-icon style="color: white;" class="mat-24">search</mat-icon>
@@ -51,7 +52,8 @@
                                     <ng-template [ngIf]="item.sectionId === section._id && item.categoryId === category._id && item.subcategoryId === ''">
                                         <mat-card class="custom-cards">
                                             <div class="header-card">
-                                                <img src="{{ getItemThumbImage(item._id) }}">
+                                                <img *ngIf="item.image" src="{{ item.image.url }}">
+                                                <img *ngIf="!item.image" src="/images/default-plate.png">
                                                 <span class="mat-card-title">{{item.name}}</span>
                                                 <button matTooltip="{{'ORDER_CREATE.VIEW_DETAIL' | translate}}" mat-fab class="btn-position-edition" (click)="showItemInformation(item)">
                                                     <mat-icon style="color: white;" class="mat-24">search</mat-icon>
@@ -80,7 +82,8 @@
                                             <ng-template [ngIf]="item.sectionId === section._id && item.categoryId === category._id && item.subcategoryId === subcategory._id">
                                                 <mat-card id="card-main" class="custom-cards">
                                                     <div class="header-card">
-                                                        <img src="{{ getItemThumbImage(item._id) }}">
+                                                        <img *ngIf="item.image" src="{{ item.image.url }}">
+                                                        <img *ngIf="!item.image" src="/images/default-plate.png">
                                                         <span class="mat-card-title">{{item.name}}</span>
                                                         <button matTooltip="{{'ORDER_CREATE.VIEW_DETAIL' | translate}}" mat-fab class="btn-position-edition" (click)="showItemInformation(item)">
                                                             <mat-icon style="color: white;" class="mat-24">search</mat-icon>
@@ -128,7 +131,8 @@
                         <div id="is" class="item-detail-card" (scroll)="showHeaderDetail()">
                             <div class="card-content">
                                 <div class="crop">
-                                    <img src="{{ getItemImage(itemDet._id) }}">
+                                    <img *ngIf="itemDet.image" src="{{ itemDet.image.url }}">
+                                    <img *ngIf="!itemDet.image" src="/images/default-plate.png">
                                 </div>
                                 <div class="content">
                                     <mat-card-subtitle class="description">{{itemDet.description}}</mat-card-subtitle>

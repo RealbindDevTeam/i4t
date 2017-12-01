@@ -10,7 +10,7 @@ import { UserLanguageService } from '../../../../shared/services/user-language.s
 import { Order, OrderItem, OrderAddition } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
 import { Item } from '../../../../../../../both/models/administration/item.model';
-import { Items, ItemImages, ItemImagesThumbs } from '../../../../../../../both/collections/administration/item.collection';
+import { Items } from '../../../../../../../both/collections/administration/item.collection';
 import { GarnishFood } from '../../../../../../../both/models/administration/garnish-food.model';
 import { GarnishFoodCol } from '../../../../../../../both/collections/administration/garnish-food.collection';
 import { Addition } from '../../../../../../../both/models/administration/addition.model';
@@ -18,7 +18,7 @@ import { Additions } from '../../../../../../../both/collections/administration/
 import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants, RestaurantImageThumbs } from '../../../../../../../both/collections/restaurant/restaurant.collection';
+import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
 import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
 
 @Component({
@@ -38,11 +38,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     private _itemsSub: Subscription;
     private _garnishFoodSub: Subscription;
     private _additionsSub: Subscription;
-    private _itemImagesSub: Subscription;
-    private _itemImageThumbsSub: Subscription;
     private _currenciesSub: Subscription;
     private _restaurantSub: Subscription;
-    private _restaurantThumbSub: Subscription;
     private _tablesSub: Subscription;
     private _mdDialogRef: MatDialogRef<any>;
 
@@ -163,8 +160,6 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                 this._additions = Additions.find({}).zone();
             });
         });
-        this._itemImagesSub = MeteorObservable.subscribe('itemImagesByRestaurant', this.restaurantId).subscribe();
-        this._itemImageThumbsSub = MeteorObservable.subscribe('itemImageThumbsByRestaurant', this.restaurantId).subscribe();
         this._currenciesSub = MeteorObservable.subscribe('getCurrenciesByRestaurantsId', [this.restaurantId]).subscribe(() => {
             this._ngZone.run(() => {
                 this._currencyCode = Currencies.findOne({ _id: this.restaurantCurrency }).code + ' ';
@@ -175,7 +170,6 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                 this._restaurants = Restaurants.find({ _id: this.restaurantId }).zone();
             });
         });
-        this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByRestaurantId', this.restaurantId).subscribe();
         this._tablesSub = MeteorObservable.subscribe('getTableByQRCode', this.tableQRCode).subscribe(() => {
             this._ngZone.run(() => {
                 this._tableNumber = Tables.collection.findOne({ QR_code: this.tableQRCode })._number;
@@ -205,11 +199,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         if (this._itemsSub) { this._itemsSub.unsubscribe(); }
         if (this._garnishFoodSub) { this._garnishFoodSub.unsubscribe(); }
         if (this._additionsSub) { this._additionsSub.unsubscribe(); }
-        if (this._itemImagesSub) { this._itemImagesSub.unsubscribe(); }
         if (this._currenciesSub) { this._currenciesSub.unsubscribe(); }
-        if (this._itemImageThumbsSub) { this._itemImageThumbsSub.unsubscribe(); }
         if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
-        if (this._restaurantThumbSub) { this._restaurantThumbSub.unsubscribe(); }
         if (this._tablesSub) { this._tablesSub.unsubscribe(); }
     }
 
@@ -234,31 +225,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         this._showDetails = false;
         this.viewItemDetail(true);
     }
-
-    /**
-     * Get Restaurant Image
-     * @param {string} _pRestaurantId
-     */
-    getRestaurantImage(_pRestaurantId: string): string {
-        return RestaurantImageThumbs.getRestaurantImageThumbUrl(_pRestaurantId);
-    }
-
-    /**
-     * Get Item Image
-     * @param {string} _pItemId
-     */
-    getItemImage(_pItemId: string): string {
-        return ItemImagesThumbs.getItemImageThumbUrl(_pItemId);
-    }
-
-    /**
-     * Get Item Image
-     * @param {string} _pItemId
-     */
-    getItemDetailImage(_pItemId: string): string {
-        return ItemImages.getItemImageUrl(_pItemId);
-    }
-
+    
     /**
      * Function to view item detail
      * @param {boolean} _boolean 

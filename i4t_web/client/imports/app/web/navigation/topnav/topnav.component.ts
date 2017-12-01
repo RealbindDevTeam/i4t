@@ -7,21 +7,21 @@ import { TranslateService } from '@ngx-translate/core';
 import { NavigationService } from '../navigation.service';
 import { StringUtils } from '../../../shared/utils/string-utils';
 import { UserLanguageService } from '../../../shared/services/user-language.service';
-import { Users, UserImages } from '../../../../../../both/collections/auth/user.collection';
+import { Users } from '../../../../../../both/collections/auth/user.collection';
 import { User } from '../../../../../../both/models/auth/user.model';
-import { UserProfileImage } from '../../../../../../both/models/auth/user-profile.model';
+import { UserDetail, UserDetailImage } from '../../../../../../both/models/auth/user-detail.model';
+import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 
 @Component({
   selector: 'app-topnav',
   templateUrl: './topnav.component.html',
-  styleUrls: [ './topnav.component.scss' ]
+  styleUrls: ['./topnav.component.scss']
 })
 export class TopnavComponent implements OnInit, OnDestroy {
 
   private _subscriptions: Subscription[] = [];
   private _userSubscription: Subscription;
-  private _userImageSub: Subscription;
-  private _userImages: Observable<UserProfileImage[]>;
+  private _userDetailSubscription: Subscription;
 
   private _sidenavOpenStyle: string;
   private _showSidenav: boolean;
@@ -43,7 +43,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
 
   private showMenuName: boolean = true;
   private menuName: string;
-  private _userLang: string  = "";
+  private _userLang: string = "";
   private _showMenuButton: boolean;
 
   /**
@@ -63,7 +63,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
     private _ngZone: NgZone) {
     this._userLang = navigator.language.split('-')[0];
     _translate.setDefaultLang('en');
-    _translate.use( this._userLang );
+    _translate.use(this._userLang);
   }
 
   ngOnInit() {
@@ -139,7 +139,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
         else if (this._user.profile.name) {
           this._userName = this._user.profile.name;
         }
-        this._userImageSub = MeteorObservable.subscribe('getUserImages', Meteor.userId()).subscribe();
+        this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
       });
     });
 
@@ -173,13 +173,18 @@ export class TopnavComponent implements OnInit, OnDestroy {
   /**
    * Return user image
    */
-  getUsetImage(): string {
+  getUserImage(): string {
     if (this._user && this._user.services.facebook) {
       return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
     } else {
-      let _lUserImage: UserProfileImage = UserImages.findOne({ userId: Meteor.userId() });
-      if (_lUserImage) {
-        return _lUserImage.url;
+      let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+      if (_lUserDetail) {
+        let _lUserDetailImage: UserDetailImage = _lUserDetail.image;
+        if (_lUserDetailImage) {
+          return _lUserDetailImage.url;
+        } else {
+          return '/images/user_default_image.png';
+        }
       }
       else {
         return '/images/user_default_image.png';
@@ -195,7 +200,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
       if (sub) { sub.unsubscribe(); }
     });
     if (this._userSubscription) { this._userSubscription.unsubscribe(); }
-    if (this._userImageSub) { this._userImageSub.unsubscribe(); }
+    if (this._userDetailSubscription) { this._userDetailSubscription.unsubscribe() }
   }
 
   toggleSidenav() {
@@ -230,7 +235,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
   private updatePageTitle() {
     this._navigation.currentRoute.take(1).subscribe(currentRoute => {
       this._pageTitle = this._navigation.getAutoPageTitle(currentRoute);
-      if(this._pageTitle){
+      if (this._pageTitle) {
         this._pageTitle = this.itemNameTraduction(this._pageTitle);
       }
       if (this._browserTitle === null) {
