@@ -206,9 +206,14 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
         if (this._user && this._user.services.facebook) {
             return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
         } else {
-            let _lUserImage: UserDetailImage = UserDetails.findOne({ userId: Meteor.userId() }).image;
-            if (_lUserImage) {
-                return _lUserImage.url;
+            let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+            if (_lUserDetail) {
+                let _lUserDetailImage: UserDetailImage = _lUserDetail.image;
+                if (_lUserDetailImage) {
+                    return _lUserDetailImage.url;
+                } else {
+                    return '/images/user_default_image.png';
+                }
             }
             else {
                 return '/images/user_default_image.png';
@@ -317,7 +322,7 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
                         this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
                     });
                 }*/
-                UserDetails.update({ userId: Meteor.userId() }, { $set: { image: this._itemImageToInsert } });
+                UserDetails.update({ _id: this._userDetail._id }, { $set: { image: this._itemImageToInsert } });
                 this._loading = false;
             }, 2000);
         }).catch((err) => {

@@ -7,44 +7,44 @@ import { SidenavItemComponent } from './sidenav-item/sidenav-item.component';
 import { NavigationService } from '../navigation.service';
 import { Users } from '../../../../../../both/collections/auth/user.collection';
 import { User } from '../../../../../../both/models/auth/user.model';
-import { UserDetailImage } from '../../../../../../both/models/auth/user-detail.model';
+import { UserDetail, UserDetailImage } from '../../../../../../both/models/auth/user-detail.model';
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 
 @Component({
-  selector : 'app-sidenav',
+  selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
-  styleUrls: [ './sidenav.component.scss' ],
+  styleUrls: ['./sidenav.component.scss'],
 })
 export class SidenavComponent implements OnInit, OnDestroy {
   @ViewChildren(SidenavItemComponent) children: QueryList<SidenavItemComponent>;
   @Input() isHovering: boolean = false;
 
-  private _subscriptions    : Subscription[] = [];
-  private _userSubscription : Subscription;
-  private _userDetailSubscription : Subscription;
-  private _this             : SidenavComponent = this;
-  private menuItems         : MenuItem[] = [];
+  private _subscriptions: Subscription[] = [];
+  private _userSubscription: Subscription;
+  private _userDetailSubscription: Subscription;
+  private _this: SidenavComponent = this;
+  private menuItems: MenuItem[] = [];
 
-  private _user         : User;//Meteor.User;
-  private sidenavStyle  : string;
-  private _userName     : string;
-  private showSidenav   : boolean = false;
-  private _initialLoad  : boolean = true;
-  private _screenWidth  : number = NavigationService.largeViewportWidth;
+  private _user: User;//Meteor.User;
+  private sidenavStyle: string;
+  private _userName: string;
+  private showSidenav: boolean = false;
+  private _initialLoad: boolean = true;
+  private _screenWidth: number = NavigationService.largeViewportWidth;
 
   constructor(private _navigation: NavigationService, private _router: Router, private _ngZone: NgZone) {
   }
 
   ngOnDestroy() {
     this._subscriptions.forEach(sub => {
-      if( sub ){ sub.unsubscribe(); }
+      if (sub) { sub.unsubscribe(); }
     })
   }
 
   ngOnInit() {
     this._subscriptions.push(this._navigation.sidenavOpened.subscribe(opened => {
-      if(this._navigation.largeScreen) {
-        if(opened) {
+      if (this._navigation.largeScreen) {
+        if (opened) {
           this._navigation.openSidenavStyle.take(1).subscribe(style => {
             this.sidenavStyle = style;
           });
@@ -70,10 +70,10 @@ export class SidenavComponent implements OnInit, OnDestroy {
         else if (this._user.profile.name) {
           this._userName = this._user.profile.name;
         }
-        this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe(() => {});
+        this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
       });
     });
-    
+
   }
 
   /**
@@ -83,9 +83,14 @@ export class SidenavComponent implements OnInit, OnDestroy {
     if (this._user && this._user.services.facebook) {
       return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
     } else {
-      let _lUserImage: UserDetailImage = UserDetails.findOne({ userId: Meteor.userId() }).image;
-      if (_lUserImage) {
-        return _lUserImage.url;
+      let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+      if (_lUserDetail) {
+        let _lUserDetailImage: UserDetailImage = _lUserDetail.image;
+        if (_lUserDetailImage) {
+          return _lUserDetailImage.url;
+        } else {
+          return '/images/user_default_image.png';
+        }
       }
       else {
         return '/images/user_default_image.png';
@@ -106,9 +111,9 @@ export class SidenavComponent implements OnInit, OnDestroy {
   }*/
 
   toggle(active: boolean, child: SidenavItemComponent) {
-    if(this.children) {
+    if (this.children) {
       this.children.forEach(childComponent => {
-        if(child !== childComponent) {
+        if (child !== childComponent) {
           childComponent.toggle(false, undefined, true);
         }
       });

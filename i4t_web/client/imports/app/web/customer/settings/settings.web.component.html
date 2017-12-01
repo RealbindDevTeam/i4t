@@ -10,7 +10,7 @@
                         <div *ngIf="!_user.services.facebook && !_loading" class="uploadOverlay">
                             <i class="fa fa-camera"></i>
                         </div>
-                        <img *ngIf="!_loading" src="{{ getUsetImage() }}">
+                        <img style="border-radius: 100%;width: 100px;height: 100px;" *ngIf="!_loading" src="{{ getUsetImage() }}">
                         <div *ngIf="_loading" class="processing-overlay">
                             <mat-spinner class="spinner"></mat-spinner>
                         </div>
