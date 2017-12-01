@@ -1266,7 +1266,11 @@
             "ABOUT_MONTHLY_PAYMENT_TEXT_4" : "El costo por restaurante",
             "ABOUT_MONTHLY_PAYMENT_TEXT_5" : "El costo de la mesa por la cantidad de mesas por restaurante",
             "REACTIVATE_IUREST_SERVICE" : "Reactivación del servicio iurest",
-            "REACTIVATE_IUREST_SERVICE_CONTENT" : "Si no realizas el pago dentro del plazo establecido (1 a 5 de cada mes), tienes la posibilidad de reactivar tus restaurantes en los días restantes del mes, pero el cobro se realizará por el valor total del mes."
+            "REACTIVATE_IUREST_SERVICE_CONTENT" : "Si no realizas el pago dentro del plazo establecido (1 a 5 de cada mes), tienes la posibilidad de reactivar tus restaurantes en los días restantes del mes, pero el cobro se realizará por el valor total del mes.",
+            "CALCULATOR" : "Calcula el costo mensual apróximado",
+            "RESTAURANT_PRICE" : "Precio por restaurante",
+            "TABLE_PRICE" : "Precio por mesa",
+            "TOTAL" : "Total"
         }
     },
     "ADMIN_DASHBOARD": {

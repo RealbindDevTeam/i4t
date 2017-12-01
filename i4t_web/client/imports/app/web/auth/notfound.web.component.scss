@@ -1,4 +1,4 @@
-$primary-color: #EF5350;
+/*$primary-color: #EF5350;
 $font-color: #3c4146;
 
 .background {
@@ -88,4 +88,27 @@ mat-icon {
 
 .clear {
     clear: both;
+}
+*/
+
+div.main {
+    width: 100%;
+    height: 100%;
+    background-color: #3c4146;
+    color: white;
+    justify-content: center;
+    display: flex;
+}
+
+.mc{
+    text-align: center
+}
+
+h1 {
+    font-size: 15em;
+    -webkit-margin-after: 0;
+}
+
+h2 {
+    font-size: 3em;
 }

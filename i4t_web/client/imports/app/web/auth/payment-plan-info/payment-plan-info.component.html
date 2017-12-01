@@ -51,12 +51,9 @@
                 </mat-step>
                 <mat-step>
                     <ng-template matStepLabel>
-                        Simulador
+                        {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.CALCULATOR' | translate}}
                     </ng-template>
-                    <p>
-                        Selecciona el país
-                    </p>
-
+                    
                     <mat-card class="cust">
                         <mat-form-field>
                             <mat-select [(ngModel)]="_countryId" placeholder="{{'ADMIN_SIGNUP.COUNTRY' | translate}}">
@@ -73,74 +70,14 @@
                         </mat-form-field>
                     </mat-card>
 
-                    <h3>Precio por restaurante: {{_country?.restaurantPrice}} {{_currency?.code}}</h3>
-                    <h3>Precio por mesa:        {{_country?.tablePrice}} {{_currency?.code}}</h3>
-                    <h2>Total: {{_total}} {{_currency?.code}}</h2>
+                    <div class="tp">
+                        <span>{{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.RESTAURANT_PRICE' | translate}}: {{_country?.restaurantPrice}} {{_currency?.code}}</span>
+                        <span>{{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.TABLE_PRICE' | translate}}: {{_country?.tablePrice}} {{_currency?.code}}</span>
+                        <span>{{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.TOTAL' | translate}}: {{_total}} {{_currency?.code}}</span>
+                    </div>
                 
                 </mat-step>
             </mat-vertical-stepper>
-            <!--
-            <mat-card-title class="margin-top">{{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.HOW_ITS_WORKS' | translate}}</mat-card-title>
-            <p>
-                {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.FIRST_DAYS_CONTENT' | translate}}
-            </p>
-            <p>
-                {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.FIRST_DAYS_SUGGEST' | translate}}
-            </p>
-
-            <mat-card-title class="margin-top">{{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT' | translate}}</mat-card-title>
-            <p>
-                {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_1' | translate}}
-            </p>
-            <p>
-                {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_2' | translate}}
-            </p>
-            <p>
-                {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_3' | translate}} 
-            </p>
-
-            <ul>
-                <li>
-                    {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_4' | translate}}
-                </li>
-                <li>
-                    {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.ABOUT_MONTHLY_PAYMENT_TEXT_5' | translate}}
-                </li>
-            </ul>
-
-            <mat-card-title class="margin-top">{{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.REACTIVATE_IUREST_SERVICE' | translate}}</mat-card-title>
-            <p>
-                {{'ADMIN_SIGNUP.PAYMENT_PLAN_INFO.REACTIVATE_IUREST_SERVICE_CONTENT' | translate}}
-            </p>
-
-            <mat-card-title class="margin-top">Simulador</mat-card-title>
-
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        Simulador
-                    </mat-panel-title>
-                    <mat-panel-description>
-                        Prueba 1
-                    </mat-panel-description>
-                </mat-expansion-panel-header>
-                    
-                <mat-form-field style="width: 100%; margin-top: 10px">
-                    <mat-select placeholder="{{'ADMIN_SIGNUP.COUNTRY' | translate}}">
-                        <mat-option *ngFor="let country of _countries | async" value="{{country._id}}">{{country.name | translate}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                    
-                <mat-form-field>
-                    <input matInput placeholder="Cantidad de restaurantes">
-                </mat-form-field>
-                
-                <mat-form-field>
-                    <input matInput placeholder="Cantidad de mesas">
-                </mat-form-field>
-            </mat-expansion-panel>
-        -->
-
         </mat-card-content>
         <mat-card-actions align="end">
             <button mat-raised-button class="secondary-button" (click)="cancel()">{{'CLOSE' | translate}}</button>

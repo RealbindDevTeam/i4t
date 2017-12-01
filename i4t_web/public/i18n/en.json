@@ -1266,7 +1266,11 @@
             "ABOUT_MONTHLY_PAYMENT_TEXT_4" : "The price by restaurant",
             "ABOUT_MONTHLY_PAYMENT_TEXT_5" : "The unit price of table * number of tables by restaurant",
             "REACTIVATE_IUREST_SERVICE" : "Reactivate iurest service",
-            "REACTIVATE_IUREST_SERVICE_CONTENT" : "If you can't able to pay in the normal payment period (1 to 5 of each month), you have the possibility to reactivate your restaurants in the remaining days of the month, the charge will be made for the total price of the month."
+            "REACTIVATE_IUREST_SERVICE_CONTENT" : "If you can't able to pay in the normal payment period (1 to 5 of each month), you have the possibility to reactivate your restaurants in the remaining days of the month, the charge will be made for the total price of the month.",
+            "CALCULATOR" : "Pricing calculator",
+            "RESTAURANT_PRICE" : "Price by restaurant",
+            "TABLE_PRICE" : "Unit price of table",
+            "TOTAL" : "Total"
         }
     },
     "ADMIN_DASHBOARD": {
