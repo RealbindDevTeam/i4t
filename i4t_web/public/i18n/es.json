@@ -1129,7 +1129,7 @@
         "VERIFY_MSG": "Puedes consultar el estado de nuevo en 15 min",
         "MSG_INITIAL": "Aún no tienes pagos realizados",
         "ALL_FILTER": "Todos",
-        "GENERATE_INVOICE": "Generar",
+        "GENERATE_INVOICE": "Descargar",
         "INVOICE_LBL": "Factura de venta",
         "NUMBER_LBL": "Número: ",
         "DATE_LBL": "Fecha: ",
@@ -1150,7 +1150,8 @@
         "PAYMENT_METHOD": "Forma de pago: ",
         "IDENTIFICATION_NUMBER": "Identificación: ",
         "TELEPHONE_NUMBER": "Teléfono: ",
-        "EMAIL": "Email: "
+        "EMAIL": "Email: ",
+        "CC_PAYMENT_METHOD": "Tarjeta de crédito"
     },
     "TRANSACTION_STATUS": {
         "APPROVED": "Aprobado",

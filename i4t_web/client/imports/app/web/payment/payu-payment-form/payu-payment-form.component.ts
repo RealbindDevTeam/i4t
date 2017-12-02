@@ -678,11 +678,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             }
 
             //Call meteor method for generate iurest invoice
-            MeteorObservable.call('generateInvoiceInfo', payment_history).subscribe(() => {
-                console.log('ejecución correcta de meteor method para generación de factura');
-            }, (error) => {
-                console.log('se ha presentado un error');
-            });
+            MeteorObservable.call('generateInvoiceInfo', payment_history, Meteor.userId()).subscribe();
         }
     }
 

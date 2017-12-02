@@ -141,8 +141,8 @@ if (Meteor.isServer) {
                 country_id: lCountry._id,
                 number: var_current_value.toString(),
                 generation_date: new Date(),
-                payment_method: 'PAYU_PAYMENT_FORM.CC_PAYMENT_METHOD',
-                description: 'PAYU_PAYMENT_FORM.DESCRIPTION',
+                payment_method: 'RES_PAYMENT_HISTORY.CC_PAYMENT_METHOD',
+                description: 'RES_PAYMENT_HISTORY.DESCRIPTION',
                 period: _firstMonthDay.getDate() + '/' + (_firstMonthDay.getMonth() + 1) + '/' + _firstMonthDay.getFullYear() +
                     ' - ' + _lastMonthDay.getDate() + '/' + (_lastMonthDay.getMonth() + 1) + '/' + _lastMonthDay.getFullYear(),
                 amount_no_iva: Meteor.call('getReturnBase', lPaymentHistory.paymentValue).toString(),

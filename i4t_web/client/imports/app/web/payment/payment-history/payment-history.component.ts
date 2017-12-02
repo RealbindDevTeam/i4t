@@ -261,89 +261,92 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         let merchant = new Merchant();
         let details = new Details();
         let credentialArray: string[] = [];
-        let historyPayment = PaymentsHistory.collection.findOne({ transactionId: _transactionId });
-        let paymentTransaction = PaymentTransactions.collection.findOne({ _id: historyPayment.paymentTransactionId });
+        let historyPayment = PaymentsHistory.collection.findOne({ paymentTransactionId: _transactionId });
+        if (historyPayment) {
+            let paymentTransaction = PaymentTransactions.collection.findOne({ _id: historyPayment.paymentTransactionId });
+            if (paymentTransaction) {
+                this._loading = true;
+                setTimeout(() => {
+                    responseQuery.language = Meteor.user().profile.language_code;
+                    responseQuery.command = 'TRANSACTION_RESPONSE_DETAIL';
+                    merchant.apiLogin = al;
+                    merchant.apiKey = ak;
+                    responseQuery.merchant = merchant;
+                    details.transactionId = "3013a2b0-0925-44c6-afca-9af20df99fe1";
+                    responseQuery.details = details;
+                    //responseQuery.test = false;
+                    responseQuery.test = true;
 
-        this._loading = true;
-        setTimeout(() => {
-            responseQuery.language = Meteor.user().profile.language_code;
-            responseQuery.command = 'TRANSACTION_RESPONSE_DETAIL';
-            merchant.apiLogin = al;
-            merchant.apiKey = ak;
-            responseQuery.merchant = merchant;
-            details.transactionId = paymentTransaction.responsetransactionId;
-            responseQuery.details = details;
-            //responseQuery.test = false;
-            responseQuery.test = true;
+                    let responseMessage: string;
+                    let responseIcon: string;
 
-            let responseMessage: string;
-            let responseIcon: string;
+                    let payuReportsApiURI = Parameters.findOne({ name: 'payu_reports_url' }).value;
 
-            let payuReportsApiURI = Parameters.findOne({ name: 'payu_reports_url' }).value;
+                    this._payuPaymentService.getTransactionResponse(payuReportsApiURI, responseQuery).subscribe(
+                        response => {
 
-            this._payuPaymentService.getTransactionResponse(payuReportsApiURI, responseQuery).subscribe(
-                response => {
-
-                    if (response.code === 'ERROR') {
-                        responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_ERROR'
-                        responseIcon = 'trn_declined.png';
-                    } else if (response.code === 'SUCCESS') {
-                        switch (response.result.payload.state) {
-                            case "APPROVED": {
-                                this.updateAllStatus(historyPayment, paymentTransaction, response);
-                                responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_APPROVED';
-                                responseIcon = 'trn_approved.png';
-                                break;
-                            }
-                            case "DECLINED": {
-                                this.updateAllStatus(historyPayment, paymentTransaction, response);
-                                responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_DECLINED';
+                            if (response.code === 'ERROR') {
+                                responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_ERROR'
                                 responseIcon = 'trn_declined.png';
-                                break;
+                            } else if (response.code === 'SUCCESS') {
+                                switch (response.result.payload.state) {
+                                    case "APPROVED": {
+                                        this.updateAllStatus(historyPayment, paymentTransaction, response);
+                                        responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_APPROVED';
+                                        responseIcon = 'trn_approved.png';
+                                        break;
+                                    }
+                                    case "DECLINED": {
+                                        this.updateAllStatus(historyPayment, paymentTransaction, response);
+                                        responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_DECLINED';
+                                        responseIcon = 'trn_declined.png';
+                                        break;
+                                    }
+                                    case "PENDING": {
+                                        this.updateAllStatus(historyPayment, paymentTransaction, response);
+                                        responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_PENDING';
+                                        responseIcon = 'trn_pending.png';
+                                        break;
+                                    }
+                                    case "EXPIRED": {
+                                        this.updateAllStatus(historyPayment, paymentTransaction, response);
+                                        responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_EXPIRED';
+                                        responseIcon = 'trn_declined.png';
+                                        break;
+                                    }
+                                    default: {
+                                        this.updateAllStatus(historyPayment, paymentTransaction, response);
+                                        responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_ERROR';
+                                        responseIcon = 'trn_declined.png';
+                                        break;
+                                    }
+                                }
                             }
-                            case "PENDING": {
-                                this.updateAllStatus(historyPayment, paymentTransaction, response);
-                                responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_PENDING';
-                                responseIcon = 'trn_pending.png';
-                                break;
-                            }
-                            case "EXPIRED": {
-                                this.updateAllStatus(historyPayment, paymentTransaction, response);
-                                responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_EXPIRED';
-                                responseIcon = 'trn_declined.png';
-                                break;
-                            }
-                            default: {
-                                this.updateAllStatus(historyPayment, paymentTransaction, response);
-                                responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_ERROR';
-                                responseIcon = 'trn_declined.png';
-                                break;
-                            }
-                        }
-                    }
-                    this._mdDialogRef = this._mdDialog.open(VerifyResultComponent, {
-                        disableClose: true,
-                        data: {
-                            responseStatus: responseMessage,
-                            responseImage: responseIcon
-                        }
-                    });
+                            this._mdDialogRef = this._mdDialog.open(VerifyResultComponent, {
+                                disableClose: true,
+                                data: {
+                                    responseStatus: responseMessage,
+                                    responseImage: responseIcon
+                                }
+                            });
 
-                    this._mdDialogRef.afterClosed().subscribe(result => {
-                        this._mdDialogRef = result;
-                        if (result.success) {
+                            this._mdDialogRef.afterClosed().subscribe(result => {
+                                this._mdDialogRef = result;
+                                if (result.success) {
 
+                                }
+                            });
+                        },
+                        error => {
+                            let errorMsg = this.itemNameTraduction('RES_PAYMENT_HISTORY.UNAVAILABLE_REPORT');
+                            this.openDialog(this.titleMsg, '', errorMsg, '', this.btnAcceptLbl, false);
+                            this._loading = false;
                         }
-                    });
-                },
-                error => {
-                    let errorMsg = this.itemNameTraduction('RES_PAYMENT_HISTORY.UNAVAILABLE_REPORT');
-                    this.openDialog(this.titleMsg, '', errorMsg, '', this.btnAcceptLbl, false);
+                    );
                     this._loading = false;
-                }
-            );
-            this._loading = false;
-        }, 5000);
+                }, 5000);
+            }
+        }
     }
 
     /**
@@ -378,6 +381,9 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
                     Tables.collection.update({ _id: table._id }, { $set: { is_active: true } });
                 });
             });
+
+            //Call meteor method for generate iurest invoice
+            MeteorObservable.call('generateInvoiceInfo', _historyPayment._id, Meteor.userId()).subscribe();
         }
     }
 
@@ -399,15 +405,14 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
      */
     generateInvoice(_paymentHistory: PaymentHistory) {
         let iurest_invoice: IurestInvoice = IurestInvoices.findOne({ payment_history_id: _paymentHistory._id });
-        let parameterTax = Parameters.findOne({ name: 'colombia_tax_iva' });
         let invoice_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.INVOICE_LBL');
         let number_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.NUMBER_LBL');
         let date_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.DATE_LBL');
+        let cc_payment_lbl = this.itemNameTraduction('PAYU_PAYMENT_FORM.CC_PAYMENT_METHOD');
         let customer_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.CUSTOMER_LBL');
         let desc_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.DESCRIPTION_LBL');
         let period_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.PERIOD_LBL');
         let amount_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.AMOUNT_LBL');
-        let description = this.itemNameTraduction('RES_PAYMENT_HISTORY.DESCRIPTION');
         let subtotal_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.SUBTOTAL');
         let iva_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.IVA');
         let total_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.TOTAL');
@@ -421,6 +426,9 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         let identication_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.IDENTIFICATION_NUMBER');
         let phone_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.TELEPHONE_NUMBER');
         let email_lbl = this.itemNameTraduction('RES_PAYMENT_HISTORY.EMAIL');
+        let aux_payment_method = this.itemNameTraduction(iurest_invoice.payment_method);
+        let aux_country = this.itemNameTraduction(iurest_invoice.client_info.country);
+        let aux_description = this.itemNameTraduction(iurest_invoice.description);
 
         let qr_pdf = new jsPDF("portrait", "mm", "a4");
 
@@ -461,14 +469,14 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
 
             let dateFormated = iurest_invoice.creation_date.getDate() + '/' + (iurest_invoice.creation_date.getMonth() + 1) + '/' + iurest_invoice.creation_date.getFullYear();
             qr_pdf.text(date_lbl + dateFormated, 15, 55);
-            qr_pdf.text(payment_method_lbl + iurest_invoice.payment_method, 15, 60);
+            qr_pdf.text(payment_method_lbl + aux_payment_method, 15, 60);
             qr_pdf.setFontSize(12);
             qr_pdf.setFontStyle('bold');
             qr_pdf.text(customer_lbl, 15, 70);
             qr_pdf.setFontStyle('normal');
             qr_pdf.text(iurest_invoice.client_info.name, 15, 75);
             qr_pdf.text(iurest_invoice.client_info.address, 15, 80);
-            qr_pdf.text(iurest_invoice.client_info.city + ', ' + iurest_invoice.client_info.country, 15, 85);
+            qr_pdf.text(iurest_invoice.client_info.city + ', ' + aux_country, 15, 85);
             qr_pdf.text(identication_lbl + '' + iurest_invoice.client_info.identification, 15, 90);
             qr_pdf.text(phone_lbl + '' + iurest_invoice.client_info.phone, 15, 95);
             qr_pdf.text(email_lbl + '' + iurest_invoice.client_info.email, 15, 100);
@@ -478,7 +486,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
             qr_pdf.text(amount_lbl, 195, 115, 'right');
             qr_pdf.line(15, 117, 195, 117);
             qr_pdf.setFontStyle('normal');
-            qr_pdf.text(description, 15, 125);
+            qr_pdf.text(aux_description, 15, 125);
             qr_pdf.text(iurest_invoice.period, 90, 125);
             qr_pdf.text(iurest_invoice.amount_no_iva.toString(), 185, 125, 'right');
             qr_pdf.text(iurest_invoice.currency, 195, 125, 'right');
