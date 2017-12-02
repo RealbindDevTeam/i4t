@@ -32,6 +32,6 @@ function setClass(css:any) {
 
 Meteor.startup(() => {
     setClass('web');
-    //enableProdMode();
+    enableProdMode();
     platformBrowserDynamic().bootstrapModule(AppModule).catch(err => console.log(err));
 });
