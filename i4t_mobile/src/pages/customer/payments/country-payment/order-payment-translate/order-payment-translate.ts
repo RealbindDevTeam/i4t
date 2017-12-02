@@ -3,10 +3,10 @@ import { AlertController, LoadingController, NavController, NavParams, ToastCont
 import { MeteorObservable } from 'meteor-rxjs'
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
+import { Orders } from 'i4t_web/both/collections/restaurant/order.collection';
 import { AddOrderPaymentPage } from "./add-order-payment/add-order-payment";
 import { UserLanguageServiceProvider } from '../../../../../providers/user-language-service/user-language-service';
-import { OrderTranslateInfo } from 'qmo_web/both/models/restaurant/order.model';
+import { OrderTranslateInfo } from 'i4t_web/both/models/restaurant/order.model';
 
 /*
   Generated class for the Order-Payment-Translate page.

@@ -4,14 +4,14 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
-import { Items, ItemImages } from 'qmo_web/both/collections/administration/item.collection';
-import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
-import { Addition } from 'qmo_web/both/models/administration/addition.model';
-import { GarnishFoodCol } from 'qmo_web/both/collections/administration/garnish-food.collection';
-import { GarnishFood } from 'qmo_web/both/models/administration/garnish-food.model';
-import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
-import { Item } from 'qmo_web/both/models/administration/item.model';
-import { Currencies } from 'qmo_web/both/collections/general/currency.collection';
+import { Items } from 'i4t_web/both/collections/administration/item.collection';
+import { Additions } from 'i4t_web/both/collections/administration/addition.collection';
+import { Addition } from 'i4t_web/both/models/administration/addition.model';
+import { GarnishFoodCol } from 'i4t_web/both/collections/administration/garnish-food.collection';
+import { GarnishFood } from 'i4t_web/both/models/administration/garnish-food.model';
+import { Orders } from 'i4t_web/both/collections/restaurant/order.collection';
+import { Item } from 'i4t_web/both/models/administration/item.model';
+import { Currencies } from 'i4t_web/both/collections/general/currency.collection';
 import { ModalObservationsEdit } from './modal-observations-edit';
 import { Storage } from '@ionic/storage';
 import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
@@ -61,7 +61,6 @@ export class ItemEditPage implements OnInit, OnDestroy {
   private _newOrderForm: FormGroup;
   private _garnishFormGroup: FormGroup = new FormGroup({});
   private _additionsFormGroup: FormGroup = new FormGroup({});
-  private _itemImageSub: Subscription;
   private _currencyCode: string;
   private _currenciesSub: Subscription;
 
@@ -232,8 +231,6 @@ export class ItemEditPage implements OnInit, OnDestroy {
       additions: this._additionsFormGroup
     });
     //
-
-    this._itemImageSub = MeteorObservable.subscribe('itemImagesByRestaurant', this._res_code).subscribe();
 
     this._currenciesSub = MeteorObservable.subscribe('getCurrenciesByRestaurantsId', [this._res_code]).subscribe(() => {
       this._currencyCode = Currencies.collection.find({}).fetch()[0].code + ' ';
@@ -500,20 +497,6 @@ export class ItemEditPage implements OnInit, OnDestroy {
   }
 
   /**
-   * Return the Image source (url)
-   * @param  {string} _itemId 
-   */
-  getItemImage(_itemId: string): string {
-    let _itemImage;
-    _itemImage = ItemImages.find().fetch().filter((i) => i.itemId === _itemId)[0];
-    if (_itemImage) {
-      return _itemImage.url;
-    } else {
-      return 'assets/img/default-plate.png';
-    }
-  }
-
-  /**
    * Return Item price by current restaurant
    * @param {Item} _pItem 
    */
@@ -588,7 +571,6 @@ export class ItemEditPage implements OnInit, OnDestroy {
     if (this._additionSub) { this._additionSub.unsubscribe(); }
     if (this._garnishSub) { this._garnishSub.unsubscribe(); }
     if (this._ordersSub) { this._ordersSub.unsubscribe(); }
-    if (this._itemImageSub) { this._itemImageSub.unsubscribe(); }
     if (this._currenciesSub) { this._currenciesSub.unsubscribe(); }
   }
 }

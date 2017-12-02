@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
-import { Items } from 'qmo_web/both/collections/administration/item.collection';
+import { Items } from 'i4t_web/both/collections/administration/item.collection';
 
 @Component({
     selector: 'item-detail-payment-confirm',

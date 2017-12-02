@@ -3,8 +3,8 @@ import { NavController, NavParams } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
-import { Restaurants } from 'qmo_web/both/collections/restaurant/restaurant.collection';
-import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
+import { Restaurants } from 'i4t_web/both/collections/restaurant/restaurant.collection';
+import { UserDetails } from 'i4t_web/both/collections/auth/user-detail.collection';
 import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 
 /*

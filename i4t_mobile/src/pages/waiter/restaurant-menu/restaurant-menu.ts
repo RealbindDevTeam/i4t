@@ -4,14 +4,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from "meteor-rxjs";
 import { Subscription } from "rxjs";
 import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
-import { Restaurants, RestaurantImageThumbs } from 'qmo_web/both/collections/restaurant/restaurant.collection';
-import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
-import { Sections } from 'qmo_web/both/collections/administration/section.collection';
-import { Categories } from 'qmo_web/both/collections/administration/category.collection';
-import { Subcategories } from 'qmo_web/both/collections/administration/subcategory.collection';
-import { Items, ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
-import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
-import { RestaurantImageThumb } from 'qmo_web/both/models/restaurant/restaurant.model';
+import { Restaurants } from 'i4t_web/both/collections/restaurant/restaurant.collection';
+import { UserDetails } from 'i4t_web/both/collections/auth/user-detail.collection';
+import { Sections } from 'i4t_web/both/collections/administration/section.collection';
+import { Categories } from 'i4t_web/both/collections/administration/category.collection';
+import { Subcategories } from 'i4t_web/both/collections/administration/subcategory.collection';
+import { Items } from 'i4t_web/both/collections/administration/item.collection';
+import { Additions } from 'i4t_web/both/collections/administration/addition.collection';
 import { ItemCardWaiterComponent } from './item-card-waiter';
 import { ItemDetailWaiterPage } from '../item-detail-waiter/item-detail-waiter';
 import { AdditionsWaiterPage } from './additions-waiter/additions-waiter';
@@ -25,12 +24,10 @@ export class RestaurantMenuPage implements OnInit, OnDestroy {
 
     private _userRestaurantSubscription: Subscription;
     private _userDetailSubscription: Subscription;
-    private _imgRestaurantSubscription: Subscription;
     private _sectionsSubscription: Subscription;
     private _categoriesSubscription: Subscription;
     private _subcategoriesSubscription: Subscription;
     private _itemsSubscription: Subscription;
-    private _itemImagesSubscription: Subscription;
     private _additionsSubscription: Subscription;
 
     private _userDetail: any;
@@ -76,10 +73,6 @@ export class RestaurantMenuPage implements OnInit, OnDestroy {
                     this._itemsSubscription = MeteorObservable.subscribe('itemsByRestaurant', this._userDetail.restaurant_work).subscribe(() => {
                         this._items = Items.find({});
                     });
-                    this._itemImagesSubscription = MeteorObservable.subscribe('itemImageThumbsByRestaurant', this._userDetail.restaurant_work).subscribe(() => {
-                        this._itemImagesThumbs = ItemImagesThumbs.find({});
-                    });
-                    this._imgRestaurantSubscription = MeteorObservable.subscribe('restaurantImageThumbsByRestaurantId', this._userDetail.restaurant_work).subscribe();
                     this._additionsSubscription = MeteorObservable.subscribe('additionsByRestaurant', this._userDetail.restaurant_work).subscribe(() => {
                         this._additions = Additions.find({});
                         this._additions.subscribe(() => {
@@ -90,19 +83,6 @@ export class RestaurantMenuPage implements OnInit, OnDestroy {
                 }
             });
         });
-    }
-
-    /**
-     * Get Restaurant Image
-     * @param {string} _pRestaurantId
-     */
-    getRestaurantImage(_pRestaurantId: string): string {
-        let _lRestaurantImageThumb: RestaurantImageThumb = RestaurantImageThumbs.findOne({ restaurantId: _pRestaurantId });
-        if (_lRestaurantImageThumb) {
-            return _lRestaurantImageThumb.url
-        } else {
-            return 'assets/img/default-restaurant.png';
-        }
     }
 
     validateSection(section_selected) {

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
-import { GarnishFoodCol } from 'qmo_web/both/collections/administration/garnish-food.collection';
+import { GarnishFoodCol } from 'i4t_web/both/collections/administration/garnish-food.collection';
 
 @Component({
     selector: 'garnish-food-send-order-component',

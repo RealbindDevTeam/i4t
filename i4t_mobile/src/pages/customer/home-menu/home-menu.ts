@@ -9,10 +9,11 @@ import { HomePage } from '../home/home';
 import { SettingsPage } from '../options/settings/settings';
 import { PaymentsHistoryPage } from '../options/payments-history/payments-history';
 import { TabsPage } from '../tabs/tabs';
-import { UserProfileImage } from 'qmo_web/both/models/auth/user-profile.model';
-import { Users, UserImages } from 'qmo_web/both/collections/auth/user.collection';
-import { User } from 'qmo_web/both/models/auth/user.model';
+import { Users } from 'i4t_web/both/collections/auth/user.collection';
+import { User } from 'i4t_web/both/models/auth/user.model';
 import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
+import { UserDetail, UserDetailImage } from 'i4t_web/both/models/auth/user-detail.model';
+import { UserDetails } from 'i4t_web/both/collections/auth/user-detail.collection';
 
 @Component({
     templateUrl: 'home-menu.html'
@@ -21,7 +22,7 @@ export class HomeMenu implements OnInit, OnDestroy {
 
     @ViewChild(Nav) nav: Nav;
     private _userSubscription: Subscription;
-    private _userImageSubscription: Subscription;
+    private _userDetailSubscription: Subscription;
     private _user: User;
 
     rootPage: any = HomePage;
@@ -61,20 +62,20 @@ export class HomeMenu implements OnInit, OnDestroy {
      */
     ngOnInit() {
         this._translate.use(this._userLanguageService.getLanguage(Meteor.user()));
-        this._userImageSubscription = MeteorObservable.subscribe('getUserImages', Meteor.userId()).subscribe();
         this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() => {
             this._ngZone.run(() => {
                 this._user = Users.findOne({ _id: Meteor.userId() });
             });
         });
+        this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
     }
 
     /**
      * Remove all subscription
      */
     removeSubscriptions() {
-        if (this._userImageSubscription) { this._userImageSubscription.unsubscribe(); }
         if (this._userSubscription) { this._userSubscription.unsubscribe(); }
+        if (this._userDetailSubscription) { this._userDetailSubscription.unsubscribe(); }
     }
 
     /**
@@ -172,9 +173,14 @@ export class HomeMenu implements OnInit, OnDestroy {
         if (this._user && this._user.services.facebook) {
             return "https://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
         } else {
-            let _lUserImage: UserProfileImage = UserImages.findOne({ userId: Meteor.userId() });
-            if (_lUserImage) {
-                return _lUserImage.url;
+            let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+            if (_lUserDetail) {
+                let _lUserDetailImage: UserDetailImage = _lUserDetail.image;
+                if (_lUserDetailImage) {
+                    return _lUserDetailImage.url;
+                } else {
+                    return 'assets/img/user_default_image.png';
+                }
             }
             else {
                 return 'assets/img/user_default_image.png';

@@ -3,17 +3,17 @@ import { NavController, NavParams, Content } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
-import { Restaurants, RestaurantImageThumbs } from 'qmo_web/both/collections/restaurant/restaurant.collection';
-import { Cities } from 'qmo_web/both/collections/settings/city.collection';
-import { Countries } from 'qmo_web/both/collections/settings/country.collection';
-import { Sections } from 'qmo_web/both/collections/administration/section.collection';
-import { Categories } from 'qmo_web/both/collections/administration/category.collection';
-import { Subcategories } from 'qmo_web/both/collections/administration/subcategory.collection';
-import { Items, ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
+import { Additions } from 'i4t_web/both/collections/administration/addition.collection';
+import { Restaurants } from 'i4t_web/both/collections/restaurant/restaurant.collection';
+import { Cities } from 'i4t_web/both/collections/settings/city.collection';
+import { Countries } from 'i4t_web/both/collections/settings/country.collection';
+import { Sections } from 'i4t_web/both/collections/administration/section.collection';
+import { Categories } from 'i4t_web/both/collections/administration/category.collection';
+import { Subcategories } from 'i4t_web/both/collections/administration/subcategory.collection';
+import { Items } from 'i4t_web/both/collections/administration/item.collection';
 import { ItemDetailPage } from '../item-detail/item-detail';
 import { AdditionsPage } from './additions/additions';
-import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
+import { Tables } from 'i4t_web/both/collections/restaurant/table.collection';
 import { Storage } from '@ionic/storage';
 import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 
@@ -40,8 +40,6 @@ export class SectionsPage implements OnInit, OnDestroy {
   private _subcategorySub: Subscription;
   private _items;
   private _itemSub: Subscription;
-  private _imageThumbs;
-  private _imageThumbSub: Subscription;
   private _restaurantThumbSub: Subscription;
   private _additions;
   private _additionsSub: Subscription;
@@ -92,11 +90,6 @@ export class SectionsPage implements OnInit, OnDestroy {
     this._itemSub = MeteorObservable.subscribe('itemsByRestaurant', this._res_code).subscribe(() => {
       this._items = Items.find({});
     });
-    this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByRestaurant', this._res_code).subscribe(() => {
-      this._imageThumbs = ItemImagesThumbs.find({});
-    });
-    this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByRestaurantId', this._res_code).subscribe();
-
     this._additionsSub = MeteorObservable.subscribe( 'additionsByRestaurant', this._res_code ).subscribe( () => {
         this._additions = Additions.find({});
         this._additions.subscribe( () => { 
@@ -142,16 +135,6 @@ export class SectionsPage implements OnInit, OnDestroy {
     this._navCtrl.push(AdditionsPage, { res_id: this._res_code, table_id: this._table_code });
   }
 
-  getRestaurantThumb(_id: string): string {
-    let _imageThumb;
-    _imageThumb = RestaurantImageThumbs.find().fetch().filter((i) => i.restaurantId === _id)[0];
-    if (_imageThumb) {
-      return _imageThumb.url;
-    } else {
-      return 'assets/img/default-restaurant.png';
-    }
-  }
-
   ngOnDestroy() {
     this.removeSubscriptions();
   }
@@ -169,7 +152,6 @@ export class SectionsPage implements OnInit, OnDestroy {
     if(this._itemSub){this._itemSub.unsubscribe();}
     if(this._restaurantThumbSub){this._restaurantThumbSub.unsubscribe();}
     if(this._additionsSub){this._additionsSub.unsubscribe();}
-    if(this._imageThumbSub){this._imageThumbSub.unsubscribe();}
     if(this._tablesSub){this._tablesSub.unsubscribe();}
     }
 }
