@@ -1,12 +1,12 @@
 import { Component, Input, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs'
 import { Subscription } from 'rxjs';
-import { Addition } from 'qmo_web/both/models/administration/addition.model';
-import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
-import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
-import { GarnishFood } from 'qmo_web/both/models/administration/garnish-food.model';
-import { GarnishFoodCol } from 'qmo_web/both/collections/administration/garnish-food.collection';
-import { Restaurants } from 'qmo_web/both/collections/restaurant/restaurant.collection';
+import { Addition } from 'i4t_web/both/models/administration/addition.model';
+import { Additions } from 'i4t_web/both/collections/administration/addition.collection';
+import { Orders } from 'i4t_web/both/collections/restaurant/order.collection';
+import { GarnishFood } from 'i4t_web/both/models/administration/garnish-food.model';
+import { GarnishFoodCol } from 'i4t_web/both/collections/administration/garnish-food.collection';
+import { Restaurants } from 'i4t_web/both/collections/restaurant/restaurant.collection';
 
 /*
   Generated class for the OrderDetailPayInfo Page.

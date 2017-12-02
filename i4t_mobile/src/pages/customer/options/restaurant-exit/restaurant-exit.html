@@ -17,7 +17,8 @@
     <div *ngIf="_res_code !== '' && _table_code !== ''">
         <div *ngIf="_restaurant">
             <div id="res-logo">
-                <img src="{{getRestaurantImage(_restaurant._id)}}">
+                <img *ngIf="_restaurant.image" src="{{_restaurant.image.url}}">
+                <img *ngIf="!_restaurant.image" src="assets/img/default-restaurant.png">
             </div>
             <ion-card>
                 <ion-card-content>

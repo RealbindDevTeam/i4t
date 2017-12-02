@@ -3,12 +3,11 @@ import { AlertController, LoadingController, NavController, ToastController } fr
 import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from "meteor-rxjs";
 import { Subscription } from "rxjs";
-import { Restaurants, RestaurantImageThumbs } from 'qmo_web/both/collections/restaurant/restaurant.collection';
-import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
-import { WaiterCallDetail } from 'qmo_web/both/models/restaurant/waiter-call-detail.model';
-import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-call-detail.collection';
-import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
-import { RestaurantImageThumb } from 'qmo_web/both/models/restaurant/restaurant.model';
+import { Restaurants } from 'i4t_web/both/collections/restaurant/restaurant.collection';
+import { Tables } from 'i4t_web/both/collections/restaurant/table.collection';
+import { WaiterCallDetail } from 'i4t_web/both/models/restaurant/waiter-call-detail.model';
+import { WaiterCallDetails } from 'i4t_web/both/collections/restaurant/waiter-call-detail.collection';
+import { UserDetails } from 'i4t_web/both/collections/auth/user-detail.collection';
 import { PaymentConfirmPage } from "./payment-confirm/payment-confirm";
 import { SendOrderDetailsPage } from './send-order-detail/send-order-detail';
 import { RestaurantExitConfirmPage } from './restaurant-exit-confirm/restaurant-exit-confirm';
@@ -24,7 +23,6 @@ export class CallsPage implements OnInit, OnDestroy {
   private _userDetailSubscription: Subscription;
   private _callsDetailsSubscription: Subscription;
   private _tableSubscription: Subscription;
-  private _imgRestaurantSubscription: Subscription;
 
   private _userDetail: any;
   private _restaurants: any;
@@ -66,8 +64,6 @@ export class CallsPage implements OnInit, OnDestroy {
       }
     });
 
-    this._imgRestaurantSubscription = MeteorObservable.subscribe('getRestaurantImageThumbByRestaurantWork', Meteor.userId()).subscribe();
-
     this._callsDetailsSubscription = MeteorObservable.subscribe('waiterCallDetailByWaiterId', Meteor.userId()).subscribe(() => {
       this._waiterCallDetail = WaiterCallDetails.find({});
       this._waiterCallDetailCollection = WaiterCallDetails.collection.find({}).fetch()[0];
@@ -77,19 +73,6 @@ export class CallsPage implements OnInit, OnDestroy {
       this._tables = Tables.find({});
     });
 
-  }
-
-  /**
-     * Get Restaurant Image
-     * @param {string} _pRestaurantId
-     */
-  getRestaurantImage(_pRestaurantId: string): string {
-    let _lRestaurantImageThumb: RestaurantImageThumb = RestaurantImageThumbs.findOne({ restaurantId: _pRestaurantId });
-    if (_lRestaurantImageThumb) {
-      return _lRestaurantImageThumb.url
-    } else {
-      return 'assets/img/default-restaurant.png';
-    }
   }
 
   /**
@@ -209,7 +192,6 @@ export class CallsPage implements OnInit, OnDestroy {
     if (this._userRestaurantSubscription) { this._userRestaurantSubscription.unsubscribe(); }
     if (this._callsDetailsSubscription) { this._callsDetailsSubscription.unsubscribe(); }
     if (this._tableSubscription) { this._tableSubscription.unsubscribe(); }
-    if (this._imgRestaurantSubscription) { this._imgRestaurantSubscription.unsubscribe(); }
   }
 
 }

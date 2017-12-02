@@ -5,8 +5,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 
 import { WaiterCallPage } from '../waiter-call/waiter-call';
-import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
-import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-call-detail.collection';
+import { UserDetails } from 'i4t_web/both/collections/auth/user-detail.collection';
+import { WaiterCallDetails } from 'i4t_web/both/collections/restaurant/waiter-call-detail.collection';
 
 import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 import { ChangeTablePage } from './table-change/table-change';

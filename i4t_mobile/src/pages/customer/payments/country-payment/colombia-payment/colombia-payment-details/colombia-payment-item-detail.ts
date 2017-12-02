@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { Order, OrderItem } from 'qmo_web/both/models/restaurant/order.model';
+import { Order, OrderItem } from 'i4t_web/both/models/restaurant/order.model';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
-import { Items } from 'qmo_web/both/collections/administration/item.collection';
+import { Items } from 'i4t_web/both/collections/administration/item.collection';
 
 @Component({
     selector: 'colombia-payment-item-detail',

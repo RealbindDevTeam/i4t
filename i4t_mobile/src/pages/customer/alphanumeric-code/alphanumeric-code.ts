@@ -3,8 +3,8 @@ import { AlertController, NavController, NavParams, ViewController } from 'ionic
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
-import { Table } from 'qmo_web/both/models/restaurant/table.model';
+import { Restaurant } from 'i4t_web/both/models/restaurant/restaurant.model';
+import { Table } from 'i4t_web/both/models/restaurant/table.model';
 import { SectionsPage } from '../sections/sections';
 import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 

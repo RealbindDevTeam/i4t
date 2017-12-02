@@ -4,14 +4,14 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
-import { Items, ItemImages } from 'qmo_web/both/collections/administration/item.collection';
-import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
-import { Addition } from 'qmo_web/both/models/administration/addition.model';
-import { GarnishFoodCol } from 'qmo_web/both/collections/administration/garnish-food.collection';
-import { GarnishFood } from 'qmo_web/both/models/administration/garnish-food.model';
-import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
-import { Item } from 'qmo_web/both/models/administration/item.model';
-import { Currencies } from 'qmo_web/both/collections/general/currency.collection';
+import { Items } from 'i4t_web/both/collections/administration/item.collection';
+import { Additions } from 'i4t_web/both/collections/administration/addition.collection';
+import { Addition } from 'i4t_web/both/models/administration/addition.model';
+import { GarnishFoodCol } from 'i4t_web/both/collections/administration/garnish-food.collection';
+import { GarnishFood } from 'i4t_web/both/models/administration/garnish-food.model';
+import { Orders } from 'i4t_web/both/collections/restaurant/order.collection';
+import { Item } from 'i4t_web/both/models/administration/item.model';
+import { Currencies } from 'i4t_web/both/collections/general/currency.collection';
 import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 
 /*
@@ -55,7 +55,6 @@ export class ItemDetailWaiterPage implements OnInit, OnDestroy {
   private _disabledMinusBtn: boolean = true;
   private _statusArray: string[];
   private _currentUserId: string;
-  private _itemImageSub: Subscription;
   private _currenciesSub: Subscription;
   private _currencyCode: string;
 
@@ -130,8 +129,6 @@ export class ItemDetailWaiterPage implements OnInit, OnDestroy {
         }
       });
     });
-
-    this._itemImageSub = MeteorObservable.subscribe('itemImagesByRestaurant', this._res_code).subscribe();
 
     this._newOrderForm = new FormGroup({
       quantity: new FormControl('', [Validators.required]),
@@ -224,16 +221,6 @@ export class ItemDetailWaiterPage implements OnInit, OnDestroy {
     return wordTraduced;
   }
 
-  getItemImage(_itemId: string): string {
-    let _itemImage;
-    _itemImage = ItemImages.find().fetch().filter((i) => i.itemId === _itemId)[0];
-    if (_itemImage) {
-      return _itemImage.url;
-    } else {
-      return 'assets/img/default-plate.png';
-    }
-  }
-
   /**
    * Return Item price by current restaurant
    * @param {Item} _pItem 
@@ -291,6 +278,5 @@ export class ItemDetailWaiterPage implements OnInit, OnDestroy {
     if (this._additionSub) { this._additionSub.unsubscribe(); }
     if (this._garnishSub) { this._garnishSub.unsubscribe(); }
     if (this._currenciesSub) { this._currenciesSub.unsubscribe(); }
-    if (this._itemImageSub) { this._itemImageSub.unsubscribe(); }
   }
 }

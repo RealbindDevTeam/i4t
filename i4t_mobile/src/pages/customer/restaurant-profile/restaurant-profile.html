@@ -22,17 +22,19 @@
             </a>
         </ion-fab-list>
     </ion-fab>
-    
-    <ion-slides *ngIf="(_restaurantProfileImgs | async)?.length >= 0" zoom>
-        <ion-slide *ngFor="let img of _restaurantProfileImgs | async">
-            <img src="{{img.url}}"/>
-        </ion-slide>
-    </ion-slides>
+
+    <span *ngFor="let restaurantProfile of _restaurantsProfiles | async">
+        <ion-slides *ngIf="restaurantProfile.images.length > 0" zoom>
+            <ion-slide *ngFor="let restProfileImgeThumb of restaurantProfile.images">
+                <img src="{{restProfileImgeThumb.url}}"/>
+            </ion-slide>
+        </ion-slides>
+    </span>
 
     <ion-card *ngFor="let _restaurant of _restaurants | async;" class="card-nm">
         <ion-card-content>
             <ion-item>
-                <ion-card-title>{{_restaurant?.name}}</ion-card-title>
+                <ion-card-title style="white-space: normal;">{{_restaurant?.name}}</ion-card-title>
                 <button ion-button outline item-end>{{'MOBILE.RESTAURANT_PROFILE.MENU_BTN' | translate}}</button>
             </ion-item>
             

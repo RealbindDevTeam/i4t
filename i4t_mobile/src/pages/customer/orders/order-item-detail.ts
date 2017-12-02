@@ -1,10 +1,9 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
-import { Order, OrderItem } from 'qmo_web/both/models/restaurant/order.model';
-import { ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
+import { Order, OrderItem } from 'i4t_web/both/models/restaurant/order.model';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
-import { Items } from 'qmo_web/both/collections/administration/item.collection';
-import { ItemRestaurant } from 'qmo_web/both/models/administration/item.model';
+import { Items } from 'i4t_web/both/collections/administration/item.collection';
+import { ItemRestaurant } from 'i4t_web/both/models/administration/item.model';
 
 @Component({
     selector: 'order-item-detail',
@@ -27,7 +26,6 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
     @Output('gotoedititem')
     itemIdOut: EventEmitter<any> = new EventEmitter<any>();
 
-    private _imageThumbSub: Subscription;
     private _items;
     private _itemsSub: Subscription;
     private _currentOrderUserId: string;
@@ -40,18 +38,6 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
         this._itemsSub = MeteorObservable.subscribe('itemsByUser', Meteor.userId()).subscribe(() => {
             this._items = Items.find({ _id: this.orderItem.itemId });
         });
-
-        this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByUserId', Meteor.userId()).subscribe();
-    }
-
-    getItemThumb(_itemId: string): string {
-        let _imageThumb;
-        _imageThumb = ItemImagesThumbs.find().fetch().filter((i) => i.itemId === _itemId)[0];
-        if (_imageThumb) {
-            return _imageThumb.url;
-        } else {
-            return 'assets/img/default-plate.png';
-        }
     }
 
     goToItemEdit(itemId, orderItemIndex) {
@@ -72,12 +58,10 @@ export class OrderItemDetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if( this._imageThumbSub ){ this._imageThumbSub.unsubscribe(); }
         if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
     }
 
     ionViewWillLeave() {
-        if( this._imageThumbSub ){ this._imageThumbSub.unsubscribe(); }
         if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
     }
 }

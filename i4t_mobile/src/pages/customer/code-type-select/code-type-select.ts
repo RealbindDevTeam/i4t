@@ -3,8 +3,8 @@ import { App, AlertController, LoadingController, NavController, NavParams, View
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
-import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
-import { Table } from 'qmo_web/both/models/restaurant/table.model';
+import { Restaurant } from 'i4t_web/both/models/restaurant/restaurant.model';
+import { Table } from 'i4t_web/both/models/restaurant/table.model';
 import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { AlphanumericCodePage } from '../alphanumeric-code/alphanumeric-code';

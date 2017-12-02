@@ -1,12 +1,11 @@
-
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
-import { Item } from 'qmo_web/both/models/administration/item.model';
-import { Currencies } from 'qmo_web/both/collections/general/currency.collection';
+import { Item } from 'i4t_web/both/models/administration/item.model';
+import { Currencies } from 'i4t_web/both/collections/general/currency.collection';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
 import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
+import { Items } from 'i4t_web/both/collections/administration/item.collection';
 
 @Component({
   selector: 'item-card-waiter',
@@ -24,8 +23,6 @@ export class ItemCardWaiterComponent implements OnInit, OnDestroy {
   @Output()
   itemIdOut: EventEmitter<string> = new EventEmitter<string>();
 
-  private _imageThumbs;
-  private _imageThumbSub: Subscription;
   private _currenciesSub: Subscription;
   private _currencyCode: string;
 
@@ -38,21 +35,21 @@ export class ItemCardWaiterComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this._translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
     this.removeSubscriptions();
-    this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByRestaurant', this.resCode).subscribe(() => {
-      this._imageThumbs = ItemImagesThumbs.find({});
-    });
     this._currenciesSub = MeteorObservable.subscribe('getCurrenciesByRestaurantsId', [this.resCode]).subscribe(() => {
       this._currencyCode = Currencies.collection.find({}).fetch()[0].code + ' ';
     });
   }
 
   getItemThumb(_itemId: string): string {
-    let _imageThumb;
-    _imageThumb = ItemImagesThumbs.find().fetch().filter((i) => i.itemId === _itemId)[0];
-    if (_imageThumb) {
-      return _imageThumb.url;
+    let _item = Items.findOne({ _id: _itemId });
+    if (_item) {
+        if(_item.image){
+            return _item.image.url;
+        } else {
+            return 'assets/img/default-plate.png';
+        }
     } else {
-      return 'assets/img/default-plate.png';
+        return 'assets/img/default-plate.png';
     }
   }
 
@@ -85,7 +82,6 @@ export class ItemCardWaiterComponent implements OnInit, OnDestroy {
    * Remove all subscriptions
    */
   removeSubscriptions():void{
-    if( this._imageThumbSub ){ this._imageThumbSub.unsubscribe(); }
     if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
   }
 }

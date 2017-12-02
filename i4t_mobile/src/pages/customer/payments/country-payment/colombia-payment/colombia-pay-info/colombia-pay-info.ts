@@ -3,7 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs'
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { Payments } from 'qmo_web/both/collections/restaurant/payment.collection';
+import { Payments } from 'i4t_web/both/collections/restaurant/payment.collection';
 import { UserLanguageServiceProvider } from '../../../../../../providers/user-language-service/user-language-service';
 
 /*
