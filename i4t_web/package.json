@@ -28,7 +28,7 @@
     "angulartics2": "4.0.4",
     "babel-cli": "6.26.0",
     "babel-preset-es2015": "6.24.1",
-    "babel-runtime": "6.26.0",
+    "babel-runtime": "^6.26.0",
     "base-64": "0.1.0",
     "bcrypt": "1.0.3",
     "core-js": "2.5.1",
