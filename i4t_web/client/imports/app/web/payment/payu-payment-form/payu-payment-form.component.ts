@@ -676,13 +676,21 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                     Restaurants.collection.update({ _id: resId }, { $set: { isActive: true, firstPay: false } });
                 });
             }
-            this.generateInvoiceInfo(payment_history);
+
+            //Call meteor method for generate iurest invoice
+            MeteorObservable.call('generateInvoiceInfo', payment_history).subscribe(() => {
+                console.log('ejecución correcta de meteor method para generación de factura');
+            }, (error) => {
+                console.log('se ha presentado un error');
+            });
         }
     }
 
     /**
      * This function generate the register for invoice
      */
+
+    /**
     generateInvoiceInfo(_paymentHistoryId: string) {
         let var_resolution: string;
         let var_prefix: string;
@@ -812,6 +820,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             });
         }
     }
+     */
 
     /**
      * This function gets the tax value according to the value

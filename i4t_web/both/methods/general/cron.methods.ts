@@ -23,11 +23,11 @@ if (Meteor.isServer) {
          * This function change the freeDays flag to false
          * * @param {string} _countryId
          */
-        /*
+
         changeFreeDaysToFalse: function (_countryId: string) {
             Restaurants.collection.update({ countryId: _countryId, freeDays: true }, { $set: { freeDays: false } });
         },
-        **/
+
         /**
          * This function send the email to warn for iurest charge soon
          * * @param {string} _countryId
