@@ -43,7 +43,7 @@
                                         </div>
                                         <div style="display: inline-block; vertical-align: middle">
                                             <button mat-button [ngClass]="{'link-color': historyPayment.status == 'TRANSACTION_STATUS.PENDING'}" *ngIf="historyPayment.status == 'TRANSACTION_STATUS.PENDING'"
-                                                (click)="getPayInfo(historyPayment.transactionId)">{{historyPayment.status | translate}}</button>
+                                                (click)="getPayInfo(historyPayment.paymentTransactionId)">{{historyPayment.status | translate}}</button>
                                         </div>
                                     </div>
                                 </td>

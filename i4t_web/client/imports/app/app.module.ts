@@ -16,7 +16,6 @@ import { CustomLoader } from './shared/utils/custom-loader';
 import { WEB_DECLARATIONS, MODAL_DIALOG_DECLARATIONS, SERVICES_DECLARATIONS } from './web/index';
 
 import { NavigationModule } from './web/navigation/navigation.module';
-import { PayuPaymenteService } from './web/payment/payu-payment-service/payu-payment.service';
 
 import { RouteGuard } from './web/auth/navigation/route-guard.service';
 import { CustomerGuard } from './web/auth/navigation/customer-guard.service';
@@ -82,8 +81,7 @@ import { CashierGuard } from './web/auth/navigation/cashier-guard.service';
     WaiterGuard,
     SupervisorGuard,
     ChefGuard,
-    CashierGuard,
-    PayuPaymenteService,
+    CashierGuard
   ],
   bootstrap: [
     AppComponent
