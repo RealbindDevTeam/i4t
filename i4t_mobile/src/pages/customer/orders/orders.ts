@@ -3,14 +3,14 @@ import { App, NavController, NavParams, AlertController, LoadingController } fro
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
-import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
-import { Order, OrderAddition } from 'qmo_web/both/models/restaurant/order.model';
-import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
-import { Items } from 'qmo_web/both/collections/administration/item.collection';
-import { Restaurant } from 'qmo_web/both/models/restaurant/restaurant.model';
-import { Restaurants, RestaurantImageThumbs } from 'qmo_web/both/collections/restaurant/restaurant.collection';
-import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
-import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
+import { Additions } from 'i4t_web/both/collections/administration/addition.collection';
+import { Order, OrderAddition } from 'i4t_web/both/models/restaurant/order.model';
+import { UserDetails } from 'i4t_web/both/collections/auth/user-detail.collection';
+import { Items } from 'i4t_web/both/collections/administration/item.collection';
+import { Restaurant } from 'i4t_web/both/models/restaurant/restaurant.model';
+import { Restaurants } from 'i4t_web/both/collections/restaurant/restaurant.collection';
+import { Tables } from 'i4t_web/both/collections/restaurant/table.collection';
+import { Orders } from 'i4t_web/both/collections/restaurant/order.collection';
 import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
 import { Storage } from '@ionic/storage';
 import { CodeTypeSelectPage } from '../code-type-select/code-type-select';
@@ -18,8 +18,7 @@ import { SectionsPage } from '../sections/sections';
 import { ItemEditPage } from '../item-edit/item-edit';
 import { AdditionEditPage } from '../addition-edit/addition-edit';
 import { RestaurantProfilePage } from '../restaurant-profile/restaurant-profile';
-import { Currencies } from 'qmo_web/both/collections/general/currency.collection';
-import { ItemImagesThumbs } from 'qmo_web/both/collections/administration/item.collection';
+import { Currencies } from 'i4t_web/both/collections/general/currency.collection';
 
 @Component({
     selector: 'page-orders',
@@ -33,9 +32,7 @@ export class OrdersPage implements OnInit, OnDestroy {
     private _ordersSub: Subscription;
     private _additionsSub: Subscription;
     private _itemsSub: Subscription;
-    private _restaurantThumbSub: Subscription;
     private _currencySub: Subscription;
-    private _imageThumbSub: Subscription;
 
     private _userLang: string;
     private _table_code: string = "";
@@ -118,10 +115,6 @@ export class OrdersPage implements OnInit, OnDestroy {
 
         this._itemsSub = MeteorObservable.subscribe('itemsByUser', Meteor.userId()).subscribe();
         this._additionsSub = MeteorObservable.subscribe('additionsByCurrentRestaurant', Meteor.userId()).subscribe();
-
-        this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByUserId', Meteor.userId()).subscribe();
-        this._imageThumbSub = MeteorObservable.subscribe('itemImageThumbsByUserId', Meteor.userId()).subscribe();
-
         this._currencySub = MeteorObservable.subscribe('getCurrenciesByCurrentUser', Meteor.userId()).subscribe(() => {
             this._ngZone.run(() => {
                 if (Currencies.find({}).fetch().length > 0) {
@@ -330,9 +323,13 @@ export class OrdersPage implements OnInit, OnDestroy {
 
 
     getItemThumb(_itemId: string): string {
-        let _imageThumb = ItemImagesThumbs.findOne({ itemId: _itemId });
-        if (_imageThumb) {
-            return _imageThumb.url;
+        let _item = Items.findOne({ _id: _itemId });
+        if (_item) {
+            if(_item.image){
+                return _item.image.url;
+            } else {
+                return 'assets/img/default-plate.png';
+            }
         } else {
             return 'assets/img/default-plate.png';
         }
@@ -380,16 +377,6 @@ export class OrdersPage implements OnInit, OnDestroy {
         this.removeSubscriptions();
     }
 
-    getRestaurantThumb(_id: string): string {
-        let _imageThumb;
-        _imageThumb = RestaurantImageThumbs.find().fetch().filter((i) => i.restaurantId === _id)[0];
-        if (_imageThumb) {
-            return _imageThumb.url;
-        } else {
-            return 'assets/img/default-restaurant.png';
-        }
-    }
-
     /**
      * Go to restaurant profile
      * @param _pRestaurant 
@@ -406,10 +393,8 @@ export class OrdersPage implements OnInit, OnDestroy {
         if (this._ordersSub) { this._ordersSub.unsubscribe(); }
         if (this._tablesSub) { this._tablesSub.unsubscribe(); }
         if (this._itemsSub) { this._itemsSub.unsubscribe(); }
-        if (this._restaurantThumbSub) { this._restaurantThumbSub.unsubscribe(); }
         if (this._userDetailSub) { this._userDetailSub.unsubscribe(); }
         if (this._currencySub) { this._currencySub.unsubscribe(); }
-        if (this._imageThumbSub) { this._imageThumbSub.unsubscribe(); }
         if (this._additionsSub) { this._additionsSub.unsubscribe(); }
     }
 }

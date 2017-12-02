@@ -8,17 +8,18 @@ import { InitialComponent } from '../../auth/initial/initial';
 import { CallsPage } from '../calls/calls';
 import { RestaurantMenuPage } from '../restaurant-menu/restaurant-menu';
 import { SettingsPage } from '../../customer/options/settings/settings';
-import { UserProfileImage } from 'qmo_web/both/models/auth/user-profile.model';
-import { Users, UserImages } from 'qmo_web/both/collections/auth/user.collection';
-import { User } from 'qmo_web/both/models/auth/user.model';
+import { Users } from 'i4t_web/both/collections/auth/user.collection';
+import { User } from 'i4t_web/both/models/auth/user.model';
+import { UserDetail, UserDetailImage } from 'i4t_web/both/models/auth/user-detail.model';
+import { UserDetails } from 'i4t_web/both/collections/auth/user-detail.collection';
 
 @Component({
   templateUrl: 'menu.html'
 })
 export class Menu {
   @ViewChild(Nav) nav: Nav;
-  private _userImageSubscription: Subscription;
   private _userSubscription: Subscription;
+  private _userDetailSubscription: Subscription;
   private _user: any;
 
   rootPage: any = CallsPage;
@@ -52,8 +53,8 @@ export class Menu {
   }
 
   ngOnInit() {
-    this._userImageSubscription = MeteorObservable.subscribe('getUserImages', Meteor.userId()).subscribe();
     this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe();
+    this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
   }
 
   /**
@@ -138,12 +139,17 @@ export class Menu {
    * Return user image
    */
   getUserImage(): string {
-    let _lUserImage: UserProfileImage = UserImages.findOne({ userId: Meteor.userId() });
-    if (_lUserImage) {
-      return _lUserImage.url;
+    let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+    if (_lUserDetail) {
+        let _lUserDetailImage: UserDetailImage = _lUserDetail.image;
+        if (_lUserDetailImage) {
+            return _lUserDetailImage.url;
+        } else {
+            return 'assets/img/user_default_image.png';
+        }
     }
     else {
-      return 'assets/img/user_default_image.png';
+        return 'assets/img/user_default_image.png';
     }
   }
 
@@ -172,8 +178,8 @@ export class Menu {
    * Remove all subscription
    */
   removeSubscriptions() {
-    if (this._userImageSubscription) { this._userImageSubscription.unsubscribe(); }
     if (this._userSubscription) { this._userSubscription.unsubscribe(); }
+    if (this._userDetailSubscription) { this._userDetailSubscription.unsubscribe(); }
   }
 
   ngOnDestroy() {

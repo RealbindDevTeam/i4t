@@ -3,11 +3,11 @@ import { AlertController, LoadingController, ModalController, NavController, Nav
 import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
-import { Accounts } from 'qmo_web/both/collections/restaurant/account.collection';
-import { Currencies } from 'qmo_web/both/collections/general/currency.collection';
-import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
-import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-call-detail.collection';
-import { Payments } from 'qmo_web/both/collections/restaurant/payment.collection';
+import { Accounts } from 'i4t_web/both/collections/restaurant/account.collection';
+import { Currencies } from 'i4t_web/both/collections/general/currency.collection';
+import { Orders } from 'i4t_web/both/collections/restaurant/order.collection';
+import { WaiterCallDetails } from 'i4t_web/both/collections/restaurant/waiter-call-detail.collection';
+import { Payments } from 'i4t_web/both/collections/restaurant/payment.collection';
 import { ColombiaPaymentDetailsPage } from "./colombia-payment-details/colombia-payment-details";
 import { ColombiaPayInfoPage } from "./colombia-pay-info/colombia-pay-info";
 import { ModalColombiaPayment } from "./modal-colombia-payment";

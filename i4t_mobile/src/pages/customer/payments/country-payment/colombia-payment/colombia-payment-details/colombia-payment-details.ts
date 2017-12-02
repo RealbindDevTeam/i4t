@@ -3,11 +3,11 @@ import { AlertController, LoadingController, ToastController, NavParams } from '
 import { MeteorObservable } from 'meteor-rxjs'
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { Order, OrderTranslateInfo } from 'qmo_web/both/models/restaurant/order.model';
-import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
-import { Users } from 'qmo_web/both/collections/auth/user.collection';
+import { Order, OrderTranslateInfo } from 'i4t_web/both/models/restaurant/order.model';
+import { Orders } from 'i4t_web/both/collections/restaurant/order.collection';
+import { Users } from 'i4t_web/both/collections/auth/user.collection';
 import { UserLanguageServiceProvider } from '../../../../../../providers/user-language-service/user-language-service';
-import { RestaurantsLegality } from 'qmo_web/both/collections/restaurant/restaurant.collection';
+import { RestaurantsLegality } from 'i4t_web/both/collections/restaurant/restaurant.collection';
 
 /*
   Generated class for the ColombiaPaymentDetailsPage page.

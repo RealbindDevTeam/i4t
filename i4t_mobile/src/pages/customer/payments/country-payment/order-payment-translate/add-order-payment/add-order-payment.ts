@@ -3,8 +3,8 @@ import { AlertController, LoadingController, NavParams, ToastController } from '
 import { MeteorObservable } from 'meteor-rxjs'
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
-import { Items } from 'qmo_web/both/collections/administration/item.collection';
+import { Orders } from 'i4t_web/both/collections/restaurant/order.collection';
+import { Items } from 'i4t_web/both/collections/administration/item.collection';
 import { UserLanguageServiceProvider } from '../../../../../../providers/user-language-service/user-language-service';
 
 /*

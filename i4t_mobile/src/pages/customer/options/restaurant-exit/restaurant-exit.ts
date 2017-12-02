@@ -4,13 +4,13 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { UserLanguageServiceProvider } from '../../../../providers/user-language-service/user-language-service';
-import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
-import { Restaurants, RestaurantImages, RestaurantImageThumbs } from 'qmo_web/both/collections/restaurant/restaurant.collection';
-import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
-import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
-import { Payments } from 'qmo_web/both/collections/restaurant/payment.collection';
-import { WaiterCallDetails } from 'qmo_web/both/collections/restaurant/waiter-call-detail.collection';
-import { Accounts } from 'qmo_web/both/collections/restaurant/account.collection';
+import { Tables } from 'i4t_web/both/collections/restaurant/table.collection';
+import { Restaurants } from 'i4t_web/both/collections/restaurant/restaurant.collection';
+import { UserDetails } from 'i4t_web/both/collections/auth/user-detail.collection';
+import { Orders } from 'i4t_web/both/collections/restaurant/order.collection';
+import { Payments } from 'i4t_web/both/collections/restaurant/payment.collection';
+import { WaiterCallDetails } from 'i4t_web/both/collections/restaurant/waiter-call-detail.collection';
+import { Accounts } from 'i4t_web/both/collections/restaurant/account.collection';
 import { TabsPage } from '../../tabs/tabs';
 
 @Component({
@@ -25,8 +25,6 @@ export class RestaurantExitPage implements OnInit, OnDestroy {
 
     private _restaurantSub: Subscription;
     private _tablesSub: Subscription;
-    private _restaurantThumbSub: Subscription;
-    private _restaurantImagesSub: Subscription;
     private _userDetailSub: Subscription;
     private _ordersSub: Subscription;
     private _waiterCallDetSub: Subscription;
@@ -73,8 +71,6 @@ export class RestaurantExitPage implements OnInit, OnDestroy {
                 });
             });
 
-            this._restaurantThumbSub = MeteorObservable.subscribe('restaurantImageThumbsByUserId', Meteor.userId()).subscribe();
-            this._restaurantImagesSub = MeteorObservable.subscribe('restaurantImageByUserId', Meteor.userId()).subscribe();
             this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
 
             this._ordersSub = MeteorObservable.subscribe('getOrdersByUserId', Meteor.userId(), ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED',
@@ -86,16 +82,6 @@ export class RestaurantExitPage implements OnInit, OnDestroy {
                 });
             this._waiterCallDetSub = MeteorObservable.subscribe('countWaiterCallDetailByUsrId', Meteor.userId()).subscribe();
             this._accountsSub = MeteorObservable.subscribe( 'getAccountsByUserId', Meteor.userId() ).subscribe();
-        }
-    }
-
-    getRestaurantImage(_id: string): string {
-        let _image;
-        _image = RestaurantImages.find().fetch().filter((i) => i.restaurantId === _id)[0];
-        if (_image) {
-            return _image.url;
-        } else {
-            return 'assets/img/default-restaurant.png';
         }
     }
 
@@ -346,8 +332,6 @@ export class RestaurantExitPage implements OnInit, OnDestroy {
     removeSubscriptions(): void {
         if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
         if (this._tablesSub) { this._tablesSub.unsubscribe(); }
-        if (this._restaurantThumbSub) { this._restaurantThumbSub.unsubscribe(); }
-        if (this._restaurantImagesSub) { this._restaurantImagesSub.unsubscribe(); }
         if (this._userDetailSub) { this._userDetailSub.unsubscribe(); }
         if (this._ordersSub) { this._ordersSub.unsubscribe(); }
         if (this._waiterCallDetSub) { this._waiterCallDetSub.unsubscribe(); }
