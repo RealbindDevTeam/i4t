@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Item } from '../../../../../../../both/models/administration/item.model';
-import { Items, ItemImagesThumbs } from '../../../../../../../both/collections/administration/item.collection';
+import { Items } from '../../../../../../../both/collections/administration/item.collection';
 import { UserDetail } from '../../../../../../../both/models/auth/user-detail.model';
 import { UserDetails } from '../../../../../../../both/collections/auth/user-detail.collection';
 
@@ -19,7 +19,6 @@ export class ItemEnableSupComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
     private _itemsSub: Subscription;
-    private _itemImagesThumbSub: Subscription;
     private _userDetailSub: Subscription;
 
     private _items: Observable<Item[]>;
@@ -55,8 +54,6 @@ export class ItemEnableSupComponent implements OnInit, OnDestroy {
                 this._items.subscribe(() => { this.countItems(); });
             });
         });
-
-        this._itemImagesThumbSub = MeteorObservable.subscribe('getItemImageThumbsByRestaurantWork', this._user).subscribe();
         this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', this._user).subscribe(() => {
             this._ngZone.run(() => {
                 this._userDetail = UserDetails.collection.findOne({ user_id: this._user });
@@ -76,7 +73,6 @@ export class ItemEnableSupComponent implements OnInit, OnDestroy {
      */
     removeSubscriptions(): void {
         if (this._itemsSub) { this._itemsSub.unsubscribe(); }
-        if (this._itemImagesThumbSub) { this._itemImagesThumbSub.unsubscribe(); }
         if (this._userDetailSub) { this._userDetailSub.unsubscribe(); }
     }
 
@@ -109,14 +105,6 @@ export class ItemEnableSupComponent implements OnInit, OnDestroy {
         } else {
             return;
         }
-    }
-
-    /**
-     * Return item image
-     * @param {string} _itemId
-     */
-    getItemImage(_itemId: string): string {
-        return ItemImagesThumbs.getItemImageThumbUrl(_itemId);
     }
 
     /**

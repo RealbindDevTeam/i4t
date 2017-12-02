@@ -7,7 +7,7 @@ import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { ItemRestaurant, ItemPrice } from '../../../../../../../both/models/administration/item.model';
+import { ItemRestaurant, ItemPrice, ItemImage } from '../../../../../../../both/models/administration/item.model';
 import { Items } from '../../../../../../../both/collections/administration/item.collection';
 import { Sections } from '../../../../../../../both/collections/administration/section.collection';
 import { Section } from '../../../../../../../both/models/administration/section.model';
@@ -75,8 +75,7 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
     private _loading: boolean = false;
 
     public _selectedIndex: number = 0;
-    private _filesToUpload: Array<File>;
-    private _itemImageToInsert: File;
+    private _itemImageToInsert: ItemImage;
     private _nameImageFile: string;
     private _restaurantsSelectedCount: number = 0;
 
@@ -102,12 +101,13 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
         protected _mdDialog: MatDialog,
         private _imageService: ImageService,
         private _snackBar: MatSnackBar) {
-        _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        let _lng: string = this._userLanguageService.getLanguage(Meteor.user());
+        _translate.use(_lng);
         _translate.setDefaultLang('en');
+        this._imageService.setPickOptionsLang(_lng);
         this._selectedSectionValue = "";
         this._selectedCategoryValue = "";
         this._selectedSubcategoryValue = "";
-        this._filesToUpload = [];
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
@@ -280,27 +280,17 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
             this._loading = true;
             setTimeout(() => {
                 this.createNewItem().then((item_id) => {
-                    if (this._createImage) {
-                        this._imageService.uploadItemImage(this._itemImageToInsert,
-                            this._user,
-                            item_id).then((result) => { }).catch((err) => {
-                                this._loading = false;
-                                this._router.navigate(['app/items']);
-                                var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
-                                this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
-                            });
-                    }
                     this._loading = false;
-                    this._router.navigate(['app/items']);
                     let _lMessage: string = this.itemNameTraduction('ITEMS.ITEM_CREATED');
                     this._snackBar.open(_lMessage, '', { duration: 2500 });
+                    this._router.navigate(['app/items']);
                 }).catch((err) => {
                     this._loading = false;
                     this._router.navigate(['app/items']);
                     var error: string = this.itemNameTraduction('ITEMS.CREATION_ERROR');
                     this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
                 });
-            }, 2300);
+            }, 2000);
         } else {
             this.cancel();
         }
@@ -310,6 +300,8 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
      * Promise to create new item
      */
     createNewItem(): Promise<string> {
+        let _lNewItem:string;
+
         return new Promise((resolve, reject) => {
             try {
                 let arrCur: any[] = Object.keys(this._itemForm.value.currencies);
@@ -361,25 +353,48 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
                     }
                 });
 
-                let _lNewItem = Items.collection.insert({
-                    creation_user: this._user,
-                    creation_date: new Date(),
-                    modification_user: '-',
-                    modification_date: new Date(),
-                    is_active: true,
-                    sectionId: this._itemForm.value.section,
-                    categoryId: this._itemForm.value.category,
-                    subcategoryId: this._itemForm.value.subcategory,
-                    name: this._itemForm.value.name,
-                    time: this._itemForm.value.cookingTime,
-                    description: this._itemForm.value.description,
-                    restaurants: _lItemRestaurantsToInsert,
-                    prices: _lItemPricesToInsert,
-                    observations: this._itemForm.value.observations,
-                    garnishFoodQuantity: this._itemForm.value.garnishFoodQuantity,
-                    garnishFood: _lGarnishFoodToInsert,
-                    additions: _lAdditionsToInsert
-                });
+                if (this._createImage) {
+                    _lNewItem = Items.collection.insert({
+                        creation_user: this._user,
+                        creation_date: new Date(),
+                        modification_user: '-',
+                        modification_date: new Date(),
+                        is_active: true,
+                        sectionId: this._itemForm.value.section,
+                        categoryId: this._itemForm.value.category,
+                        subcategoryId: this._itemForm.value.subcategory,
+                        name: this._itemForm.value.name,
+                        time: this._itemForm.value.cookingTime,
+                        description: this._itemForm.value.description,
+                        restaurants: _lItemRestaurantsToInsert,
+                        prices: _lItemPricesToInsert,
+                        observations: this._itemForm.value.observations,
+                        image: this._itemImageToInsert,
+                        garnishFoodQuantity: this._itemForm.value.garnishFoodQuantity,
+                        garnishFood: _lGarnishFoodToInsert,
+                        additions: _lAdditionsToInsert
+                    });
+                } else {
+                    _lNewItem = Items.collection.insert({
+                        creation_user: this._user,
+                        creation_date: new Date(),
+                        modification_user: '-',
+                        modification_date: new Date(),
+                        is_active: true,
+                        sectionId: this._itemForm.value.section,
+                        categoryId: this._itemForm.value.category,
+                        subcategoryId: this._itemForm.value.subcategory,
+                        name: this._itemForm.value.name,
+                        time: this._itemForm.value.cookingTime,
+                        description: this._itemForm.value.description,
+                        restaurants: _lItemRestaurantsToInsert,
+                        prices: _lItemPricesToInsert,
+                        observations: this._itemForm.value.observations,
+                        garnishFoodQuantity: this._itemForm.value.garnishFoodQuantity,
+                        garnishFood: _lGarnishFoodToInsert,
+                        additions: _lAdditionsToInsert
+                    });
+                }
                 resolve(_lNewItem);
             } catch (e) {
                 reject(e);
@@ -516,22 +531,24 @@ export class ItemCreationComponent implements OnInit, OnDestroy {
         if (this._selectedSectionValue !== "") { this._selectedSectionValue = ""; }
         if (this._selectedCategoryValue !== "") { this._selectedCategoryValue = ""; }
         if (this._selectedSubcategoryValue !== "") { this._selectedSubcategoryValue = ""; }
-        this._itemImageToInsert = new File([""], "");
         this._createImage = false;
-        this._filesToUpload = [];
         this._itemForm.reset();
         this._router.navigate(['app/items']);
     }
 
     /**
-     * When user wants add item image, this function allow insert the image in the store
-     * @param {any} _fileInput
+     * Function to insert new image
      */
-    onChangeImage(_fileInput: any): void {
-        this._createImage = true;
-        this._filesToUpload = <Array<File>>_fileInput.target.files;
-        this._itemImageToInsert = this._filesToUpload[0];
-        this._nameImageFile = this._itemImageToInsert.name;
+    changeImage(): void {
+        this._imageService.client.pick(this._imageService.pickOptions).then((res) => {
+            let _imageToUpload: any = res.filesUploaded[0];
+            this._nameImageFile = _imageToUpload.filename;
+            this._itemImageToInsert = _imageToUpload;
+            this._createImage = true;
+        }).catch((err) => {
+            var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+        });
     }
 
     /**

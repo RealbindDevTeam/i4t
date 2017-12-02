@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { CustomValidators } from '../../../../../both/shared-components/validators/custom-validator';
 import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
+import { PaymentPlanInfo } from "./payment-plan-info/payment-plan-info.component";
 import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
 import { Countries } from '../../../../../both/collections/settings/country.collection';
 import { Country } from '../../../../../both/models/settings/country.model';
@@ -173,6 +174,12 @@ export class AdminSignupComponent extends AuthClass implements OnInit, OnDestroy
         } else {
             this.showConfirmError = true;
         }
+    }
+
+    openPaymentPlanInfoDialog(){
+        this._mdDialogRef = this._mdDialog.open(PaymentPlanInfo, {
+            disableClose : true 
+        });
     }
 
     ngOnDestroy() {

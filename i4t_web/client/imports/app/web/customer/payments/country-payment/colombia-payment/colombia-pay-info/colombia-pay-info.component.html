@@ -31,7 +31,8 @@
                                                         <span *ngFor="let item of _items | async">
                                                             <ng-template [ngIf]="item._id === it.itemId">
                                                                 <mat-list-item class="element">
-                                                                    <img mat-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" src="{{ getItemImage(item._id) }}">
+                                                                    <img mat-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" *ngIf="item.image" src="{{ item.image.url }}">
+                                                                    <img mat-list-avatar style="flex-shrink: 0;width: 4rem;height: 4rem;border-radius: 0;" *ngIf="!item.image" src="/images/default-plate.png">
                                                                     <h4 mat-line>{{item.name}}</h4>
                                                                     <div mat-line>
                                                                         <p class="element-price">{{'PAYMENTS.COLOMBIA.PRICE' | translate}}: {{ getUnitPrice(item) }} {{_currencyCode}}</p>

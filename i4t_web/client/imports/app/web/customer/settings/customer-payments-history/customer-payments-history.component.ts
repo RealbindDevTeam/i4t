@@ -144,6 +144,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         y = this.calculateY(y, 20);
         pdf.setFontType("bold");
         pdf.text('Factura de venta', 10, y);
+        //TODO Invoice number
         pdf.text(_pInvoice.legal_information.number, 120, y);
 
         y = this.calculateY(y, 10);

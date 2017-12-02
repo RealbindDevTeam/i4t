@@ -16,22 +16,22 @@ import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/ale
 @Component({
     selector: 'categories-edit',
     templateUrl: './categories-edit.component.html',
-    styleUrls: [ './categories-edit.component.scss' ],
-    providers:[ UserLanguageService ]
+    styleUrls: ['./categories-edit.component.scss'],
+    providers: [UserLanguageService]
 })
 export class CategoriesEditComponent implements OnInit {
 
     private _user = Meteor.userId();
-    public _categoryToEdit          : Category;
-    private _editForm               : FormGroup;
-    private _mdDialogRef            : MatDialogRef<any>;
+    public _categoryToEdit: Category;
+    private _editForm: FormGroup;
+    private _mdDialogRef: MatDialogRef<any>;
 
-    private _categories             : Observable<Category[]>;
-    private _sections               : Observable<Section[]>;
+    private _categories: Observable<Category[]>;
+    private _sections: Observable<Section[]>;
 
-    private _categorySection        : string;
-    private titleMsg                : string;
-    private btnAcceptLbl            : string;
+    private _categorySection: string;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
 
     /**
      * CategoriesEditComponent constructor
@@ -42,15 +42,15 @@ export class CategoriesEditComponent implements OnInit {
      * @param {NgZone} _ngZone
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor( private _formBuilder: FormBuilder, 
-                 private _translate: TranslateService, 
-                 public _dialogRef: MatDialogRef<any>, 
-                 public snackBar: MatSnackBar,
-                 private _ngZone:NgZone,
-                 private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MatDialog ){
-        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        _translate.setDefaultLang( 'en' );
+    constructor(private _formBuilder: FormBuilder,
+        private _translate: TranslateService,
+        public _dialogRef: MatDialogRef<any>,
+        public snackBar: MatSnackBar,
+        private _ngZone: NgZone,
+        private _userLanguageService: UserLanguageService,
+        protected _mdDialog: MatDialog) {
+        _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        _translate.setDefaultLang('en');
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
@@ -58,31 +58,31 @@ export class CategoriesEditComponent implements OnInit {
     /**
      * Implements ngOnInit function
      */
-    ngOnInit(){
+    ngOnInit() {
         //this.removeSubscriptions();
         this._editForm = this._formBuilder.group({
-            editId: [ this._categoryToEdit._id ],
-            editName: [ this._categoryToEdit.name, Validators.required ],
-            editIsActive: [ this._categoryToEdit.is_active ],
-            editSection: [ this._categoryToEdit.section ]
+            editId: [this._categoryToEdit._id],
+            editName: [this._categoryToEdit.name, Validators.required],
+            editIsActive: [this._categoryToEdit.is_active],
+            editSection: [this._categoryToEdit.section]
         });
         this._categorySection = this._categoryToEdit.section;
-        this._categories = Categories.find( { } ).zone();
-        this._sections = Sections.find( { } ).zone();
+        this._categories = Categories.find({}).zone();
+        this._sections = Sections.find({}).zone();
     }
 
     /**
      * Function to edit Category
      */
-    editCategory():void{
-        if( !Meteor.userId() ){
-            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+    editCategory(): void {
+        if (!Meteor.userId()) {
+            var error: string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
 
-        if( this._editForm.valid ){
-            Categories.update( this._editForm.value.editId,{
+        if (this._editForm.valid) {
+            Categories.update(this._editForm.value.editId, {
                 $set: {
                     modification_user: this._user,
                     modification_date: new Date(),
@@ -92,8 +92,8 @@ export class CategoriesEditComponent implements OnInit {
                 }
             });
 
-            let _lMessage:string = this.itemNameTraduction( 'CATEGORIES.CATEGORY_EDITED' );
-            this.snackBar.open( _lMessage, '',{
+            let _lMessage: string = this.itemNameTraduction('CATEGORIES.CATEGORY_EDITED');
+            this.snackBar.open(_lMessage, '', {
                 duration: 2500
             });
         }
@@ -103,18 +103,18 @@ export class CategoriesEditComponent implements OnInit {
     /**
      * This function set section value in the form when the value select change
      */
-    changeSectionEdit( _section ):void{
-        this._editForm.controls['editSection'].setValue( _section );
+    changeSectionEdit(_section): void {
+        this._editForm.controls['editSection'].setValue(_section);
     }
 
     /**
      * Return traduction
      * @param {string} itemName 
      */
-    itemNameTraduction(itemName: string): string{
+    itemNameTraduction(itemName: string): string {
         var wordTraduced: string;
         this._translate.get(itemName).subscribe((res: string) => {
-            wordTraduced = res; 
+            wordTraduced = res;
         });
         return wordTraduced;
     }
@@ -129,7 +129,7 @@ export class CategoriesEditComponent implements OnInit {
     * @param {boolean} showBtnCancel
     */
     openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
-        
+
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {

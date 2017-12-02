@@ -13,7 +13,7 @@ import { Categories } from '../../../../../../../both/collections/administration
 import { Subcategory } from '../../../../../../../both/models/administration/subcategory.model';
 import { Subcategories } from '../../../../../../../both/collections/administration/subcategory.collection';
 import { Item } from '../../../../../../../both/models/administration/item.model';
-import { Items, ItemImages, ItemImagesThumbs } from '../../../../../../../both/collections/administration/item.collection';
+import { Items } from '../../../../../../../both/collections/administration/item.collection';
 import { OrderMenu } from '../order-navigation/order-menu';
 import { OrderNavigationService } from '../order-navigation/order-navigation.service';
 import { GarnishFood } from '../../../../../../../both/models/administration/garnish-food.model';
@@ -50,9 +50,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     private _garnishFoodSub: Subscription;
     private _additionsSub: Subscription;
     private _ordersSub: Subscription;
-    private _itemImagesSub: Subscription;
     private _currenciesSub: Subscription;
-    private _itemImagesThumbSub: Subscription;
 
     private _sections: Observable<Section[]>;
     private _categories: Observable<Category[]>;
@@ -123,8 +121,6 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
                 this._items = Items.find({}).zone();
             });
         });
-        this._itemImagesSub = MeteorObservable.subscribe('itemImagesByRestaurant', this.restaurantId).subscribe();
-        this._itemImagesThumbSub = MeteorObservable.subscribe('itemImageThumbsByRestaurant', this.restaurantId).subscribe();
         this._ordersSub = MeteorObservable.subscribe('getOrders', this.restaurantId, this.tableQRCode, ['ORDER_STATUS.REGISTERED']).subscribe(() => { });
         this._garnishFoodSub = MeteorObservable.subscribe('garnishFoodByRestaurant', this.restaurantId).subscribe(() => {
             this._ngZone.run(() => {
@@ -183,9 +179,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         if (this._garnishFoodSub) { this._garnishFoodSub.unsubscribe(); }
         if (this._additionsSub) { this._additionsSub.unsubscribe(); }
         if (this._ordersSub) { this._ordersSub.unsubscribe(); }
-        if (this._itemImagesSub) { this._itemImagesSub.unsubscribe(); }
         if (this._currenciesSub) { this._currenciesSub.unsubscribe(); }
-        if (this._itemImagesThumbSub) { this._itemImagesThumbSub.unsubscribe(); }
     }
 
     /**
@@ -297,22 +291,6 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      */
     getItemPrice(_pItem: Item): number {
         return _pItem.restaurants.filter(r => r.restaurantId === this.restaurantId)[0].price;
-    }
-
-    /**
-     * Return item image
-     * @param {string} _itemId
-     */
-    getItemImage(_itemId: string): string {
-        return ItemImages.getItemImageUrl(_itemId);
-    }
-
-    /**
-     * Return item thumb image
-     * @param {string} _itemId
-     */
-    getItemThumbImage(_itemId: string): string {
-        return ItemImagesThumbs.getItemImageThumbUrl(_itemId);
     }
 
     /**
