@@ -11,13 +11,12 @@ import { City } from '../../../../../../both/models/settings/city.model';
 import { Cities } from '../../../../../../both/collections/settings/city.collection';
 import { Language } from '../../../../../../both/models/settings/language.model';
 import { Languages } from '../../../../../../both/collections/settings/language.collection';
-import { Users, UserImages } from '../../../../../../both/collections/auth/user.collection';
+import { Users } from '../../../../../../both/collections/auth/user.collection';
 import { User } from '../../../../../../both/models/auth/user.model';
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
-import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
+import { UserDetail, UserDetailImage } from '../../../../../../both/models/auth/user-detail.model';
 import { ChangeEmailWebComponent } from './modal-dialog/change-email.web.component';
 import { ChangePasswordWebComponent } from '../../../web/customer/settings/modal-dialog/change-password.web.component';
-import { UserProfileImage } from '../../../../../../both/models/auth/user-profile.model';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 import { ImageService } from '../../../shared/services/image.service';
 
@@ -58,11 +57,8 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
     private _showOtherCity: boolean = false;
     private _validateChangeEmail: boolean = true;
     private _validateChangePass: boolean = true;
-    private _createImage: boolean = false;
     private _loading: boolean = false;
-
-    private _filesToUpload: Array<File>;
-    private _itemImageToInsert: File;
+    private _itemImageToInsert: UserDetailImage;
 
     /**
      * SettingsWebComponent Constructor
@@ -210,9 +206,14 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
         if (this._user && this._user.services.facebook) {
             return "http://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
         } else {
-            let _lUserImage: UserProfileImage = UserImages.findOne({ userId: Meteor.userId() });
-            if (_lUserImage) {
-                return _lUserImage.url;
+            let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+            if (_lUserDetail) {
+                let _lUserDetailImage: UserDetailImage = _lUserDetail.image;
+                if (_lUserDetailImage) {
+                    return _lUserDetailImage.url;
+                } else {
+                    return '/images/user_default_image.png';
+                }
             }
             else {
                 return '/images/user_default_image.png';
@@ -306,27 +307,29 @@ export class SettingsWebComponent implements OnInit, OnDestroy {
 
     /**
      * When user wants add image, this function allow insert the image in the store
-     * @param {any} _fileInput
      */
-    onChangeImage(_fileInput: any): void {
-        this._loading = true;
-        setTimeout(() => {
-            this._createImage = true;
-            this._filesToUpload = <Array<File>>_fileInput.target.files;
-            this._itemImageToInsert = this._filesToUpload[0];
-
-            let _lUserImage: UserProfileImage = UserImages.findOne({ userId: Meteor.userId() });
-            if (_lUserImage) {
-                UserImages.remove({ _id: _lUserImage._id });
-            }
-            this._imageService.uploadUserImage(this._itemImageToInsert, Meteor.userId()).then((result) => {
-                this._createImage = false;
-            }).catch((err) => {
-                var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
-                this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
-            });
+    changeImage(): void {
+        this._imageService.client.pick(this._imageService.pickOptions).then((res) => {
+            this._itemImageToInsert = res.filesUploaded[0];
+            this._loading = true;
+            setTimeout(() => {
+                /*let _lUserImage: UserDetailImage = UserDetails.findOne({ userId: Meteor.userId() }).image;
+                if (_lUserImage) {
+                    this._imageService.client.remove(_lUserImage.handle).then((res) => {
+                        console.log(res);
+                    }).catch((err) => {
+                        var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
+                        this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                    });
+                }*/
+                UserDetails.update({ _id: this._userDetail._id }, { $set: { image: this._itemImageToInsert } });
+                this._loading = false;
+            }, 2000);
+        }).catch((err) => {
             this._loading = false;
-        }, 3000);
+            var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+        });
     }
 
     /** 

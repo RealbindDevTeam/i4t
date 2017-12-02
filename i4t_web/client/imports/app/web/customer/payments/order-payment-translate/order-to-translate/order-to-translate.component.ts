@@ -7,8 +7,8 @@ import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../../shared/services/user-language.service';
 import { Order, OrderTranslateInfo } from '../../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../../both/collections/restaurant/order.collection';
-import { Item, ItemImage, ItemImageThumb } from '../../../../../../../../both/models/administration/item.model';
-import { Items, ItemImages, ItemImagesThumbs } from '../../../../../../../../both/collections/administration/item.collection';
+import { Item, ItemImage } from '../../../../../../../../both/models/administration/item.model';
+import { Items } from '../../../../../../../../both/collections/administration/item.collection';
 import { Currency } from '../../../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../../../both/collections/general/currency.collection';
 import { Addition } from '../../../../../../../../both/models/administration/addition.model';
@@ -18,31 +18,30 @@ import { AlertConfirmComponent } from '../../../../../web/general/alert-confirm/
 @Component({
     selector: 'order-to-translate',
     templateUrl: './order-to-translate.component.html',
-    styleUrls: [ './order-to-translate.component.scss' ],
-    providers: [ UserLanguageService ]
+    styleUrls: ['./order-to-translate.component.scss'],
+    providers: [UserLanguageService]
 })
 export class OrderToTranslateComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    public _restaurantId                : string;
-    public _tableId                     : string;
-    public _currencyId                  : string;
+    public _restaurantId: string;
+    public _tableId: string;
+    public _currencyId: string;
 
-    private _ordersSub                  : Subscription;
-    private _itemsSub                   : Subscription;
-    private _itemImageThumbsSub         : Subscription;
-    private _currencySub                : Subscription;
-    private _additionsSub               : Subscription;
-    private _mdDialogRef                : MatDialogRef<any>;
+    private _ordersSub: Subscription;
+    private _itemsSub: Subscription;
+    private _currencySub: Subscription;
+    private _additionsSub: Subscription;
+    private _mdDialogRef: MatDialogRef<any>;
 
-    private _ordersTable                : Observable<Order[]>;
-    private _items                      : Observable<Item[]>;
-    private _additions                  : Observable<Addition[]>;
-    
-    private _orderOthersIndex           : number = -1;
-    private _currencyCode               : string;
-    private titleMsg                    : string;
-    private btnAcceptLbl                : string;
+    private _ordersTable: Observable<Order[]>;
+    private _items: Observable<Item[]>;
+    private _additions: Observable<Addition[]>;
+
+    private _orderOthersIndex: number = -1;
+    private _currencyCode: string;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
 
     /**
      * OrderToTranslateComponent constructor
@@ -51,13 +50,13 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
      * @param {NgZone} _ngZone
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor( private _translate: TranslateService, 
-                 public _dialogRef: MatDialogRef<any>, 
-                 private _ngZone: NgZone,
-                 private _userLanguageService: UserLanguageService,
-                 protected _mdDialog: MatDialog ){
-        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        _translate.setDefaultLang( 'en' ); 
+    constructor(private _translate: TranslateService,
+        public _dialogRef: MatDialogRef<any>,
+        private _ngZone: NgZone,
+        private _userLanguageService: UserLanguageService,
+        protected _mdDialog: MatDialog) {
+        _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        _translate.setDefaultLang('en');
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';
     }
@@ -65,29 +64,30 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
     /**
      * ngOnInit Implementation
      */
-    ngOnInit(){
+    ngOnInit() {
         this.removeSubscriptions();
-        this._ordersSub = MeteorObservable.subscribe( 'getOrdersByTableId', this._restaurantId, this._tableId,[ 'ORDER_STATUS.DELIVERED' ] ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._ordersTable = Orders.find( { creation_user: { $not: this._user }, status: 'ORDER_STATUS.DELIVERED', 'translateInfo.lastOrderOwner': '',
-                                                   'translateInfo.markedToTranslate': false, 'translateInfo.confirmedToTranslate': false, toPay : false } ).zone();
+        this._ordersSub = MeteorObservable.subscribe('getOrdersByTableId', this._restaurantId, this._tableId, ['ORDER_STATUS.DELIVERED']).subscribe(() => {
+            this._ngZone.run(() => {
+                this._ordersTable = Orders.find({
+                    creation_user: { $not: this._user }, status: 'ORDER_STATUS.DELIVERED', 'translateInfo.lastOrderOwner': '',
+                    'translateInfo.markedToTranslate': false, 'translateInfo.confirmedToTranslate': false, toPay: false
+                }).zone();
             });
         });
-        this._itemsSub = MeteorObservable.subscribe( 'itemsByRestaurant', this._restaurantId ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._items = Items.find( { } ).zone();
+        this._itemsSub = MeteorObservable.subscribe('itemsByRestaurant', this._restaurantId).subscribe(() => {
+            this._ngZone.run(() => {
+                this._items = Items.find({}).zone();
             });
         });
-        this._itemImageThumbsSub = MeteorObservable.subscribe( 'itemImageThumbsByRestaurant', this._restaurantId ).subscribe();
-        this._currencySub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantsId', [ this._restaurantId ] ).subscribe( () => {
-            this._ngZone.run( () => {
-                let _lCurrency: Currency = Currencies.findOne( { _id: this._currencyId } );
+        this._currencySub = MeteorObservable.subscribe('getCurrenciesByRestaurantsId', [this._restaurantId]).subscribe(() => {
+            this._ngZone.run(() => {
+                let _lCurrency: Currency = Currencies.findOne({ _id: this._currencyId });
                 this._currencyCode = _lCurrency.code;
             });
         });
-        this._additionsSub = MeteorObservable.subscribe( 'additionsByRestaurant', this._restaurantId ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._additions = Additions.find( { } ).zone();
+        this._additionsSub = MeteorObservable.subscribe('additionsByRestaurant', this._restaurantId).subscribe(() => {
+            this._ngZone.run(() => {
+                this._additions = Additions.find({}).zone();
             });
         });
     }
@@ -95,25 +95,11 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
-        if( this._itemsSub ){ this._itemsSub.unsubscribe(); }
-        if( this._itemImageThumbsSub ){ this._itemImageThumbsSub.unsubscribe(); }
-        if( this._currencySub ){ this._currencySub.unsubscribe(); }
-        if( this._additionsSub ){ this._additionsSub.unsubscribe(); }
-    }
-
-    /**
-     * Get Item Image
-     * @param {string} _pItemId
-     */
-    getItemImage( _pItemId: string ):string{
-        let _lItemImage: ItemImageThumb = ItemImagesThumbs.findOne( { itemId: _pItemId } );
-        if( _lItemImage ){
-            return _lItemImage.url;
-        } else{
-            return '/images/default-plate.png';
-        }
+    removeSubscriptions(): void {
+        if (this._ordersSub) { this._ordersSub.unsubscribe(); }
+        if (this._itemsSub) { this._itemsSub.unsubscribe(); }
+        if (this._currencySub) { this._currencySub.unsubscribe(); }
+        if (this._additionsSub) { this._additionsSub.unsubscribe(); }
     }
 
     /**
@@ -121,8 +107,8 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
      * @param {Order} _pOrder 
      * @param {number} _pIndex
      */
-    showOthersOrderDetail( _pOrder: Order, _pIndex:number ):void{
-        if ( this._orderOthersIndex == _pIndex ) {
+    showOthersOrderDetail(_pOrder: Order, _pIndex: number): void {
+        if (this._orderOthersIndex == _pIndex) {
             this._orderOthersIndex = -1;
         } else {
             this._orderOthersIndex = _pIndex;
@@ -132,7 +118,7 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
     /**
      * 
      */
-    close():void{
+    close(): void {
         this._dialogRef.close();
     }
 
@@ -140,39 +126,41 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
      * Mark order to confirm if is accepted to translate payment
      * @param {Order} _pOrder
      */
-    markOrderToPay( _pOrder: Order ):void{
-        if( !Meteor.userId() ){
-            var error : string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
+    markOrderToPay(_pOrder: Order): void {
+        if (!Meteor.userId()) {
+            var error: string = 'LOGIN_SYSTEM_OPERATIONS_MSG';
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             return;
         }
-        
-        let _lMessagePay:string = this.itemNameTraduction( 'ORDER_TRANS.ORDER_PAY' );
-        let _lMessageUser: string = this.itemNameTraduction( 'ORDER_TRANS.USER_CONFIRM' );
-        let _lMessageNoPay: string = this.itemNameTraduction( 'ORDER_TRANS.NO_PAY_POSSIBLE' );
+
+        let _lMessagePay: string = this.itemNameTraduction('ORDER_TRANS.ORDER_PAY');
+        let _lMessageUser: string = this.itemNameTraduction('ORDER_TRANS.USER_CONFIRM');
+        let _lMessageNoPay: string = this.itemNameTraduction('ORDER_TRANS.NO_PAY_POSSIBLE');
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
-                title: this.itemNameTraduction( 'ORDER_TRANS.PAY_ORDER_DLG' ),
+                title: this.itemNameTraduction('ORDER_TRANS.PAY_ORDER_DLG'),
                 subtitle: '',
-                content:_lMessagePay + _pOrder.code + '?',
-                buttonCancel: this.itemNameTraduction( 'NO' ),
-                buttonAccept: this.itemNameTraduction( 'YES' ),
+                content: _lMessagePay + _pOrder.code + '?',
+                buttonCancel: this.itemNameTraduction('NO'),
+                buttonAccept: this.itemNameTraduction('YES'),
                 showCancel: true
             }
         });
         this._mdDialogRef.afterClosed().subscribe(result => {
             this._mdDialogRef = result;
-            if ( result.success ){
-                if( _pOrder.status === 'ORDER_STATUS.DELIVERED' ){
+            if (result.success) {
+                if (_pOrder.status === 'ORDER_STATUS.DELIVERED') {
                     let _lOrderTranslate: OrderTranslateInfo = { firstOrderOwner: _pOrder.creation_user, markedToTranslate: true, lastOrderOwner: this._user, confirmedToTranslate: false };
-                    Orders.update( { _id: _pOrder._id }, { $set: { status: 'ORDER_STATUS.PENDING_CONFIRM', modification_user: this._user,
-                                                                   modification_date: new Date(), translateInfo: _lOrderTranslate 
-                                                                 } 
-                                                         } 
-                                 );
+                    Orders.update({ _id: _pOrder._id }, {
+                        $set: {
+                            status: 'ORDER_STATUS.PENDING_CONFIRM', modification_user: this._user,
+                            modification_date: new Date(), translateInfo: _lOrderTranslate
+                        }
+                    }
+                    );
                     this.openDialog(this.titleMsg, '', _lMessageUser, '', this.btnAcceptLbl, false);
-                }else {
+                } else {
                     this.openDialog(this.titleMsg, '', _lMessageNoPay, '', this.btnAcceptLbl, false);
                 }
                 this.close();
@@ -184,10 +172,10 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
      * Return traduction
      * @param {string} itemName 
      */
-    itemNameTraduction(itemName: string): string{
+    itemNameTraduction(itemName: string): string {
         var wordTraduced: string;
         this._translate.get(itemName).subscribe((res: string) => {
-            wordTraduced = res; 
+            wordTraduced = res;
         });
         return wordTraduced;
     }
@@ -202,7 +190,7 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
     * @param {boolean} showBtnCancel
     */
     openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
-        
+
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {
@@ -225,7 +213,7 @@ export class OrderToTranslateComponent implements OnInit, OnDestroy {
     /**
      * ngOnDestroy Implementation
      */
-    ngOnDestroy(){
-        this.removeSubscriptions();   
+    ngOnDestroy() {
+        this.removeSubscriptions();
     }
 }

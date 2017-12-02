@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
 import { Restaurants, RestaurantsLegality } from '../../../../../../../both/collections/restaurant/restaurant.collection';
-import { Restaurant, RestaurantLegality } from '../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurant, RestaurantLegality, RestaurantImage } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Currency } from '../../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
 import { PaymentMethod } from '../../../../../../../both/models/general/paymentMethod.model';
@@ -43,14 +43,12 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _countriesSub: Subscription;
     private _citiesSub: Subscription;
     private _paymentMethodsSub: Subscription;
-    private _restaurantImagesSub: Subscription;
 
     private _countries: Observable<Country[]>;
     private _cities: Observable<City[]>;
     private _paymentMethods: Observable<PaymentMethod[]>;
 
-    private _filesToUpload: Array<File>;
-    private _restaurantImageToInsert: File;
+    private _restaurantImageToInsert: RestaurantImage;
     private _createImage: boolean;
     private _nameImageFile: string;
     public _selectedIndex: number = 0;
@@ -94,12 +92,13 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         private _userLanguageService: UserLanguageService,
         private _imageService: ImageService,
         private _snackBar: MatSnackBar) {
-        _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        let _lng: string = this._userLanguageService.getLanguage(Meteor.user());
+        _translate.use(_lng);
         _translate.setDefaultLang('en');
+        this._imageService.setPickOptionsLang(_lng);
         this._selectedCountryValue = "";
         this._selectedCityValue = "";
         this._nameImageFile = "";
-        this._filesToUpload = [];
         this._createImage = false;
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';
@@ -136,7 +135,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
             });
         });
         this._citiesSub = MeteorObservable.subscribe('cities').subscribe();
-        this._restaurantImagesSub = MeteorObservable.subscribe('restaurantImages', this._user).subscribe();
         this._currencySub = MeteorObservable.subscribe('currencies').subscribe();
         this._currentDate = new Date();
         this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
@@ -152,7 +150,6 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
         if (this._countriesSub) { this._countriesSub.unsubscribe(); }
         if (this._citiesSub) { this._citiesSub.unsubscribe(); }
-        if (this._restaurantImagesSub) { this._restaurantImagesSub.unsubscribe(); }
         if (this._currencySub) { this._currencySub.unsubscribe(); }
         if (this._paymentMethodsSub) { this._paymentMethodsSub.unsubscribe(); }
     }
@@ -285,27 +282,17 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                 this._loading = true;
                 setTimeout(() => {
                     this.createNewRestaurant().then((restaurant_id) => {
-                        if (this._createImage) {
-                            this._imageService.uploadRestaurantImage(this._restaurantImageToInsert,
-                                this._user,
-                                restaurant_id).then((result) => { }).catch((err) => {
-                                    this._loading = false;
-                                    this._router.navigate(['app/restaurant']);
-                                    var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
-                                    this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
-                                });
-                        }
                         this._loading = false;
+                        let _lMessage: string = this.itemNameTraduction('RESTAURANT_REGISTER.RESTAURANT_CREATED');
+                        this._snackBar.open(_lMessage, '', { duration: 2500 });
                         this._router.navigate(['app/restaurant']);
-                        let _lMessage: string = this.itemNameTraduction( 'RESTAURANT_REGISTER.RESTAURANT_CREATED' );
-                        this._snackBar.open( _lMessage, '', { duration: 2500 } );
                     }).catch((err) => {
                         this._loading = false;
-                        this._router.navigate(['app/restaurant']);
                         var error: string = this.itemNameTraduction('RESTAURANT_REGISTER.CREATION_ERROR');
                         this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                        this._router.navigate(['app/restaurant']);
                     });
-                }, 3500);
+                }, 2500);
             }
         });
     }
@@ -316,6 +303,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     createNewRestaurant(): Promise<string> {
         let cityIdAux: string;
         let cityAux: string;
+        let _lNewRestaurant: string;
 
         return new Promise((resolve, reject) => {
             try {
@@ -336,30 +324,58 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                     cityAux = '';
                 }
 
-                let _lNewRestaurant = Restaurants.collection.insert({
-                    creation_user: this._user,
-                    creation_date: new Date(),
-                    modification_user: '-',
-                    modification_date: new Date(),
-                    countryId: this._restaurantForm.value.country,
-                    cityId: cityIdAux,
-                    other_city: cityAux,
-                    name: this._restaurantForm.value.name,
-                    currencyId: this._restaurantCurrencyId,
-                    address: this._restaurantForm.value.address,
-                    indicative: this._countryIndicative,
-                    phone: this._restaurantForm.value.phone,
-                    restaurant_code: this.generateRestaurantCode(),
-                    paymentMethods: _lPaymentMethodsToInsert,
-                    tip_percentage: this._tipValue,
-                    tables_quantity: 0,
-                    orderNumberCount: 0,
-                    max_jobs: 5,
-                    queue: this._queues,
-                    isActive: true,
-                    firstPay: true,
-                    freeDays: true
-                });
+                if (this._createImage) {
+                    _lNewRestaurant = Restaurants.collection.insert({
+                        creation_user: this._user,
+                        creation_date: new Date(),
+                        modification_user: '-',
+                        modification_date: new Date(),
+                        countryId: this._restaurantForm.value.country,
+                        cityId: cityIdAux,
+                        other_city: cityAux,
+                        name: this._restaurantForm.value.name,
+                        currencyId: this._restaurantCurrencyId,
+                        address: this._restaurantForm.value.address,
+                        indicative: this._countryIndicative,
+                        phone: this._restaurantForm.value.phone,
+                        restaurant_code: this.generateRestaurantCode(),
+                        paymentMethods: _lPaymentMethodsToInsert,
+                        tip_percentage: this._tipValue,
+                        image: this._restaurantImageToInsert,
+                        tables_quantity: 0,
+                        orderNumberCount: 0,
+                        max_jobs: 5,
+                        queue: this._queues,
+                        isActive: true,
+                        firstPay: true,
+                        freeDays: true
+                    });
+                } else {
+                    _lNewRestaurant = Restaurants.collection.insert({
+                        creation_user: this._user,
+                        creation_date: new Date(),
+                        modification_user: '-',
+                        modification_date: new Date(),
+                        countryId: this._restaurantForm.value.country,
+                        cityId: cityIdAux,
+                        other_city: cityAux,
+                        name: this._restaurantForm.value.name,
+                        currencyId: this._restaurantCurrencyId,
+                        address: this._restaurantForm.value.address,
+                        indicative: this._countryIndicative,
+                        phone: this._restaurantForm.value.phone,
+                        restaurant_code: this.generateRestaurantCode(),
+                        paymentMethods: _lPaymentMethodsToInsert,
+                        tip_percentage: this._tipValue,
+                        tables_quantity: 0,
+                        orderNumberCount: 0,
+                        max_jobs: 5,
+                        queue: this._queues,
+                        isActive: true,
+                        firstPay: true,
+                        freeDays: true
+                    });
+                }
 
                 this._restaurantLegality.restaurant_id = _lNewRestaurant;
                 RestaurantsLegality.insert(this._restaurantLegality);
@@ -490,14 +506,18 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * When user change Image, this function allow insert in the store
-     * @param {any} _fileInput
+     * Function to insert new image
      */
-    onChangeImage(_fileInput: any): void {
-        this._createImage = true;
-        this._filesToUpload = <Array<File>>_fileInput.target.files;
-        this._restaurantImageToInsert = this._filesToUpload[0];
-        this._nameImageFile = this._restaurantImageToInsert.name;
+    changeImage(): void {
+        this._imageService.client.pick(this._imageService.pickOptions).then((res) => {
+            let _imageToUpload: any = res.filesUploaded[0];
+            this._nameImageFile = _imageToUpload.filename;
+            this._restaurantImageToInsert = _imageToUpload;
+            this._createImage = true;
+        }).catch((err) => {
+            var error: string = this.itemNameTraduction('UPLOAD_IMG_ERROR');
+            this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+        });
     }
 
     /**

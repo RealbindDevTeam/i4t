@@ -16,6 +16,7 @@ export interface Restaurant extends CollectionObject {
     paymentMethods: string[];
     tip_percentage: number;
     tables_quantity: number;
+    image?: RestaurantImage;
     orderNumberCount: number;
     max_jobs?: number;
     queue: string[];
@@ -30,27 +31,18 @@ export interface Restaurant extends CollectionObject {
  */
 export interface RestaurantImage {
     _id?: string;
-    complete: boolean;
-    extension: string;
-    name: string;
-    progress: number;
-    size: number;
-    store: string;
-    token: string;
-    type: string;
-    uploadedAt: Date;
-    uploading: boolean;
+    filename: string;
+    handle: string;
+    mimetype: string;
+    originalPath: string;
+    size: string;
+    source: string;
     url: string;
-    userId: string;
-    restaurantId: string;
-}
-
-/**
- * Restaurant Image Thumbs model
- */
-export interface RestaurantImageThumb extends RestaurantImage {
-    originalStore?: string;
-    originalId?: string;
+    originalFile?: Object;
+    status?: string;
+    key?: string;
+    container?: string;
+    uploadId: string;
 }
 
 /**
@@ -175,6 +167,7 @@ export interface RestaurantProfile extends CollectionObject {
     phone?: string;
     email?: string;
     social_networks?: RestaurantSocialNetwork;
+    images?:RestaurantProfileImage[];
     schedule: RestaurantSchedule;
     location: RestaurantLocation;
 }
@@ -184,25 +177,16 @@ export interface RestaurantProfile extends CollectionObject {
  */
 export interface RestaurantProfileImage {
     _id?: string;
-    complete: boolean;
-    extension: string;
-    name: string;
-    progress: number;
-    size: number;
-    store: string;
-    token: string;
-    type: string;
-    uploadedAt: Date;
-    uploading: boolean;
+    filename: string;
+    handle: string;
+    mimetype: string;
+    originalPath: string;
+    size: string;
+    source: string;
     url: string;
-    userId: string;
-    restaurantId: string;
-}
-
-/**
- * RestaurantProfile Image Thumbs model
- */
-export interface RestaurantProfileImageThumb extends RestaurantImage {
-    originalStore?: string;
-    originalId?: string;
+    originalFile?: Object;
+    status?: string;
+    key?: string;
+    container?: string;
+    uploadId: string;
 }

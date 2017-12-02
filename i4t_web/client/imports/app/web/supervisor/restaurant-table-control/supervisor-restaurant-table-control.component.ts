@@ -15,28 +15,28 @@ import { Account } from '../../../../../../both/models/restaurant/account.model'
 import { Accounts } from '../../../../../../both/collections/restaurant/account.collection';
 import { Currency } from '../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../both/collections/general/currency.collection';
-import { Users} from '../../../../../../both/collections/auth/user.collection';
+import { Users } from '../../../../../../both/collections/auth/user.collection';
 
 @Component({
     selector: 'supervisor-restaurant-table-control',
     templateUrl: './supervisor-restaurant-table-control.component.html',
-    styleUrls: [ './supervisor-restaurant-table-control.component.scss' ]
+    styleUrls: ['./supervisor-restaurant-table-control.component.scss']
 })
 export class SupervisorRestaurantTableControlComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
 
-    private _restaurantsSub         : Subscription;
-    private _tablesSub              : Subscription;
-    private _userDetailsSub         : Subscription;
-    private _accountsSub            : Subscription;
-    private _ordersSub              : Subscription;
-    private _currenciesSub          : Subscription;
+    private _restaurantsSub: Subscription;
+    private _tablesSub: Subscription;
+    private _userDetailsSub: Subscription;
+    private _accountsSub: Subscription;
+    private _ordersSub: Subscription;
+    private _currenciesSub: Subscription;
 
-    private _restaurants            : Observable<Restaurant[]>;
-    private _tables                 : Observable<Table[]>;
+    private _restaurants: Observable<Restaurant[]>;
+    private _tables: Observable<Table[]>;
 
-    private _thereAreRestaurants    : boolean = true;
+    private _thereAreRestaurants: boolean = true;
 
     /**
      * RestaurantTableControlComponent Constructor
@@ -45,58 +45,58 @@ export class SupervisorRestaurantTableControlComponent implements OnInit, OnDest
      * @param {NgZone} _ngZone 
      * @param {UserLanguageService} _userLanguageService 
      */
-    constructor( private _router: Router,
-                 private _translate: TranslateService,
-                 private _ngZone: NgZone,
-                 private _userLanguageService: UserLanguageService ){
-        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        _translate.setDefaultLang( 'en' );
+    constructor(private _router: Router,
+        private _translate: TranslateService,
+        private _ngZone: NgZone,
+        private _userLanguageService: UserLanguageService) {
+        _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        _translate.setDefaultLang('en');
     }
 
     /**
      * ngOnInit Implementation
      */
-    ngOnInit(){
+    ngOnInit() {
         this.removeSubscriptions();
-        this._restaurantsSub = MeteorObservable.subscribe( 'getRestaurantByRestaurantWork', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._restaurants = Restaurants.find( { } ).zone();
+        this._restaurantsSub = MeteorObservable.subscribe('getRestaurantByRestaurantWork', this._user).subscribe(() => {
+            this._ngZone.run(() => {
+                this._restaurants = Restaurants.find({}).zone();
                 this.countRestaurants();
-                this._restaurants.subscribe( () => { this.countRestaurants(); });
+                this._restaurants.subscribe(() => { this.countRestaurants(); });
             });
         });
-        this._tablesSub = MeteorObservable.subscribe( 'getTablesByRestaurantWork', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._tables = Tables.find( { } ).zone();
+        this._tablesSub = MeteorObservable.subscribe('getTablesByRestaurantWork', this._user).subscribe(() => {
+            this._ngZone.run(() => {
+                this._tables = Tables.find({}).zone();
             });
         });
-        this._ordersSub = MeteorObservable.subscribe( 'getOrdersByRestaurantWork', this._user, ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 
-                                                                                                'ORDER_STATUS.PREPARED', 'ORDER_STATUS.DELIVERED',
-                                                                                                'ORDER_STATUS.PENDING_CONFIRM'] ).subscribe();
-        this._accountsSub = MeteorObservable.subscribe( 'getAccountsByRestaurantWork', this._user ).subscribe();
-        this._currenciesSub = MeteorObservable.subscribe( 'getCurrenciesByRestaurantWork', this._user ).subscribe();
-        this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByRestaurantWork', this._user ).subscribe();
+        this._ordersSub = MeteorObservable.subscribe('getOrdersByRestaurantWork', this._user, ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS',
+            'ORDER_STATUS.PREPARED', 'ORDER_STATUS.DELIVERED',
+            'ORDER_STATUS.PENDING_CONFIRM']).subscribe();
+        this._accountsSub = MeteorObservable.subscribe('getAccountsByRestaurantWork', this._user).subscribe();
+        this._currenciesSub = MeteorObservable.subscribe('getCurrenciesByRestaurantWork', this._user).subscribe();
+        this._userDetailsSub = MeteorObservable.subscribe('getUserDetailsByRestaurantWork', this._user).subscribe();
     }
 
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._restaurantsSub ){ this._restaurantsSub.unsubscribe(); }
-        if( this._tablesSub ){ this._tablesSub.unsubscribe(); }
-        if( this._userDetailsSub ){ this._userDetailsSub.unsubscribe(); }
-        if( this._accountsSub ){ this._accountsSub.unsubscribe(); }
-        if( this._ordersSub ){ this._ordersSub.unsubscribe(); }
-        if( this._currenciesSub ){ this._currenciesSub.unsubscribe(); }
+    removeSubscriptions(): void {
+        if ( this._restaurantsSub) {  this._restaurantsSub.unsubscribe(); }
+        if (this._tablesSub) { this._tablesSub.unsubscribe(); }
+        if (this._userDetailsSub) { this._userDetailsSub.unsubscribe(); }
+        if (this._accountsSub) { this._accountsSub.unsubscribe(); }
+        if (this._ordersSub) { this._ordersSub.unsubscribe(); }
+        if (this._currenciesSub) { this._currenciesSub.unsubscribe(); }
     }
 
     /**
      * Return restaurant currency
      * @param {string} _pRestaurantCurrency 
      */
-    getRestaurantCurrency( _pRestaurantCurrency:string ):string{
-        let _lCurrency:Currency = Currencies.findOne( { _id: _pRestaurantCurrency } );
-        if( _lCurrency ){
+    getRestaurantCurrency(_pRestaurantCurrency: string): string {
+        let _lCurrency: Currency = Currencies.findOne({ _id: _pRestaurantCurrency });
+        if (_lCurrency) {
             return _lCurrency.code;
         }
     }
@@ -113,9 +113,9 @@ export class SupervisorRestaurantTableControlComponent implements OnInit, OnDest
      * @param {string} _pRestaurantId
      * @param {string} _pTableId 
      */
-    getPaymentAccount( _pRestaurantId:string, _pTableId:string ):number{
-        let _lAccount:Account = Accounts.findOne( { restaurantId: _pRestaurantId, tableId: _pTableId } );
-        if( _lAccount ){
+    getPaymentAccount(_pRestaurantId: string, _pTableId: string): number {
+        let _lAccount: Account = Accounts.findOne({ restaurantId: _pRestaurantId, tableId: _pTableId });
+        if (_lAccount) {
             return _lAccount.total_payment;
         }
     }
@@ -125,16 +125,16 @@ export class SupervisorRestaurantTableControlComponent implements OnInit, OnDest
      * @param {string} _pRestaurantId 
      * @param {string} _pTableId 
      */
-    getTableOrders( _pRestaurantId:string, _pTableId:string ):number{
-        return Orders.collection.find( { restaurantId: _pRestaurantId, tableId: _pTableId } ).count();
+    getTableOrders(_pRestaurantId: string, _pTableId: string): number {
+        return Orders.collection.find({ restaurantId: _pRestaurantId, tableId: _pTableId }).count();
     }
 
     /**
      * Get Users in restaurant
      * @param {string} _pRestaurantId
      */
-    getRestaurantUsers( _pRestaurantId:string ):number{
-        return UserDetails.collection.find( { current_restaurant: _pRestaurantId } ).count();
+    getRestaurantUsers(_pRestaurantId: string): number {
+        return UserDetails.collection.find({ current_restaurant: _pRestaurantId }).count();
     }
 
     /**
@@ -144,14 +144,14 @@ export class SupervisorRestaurantTableControlComponent implements OnInit, OnDest
      * @param {string} _pTableNumber
      * @param {string} _pCurrencyId
      */
-    openTableDetail( _pRestaurantId:string, _pTableId:string, _pTableNumber:string, _pCurrencyId:string ) {
-        this._router.navigate( [ 'app/table-detail', _pRestaurantId, _pTableId, _pTableNumber, _pCurrencyId, '600' ], { skipLocationChange: true } );
+    openTableDetail(_pRestaurantId: string, _pTableId: string, _pTableNumber: string, _pCurrencyId: string) {
+        this._router.navigate(['app/table-detail', _pRestaurantId, _pTableId, _pTableNumber, _pCurrencyId, '600'], { skipLocationChange: true });
     }
 
     /**
      * ngOnDestroy Implementation
      */
-    ngOnDestroy(){
+    ngOnDestroy() {
         this.removeSubscriptions();
     }
 }

@@ -6,7 +6,6 @@
       "emitDecoratorMetadata": true,
       "importHelpers": true,
       "experimentalDecorators": true,
-      "noUnusedLocals": true,
       "lib": [
         "dom",
         "es2015"
@@ -42,9 +41,5 @@
       "@types/node",
       "@types/prismjs"
     ],
-    "compileOnSave": false,
-    "angularCompilerOptions": {
-      "strictMetadataEmit": true,
-      "skipTemplateCodegen": true
-    }
+    "compileOnSave": false
   }

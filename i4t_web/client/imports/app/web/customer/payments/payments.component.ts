@@ -13,16 +13,16 @@ import { UserDetail } from '../../../../../../both/models/auth/user-detail.model
 @Component({
     selector: 'payments',
     templateUrl: './payments.component.html',
-    styleUrls: [ './payments.component.scss' ]
+    styleUrls: ['./payments.component.scss']
 })
 export class PaymentsComponent implements OnInit, OnDestroy {
 
     private _user = Meteor.userId();
-    private _userDetailsSub         : Subscription;
-    private _restaurantSub          : Subscription;
+    private _userDetailsSub: Subscription;
+    private _restaurantSub: Subscription;
 
-    private _userDetails            : Observable<UserDetail[]>;
-    private _restaurants            : Observable<Restaurant[]>;
+    private _userDetails: Observable<UserDetail[]>;
+    private _restaurants: Observable<Restaurant[]>;
 
     /**
      * PaymentsComponent Constructor
@@ -30,27 +30,27 @@ export class PaymentsComponent implements OnInit, OnDestroy {
      * @param { NgZone } _ngZone 
      * @param {UserLanguageService} _userLanguageService
      */
-    constructor( private _translate: TranslateService, 
-                 private _ngZone: NgZone,
-                 private _router: Router,
-                 private _userLanguageService: UserLanguageService ) {
-        _translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        _translate.setDefaultLang( 'en' );
+    constructor(private _translate: TranslateService,
+        private _ngZone: NgZone,
+        private _router: Router,
+        private _userLanguageService: UserLanguageService) {
+        _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        _translate.setDefaultLang('en');
     }
 
     /**
      * ngOnInit Implementation
      */
-    ngOnInit(){
+    ngOnInit() {
         this.removeSubscriptions();
-        this._userDetailsSub = MeteorObservable.subscribe( 'getUserDetailsByUser', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._userDetails = UserDetails.find( { user_id: this._user } ).zone();
+        this._userDetailsSub = MeteorObservable.subscribe('getUserDetailsByUser', this._user).subscribe(() => {
+            this._ngZone.run(() => {
+                this._userDetails = UserDetails.find({ user_id: this._user }).zone();
             });
         });
-        this._restaurantSub = MeteorObservable.subscribe( 'getRestaurantByCurrentUser', this._user ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._restaurants = Restaurants.find( { } ).zone();
+        this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', this._user).subscribe(() => {
+            this._ngZone.run(() => {
+                this._restaurants = Restaurants.find({}).zone();
             });
         });;
     }
@@ -58,22 +58,22 @@ export class PaymentsComponent implements OnInit, OnDestroy {
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._userDetailsSub ){ this._userDetailsSub.unsubscribe(); }
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
+    removeSubscriptions(): void {
+        if (this._userDetailsSub) { this._userDetailsSub.unsubscribe(); }
+        if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
     }
 
     /**
      * This function allow go to Orders
      */
-    goToOrders(){
+    goToOrders() {
         this._router.navigate(['/app/orders']);
     }
 
     /**
      * ngOnDestroy Implementation
      */
-    ngOnDestroy(){
-        this.removeSubscriptions();   
+    ngOnDestroy() {
+        this.removeSubscriptions();
     }
 }
