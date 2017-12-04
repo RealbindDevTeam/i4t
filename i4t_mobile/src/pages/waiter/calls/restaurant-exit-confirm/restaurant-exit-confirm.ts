@@ -3,13 +3,13 @@ import { LoadingController, NavController, NavParams, ToastController, AlertCont
 import { MeteorObservable } from "meteor-rxjs";
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from "rxjs";
-import { WaiterCallDetail } from 'qmo_web/both/models/restaurant/waiter-call-detail.model';
-import { Orders } from 'qmo_web/both/collections/restaurant/order.collection';
-import { Order } from 'qmo_web/both/models/restaurant/order.model';
-import { Users } from 'qmo_web/both/collections/auth/user.collection';
-import { Tables } from 'qmo_web/both/collections/restaurant/table.collection';
-import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
-import { Table } from 'qmo_web/both/models/restaurant/table.model';
+import { WaiterCallDetail } from 'i4t_web/both/models/restaurant/waiter-call-detail.model';
+import { Orders } from 'i4t_web/both/collections/restaurant/order.collection';
+import { Order } from 'i4t_web/both/models/restaurant/order.model';
+import { Users } from 'i4t_web/both/collections/auth/user.collection';
+import { Tables } from 'i4t_web/both/collections/restaurant/table.collection';
+import { Additions } from 'i4t_web/both/collections/administration/addition.collection';
+import { Table } from 'i4t_web/both/models/restaurant/table.model';
 import { UserLanguageServiceProvider } from '../../../../providers/user-language-service/user-language-service';
 
 @Component({

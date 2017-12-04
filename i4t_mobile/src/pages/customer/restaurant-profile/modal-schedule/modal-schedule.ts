@@ -1,8 +1,8 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
 import { Observable } from 'rxjs';
-import { Restaurant, RestaurantProfile } from 'qmo_web/both/models/restaurant/restaurant.model';
-import { Restaurants, RestaurantsProfile } from 'qmo_web/both/collections/restaurant/restaurant.collection';
+import { Restaurant, RestaurantProfile } from 'i4t_web/both/models/restaurant/restaurant.model';
+import { Restaurants, RestaurantsProfile } from 'i4t_web/both/collections/restaurant/restaurant.collection';
 
 @Component({
   selector: 'modal-schedule',

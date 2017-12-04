@@ -4,9 +4,9 @@ import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { Addition } from 'qmo_web/both/models/administration/addition.model';
-import { Additions } from 'qmo_web/both/collections/administration/addition.collection';
-import { OrderAddition } from 'qmo_web/both/models/restaurant/order.model';
+import { Addition } from 'i4t_web/both/models/administration/addition.model';
+import { Additions } from 'i4t_web/both/collections/administration/addition.collection';
+import { OrderAddition } from 'i4t_web/both/models/restaurant/order.model';
 import { UserLanguageServiceProvider } from '../../../../providers/user-language-service/user-language-service';
 
 @Component({

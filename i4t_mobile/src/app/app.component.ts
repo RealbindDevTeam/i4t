@@ -8,7 +8,7 @@ import { Device } from '@ionic-native/device';
 import { InitialComponent } from '../pages/auth/initial/initial';
 import { HomeMenu } from '../pages/customer/home-menu/home-menu';
 import { Menu } from '../pages/waiter/menu/menu';
-import { UserLogin  } from 'qmo_web/both/models/auth/user-login.model';
+import { UserLogin  } from 'i4t_web/both/models/auth/user-login.model';
 
 @Component({
   templateUrl: 'app.html'

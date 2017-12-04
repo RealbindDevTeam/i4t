@@ -4,14 +4,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams, ModalController, LoadingController, ToastController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Observable, Subscription } from 'rxjs';
-import { Country } from 'qmo_web/both/models/settings/country.model';
-import { Countries } from 'qmo_web/both/collections/settings/country.collection';
-import { City } from 'qmo_web/both/models/settings/city.model';
-import { Cities } from 'qmo_web/both/collections/settings/city.collection';
-import { PaymentMethod } from 'qmo_web/both/models/general/paymentMethod.model';
-import { PaymentMethods } from 'qmo_web/both/collections/general/paymentMethod.collection';
-import { Restaurant, RestaurantProfile, RestaurantImageThumb, RestaurantProfileImage } from 'qmo_web/both/models/restaurant/restaurant.model';
-import { Restaurants, RestaurantsProfile, RestaurantImageThumbs, RestaurantProfileImages } from 'qmo_web/both/collections/restaurant/restaurant.collection';
+import { Country } from 'i4t_web/both/models/settings/country.model';
+import { Countries } from 'i4t_web/both/collections/settings/country.collection';
+import { City } from 'i4t_web/both/models/settings/city.model';
+import { Cities } from 'i4t_web/both/collections/settings/city.collection';
+import { PaymentMethod } from 'i4t_web/both/models/general/paymentMethod.model';
+import { PaymentMethods } from 'i4t_web/both/collections/general/paymentMethod.collection';
+import { Restaurant, RestaurantProfile, RestaurantProfileImage } from 'i4t_web/both/models/restaurant/restaurant.model';
+import { Restaurants, RestaurantsProfile } from 'i4t_web/both/collections/restaurant/restaurant.collection';
 import { ModalSchedule } from './modal-schedule/modal-schedule';
 
 @Component({
@@ -25,20 +25,18 @@ export class RestaurantProfilePage implements OnInit, OnDestroy {
     private _countriesSubscription             : Subscription;
     private _citiesSubscription                : Subscription;
     private _restaurantProfileSubscription     : Subscription;
-    private _restaurantProfileImgsSubscription : Subscription;
     private _paymentMethodsSubscription        : Subscription;
 
     private _restaurantsProfiles               : Observable<RestaurantProfile[]>;
-    private _restaurantProfileImgs             : Observable<RestaurantProfileImage[]>;
     private _paymentMethods                    : Observable<PaymentMethod[]>;
     private _restaurants                       : Observable<Restaurant[]> = null;
-    private _profileImgs                       : RestaurantProfileImage[] =[];
     private _restaurantParam                   : Restaurant = null;
     private _restaurantProfile                 : RestaurantProfile = null;
 
     private _restaurantCountry                 : string;
     private _restaurantCity                    : string;
     private _showDescription                   : boolean = false;
+    private _profileImgs                       : RestaurantProfileImage[] = [];
 
 
     /**
@@ -89,32 +87,9 @@ export class RestaurantProfilePage implements OnInit, OnDestroy {
         this._restaurantProfileSubscription = MeteorObservable.subscribe( 'getRestaurantProfile', this._restaurantParam._id ).subscribe( () => {
             this._ngZone.run( () => {
                 this._restaurantsProfiles = RestaurantsProfile.find( { restaurant_id: this._restaurantParam._id } ).zone();
-                this._restaurantsProfiles.subscribe(() => {
-                    this._restaurantProfile = RestaurantsProfile.findOne({ restaurant_id: this._restaurantParam._id });
-                });
+                this._restaurantProfile = RestaurantsProfile.findOne({ restaurant_id: this._restaurantParam._id });
                 this.loadMap();
             });
-        });
-
-        this._restaurantProfileImgsSubscription = MeteorObservable.subscribe( 'getRestaurantProfileImagesByRestaurantId', this._restaurantParam._id ).subscribe( () => {
-            this._ngZone.run( () => {
-                this._restaurantProfileImgs = RestaurantProfileImages.find( { restaurantId: this._restaurantParam._id } ).zone();
-                this.setRestaurantProfileImageThumbs();
-                this._restaurantProfileImgs.subscribe( () => { 
-                    this.setRestaurantProfileImageThumbs(); 
-                });
-            });
-        });
-    }
-
-    /**
-     * Set restaurant profile thumbs array
-     */
-    setRestaurantProfileImageThumbs():void{
-        RestaurantProfileImages.find( { restaurantId: this._restaurantParam._id } ).fetch().forEach( ( img ) => {
-            if( img ){
-                this._profileImgs.push( img );
-            }
         });
     }
 
@@ -186,7 +161,6 @@ export class RestaurantProfilePage implements OnInit, OnDestroy {
         if(this._countriesSubscription){ this._countriesSubscription };
         if(this._citiesSubscription){ this._citiesSubscription };
         if(this._restaurantProfileSubscription){ this._restaurantProfileSubscription };
-        if(this._restaurantProfileImgsSubscription){ this._restaurantProfileImgsSubscription };
         if(this._paymentMethodsSubscription){ this._paymentMethodsSubscription };
     }
 }

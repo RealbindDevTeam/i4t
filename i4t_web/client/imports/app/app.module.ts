@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSnackBarModule, MatDatepickerModule, MatNativeDateModule, MatDialogModule, MatSidenavModule, MatListModule, MatCardModule, MatButtonModule, MatInputModule, MatSelectModule, MatSlideToggleModule, MatTabsModule, MatCheckboxModule, MatSliderModule, MatProgressSpinnerModule, MatTooltipModule, MatIconModule, MatToolbarModule, MatMenuModule, MatButtonToggleModule, MatRadioModule } from '@angular/material';
+import { MatSnackBarModule, MatDatepickerModule, MatNativeDateModule, MatDialogModule, MatSidenavModule, MatListModule, MatCardModule, MatButtonModule, MatInputModule, MatSelectModule, MatSlideToggleModule, MatTabsModule, MatCheckboxModule, MatSliderModule, MatProgressSpinnerModule, MatTooltipModule, MatIconModule, MatToolbarModule, MatMenuModule, MatButtonToggleModule, MatRadioModule, MatExpansionModule, MatStepperModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { AgmCoreModule } from '@agm/core';
@@ -16,7 +16,6 @@ import { CustomLoader } from './shared/utils/custom-loader';
 import { WEB_DECLARATIONS, MODAL_DIALOG_DECLARATIONS, SERVICES_DECLARATIONS } from './web/index';
 
 import { NavigationModule } from './web/navigation/navigation.module';
-import { PayuPaymenteService } from './web/payment/payu-payment-service/payu-payment.service';
 
 import { RouteGuard } from './web/auth/navigation/route-guard.service';
 import { CustomerGuard } from './web/auth/navigation/customer-guard.service';
@@ -65,6 +64,8 @@ import { CashierGuard } from './web/auth/navigation/cashier-guard.service';
     MatMenuModule,
     MatButtonToggleModule,
     MatRadioModule,
+    MatExpansionModule,
+    MatStepperModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCFXGTI9kCa4U7YyMd2USL9LCV_JlQinyw'
     })
@@ -80,8 +81,7 @@ import { CashierGuard } from './web/auth/navigation/cashier-guard.service';
     WaiterGuard,
     SupervisorGuard,
     ChefGuard,
-    CashierGuard,
-    PayuPaymenteService,
+    CashierGuard
   ],
   bootstrap: [
     AppComponent

@@ -8,12 +8,11 @@ import { Subscription } from 'rxjs';
 import { ChangeEmailPage } from './change-email/change-email';
 import { ChangePasswordPage } from './change-password/change-password';
 
-import { UserProfileImage } from 'qmo_web/both/models/auth/user-profile.model';
-import { Language } from 'qmo_web/both/models/settings/language.model';
-import { Languages } from 'qmo_web/both/collections/settings/language.collection';
-import { Users, UserImages } from 'qmo_web/both/collections/auth/user.collection';
-import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
-import { UserDetail } from 'qmo_web/both/models/auth/user-detail.model';
+import { Language } from 'i4t_web/both/models/settings/language.model';
+import { Languages } from 'i4t_web/both/collections/settings/language.collection';
+import { Users } from 'i4t_web/both/collections/auth/user.collection';
+import { UserDetails } from 'i4t_web/both/collections/auth/user-detail.collection';
+import { UserDetail, UserDetailImage } from 'i4t_web/both/models/auth/user-detail.model';
 import { UserLanguageServiceProvider } from '../../../../providers/user-language-service/user-language-service';
 
 @Component({
@@ -205,12 +204,17 @@ export class SettingsPage implements OnInit, OnDestroy {
     if(this._user.services && this._user.services.facebook){
       return "https://graph.facebook.com/" + this._user.services.facebook.id + "/picture/?type=large";
     } else {
-      let _lUserImage: UserProfileImage = UserImages.findOne( { userId: Meteor.userId() });
-      if( _lUserImage ){
-        return _lUserImage.url;
-      } 
+      let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+      if (_lUserDetail) {
+          let _lUserDetailImage: UserDetailImage = _lUserDetail.image;
+          if (_lUserDetailImage) {
+              return _lUserDetailImage.url;
+          } else {
+              return 'assets/img/user_default_image.png';
+          }
+      }
       else {
-        return 'assets/img/user_default_image.png';
+          return 'assets/img/user_default_image.png';
       }
     }
   }

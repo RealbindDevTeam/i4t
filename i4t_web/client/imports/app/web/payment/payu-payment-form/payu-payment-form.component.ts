@@ -34,7 +34,7 @@ import { UserDetails } from '../../../../../../both/collections/auth/user-detail
 import { InvoicesInfo } from '../../../../../../both/collections/payment/invoices-info.collection';
 import { IurestInvoices } from '../../../../../../both/collections/payment/iurest-invoices.collection';
 import { CompanyInfo, ClientInfo } from '../../../../../../both/models/payment/iurest-invoice.model';
-import { PayuPaymenteService } from '../payu-payment-service/payu-payment.service';
+import { PayuPaymentService } from '../../../shared/services/payu-payment.service';
 
 let md5 = require('md5');
 
@@ -123,7 +123,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
         private _activateRoute: ActivatedRoute,
         private _formBuilder: FormBuilder,
         private _translate: TranslateService,
-        private _payuPaymentService: PayuPaymenteService,
+        private _payuPaymentService: PayuPaymentService,
         private _ngZone: NgZone,
         public _mdDialog: MatDialog,
         private _domSanitizer: DomSanitizer,
@@ -660,7 +660,8 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             paymentValue: Number(this._valueToPay),
             currency: this._currency,
             creation_date: new Date(),
-            creation_user: Meteor.userId()
+            creation_user: Meteor.userId(),
+            isInitial: false
         });
 
         if (_response.transactionResponse.state == 'APPROVED') {
@@ -675,13 +676,17 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                     Restaurants.collection.update({ _id: resId }, { $set: { isActive: true, firstPay: false } });
                 });
             }
-            this.generateInvoiceInfo(payment_history);
+
+            //Call meteor method for generate iurest invoice
+            MeteorObservable.call('generateInvoiceInfo', payment_history, Meteor.userId()).subscribe();
         }
     }
 
     /**
      * This function generate the register for invoice
      */
+
+    /**
     generateInvoiceInfo(_paymentHistoryId: string) {
         let var_resolution: string;
         let var_prefix: string;
@@ -794,16 +799,16 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
                 creation_date: new Date(),
                 payment_history_id: _paymentHistoryId,
                 country_id: this._selectedCountry._id,
-                number: var_current_value,
+                number: var_current_value.toString(),
                 generation_date: new Date(),
                 payment_method: this.itemNameTraduction('PAYU_PAYMENT_FORM.CC_PAYMENT_METHOD'),
                 description: this.itemNameTraduction('PAYU_PAYMENT_FORM.DESCRIPTION'),
                 period: this._firstMonthDay.getDate() + '/' + (this._firstMonthDay.getMonth() + 1) + '/' + this._firstMonthDay.getFullYear() +
                     ' - ' + this._lastMonthDay.getDate() + '/' + (this._lastMonthDay.getMonth() + 1) + '/' + this._lastMonthDay.getFullYear(),
-                amount_no_iva: this.getReturnBase(),
-                subtotal: this.getReturnBase(),
-                iva: this.getValueTax(),
-                total: this._valueToPay,
+                amount_no_iva: this.getReturnBase().toString(),
+                subtotal: this.getReturnBase().toString(),
+                iva: this.getValueTax().toString(),
+                total: this._valueToPay.toString(),
                 currency: this._currency,
                 company_info: company_info,
                 client_info: client_info,
@@ -811,6 +816,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             });
         }
     }
+     */
 
     /**
      * This function gets the tax value according to the value

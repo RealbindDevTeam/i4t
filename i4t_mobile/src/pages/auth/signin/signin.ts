@@ -5,11 +5,11 @@ import { App, ViewController, NavController, AlertController, Platform, LoadingC
 import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Device } from '@ionic-native/device';
-import { UserDetails } from 'qmo_web/both/collections/auth/user-detail.collection';
+import { UserDetails } from 'i4t_web/both/collections/auth/user-detail.collection';
 import { Meteor } from 'meteor/meteor';
 import { HomeMenu } from '../../customer/home-menu/home-menu';
 import { Menu } from '../../waiter/menu/menu';
-import { UserLogin } from 'qmo_web/both/models/auth/user-login.model';
+import { UserLogin } from 'i4t_web/both/models/auth/user-login.model';
 import { Accounts } from 'meteor/accounts-base';
 import { Facebook } from '@ionic-native/facebook';
 
