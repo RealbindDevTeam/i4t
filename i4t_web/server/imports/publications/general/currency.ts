@@ -14,7 +14,7 @@ Meteor.publish('currencies', () => Currencies.find({ isActive: true }));
  */
 Meteor.publish('getCurrenciesByRestaurantsId', function (_restaurantsId: string[]) {
     let _ids: string[] = [];
-    Restaurants.collection.find({ _id: { $in: _restaurantsId } }).forEach((restaurant: Restaurant) => {
+    Restaurants.collection.find({ _id: { $in: _restaurantsId } }).forEach(function <Restaurant>(restaurant, index, ar) {
         _ids.push(restaurant.currencyId);
     });
     return Currencies.collection.find({ _id: { $in: _ids } });
@@ -25,7 +25,7 @@ Meteor.publish('getCurrenciesByRestaurantsId', function (_restaurantsId: string[
  */
 Meteor.publish('getCurrenciesByUserId', function () {
     let _currenciesIds: string[] = [];
-    Restaurants.collection.find({ creation_user: this.userId }).forEach((restaurant: Restaurant) => {
+    Restaurants.collection.find({ creation_user: this.userId }).forEach(function <Restaurant>(restaurant, index, args) {
         _currenciesIds.push(restaurant.currencyId);
     });
 

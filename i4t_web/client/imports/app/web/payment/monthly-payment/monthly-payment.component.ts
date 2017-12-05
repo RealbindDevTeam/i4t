@@ -19,7 +19,7 @@ import { Parameter } from '../../../../../../both/models/general/parameter.model
 @Component({
     selector: 'monthly-payment',
     templateUrl: './monthly-payment.component.html',
-    styleUrls: [ './monthly-payment.component.scss' ]
+    styleUrls: ['./monthly-payment.component.scss']
 })
 export class MonthlyPaymentComponent implements OnInit, OnDestroy {
 
@@ -234,7 +234,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
      */
     getTotalByCurrency(_currencyId: string): number {
         let price: number = 0;
-        Restaurants.collection.find({ currencyId: _currencyId, creation_user: Meteor.userId(), isActive: true }).forEach((restaurant: Restaurant) => {
+        Restaurants.collection.find({ currencyId: _currencyId, creation_user: Meteor.userId(), isActive: true }).forEach(function <Restaurant>(restaurant, index, ar) {
             price = price + this.getTotalRestaurant(restaurant);
         });
         this._restaurantsTotalPrice = price;
