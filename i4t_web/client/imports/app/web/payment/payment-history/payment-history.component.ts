@@ -65,6 +65,8 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
     private btnAcceptLbl: string;
     private _thereArePaymentsHistory: boolean = true;
 
+    private is_prod_flag: string;
+
     /**
      * PaymentHistoryComponent Constructor
      * @param {Router} _router 
@@ -120,7 +122,11 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe();
         this._paymentTransactionSub = MeteorObservable.subscribe('getTransactionsByUser', Meteor.userId()).subscribe();
 
-        this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
+        this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe(() => {
+            this._ngZone.run(() => {
+                this.is_prod_flag = Parameters.findOne({ name: 'payu_is_prod' }).value;
+            });
+        });
 
         this._currentYear = this._currentDate.getFullYear();
         this._yearsArray = [];
@@ -261,6 +267,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         let merchant = new Merchant();
         let details = new Details();
         let credentialArray: string[] = [];
+        let isProd: boolean = (this.is_prod_flag == 'true');
         let historyPayment = PaymentsHistory.collection.findOne({ paymentTransactionId: _transactionId });
         if (historyPayment) {
             let paymentTransaction = PaymentTransactions.collection.findOne({ _id: historyPayment.paymentTransactionId });
@@ -272,19 +279,19 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
                     merchant.apiLogin = al;
                     merchant.apiKey = ak;
                     responseQuery.merchant = merchant;
-                    details.transactionId = "3013a2b0-0925-44c6-afca-9af20df99fe1";
+                    details.transactionId = _transactionId;
                     responseQuery.details = details;
-                    //responseQuery.test = false;
-                    responseQuery.test = true;
+                    if (isProd) {
+                        responseQuery.test = false;
+                    } else {
+                        responseQuery.test = true;
+                    }
 
                     let responseMessage: string;
                     let responseIcon: string;
-
                     let payuReportsApiURI = Parameters.findOne({ name: 'payu_reports_url' }).value;
-
                     this._payuPaymentService.getTransactionResponse(payuReportsApiURI, responseQuery).subscribe(
                         response => {
-
                             if (response.code === 'ERROR') {
                                 responseMessage = 'RES_PAYMENT_HISTORY.VERIFY_ERROR'
                                 responseIcon = 'trn_declined.png';
@@ -431,7 +438,6 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         let aux_description = this.itemNameTraduction(iurest_invoice.description);
 
         let qr_pdf = new jsPDF("portrait", "mm", "a4");
-
         var myImage = new Image();
         myImage.src = '/images/logo_iurest.png';
 

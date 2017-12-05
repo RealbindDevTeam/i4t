@@ -789,7 +789,7 @@
         "SELECT_ADDITIONS": "Por favor selecciona las adiciones que desees",
         "TOTAL_PRICE": "Precio total",
         "MODIFY_ITEM": "Modificar",
-        "DELETE_ITEM": "Remover",
+        "DELETE_ITEM": "Eliminar",
         "DELETE_ORDER": "Estas seguro de eliminar el item de la orden?",
         "CANCEL_ORDER_CONFIRM": "Estas seguro de cancelar la orden?",
         "ORDER_CANT_CANCEL": "La orden no se puede cancelar.",
