@@ -438,7 +438,6 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         let aux_description = this.itemNameTraduction(iurest_invoice.description);
 
         let qr_pdf = new jsPDF("portrait", "mm", "a4");
-
         var myImage = new Image();
         myImage.src = '/images/logo_iurest.png';
 
