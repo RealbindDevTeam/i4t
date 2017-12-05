@@ -668,7 +668,7 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             if (this._mode != 'normal') {
                 Restaurants.collection.update({ _id: this._mode }, { $set: { isActive: true, firstPay: false } });
 
-                Tables.collection.find({ restaurantId: this._mode }).forEach((table: Table) => {
+                Tables.collection.find({ restaurantId: this._mode }).forEach(function <Table>(table, index, ar) {
                     Tables.collection.update({ _id: table._id }, { $set: { is_active: true } });
                 });
             } else {

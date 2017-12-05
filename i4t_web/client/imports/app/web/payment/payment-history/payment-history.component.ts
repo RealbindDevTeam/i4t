@@ -384,7 +384,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
             _historyPayment.restaurantIds.forEach((restaurantId) => {
                 Restaurants.collection.update({ _id: restaurantId }, { $set: { isActive: true, firstPay: false } });
 
-                Tables.collection.find({ restaurantId: restaurantId }).forEach((table: Table) => {
+                Tables.collection.find({ restaurantId: restaurantId }).forEach(function <Table>(table, index, ar) {
                     Tables.collection.update({ _id: table._id }, { $set: { is_active: true } });
                 });
             });
