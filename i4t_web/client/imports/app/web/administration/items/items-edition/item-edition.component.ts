@@ -371,7 +371,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
 
         let _lSection: Section = Sections.findOne({ _id: _section });
 
-        if (Restaurants.find({ _id: { $in: _lSection.restaurants } }).zone().isEmpty) {
+        if (Restaurants.collection.find({ _id: { $in: _lSection.restaurants } }).count() > 0) {
             this._showRestaurants = true;
             Restaurants.collection.find({ _id: { $in: _lSection.restaurants } }).fetch().forEach((r) => {
                 if (this._restaurantsFormGroup.contains(r._id)) {
@@ -385,7 +385,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
             });
         }
 
-        if (!GarnishFoodCol.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).zone().isEmpty()) {
+        if (GarnishFoodCol.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).count() > 0) {
             this._showGarnishFood = true;
             GarnishFoodCol.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).fetch().forEach((gar) => {
                 if (this._garnishFormGroup.contains(gar._id)) {
@@ -398,7 +398,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
             this._garnishFoodList = GarnishFoodCol.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).fetch();
         }
 
-        if (!Additions.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).zone().isEmpty()) {
+        if (Additions.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).count() > 0) {
             this._showAddition = true;
             Additions.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).fetch().forEach((ad) => {
                 if (this._additionsFormGroup.contains(ad._id)) {

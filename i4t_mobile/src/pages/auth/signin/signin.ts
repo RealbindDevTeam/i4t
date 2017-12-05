@@ -121,6 +121,7 @@ export class SigninComponent implements OnInit {
                     this.error = err;
                 } else {
                     this.insertUserDetail();
+                    this.insertUserInfo();
                 }
             });
         });
@@ -133,6 +134,7 @@ export class SigninComponent implements OnInit {
                 this.error = err;
             } else {
                 this.insertUserDetail();
+                this.insertUserInfo();
             }
         });
     }
@@ -144,6 +146,7 @@ export class SigninComponent implements OnInit {
                     this.error = err;
                 } else {
                     this.insertUserDetail();
+                    this.insertUserInfo();
                 }
             });
         });
