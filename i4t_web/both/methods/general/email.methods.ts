@@ -25,7 +25,7 @@ if (Meteor.isServer) {
             var secondAdviceDays: number = Number.parseInt(Parameters.collection.findOne({ name: 'second_advice_days' }).value);
             var thirdAdviceDays: number = Number.parseInt(Parameters.collection.findOne({ name: 'third_advice_days' }).value);
 
-            Restaurants.collection.find({ countryId: _countryId, isActive: true, tstPeriod: true }).forEach((restaurant: Restaurant) => {
+            Restaurants.collection.find({ countryId: _countryId, isActive: true, tstPeriod: true }).forEach(function <Restaurant>(restaurant, index, ar) {
                 let diff = Math.round((currentDate.valueOf() - restaurant.creation_date.valueOf()) / (1000 * 60 * 60 * 24));
                 let forwardDate: Date = Meteor.call('addDays', restaurant.creation_date, trialDays);
                 let forwardString: string = Meteor.call('convertDate', forwardDate);
@@ -35,7 +35,7 @@ if (Meteor.isServer) {
                 let secondAdviceString: string = Meteor.call('convertDate', secondAdviceDate);
                 let thirdAdviceDate: Date = Meteor.call('substractDays', forwardDate, thirdAdviceDays);
                 let thirdAdviceString: string = Meteor.call('convertDate', thirdAdviceDate);
-                
+
                 if (diff > trialDays) {
                     Restaurants.collection.update({ _id: restaurant._id }, { $set: { isActive: false, tstPeriod: false } })
                 } else {
@@ -78,14 +78,14 @@ if (Meteor.isServer) {
          */
         sendTrialEmail: function (_userId: string, _forwardDate: string) {
             let user: User = Users.collection.findOne({ _id: _userId });
-            let parameter: Parameter = Parameters.collection.findOne({name: 'from_email'});
+            let parameter: Parameter = Parameters.collection.findOne({ name: 'from_email' });
             let emailContent: EmailContent = EmailContents.collection.findOne({ language: user.profile.language_code });
             var trial_email_subject: string = emailContent.lang_dictionary[0].traduction;
-            var greeting: string = (user.profile && user.profile.first_name) ? (emailContent.lang_dictionary[1].traduction +' '+user.profile.first_name + ",") : emailContent.lang_dictionary[1].traduction;
-            
+            var greeting: string = (user.profile && user.profile.first_name) ? (emailContent.lang_dictionary[1].traduction + ' ' + user.profile.first_name + ",") : emailContent.lang_dictionary[1].traduction;
+
             SSR.compileTemplate('htmlEmail', Assets.getText('html-email.html'));
 
-            var emailData =  {
+            var emailData = {
                 greeting: greeting,
                 reminderMsgVar: emailContent.lang_dictionary[7].traduction,
                 dateVar: _forwardDate,
@@ -94,12 +94,12 @@ if (Meteor.isServer) {
                 followMsgVar: emailContent.lang_dictionary[6].traduction
             }
 
-             Email.send({
-                            to: user.emails[0].address,
-                            from: parameter.value,
-                            subject: trial_email_subject,
-                            html: SSR.render('htmlEmail', emailData),      
-                        });
+            Email.send({
+                to: user.emails[0].address,
+                from: parameter.value,
+                subject: trial_email_subject,
+                html: SSR.render('htmlEmail', emailData),
+            });
         }
     });
 }
