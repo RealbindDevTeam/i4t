@@ -5,8 +5,8 @@ import { WaiterCallDetails } from '../../../../both/collections/restaurant/waite
  * Meteor publication waiter call details. userId
  * @param { string } _userId
  */
-Meteor.publish('countWaiterCallDetailByUsrId', function ( _userId : string ) {
-  return WaiterCallDetails.collection.find({ user_id: _userId, status : { $in : ["waiting", "completed"] } });
+Meteor.publish('countWaiterCallDetailByUsrId', function (_userId: string) {
+  return WaiterCallDetails.find({ user_id: _userId, status: { $in: ["waiting", "completed"] } });
 });
 
 /**
@@ -16,19 +16,21 @@ Meteor.publish('countWaiterCallDetailByUsrId', function ( _userId : string ) {
  * @param { string } _type
  * @param { string[] } _status
  */
-Meteor.publish('WaiterCallDetailForPayment', function ( _restaurantId : string, 
-                                                        _tableId      : string,
-                                                        _type         : string ) {
-  return WaiterCallDetails.collection.find({ restaurant_id : _restaurantId, 
-                                             table_id : _tableId, 
-                                             type : _type,
-                                             status : { $in : ['waiting', 'completed'] }});
+Meteor.publish('WaiterCallDetailForPayment', function (_restaurantId: string,
+  _tableId: string,
+  _type: string) {
+  return WaiterCallDetails.find({
+    restaurant_id: _restaurantId,
+    table_id: _tableId,
+    type: _type,
+    status: { $in: ['waiting', 'completed'] }
+  });
 });
 
 /**
  * Meteor publication waiter call details. userId (Waiter id)
  * @param { string } _waiterId
  */
-Meteor.publish('waiterCallDetailByWaiterId', function ( _waiterId : string ) {
-  return WaiterCallDetails.collection.find({ waiter_id: _waiterId, status : "completed" });
+Meteor.publish('waiterCallDetailByWaiterId', function (_waiterId: string) {
+  return WaiterCallDetails.find({ waiter_id: _waiterId, status: "completed" });
 });

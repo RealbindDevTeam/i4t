@@ -11,7 +11,7 @@ import { check } from 'meteor/check';
  */
 Meteor.publish('garnishFood', function (_userId: string) {
     check(_userId, String);
-    return GarnishFoodCol.collection.find({ creation_user: _userId });
+    return GarnishFoodCol.find({ creation_user: _userId });
 });
 
 /**
@@ -20,7 +20,7 @@ Meteor.publish('garnishFood', function (_userId: string) {
  */
 Meteor.publish('garnishFoodByRestaurant', function (_restaurantId: string) {
     check(_restaurantId, String);
-    return GarnishFoodCol.collection.find({ 'restaurants.restaurantId': { $in: [_restaurantId] }, is_active: true });
+    return GarnishFoodCol.find({ 'restaurants.restaurantId': { $in: [_restaurantId] }, is_active: true });
 });
 
 /**
@@ -29,7 +29,7 @@ Meteor.publish('garnishFoodByRestaurant', function (_restaurantId: string) {
  */
 Meteor.publish('garnishFoodById', function ( _pId: string) {
     check(_pId, String);
-    return GarnishFoodCol.collection.find({ _id : _pId });
+    return GarnishFoodCol.find({ _id : _pId });
 });
 
 /**
@@ -38,9 +38,9 @@ Meteor.publish('garnishFoodById', function ( _pId: string) {
  */
 Meteor.publish('garnishesByItem', function (_itemId: string) {
     check(_itemId, String);
-    var item = Items.collection.findOne({ _id: _itemId, garnishFoodIsAcceped: true });
+    var item = Items.findOne({ _id: _itemId, garnishFoodIsAcceped: true });
     if( item ){
-        return GarnishFoodCol.collection.find({ _id: { $in: item.garnishFood } });
+        return GarnishFoodCol.find({ _id: { $in: item.garnishFood } });
     } else {
         return;
     }
@@ -54,7 +54,7 @@ Meteor.publish('garnishFoodByRestaurantWork', function (_userId: string) {
     check(_userId, String);
     let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
     if( _lUserDetail ){
-        return GarnishFoodCol.collection.find({ 'restaurants.restaurantId': { $in: [_lUserDetail.restaurant_work] }, is_active: true });
+        return GarnishFoodCol.find({ 'restaurants.restaurantId': { $in: [_lUserDetail.restaurant_work] }, is_active: true });
     } else {
         return;
     }

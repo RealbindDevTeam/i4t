@@ -8,20 +8,19 @@ import { check } from 'meteor/check';
  * Meteor publication countries
  */
 Meteor.publish('countries', function () {
-    return Countries.collection.find({ is_active: true });
+    return Countries.find({ is_active: true });
 });
-
 
 /**
  * Country by restaurant
  */
 Meteor.publish('getCountryByRestaurantId', function (_restaurantId: string) {
     check(_restaurantId, String);
-    let restaurant = Restaurants.collection.findOne({ _id: _restaurantId });
+    let restaurant = Restaurants.findOne({ _id: _restaurantId });
     if (restaurant) {
-        return Countries.collection.find({ _id: restaurant.countryId });
+        return Countries.find({ _id: restaurant.countryId });
     } else {
-        return Countries.collection.find({ is_active: true });;
+        return Countries.find({ is_active: true });;
     }
 });
 
@@ -33,7 +32,7 @@ Meteor.publish('getCountriesByRestaurantsId', function (_restaurantsId: string[]
     Restaurants.collection.find({ _id: { $in: _restaurantsId } }).forEach(function <Restaurant>(restaurant, index, ar) {
         _ids.push(restaurant.countryId);
     });
-    return Countries.collection.find({ _id: { $in: _ids } });
+    return Countries.find({ _id: { $in: _ids } });
 });
 
 
@@ -46,5 +45,5 @@ Meteor.publish('getCountriesByAdminUser', function () {
         _countriesIds.push(restaurant.countryId);
     });
 
-    return Countries.collection.find({ _id: { $in: _countriesIds }, is_active: true });
+    return Countries.find({ _id: { $in: _countriesIds }, is_active: true });
 });

@@ -17,9 +17,9 @@ Meteor.publish('getPaymentMethodsByUserCurrentRestaurant', function ( _pUserId :
     let _lUserDetail = UserDetails.findOne({ user_id: _pUserId });
     if(_lUserDetail.current_restaurant){
         let _lRestaurant : Restaurant = Restaurants.findOne({ _id: _lUserDetail.current_restaurant });
-        return PaymentMethods.collection.find({_id : {$in : _lRestaurant.paymentMethods }, isActive: true });
+        return PaymentMethods.find({_id : {$in : _lRestaurant.paymentMethods }, isActive: true });
     } else {
-        return PaymentMethods.collection.find({isActive: true});
+        return PaymentMethods.find({isActive: true});
     }
 });
 
