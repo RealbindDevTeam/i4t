@@ -1470,7 +1470,8 @@
             "ENTER_SELF_ACCEPTING_FILES": "Please fill in self accepting fields",
             "CURRENT_RESOLUTION_TITLE": "Current resolution information",
             "NEXT_RESOLUTION_TITLE": "Next resolution information",
-            "IS_RETAINING_AGENT": "Is retaining agent"
+            "IS_RETAINING_AGENT": "Is retaining agent",
+            "MESSAGE": "In simplified regime, the DIAN number and date are not mandatory. You can leave these fields empty and continue with the prefix and numbering."            
         }
     },
     "RESTAURANT_PROFILE": {

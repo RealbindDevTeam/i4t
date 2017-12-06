@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import { Items } from '../../../../both/collections/administration/item.collection';
-import { Sections } from '../../../../both/collections/administration/section.collection';
 import { UserDetails } from '../../../../both/collections/auth/user-detail.collection';
 import { UserDetail } from '../../../../both/models/auth/user-detail.model';
 import { check } from 'meteor/check';
@@ -18,29 +17,20 @@ Meteor.publish('items', function (_userId: string) {
  * Meteor publication return items with restaurant condition
  */
 Meteor.publish('itemsByRestaurant', function (_restaurantId: string) {
-    let _sections: string[] = [];
     check(_restaurantId, String);
-
-    Sections.collection.find({ restaurants: { $in: [_restaurantId] } }).fetch().forEach((s) => {
-        _sections.push(s._id);
-    });
-    return Items.collection.find({ sectionId: { $in: _sections }, is_active: true });
+    return Items.collection.find({ 'restaurants.restaurantId': { $in: [_restaurantId] }, is_active: true });
 });
 
 /**
  * Meteor publication return items with user condition
  */
 Meteor.publish('itemsByUser', function (_userId: string) {
-    let _sections: string[] = [];
     check(_userId, String);
     let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
 
     if (_lUserDetail) {
         if (_lUserDetail.current_restaurant) {
-            Sections.collection.find({ restaurants: { $in: [_lUserDetail.current_restaurant] } }).fetch().forEach((s) => {
-                _sections.push(s._id);
-            });
-            return Items.collection.find({ sectionId: { $in: _sections }, is_active: true });
+            return Items.collection.find({ 'restaurants.restaurantId': { $in: [_lUserDetail.current_restaurant] }, is_active: true });
         } else {
             return;
         }
@@ -67,10 +57,11 @@ Meteor.publish('getItemsByRestaurantWork', function (_userId: string) {
     let _sections: string[] = [];
 
     if (_lUserDetail) {
-        Sections.collection.find({ restaurants: { $in: [_lUserDetail.restaurant_work] } }).fetch().forEach((s) => {
-            _sections.push(s._id);
-        });
-        return Items.collection.find({ sectionId: { $in: _sections }, is_active: true });
+        if (_lUserDetail.restaurant_work) {
+            return Items.collection.find({ 'restaurants.restaurantId': { $in: [_lUserDetail.restaurant_work] }, is_active: true });
+        } else {
+            return;
+        }
     } else {
         return;
     }
@@ -94,7 +85,11 @@ Meteor.publish('getItemsByUserRestaurantWork', function (_userId: string) {
     let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
 
     if (_lUserDetail) {
-        return Items.collection.find({ 'restaurants.restaurantId': { $in: [_lUserDetail.restaurant_work] }, is_active: true });
+        if (_lUserDetail.restaurant_work) {
+            return Items.collection.find({ 'restaurants.restaurantId': { $in: [_lUserDetail.restaurant_work] }, is_active: true });
+        } else {
+            return;
+        }
     } else {
         return;
     }

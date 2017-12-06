@@ -144,8 +144,12 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         y = this.calculateY(y, 20);
         pdf.setFontType("bold");
         pdf.text('Factura de venta', 10, y);
-        //TODO Invoice number
-        pdf.text(_pInvoice.legal_information.number, 120, y);
+
+        if (_pInvoice.legal_information.prefix) {
+            pdf.text( _pInvoice.legal_information.prefix_name + '-' + _pInvoice.legal_information.number, 120, y);
+        } else {
+            pdf.text(_pInvoice.legal_information.number, 120, y);
+        }
 
         y = this.calculateY(y, 10);
         pdf.setFontType("normal");
@@ -289,8 +293,10 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         }
         pdf.setFontType("normal");
 
-        y = this.calculateY(y, 10);
-        pdf.text(x, y, 'Res. DIAN No. ' + _pInvoice.legal_information.invoice_resolution + ' del ' + this.dateFormater(_pInvoice.legal_information.invoice_resolution_date, false), alignCenter);
+        if(_pInvoice.legal_information.invoice_resolution &&  _pInvoice.legal_information.invoice_resolution_date){
+            y = this.calculateY(y, 10);
+            pdf.text(x, y, 'Res. DIAN No. ' + _pInvoice.legal_information.invoice_resolution + ' del ' + this.dateFormater(_pInvoice.legal_information.invoice_resolution_date, false), alignCenter);
+        }
 
         if (_pInvoice.legal_information.prefix) {
             y = this.calculateY(y, 10);
@@ -327,7 +333,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         } else {
             let splitRetainingAgent = pdf.splitTextToSize('No somos Agentes Retenedores de IVA e ICA', widthText);
             pdf.text(splitRetainingAgent, x, y, alignCenter);
-            y = this.calculateY(y, 20);
+            y = this.calculateY(y, 10);
         }
 
         pdf.text(x, y, '==========================================', alignCenter);
