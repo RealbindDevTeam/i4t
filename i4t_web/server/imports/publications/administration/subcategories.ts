@@ -23,10 +23,10 @@ Meteor.publish('subcategoriesByRestaurant', function (_restaurantId: string) {
     let _categories: string[] = [];
     check(_restaurantId, String);
 
-    Sections.collection.find({ restaurants: { $in: [_restaurantId] } }).fetch().forEach((s) => {
+    Sections.collection.find({ restaurants: { $in: [_restaurantId] }, is_active: true }).fetch().forEach((s) => {
         _sections.push(s._id);
     });
-    Categories.collection.find({ section: { $in: _sections } }).fetch().forEach((c) => {
+    Categories.collection.find({ section: { $in: _sections }, is_active: true }).fetch().forEach((c) => {
         _categories.push(c._id);
     });
     return Subcategories.collection.find({ category: { $in: _categories }, is_active: true });
@@ -42,11 +42,11 @@ Meteor.publish('getSubcategoriesByRestaurantWork', function (_userId: string) {
     let _sections: string[] = [];
     let _categories: string[] = [];
     let user_detail = UserDetails.findOne({ user_id: _userId });
-    if( user_detail ){
-        Sections.collection.find({ restaurants: { $in: [user_detail.restaurant_work] } }).fetch().forEach((s) => {
+    if (user_detail) {
+        Sections.collection.find({ restaurants: { $in: [user_detail.restaurant_work] }, is_active: true }).fetch().forEach((s) => {
             _sections.push(s._id);
         });
-        Categories.collection.find({ section: { $in: _sections } }).fetch().forEach((c) => {
+        Categories.collection.find({ section: { $in: _sections }, is_active: true }).fetch().forEach((c) => {
             _categories.push(c._id);
         });
         return Subcategories.collection.find({ category: { $in: _categories }, is_active: true });
