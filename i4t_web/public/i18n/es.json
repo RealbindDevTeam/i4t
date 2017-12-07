@@ -1455,10 +1455,10 @@
             "NUMERATION_FROM": "Desde",
             "NUMERATION_TO": "Hasta",
             "IS_BIG_CONTRIBUTOR": "Es gran Contribuyente",
-            "BIG_CONTRIBUTOR_RESOLUTION": "Ingresa el numero de la resolución de la DIAN para gran Contribuyente",
+            "BIG_CONTRIBUTOR_RESOLUTION": "Ingresa el número de la resolución de la DIAN para gran Contribuyente",
             "BIG_CONTRIBUTOR_DATE": "Ingresa la fecha de la resolución de la DIAN para gran Contribuyente",
             "IS_SELF_ACCEPTING": "Es autoretenedor",
-            "SELF_ACCEPTING_RESOLUTION": "Ingresa el numero de la resolución de la DIAN para autoretenedor",
+            "SELF_ACCEPTING_RESOLUTION": "Ingresa el número de la resolución de la DIAN para autoretenedor",
             "SELF_ACCEPTING_DATE": "Ingresa la fecha de la resolución de la DIAN para autoretenedor",
             "FINAL_TEXT": "Si desea que al final de las facturas aparezca un texto específico, por favor ingreselo aqui",
             "FINAL_TEXT_PLACEHOLDER": "Texto de la factura",
@@ -1470,7 +1470,8 @@
             "ENTER_SELF_ACCEPTING_FILES": "Por favor ingrese los datos de autoretenedor",
             "CURRENT_RESOLUTION_TITLE": "Información de resolución actual",
             "NEXT_RESOLUTION_TITLE": "Información de siguiente resolución",
-            "IS_RETAINING_AGENT": "Es agente retenedor"
+            "IS_RETAINING_AGENT": "Es agente retenedor",
+            "MESSAGE": "En el régimen simplificado el número y fecha de resolución de la DIAN no son obligatorios. Puedes dejar estos campos vacíos y continuar con el prefijo y la numeración."
         }
     },
     "RESTAURANT_PROFILE": {

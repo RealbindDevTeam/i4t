@@ -13,7 +13,7 @@ import { Accounts } from '../../../../both/collections/restaurant/account.collec
  */
 Meteor.publish( 'getUserPayments', function( _userId: string ){
     check( _userId, String );
-    return Payments.collection.find( { creation_user: _userId } );
+    return Payments.find( { creation_user: _userId } );
 });
 
 /**
@@ -24,7 +24,7 @@ Meteor.publish( 'getUserPayments', function( _userId: string ){
 Meteor.publish( 'getUserPaymentsByRestaurant', function( _userId: string, _restaurantId: string ) {
     check( _userId, String );
     check( _restaurantId, String );
-    return Payments.collection.find( { creation_user: _userId, restaurantId: _restaurantId } );
+    return Payments.find( { creation_user: _userId, restaurantId: _restaurantId } );
 });
 
 /**
@@ -44,7 +44,7 @@ Meteor.publish( 'getUserPaymentsByRestaurantAndTable', function( _userId: string
                                                     tableId: _lUserDetail.current_table,
                                                     status: 'OPEN'});
         if( _lAccount ){
-            return Payments.collection.find( { creation_user: _userId, restaurantId: _restaurantId, tableId: _tableId, accountId: _lAccount._id, status: { $in: _status } } );
+            return Payments.find( { creation_user: _userId, restaurantId: _restaurantId, tableId: _tableId, accountId: _lAccount._id, status: { $in: _status } } );
         } else {
             return;
         }
@@ -61,7 +61,7 @@ Meteor.publish( 'getUserPaymentsByRestaurantAndTable', function( _userId: string
 Meteor.publish( 'getPaymentsToWaiter', function( _restaurantId: string, _tableId: string ) {
     check( _restaurantId, String );
     check( _tableId, String );
-    return Payments.collection.find( { restaurantId: _restaurantId, tableId: _tableId, status: 'PAYMENT.NO_PAID' } );
+    return Payments.find( { restaurantId: _restaurantId, tableId: _tableId, status: 'PAYMENT.NO_PAID' } );
 });
 
 /**
@@ -69,5 +69,5 @@ Meteor.publish( 'getPaymentsToWaiter', function( _restaurantId: string, _tableId
  * @param {string[]} _pRestaurantIds
  */
 Meteor.publish( 'getPaymentsByRestaurantIds', function( _pRestaurantIds: string[] ) {
-    return Payments.collection.find( { restaurantId: { $in: _pRestaurantIds }, status: 'PAYMENT.PAID', received: true } );
+    return Payments.find( { restaurantId: { $in: _pRestaurantIds }, status: 'PAYMENT.PAID', received: true } );
 });

@@ -9,7 +9,7 @@ import { check } from 'meteor/check';
  */
 Meteor.publish('sections', function (_userId: string) {
     check(_userId, String);
-    return Sections.collection.find({ creation_user: _userId });
+    return Sections.find({ creation_user: _userId });
 });
 
 /**
@@ -18,7 +18,7 @@ Meteor.publish('sections', function (_userId: string) {
 */
 Meteor.publish('sectionsByRestaurant', function (_restaurantId: string) {
     check(_restaurantId, String);
-    return Sections.collection.find({ restaurants: { $in: [_restaurantId] }, is_active: true });
+    return Sections.find({ restaurants: { $in: [_restaurantId] }, is_active: true });
 });
 
 Meteor.publish('getSections', function () {
@@ -33,7 +33,7 @@ Meteor.publish('getSectionsByRestaurantWork', function (_userId: string) {
     check(_userId, String);
     let user_detail = UserDetails.findOne({ user_id: _userId });
     if( user_detail ){
-        return Sections.collection.find({ restaurants: { $in: [user_detail.restaurant_work] }, is_active: true });
+        return Sections.find({ restaurants: { $in: [user_detail.restaurant_work] }, is_active: true });
     } else {
         return;
     }

@@ -41,6 +41,7 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
     private _isEnableTwoResolution: boolean = false;
     private _showDivider: boolean = false;
     private _retainingAgent: boolean = false;
+    private _showMessage: boolean = false;
 
     private _restaurantLegalitySub: Subscription;
     private _restaurantLegality: RestaurantLegality = { restaurant_id: '' };
@@ -164,6 +165,7 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
                             this._showForcedToInvoice = true;
                             if (this._restaurantLegalityInEditMode.forced_to_invoice) {
                                 this._showGeneralInvoice = true;
+                                this._showMessage = true;
                                 if (this._restaurantLegalityInEditMode.prefix) {
                                     this._showPrefixName = true;
                                 } else {
@@ -250,6 +252,7 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
             this._showGeneralInvoice = true;
             this._showInvoiceFinalPart = true;
             this._restaurantLegality.forced_to_invoice = true;
+            this._showMessage = true;
         } else {
             this._restaurantLegality = this._restaurantLegalityInEditMode === null || this._restaurantLegalityInEditMode === undefined ? { restaurant_id: '' } : { _id: this._restaurantLegalityInEditMode._id, restaurant_id: this._restaurantLegalityInEditMode.restaurant_id };
             this._restaurantLegality.regime = 'regime_si';
@@ -258,6 +261,7 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
             this._showGeneralInvoice = false;
             this._showInvoiceFinalPart = false;
             this._restaurantLegality.forced_to_invoice = false;
+            this._showMessage = false;
         }
     }
 
@@ -522,10 +526,8 @@ export class ColombiaLegalityComponent implements OnInit, OnDestroy {
                 //info to next resolution
 
                 this._restaurantLegality.text_at_the_end = this._colombiaLegalityForm.value.text_at_the_end;
-                if (this._colombiaLegalityForm.valid) {
-                    if (_validator) {
-                        this.colombiaLegality.emit(this._restaurantLegality);
-                    }
+                if (_validator) {
+                    this.colombiaLegality.emit(this._restaurantLegality);
                 } else {
                     this._dialogRef = this._mdDialog.open(AlertConfirmComponent, {
                         disableClose: true,
