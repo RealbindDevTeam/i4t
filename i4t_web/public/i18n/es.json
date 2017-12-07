@@ -278,7 +278,9 @@
         "ORDERS": "Ordenes",
         "WAITER_CALL": "Llamar mesero",
         "CALLS": "Llamados",
-        "SETTINGS": "Ajustes"
+        "SETTINGS": "Ajustes",
+        "TABLES": "Mesas",
+        "RESTAURANT_EXIT": "Salir del Restaurante"
     },
     "PROMOTIONS": {
         "PROMOTION_CREATION": "Creación de promociones",

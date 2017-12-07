@@ -143,6 +143,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
       });
     });
 
+    /*
     MeteorObservable.call('getRole').subscribe((role) => {
       if (role === "400") {
         this._itemsTopMenu = 'customer';
@@ -157,6 +158,10 @@ export class TopnavComponent implements OnInit, OnDestroy {
     }, (error) => {
       alert(`Failed to to load layout ${error}`);
     });
+    */
+    this._showToggleSidenav = true;
+    this.showMenuName = false;
+    this._showMenuButton = false;
   }
 
   /**

@@ -1,4 +1,4 @@
-<div style="width: 80%; margin: 0 auto; max-width: 740px;" *ngIf="!_thereAreUserOrders && !_thereAreNotUserOrders">
+<div *ngIf="!_thereAreUserOrders && !_thereAreNotUserOrders">
     <mat-card>
         <mat-list>
             <mat-list-item *ngFor="let _res of _restaurants | async">
@@ -42,30 +42,33 @@
         </mat-card-content>
     </mat-card>
 </div>
+
 <div class="order-form-1" *ngIf="_thereAreUserOrders || _thereAreNotUserOrders">
-    <div class="order-form-2">
+    <!--div class="order-form-2"-->
         <div class="menu-items">
             <div class="menu-items-content">
                 <div class="items">
                     <div id="center">
                         <mat-card>
-                            <mat-list>
-                                <mat-list-item *ngFor="let _res of _restaurants | async">
-                                    <img mat-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{ _res.image.url }}">
-                                    <h2 mat-line style="font-size: 1.3rem;"> {{_res.name}} </h2>
-                                    <p mat-line style="font-size: 1rem;">
-                                        <mat-icon style="vertical-align: middle">location_on</mat-icon>
-                                        <span>{{_res.address}}</span>
-                                    </p>
-                                    <p mat-line style="font-size: 1rem;font-weight: bold;">
-                                        <mat-icon style="vertical-align: middle">restaurant</mat-icon>
-                                        <span>{{'RESTAURANT_INFO_MASTER.TABLE_CODE' | translate}}: {{_tableNumber}}</span>
-                                    </p>
-                                    <button mat-icon-button (click)="openRestaurantProfileDetail(_res._id)">
-                                        <mat-icon>keyboard_arrow_right</mat-icon>
-                                    </button>
-                                </mat-list-item>
-                            </mat-list>
+                            <mat-card-content>
+                                <mat-list>
+                                    <mat-list-item *ngFor="let _res of _restaurants | async">
+                                        <img mat-list-avatar style="border-radius: 50%; width: 100px; height: 100px;" src="{{ _res.image.url }}">
+                                        <h2 mat-line style="font-size: 1.3rem;"> {{_res.name}} </h2>
+                                        <p mat-line style="font-size: 1rem;">
+                                            <mat-icon style="vertical-align: middle">location_on</mat-icon>
+                                            <span>{{_res.address}}</span>
+                                        </p>
+                                        <p mat-line style="font-size: 1rem;font-weight: bold;">
+                                            <mat-icon style="vertical-align: middle">restaurant</mat-icon>
+                                            <span>{{'RESTAURANT_INFO_MASTER.TABLE_CODE' | translate}}: {{_tableNumber}}</span>
+                                        </p>
+                                        <button mat-icon-button (click)="openRestaurantProfileDetail(_res._id)">
+                                            <mat-icon>keyboard_arrow_right</mat-icon>
+                                        </button>
+                                    </mat-list-item>
+                                </mat-list>
+                            </mat-card-content>
                         </mat-card>
                         <mat-form-field class="orders-bar">
                             <mat-select placeholder="{{'ORDER_LIST.TABLE_ORDERS' | translate}}" [(ngModel)]="_initialValue">
@@ -78,10 +81,12 @@
                             <div *ngFor="let or of _orders | async; let i = index">
                                 <mat-toolbar class="customer-order" (click)="showCustomerOrderDetail(or,i)">
                                     <img style="width: 3rem;" src="/images/my-orders.png">
-                                    <span class="order-code">{{'ORDER_LIST.ORDERS' | translate}} # {{or.code}}</span>
-                                    <span>{{'ORDER_LIST.TOTAL' | translate}}: {{or.totalPayment}} {{_currencyCode}}</span>
-                                    <span class="app-flex-filler"></span>
-                                    <span class="order-status">{{'ORDER_LIST.STATUS' | translate}}: {{or.status | translate}}</span>
+                                    <div class="mt-div">
+                                        <span class="order-code">{{'ORDER_LIST.ORDERS' | translate}} # {{or.code}}</span>
+                                        <span>{{'ORDER_LIST.TOTAL' | translate}}: {{or.totalPayment}} {{_currencyCode}}</span>
+                                        <span class="app-flex-filler"></span>
+                                        <span class="order-status">{{'ORDER_LIST.STATUS' | translate}}: {{or.status | translate}}</span>
+                                    </div>
                                     <mat-icon>keyboard_arrow_right</mat-icon>
                                 </mat-toolbar>
                                 <mat-card *ngIf="_orderCustomerIndex == i">
@@ -203,7 +208,12 @@
                     <div *ngIf="_showDetails">
                         <div *ngIf="_showOrderItemDetail">
                             <div *ngFor="let item of _itemsToShowDetail | async">
-                                <div id="mt" class="menu menu_bar-hide">
+                                <div class="header-detail-static">
+                                    <button class="btn-close" mat-raised-button (click)="viewItemDetail(true)">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <div id="mt" class="header-detail header-detail-hide">
                                     <label>{{item.name}}</label>
                                     <button class="btn-close" mat-raised-button (click)="viewItemDetail(true)">
                                         <i class="fa fa-times" aria-hidden="true"></i>
@@ -313,5 +323,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    <!--/div-->
 </div>
