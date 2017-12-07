@@ -29,7 +29,7 @@
                 <ng-template [ngIf]="or === order._id">
                         <div class="uh">
                             <div class="uhl">
-                                <p>{{ 'PAYMENT_CONFIRM.ORDER' | translate }} # {{order.code}} </p>
+                                <p>{{ 'PAYMENT_CONFIRM.ORDER' | translate }} # {{order.code}}&nbsp;-&nbsp;</p>
                                 <p>{{ 'PAYMENT_CONFIRM.STATUS' | translate }}: {{order.status | translate}}</p>
                             </div>
                             <p class="order-payment-info">{{order.totalPayment}} {{ getPaymentCurrency(payment.currencyId)}}</p>
