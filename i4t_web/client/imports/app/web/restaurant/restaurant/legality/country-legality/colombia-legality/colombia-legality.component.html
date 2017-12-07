@@ -38,6 +38,7 @@
             <div id="diva">
                 <h3 *ngIf="!_isEnableTwoResolution">{{'RESTAURANT_LEGALITY.COLOMBIA.CURRENT_RESOLUTION_TITLE' | translate}}</h3>
                 <h3 *ngIf="_isEnableTwoResolution">{{'RESTAURANT_LEGALITY.COLOMBIA.NEXT_RESOLUTION_TITLE' | translate}}</h3>
+                <p *ngIf="_showMessage">{{'RESTAURANT_LEGALITY.COLOMBIA.MESSAGE' | translate}}</p>
                 <div class="cust-resolution-sty">
                     <div>
                         <p>{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION' | translate}}</p>
@@ -88,6 +89,7 @@
             <div id="divb" *ngIf="_showNextResolution">
                 <h3 *ngIf="_isEnableTwoResolution">{{'RESTAURANT_LEGALITY.COLOMBIA.CURRENT_RESOLUTION_TITLE' | translate}}</h3>
                 <h3 *ngIf="!_isEnableTwoResolution">{{'RESTAURANT_LEGALITY.COLOMBIA.NEXT_RESOLUTION_TITLE' | translate}}</h3>
+                <p *ngIf="_showMessage">{{'RESTAURANT_LEGALITY.COLOMBIA.MESSAGE' | translate}}</p>
                 <div class="cust-resolution-sty">
                     <div>
                         <p>{{'RESTAURANT_LEGALITY.COLOMBIA.INVOICE_RESOLUTION' | translate}}</p>
