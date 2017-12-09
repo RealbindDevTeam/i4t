@@ -66,6 +66,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
     private _thereArePaymentsHistory: boolean = true;
 
     private is_prod_flag: string;
+    private isProd: boolean;
 
     /**
      * PaymentHistoryComponent Constructor
@@ -125,6 +126,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         this._parameterSub = MeteorObservable.subscribe('getParameters').subscribe(() => {
             this._ngZone.run(() => {
                 this.is_prod_flag = Parameters.findOne({ name: 'payu_is_prod' }).value;
+                this.isProd = (this.is_prod_flag == 'true');
             });
         });
 
@@ -245,7 +247,13 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
      * This function gets custPayInfo credentials
      */
     getPayInfo(_transactionId: string) {
-        let payInfoUrl = Parameters.findOne({ name: 'payu_pay_info_url' }).value;
+        let payInfoUrl: string;
+        if (this.isProd) {
+            payInfoUrl = Parameters.findOne({ name: 'payu_pay_info_url_prod' }).value;
+        } else {
+            payInfoUrl = Parameters.findOne({ name: 'payu_pay_info_url_test' }).value;
+        }
+
         this._payuPaymentService.getCusPayInfo(payInfoUrl).subscribe(
             payInfo => {
                 this.checkTransactionStatus(payInfo.al, payInfo.ak, _transactionId);
@@ -267,7 +275,11 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
         let merchant = new Merchant();
         let details = new Details();
         let credentialArray: string[] = [];
-        let isProd: boolean = (this.is_prod_flag == 'true');
+        //let isProd: boolean = (this.is_prod_flag == 'true');
+        let responseMessage: string;
+        let responseIcon: string;
+        let payuReportsApiURI: string;
+
         let historyPayment = PaymentsHistory.collection.findOne({ paymentTransactionId: _transactionId });
         if (historyPayment) {
             let paymentTransaction = PaymentTransactions.collection.findOne({ _id: historyPayment.paymentTransactionId });
@@ -281,15 +293,14 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
                     responseQuery.merchant = merchant;
                     details.transactionId = _transactionId;
                     responseQuery.details = details;
-                    if (isProd) {
+                    if (this.isProd) {
                         responseQuery.test = false;
+                        payuReportsApiURI = Parameters.findOne({ name: 'payu_reports_url_prod' }).value;
                     } else {
                         responseQuery.test = true;
+                        payuReportsApiURI = Parameters.findOne({ name: 'payu_reports_url_test' }).value;
                     }
 
-                    let responseMessage: string;
-                    let responseIcon: string;
-                    let payuReportsApiURI = Parameters.findOne({ name: 'payu_reports_url' }).value;
                     this._payuPaymentService.getTransactionResponse(payuReportsApiURI, responseQuery).subscribe(
                         response => {
                             if (response.code === 'ERROR') {

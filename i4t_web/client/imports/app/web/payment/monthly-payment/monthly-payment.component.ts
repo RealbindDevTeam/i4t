@@ -234,7 +234,7 @@ export class MonthlyPaymentComponent implements OnInit, OnDestroy {
      */
     getTotalByCurrency(_currencyId: string): number {
         let price: number = 0;
-        Restaurants.collection.find({ currencyId: _currencyId, creation_user: Meteor.userId(), isActive: true }).forEach(function <Restaurant>(restaurant, index, ar) {
+        Restaurants.collection.find({ currencyId: _currencyId, creation_user: Meteor.userId(), isActive: true }).forEach((restaurant: Restaurant) => {
             price = price + this.getTotalRestaurant(restaurant);
         });
         this._restaurantsTotalPrice = price;
