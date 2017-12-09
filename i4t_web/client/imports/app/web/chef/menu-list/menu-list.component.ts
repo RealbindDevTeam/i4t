@@ -75,6 +75,20 @@ export class MenuListComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Show the detail header
+     */
+    showHeaderDetail() {
+        var _lScrollTop = document.getElementById("is").scrollTop;
+        if (_lScrollTop > 0) {
+            document.getElementById("mt").classList.remove('header-detail-hide');
+            document.getElementById("mt").classList.add('header-detail-show');
+        } else {
+            document.getElementById("mt").classList.remove('header-detail-show');
+            document.getElementById("mt").classList.add('header-detail-hide');
+        }
+    }
+
+    /**
      * ngOnInit implementation
      */
     ngOnInit() {

@@ -112,7 +112,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
      */
     showHeaderDetail() {
         var _lScrollTop = document.getElementById("is").scrollTop;
-        if (_lScrollTop > 64) {
+        if (_lScrollTop > 0) {
             document.getElementById("mt").classList.remove('header-detail-hide');
             document.getElementById("mt").classList.add('header-detail-show');
         } else {
