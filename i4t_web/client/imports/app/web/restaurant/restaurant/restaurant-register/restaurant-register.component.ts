@@ -24,6 +24,10 @@ import { Tables } from '../../../../../../../both/collections/restaurant/table.c
 import { PaymentsHistory } from '../../../../../../../both/collections/payment/payment-history.collection';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 import { ImageService } from '../../../../shared/services/image.service';
+import { Addition, AdditionPrice, AdditionRestaurant } from '../../../../../../../both/models/administration/addition.model';
+import { GarnishFood, GarnishFoodPrice, GarnishFoodRestaurant } from '../../../../../../../both/models/administration/garnish-food.model';
+import { Additions } from '../../../../../../../both/collections/administration/addition.collection';
+import { GarnishFoodCol } from '../../../../../../../both/collections/administration/garnish-food.collection';
 
 import * as QRious from 'qrious';
 
@@ -43,6 +47,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _countriesSub: Subscription;
     private _citiesSub: Subscription;
     private _paymentMethodsSub: Subscription;
+    private _additionsSub: Subscription;
+    private _garnishFoodSub: Subscription;
 
     private _countries: Observable<Country[]>;
     private _cities: Observable<City[]>;
@@ -136,6 +142,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         });
         this._citiesSub = MeteorObservable.subscribe('cities').subscribe();
         this._currencySub = MeteorObservable.subscribe('currencies').subscribe();
+        this._additionsSub = MeteorObservable.subscribe('additions', this._user).subscribe();
+        this._garnishFoodSub = MeteorObservable.subscribe('garnishFood', this._user).subscribe();
         this._currentDate = new Date();
         this._firstMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth(), 1);
         this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
@@ -152,6 +160,8 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         if (this._citiesSub) { this._citiesSub.unsubscribe(); }
         if (this._currencySub) { this._currencySub.unsubscribe(); }
         if (this._paymentMethodsSub) { this._paymentMethodsSub.unsubscribe(); }
+        if (this._additionsSub) { this._additionsSub.unsubscribe(); }
+        if (this._garnishFoodSub) { this._garnishFoodSub.unsubscribe(); }
     }
 
     /**
@@ -443,6 +453,29 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                     currency: _lCurrency.code,
                     isInitial: true
                 });
+
+                if (Additions.collection.find({ creation_user: this._user }).count() > 0) {
+                    Additions.collection.find({ creation_user: this._user }).forEach(function <Addition>(addition, index, arr) {
+                        addition.prices.forEach(function <AdditionPrice>(additionPrice, index, arr) {
+                            if (_lCurrency._id === additionPrice.currencyId) {
+                                let _lAdditionRestaurant: AdditionRestaurant = { restaurantId: _lRestau._id, price: additionPrice.price };
+                                Additions.update({ _id: addition._id }, { $push: { restaurants: _lAdditionRestaurant } });
+                            }
+                        });
+                    });
+                }
+
+                if (GarnishFoodCol.collection.find({ creation_user: this._user }).count() > 0) {
+                    GarnishFoodCol.collection.find({ creation_user: this._user }).forEach(function <GarnishFood>(garnishFood, index, arr) {
+                        garnishFood.prices.forEach(function <GarnishFoodPrice>(garnishFoodPrice, index, arr) {
+                            if (_lCurrency._id === garnishFoodPrice.currencyId) {
+                                let _lGarnishFoodRestaurant: GarnishFoodRestaurant = { restaurantId: _lRestau._id, price: garnishFoodPrice.price };
+                                GarnishFoodCol.update({ _id: garnishFood._id }, { $push: { restaurants: _lGarnishFoodRestaurant } })
+                            }
+                        })
+                    });
+                }
+
                 resolve(_lNewRestaurant);
             } catch (e) {
                 reject(e);

@@ -160,7 +160,7 @@
             "ADDITON_AGGREGATED": "Adición agregada correctamente",
             "ADDITION": "(Adición)",
             "MODIFY_ADDITION_ORDER": "Modificar",
-            "DELETE_ADDITION_ORDER": "Remover",
+            "DELETE_ADDITION_ORDER": "Eliminar",
             "DELETE_ADDITION_CONFIRM": "Estas seguro de eliminar la adición de la orden?",
             "ADDITION_DELETED": "Adición eliminada de la orden",
             "ADDITION_EDITED": "Adición editada correctamente",
@@ -309,13 +309,13 @@
         },
         "ITEM_EDIT": {
             "MODIFY": "Modificar",
-            "REMOVE": "Remover",
-            "REMOVE_ITEM": "Remover Item",
-            "SURE_REMOVE": "Estás seguro que quieres remover el item?",
+            "REMOVE": "Eliminar",
+            "REMOVE_ITEM": "Eliminar Item",
+            "SURE_REMOVE": "Estás seguro que quieres eliminar el item?",
             "YES_ANSWER": "Sí",
             "NO_ANSWER": "No",
             "TOAST_MSG_EDIT": "Item modificado exitosamente",
-            "TOAST_MSG_REMOVE": "Item removido exitosamente"
+            "TOAST_MSG_REMOVE": "Item eliminado exitosamente"
         },
         "SEND_ORDER": {
             "ORDER": "Orden",

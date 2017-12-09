@@ -200,10 +200,12 @@ export class InvoicesDownloadPage implements OnInit, OnDestroy {
         y = this.calculateY(y, 10);
         pdf.setFontType("bold");
         pdf.text(splitRestaurantName, x, y, alignCenter);
-        if (_pInvoice.restaurant_name.length > maxLength) {
+        if (_pInvoice.restaurant_name.length >= 68) {
             y = this.calculateY(y, 30);
-        } else {
+        } else if (_pInvoice.restaurant_name.length >= 35 && _pInvoice.restaurant_name.length <= 67) {
             y = this.calculateY(y, 20);
+        } else if (_pInvoice.restaurant_name.length <= 34) {
+            y = this.calculateY(y, 10);
         }
         pdf.setFontType("normal");
         pdf.text(splitAddress, x, y, alignCenter);
@@ -217,7 +219,12 @@ export class InvoicesDownloadPage implements OnInit, OnDestroy {
         y = this.calculateY(y, 20);
         pdf.setFontType("bold");
         pdf.text('Factura de venta', 10, y);
-        pdf.text(_pInvoice.legal_information.number, 120, y);
+
+        if (_pInvoice.legal_information.prefix) {
+            pdf.text(_pInvoice.legal_information.prefix_name + '-' + _pInvoice.legal_information.number, 120, y);
+        } else {
+            pdf.text(_pInvoice.legal_information.number, 120, y);
+        }
 
         y = this.calculateY(y, 10);
         pdf.setFontType("normal");
@@ -361,8 +368,10 @@ export class InvoicesDownloadPage implements OnInit, OnDestroy {
         }
         pdf.setFontType("normal");
 
-        y = this.calculateY(y, 10);
-        pdf.text(x, y, 'Res. DIAN No. ' + _pInvoice.legal_information.invoice_resolution + ' del ' + this.dateFormater(_pInvoice.legal_information.invoice_resolution_date, false), alignCenter);
+        if (_pInvoice.legal_information.invoice_resolution && _pInvoice.legal_information.invoice_resolution_date) {
+            y = this.calculateY(y, 10);
+            pdf.text(x, y, 'Res. DIAN No. ' + _pInvoice.legal_information.invoice_resolution + ' del ' + this.dateFormater(_pInvoice.legal_information.invoice_resolution_date, false), alignCenter);
+        }
 
         if (_pInvoice.legal_information.prefix) {
             y = this.calculateY(y, 10);
@@ -399,7 +408,7 @@ export class InvoicesDownloadPage implements OnInit, OnDestroy {
         } else {
             let splitRetainingAgent = pdf.splitTextToSize('No somos Agentes Retenedores de IVA e ICA', widthText);
             pdf.text(splitRetainingAgent, x, y, alignCenter);
-            y = this.calculateY(y, 20);
+            y = this.calculateY(y, 10);
         }
 
         pdf.text(x, y, '==========================================', alignCenter);
@@ -409,14 +418,15 @@ export class InvoicesDownloadPage implements OnInit, OnDestroy {
             y = this.calculateY(y, 10);
             let splitFinalText = pdf.splitTextToSize(_pInvoice.legal_information.text_at_the_end, widthText);
             pdf.text(splitFinalText, x, y, alignCenter);
-            if (_pInvoice.legal_information.text_at_the_end.length <= 40) {
-                y = this.calculateY(y, 10);
-            } else if (_pInvoice.legal_information.text_at_the_end.length > 41 && _pInvoice.legal_information.text_at_the_end.length <= 80) {
-                y = this.calculateY(y, 20);
-            } else if (_pInvoice.legal_information.text_at_the_end.length > 81 && _pInvoice.legal_information.text_at_the_end.length <= 120) {
-                y = this.calculateY(y, 30);
-            } else {
+
+            if (_pInvoice.legal_information.text_at_the_end.length >= 145) {
                 y = this.calculateY(y, 40);
+            } else if (_pInvoice.legal_information.text_at_the_end.length >= 97 && _pInvoice.legal_information.text_at_the_end.length <= 144) {
+                y = this.calculateY(y, 30);
+            } else if (_pInvoice.legal_information.text_at_the_end.length >= 49 && _pInvoice.legal_information.text_at_the_end.length <= 96) {
+                y = this.calculateY(y, 20);
+            } else if (_pInvoice.legal_information.text_at_the_end.length <= 48) {
+                y = this.calculateY(y, 10);
             }
             pdf.text(x, y, '==========================================', alignCenter);
         }
@@ -438,7 +448,12 @@ export class InvoicesDownloadPage implements OnInit, OnDestroy {
             title: this.itemNameTraduction('PAYMENTS_HISTORY.INVOICE_SALE'),
             author: this.itemNameTraduction('PAYMENTS_HISTORY.SOFTWARE_BY_REALBIND'),
         });
-        pdf.save(_pInvoice.legal_information.number + '_' + this.dateFormater(_pInvoice.creation_date, false) + '.pdf');
+        
+        if(_pInvoice.legal_information.prefix_name){
+            pdf.save(_pInvoice.legal_information.prefix_name + '_' + _pInvoice.legal_information.number + '_' + this.dateFormater(_pInvoice.creation_date, false) + '.pdf');
+        } else {
+            pdf.save(_pInvoice.legal_information.number + '_' + this.dateFormater(_pInvoice.creation_date, false) + '.pdf');
+        }
     }
 
     /**

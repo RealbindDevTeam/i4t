@@ -14,10 +14,10 @@ Meteor.publish('currencies', () => Currencies.find({ isActive: true }));
  */
 Meteor.publish('getCurrenciesByRestaurantsId', function (_restaurantsId: string[]) {
     let _ids: string[] = [];
-    Restaurants.collection.find({ _id: { $in: _restaurantsId } }).forEach((restaurant: Restaurant) => {
+    Restaurants.collection.find({ _id: { $in: _restaurantsId } }).forEach(function <Restaurant>(restaurant, index, ar) {
         _ids.push(restaurant.currencyId);
     });
-    return Currencies.collection.find({ _id: { $in: _ids } });
+    return Currencies.find({ _id: { $in: _ids } });
 });
 
 /**
@@ -25,11 +25,11 @@ Meteor.publish('getCurrenciesByRestaurantsId', function (_restaurantsId: string[
  */
 Meteor.publish('getCurrenciesByUserId', function () {
     let _currenciesIds: string[] = [];
-    Restaurants.collection.find({ creation_user: this.userId }).forEach((restaurant: Restaurant) => {
+    Restaurants.collection.find({ creation_user: this.userId }).forEach(function <Restaurant>(restaurant, index, args) {
         _currenciesIds.push(restaurant.currencyId);
     });
 
-    return Currencies.collection.find({ _id: { $in: _currenciesIds } });
+    return Currencies.find({ _id: { $in: _currenciesIds } });
 });
 
 /**
@@ -40,9 +40,9 @@ Meteor.publish('getCurrenciesByCurrentUser', function (_userId: string) {
 
     if (_userDetail.current_restaurant != '') {
         let _restaurant = Restaurants.findOne({ _id: _userDetail.current_restaurant });
-        return Currencies.collection.find({ _id: _restaurant.currencyId });
+        return Currencies.find({ _id: _restaurant.currencyId });
     } else {
-        return Currencies.collection.find({ _id: '0' });
+        return Currencies.find({ _id: '0' });
     }
 });
 
@@ -55,8 +55,8 @@ Meteor.publish('getCurrenciesByRestaurantWork', function (_userId: string) {
     let _currenciesIds: string[] = [];
     if (_userDetail.restaurant_work != '') {
         let _restaurant = Restaurants.findOne({ _id: _userDetail.restaurant_work });
-        return Currencies.collection.find({ _id: _restaurant.currencyId });
+        return Currencies.find({ _id: _restaurant.currencyId });
     } else {
-        return Currencies.collection.find({ _id: '0' });
+        return Currencies.find({ _id: '0' });
     }
 });

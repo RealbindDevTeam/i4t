@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog, MatDialogConfig } from '@angular/material';
 import { MeteorObservable } from 'meteor-rxjs';
 import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
 import { UserLogin } from '../../../../../both/models/auth/user-login.model';
@@ -12,7 +12,7 @@ import { AlertConfirmComponent } from '../../web/general/alert-confirm/alert-con
 export class AuthClass {
 
     protected userLang: string;
-    protected _mdDialogRef: MdDialogRef<any>;
+    protected _mdDialogRef: MatDialogRef<any>;
     protected titleMsg: string;
     protected btnAcceptLbl: string;
 
@@ -26,7 +26,7 @@ export class AuthClass {
     constructor(protected router: Router,
         protected zone: NgZone,
         protected translate: TranslateService,
-        protected _mdDialog: MdDialog) {
+        protected _mdDialog: MatDialog) {
         
         this.userLang = navigator.language.split('-')[0];
         translate.setDefaultLang('en');

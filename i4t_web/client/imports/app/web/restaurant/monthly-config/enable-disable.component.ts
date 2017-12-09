@@ -22,7 +22,7 @@ import * as QRious from 'qrious';
 @Component({
     selector: 'enable-disable',
     templateUrl: './enable-disable.component.html',
-    styleUrls: [ './enable-disable.component.scss' ]
+    styleUrls: ['./enable-disable.component.scss']
 })
 export class EnableDisableComponent implements OnInit, OnDestroy {
 
@@ -32,23 +32,23 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
     @Output('gotorestaurantlist')
     restaurantStatus: EventEmitter<any> = new EventEmitter<any>();
 
-    private _tableForm              : FormGroup;
-    private _restaurantSub          : Subscription;
-    private _tableSub               : Subscription;
-    private _countrySub             : Subscription;
-    
-    private _restaurants            : Observable<Restaurant[]>;
-    private _tables                 : Observable<Table[]>;
+    private _tableForm: FormGroup;
+    private _restaurantSub: Subscription;
+    private _tableSub: Subscription;
+    private _countrySub: Subscription;
 
-    private titleMsg                : string;
-    private btnAcceptLbl            : string;
-    private selectedRestaurantValue : string;
-    private restaurantCode          : string = '';
-    private tables_count            : number = 0;
-    private max_table_number        : number;
-    private _restaurant             : Restaurant;
+    private _restaurants: Observable<Restaurant[]>;
+    private _tables: Observable<Table[]>;
 
-    private _mdDialogRef            : MatDialogRef<any>;
+    private titleMsg: string;
+    private btnAcceptLbl: string;
+    private selectedRestaurantValue: string;
+    private restaurantCode: string = '';
+    private tables_count: number = 0;
+    private max_table_number: number;
+    private _restaurant: Restaurant;
+
+    private _mdDialogRef: MatDialogRef<any>;
 
     /**
      * EnableDisableComponent Constructor
@@ -58,13 +58,13 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
      * @param {UserLanguageService} _userLanguageService 
      * @param {NgZone} _ngZone
      */
-    constructor( private translate: TranslateService, 
-                 public snackBar: MatSnackBar,
-                 public _mdDialog: MatDialog, 
-                 private _userLanguageService: UserLanguageService,
-                 private _ngZone:NgZone ) {
-        translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
-        translate.setDefaultLang( 'en' );
+    constructor(private translate: TranslateService,
+        public snackBar: MatSnackBar,
+        public _mdDialog: MatDialog,
+        private _userLanguageService: UserLanguageService,
+        private _ngZone: NgZone) {
+        translate.use(this._userLanguageService.getLanguage(Meteor.user()));
+        translate.setDefaultLang('en');
         this.selectedRestaurantValue = "";
         this.titleMsg = 'SIGNUP.SYSTEM_MSG';
         this.btnAcceptLbl = 'SIGNUP.ACCEPT';
@@ -76,20 +76,20 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
             tables_number: new FormControl('', [Validators.required])
         });
         this._restaurantSub = MeteorObservable.subscribe('restaurants', Meteor.userId()).subscribe(() => {
-            this._ngZone.run( () => {
+            this._ngZone.run(() => {
                 this._restaurants = Restaurants.find({ _id: this.restaurantId }).zone();
-                this._restaurant = Restaurants.findOne( { _id: this.restaurantId } );
-                this._countrySub = MeteorObservable.subscribe( 'getCountryByRestaurantId', this.restaurantId ).subscribe( () => {
-                    this._ngZone.run( () => {
-                        let _lRestaurantCountry:Country = Countries.findOne( { _id: this._restaurant.countryId } );
+                this._restaurant = Restaurants.findOne({ _id: this.restaurantId });
+                this._countrySub = MeteorObservable.subscribe('getCountryByRestaurantId', this.restaurantId).subscribe(() => {
+                    this._ngZone.run(() => {
+                        let _lRestaurantCountry: Country = Countries.findOne({ _id: this._restaurant.countryId });
                         this.max_table_number = _lRestaurantCountry.max_number_tables;
-                        this._tableForm.controls['tables_number'].setValidators( Validators.max(this.max_table_number) );
+                        this._tableForm.controls['tables_number'].setValidators(Validators.max(this.max_table_number));
                     });
                 });
             });
         });
         this._tableSub = MeteorObservable.subscribe('tables', Meteor.userId()).subscribe(() => {
-            this._ngZone.run( () => {
+            this._ngZone.run(() => {
                 this._tables = this._tables = Tables.find({ restaurantId: this.restaurantId }).zone();
             });
         });
@@ -98,10 +98,10 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
     /**
      * Remove all subscriptions
      */
-    removeSubscriptions():void{
-        if( this._restaurantSub ){ this._restaurantSub.unsubscribe(); }
-        if( this._tableSub ){ this._tableSub.unsubscribe(); }
-        if( this._countrySub ){ this._countrySub.unsubscribe(); }
+    removeSubscriptions(): void {
+        if (this._restaurantSub) { this._restaurantSub.unsubscribe(); }
+        if (this._tableSub) { this._tableSub.unsubscribe(); }
+        if (this._countrySub) { this._countrySub.unsubscribe(); }
     }
 
     /**
@@ -247,8 +247,8 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
                     }
                 });
 
-                Tables.collection.find({ restaurantId: _restaurant._id}).forEach((table: Table)=> {
-                    Tables.collection.update({_id: table._id},{$set: {is_active: !_restaurant.isActive}});
+                Tables.collection.find({ restaurantId: _restaurant._id }).forEach(function <Table>(table, index, ar) {
+                    Tables.collection.update({ _id: table._id }, { $set: { is_active: !_restaurant.isActive } });
                 });
 
                 this.restaurantStatus.emit(true);
@@ -266,7 +266,7 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
      */
     itemNameTraduction(itemName: string): string {
         var wordTraduced: string;
-        this.translate.use( this._userLanguageService.getLanguage( Meteor.user() ) );
+        this.translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         this.translate.get(itemName).subscribe((res: string) => {
             wordTraduced = res;
         });
@@ -297,7 +297,7 @@ export class EnableDisableComponent implements OnInit, OnDestroy {
     * @param {boolean} showBtnCancel
     */
     openDialog(title: string, subtitle: string, content: string, btnCancelLbl: string, btnAcceptLbl: string, showBtnCancel: boolean) {
-        
+
         this._mdDialogRef = this._mdDialog.open(AlertConfirmComponent, {
             disableClose: true,
             data: {

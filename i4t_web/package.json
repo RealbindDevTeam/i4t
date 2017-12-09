@@ -24,6 +24,7 @@
     "@angular/platform-server": "5.0.3",
     "@angular/router": "5.0.3",
     "@ngx-translate/core": "9.0.0",
+    "@ngx-translate/http-loader": "2.0.0",
     "@types/node": "8.0.53",
     "angulartics2": "4.0.4",
     "babel-cli": "6.26.0",

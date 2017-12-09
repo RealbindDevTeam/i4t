@@ -13,7 +13,7 @@ import { Items } from '../../../../../both/collections/administration/item.colle
 import { Payment } from '../../../../../both/models/restaurant/payment.model';
 import { Payments } from '../../../../../both/collections/restaurant/payment.collection';
 import { Order, OrderItem, OrderAddition } from '../../../../../both/models/restaurant/order.model';
-import { Orders  } from '../../../../../both/collections/restaurant/order.collection';
+import { Orders } from '../../../../../both/collections/restaurant/order.collection';
 import { Currency } from '../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../both/collections/general/currency.collection';
 
@@ -135,7 +135,7 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
      */
     getDailySales(_pRestaurantId: string): number {
         let _lTotalSale: number = 0;
-        Payments.collection.find({ restaurantId: _pRestaurantId, creation_date: { $gte: new Date(this._currentYear, this._currentMonth, this._currentDay) } }).forEach((pay: Payment) => {
+        Payments.collection.find({ restaurantId: _pRestaurantId, creation_date: { $gte: new Date(this._currentYear, this._currentMonth, this._currentDay) } }).forEach(function <Payment>(pay, index, ar) {
             _lTotalSale += pay.totalToPayment;
         });
         return _lTotalSale;
@@ -147,7 +147,7 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
      */
     getItemsSold(_pRestaurantId: string): number {
         let _lItemCount: number = 0;
-        Payments.collection.find({ restaurantId: _pRestaurantId, creation_date: { $gte: new Date(this._currentYear, this._currentMonth, this._currentDay) } }).forEach((pay: Payment) => {
+        Payments.collection.find({ restaurantId: _pRestaurantId, creation_date: { $gte: new Date(this._currentYear, this._currentMonth, this._currentDay) } }).forEach(function <Payment>(pay, index, ar) {
             pay.orders.forEach((orderId) => {
                 let _lOrder: Order = Orders.findOne({ _id: orderId });
                 if (_lOrder) {
@@ -166,7 +166,7 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
      */
     getGarnishFoodSold(_pRestaurantId: string): number {
         let _lGarnishFoodCount: number = 0;
-        Payments.collection.find({ restaurantId: _pRestaurantId, creation_date: { $gte: new Date(this._currentYear, this._currentMonth, this._currentDay) } }).forEach((pay: Payment) => {
+        Payments.collection.find({ restaurantId: _pRestaurantId, creation_date: { $gte: new Date(this._currentYear, this._currentMonth, this._currentDay) } }).forEach(function <Payment>(pay, index, ar) {
             pay.orders.forEach((orderId) => {
                 let _lOrder: Order = Orders.findOne({ _id: orderId });
                 if (_lOrder) {
@@ -185,7 +185,7 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
      */
     getAdditionsSold(_pRestaurantId: string): number {
         let _lAdditions: number = 0;
-        Payments.collection.find({ restaurantId: _pRestaurantId, creation_date: { $gte: new Date(this._currentYear, this._currentMonth, this._currentDay) } }).forEach((pay: Payment) => {
+        Payments.collection.find({ restaurantId: _pRestaurantId, creation_date: { $gte: new Date(this._currentYear, this._currentMonth, this._currentDay) } }).forEach(function <Payment>(pay, index, ar) {
             pay.orders.forEach((orderId) => {
                 let _lOrder: Order = Orders.findOne({ _id: orderId });
                 if (_lOrder) {

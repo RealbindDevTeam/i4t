@@ -32,7 +32,6 @@ export class TableDetailComponent implements OnInit, OnDestroy {
     private _role: string;
 
     private _usersSub: Subscription;
-    private _userImagesSub: Subscription;
     private _userDetailsSub: Subscription;
     private _ordersSub: Subscription;
     private _currenciesSub: Subscription;
@@ -81,7 +80,6 @@ export class TableDetailComponent implements OnInit, OnDestroy {
                 this._users = Users.find({}).zone();
             });
         });
-        this._userImagesSub = MeteorObservable.subscribe('getUserImagesByTableId', this._restaurantId, this._tableId).subscribe();
         this._ordersSub = MeteorObservable.subscribe('getOrdersByTableId', this._restaurantId, this._tableId,
             ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS',
                 'ORDER_STATUS.PREPARED', 'ORDER_STATUS.DELIVERED',
@@ -100,7 +98,6 @@ export class TableDetailComponent implements OnInit, OnDestroy {
     removesubscriptions(): void {
         if (this._userDetailsSub) { this._userDetailsSub.unsubscribe(); }
         if (this._usersSub) { this._usersSub.unsubscribe(); }
-        if (this._userImagesSub) { this._userImagesSub.unsubscribe(); }
         if (this._ordersSub) { this._ordersSub.unsubscribe(); }
         if (this._currenciesSub) { this._currenciesSub.unsubscribe(); }
     }

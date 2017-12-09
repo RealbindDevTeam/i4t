@@ -11,7 +11,7 @@ import { check } from 'meteor/check';
  */
 Meteor.publish('additions', function (_userId: string) {
     check(_userId, String);
-    return Additions.collection.find({ creation_user: _userId });
+    return Additions.find({ creation_user: _userId });
 });
 
 /**
@@ -20,7 +20,7 @@ Meteor.publish('additions', function (_userId: string) {
  */
 Meteor.publish('additionsByRestaurant', function (_restaurantId: string) {
     check(_restaurantId, String);
-    return Additions.collection.find({ 'restaurants.restaurantId': { $in: [_restaurantId] }, is_active: true });
+    return Additions.find({ 'restaurants.restaurantId': { $in: [_restaurantId] }, is_active: true });
 });
 
 /**
@@ -29,7 +29,7 @@ Meteor.publish('additionsByRestaurant', function (_restaurantId: string) {
  */
 Meteor.publish('additionsById', function ( _pId: string) {
     check(_pId, String);
-    return Additions.collection.find({ _id : _pId });
+    return Additions.find({ _id : _pId });
 });
 
 /**
@@ -40,7 +40,7 @@ Meteor.publish('additionsByCurrentRestaurant', function ( _userId : string ) {
     check(_userId, String);
     let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
     if( _lUserDetail ){
-        return Additions.collection.find({ 'restaurants.restaurantId': { $in: [_lUserDetail.current_restaurant] }, is_active: true });
+        return Additions.find({ 'restaurants.restaurantId': { $in: [_lUserDetail.current_restaurant] }, is_active: true });
     } else {
         return;
     }
@@ -52,13 +52,13 @@ Meteor.publish('additionsByCurrentRestaurant', function ( _userId : string ) {
 */
 Meteor.publish('additionsByItem', function (_itemId: string) {
     check(_itemId, String); 
-    var item = Items.collection.findOne({ _id: _itemId, additionsIsAccepted: true });
+    var item = Items.findOne({ _id: _itemId, additionsIsAccepted: true });
 
     if(typeof item !== 'undefined') {
-        var aux = Additions.collection.find({ _id: { $in: item.additions } }).fetch();
-        return Additions.collection.find({ _id: { $in: item.additions } });
+        var aux = Additions.find({ _id: { $in: item.additions } }).fetch();
+        return Additions.find({ _id: { $in: item.additions } });
     }else{
-        return Additions.collection.find({ _id: { $in: [] } });
+        return Additions.find({ _id: { $in: [] } });
     }
 });
 
@@ -70,7 +70,7 @@ Meteor.publish('additionsByRestaurantWork', function (_userId: string) {
     check(_userId, String);
     let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
     if( _lUserDetail ){
-        return Additions.collection.find({ 'restaurants.restaurantId': { $in: [_lUserDetail.restaurant_work] }, is_active: true });
+        return Additions.find({ 'restaurants.restaurantId': { $in: [_lUserDetail.restaurant_work] }, is_active: true });
     } else {
         return;
     }

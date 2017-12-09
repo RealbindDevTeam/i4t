@@ -13,9 +13,9 @@ Meteor.publish('cities', () => Cities.find({ is_active: true }));
  */
 Meteor.publish('getCityByRestaurantId', function (_restaurantId: string) {
     check(_restaurantId, String);
-    let restaurant = Restaurants.collection.findOne({ _id: _restaurantId });
+    let restaurant = Restaurants.findOne({ _id: _restaurantId });
     if (restaurant) {
-        return Cities.collection.find({ _id: restaurant.cityId });
+        return Cities.find({ _id: restaurant.cityId });
     } else {
         return Cities.find({ is_active: true });
     }
@@ -27,5 +27,5 @@ Meteor.publish('getCityByRestaurantId', function (_restaurantId: string) {
  */
 Meteor.publish('citiesByCountry', function (_countryId: string) {
     check(_countryId, String);
-    return Cities.collection.find({ country: _countryId, is_active: true });
+    return Cities.find({ country: _countryId, is_active: true });
 });

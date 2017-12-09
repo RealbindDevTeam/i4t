@@ -10,7 +10,7 @@ import { check } from 'meteor/check';
  */
 Meteor.publish('tables', function (_userId: string) {
     check(_userId, String);
-    return Tables.collection.find({ creation_user: _userId });
+    return Tables.find({ creation_user: _userId });
 });
 
 /**
@@ -19,7 +19,7 @@ Meteor.publish('tables', function (_userId: string) {
  */
 Meteor.publish('getTableById', function (_tableId: string) {
     check(_tableId, String);
-    return Tables.collection.find({ _id: _tableId });
+    return Tables.find({ _id: _tableId });
 });
 
 /**
@@ -28,9 +28,9 @@ Meteor.publish('getTableById', function (_tableId: string) {
 Meteor.publish('getTableByCurrentTable', function (_userId: string) {
     check(_userId, String);
 
-    var user_detail = UserDetails.collection.findOne({ user_id: _userId });
+    var user_detail = UserDetails.findOne({ user_id: _userId });
     if( user_detail ){
-        return Tables.collection.find({ _id: user_detail.current_table });
+        return Tables.find({ _id: user_detail.current_table });
     } else {
         return;
     }
@@ -40,7 +40,7 @@ Meteor.publish('getTableByCurrentTable', function (_userId: string) {
  * Meteor publication return all tables
  */
 Meteor.publish( 'getAllTables', function( ){
-    return Tables.collection.find( { } );
+    return Tables.find( { } );
 });
 
 /**
@@ -49,7 +49,7 @@ Meteor.publish( 'getAllTables', function( ){
  */
 Meteor.publish( 'getTablesByRestaurant', function( _restaurantId:string ) {
     check( _restaurantId, String );
-    return Tables.collection.find( { restaurantId: _restaurantId } );
+    return Tables.find( { restaurantId: _restaurantId } );
 });
 
 /**
@@ -60,7 +60,7 @@ Meteor.publish( 'getTablesByRestaurantWork', function( _userId: string ){
     check( _userId, String );
     let _lUserDetail: UserDetail = UserDetails.findOne( { user_id: _userId } );
     if( _lUserDetail ){
-        return Tables.collection.find( { restaurantId: _lUserDetail.restaurant_work } );
+        return Tables.find( { restaurantId: _lUserDetail.restaurant_work } );
     } else {
         return;
     }
@@ -72,5 +72,5 @@ Meteor.publish( 'getTablesByRestaurantWork', function( _userId: string ){
  */
 Meteor.publish('getTableByQRCode', function ( _lQRCode: string ){
     check(_lQRCode, String);
-    return Tables.collection.find( { QR_code: _lQRCode } );
+    return Tables.find( { QR_code: _lQRCode } );
 });

@@ -5,6 +5,8 @@ import { check } from 'meteor/check';
 import { Accounts } from '../../../../both/collections/restaurant/account.collection';
 import { UserDetail } from '../../../../both/models/auth/user-detail.model';
 import { PaymentsHistory } from '../../../../both/collections/payment/payment-history.collection';
+import { Restaurant } from '../../../../both/models/restaurant/restaurant.model';
+import { PaymentHistory } from '../../../../both/models/payment/payment-history.model';
 
 /**
  * Meteor publication restaurants with creation user condition
@@ -12,7 +14,7 @@ import { PaymentsHistory } from '../../../../both/collections/payment/payment-hi
  */
 Meteor.publish('restaurants', function (_userId: string) {
     check(_userId, String);
-    return Restaurants.collection.find({ creation_user: _userId });
+    return Restaurants.find({ creation_user: _userId });
 });
 
 /**
@@ -22,9 +24,9 @@ Meteor.publish('restaurants', function (_userId: string) {
 
 Meteor.publish('getRestaurantByCurrentUser', function (_userId: string) {
     check(_userId, String);
-    var user_detail = UserDetails.collection.findOne({ user_id: _userId });
+    var user_detail = UserDetails.findOne({ user_id: _userId });
     if (user_detail) {
-        return Restaurants.collection.find({ _id: user_detail.current_restaurant });
+        return Restaurants.find({ _id: user_detail.current_restaurant });
     } else {
         return;
     }
@@ -37,9 +39,9 @@ Meteor.publish('getRestaurantByCurrentUser', function (_userId: string) {
 
 Meteor.publish('getRestaurantByRestaurantWork', function (_userId: string) {
     check(_userId, String);
-    var user_detail = UserDetails.collection.findOne({ user_id: _userId });
+    var user_detail = UserDetails.findOne({ user_id: _userId });
     if (user_detail) {
-        return Restaurants.collection.find({ _id: user_detail.restaurant_work });
+        return Restaurants.find({ _id: user_detail.restaurant_work });
     } else {
         return;
     }
@@ -58,7 +60,7 @@ Meteor.publish('currentRestaurantsNoPayed', function (_userId: string) {
     let historyPaymentRes: string[] = [];
     let restaurantsInitial: string[] = [];
 
-    Restaurants.collection.find({ creation_user: _userId, isActive: true, freeDays: false }).fetch().forEach((restaurant) => {
+    Restaurants.collection.find({ creation_user: _userId, isActive: true, freeDays: false }).fetch().forEach(function <Restaurant>(restaurant, index, arr) {
         restaurantsInitial.push(restaurant._id);
     });
 
@@ -66,13 +68,13 @@ Meteor.publish('currentRestaurantsNoPayed', function (_userId: string) {
         restaurantIds: {
             $in: restaurantsInitial
         }, month: currentMonth, year: currentYear, $or: [{ status: 'TRANSACTION_STATUS.APPROVED' }, { status: 'TRANSACTION_STATUS.PENDING' }]
-    }).fetch().forEach((historyPayment) => {
+    }).fetch().forEach(function <PaymentHistory>(historyPayment, index, arr) {
         historyPayment.restaurantIds.forEach((restaurantId) => {
             historyPaymentRes.push(restaurantId);
         });
     });
 
-    return Restaurants.collection.find({ _id: { $nin: historyPaymentRes }, creation_user: _userId, isActive: true, freeDays: false });
+    return Restaurants.find({ _id: { $nin: historyPaymentRes }, creation_user: _userId, isActive: true, freeDays: false });
 });
 
 /**
@@ -80,7 +82,7 @@ Meteor.publish('currentRestaurantsNoPayed', function (_userId: string) {
  */
 Meteor.publish('getInactiveRestaurants', function (_userId: string) {
     check(_userId, String);
-    return Restaurants.collection.find({ creation_user: _userId, isActive: false });
+    return Restaurants.find({ creation_user: _userId, isActive: false });
 });
 
 /**
@@ -89,7 +91,7 @@ Meteor.publish('getInactiveRestaurants', function (_userId: string) {
  */
 Meteor.publish('getActiveRestaurants', function (_userId: string) {
     check(_userId, String);
-    return Restaurants.collection.find({ creation_user: _userId, isActive: true });
+    return Restaurants.find({ creation_user: _userId, isActive: true });
 });
 
 /**
@@ -98,7 +100,7 @@ Meteor.publish('getActiveRestaurants', function (_userId: string) {
  */
 Meteor.publish('getRestaurantById', function (_pId: string) {
     check(_pId, String);
-    return Restaurants.collection.find({ _id: _pId });
+    return Restaurants.find({ _id: _pId });
 });
 
 /**
@@ -113,7 +115,7 @@ Meteor.publish('getRestaurantLegality', function (_restaurantId: string) {
 /**
  * Meteor publication return restaurant profile by restaurant id
  */
-Meteor.publish('getRestaurantProfile', function (_restaurantId: string){
+Meteor.publish('getRestaurantProfile', function (_restaurantId: string) {
     check(_restaurantId, String);
-    return RestaurantsProfile.find({restaurant_id: _restaurantId});
+    return RestaurantsProfile.find({ restaurant_id: _restaurantId });
 });

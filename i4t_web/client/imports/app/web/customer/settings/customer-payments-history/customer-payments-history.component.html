@@ -30,7 +30,7 @@
                                         <mat-list-item>
                                             <img mat-list-avatar class="image" src="/images/orders.png">
                                             <h2 mat-line class="title">{{invoice.restaurant_name}}</h2>
-                                            <p mat-line class="title">{{invoice.creation_date | date: 'dd MMM yyyy HH:mm'}}</p>
+                                            <p mat-line class="title">{{invoice.creation_date | date: 'MM/dd/yyyy HH:mm a'}}</p>
                                             <button mat-raised-button *ngIf="isInvoiceCanDownload(invoice, invoice.country_id)" (click)="invoiceGenerate(invoice, invoice.country_id)" style="box-shadow: none; color: #ef5350;" matTooltip="{{'PAYMENTS_HISTORY.TOOLTIP_DOWNLOAD_INVOICE' | translate}}">
                                                 <mat-icon>get_app</mat-icon>
                                             </button>
