@@ -22,8 +22,9 @@
                 <ion-thumbnail item-left>
                     <img md-list-avatar src="assets/img/my-orders.png">
                 </ion-thumbnail>
-                <h2>{{ 'MOBILE.PAYMENTS.PAY_ORDER' | translate }} # {{order.code}}</h2>
-                <p>{{order.totalPayment}} {{_currency}}</p>
+                <h2 style="font-weight: bold;">{{ 'MOBILE.PAYMENTS.PAY_ORDER' | translate }} # {{order.code}}</h2>
+                <p style="font-weight: bold;">{{order.totalPayment}} {{_currency}}</p>
+                <p style="font-weight: bold;">{{'MOBILE.STATE' | translate}}: {{order.status | translate}}</p>
 
                 <button *ngIf="isAvailableToReturn(order)" ion-button icon-only item-right style="color: #EF5350; background-color: transparent; margin: 0 8px;" (click)="showComfirmClose(order)">
                     <ion-icon name="repeat"></ion-icon>

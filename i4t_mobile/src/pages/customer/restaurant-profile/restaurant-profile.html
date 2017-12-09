@@ -1,11 +1,11 @@
 <ion-header>
     <ion-navbar>
-        <ion-title *ngFor="let _restaurant of _restaurants | async;">{{_restaurant?.name}}</ion-title>
+        <ion-title style="width: 90%;" *ngFor="let _restaurant of _restaurants | async;">{{_restaurant?.name}}</ion-title>
     </ion-navbar>
 </ion-header>
   
 <ion-content>
-    <ion-fab *ngIf="_restaurantProfile?.social_networks?.facebook || _restaurantProfile?.social_networks?.twitter  || _restaurantProfile?.social_networks?.instagram" top right>
+    <ion-fab *ngIf="_restaurantProfile?.web_page || _restaurantProfile?.social_networks?.facebook || _restaurantProfile?.social_networks?.twitter  || _restaurantProfile?.social_networks?.instagram" top right>
         <button ion-fab color="vibrant" mini class="custom"><ion-icon name="more"></ion-icon></button>
         <ion-fab-list side="bottom">
             <a ion-fab *ngIf="_restaurantProfile?.web_page" href="{{_restaurantProfile?.web_page}}">
@@ -50,14 +50,6 @@
                     <ion-icon name="time"></ion-icon>
                     {{'MOBILE.SCHEDULE.SCHEDULE' | translate}}
                 </button>
-
-                <ion-item *ngIf="!_restaurantProfile?.schedule?.monday.isActive && !_restaurantProfile?.schedule?.tuesday.isActive && 
-                !_restaurantProfile?.schedule?.wednesday.isActive && !_restaurantProfile?.schedule?.thursday.isActive && 
-                !_restaurantProfile?.schedule?.friday.isActive && !_restaurantProfile?.schedule?.saturday.isActive && 
-                !_restaurantProfile?.schedule?.sunday.isActive && !_restaurantProfile?.schedule?.holiday.isActive">
-                    <ion-icon name="time"></ion-icon>
-                    {{'MOBILE.SCHEDULE.NO_RESTAURANT_HOURS' | translate}}
-                </ion-item>
             </ion-list>
 
             <p *ngIf="_restaurantProfile?.restaurant_description.length <= 20" class="margin">
