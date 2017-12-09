@@ -16,7 +16,7 @@ export function loadParameters() {
             { _id: '1000', name: 'payu_payments_url_test', value: 'https://sandbox.api.payulatam.com/payments-api/4.0/service.cgi', description: 'url for connect test payu payments API' },
             { _id: '2000', name: 'payu_reports_url_test', value: 'https://sandbox.api.payulatam.com/reports-api/4.0/service.cgi', description: 'url for connect test payu reports API' },
             { _id: '3000', name: 'ip_public_service_url', value: 'https://api.ipify.org?format=json', description: 'url for retrieve the client public ip' },
-            { _id: '4000', name: 'payu_pay_info_url_test', value: 'http://192.168.0.3:9000/api/getCusPayInfo', description: 'url for retrieve credentials for test payu payment' },
+            { _id: '4000', name: 'payu_pay_info_url_test', value: 'http://104.196.37.221:9000/', description: 'url for retrieve credentials for test payu payment' },
             { _id: '1100', name: 'company_name', value: 'Realbind S.A.S', description: 'Realbind company name for invoice' },
             { _id: '1150', name: 'company_phone', value: 'Tel: (57 1) 6959537', description: 'Realbind phone' },
             { _id: '1200', name: 'company_address', value: 'Cra 6 # 58-43 Of 201', description: 'Realbind company address' },
