@@ -79,16 +79,6 @@
                                     </mat-form-field>
                                 </div>
                                 <div class="input">
-                                    <p>{{ 'RESTAURANT_PROFILE.PHONE' | translate }}:</p>
-                                    <mat-form-field class="input-right">
-                                        <input matInput formControlName="phone" placeholder="{{ 'RESTAURANT_PROFILE.PHONE_LBL' | translate }}" minlength="1" maxlength="30"
-                                            #inputPhone>
-                                        <mat-hint align="end">{{inputPhone.value.length}} / 30</mat-hint>
-                                    </mat-form-field>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="input">
                                     <p>{{ 'RESTAURANT_PROFILE.EMAIL' | translate }}:</p>
                                     <mat-form-field class="input-left">
                                         <input matInput formControlName="email" placeholder="{{ 'RESTAURANT_PROFILE.EMAIL_LBL' | translate }}" minlength="1" maxlength="40"
@@ -96,6 +86,8 @@
                                         <mat-hint align="end">{{inputEmail.value.length}} / 40</mat-hint>
                                     </mat-form-field>
                                 </div>
+                            </div>
+                            <div>
                                 <div class="input">
                                     <p>{{ 'RESTAURANT_PROFILE.FACEBOOK_LINK' | translate }}:</p>
                                     <mat-form-field class="input-right">
@@ -104,8 +96,6 @@
                                         <mat-hint align="end">{{inputFacebooklink.value.length}} / 60</mat-hint>
                                     </mat-form-field>
                                 </div>
-                            </div>
-                            <div>
                                 <div class="input">
                                     <p>{{ 'RESTAURANT_PROFILE.INSTAGRAM_LINK' | translate }}:</p>
                                     <mat-form-field class="input-left">
@@ -114,6 +104,8 @@
                                         <mat-hint align="end">{{inputInstagramlink.value.length}} / 60</mat-hint>
                                     </mat-form-field>
                                 </div>
+                            </div>
+                            <div>
                                 <div class="input">
                                     <p>{{ 'RESTAURANT_PROFILE.TWITTER_LINK' | translate }}:</p>
                                     <mat-form-field class="input-right">

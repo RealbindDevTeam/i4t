@@ -9,7 +9,7 @@
                         <mat-icon class="location-icon">location_on</mat-icon>
                         <span>{{_restaurantCountry}}, {{_restaurantCity}}</span>
                     </p>
-                    <button mat-raised-button class="primary-button menu-button">{{'RESTAURANT_PROFILE_DETAIL.VIEW_MENU' | translate}}</button>
+                    <!--button mat-raised-button class="primary-button menu-button">{{'RESTAURANT_PROFILE_DETAIL.VIEW_MENU' | translate}}</button-->
                 </mat-list-item>
             </mat-list>
         </mat-card>
@@ -43,10 +43,13 @@
                         </mat-card>
                         <mat-card class="photos">
                             <mat-card-title>{{'RESTAURANT_PROFILE_DETAIL.PHOTOS' | translate}}</mat-card-title>
-                            <p *ngIf="restaurantProfile.images.length <= 0">{{'RESTAURANT_PROFILE_DETAIL.NO_PHOTOS' | translate}}</p>
-                            <mat-card-content class="content">
-                                <img *ngFor="let restProfileImgeThumb of restaurantProfile.images" md-card-image class="img-thumb" src="{{restProfileImgeThumb.url}}">
-                            </mat-card-content>
+                            <div *ngIf="restaurantProfile.images">
+                                <p *ngIf="restaurantProfile.images.length <= 0">{{'RESTAURANT_PROFILE_DETAIL.NO_PHOTOS' | translate}}</p>
+                                <mat-card-content class="content">
+                                    <img *ngFor="let restProfileImgeThumb of restaurantProfile.images" md-card-image class="img-thumb" src="{{restProfileImgeThumb.url}}">
+                                </mat-card-content>
+                            </div>
+                            <p *ngIf="!restaurantProfile.images">{{'RESTAURANT_PROFILE_DETAIL.NO_PHOTOS' | translate}}</p>
                         </mat-card>
                     </div>
                     <div class="contact-payments-panel">
@@ -63,11 +66,11 @@
                                             <mat-icon class="icon">language</mat-icon>
                                             <span>{{'RESTAURANT_PROFILE_DETAIL.NO_WEB_PAGE' | translate}}</span>
                                         </p>
-                                        <p *ngIf="restaurantProfile.phone" mat-line class="font-info">
+                                        <p *ngIf="restaurant.phone" mat-line class="font-info">
                                             <mat-icon class="icon">call</mat-icon>
-                                            <span>{{restaurantProfile.phone}}</span>
+                                            <span>{{restaurant.indicative}} {{restaurant.phone}}</span>
                                         </p>
-                                        <p *ngIf="!restaurantProfile.phone" mat-line class="font-info">
+                                        <p *ngIf="!restaurant.phone" mat-line class="font-info">
                                             <mat-icon class="icon">call</mat-icon>
                                             <span>{{'RESTAURANT_PROFILE_DETAIL.NO_PHONE' | translate}}</span>
                                         </p>
