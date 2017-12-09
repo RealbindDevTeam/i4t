@@ -8,15 +8,15 @@
 </ion-header>
 
 <ion-content text-wrap>
+    <ion-card *ngIf="_ionicUrlParam">
+        <ion-card-content>
+            <p>{{'MOBILE.PAYMENTS_HISTORY.INFO' | translate}}
+                <a href="{{_ionicUrlParam.value}}">iurest.com</a>
+            </p>
+        </ion-card-content>
+    </ion-card>
+    
     <div *ngFor="let invoice of _invoices | async;">
-        <ion-card *ngIf="_ionicUrlParam">
-            <ion-card-content>
-                <p>{{'MOBILE.PAYMENTS_HISTORY.INFO' | translate}}
-                    <a href="{{_ionicUrlParam.value}}">iurest.com</a>
-                </p>
-            </ion-card-content>
-        </ion-card>
-
         <ion-card (click)="goToPaymentDetail(invoice)">
             <ion-card-content>
                 <ion-list no-lines>

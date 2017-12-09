@@ -164,7 +164,6 @@ export interface RestaurantProfile extends CollectionObject {
     restaurant_id: string;
     restaurant_description: string;
     web_page?: string;
-    phone?: string;
     email?: string;
     social_networks?: RestaurantSocialNetwork;
     images?:RestaurantProfileImage[];
