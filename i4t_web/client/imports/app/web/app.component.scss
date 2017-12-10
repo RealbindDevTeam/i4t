@@ -5,6 +5,7 @@
 @import "../../../../public/scss/_typography.scss";
 @import "../../../../public/scss/_cards.scss";
 @import "../../../../public/scss/_tables.scss";
+@import "public/css/animate";
 
 /***************
   HTML Styles
@@ -727,7 +728,7 @@ div.fixed-action-btn {
     }
 }
 
-.btn-close {
+button.btn-close {
     position: absolute;
     top: 16px;
     right: 0;
