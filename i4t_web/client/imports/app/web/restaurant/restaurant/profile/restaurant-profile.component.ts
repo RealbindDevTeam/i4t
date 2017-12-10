@@ -160,7 +160,6 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
         this._profileForm = new FormGroup({
             restaurant_description: new FormControl('', [Validators.required]),
             web_page: new FormControl(),
-            phone: new FormControl(),
             email: new FormControl(),
             facebookLink: new FormControl(),
             instagramLink: new FormControl(),
@@ -175,7 +174,6 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                 if (this._restaurantProfile) {
                     this._profileForm.controls['restaurant_description'].setValue(this._restaurantProfile.restaurant_description);
                     this._profileForm.controls['web_page'].setValue(this._restaurantProfile.web_page === undefined || this._restaurantProfile.web_page === null ? '' : this._restaurantProfile.web_page);
-                    this._profileForm.controls['phone'].setValue(this._restaurantProfile.phone === undefined || this._restaurantProfile.phone === null ? '' : this._restaurantProfile.phone);
                     this._profileForm.controls['email'].setValue(this._restaurantProfile.email === undefined || this._restaurantProfile.email === null ? '' : this._restaurantProfile.email);
                     if (this._restaurantProfile.social_networks) {
                         this._profileForm.controls['facebookLink'].setValue(this._restaurantProfile.social_networks.facebook === undefined || this._restaurantProfile.social_networks.facebook === null ? '' : this._restaurantProfile.social_networks.facebook);
@@ -187,7 +185,6 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                     this._schedule = this._restaurantProfile.schedule;
                     this._lat = this._restaurantProfile.location.lat;
                     this._lng = this._restaurantProfile.location.lng;
-                    this._profileImages = this._restaurantProfile.images;
                 } else {
                     this._profileForm.reset();
                     this._scheduleInEditMode = false;
@@ -312,12 +309,6 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                     RestaurantsProfile.update({ _id: this._restaurantProfile._id }, { $unset: { web_page: true } });
                 }
 
-                if (this._profileForm.controls['phone'].value !== '' && this._profileForm.controls['phone'].value !== null) {
-                    RestaurantsProfile.update({ _id: this._restaurantProfile._id }, { $set: { phone: this._profileForm.controls['phone'].value } });
-                } else if ((this._profileForm.controls['phone'].value === '' || this._profileForm.controls['phone'].value === null) && (this._restaurantProfile.phone !== undefined && this._restaurantProfile.phone !== null)) {
-                    RestaurantsProfile.update({ _id: this._restaurantProfile._id }, { $unset: { phone: true } });
-                }
-
                 if (this._profileForm.controls['email'].value !== '' && this._profileForm.controls['email'].value !== null) {
                     RestaurantsProfile.update({ _id: this._restaurantProfile._id }, { $set: { email: this._profileForm.controls['email'].value } });
                 } else if ((this._profileForm.controls['email'].value === '' || this._profileForm.controls['email'].value === null) && (this._restaurantProfile.email !== undefined && this._restaurantProfile.email !== null)) {
@@ -346,7 +337,6 @@ export class RestaurantProfileComponent implements OnInit, OnDestroy {
                     }
 
                     if (this._profileForm.controls['web_page'].value !== '' && this._profileForm.controls['web_page'].value !== null) { _lRestaurantProfile.web_page = this._profileForm.value.web_page; }
-                    if (this._profileForm.controls['phone'].value !== '' && this._profileForm.controls['phone'].value !== null) { _lRestaurantProfile.phone = this._profileForm.value.phone; }
                     if (this._profileForm.controls['email'].value !== '' && this._profileForm.controls['email'].value !== null) { _lRestaurantProfile.email = this._profileForm.value.email; }
 
                     if (Object.keys(_lRestaurantSocialNetwork).length !== 0) { _lRestaurantProfile.social_networks = _lRestaurantSocialNetwork; }
