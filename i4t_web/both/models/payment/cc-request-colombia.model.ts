@@ -136,13 +136,3 @@ export class ShippingBillingAddress {
     postalCode?: string;
     phone?: string;
 }
-
-/**
- * CusPayInfo Info
- */
-export class CusPayInfo {
-    al: string;
-    ak: string;
-    mi: string;
-    ai: number
-}

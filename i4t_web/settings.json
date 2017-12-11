@@ -27,6 +27,12 @@
                 "policy": "eyJtaW5TaXplIjoiMSIsIm1heFNpemUiOiIxMDQ4NTc2IiwiY2FsbCI6WyJwaWNrIl19",
                 "signature": "2a1fa9ed15d987fd62f2134b481b0307120664e8f2534967e585892858fce95b"
             }
+        },
+        "custpayinfo": {
+            "al": "pRRXKOl8ikMmt9u",
+            "ak": "4Vj8eK4rloUd272L48hsrarnUA",
+            "mi": "508029",
+            "ai": "512321"
         }
     }
 }
