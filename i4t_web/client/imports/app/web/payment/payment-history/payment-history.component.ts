@@ -247,23 +247,15 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
      * This function gets custPayInfo credentials
      */
     getPayInfo(_transactionId: string) {
-        let payInfoUrl: string;
-        if (this.isProd) {
-            payInfoUrl = Parameters.findOne({ name: 'payu_pay_info_url_prod' }).value;
-        } else {
-            payInfoUrl = Parameters.findOne({ name: 'payu_pay_info_url_test' }).value;
+
+        try {
+            this.checkTransactionStatus(this._payuPaymentService.al, this._payuPaymentService.ak, _transactionId);
+        } catch (e) {
+            let errorMsg = this.itemNameTraduction('RES_PAYMENT_HISTORY.UNAVAILABLE_REPORT');
+            this.openDialog(this.titleMsg, '', errorMsg, '', this.btnAcceptLbl, false);
+            this._loading = false;
         }
 
-        this._payuPaymentService.getCusPayInfo(payInfoUrl).subscribe(
-            payInfo => {
-                this.checkTransactionStatus(payInfo.al, payInfo.ak, _transactionId);
-            },
-            error => {
-                let errorMsg = this.itemNameTraduction('RES_PAYMENT_HISTORY.UNAVAILABLE_REPORT');
-                this.openDialog(this.titleMsg, '', errorMsg, '', this.btnAcceptLbl, false);
-                this._loading = false;
-            }
-        );
     }
 
     /**
@@ -291,7 +283,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
                     merchant.apiLogin = al;
                     merchant.apiKey = ak;
                     responseQuery.merchant = merchant;
-                    details.transactionId = _transactionId;
+                    details.transactionId = paymentTransaction.responsetransactionId;
                     responseQuery.details = details;
                     if (this.isProd) {
                         responseQuery.test = false;
