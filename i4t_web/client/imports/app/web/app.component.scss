@@ -754,3 +754,9 @@ button.btn-close {
         width: 100%;
     }
 }
+
+@media only screen and (max-width: 600px) {
+    mat-list-item {
+        margin: -16px;
+    }
+}
