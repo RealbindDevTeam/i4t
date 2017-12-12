@@ -11,6 +11,8 @@ import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { Table } from '../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
+import { Parameters } from '../../../../../../both/collections/general/parameter.collection';
+import { Parameter } from '../../../../../../both/models/general/parameter.model';
 
 import * as QRious from 'qrious';
 
@@ -19,32 +21,33 @@ let jsPDF = require('jspdf');
 @Component({
   selector: 'iu-table',
   templateUrl: './table.component.html',
-  styleUrls: [ './table.component.scss' ]
+  styleUrls: ['./table.component.scss']
 })
 export class TableComponent implements OnInit, OnDestroy {
 
   private _user = Meteor.userId();
-  private tableForm           : FormGroup;
-  private restaurantSub       : Subscription;
-  private tableSub            : Subscription;
+  private tableForm: FormGroup;
+  private restaurantSub: Subscription;
+  private tableSub: Subscription;
+  private parameterSub: Subscription;
 
-  private restaurants         : Observable<Restaurant[]>;
-  private tables              : Observable<Table[]>;
+  private restaurants: Observable<Restaurant[]>;
+  private tables: Observable<Table[]>;
 
-  selectedRestaurantValue     : string;
-  private restaurantCode      : string = '';
-  private tables_count        : number = 0;
-  private all_checked         : boolean;
-  private enable_print        : boolean;
-  private restaurant_name     : string = '';
+  selectedRestaurantValue: string;
+  private restaurantCode: string = '';
+  private tables_count: number = 0;
+  private all_checked: boolean;
+  private enable_print: boolean;
+  private restaurant_name: string = '';
 
-  private tables_selected     : Table[];
-  private isChecked           : false;
-  private tooltip_msg         : string = '';
-  private show_cards          : boolean;
+  private tables_selected: Table[];
+  private isChecked: false;
+  private tooltip_msg: string = '';
+  private show_cards: boolean;
   finalImg: any;
-  private _thereAreRestaurants : boolean = true;
-  private _thereAreTables      : boolean = true;
+  private _thereAreRestaurants: boolean = true;
+  private _thereAreTables: boolean = true;
 
   /**
    * TableComponent Constructor
@@ -76,11 +79,11 @@ export class TableComponent implements OnInit, OnDestroy {
       restaurant: new FormControl('', [Validators.required]),
       tables_number: new FormControl('', [Validators.required])
     });
-    this.restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe( () => {
-      this._ngZone.run( () => {
+    this.restaurantSub = MeteorObservable.subscribe('restaurants', this._user).subscribe(() => {
+      this._ngZone.run(() => {
         this.restaurants = Restaurants.find({ creation_user: this._user }).zone();
         this.countRestaurants();
-        this.restaurants.subscribe( () => { this.countRestaurants(); });
+        this.restaurants.subscribe(() => { this.countRestaurants(); });
       });
     });
 
@@ -88,29 +91,30 @@ export class TableComponent implements OnInit, OnDestroy {
       this._ngZone.run(() => {
         this.tables = Tables.find({ creation_user: this._user }).zone();
         this.countTables();
-        this.tables.subscribe( () => { this.countTables(); } );
+        this.tables.subscribe(() => { this.countTables(); });
       });
     });
+    this.parameterSub = MeteorObservable.subscribe('getParameters').subscribe();
     this.tooltip_msg = this.itemNameTraduction('TABLES.MSG_TOOLTIP');
   }
 
   /**
    * Verify if restaurants exists
    */
-  countRestaurants():void{
-    Restaurants.collection.find( { creation_user: this._user } ).count() > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
+  countRestaurants(): void {
+    Restaurants.collection.find({ creation_user: this._user }).count() > 0 ? this._thereAreRestaurants = true : this._thereAreRestaurants = false;
   }
 
-  countTables():void{
-    Tables.collection.find( { creation_user: this._user } ).count() > 0 ? this._thereAreTables = true : this._thereAreTables = false;
+  countTables(): void {
+    Tables.collection.find({ creation_user: this._user }).count() > 0 ? this._thereAreTables = true : this._thereAreTables = false;
   }
 
   /**
    * Remove all subscriptions
    */
-  removeSubscriptions():void{
-    if( this.restaurantSub ){ this.restaurantSub.unsubscribe(); }
-    if( this.tableSub ){ this.tableSub.unsubscribe(); }
+  removeSubscriptions(): void {
+    if (this.restaurantSub) { this.restaurantSub.unsubscribe(); }
+    if (this.tableSub) { this.tableSub.unsubscribe(); }
   }
 
   changeRestaurant(_pRestaurant) {
@@ -165,6 +169,7 @@ export class TableComponent implements OnInit, OnDestroy {
     let codeStr: string = this.itemNameTraduction('TABLES.CODE');
     let file_name = this.itemNameTraduction('TABLES.FILE_NAME');
     let countVar: number = 0;
+    let iurest_url: string = Parameters.findOne({ name: 'iurest_url_short' }).value;
 
     let qr_pdf = new jsPDF("portrait", "mm", "a4");
 
@@ -176,36 +181,49 @@ export class TableComponent implements OnInit, OnDestroy {
           countVar += 1;
 
           if ((countVar % 2) == 1) {
+            qr_pdf.setFontSize(16);
             qr_pdf.rect(55, 25, 90, 90); // empty square
-            qr_pdf.text(70, 35, tableStr + auxStr);
-            qr_pdf.addImage(table2.QR_URI, 'JPEG', 70, 40, 60, 60);
-            qr_pdf.text(70, 110, codeStr + table2.QR_code);
+            qr_pdf.text(70, 33, tableStr + auxStr);
+            qr_pdf.addImage(table2.QR_URI, 'JPEG', 70, 37, 60, 60);
+            qr_pdf.text(70, 105, codeStr + table2.QR_code);
+            qr_pdf.setFontSize(13);
+            qr_pdf.text(85, 112, iurest_url);
           } else {
+            qr_pdf.setFontSize(16);
             qr_pdf.rect(55, 150, 90, 90); // empty square
-            qr_pdf.text(70, 160, tableStr + auxStr);
-            qr_pdf.addImage(table2.QR_URI, 'JPEG', 70, 165, 60, 60);
-            qr_pdf.text(70, 235, codeStr + table2.QR_code);
+            qr_pdf.text(70, 158, tableStr + auxStr);
+            qr_pdf.addImage(table2.QR_URI, 'JPEG', 70, 162, 60, 60);
+            qr_pdf.text(70, 230, codeStr + table2.QR_code);
+            qr_pdf.setFontSize(13);
+            qr_pdf.text(85, 237, iurest_url);
             qr_pdf.addPage();
           }
         });
+        qr_pdf.output('save', this.restaurant_name.substr(0, 15) + '_' + file_name + '.pdf');
       });
       this.tables_selected = [];
-      qr_pdf.output('save', this.restaurant_name.substr(0, 15) + '_' + file_name + '.pdf');
+      //qr_pdf.output('save', this.restaurant_name.substr(0, 15) + '_' + file_name + '.pdf');
     } else if (!this.all_checked && this.tables_selected.length > 0) {
       this.tables_selected.forEach(table2 => {
         auxStr = table2._number.toString();
         countVar += 1;
 
         if ((countVar % 2) == 1) {
+          qr_pdf.setFontSize(16);
           qr_pdf.rect(55, 25, 90, 90); // empty square
-          qr_pdf.text(70, 35, tableStr + auxStr);
-          qr_pdf.addImage(table2.QR_URI, 'JPEG', 70, 40, 60, 60);
-          qr_pdf.text(70, 110, codeStr + table2.QR_code);
+          qr_pdf.text(70, 33, tableStr + auxStr);
+          qr_pdf.addImage(table2.QR_URI, 'JPEG', 70, 37, 60, 60);
+          qr_pdf.text(70, 105, codeStr + table2.QR_code);
+          qr_pdf.setFontSize(13);
+          qr_pdf.text(85, 112, iurest_url);
         } else {
+          qr_pdf.setFontSize(16);
           qr_pdf.rect(55, 150, 90, 90); // empty square
-          qr_pdf.text(70, 160, tableStr + auxStr);
-          qr_pdf.addImage(table2.QR_URI, 'JPEG', 70, 165, 60, 60);
-          qr_pdf.text(70, 235, codeStr + table2.QR_code);
+          qr_pdf.text(70, 158, tableStr + auxStr);
+          qr_pdf.addImage(table2.QR_URI, 'JPEG', 70, 162, 60, 60);
+          qr_pdf.text(70, 230, codeStr + table2.QR_code);
+          qr_pdf.setFontSize(13);
+          qr_pdf.text(85, 237, iurest_url);
           qr_pdf.addPage();
         }
       });
