@@ -28,6 +28,7 @@ export function loadParameters() {
             { _id: '1540', name: 'company_agent_retainer', value: 'No somos agentes retenedores de IVA e ICA', description: 'Realbind iva and ica agent retention in Colombia' },
             { _id: '1550', name: 'invoice_generated_msg', value: 'Factura emitida por computador', description: 'Invoice message for invoice' },
             { _id: '1600', name: 'iurest_url', value: 'https://www.iurest.com', description: 'iurest url page' },
+            { _id: '1650', name: 'iurest_url_short', value: 'www.iurest.com', description: 'iurest url page short' },
             { _id: '1700', name: 'facebook_link', value: 'https://www.facebook.com', description: 'facebook link for iurest' },
             { _id: '1800', name: 'twitter_link', value: 'https://www.twitter.com', description: 'twitter link for iurest' },
             { _id: '1900', name: 'instagram_link', value: 'https://www.instagram.com', description: 'instagram link for iurest' },
