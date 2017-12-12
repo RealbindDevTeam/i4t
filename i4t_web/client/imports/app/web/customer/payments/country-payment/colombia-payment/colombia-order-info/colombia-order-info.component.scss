@@ -1,74 +1,91 @@
-.fixed-action-btn {		
-    position: relative;
-
-    button {
-        position: absolute;
-        bottom: 30px;
-        right: 35px;
-        width: 56px;
-        -webkit-transition: all 0.3s ease;
-        -moz-transition: all 0.3s ease;
-        transition: all 0.3s ease;
-    }
- }
-
- .main{
+/*
+.main{
      width: 55%;
      margin: 0 auto;
 
-     .order-info{
+}
 
-         .image{
-             border-radius: 50%; 
-             width: 100px; 
-             height: 100px;
-         }
-         .title{
-             color: black;
-             font-weight: bold;
-         }
-     }
+.order-info {
+    
+}
+*/
 
-     .divider{
-         margin-left: 7rem;
-         width: 80%;
-     }
+.image {
+    border-radius: 50%; 
+    width: 100px; 
+    height: 100px;
+}
+.title{
+    color: black;
+    font-weight: bold;
+}
 
-     .order-details{
 
-         .element{
-             margin-left: 7rem;
+.order-details{
 
-             .price{
-                 display: inline;
-             }
+}
 
-             .quantity{
-                 display: inline;
-                 margin-left: 2rem;
-             }
+.element{
+    margin-left: 16px;
+}
 
-             .total{
-                 display: inline;
-                 margin-left: 3rem;
-                 color: black;
-             }
-         }
-     }
+.price{
+    display: inline;
+}
 
-     .regime-si-total{
-        width: 50%;
-        margin: 0 auto;
-        text-align: center;
+.quantity{
+    display: inline;
+    margin-left: 2rem;
+}
 
-        .info{
-            display: inline-block;
-            font-size: 24px;
-            font-weight: bold;
-        }
-     }
- }
+.total{
+    display: inline;
+    margin-left: 3rem;
+    color: black;
+}
 
+.regime-si-total{
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.info{
+    display: inline-block;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.di {
+    display: -webkit-inline-box;
+    margin: 24px 16px 0;
+}
+
+.dic {
+    display: block;
+    margin-left: 16px;
+}
+
+.dic h2{
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+}
+
+.did p{
+    margin-right: 16px;
+}
+
+@media only screen and (min-width: 600px) {
+    .did p{
+        display: -webkit-inline-box;
+    }
+}
+
+.divider{
+    margin-left: 80px;
+}
+
+ /*
  .order-form-1 {
     position: absolute;
     top: 0;
@@ -127,3 +144,4 @@
         }
     }
 }
+*/

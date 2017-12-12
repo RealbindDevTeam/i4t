@@ -77,12 +77,8 @@ export class SigninWebComponent extends AuthClass implements OnInit {
                                     break;
                                 }
                                 case '400': {
-                                    if(this.devicesValidate()){
-                                        this.insertUserInfo();
-                                        this.router.navigate(['app/orders']);
-                                    } else {
-                                        this.router.navigate(['go-to-store', 't'], { skipLocationChange: true });
-                                    }
+                                    this.insertUserInfo();
+                                    this.router.navigate(['app/orders']);
                                     break;
                                 }
                                 case '500': {

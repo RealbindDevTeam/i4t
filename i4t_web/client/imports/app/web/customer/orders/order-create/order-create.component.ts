@@ -102,12 +102,12 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      */
     showHeaderDetail() {
         var _lScrollTop = document.getElementById("is").scrollTop;
-        if (_lScrollTop > 64) {
-            document.getElementById("mt").classList.remove('menu_bar-hide');
-            document.getElementById("mt").classList.add('menu_bar-show');
+        if (_lScrollTop > 0) {
+            document.getElementById("mt").classList.remove('header-detail-hide');
+            document.getElementById("mt").classList.add('header-detail-show');
         } else {
-            document.getElementById("mt").classList.remove('menu_bar-show');
-            document.getElementById("mt").classList.add('menu_bar-hide');
+            document.getElementById("mt").classList.remove('header-detail-show');
+            document.getElementById("mt").classList.add('header-detail-hide');
         }
     }
 
@@ -366,13 +366,21 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * @param {boolean} _boolean 
      */
     viewItemDetail(_boolean: boolean): void {
-        var card = document.getElementById("item-selected");
+        /*var card = document.getElementById("item-selected");
 
         if (!_boolean) {
             card.style.width = "396px";
         } else {
             card.style.width = "0";
             card.removeAttribute("style");
+        }*/
+
+        var card = document.getElementById("item-selected");
+        if (!_boolean) {
+            card.classList.add('item-detail-show');
+            card.classList.remove('item-detail-hidden');
+        } else {
+            card.classList.add('item-detail-hidden');
         }
     }
 
@@ -381,13 +389,22 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * @param {boolean} _boolean 
      */
     viewAdditionDetail(_boolean: boolean): void {
-        var card = document.getElementById("addition-detail");
+        /*var card = document.getElementById("addition-detail");
 
         if (!_boolean) {
             card.style.width = "396px";
         } else {
             card.style.width = "0";
             card.removeAttribute("style");
+        }*/
+        var card = document.getElementById("addition-detail");
+        if (card) {
+            if (!_boolean) {
+                card.classList.add('item-detail-show');
+                card.classList.remove('item-detail-hidden');
+            } else {
+                card.classList.add('item-detail-hidden');
+            }
         }
     }
 
