@@ -1,5 +1,8 @@
 {
   "name": "iurest",
+  "version": "0.0.1",
+  "author": "Realbind S.A.S",
+  "homepage": "https://www.iurest.com",
   "private": true,
   "scripts": {
     "start": "meteor --settings settings.json",
