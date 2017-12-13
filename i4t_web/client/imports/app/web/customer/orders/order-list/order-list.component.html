@@ -79,7 +79,7 @@
                 <div *ngIf="_showCustomerOrders || _showAllOrders">
                     <div *ngFor="let or of _orders | async; let i = index">
                         <mat-toolbar class="customer-order" (click)="showCustomerOrderDetail(or,i)">
-                            <img style="width: 3rem;" src="/images/my-orders.png">
+                            <img class="order" src="/images/my-orders.png">
                             <div class="mt-div">
                                 <span class="order-code">{{'ORDER_LIST.ORDERS' | translate}} # {{or.code}}</span>
                                 <span>{{'ORDER_LIST.TOTAL' | translate}}: {{or.totalPayment}} {{_currencyCode}}</span>
@@ -144,11 +144,13 @@
                 <div *ngIf="_showOtherOrders || _showAllOrders">
                     <div *ngFor="let or of _ordersTable | async; let in = index">
                         <mat-toolbar class="customer-order" (click)="showOthersOrderDetail(or,in)">
-                            <img style="width: 3rem;" src="/images/others-orders.png">
-                            <span class="order-code">{{'ORDER_LIST.ORDERS' | translate}} # {{or.code}}</span>
-                            <span>{{'ORDER_LIST.TOTAL' | translate}}: {{or.totalPayment}} {{_currencyCode}}</span>
-                            <span class="app-flex-filler"></span>
-                            <span class="order-status">{{'ORDER_LIST.STATUS' | translate}}: {{or.status | translate}}</span>
+                            <img class="order" src="/images/others-orders.png">
+                            <div class="mt-div">
+                                <span class="order-code">{{'ORDER_LIST.ORDERS' | translate}} # {{or.code}}</span>
+                                <span>{{'ORDER_LIST.TOTAL' | translate}}: {{or.totalPayment}} {{_currencyCode}}</span>
+                                <span class="app-flex-filler"></span>
+                                <span class="order-status">{{'ORDER_LIST.STATUS' | translate}}: {{or.status | translate}}</span>
+                            </div>
                             <mat-icon>keyboard_arrow_right</mat-icon>
                         </mat-toolbar>
                         <mat-card *ngIf="_orderOthersIndex == in">
