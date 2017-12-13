@@ -54,8 +54,8 @@
                             <input matInput value="{{_tableInit}}" placeholder="{{'COLLABORATORS.TABLE_INIT' | translate}}" disabled="true"/>
                         </mat-form-field>
                         
-                        <mat-form-field style="width: 100px;">
-                            <mat-select formControlName="table_init" *ngIf="!_disabledTablesAssignment">
+                        <mat-form-field style="width: 100px;" *ngIf="!_disabledTablesAssignment">
+                            <mat-select formControlName="table_init">
                                 <mat-option *ngFor="let index of _tablesNumber" value="{{index}}" ng-selected="_tableInit">{{index}}</mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -64,8 +64,8 @@
                             <input matInput value="{{_tableEnd}}" placeholder="{{'COLLABORATORS.TABLE_END' | translate}}" disabled="true"/>
                         </mat-form-field>
 
-                        <mat-form-field style="width: 100px;">
-                            <mat-select formControlName="table_end" *ngIf="!_disabledTablesAssignment">
+                        <mat-form-field style="width: 100px;" *ngIf="!_disabledTablesAssignment">
+                            <mat-select formControlName="table_end">
                                 <mat-option *ngFor="let index of _tablesNumber" value="{{index}}" ng-selected="_tableEnd">{{index}}</mat-option>
                             </mat-select>
                         </mat-form-field>
