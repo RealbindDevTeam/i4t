@@ -381,6 +381,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
         if (_section !== this._itemToEdit.sectionId) {
             this._restaurantsSelectedCount = 0;
             this._showCurrencies = false;
+            this._itemEditionForm.controls['editGarnishFoodQuantity'].setValue('0');
 
             if (Restaurants.collection.find({ _id: { $in: _lSection.restaurants } }).count() > 0) {
                 this._showRestaurants = true;
@@ -455,6 +456,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
             }
         } else {
             this._restaurantsSelectedCount = this._itemToEdit.restaurants.length;
+            this._itemEditionForm.controls['editGarnishFoodQuantity'].setValue(this._itemToEdit.garnishFoodQuantity);
             if (Restaurants.collection.find({ _id: { $in: _lSection.restaurants } }).count() > 0) {
                 this._showRestaurants = true;
                 Restaurants.collection.find({ _id: { $in: _lSection.restaurants } }).fetch().forEach((r) => {
