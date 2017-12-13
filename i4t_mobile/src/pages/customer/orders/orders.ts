@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { App, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Additions } from 'i4t_web/both/collections/administration/addition.collection';
 import { Order, OrderAddition } from 'i4t_web/both/models/restaurant/order.model';
@@ -19,6 +19,7 @@ import { ItemEditPage } from '../item-edit/item-edit';
 import { AdditionEditPage } from '../addition-edit/addition-edit';
 import { RestaurantProfilePage } from '../restaurant-profile/restaurant-profile';
 import { Currencies } from 'i4t_web/both/collections/general/currency.collection';
+import { UserDetail } from '../../../../../i4t_web/both/models/auth/user-detail.model';
 
 @Component({
     selector: 'page-orders',
@@ -50,11 +51,12 @@ export class OrdersPage implements OnInit, OnDestroy {
     private _userDetail;
     private _orders;
     private _items;
+    private _userDetails: Observable<UserDetail[]>;
 
     private _currentOrderUserId: string;
     private _btnOrderItem: boolean = true;
 
-    private _thereIsRestaurant: boolean = true;
+    private _thereIsUser: boolean = true;
     private _thereAreOrders: boolean = true;
 
     constructor(public _navCtrl: NavController,
@@ -85,14 +87,15 @@ export class OrdersPage implements OnInit, OnDestroy {
         this._translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         this._userDetailSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe(() => {
             this._ngZone.run(() => {
+                this._userDetails = UserDetails.find({ user_id: Meteor.userId() }).zone();
+                this.validateUser();
+                this._userDetails.subscribe(() => { this.validateUser() });
                 this._userDetail = UserDetails.findOne({ user_id: Meteor.userId() });
-                this._res_code = this._userDetail.current_restaurant;
                 if (this._userDetail) {
+                    this._res_code = this._userDetail.current_restaurant;
                     this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
                         this._ngZone.run(() => {
-                            this.getRestaurant();
                             this._restaurants = Restaurants.find({ _id: this._userDetail.current_restaurant }).zone();
-                            this._restaurants.subscribe(() => { this.getRestaurant() });
                         });
                     });
 
@@ -124,8 +127,9 @@ export class OrdersPage implements OnInit, OnDestroy {
         });
     }
 
-    getRestaurant() {
-        Restaurants.collection.find({ _id: this._userDetail.current_restaurant }).count() > 0 ? this._thereIsRestaurant = true : this._thereIsRestaurant = false;
+    validateUser(): void {
+        let _user: UserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+        _user.current_restaurant !== '' && _user.current_table !== '' ? this._thereIsUser = true : this._thereIsUser = false;
     }
 
     getOrders() {
@@ -325,7 +329,7 @@ export class OrdersPage implements OnInit, OnDestroy {
     getItemThumb(_itemId: string): string {
         let _item = Items.findOne({ _id: _itemId });
         if (_item) {
-            if(_item.image){
+            if (_item.image) {
                 return _item.image.url;
             } else {
                 return 'assets/img/default-plate.png';
@@ -381,8 +385,8 @@ export class OrdersPage implements OnInit, OnDestroy {
      * Go to restaurant profile
      * @param _pRestaurant 
      */
-    viewRestaurantProfile( _pRestaurant : any ){
-        this._navCtrl.push(RestaurantProfilePage, { restaurant : _pRestaurant});
+    viewRestaurantProfile(_pRestaurant: any) {
+        this._navCtrl.push(RestaurantProfilePage, { restaurant: _pRestaurant });
     }
 
     /**

@@ -2,10 +2,11 @@ import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from 'meteor-rxjs';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { Restaurants } from 'i4t_web/both/collections/restaurant/restaurant.collection';
 import { UserDetails } from 'i4t_web/both/collections/auth/user-detail.collection';
 import { UserLanguageServiceProvider } from '../../../providers/user-language-service/user-language-service';
+import { UserDetail } from '../../../../../i4t_web/both/models/auth/user-detail.model';
 
 /*
   Generated class for the Payments page.
@@ -27,6 +28,7 @@ export class PaymentsPage implements OnInit, OnDestroy {
   private _currentTable: string;
   private _showPaymentInfo: boolean = false;
   private _lUserDetail: any;
+  private _userDetails: Observable<UserDetail[]>;
 
   /**
    * PaymentsPage constructor
@@ -51,29 +53,28 @@ export class PaymentsPage implements OnInit, OnDestroy {
     this.removeSubscriptions();
     this._userDetailsSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
+        this._userDetails = UserDetails.find({ user_id: Meteor.userId() }).zone();
         this._lUserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
         if (this._lUserDetail) {
           this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
             this._ngZone.run(() => {
-              this.changeShowPaymentInfo();
-              let restaurants = Restaurants.find({ _id: this._lUserDetail.current_restaurant }).zone();
-              restaurants.subscribe(() => { this.changeShowPaymentInfo() });
+              this._currentRestaurant = Restaurants.findOne({ _id: this._lUserDetail.current_restaurant });
+              this._currentTable = this._lUserDetail.current_table;
+              this.validateUser();
+              this._userDetails.subscribe(() => { this.validateUser() });
             });
           });
+        } else {
+          this.validateUser();
+          this._userDetails.subscribe(() => { this.validateUser() });
         }
       });
     });
   }
 
-  changeShowPaymentInfo() {
-    let auxRestaurant = Restaurants.collection.find({ _id: this._lUserDetail.current_restaurant }).count();
-    if (auxRestaurant > 0) {
-      this._currentRestaurant = Restaurants.findOne({ _id: this._lUserDetail.current_restaurant });
-      this._currentTable = this._lUserDetail.current_table;
-      this._showPaymentInfo = true;
-    } else {
-      this._showPaymentInfo = false;
-    }
+  validateUser(): void {
+    let _user: UserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
+    _user.current_restaurant !== '' && _user.current_table !== '' ? this._showPaymentInfo = true : this._showPaymentInfo = false;
   }
 
   /**
@@ -81,18 +82,22 @@ export class PaymentsPage implements OnInit, OnDestroy {
    */
   ionViewWillEnter() {
     this._translate.use(this._userLanguageService.getLanguage(Meteor.user()));
-    //this.removeSubscriptions();
     this._userDetailsSub = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
+        this._userDetails = UserDetails.find({ user_id: Meteor.userId() }).zone();
         this._lUserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
         if (this._lUserDetail) {
           this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', Meteor.userId()).subscribe(() => {
             this._ngZone.run(() => {
-              this.changeShowPaymentInfo();
-              let restaurants = Restaurants.find({ _id: this._lUserDetail.current_restaurant }).zone();
-              restaurants.subscribe(() => { this.changeShowPaymentInfo() });
+              this._currentRestaurant = Restaurants.findOne({ _id: this._lUserDetail.current_restaurant });
+              this._currentTable = this._lUserDetail.current_table;
+              this.validateUser();
+              this._userDetails.subscribe(() => { this.validateUser() });
             });
           });
+        } else {
+          this.validateUser();
+          this._userDetails.subscribe(() => { this.validateUser() });
         }
       });
     });
