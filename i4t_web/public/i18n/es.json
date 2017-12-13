@@ -1522,13 +1522,14 @@
         "ABOUT_RESTAURANT": "Sobre el Restaurante",
         "PHOTOS": "Fotos",
         "NO_PHOTOS": "No se encuentran fotos del restaurante",
-        "CONTACT": "Contácto",
+        "CONTACT": "Contacto",
         "NO_WEB_PAGE": "No tiene página de internet",
         "NO_PHONE": "No tiene teléfono registrado",
         "NO_EMAIL": "No tiene correo electrónico registrado",
         "PAYMENT_METHODS": "Medios de Pago",
         "CURRENCY_ACCEPTED": "Moneda aceptada",
         "LOCATION": "Ubicación",
-        "ADDRESS": "Dirección"
+        "ADDRESS": "Dirección",
+        "READ_MORE": "Leer más"
     }
 }

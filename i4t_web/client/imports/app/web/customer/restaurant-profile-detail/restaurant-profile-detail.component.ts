@@ -44,6 +44,10 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
     private _restaurantCurrency: string = '';
     public _dialogRef: MatDialogRef<any>;
 
+    private _descriptionAux: string;
+    private _showReadMore: boolean = true;
+    private _showExtended: boolean = false;
+
     /**
      * RestaurantProFileDetailComponent Constructor
      * @param {TranslateService} _translate 
@@ -93,8 +97,12 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
                             });
                             this._citiesSub = MeteorObservable.subscribe('getCityByRestaurantId', this.restaurantId).subscribe(() => {
                                 this._ngZone.run(() => {
-                                    let _lCity: City = Cities.findOne({ _id: _lRestaurant.cityId });
-                                    this._restaurantCity = this.itemNameTraduction(_lCity.name);
+                                    if (_lRestaurant.cityId === '') {
+                                        this._restaurantCity = _lRestaurant.other_city;
+                                    } else {
+                                        let _lCity: City = Cities.findOne({ _id: _lRestaurant.cityId });
+                                        this._restaurantCity = this.itemNameTraduction(_lCity.name);
+                                    }
                                 });
                             });
                             this._currencySub = MeteorObservable.subscribe('getCurrenciesByRestaurantsId', [this.restaurantId]).subscribe(() => {
@@ -160,8 +168,7 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
      */
     openSchedule(_pRestaurantProfile: RestaurantProfile): void {
         this._dialogRef = this._dialog.open(ScheduleDetailComponent, {
-            disableClose: true,
-            width: '40%'
+            disableClose: true
         });
         this._dialogRef.componentInstance._restaurantSchedule = _pRestaurantProfile;
         this._dialogRef.afterClosed().subscribe(result => {
@@ -209,6 +216,13 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
                 return '/images/payment-online.png';
             }
         }
+    }
+    
+    /**
+     * Function to extend the restaurant description
+     */
+    extendDescription(_restaurantDescription) {
+        this._showExtended = !this._showExtended;
     }
 
     /**

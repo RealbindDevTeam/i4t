@@ -1529,6 +1529,7 @@
         "PAYMENT_METHODS": "Payment methods",
         "CURRENCY_ACCEPTED": "Currency accepted",
         "LOCATION": "Location",
-        "ADDRESS": "Address"
+        "ADDRESS": "Address",
+        "READ_MORE": "Read more"
     }
 }
