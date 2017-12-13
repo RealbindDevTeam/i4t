@@ -4342,24 +4342,25 @@ __meteor_runtime_config__ = {
                     // 113
                     // Returns a function that takes a namespace object and copies the                                                     // 114
                     // properties of the namespace to module.exports, excluding any "default"                                              // 115
-                    // property, which is useful for implementing `export * from "module"`.                                                // 116
-                    function moduleMakeNsSetter() {
-                      // 117
-                      var _module7 = this; // 118
-                      // Discussion of why the "default" property is skipped:                                                              // 119
-                      // https://github.com/tc39/ecma262/issues/948                                                                        // 120
+                    // property (by default, unless includeDefault is truthy), which is useful                                             // 116
+                    // for implementing `export * from "module"`.                                                                          // 117
+                    function moduleMakeNsSetter(includeDefault) {
+                      // 118
+                      var _module7 = this; // 119
+                      // Discussion of why the "default" property is skipped:                                                              // 120
+                      // https://github.com/tc39/ecma262/issues/948                                                                        // 121
                       return function (namespace) {
-                        // 121
+                        // 122
                         Object.keys(namespace).forEach(function (key) {
-                          // 122
-                          if (key !== "default") {
-                            // 123
-                            utils.copyKey(key, _module7.exports, namespace); // 124
-                          } // 125
-                        }); // 126
-                      }; // 127
-                    } // 128
-                    // 129
+                          // 123
+                          if (includeDefault || key !== "default") {
+                            // 124
+                            utils.copyKey(key, _module7.exports, namespace); // 125
+                          } // 126
+                        }); // 127
+                      }; // 128
+                    } // 129
+                    // 130
                     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                   }, "utils.js": function (_require9, _exports8, _module8) {
                     // 1
@@ -5893,7 +5894,7 @@ __meteor_runtime_config__ = {
             "_resolved": "https://registry.npmjs.org/babel-runtime/-/babel-runtime-6.26.0.tgz", // 21
             "_shasum": "965c7058668e82b55d7bfe04ff2337bc8b5647fe", // 22
             "_spec": "babel-runtime@^6.26.0", // 23
-            "_where": "/private/var/folders/j_/rp9lwp6s08b7nfpxd1jm_0980000gn/T/tmp-110066501dn7pf9JR", // 24
+            "_where": "/private/var/folders/j_/rp9lwp6s08b7nfpxd1jm_0980000gn/T/tmp-5035YnCIkVQltYsK", // 24
             "author": { // 25
               "name": "Sebastian McKenzie", // 26
               "email": "sebmck@gmail.com" // 27
@@ -6123,7 +6124,7 @@ __meteor_runtime_config__ = {
           /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
           //
           _exports30.name = "regenerator-runtime"; // 1
-          _exports30.version = "0.11.0"; // 2
+          _exports30.version = "0.11.1"; // 2
           _exports30.main = "runtime-module.js"; // 3
           // 4
           /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -6135,41 +6136,48 @@ __meteor_runtime_config__ = {
           //                                                                                                                     //
           /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
           //
-          // This method of obtaining a reference to the global object needs to be                                               // 1
-          // kept identical to the way it is obtained in runtime.js                                                              // 2
+          /**                                                                                                                    // 1
+           * Copyright (c) 2014-present, Facebook, Inc.                                                                          // 2
+           *                                                                                                                     // 3
+           * This source code is licensed under the MIT license found in the                                                     // 4
+           * LICENSE file in the root directory of this source tree.                                                             // 5
+           */ // 6
+          // 7
+          // This method of obtaining a reference to the global object needs to be                                               // 8
+          // kept identical to the way it is obtained in runtime.js                                                              // 9
           var g = function () {
             return this;
-          }() || Function("return this")(); // 3
-          // 4
-          // Use `getOwnPropertyNames` because not all browsers support calling                                                  // 5
-          // `hasOwnProperty` on the global `self` object in a worker. See #183.                                                 // 6
-          var hadRuntime = g.regeneratorRuntime && // 7
-          Object.getOwnPropertyNames(g).indexOf("regeneratorRuntime") >= 0; // 8
-          // 9
-          // Save the old regeneratorRuntime in case it needs to be restored later.                                              // 10
-          var oldRuntime = hadRuntime && g.regeneratorRuntime; // 11
-          // 12
-          // Force reevalutation of runtime.js.                                                                                  // 13
-          g.regeneratorRuntime = undefined; // 14
-          // 15
-          _module23.exports = _require34("./runtime"); // 16
-          // 17
+          }() || Function("return this")(); // 10
+          // 11
+          // Use `getOwnPropertyNames` because not all browsers support calling                                                  // 12
+          // `hasOwnProperty` on the global `self` object in a worker. See #183.                                                 // 13
+          var hadRuntime = g.regeneratorRuntime && // 14
+          Object.getOwnPropertyNames(g).indexOf("regeneratorRuntime") >= 0; // 15
+          // 16
+          // Save the old regeneratorRuntime in case it needs to be restored later.                                              // 17
+          var oldRuntime = hadRuntime && g.regeneratorRuntime; // 18
+          // 19
+          // Force reevalutation of runtime.js.                                                                                  // 20
+          g.regeneratorRuntime = undefined; // 21
+          // 22
+          _module23.exports = _require34("./runtime"); // 23
+          // 24
           if (hadRuntime) {
-            // 18
-            // Restore the original runtime.                                                                                     // 19
-            g.regeneratorRuntime = oldRuntime; // 20
+            // 25
+            // Restore the original runtime.                                                                                     // 26
+            g.regeneratorRuntime = oldRuntime; // 27
           } else {
-            // 21
-            // Remove the global property added by runtime.js.                                                                   // 22
+            // 28
+            // Remove the global property added by runtime.js.                                                                   // 29
             try {
-              // 23
-              delete g.regeneratorRuntime; // 24
+              // 30
+              delete g.regeneratorRuntime; // 31
             } catch (e) {
-              // 25
-              g.regeneratorRuntime = undefined; // 26
-            } // 27
-          } // 28
-          // 29
+              // 32
+              g.regeneratorRuntime = undefined; // 33
+            } // 34
+          } // 35
+          // 36
           /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         }, "runtime.js": function (_require35, _exports32, _module24) {
 
@@ -6180,856 +6188,853 @@ __meteor_runtime_config__ = {
           /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
           //
           /**                                                                                                                    // 1
-           * Copyright (c) 2014, Facebook, Inc.                                                                                  // 2
-           * All rights reserved.                                                                                                // 3
-           *                                                                                                                     // 4
-           * This source code is licensed under the BSD-style license found in the                                               // 5
-           * https://raw.github.com/facebook/regenerator/master/LICENSE file. An                                                 // 6
-           * additional grant of patent rights can be found in the PATENTS file in                                               // 7
-           * the same directory.                                                                                                 // 8
-           */ // 9
-          // 10
+           * Copyright (c) 2014-present, Facebook, Inc.                                                                          // 2
+           *                                                                                                                     // 3
+           * This source code is licensed under the MIT license found in the                                                     // 4
+           * LICENSE file in the root directory of this source tree.                                                             // 5
+           */ // 6
+          // 7
           !function (global) {
-            // 12
-            // 13
-            var Op = Object.prototype; // 14
-            var hasOwn = Op.hasOwnProperty; // 15
-            var undefined; // More compressible than void 0.                                                                     // 16
-            var $Symbol = typeof Symbol === "function" ? Symbol : {}; // 17
-            var iteratorSymbol = $Symbol.iterator || "@@iterator"; // 18
-            var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator"; // 19
-            var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; // 20
-            // 21
-            var inModule = typeof _module24 === "object"; // 22
-            var runtime = global.regeneratorRuntime; // 23
+            // 9
+            // 10
+            var Op = Object.prototype; // 11
+            var hasOwn = Op.hasOwnProperty; // 12
+            var undefined; // More compressible than void 0.                                                                     // 13
+            var $Symbol = typeof Symbol === "function" ? Symbol : {}; // 14
+            var iteratorSymbol = $Symbol.iterator || "@@iterator"; // 15
+            var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator"; // 16
+            var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; // 17
+            // 18
+            var inModule = typeof _module24 === "object"; // 19
+            var runtime = global.regeneratorRuntime; // 20
             if (runtime) {
-              // 24
+              // 21
               if (inModule) {
-                // 25
-                // If regeneratorRuntime is defined globally and we're in a module,                                              // 26
-                // make the exports object identical to regeneratorRuntime.                                                      // 27
-                _module24.exports = runtime; // 28
-              } // 29
-              // Don't bother evaluating the rest of this file if the runtime was                                                // 30
-              // already defined globally.                                                                                       // 31
-              return; // 32
-            } // 33
-            // 34
-            // Define the runtime globally (as expected by generated code) as either                                             // 35
-            // module.exports (if we're in a module) or a new, empty object.                                                     // 36
-            runtime = global.regeneratorRuntime = inModule ? _module24.exports : {}; // 37
-            // 38
+                // 22
+                // If regeneratorRuntime is defined globally and we're in a module,                                              // 23
+                // make the exports object identical to regeneratorRuntime.                                                      // 24
+                _module24.exports = runtime; // 25
+              } // 26
+              // Don't bother evaluating the rest of this file if the runtime was                                                // 27
+              // already defined globally.                                                                                       // 28
+              return; // 29
+            } // 30
+            // 31
+            // Define the runtime globally (as expected by generated code) as either                                             // 32
+            // module.exports (if we're in a module) or a new, empty object.                                                     // 33
+            runtime = global.regeneratorRuntime = inModule ? _module24.exports : {}; // 34
+            // 35
             function wrap(innerFn, outerFn, self, tryLocsList) {
-              // 39
-              // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.          // 40
-              var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator; // 41
-              var generator = Object.create(protoGenerator.prototype); // 42
-              var context = new Context(tryLocsList || []); // 43
-              // 44
-              // The ._invoke method unifies the implementations of the .next,                                                   // 45
-              // .throw, and .return methods.                                                                                    // 46
-              generator._invoke = makeInvokeMethod(innerFn, self, context); // 47
-              // 48
-              return generator; // 49
-            } // 50
-            runtime.wrap = wrap; // 51
-            // 52
-            // Try/catch helper to minimize deoptimizations. Returns a completion                                                // 53
-            // record like context.tryEntries[i].completion. This interface could                                                // 54
-            // have been (and was previously) designed to take a closure to be                                                   // 55
-            // invoked without arguments, but in all the cases we care about we                                                  // 56
-            // already have an existing method we want to call, so there's no need                                               // 57
-            // to create a new function object. We can even get away with assuming                                               // 58
-            // the method takes exactly one argument, since that happens to be true                                              // 59
-            // in every case, so we don't have to touch the arguments object. The                                                // 60
-            // only additional allocation required is the completion record, which                                               // 61
-            // has a stable shape and so hopefully should be cheap to allocate.                                                  // 62
+              // 36
+              // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.          // 37
+              var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator; // 38
+              var generator = Object.create(protoGenerator.prototype); // 39
+              var context = new Context(tryLocsList || []); // 40
+              // 41
+              // The ._invoke method unifies the implementations of the .next,                                                   // 42
+              // .throw, and .return methods.                                                                                    // 43
+              generator._invoke = makeInvokeMethod(innerFn, self, context); // 44
+              // 45
+              return generator; // 46
+            } // 47
+            runtime.wrap = wrap; // 48
+            // 49
+            // Try/catch helper to minimize deoptimizations. Returns a completion                                                // 50
+            // record like context.tryEntries[i].completion. This interface could                                                // 51
+            // have been (and was previously) designed to take a closure to be                                                   // 52
+            // invoked without arguments, but in all the cases we care about we                                                  // 53
+            // already have an existing method we want to call, so there's no need                                               // 54
+            // to create a new function object. We can even get away with assuming                                               // 55
+            // the method takes exactly one argument, since that happens to be true                                              // 56
+            // in every case, so we don't have to touch the arguments object. The                                                // 57
+            // only additional allocation required is the completion record, which                                               // 58
+            // has a stable shape and so hopefully should be cheap to allocate.                                                  // 59
             function tryCatch(fn, obj, arg) {
-              // 63
+              // 60
               try {
-                // 64
-                return { type: "normal", arg: fn.call(obj, arg) }; // 65
+                // 61
+                return { type: "normal", arg: fn.call(obj, arg) }; // 62
               } catch (err) {
-                // 66
-                return { type: "throw", arg: err }; // 67
-              } // 68
-            } // 69
-            // 70
-            var GenStateSuspendedStart = "suspendedStart"; // 71
-            var GenStateSuspendedYield = "suspendedYield"; // 72
-            var GenStateExecuting = "executing"; // 73
-            var GenStateCompleted = "completed"; // 74
-            // 75
-            // Returning this object from the innerFn has the same effect as                                                     // 76
-            // breaking out of the dispatch switch statement.                                                                    // 77
-            var ContinueSentinel = {}; // 78
-            // 79
-            // Dummy constructor functions that we use as the .constructor and                                                   // 80
-            // .constructor.prototype properties for functions that return Generator                                             // 81
-            // objects. For full spec compliance, you may wish to configure your                                                 // 82
-            // minifier not to mangle the names of these two functions.                                                          // 83
-            function Generator() {} // 84
-            function GeneratorFunction() {} // 85
-            function GeneratorFunctionPrototype() {} // 86
-            // 87
-            // This is a polyfill for %IteratorPrototype% for environments that                                                  // 88
-            // don't natively support it.                                                                                        // 89
-            var IteratorPrototype = {}; // 90
+                // 63
+                return { type: "throw", arg: err }; // 64
+              } // 65
+            } // 66
+            // 67
+            var GenStateSuspendedStart = "suspendedStart"; // 68
+            var GenStateSuspendedYield = "suspendedYield"; // 69
+            var GenStateExecuting = "executing"; // 70
+            var GenStateCompleted = "completed"; // 71
+            // 72
+            // Returning this object from the innerFn has the same effect as                                                     // 73
+            // breaking out of the dispatch switch statement.                                                                    // 74
+            var ContinueSentinel = {}; // 75
+            // 76
+            // Dummy constructor functions that we use as the .constructor and                                                   // 77
+            // .constructor.prototype properties for functions that return Generator                                             // 78
+            // objects. For full spec compliance, you may wish to configure your                                                 // 79
+            // minifier not to mangle the names of these two functions.                                                          // 80
+            function Generator() {} // 81
+            function GeneratorFunction() {} // 82
+            function GeneratorFunctionPrototype() {} // 83
+            // 84
+            // This is a polyfill for %IteratorPrototype% for environments that                                                  // 85
+            // don't natively support it.                                                                                        // 86
+            var IteratorPrototype = {}; // 87
             IteratorPrototype[iteratorSymbol] = function () {
-              // 91
-              return this; // 92
-            }; // 93
-            // 94
-            var getProto = Object.getPrototypeOf; // 95
-            var NativeIteratorPrototype = getProto && getProto(getProto(values([]))); // 96
-            if (NativeIteratorPrototype && // 97
-            NativeIteratorPrototype !== Op && // 98
+              // 88
+              return this; // 89
+            }; // 90
+            // 91
+            var getProto = Object.getPrototypeOf; // 92
+            var NativeIteratorPrototype = getProto && getProto(getProto(values([]))); // 93
+            if (NativeIteratorPrototype && // 94
+            NativeIteratorPrototype !== Op && // 95
             hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
-              // 99
-              // This environment has a native %IteratorPrototype%; use it instead                                               // 100
-              // of the polyfill.                                                                                                // 101
-              IteratorPrototype = NativeIteratorPrototype; // 102
-            } // 103
-            // 104
-            var Gp = GeneratorFunctionPrototype.prototype = // 105
-            Generator.prototype = Object.create(IteratorPrototype); // 106
-            GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype; // 107
-            GeneratorFunctionPrototype.constructor = GeneratorFunction; // 108
-            GeneratorFunctionPrototype[toStringTagSymbol] = // 109
-            GeneratorFunction.displayName = "GeneratorFunction"; // 110
-            // 111
-            // Helper for defining the .next, .throw, and .return methods of the                                                 // 112
-            // Iterator interface in terms of a single ._invoke method.                                                          // 113
+              // 96
+              // This environment has a native %IteratorPrototype%; use it instead                                               // 97
+              // of the polyfill.                                                                                                // 98
+              IteratorPrototype = NativeIteratorPrototype; // 99
+            } // 100
+            // 101
+            var Gp = GeneratorFunctionPrototype.prototype = // 102
+            Generator.prototype = Object.create(IteratorPrototype); // 103
+            GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype; // 104
+            GeneratorFunctionPrototype.constructor = GeneratorFunction; // 105
+            GeneratorFunctionPrototype[toStringTagSymbol] = // 106
+            GeneratorFunction.displayName = "GeneratorFunction"; // 107
+            // 108
+            // Helper for defining the .next, .throw, and .return methods of the                                                 // 109
+            // Iterator interface in terms of a single ._invoke method.                                                          // 110
             function defineIteratorMethods(prototype) {
-              // 114
+              // 111
               ["next", "throw", "return"].forEach(function (method) {
-                // 115
+                // 112
                 prototype[method] = function (arg) {
-                  // 116
-                  return this._invoke(method, arg); // 117
-                }; // 118
-              }); // 119
-            } // 120
-            // 121
+                  // 113
+                  return this._invoke(method, arg); // 114
+                }; // 115
+              }); // 116
+            } // 117
+            // 118
             runtime.isGeneratorFunction = function (genFun) {
-              // 122
-              var ctor = typeof genFun === "function" && genFun.constructor; // 123
-              return ctor // 124
-              ? ctor === GeneratorFunction || // 125
-              // For the native GeneratorFunction constructor, the best we can                                               // 126
-              // do is to check its .name property.                                                                          // 127
-              (ctor.displayName || ctor.name) === "GeneratorFunction" // 128
-              : false; // 129
-            }; // 130
-            // 131
+              // 119
+              var ctor = typeof genFun === "function" && genFun.constructor; // 120
+              return ctor // 121
+              ? ctor === GeneratorFunction || // 122
+              // For the native GeneratorFunction constructor, the best we can                                               // 123
+              // do is to check its .name property.                                                                          // 124
+              (ctor.displayName || ctor.name) === "GeneratorFunction" // 125
+              : false; // 126
+            }; // 127
+            // 128
             runtime.mark = function (genFun) {
-              // 132
+              // 129
               if (Object.setPrototypeOf) {
-                // 133
-                Object.setPrototypeOf(genFun, GeneratorFunctionPrototype); // 134
+                // 130
+                Object.setPrototypeOf(genFun, GeneratorFunctionPrototype); // 131
               } else {
-                // 135
-                genFun.__proto__ = GeneratorFunctionPrototype; // 136
+                // 132
+                genFun.__proto__ = GeneratorFunctionPrototype; // 133
                 if (!(toStringTagSymbol in genFun)) {
-                  // 137
-                  genFun[toStringTagSymbol] = "GeneratorFunction"; // 138
-                } // 139
-              } // 140
-              genFun.prototype = Object.create(Gp); // 141
-              return genFun; // 142
-            }; // 143
-            // 144
-            // Within the body of any async function, `await x` is transformed to                                                // 145
-            // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test                                                 // 146
-            // `hasOwn.call(value, "__await")` to determine if the yielded value is                                              // 147
-            // meant to be awaited.                                                                                              // 148
+                  // 134
+                  genFun[toStringTagSymbol] = "GeneratorFunction"; // 135
+                } // 136
+              } // 137
+              genFun.prototype = Object.create(Gp); // 138
+              return genFun; // 139
+            }; // 140
+            // 141
+            // Within the body of any async function, `await x` is transformed to                                                // 142
+            // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test                                                 // 143
+            // `hasOwn.call(value, "__await")` to determine if the yielded value is                                              // 144
+            // meant to be awaited.                                                                                              // 145
             runtime.awrap = function (arg) {
-              // 149
-              return { __await: arg }; // 150
-            }; // 151
-            // 152
+              // 146
+              return { __await: arg }; // 147
+            }; // 148
+            // 149
             function AsyncIterator(generator) {
-              // 153
+              // 150
               function invoke(method, arg, resolve, reject) {
-                // 154
-                var record = tryCatch(generator[method], generator, arg); // 155
+                // 151
+                var record = tryCatch(generator[method], generator, arg); // 152
                 if (record.type === "throw") {
-                  // 156
-                  reject(record.arg); // 157
+                  // 153
+                  reject(record.arg); // 154
                 } else {
-                  // 158
-                  var result = record.arg; // 159
-                  var value = result.value; // 160
-                  if (value && // 161
-                  typeof value === "object" && // 162
+                  // 155
+                  var result = record.arg; // 156
+                  var value = result.value; // 157
+                  if (value && // 158
+                  typeof value === "object" && // 159
                   hasOwn.call(value, "__await")) {
-                    // 163
+                    // 160
                     return Promise.resolve(value.__await).then(function (value) {
-                      // 164
-                      invoke("next", value, resolve, reject); // 165
+                      // 161
+                      invoke("next", value, resolve, reject); // 162
                     }, function (err) {
-                      // 166
-                      invoke("throw", err, resolve, reject); // 167
-                    }); // 168
-                  } // 169
-                  // 170
+                      // 163
+                      invoke("throw", err, resolve, reject); // 164
+                    }); // 165
+                  } // 166
+                  // 167
                   return Promise.resolve(value).then(function (unwrapped) {
-                    // 171
-                    // When a yielded Promise is resolved, its final value becomes                                               // 172
-                    // the .value of the Promise<{value,done}> result for the                                                    // 173
-                    // current iteration. If the Promise is rejected, however, the                                               // 174
-                    // result for this iteration will be rejected with the same                                                  // 175
-                    // reason. Note that rejections of yielded Promises are not                                                  // 176
-                    // thrown back into the generator function, as is the case                                                   // 177
-                    // when an awaited Promise is rejected. This difference in                                                   // 178
-                    // behavior between yield and await is important, because it                                                 // 179
-                    // allows the consumer to decide what to do with the yielded                                                 // 180
-                    // rejection (swallow it and continue, manually .throw it back                                               // 181
-                    // into the generator, abandon iteration, whatever). With                                                    // 182
-                    // await, by contrast, there is no opportunity to examine the                                                // 183
-                    // rejection reason outside the generator function, so the                                                   // 184
-                    // only option is to throw it from the await expression, and                                                 // 185
-                    // let the generator function handle the exception.                                                          // 186
-                    result.value = unwrapped; // 187
-                    resolve(result); // 188
-                  }, reject); // 189
-                } // 190
-              } // 191
-              // 192
-              var previousPromise; // 193
-              // 194
+                    // 168
+                    // When a yielded Promise is resolved, its final value becomes                                               // 169
+                    // the .value of the Promise<{value,done}> result for the                                                    // 170
+                    // current iteration. If the Promise is rejected, however, the                                               // 171
+                    // result for this iteration will be rejected with the same                                                  // 172
+                    // reason. Note that rejections of yielded Promises are not                                                  // 173
+                    // thrown back into the generator function, as is the case                                                   // 174
+                    // when an awaited Promise is rejected. This difference in                                                   // 175
+                    // behavior between yield and await is important, because it                                                 // 176
+                    // allows the consumer to decide what to do with the yielded                                                 // 177
+                    // rejection (swallow it and continue, manually .throw it back                                               // 178
+                    // into the generator, abandon iteration, whatever). With                                                    // 179
+                    // await, by contrast, there is no opportunity to examine the                                                // 180
+                    // rejection reason outside the generator function, so the                                                   // 181
+                    // only option is to throw it from the await expression, and                                                 // 182
+                    // let the generator function handle the exception.                                                          // 183
+                    result.value = unwrapped; // 184
+                    resolve(result); // 185
+                  }, reject); // 186
+                } // 187
+              } // 188
+              // 189
+              var previousPromise; // 190
+              // 191
               function enqueue(method, arg) {
-                // 195
+                // 192
                 function callInvokeWithMethodAndArg() {
-                  // 196
+                  // 193
                   return new Promise(function (resolve, reject) {
-                    // 197
-                    invoke(method, arg, resolve, reject); // 198
-                  }); // 199
-                } // 200
-                // 201
-                return previousPromise = // 202
-                // If enqueue has been called before, then we want to wait until                                               // 203
-                // all previous Promises have been resolved before calling invoke,                                             // 204
-                // so that results are always delivered in the correct order. If                                               // 205
-                // enqueue has not been called before, then it is important to                                                 // 206
-                // call invoke immediately, without waiting on a callback to fire,                                             // 207
-                // so that the async generator function has the opportunity to do                                              // 208
-                // any necessary setup in a predictable way. This predictability                                               // 209
-                // is why the Promise constructor synchronously invokes its                                                    // 210
-                // executor callback, and why async functions synchronously                                                    // 211
-                // execute code before the first await. Since we implement simple                                              // 212
-                // async functions in terms of async generators, it is especially                                              // 213
-                // important to get this right, even though it requires care.                                                  // 214
-                previousPromise ? previousPromise.then( // 215
-                callInvokeWithMethodAndArg, // 216
-                // Avoid propagating failures to Promises returned by later                                                  // 217
-                // invocations of the iterator.                                                                              // 218
-                callInvokeWithMethodAndArg // 219
-                ) : callInvokeWithMethodAndArg(); // 220
-              } // 221
-              // 222
-              // Define the unified helper method that is used to implement .next,                                               // 223
-              // .throw, and .return (see defineIteratorMethods).                                                                // 224
-              this._invoke = enqueue; // 225
-            } // 226
-            // 227
-            defineIteratorMethods(AsyncIterator.prototype); // 228
+                    // 194
+                    invoke(method, arg, resolve, reject); // 195
+                  }); // 196
+                } // 197
+                // 198
+                return previousPromise = // 199
+                // If enqueue has been called before, then we want to wait until                                               // 200
+                // all previous Promises have been resolved before calling invoke,                                             // 201
+                // so that results are always delivered in the correct order. If                                               // 202
+                // enqueue has not been called before, then it is important to                                                 // 203
+                // call invoke immediately, without waiting on a callback to fire,                                             // 204
+                // so that the async generator function has the opportunity to do                                              // 205
+                // any necessary setup in a predictable way. This predictability                                               // 206
+                // is why the Promise constructor synchronously invokes its                                                    // 207
+                // executor callback, and why async functions synchronously                                                    // 208
+                // execute code before the first await. Since we implement simple                                              // 209
+                // async functions in terms of async generators, it is especially                                              // 210
+                // important to get this right, even though it requires care.                                                  // 211
+                previousPromise ? previousPromise.then( // 212
+                callInvokeWithMethodAndArg, // 213
+                // Avoid propagating failures to Promises returned by later                                                  // 214
+                // invocations of the iterator.                                                                              // 215
+                callInvokeWithMethodAndArg // 216
+                ) : callInvokeWithMethodAndArg(); // 217
+              } // 218
+              // 219
+              // Define the unified helper method that is used to implement .next,                                               // 220
+              // .throw, and .return (see defineIteratorMethods).                                                                // 221
+              this._invoke = enqueue; // 222
+            } // 223
+            // 224
+            defineIteratorMethods(AsyncIterator.prototype); // 225
             AsyncIterator.prototype[asyncIteratorSymbol] = function () {
-              // 229
-              return this; // 230
-            }; // 231
-            runtime.AsyncIterator = AsyncIterator; // 232
-            // 233
-            // Note that simple async functions are implemented on top of                                                        // 234
-            // AsyncIterator objects; they just return a Promise for the value of                                                // 235
-            // the final result produced by the iterator.                                                                        // 236
+              // 226
+              return this; // 227
+            }; // 228
+            runtime.AsyncIterator = AsyncIterator; // 229
+            // 230
+            // Note that simple async functions are implemented on top of                                                        // 231
+            // AsyncIterator objects; they just return a Promise for the value of                                                // 232
+            // the final result produced by the iterator.                                                                        // 233
             runtime.async = function (innerFn, outerFn, self, tryLocsList) {
-              // 237
-              var iter = new AsyncIterator( // 238
-              wrap(innerFn, outerFn, self, tryLocsList) // 239
-              ); // 240
-              // 241
-              return runtime.isGeneratorFunction(outerFn) // 242
-              ? iter // If outerFn is a generator, return the full iterator.                                                   // 243
+              // 234
+              var iter = new AsyncIterator( // 235
+              wrap(innerFn, outerFn, self, tryLocsList) // 236
+              ); // 237
+              // 238
+              return runtime.isGeneratorFunction(outerFn) // 239
+              ? iter // If outerFn is a generator, return the full iterator.                                                   // 240
               : iter.next().then(function (result) {
-                // 244
-                return result.done ? result.value : iter.next(); // 245
-              }); // 246
-            }; // 247
-            // 248
+                // 241
+                return result.done ? result.value : iter.next(); // 242
+              }); // 243
+            }; // 244
+            // 245
             function makeInvokeMethod(innerFn, self, context) {
-              // 249
-              var state = GenStateSuspendedStart; // 250
-              // 251
+              // 246
+              var state = GenStateSuspendedStart; // 247
+              // 248
               return function invoke(method, arg) {
-                // 252
+                // 249
                 if (state === GenStateExecuting) {
-                  // 253
-                  throw new Error("Generator is already running"); // 254
-                } // 255
-                // 256
+                  // 250
+                  throw new Error("Generator is already running"); // 251
+                } // 252
+                // 253
                 if (state === GenStateCompleted) {
-                  // 257
+                  // 254
                   if (method === "throw") {
-                    // 258
-                    throw arg; // 259
-                  } // 260
-                  // 261
-                  // Be forgiving, per 25.3.3.3.3 of the spec:                                                                   // 262
-                  // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume                                   // 263
-                  return doneResult(); // 264
-                } // 265
+                    // 255
+                    throw arg; // 256
+                  } // 257
+                  // 258
+                  // Be forgiving, per 25.3.3.3.3 of the spec:                                                                   // 259
+                  // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume                                   // 260
+                  return doneResult(); // 261
+                } // 262
+                // 263
+                context.method = method; // 264
+                context.arg = arg; // 265
                 // 266
-                context.method = method; // 267
-                context.arg = arg; // 268
-                // 269
                 while (true) {
-                  // 270
-                  var delegate = context.delegate; // 271
+                  // 267
+                  var delegate = context.delegate; // 268
                   if (delegate) {
-                    // 272
-                    var delegateResult = maybeInvokeDelegate(delegate, context); // 273
+                    // 269
+                    var delegateResult = maybeInvokeDelegate(delegate, context); // 270
                     if (delegateResult) {
-                      // 274
-                      if (delegateResult === ContinueSentinel) continue; // 275
-                      return delegateResult; // 276
-                    } // 277
-                  } // 278
-                  // 279
+                      // 271
+                      if (delegateResult === ContinueSentinel) continue; // 272
+                      return delegateResult; // 273
+                    } // 274
+                  } // 275
+                  // 276
                   if (context.method === "next") {
-                    // 280
-                    // Setting context._sent for legacy support of Babel's                                                       // 281
-                    // function.sent implementation.                                                                             // 282
-                    context.sent = context._sent = context.arg; // 283
-                    // 284
+                    // 277
+                    // Setting context._sent for legacy support of Babel's                                                       // 278
+                    // function.sent implementation.                                                                             // 279
+                    context.sent = context._sent = context.arg; // 280
+                    // 281
                   } else if (context.method === "throw") {
-                    // 285
+                    // 282
                     if (state === GenStateSuspendedStart) {
-                      // 286
-                      state = GenStateCompleted; // 287
-                      throw context.arg; // 288
-                    } // 289
-                    // 290
-                    context.dispatchException(context.arg); // 291
-                    // 292
+                      // 283
+                      state = GenStateCompleted; // 284
+                      throw context.arg; // 285
+                    } // 286
+                    // 287
+                    context.dispatchException(context.arg); // 288
+                    // 289
                   } else if (context.method === "return") {
-                    // 293
-                    context.abrupt("return", context.arg); // 294
-                  } // 295
-                  // 296
-                  state = GenStateExecuting; // 297
-                  // 298
-                  var record = tryCatch(innerFn, self, context); // 299
+                    // 290
+                    context.abrupt("return", context.arg); // 291
+                  } // 292
+                  // 293
+                  state = GenStateExecuting; // 294
+                  // 295
+                  var record = tryCatch(innerFn, self, context); // 296
                   if (record.type === "normal") {
-                    // 300
-                    // If an exception is thrown from innerFn, we leave state ===                                                // 301
-                    // GenStateExecuting and loop back for another invocation.                                                   // 302
-                    state = context.done // 303
-                    ? GenStateCompleted // 304
-                    : GenStateSuspendedYield; // 305
-                    // 306
+                    // 297
+                    // If an exception is thrown from innerFn, we leave state ===                                                // 298
+                    // GenStateExecuting and loop back for another invocation.                                                   // 299
+                    state = context.done // 300
+                    ? GenStateCompleted // 301
+                    : GenStateSuspendedYield; // 302
+                    // 303
                     if (record.arg === ContinueSentinel) {
-                      // 307
-                      continue; // 308
-                    } // 309
-                    // 310
-                    return { // 311
-                      value: record.arg, // 312
-                      done: context.done // 313
-                    }; // 314
-                    // 315
+                      // 304
+                      continue; // 305
+                    } // 306
+                    // 307
+                    return { // 308
+                      value: record.arg, // 309
+                      done: context.done // 310
+                    }; // 311
+                    // 312
                   } else if (record.type === "throw") {
-                    // 316
-                    state = GenStateCompleted; // 317
-                    // Dispatch the exception by looping back around to the                                                      // 318
-                    // context.dispatchException(context.arg) call above.                                                        // 319
-                    context.method = "throw"; // 320
-                    context.arg = record.arg; // 321
-                  } // 322
-                } // 323
-              }; // 324
-            } // 325
-            // 326
-            // Call delegate.iterator[context.method](context.arg) and handle the                                                // 327
-            // result, either by returning a { value, done } result from the                                                     // 328
-            // delegate iterator, or by modifying context.method and context.arg,                                                // 329
-            // setting context.delegate to null, and returning the ContinueSentinel.                                             // 330
+                    // 313
+                    state = GenStateCompleted; // 314
+                    // Dispatch the exception by looping back around to the                                                      // 315
+                    // context.dispatchException(context.arg) call above.                                                        // 316
+                    context.method = "throw"; // 317
+                    context.arg = record.arg; // 318
+                  } // 319
+                } // 320
+              }; // 321
+            } // 322
+            // 323
+            // Call delegate.iterator[context.method](context.arg) and handle the                                                // 324
+            // result, either by returning a { value, done } result from the                                                     // 325
+            // delegate iterator, or by modifying context.method and context.arg,                                                // 326
+            // setting context.delegate to null, and returning the ContinueSentinel.                                             // 327
             function maybeInvokeDelegate(delegate, context) {
-              // 331
-              var method = delegate.iterator[context.method]; // 332
+              // 328
+              var method = delegate.iterator[context.method]; // 329
               if (method === undefined) {
-                // 333
-                // A .throw or .return when the delegate iterator has no .throw                                                  // 334
-                // method always terminates the yield* loop.                                                                     // 335
-                context.delegate = null; // 336
-                // 337
+                // 330
+                // A .throw or .return when the delegate iterator has no .throw                                                  // 331
+                // method always terminates the yield* loop.                                                                     // 332
+                context.delegate = null; // 333
+                // 334
                 if (context.method === "throw") {
-                  // 338
+                  // 335
                   if (delegate.iterator.return) {
-                    // 339
-                    // If the delegate iterator has a return method, give it a                                                   // 340
-                    // chance to clean up.                                                                                       // 341
-                    context.method = "return"; // 342
-                    context.arg = undefined; // 343
-                    maybeInvokeDelegate(delegate, context); // 344
-                    // 345
+                    // 336
+                    // If the delegate iterator has a return method, give it a                                                   // 337
+                    // chance to clean up.                                                                                       // 338
+                    context.method = "return"; // 339
+                    context.arg = undefined; // 340
+                    maybeInvokeDelegate(delegate, context); // 341
+                    // 342
                     if (context.method === "throw") {
-                      // 346
-                      // If maybeInvokeDelegate(context) changed context.method from                                             // 347
-                      // "return" to "throw", let that override the TypeError below.                                             // 348
-                      return ContinueSentinel; // 349
-                    } // 350
-                  } // 351
-                  // 352
-                  context.method = "throw"; // 353
-                  context.arg = new TypeError( // 354
-                  "The iterator does not provide a 'throw' method"); // 355
-                } // 356
-                // 357
-                return ContinueSentinel; // 358
-              } // 359
-              // 360
-              var record = tryCatch(method, delegate.iterator, context.arg); // 361
-              // 362
+                      // 343
+                      // If maybeInvokeDelegate(context) changed context.method from                                             // 344
+                      // "return" to "throw", let that override the TypeError below.                                             // 345
+                      return ContinueSentinel; // 346
+                    } // 347
+                  } // 348
+                  // 349
+                  context.method = "throw"; // 350
+                  context.arg = new TypeError( // 351
+                  "The iterator does not provide a 'throw' method"); // 352
+                } // 353
+                // 354
+                return ContinueSentinel; // 355
+              } // 356
+              // 357
+              var record = tryCatch(method, delegate.iterator, context.arg); // 358
+              // 359
               if (record.type === "throw") {
-                // 363
-                context.method = "throw"; // 364
-                context.arg = record.arg; // 365
-                context.delegate = null; // 366
-                return ContinueSentinel; // 367
-              } // 368
-              // 369
-              var info = record.arg; // 370
-              // 371
+                // 360
+                context.method = "throw"; // 361
+                context.arg = record.arg; // 362
+                context.delegate = null; // 363
+                return ContinueSentinel; // 364
+              } // 365
+              // 366
+              var info = record.arg; // 367
+              // 368
               if (!info) {
-                // 372
-                context.method = "throw"; // 373
-                context.arg = new TypeError("iterator result is not an object"); // 374
-                context.delegate = null; // 375
-                return ContinueSentinel; // 376
-              } // 377
-              // 378
+                // 369
+                context.method = "throw"; // 370
+                context.arg = new TypeError("iterator result is not an object"); // 371
+                context.delegate = null; // 372
+                return ContinueSentinel; // 373
+              } // 374
+              // 375
               if (info.done) {
-                // 379
-                // Assign the result of the finished delegate to the temporary                                                   // 380
-                // variable specified by delegate.resultName (see delegateYield).                                                // 381
-                context[delegate.resultName] = info.value; // 382
+                // 376
+                // Assign the result of the finished delegate to the temporary                                                   // 377
+                // variable specified by delegate.resultName (see delegateYield).                                                // 378
+                context[delegate.resultName] = info.value; // 379
+                // 380
+                // Resume execution at the desired location (see delegateYield).                                                 // 381
+                context.next = delegate.nextLoc; // 382
                 // 383
-                // Resume execution at the desired location (see delegateYield).                                                 // 384
-                context.next = delegate.nextLoc; // 385
-                // 386
-                // If context.method was "throw" but the delegate handled the                                                    // 387
-                // exception, let the outer generator proceed normally. If                                                       // 388
-                // context.method was "next", forget context.arg since it has been                                               // 389
-                // "consumed" by the delegate iterator. If context.method was                                                    // 390
-                // "return", allow the original .return call to continue in the                                                  // 391
-                // outer generator.                                                                                              // 392
+                // If context.method was "throw" but the delegate handled the                                                    // 384
+                // exception, let the outer generator proceed normally. If                                                       // 385
+                // context.method was "next", forget context.arg since it has been                                               // 386
+                // "consumed" by the delegate iterator. If context.method was                                                    // 387
+                // "return", allow the original .return call to continue in the                                                  // 388
+                // outer generator.                                                                                              // 389
                 if (context.method !== "return") {
-                  // 393
-                  context.method = "next"; // 394
-                  context.arg = undefined; // 395
-                } // 396
-                // 397
+                  // 390
+                  context.method = "next"; // 391
+                  context.arg = undefined; // 392
+                } // 393
+                // 394
               } else {
-                // 398
-                // Re-yield the result returned by the delegate method.                                                          // 399
-                return info; // 400
-              } // 401
-              // 402
-              // The delegate iterator is finished, so forget it and continue with                                               // 403
-              // the outer generator.                                                                                            // 404
-              context.delegate = null; // 405
-              return ContinueSentinel; // 406
-            } // 407
-            // 408
-            // Define Generator.prototype.{next,throw,return} in terms of the                                                    // 409
-            // unified ._invoke helper method.                                                                                   // 410
-            defineIteratorMethods(Gp); // 411
-            // 412
-            Gp[toStringTagSymbol] = "Generator"; // 413
-            // 414
-            // A Generator should always return itself as the iterator object when the                                           // 415
-            // @@iterator function is called on it. Some browsers' implementations of the                                        // 416
-            // iterator prototype chain incorrectly implement this, causing the Generator                                        // 417
-            // object to not be returned from this call. This ensures that doesn't happen.                                       // 418
-            // See https://github.com/facebook/regenerator/issues/274 for more details.                                          // 419
+                // 395
+                // Re-yield the result returned by the delegate method.                                                          // 396
+                return info; // 397
+              } // 398
+              // 399
+              // The delegate iterator is finished, so forget it and continue with                                               // 400
+              // the outer generator.                                                                                            // 401
+              context.delegate = null; // 402
+              return ContinueSentinel; // 403
+            } // 404
+            // 405
+            // Define Generator.prototype.{next,throw,return} in terms of the                                                    // 406
+            // unified ._invoke helper method.                                                                                   // 407
+            defineIteratorMethods(Gp); // 408
+            // 409
+            Gp[toStringTagSymbol] = "Generator"; // 410
+            // 411
+            // A Generator should always return itself as the iterator object when the                                           // 412
+            // @@iterator function is called on it. Some browsers' implementations of the                                        // 413
+            // iterator prototype chain incorrectly implement this, causing the Generator                                        // 414
+            // object to not be returned from this call. This ensures that doesn't happen.                                       // 415
+            // See https://github.com/facebook/regenerator/issues/274 for more details.                                          // 416
             Gp[iteratorSymbol] = function () {
-              // 420
-              return this; // 421
-            }; // 422
-            // 423
+              // 417
+              return this; // 418
+            }; // 419
+            // 420
             Gp.toString = function () {
-              // 424
-              return "[object Generator]"; // 425
-            }; // 426
-            // 427
+              // 421
+              return "[object Generator]"; // 422
+            }; // 423
+            // 424
             function pushTryEntry(locs) {
-              // 428
-              var entry = { tryLoc: locs[0] }; // 429
-              // 430
+              // 425
+              var entry = { tryLoc: locs[0] }; // 426
+              // 427
               if (1 in locs) {
-                // 431
-                entry.catchLoc = locs[1]; // 432
-              } // 433
-              // 434
+                // 428
+                entry.catchLoc = locs[1]; // 429
+              } // 430
+              // 431
               if (2 in locs) {
-                // 435
-                entry.finallyLoc = locs[2]; // 436
-                entry.afterLoc = locs[3]; // 437
-              } // 438
-              // 439
-              this.tryEntries.push(entry); // 440
-            } // 441
-            // 442
+                // 432
+                entry.finallyLoc = locs[2]; // 433
+                entry.afterLoc = locs[3]; // 434
+              } // 435
+              // 436
+              this.tryEntries.push(entry); // 437
+            } // 438
+            // 439
             function resetTryEntry(entry) {
-              // 443
-              var record = entry.completion || {}; // 444
-              record.type = "normal"; // 445
-              delete record.arg; // 446
-              entry.completion = record; // 447
-            } // 448
-            // 449
+              // 440
+              var record = entry.completion || {}; // 441
+              record.type = "normal"; // 442
+              delete record.arg; // 443
+              entry.completion = record; // 444
+            } // 445
+            // 446
             function Context(tryLocsList) {
-              // 450
-              // The root entry object (effectively a try statement without a catch                                              // 451
-              // or a finally block) gives us a place to store values thrown from                                                // 452
-              // locations where there is no enclosing try statement.                                                            // 453
-              this.tryEntries = [{ tryLoc: "root" }]; // 454
-              tryLocsList.forEach(pushTryEntry, this); // 455
-              this.reset(true); // 456
-            } // 457
-            // 458
+              // 447
+              // The root entry object (effectively a try statement without a catch                                              // 448
+              // or a finally block) gives us a place to store values thrown from                                                // 449
+              // locations where there is no enclosing try statement.                                                            // 450
+              this.tryEntries = [{ tryLoc: "root" }]; // 451
+              tryLocsList.forEach(pushTryEntry, this); // 452
+              this.reset(true); // 453
+            } // 454
+            // 455
             runtime.keys = function (object) {
-              // 459
-              var keys = []; // 460
+              // 456
+              var keys = []; // 457
               for (var key in object) {
-                // 461
-                keys.push(key); // 462
-              } // 463
-              keys.reverse(); // 464
-              // 465
-              // Rather than returning an object with a next method, we keep                                                     // 466
-              // things simple and return the next function itself.                                                              // 467
+                // 458
+                keys.push(key); // 459
+              } // 460
+              keys.reverse(); // 461
+              // 462
+              // Rather than returning an object with a next method, we keep                                                     // 463
+              // things simple and return the next function itself.                                                              // 464
               return function next() {
-                // 468
+                // 465
                 while (keys.length) {
-                  // 469
-                  var key = keys.pop(); // 470
+                  // 466
+                  var key = keys.pop(); // 467
                   if (key in object) {
-                    // 471
-                    next.value = key; // 472
-                    next.done = false; // 473
-                    return next; // 474
-                  } // 475
-                } // 476
-                // 477
-                // To avoid creating an additional object, we just hang the .value                                               // 478
-                // and .done properties off the next function object itself. This                                                // 479
-                // also ensures that the minifier will not anonymize the function.                                               // 480
-                next.done = true; // 481
-                return next; // 482
-              }; // 483
-            }; // 484
-            // 485
+                    // 468
+                    next.value = key; // 469
+                    next.done = false; // 470
+                    return next; // 471
+                  } // 472
+                } // 473
+                // 474
+                // To avoid creating an additional object, we just hang the .value                                               // 475
+                // and .done properties off the next function object itself. This                                                // 476
+                // also ensures that the minifier will not anonymize the function.                                               // 477
+                next.done = true; // 478
+                return next; // 479
+              }; // 480
+            }; // 481
+            // 482
             function values(iterable) {
-              // 486
+              // 483
               if (iterable) {
-                // 487
-                var iteratorMethod = iterable[iteratorSymbol]; // 488
+                // 484
+                var iteratorMethod = iterable[iteratorSymbol]; // 485
                 if (iteratorMethod) {
-                  // 489
-                  return iteratorMethod.call(iterable); // 490
-                } // 491
-                // 492
+                  // 486
+                  return iteratorMethod.call(iterable); // 487
+                } // 488
+                // 489
                 if (typeof iterable.next === "function") {
-                  // 493
-                  return iterable; // 494
-                } // 495
-                // 496
+                  // 490
+                  return iterable; // 491
+                } // 492
+                // 493
                 if (!isNaN(iterable.length)) {
-                  // 497
+                  // 494
                   var i = -1,
                       next = function next() {
-                    // 498
+                    // 495
                     while (++i < iterable.length) {
-                      // 499
+                      // 496
                       if (hasOwn.call(iterable, i)) {
-                        // 500
-                        next.value = iterable[i]; // 501
-                        next.done = false; // 502
-                        return next; // 503
-                      } // 504
-                    } // 505
+                        // 497
+                        next.value = iterable[i]; // 498
+                        next.done = false; // 499
+                        return next; // 500
+                      } // 501
+                    } // 502
+                    // 503
+                    next.value = undefined; // 504
+                    next.done = true; // 505
                     // 506
-                    next.value = undefined; // 507
-                    next.done = true; // 508
-                    // 509
-                    return next; // 510
-                  }; // 511
-                  // 512
-                  return next.next = next; // 513
-                } // 514
-              } // 515
-              // 516
-              // Return an iterator with no values.                                                                              // 517
-              return { next: doneResult }; // 518
-            } // 519
-            runtime.values = values; // 520
-            // 521
+                    return next; // 507
+                  }; // 508
+                  // 509
+                  return next.next = next; // 510
+                } // 511
+              } // 512
+              // 513
+              // Return an iterator with no values.                                                                              // 514
+              return { next: doneResult }; // 515
+            } // 516
+            runtime.values = values; // 517
+            // 518
             function doneResult() {
-              // 522
-              return { value: undefined, done: true }; // 523
-            } // 524
-            // 525
-            Context.prototype = { // 526
-              constructor: Context, // 527
-              // 528
+              // 519
+              return { value: undefined, done: true }; // 520
+            } // 521
+            // 522
+            Context.prototype = { // 523
+              constructor: Context, // 524
+              // 525
               reset: function (skipTempReset) {
-                // 529
-                this.prev = 0; // 530
-                this.next = 0; // 531
-                // Resetting context._sent for legacy support of Babel's                                                         // 532
-                // function.sent implementation.                                                                                 // 533
-                this.sent = this._sent = undefined; // 534
-                this.done = false; // 535
-                this.delegate = null; // 536
+                // 526
+                this.prev = 0; // 527
+                this.next = 0; // 528
+                // Resetting context._sent for legacy support of Babel's                                                         // 529
+                // function.sent implementation.                                                                                 // 530
+                this.sent = this._sent = undefined; // 531
+                this.done = false; // 532
+                this.delegate = null; // 533
+                // 534
+                this.method = "next"; // 535
+                this.arg = undefined; // 536
                 // 537
-                this.method = "next"; // 538
-                this.arg = undefined; // 539
-                // 540
-                this.tryEntries.forEach(resetTryEntry); // 541
-                // 542
+                this.tryEntries.forEach(resetTryEntry); // 538
+                // 539
                 if (!skipTempReset) {
-                  // 543
+                  // 540
                   for (var name in this) {
-                    // 544
-                    // Not sure about the optimal order of these conditions:                                                     // 545
-                    if (name.charAt(0) === "t" && // 546
-                    hasOwn.call(this, name) && // 547
+                    // 541
+                    // Not sure about the optimal order of these conditions:                                                     // 542
+                    if (name.charAt(0) === "t" && // 543
+                    hasOwn.call(this, name) && // 544
                     !isNaN(+name.slice(1))) {
-                      // 548
-                      this[name] = undefined; // 549
-                    } // 550
-                  } // 551
-                } // 552
-              }, // 553
-              // 554
+                      // 545
+                      this[name] = undefined; // 546
+                    } // 547
+                  } // 548
+                } // 549
+              }, // 550
+              // 551
               stop: function () {
-                // 555
-                this.done = true; // 556
-                // 557
-                var rootEntry = this.tryEntries[0]; // 558
-                var rootRecord = rootEntry.completion; // 559
+                // 552
+                this.done = true; // 553
+                // 554
+                var rootEntry = this.tryEntries[0]; // 555
+                var rootRecord = rootEntry.completion; // 556
                 if (rootRecord.type === "throw") {
-                  // 560
-                  throw rootRecord.arg; // 561
-                } // 562
-                // 563
-                return this.rval; // 564
-              }, // 565
-              // 566
+                  // 557
+                  throw rootRecord.arg; // 558
+                } // 559
+                // 560
+                return this.rval; // 561
+              }, // 562
+              // 563
               dispatchException: function (exception) {
-                // 567
+                // 564
                 if (this.done) {
-                  // 568
-                  throw exception; // 569
-                } // 570
-                // 571
-                var context = this; // 572
+                  // 565
+                  throw exception; // 566
+                } // 567
+                // 568
+                var context = this; // 569
                 function handle(loc, caught) {
-                  // 573
-                  record.type = "throw"; // 574
-                  record.arg = exception; // 575
-                  context.next = loc; // 576
-                  // 577
+                  // 570
+                  record.type = "throw"; // 571
+                  record.arg = exception; // 572
+                  context.next = loc; // 573
+                  // 574
                   if (caught) {
-                    // 578
-                    // If the dispatched exception was caught by a catch block,                                                  // 579
-                    // then let that catch block handle the exception normally.                                                  // 580
-                    context.method = "next"; // 581
-                    context.arg = undefined; // 582
-                  } // 583
-                  // 584
-                  return !!caught; // 585
-                } // 586
-                // 587
+                    // 575
+                    // If the dispatched exception was caught by a catch block,                                                  // 576
+                    // then let that catch block handle the exception normally.                                                  // 577
+                    context.method = "next"; // 578
+                    context.arg = undefined; // 579
+                  } // 580
+                  // 581
+                  return !!caught; // 582
+                } // 583
+                // 584
                 for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+                  // 585
+                  var entry = this.tryEntries[i]; // 586
+                  var record = entry.completion; // 587
                   // 588
-                  var entry = this.tryEntries[i]; // 589
-                  var record = entry.completion; // 590
-                  // 591
                   if (entry.tryLoc === "root") {
-                    // 592
-                    // Exception thrown outside of any try block that could handle                                               // 593
-                    // it, so set the completion value of the entire function to                                                 // 594
-                    // throw the exception.                                                                                      // 595
-                    return handle("end"); // 596
-                  } // 597
-                  // 598
+                    // 589
+                    // Exception thrown outside of any try block that could handle                                               // 590
+                    // it, so set the completion value of the entire function to                                                 // 591
+                    // throw the exception.                                                                                      // 592
+                    return handle("end"); // 593
+                  } // 594
+                  // 595
                   if (entry.tryLoc <= this.prev) {
+                    // 596
+                    var hasCatch = hasOwn.call(entry, "catchLoc"); // 597
+                    var hasFinally = hasOwn.call(entry, "finallyLoc"); // 598
                     // 599
-                    var hasCatch = hasOwn.call(entry, "catchLoc"); // 600
-                    var hasFinally = hasOwn.call(entry, "finallyLoc"); // 601
-                    // 602
                     if (hasCatch && hasFinally) {
-                      // 603
+                      // 600
                       if (this.prev < entry.catchLoc) {
-                        // 604
-                        return handle(entry.catchLoc, true); // 605
+                        // 601
+                        return handle(entry.catchLoc, true); // 602
                       } else if (this.prev < entry.finallyLoc) {
-                        // 606
-                        return handle(entry.finallyLoc); // 607
-                      } // 608
-                      // 609
+                        // 603
+                        return handle(entry.finallyLoc); // 604
+                      } // 605
+                      // 606
                     } else if (hasCatch) {
-                      // 610
+                      // 607
                       if (this.prev < entry.catchLoc) {
-                        // 611
-                        return handle(entry.catchLoc, true); // 612
-                      } // 613
-                      // 614
+                        // 608
+                        return handle(entry.catchLoc, true); // 609
+                      } // 610
+                      // 611
                     } else if (hasFinally) {
-                      // 615
+                      // 612
                       if (this.prev < entry.finallyLoc) {
-                        // 616
-                        return handle(entry.finallyLoc); // 617
-                      } // 618
-                      // 619
+                        // 613
+                        return handle(entry.finallyLoc); // 614
+                      } // 615
+                      // 616
                     } else {
-                      // 620
-                      throw new Error("try statement without catch or finally"); // 621
-                    } // 622
-                  } // 623
-                } // 624
-              }, // 625
-              // 626
+                      // 617
+                      throw new Error("try statement without catch or finally"); // 618
+                    } // 619
+                  } // 620
+                } // 621
+              }, // 622
+              // 623
               abrupt: function (type, arg) {
-                // 627
+                // 624
                 for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-                  // 628
-                  var entry = this.tryEntries[i]; // 629
-                  if (entry.tryLoc <= this.prev && // 630
-                  hasOwn.call(entry, "finallyLoc") && // 631
+                  // 625
+                  var entry = this.tryEntries[i]; // 626
+                  if (entry.tryLoc <= this.prev && // 627
+                  hasOwn.call(entry, "finallyLoc") && // 628
                   this.prev < entry.finallyLoc) {
-                    // 632
-                    var finallyEntry = entry; // 633
-                    break; // 634
-                  } // 635
-                } // 636
-                // 637
-                if (finallyEntry && ( // 638
-                type === "break" || // 639
-                type === "continue") && // 640
-                finallyEntry.tryLoc <= arg && // 641
+                    // 629
+                    var finallyEntry = entry; // 630
+                    break; // 631
+                  } // 632
+                } // 633
+                // 634
+                if (finallyEntry && ( // 635
+                type === "break" || // 636
+                type === "continue") && // 637
+                finallyEntry.tryLoc <= arg && // 638
                 arg <= finallyEntry.finallyLoc) {
-                  // 642
-                  // Ignore the finally entry if control is not jumping to a                                                     // 643
-                  // location outside the try/catch block.                                                                       // 644
-                  finallyEntry = null; // 645
-                } // 646
-                // 647
-                var record = finallyEntry ? finallyEntry.completion : {}; // 648
-                record.type = type; // 649
-                record.arg = arg; // 650
-                // 651
+                  // 639
+                  // Ignore the finally entry if control is not jumping to a                                                     // 640
+                  // location outside the try/catch block.                                                                       // 641
+                  finallyEntry = null; // 642
+                } // 643
+                // 644
+                var record = finallyEntry ? finallyEntry.completion : {}; // 645
+                record.type = type; // 646
+                record.arg = arg; // 647
+                // 648
                 if (finallyEntry) {
-                  // 652
-                  this.method = "next"; // 653
-                  this.next = finallyEntry.finallyLoc; // 654
-                  return ContinueSentinel; // 655
-                } // 656
-                // 657
-                return this.complete(record); // 658
-              }, // 659
-              // 660
+                  // 649
+                  this.method = "next"; // 650
+                  this.next = finallyEntry.finallyLoc; // 651
+                  return ContinueSentinel; // 652
+                } // 653
+                // 654
+                return this.complete(record); // 655
+              }, // 656
+              // 657
               complete: function (record, afterLoc) {
-                // 661
+                // 658
                 if (record.type === "throw") {
-                  // 662
-                  throw record.arg; // 663
-                } // 664
-                // 665
-                if (record.type === "break" || // 666
+                  // 659
+                  throw record.arg; // 660
+                } // 661
+                // 662
+                if (record.type === "break" || // 663
                 record.type === "continue") {
-                  // 667
-                  this.next = record.arg; // 668
+                  // 664
+                  this.next = record.arg; // 665
                 } else if (record.type === "return") {
-                  // 669
-                  this.rval = this.arg = record.arg; // 670
-                  this.method = "return"; // 671
-                  this.next = "end"; // 672
+                  // 666
+                  this.rval = this.arg = record.arg; // 667
+                  this.method = "return"; // 668
+                  this.next = "end"; // 669
                 } else if (record.type === "normal" && afterLoc) {
-                  // 673
-                  this.next = afterLoc; // 674
-                } // 675
-                // 676
-                return ContinueSentinel; // 677
-              }, // 678
-              // 679
+                  // 670
+                  this.next = afterLoc; // 671
+                } // 672
+                // 673
+                return ContinueSentinel; // 674
+              }, // 675
+              // 676
               finish: function (finallyLoc) {
-                // 680
+                // 677
                 for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-                  // 681
-                  var entry = this.tryEntries[i]; // 682
+                  // 678
+                  var entry = this.tryEntries[i]; // 679
                   if (entry.finallyLoc === finallyLoc) {
-                    // 683
-                    this.complete(entry.completion, entry.afterLoc); // 684
-                    resetTryEntry(entry); // 685
-                    return ContinueSentinel; // 686
-                  } // 687
-                } // 688
-              }, // 689
-              // 690
+                    // 680
+                    this.complete(entry.completion, entry.afterLoc); // 681
+                    resetTryEntry(entry); // 682
+                    return ContinueSentinel; // 683
+                  } // 684
+                } // 685
+              }, // 686
+              // 687
               "catch": function (tryLoc) {
-                // 691
+                // 688
                 for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-                  // 692
-                  var entry = this.tryEntries[i]; // 693
+                  // 689
+                  var entry = this.tryEntries[i]; // 690
                   if (entry.tryLoc === tryLoc) {
-                    // 694
-                    var record = entry.completion; // 695
+                    // 691
+                    var record = entry.completion; // 692
                     if (record.type === "throw") {
-                      // 696
-                      var thrown = record.arg; // 697
-                      resetTryEntry(entry); // 698
-                    } // 699
-                    return thrown; // 700
-                  } // 701
-                } // 702
-                // 703
-                // The context.catch method must only be called with a location                                                  // 704
-                // argument that corresponds to a known catch block.                                                             // 705
-                throw new Error("illegal catch attempt"); // 706
-              }, // 707
-              // 708
+                      // 693
+                      var thrown = record.arg; // 694
+                      resetTryEntry(entry); // 695
+                    } // 696
+                    return thrown; // 697
+                  } // 698
+                } // 699
+                // 700
+                // The context.catch method must only be called with a location                                                  // 701
+                // argument that corresponds to a known catch block.                                                             // 702
+                throw new Error("illegal catch attempt"); // 703
+              }, // 704
+              // 705
               delegateYield: function (iterable, resultName, nextLoc) {
-                // 709
-                this.delegate = { // 710
-                  iterator: values(iterable), // 711
-                  resultName: resultName, // 712
-                  nextLoc: nextLoc // 713
-                }; // 714
-                // 715
+                // 706
+                this.delegate = { // 707
+                  iterator: values(iterable), // 708
+                  resultName: resultName, // 709
+                  nextLoc: nextLoc // 710
+                }; // 711
+                // 712
                 if (this.method === "next") {
-                  // 716
-                  // Deliberately forget the last sent value so that we don't                                                    // 717
-                  // accidentally pass it on to the delegate.                                                                    // 718
-                  this.arg = undefined; // 719
-                } // 720
-                // 721
-                return ContinueSentinel; // 722
-              } // 723
-            }; // 724
-          }( // 725
-          // In sloppy mode, unbound `this` refers to the global object, fallback to                                           // 726
-          // Function constructor if we're in global strict mode. That is sadly a form                                         // 727
-          // of indirect eval which violates Content Security Policy.                                                          // 728
+                  // 713
+                  // Deliberately forget the last sent value so that we don't                                                    // 714
+                  // accidentally pass it on to the delegate.                                                                    // 715
+                  this.arg = undefined; // 716
+                } // 717
+                // 718
+                return ContinueSentinel; // 719
+              } // 720
+            }; // 721
+          }( // 722
+          // In sloppy mode, unbound `this` refers to the global object, fallback to                                           // 723
+          // Function constructor if we're in global strict mode. That is sadly a form                                         // 724
+          // of indirect eval which violates Content Security Policy.                                                          // 725
           function () {
             return this;
-          }() || Function("return this")() // 729
-          ); // 730
-          // 731
+          }() || Function("return this")() // 726
+          ); // 727
+          // 728
           /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         } }, "core-js": { "modules": { "es6.symbol.js": function (_require36) {
             // 1
@@ -7050,241 +7055,241 @@ __meteor_runtime_config__ = {
             var enumKeys = _require36('./_enum-keys'); // 16
             var isArray = _require36('./_is-array'); // 17
             var anObject = _require36('./_an-object'); // 18
-            var toIObject = _require36('./_to-iobject'); // 19
-            var toPrimitive = _require36('./_to-primitive'); // 20
-            var createDesc = _require36('./_property-desc'); // 21
-            var _create = _require36('./_object-create'); // 22
-            var gOPNExt = _require36('./_object-gopn-ext'); // 23
-            var $GOPD = _require36('./_object-gopd'); // 24
-            var $DP = _require36('./_object-dp'); // 25
-            var $keys = _require36('./_object-keys'); // 26
-            var gOPD = $GOPD.f; // 27
-            var dP = $DP.f; // 28
-            var gOPN = gOPNExt.f; // 29
-            var $Symbol = global.Symbol; // 30
-            var $JSON = global.JSON; // 31
-            var _stringify = $JSON && $JSON.stringify; // 32
-            var PROTOTYPE = 'prototype'; // 33
-            var HIDDEN = wks('_hidden'); // 34
-            var TO_PRIMITIVE = wks('toPrimitive'); // 35
-            var isEnum = {}.propertyIsEnumerable; // 36
-            var SymbolRegistry = shared('symbol-registry'); // 37
-            var AllSymbols = shared('symbols'); // 38
-            var OPSymbols = shared('op-symbols'); // 39
-            var ObjectProto = Object[PROTOTYPE]; // 40
-            var USE_NATIVE = typeof $Symbol == 'function'; // 41
-            var QObject = global.QObject; // 42
-            // Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173                                      // 43
-            var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild; // 44
-            // 45
-            // fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687                                         // 46
+            var isObject = _require36('./_is-object'); // 19
+            var toIObject = _require36('./_to-iobject'); // 20
+            var toPrimitive = _require36('./_to-primitive'); // 21
+            var createDesc = _require36('./_property-desc'); // 22
+            var _create = _require36('./_object-create'); // 23
+            var gOPNExt = _require36('./_object-gopn-ext'); // 24
+            var $GOPD = _require36('./_object-gopd'); // 25
+            var $DP = _require36('./_object-dp'); // 26
+            var $keys = _require36('./_object-keys'); // 27
+            var gOPD = $GOPD.f; // 28
+            var dP = $DP.f; // 29
+            var gOPN = gOPNExt.f; // 30
+            var $Symbol = global.Symbol; // 31
+            var $JSON = global.JSON; // 32
+            var _stringify = $JSON && $JSON.stringify; // 33
+            var PROTOTYPE = 'prototype'; // 34
+            var HIDDEN = wks('_hidden'); // 35
+            var TO_PRIMITIVE = wks('toPrimitive'); // 36
+            var isEnum = {}.propertyIsEnumerable; // 37
+            var SymbolRegistry = shared('symbol-registry'); // 38
+            var AllSymbols = shared('symbols'); // 39
+            var OPSymbols = shared('op-symbols'); // 40
+            var ObjectProto = Object[PROTOTYPE]; // 41
+            var USE_NATIVE = typeof $Symbol == 'function'; // 42
+            var QObject = global.QObject; // 43
+            // Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173                                      // 44
+            var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild; // 45
+            // 46
+            // fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687                                         // 47
             var setSymbolDesc = DESCRIPTORS && $fails(function () {
-              // 47
-              return _create(dP({}, 'a', { // 48
+              // 48
+              return _create(dP({}, 'a', { // 49
                 get: function () {
                   return dP(this, 'a', { value: 7 }).a;
-                } // 49
-              })).a != 7; // 50
+                } // 50
+              })).a != 7; // 51
             }) ? function (it, key, D) {
-              // 51
-              var protoDesc = gOPD(ObjectProto, key); // 52
-              if (protoDesc) delete ObjectProto[key]; // 53
-              dP(it, key, D); // 54
-              if (protoDesc && it !== ObjectProto) dP(ObjectProto, key, protoDesc); // 55
-            } : dP; // 56
-            // 57
+              // 52
+              var protoDesc = gOPD(ObjectProto, key); // 53
+              if (protoDesc) delete ObjectProto[key]; // 54
+              dP(it, key, D); // 55
+              if (protoDesc && it !== ObjectProto) dP(ObjectProto, key, protoDesc); // 56
+            } : dP; // 57
+            // 58
             var wrap = function (tag) {
-              // 58
-              var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]); // 59
-              sym._k = tag; // 60
-              return sym; // 61
-            }; // 62
-            // 63
+              // 59
+              var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]); // 60
+              sym._k = tag; // 61
+              return sym; // 62
+            }; // 63
+            // 64
             var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function (it) {
-              // 64
-              return typeof it == 'symbol'; // 65
+              // 65
+              return typeof it == 'symbol'; // 66
             } : function (it) {
-              // 66
-              return it instanceof $Symbol; // 67
-            }; // 68
-            // 69
+              // 67
+              return it instanceof $Symbol; // 68
+            }; // 69
+            // 70
             var $defineProperty = function defineProperty(it, key, D) {
-              // 70
-              if (it === ObjectProto) $defineProperty(OPSymbols, key, D); // 71
-              anObject(it); // 72
-              key = toPrimitive(key, true); // 73
-              anObject(D); // 74
+              // 71
+              if (it === ObjectProto) $defineProperty(OPSymbols, key, D); // 72
+              anObject(it); // 73
+              key = toPrimitive(key, true); // 74
+              anObject(D); // 75
               if (has(AllSymbols, key)) {
-                // 75
+                // 76
                 if (!D.enumerable) {
-                  // 76
-                  if (!has(it, HIDDEN)) dP(it, HIDDEN, createDesc(1, {})); // 77
-                  it[HIDDEN][key] = true; // 78
+                  // 77
+                  if (!has(it, HIDDEN)) dP(it, HIDDEN, createDesc(1, {})); // 78
+                  it[HIDDEN][key] = true; // 79
                 } else {
-                  // 79
-                  if (has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false; // 80
-                  D = _create(D, { enumerable: createDesc(0, false) }); // 81
-                }return setSymbolDesc(it, key, D); // 82
-              }return dP(it, key, D); // 83
-            }; // 84
+                  // 80
+                  if (has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false; // 81
+                  D = _create(D, { enumerable: createDesc(0, false) }); // 82
+                }return setSymbolDesc(it, key, D); // 83
+              }return dP(it, key, D); // 84
+            }; // 85
             var $defineProperties = function defineProperties(it, P) {
-              // 85
-              anObject(it); // 86
-              var keys = enumKeys(P = toIObject(P)); // 87
-              var i = 0; // 88
-              var l = keys.length; // 89
-              var key; // 90
-              while (l > i) $defineProperty(it, key = keys[i++], P[key]); // 91
-              return it; // 92
-            }; // 93
+              // 86
+              anObject(it); // 87
+              var keys = enumKeys(P = toIObject(P)); // 88
+              var i = 0; // 89
+              var l = keys.length; // 90
+              var key; // 91
+              while (l > i) $defineProperty(it, key = keys[i++], P[key]); // 92
+              return it; // 93
+            }; // 94
             var $create = function create(it, P) {
-              // 94
-              return P === undefined ? _create(it) : $defineProperties(_create(it), P); // 95
-            }; // 96
+              // 95
+              return P === undefined ? _create(it) : $defineProperties(_create(it), P); // 96
+            }; // 97
             var $propertyIsEnumerable = function propertyIsEnumerable(key) {
-              // 97
-              var E = isEnum.call(this, key = toPrimitive(key, true)); // 98
-              if (this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return false; // 99
-              return E || !has(this, key) || !has(AllSymbols, key) || has(this, HIDDEN) && this[HIDDEN][key] ? E : true; // 100
-            }; // 101
+              // 98
+              var E = isEnum.call(this, key = toPrimitive(key, true)); // 99
+              if (this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return false; // 100
+              return E || !has(this, key) || !has(AllSymbols, key) || has(this, HIDDEN) && this[HIDDEN][key] ? E : true; // 101
+            }; // 102
             var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
-              // 102
-              it = toIObject(it); // 103
-              key = toPrimitive(key, true); // 104
-              if (it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return; // 105
-              var D = gOPD(it, key); // 106
-              if (D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true; // 107
-              return D; // 108
-            }; // 109
+              // 103
+              it = toIObject(it); // 104
+              key = toPrimitive(key, true); // 105
+              if (it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return; // 106
+              var D = gOPD(it, key); // 107
+              if (D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true; // 108
+              return D; // 109
+            }; // 110
             var $getOwnPropertyNames = function getOwnPropertyNames(it) {
-              // 110
-              var names = gOPN(toIObject(it)); // 111
-              var result = []; // 112
-              var i = 0; // 113
-              var key; // 114
+              // 111
+              var names = gOPN(toIObject(it)); // 112
+              var result = []; // 113
+              var i = 0; // 114
+              var key; // 115
               while (names.length > i) {
-                // 115
-                if (!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META) result.push(key); // 116
-              }return result; // 117
-            }; // 118
+                // 116
+                if (!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META) result.push(key); // 117
+              }return result; // 118
+            }; // 119
             var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
-              // 119
-              var IS_OP = it === ObjectProto; // 120
-              var names = gOPN(IS_OP ? OPSymbols : toIObject(it)); // 121
-              var result = []; // 122
-              var i = 0; // 123
-              var key; // 124
+              // 120
+              var IS_OP = it === ObjectProto; // 121
+              var names = gOPN(IS_OP ? OPSymbols : toIObject(it)); // 122
+              var result = []; // 123
+              var i = 0; // 124
+              var key; // 125
               while (names.length > i) {
-                // 125
-                if (has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true)) result.push(AllSymbols[key]); // 126
-              }return result; // 127
-            }; // 128
-            // 129
-            // 19.4.1.1 Symbol([description])                                                                                      // 130
+                // 126
+                if (has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true)) result.push(AllSymbols[key]); // 127
+              }return result; // 128
+            }; // 129
+            // 130
+            // 19.4.1.1 Symbol([description])                                                                                      // 131
             if (!USE_NATIVE) {
-              // 131
+              // 132
               $Symbol = function Symbol() {
-                // 132
-                if (this instanceof $Symbol) throw TypeError('Symbol is not a constructor!'); // 133
-                var tag = uid(arguments.length > 0 ? arguments[0] : undefined); // 134
+                // 133
+                if (this instanceof $Symbol) throw TypeError('Symbol is not a constructor!'); // 134
+                var tag = uid(arguments.length > 0 ? arguments[0] : undefined); // 135
                 var $set = function (value) {
-                  // 135
-                  if (this === ObjectProto) $set.call(OPSymbols, value); // 136
-                  if (has(this, HIDDEN) && has(this[HIDDEN], tag)) this[HIDDEN][tag] = false; // 137
-                  setSymbolDesc(this, tag, createDesc(1, value)); // 138
-                }; // 139
-                if (DESCRIPTORS && setter) setSymbolDesc(ObjectProto, tag, { configurable: true, set: $set }); // 140
-                return wrap(tag); // 141
-              }; // 142
+                  // 136
+                  if (this === ObjectProto) $set.call(OPSymbols, value); // 137
+                  if (has(this, HIDDEN) && has(this[HIDDEN], tag)) this[HIDDEN][tag] = false; // 138
+                  setSymbolDesc(this, tag, createDesc(1, value)); // 139
+                }; // 140
+                if (DESCRIPTORS && setter) setSymbolDesc(ObjectProto, tag, { configurable: true, set: $set }); // 141
+                return wrap(tag); // 142
+              }; // 143
               redefine($Symbol[PROTOTYPE], 'toString', function toString() {
-                // 143
-                return this._k; // 144
-              }); // 145
-              // 146
-              $GOPD.f = $getOwnPropertyDescriptor; // 147
-              $DP.f = $defineProperty; // 148
-              _require36('./_object-gopn').f = gOPNExt.f = $getOwnPropertyNames; // 149
-              _require36('./_object-pie').f = $propertyIsEnumerable; // 150
-              _require36('./_object-gops').f = $getOwnPropertySymbols; // 151
-              // 152
+                // 144
+                return this._k; // 145
+              }); // 146
+              // 147
+              $GOPD.f = $getOwnPropertyDescriptor; // 148
+              $DP.f = $defineProperty; // 149
+              _require36('./_object-gopn').f = gOPNExt.f = $getOwnPropertyNames; // 150
+              _require36('./_object-pie').f = $propertyIsEnumerable; // 151
+              _require36('./_object-gops').f = $getOwnPropertySymbols; // 152
+              // 153
               if (DESCRIPTORS && !_require36('./_library')) {
-                // 153
-                redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true); // 154
-              } // 155
-              // 156
+                // 154
+                redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true); // 155
+              } // 156
+              // 157
               wksExt.f = function (name) {
-                // 157
-                return wrap(wks(name)); // 158
-              }; // 159
-            } // 160
-            // 161
-            $export($export.G + $export.W + $export.F * !USE_NATIVE, { Symbol: $Symbol }); // 162
-            // 163
-            for (var es6Symbols = // 164
+                // 158
+                return wrap(wks(name)); // 159
+              }; // 160
+            } // 161
+            // 162
+            $export($export.G + $export.W + $export.F * !USE_NATIVE, { Symbol: $Symbol }); // 163
+            // 164
+            for (var es6Symbols = // 165
             // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
-            'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables' // 166
-            .split(','), j = 0; es6Symbols.length > j;) wks(es6Symbols[j++]); // 167
-            // 168
-            for (var wellKnownSymbols = $keys(wks.store), k = 0; wellKnownSymbols.length > k;) wksDefine(wellKnownSymbols[k++]); // 169
-            // 170
-            $export($export.S + $export.F * !USE_NATIVE, 'Symbol', { // 171
-              // 19.4.2.1 Symbol.for(key)                                                                                          // 172
+            'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables' // 167
+            .split(','), j = 0; es6Symbols.length > j;) wks(es6Symbols[j++]); // 168
+            // 169
+            for (var wellKnownSymbols = $keys(wks.store), k = 0; wellKnownSymbols.length > k;) wksDefine(wellKnownSymbols[k++]); // 170
+            // 171
+            $export($export.S + $export.F * !USE_NATIVE, 'Symbol', { // 172
+              // 19.4.2.1 Symbol.for(key)                                                                                          // 173
               'for': function (key) {
-                // 173
-                return has(SymbolRegistry, key += '') // 174
-                ? SymbolRegistry[key] // 175
-                : SymbolRegistry[key] = $Symbol(key); // 176
-              }, // 177
-              // 19.4.2.5 Symbol.keyFor(sym)                                                                                       // 178
+                // 174
+                return has(SymbolRegistry, key += '') // 175
+                ? SymbolRegistry[key] // 176
+                : SymbolRegistry[key] = $Symbol(key); // 177
+              }, // 178
+              // 19.4.2.5 Symbol.keyFor(sym)                                                                                       // 179
               keyFor: function keyFor(sym) {
-                // 179
-                if (!isSymbol(sym)) throw TypeError(sym + ' is not a symbol!'); // 180
-                for (var key in SymbolRegistry) if (SymbolRegistry[key] === sym) return key; // 181
-              }, // 182
+                // 180
+                if (!isSymbol(sym)) throw TypeError(sym + ' is not a symbol!'); // 181
+                for (var key in SymbolRegistry) if (SymbolRegistry[key] === sym) return key; // 182
+              }, // 183
               useSetter: function () {
                 setter = true;
-              }, // 183
+              }, // 184
               useSimple: function () {
                 setter = false;
-              } // 184
-            }); // 185
-            // 186
-            $export($export.S + $export.F * !USE_NATIVE, 'Object', { // 187
-              // 19.1.2.2 Object.create(O [, Properties])                                                                          // 188
-              create: $create, // 189
-              // 19.1.2.4 Object.defineProperty(O, P, Attributes)                                                                  // 190
-              defineProperty: $defineProperty, // 191
-              // 19.1.2.3 Object.defineProperties(O, Properties)                                                                   // 192
-              defineProperties: $defineProperties, // 193
-              // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)                                                                    // 194
-              getOwnPropertyDescriptor: $getOwnPropertyDescriptor, // 195
-              // 19.1.2.7 Object.getOwnPropertyNames(O)                                                                            // 196
-              getOwnPropertyNames: $getOwnPropertyNames, // 197
-              // 19.1.2.8 Object.getOwnPropertySymbols(O)                                                                          // 198
-              getOwnPropertySymbols: $getOwnPropertySymbols // 199
-            }); // 200
-            // 201
-            // 24.3.2 JSON.stringify(value [, replacer [, space]])                                                                 // 202
+              } // 185
+            }); // 186
+            // 187
+            $export($export.S + $export.F * !USE_NATIVE, 'Object', { // 188
+              // 19.1.2.2 Object.create(O [, Properties])                                                                          // 189
+              create: $create, // 190
+              // 19.1.2.4 Object.defineProperty(O, P, Attributes)                                                                  // 191
+              defineProperty: $defineProperty, // 192
+              // 19.1.2.3 Object.defineProperties(O, Properties)                                                                   // 193
+              defineProperties: $defineProperties, // 194
+              // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)                                                                    // 195
+              getOwnPropertyDescriptor: $getOwnPropertyDescriptor, // 196
+              // 19.1.2.7 Object.getOwnPropertyNames(O)                                                                            // 197
+              getOwnPropertyNames: $getOwnPropertyNames, // 198
+              // 19.1.2.8 Object.getOwnPropertySymbols(O)                                                                          // 199
+              getOwnPropertySymbols: $getOwnPropertySymbols // 200
+            }); // 201
+            // 202
+            // 24.3.2 JSON.stringify(value [, replacer [, space]])                                                                 // 203
             $JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function () {
-              // 203
-              var S = $Symbol(); // 204
-              // MS Edge converts symbol values to JSON as {}                                                                      // 205
-              // WebKit converts symbol values to JSON as null                                                                     // 206
-              // V8 throws on boxed symbols                                                                                        // 207
-              return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}'; // 208
-            })), 'JSON', { // 209
+              // 204
+              var S = $Symbol(); // 205
+              // MS Edge converts symbol values to JSON as {}                                                                      // 206
+              // WebKit converts symbol values to JSON as null                                                                     // 207
+              // V8 throws on boxed symbols                                                                                        // 208
+              return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}'; // 209
+            })), 'JSON', { // 210
               stringify: function stringify(it) {
-                // 210
-                if (it === undefined || isSymbol(it)) return; // IE8 returns string on undefined                                   // 211
+                // 211
                 var args = [it]; // 212
                 var i = 1; // 213
                 var replacer, $replacer; // 214
                 while (arguments.length > i) args.push(arguments[i++]); // 215
-                replacer = args[1]; // 216
-                if (typeof replacer == 'function') $replacer = replacer; // 217
-                if ($replacer || !isArray(replacer)) replacer = function (key, value) {
+                $replacer = replacer = args[1]; // 216
+                if (!isObject(replacer) && it === undefined || isSymbol(it)) return; // IE8 returns string on undefined            // 217
+                if (!isArray(replacer)) replacer = function (key, value) {
                   // 218
-                  if ($replacer) value = $replacer.call(this, key, value); // 219
+                  if (typeof $replacer == 'function') value = $replacer.call(this, key, value); // 219
                   if (!isSymbol(value)) return value; // 220
                 }; // 221
                 args[1] = replacer; // 222
@@ -7433,7 +7438,7 @@ __meteor_runtime_config__ = {
             //                                                                                                                     //
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //
-            var core = _module30.exports = { version: '2.5.1' }; // 1
+            var core = _module30.exports = { version: '2.5.3' }; // 1
             if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef                                                // 2
             // 3
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -8767,7 +8772,7 @@ __meteor_runtime_config__ = {
               var VALUES_BUG = false; // 30
               var proto = Base.prototype; // 31
               var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT]; // 32
-              var $default = $native || getMethod(DEFAULT); // 33
+              var $default = !BUGGY && $native || getMethod(DEFAULT); // 33
               var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined; // 34
               var $anyNative = NAME == 'Array' ? proto.entries || $native : $native; // 35
               var methods, key, IteratorPrototype; // 36
@@ -9359,7 +9364,7 @@ __meteor_runtime_config__ = {
                 var start = toAbsoluteIndex(begin, len); // 18
                 var upTo = toAbsoluteIndex(end, len); // 19
                 var size = toLength(upTo - start); // 20
-                var cloned = Array(size); // 21
+                var cloned = new Array(size); // 21
                 var i = 0; // 22
                 for (; i < size; i++) cloned[i] = klass == 'String' // 23
                 ? this.charAt(start + i) // 24
@@ -13108,7 +13113,7 @@ __meteor_runtime_config__ = {
             // IEEE754 conversions based on https://github.com/feross/ieee754                                                      // 41
             function packIEEE754(value, mLen, nBytes) {
               // 42
-              var buffer = Array(nBytes); // 43
+              var buffer = new Array(nBytes); // 43
               var eLen = nBytes * 8 - mLen - 1; // 44
               var eMax = (1 << eLen) - 1; // 45
               var eBias = eMax >> 1; // 46
@@ -13252,7 +13257,7 @@ __meteor_runtime_config__ = {
                 // 158
                 anInstance(this, $ArrayBuffer, ARRAY_BUFFER); // 159
                 var byteLength = toIndex(length); // 160
-                this._b = arrayFill.call(Array(byteLength), 0); // 161
+                this._b = arrayFill.call(new Array(byteLength), 0); // 161
                 this[$LENGTH] = byteLength; // 162
               }; // 163
               // 164
@@ -13873,7 +13878,7 @@ __meteor_runtime_config__ = {
                 var VALUES_BUG = false; // 30
                 var proto = Base.prototype; // 31
                 var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT]; // 32
-                var $default = $native || getMethod(DEFAULT); // 33
+                var $default = !BUGGY && $native || getMethod(DEFAULT); // 33
                 var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined; // 34
                 var $anyNative = NAME == 'Array' ? proto.entries || $native : $native; // 35
                 var methods, key, IteratorPrototype; // 36
@@ -14036,7 +14041,7 @@ __meteor_runtime_config__ = {
               //                                                                                                                     //
               /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
               //
-              var core = _module152.exports = { version: '2.5.1' }; // 1
+              var core = _module152.exports = { version: '2.5.3' }; // 1
               if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef                                                // 2
               // 3
               /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -14868,241 +14873,241 @@ __meteor_runtime_config__ = {
               var enumKeys = _require322('./_enum-keys'); // 16
               var isArray = _require322('./_is-array'); // 17
               var anObject = _require322('./_an-object'); // 18
-              var toIObject = _require322('./_to-iobject'); // 19
-              var toPrimitive = _require322('./_to-primitive'); // 20
-              var createDesc = _require322('./_property-desc'); // 21
-              var _create = _require322('./_object-create'); // 22
-              var gOPNExt = _require322('./_object-gopn-ext'); // 23
-              var $GOPD = _require322('./_object-gopd'); // 24
-              var $DP = _require322('./_object-dp'); // 25
-              var $keys = _require322('./_object-keys'); // 26
-              var gOPD = $GOPD.f; // 27
-              var dP = $DP.f; // 28
-              var gOPN = gOPNExt.f; // 29
-              var $Symbol = global.Symbol; // 30
-              var $JSON = global.JSON; // 31
-              var _stringify = $JSON && $JSON.stringify; // 32
-              var PROTOTYPE = 'prototype'; // 33
-              var HIDDEN = wks('_hidden'); // 34
-              var TO_PRIMITIVE = wks('toPrimitive'); // 35
-              var isEnum = {}.propertyIsEnumerable; // 36
-              var SymbolRegistry = shared('symbol-registry'); // 37
-              var AllSymbols = shared('symbols'); // 38
-              var OPSymbols = shared('op-symbols'); // 39
-              var ObjectProto = Object[PROTOTYPE]; // 40
-              var USE_NATIVE = typeof $Symbol == 'function'; // 41
-              var QObject = global.QObject; // 42
-              // Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173                                      // 43
-              var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild; // 44
-              // 45
-              // fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687                                         // 46
+              var isObject = _require322('./_is-object'); // 19
+              var toIObject = _require322('./_to-iobject'); // 20
+              var toPrimitive = _require322('./_to-primitive'); // 21
+              var createDesc = _require322('./_property-desc'); // 22
+              var _create = _require322('./_object-create'); // 23
+              var gOPNExt = _require322('./_object-gopn-ext'); // 24
+              var $GOPD = _require322('./_object-gopd'); // 25
+              var $DP = _require322('./_object-dp'); // 26
+              var $keys = _require322('./_object-keys'); // 27
+              var gOPD = $GOPD.f; // 28
+              var dP = $DP.f; // 29
+              var gOPN = gOPNExt.f; // 30
+              var $Symbol = global.Symbol; // 31
+              var $JSON = global.JSON; // 32
+              var _stringify = $JSON && $JSON.stringify; // 33
+              var PROTOTYPE = 'prototype'; // 34
+              var HIDDEN = wks('_hidden'); // 35
+              var TO_PRIMITIVE = wks('toPrimitive'); // 36
+              var isEnum = {}.propertyIsEnumerable; // 37
+              var SymbolRegistry = shared('symbol-registry'); // 38
+              var AllSymbols = shared('symbols'); // 39
+              var OPSymbols = shared('op-symbols'); // 40
+              var ObjectProto = Object[PROTOTYPE]; // 41
+              var USE_NATIVE = typeof $Symbol == 'function'; // 42
+              var QObject = global.QObject; // 43
+              // Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173                                      // 44
+              var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild; // 45
+              // 46
+              // fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687                                         // 47
               var setSymbolDesc = DESCRIPTORS && $fails(function () {
-                // 47
-                return _create(dP({}, 'a', { // 48
+                // 48
+                return _create(dP({}, 'a', { // 49
                   get: function () {
                     return dP(this, 'a', { value: 7 }).a;
-                  } // 49
-                })).a != 7; // 50
+                  } // 50
+                })).a != 7; // 51
               }) ? function (it, key, D) {
-                // 51
-                var protoDesc = gOPD(ObjectProto, key); // 52
-                if (protoDesc) delete ObjectProto[key]; // 53
-                dP(it, key, D); // 54
-                if (protoDesc && it !== ObjectProto) dP(ObjectProto, key, protoDesc); // 55
-              } : dP; // 56
-              // 57
+                // 52
+                var protoDesc = gOPD(ObjectProto, key); // 53
+                if (protoDesc) delete ObjectProto[key]; // 54
+                dP(it, key, D); // 55
+                if (protoDesc && it !== ObjectProto) dP(ObjectProto, key, protoDesc); // 56
+              } : dP; // 57
+              // 58
               var wrap = function (tag) {
-                // 58
-                var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]); // 59
-                sym._k = tag; // 60
-                return sym; // 61
-              }; // 62
-              // 63
+                // 59
+                var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]); // 60
+                sym._k = tag; // 61
+                return sym; // 62
+              }; // 63
+              // 64
               var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function (it) {
-                // 64
-                return typeof it == 'symbol'; // 65
+                // 65
+                return typeof it == 'symbol'; // 66
               } : function (it) {
-                // 66
-                return it instanceof $Symbol; // 67
-              }; // 68
-              // 69
+                // 67
+                return it instanceof $Symbol; // 68
+              }; // 69
+              // 70
               var $defineProperty = function defineProperty(it, key, D) {
-                // 70
-                if (it === ObjectProto) $defineProperty(OPSymbols, key, D); // 71
-                anObject(it); // 72
-                key = toPrimitive(key, true); // 73
-                anObject(D); // 74
+                // 71
+                if (it === ObjectProto) $defineProperty(OPSymbols, key, D); // 72
+                anObject(it); // 73
+                key = toPrimitive(key, true); // 74
+                anObject(D); // 75
                 if (has(AllSymbols, key)) {
-                  // 75
+                  // 76
                   if (!D.enumerable) {
-                    // 76
-                    if (!has(it, HIDDEN)) dP(it, HIDDEN, createDesc(1, {})); // 77
-                    it[HIDDEN][key] = true; // 78
+                    // 77
+                    if (!has(it, HIDDEN)) dP(it, HIDDEN, createDesc(1, {})); // 78
+                    it[HIDDEN][key] = true; // 79
                   } else {
-                    // 79
-                    if (has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false; // 80
-                    D = _create(D, { enumerable: createDesc(0, false) }); // 81
-                  }return setSymbolDesc(it, key, D); // 82
-                }return dP(it, key, D); // 83
-              }; // 84
+                    // 80
+                    if (has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false; // 81
+                    D = _create(D, { enumerable: createDesc(0, false) }); // 82
+                  }return setSymbolDesc(it, key, D); // 83
+                }return dP(it, key, D); // 84
+              }; // 85
               var $defineProperties = function defineProperties(it, P) {
-                // 85
-                anObject(it); // 86
-                var keys = enumKeys(P = toIObject(P)); // 87
-                var i = 0; // 88
-                var l = keys.length; // 89
-                var key; // 90
-                while (l > i) $defineProperty(it, key = keys[i++], P[key]); // 91
-                return it; // 92
-              }; // 93
+                // 86
+                anObject(it); // 87
+                var keys = enumKeys(P = toIObject(P)); // 88
+                var i = 0; // 89
+                var l = keys.length; // 90
+                var key; // 91
+                while (l > i) $defineProperty(it, key = keys[i++], P[key]); // 92
+                return it; // 93
+              }; // 94
               var $create = function create(it, P) {
-                // 94
-                return P === undefined ? _create(it) : $defineProperties(_create(it), P); // 95
-              }; // 96
+                // 95
+                return P === undefined ? _create(it) : $defineProperties(_create(it), P); // 96
+              }; // 97
               var $propertyIsEnumerable = function propertyIsEnumerable(key) {
-                // 97
-                var E = isEnum.call(this, key = toPrimitive(key, true)); // 98
-                if (this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return false; // 99
-                return E || !has(this, key) || !has(AllSymbols, key) || has(this, HIDDEN) && this[HIDDEN][key] ? E : true; // 100
-              }; // 101
+                // 98
+                var E = isEnum.call(this, key = toPrimitive(key, true)); // 99
+                if (this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return false; // 100
+                return E || !has(this, key) || !has(AllSymbols, key) || has(this, HIDDEN) && this[HIDDEN][key] ? E : true; // 101
+              }; // 102
               var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
-                // 102
-                it = toIObject(it); // 103
-                key = toPrimitive(key, true); // 104
-                if (it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return; // 105
-                var D = gOPD(it, key); // 106
-                if (D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true; // 107
-                return D; // 108
-              }; // 109
+                // 103
+                it = toIObject(it); // 104
+                key = toPrimitive(key, true); // 105
+                if (it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return; // 106
+                var D = gOPD(it, key); // 107
+                if (D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true; // 108
+                return D; // 109
+              }; // 110
               var $getOwnPropertyNames = function getOwnPropertyNames(it) {
-                // 110
-                var names = gOPN(toIObject(it)); // 111
-                var result = []; // 112
-                var i = 0; // 113
-                var key; // 114
+                // 111
+                var names = gOPN(toIObject(it)); // 112
+                var result = []; // 113
+                var i = 0; // 114
+                var key; // 115
                 while (names.length > i) {
-                  // 115
-                  if (!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META) result.push(key); // 116
-                }return result; // 117
-              }; // 118
+                  // 116
+                  if (!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META) result.push(key); // 117
+                }return result; // 118
+              }; // 119
               var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
-                // 119
-                var IS_OP = it === ObjectProto; // 120
-                var names = gOPN(IS_OP ? OPSymbols : toIObject(it)); // 121
-                var result = []; // 122
-                var i = 0; // 123
-                var key; // 124
+                // 120
+                var IS_OP = it === ObjectProto; // 121
+                var names = gOPN(IS_OP ? OPSymbols : toIObject(it)); // 122
+                var result = []; // 123
+                var i = 0; // 124
+                var key; // 125
                 while (names.length > i) {
-                  // 125
-                  if (has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true)) result.push(AllSymbols[key]); // 126
-                }return result; // 127
-              }; // 128
-              // 129
-              // 19.4.1.1 Symbol([description])                                                                                      // 130
+                  // 126
+                  if (has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true)) result.push(AllSymbols[key]); // 127
+                }return result; // 128
+              }; // 129
+              // 130
+              // 19.4.1.1 Symbol([description])                                                                                      // 131
               if (!USE_NATIVE) {
-                // 131
+                // 132
                 $Symbol = function Symbol() {
-                  // 132
-                  if (this instanceof $Symbol) throw TypeError('Symbol is not a constructor!'); // 133
-                  var tag = uid(arguments.length > 0 ? arguments[0] : undefined); // 134
+                  // 133
+                  if (this instanceof $Symbol) throw TypeError('Symbol is not a constructor!'); // 134
+                  var tag = uid(arguments.length > 0 ? arguments[0] : undefined); // 135
                   var $set = function (value) {
-                    // 135
-                    if (this === ObjectProto) $set.call(OPSymbols, value); // 136
-                    if (has(this, HIDDEN) && has(this[HIDDEN], tag)) this[HIDDEN][tag] = false; // 137
-                    setSymbolDesc(this, tag, createDesc(1, value)); // 138
-                  }; // 139
-                  if (DESCRIPTORS && setter) setSymbolDesc(ObjectProto, tag, { configurable: true, set: $set }); // 140
-                  return wrap(tag); // 141
-                }; // 142
+                    // 136
+                    if (this === ObjectProto) $set.call(OPSymbols, value); // 137
+                    if (has(this, HIDDEN) && has(this[HIDDEN], tag)) this[HIDDEN][tag] = false; // 138
+                    setSymbolDesc(this, tag, createDesc(1, value)); // 139
+                  }; // 140
+                  if (DESCRIPTORS && setter) setSymbolDesc(ObjectProto, tag, { configurable: true, set: $set }); // 141
+                  return wrap(tag); // 142
+                }; // 143
                 redefine($Symbol[PROTOTYPE], 'toString', function toString() {
-                  // 143
-                  return this._k; // 144
-                }); // 145
-                // 146
-                $GOPD.f = $getOwnPropertyDescriptor; // 147
-                $DP.f = $defineProperty; // 148
-                _require322('./_object-gopn').f = gOPNExt.f = $getOwnPropertyNames; // 149
-                _require322('./_object-pie').f = $propertyIsEnumerable; // 150
-                _require322('./_object-gops').f = $getOwnPropertySymbols; // 151
-                // 152
+                  // 144
+                  return this._k; // 145
+                }); // 146
+                // 147
+                $GOPD.f = $getOwnPropertyDescriptor; // 148
+                $DP.f = $defineProperty; // 149
+                _require322('./_object-gopn').f = gOPNExt.f = $getOwnPropertyNames; // 150
+                _require322('./_object-pie').f = $propertyIsEnumerable; // 151
+                _require322('./_object-gops').f = $getOwnPropertySymbols; // 152
+                // 153
                 if (DESCRIPTORS && !_require322('./_library')) {
-                  // 153
-                  redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true); // 154
-                } // 155
-                // 156
+                  // 154
+                  redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true); // 155
+                } // 156
+                // 157
                 wksExt.f = function (name) {
-                  // 157
-                  return wrap(wks(name)); // 158
-                }; // 159
-              } // 160
-              // 161
-              $export($export.G + $export.W + $export.F * !USE_NATIVE, { Symbol: $Symbol }); // 162
-              // 163
-              for (var es6Symbols = // 164
+                  // 158
+                  return wrap(wks(name)); // 159
+                }; // 160
+              } // 161
+              // 162
+              $export($export.G + $export.W + $export.F * !USE_NATIVE, { Symbol: $Symbol }); // 163
+              // 164
+              for (var es6Symbols = // 165
               // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
-              'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables' // 166
-              .split(','), j = 0; es6Symbols.length > j;) wks(es6Symbols[j++]); // 167
-              // 168
-              for (var wellKnownSymbols = $keys(wks.store), k = 0; wellKnownSymbols.length > k;) wksDefine(wellKnownSymbols[k++]); // 169
-              // 170
-              $export($export.S + $export.F * !USE_NATIVE, 'Symbol', { // 171
-                // 19.4.2.1 Symbol.for(key)                                                                                          // 172
+              'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables' // 167
+              .split(','), j = 0; es6Symbols.length > j;) wks(es6Symbols[j++]); // 168
+              // 169
+              for (var wellKnownSymbols = $keys(wks.store), k = 0; wellKnownSymbols.length > k;) wksDefine(wellKnownSymbols[k++]); // 170
+              // 171
+              $export($export.S + $export.F * !USE_NATIVE, 'Symbol', { // 172
+                // 19.4.2.1 Symbol.for(key)                                                                                          // 173
                 'for': function (key) {
-                  // 173
-                  return has(SymbolRegistry, key += '') // 174
-                  ? SymbolRegistry[key] // 175
-                  : SymbolRegistry[key] = $Symbol(key); // 176
-                }, // 177
-                // 19.4.2.5 Symbol.keyFor(sym)                                                                                       // 178
+                  // 174
+                  return has(SymbolRegistry, key += '') // 175
+                  ? SymbolRegistry[key] // 176
+                  : SymbolRegistry[key] = $Symbol(key); // 177
+                }, // 178
+                // 19.4.2.5 Symbol.keyFor(sym)                                                                                       // 179
                 keyFor: function keyFor(sym) {
-                  // 179
-                  if (!isSymbol(sym)) throw TypeError(sym + ' is not a symbol!'); // 180
-                  for (var key in SymbolRegistry) if (SymbolRegistry[key] === sym) return key; // 181
-                }, // 182
+                  // 180
+                  if (!isSymbol(sym)) throw TypeError(sym + ' is not a symbol!'); // 181
+                  for (var key in SymbolRegistry) if (SymbolRegistry[key] === sym) return key; // 182
+                }, // 183
                 useSetter: function () {
                   setter = true;
-                }, // 183
+                }, // 184
                 useSimple: function () {
                   setter = false;
-                } // 184
-              }); // 185
-              // 186
-              $export($export.S + $export.F * !USE_NATIVE, 'Object', { // 187
-                // 19.1.2.2 Object.create(O [, Properties])                                                                          // 188
-                create: $create, // 189
-                // 19.1.2.4 Object.defineProperty(O, P, Attributes)                                                                  // 190
-                defineProperty: $defineProperty, // 191
-                // 19.1.2.3 Object.defineProperties(O, Properties)                                                                   // 192
-                defineProperties: $defineProperties, // 193
-                // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)                                                                    // 194
-                getOwnPropertyDescriptor: $getOwnPropertyDescriptor, // 195
-                // 19.1.2.7 Object.getOwnPropertyNames(O)                                                                            // 196
-                getOwnPropertyNames: $getOwnPropertyNames, // 197
-                // 19.1.2.8 Object.getOwnPropertySymbols(O)                                                                          // 198
-                getOwnPropertySymbols: $getOwnPropertySymbols // 199
-              }); // 200
-              // 201
-              // 24.3.2 JSON.stringify(value [, replacer [, space]])                                                                 // 202
+                } // 185
+              }); // 186
+              // 187
+              $export($export.S + $export.F * !USE_NATIVE, 'Object', { // 188
+                // 19.1.2.2 Object.create(O [, Properties])                                                                          // 189
+                create: $create, // 190
+                // 19.1.2.4 Object.defineProperty(O, P, Attributes)                                                                  // 191
+                defineProperty: $defineProperty, // 192
+                // 19.1.2.3 Object.defineProperties(O, Properties)                                                                   // 193
+                defineProperties: $defineProperties, // 194
+                // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)                                                                    // 195
+                getOwnPropertyDescriptor: $getOwnPropertyDescriptor, // 196
+                // 19.1.2.7 Object.getOwnPropertyNames(O)                                                                            // 197
+                getOwnPropertyNames: $getOwnPropertyNames, // 198
+                // 19.1.2.8 Object.getOwnPropertySymbols(O)                                                                          // 199
+                getOwnPropertySymbols: $getOwnPropertySymbols // 200
+              }); // 201
+              // 202
+              // 24.3.2 JSON.stringify(value [, replacer [, space]])                                                                 // 203
               $JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function () {
-                // 203
-                var S = $Symbol(); // 204
-                // MS Edge converts symbol values to JSON as {}                                                                      // 205
-                // WebKit converts symbol values to JSON as null                                                                     // 206
-                // V8 throws on boxed symbols                                                                                        // 207
-                return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}'; // 208
-              })), 'JSON', { // 209
+                // 204
+                var S = $Symbol(); // 205
+                // MS Edge converts symbol values to JSON as {}                                                                      // 206
+                // WebKit converts symbol values to JSON as null                                                                     // 207
+                // V8 throws on boxed symbols                                                                                        // 208
+                return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}'; // 209
+              })), 'JSON', { // 210
                 stringify: function stringify(it) {
-                  // 210
-                  if (it === undefined || isSymbol(it)) return; // IE8 returns string on undefined                                   // 211
+                  // 211
                   var args = [it]; // 212
                   var i = 1; // 213
                   var replacer, $replacer; // 214
                   while (arguments.length > i) args.push(arguments[i++]); // 215
-                  replacer = args[1]; // 216
-                  if (typeof replacer == 'function') $replacer = replacer; // 217
-                  if ($replacer || !isArray(replacer)) replacer = function (key, value) {
+                  $replacer = replacer = args[1]; // 216
+                  if (!isObject(replacer) && it === undefined || isSymbol(it)) return; // IE8 returns string on undefined            // 217
+                  if (!isArray(replacer)) replacer = function (key, value) {
                     // 218
-                    if ($replacer) value = $replacer.call(this, key, value); // 219
+                    if (typeof $replacer == 'function') value = $replacer.call(this, key, value); // 219
                     if (!isSymbol(value)) return value; // 220
                   }; // 221
                   args[1] = replacer; // 222
@@ -23767,1472 +23772,1510 @@ __meteor_runtime_config__ = {
                 dontIncludeLeafArrays: true, // 88
                 compileElementSelector: function (operand) {
                   // 89
-                  if (typeof operand !== 'number') {
+                  if (typeof operand === 'string') {
                     // 90
-                    throw Error('$type needs a number'); // 91
-                  } // 92
+                    var operandAliasMap = { // 91
+                      'double': 1, // 92
+                      'string': 2, // 93
+                      'object': 3, // 94
+                      'array': 4, // 95
+                      'binData': 5, // 96
+                      'undefined': 6, // 97
+                      'objectId': 7, // 98
+                      'bool': 8, // 99
+                      'date': 9, // 100
+                      'null': 10, // 101
+                      'regex': 11, // 102
+                      'dbPointer': 12, // 103
+                      'javascript': 13, // 104
+                      'symbol': 14, // 105
+                      'javascriptWithScope': 15, // 106
+                      'int': 16, // 107
+                      'timestamp': 17, // 108
+                      'long': 18, // 109
+                      'decimal': 19, // 110
+                      'minKey': -1, // 111
+                      'maxKey': 127 // 112
+                    }; // 91
+                    //
+                    if (!hasOwn.call(operandAliasMap, operand)) {
+                      // 114
+                      throw Error("unknown string alias for $type: " + operand); // 115
+                    } // 116
+                    //
+                    operand = operandAliasMap[operand]; // 117
+                  } else if (typeof operand === 'number') {
+                    // 118
+                    if (operand === 0 || operand < -1 || operand > 19 && operand !== 127) {
+                      // 119
+                      throw Error("Invalid numerical $type code: " + operand); // 121
+                    } // 122
+                  } else {
+                    // 123
+                    throw Error('argument to $type is not a number or a string'); // 124
+                  } // 125
                   //
                   return function (value) {
-                    // 94
-                    return value !== undefined && LocalCollection._f._type(value) === operand; // 94
-                  }; // 94
-                } // 97
+                    // 127
+                    return value !== undefined && LocalCollection._f._type(value) === operand; // 127
+                  }; // 127
+                } // 130
               }, // 83
-              $bitsAllSet: { // 99
+              $bitsAllSet: { // 132
                 compileElementSelector: function (operand) {
-                  // 100
-                  var mask = getOperandBitmask(operand, '$bitsAllSet'); // 101
+                  // 133
+                  var mask = getOperandBitmask(operand, '$bitsAllSet'); // 134
                   return function (value) {
-                    // 102
-                    var bitmask = getValueBitmask(value, mask.length); // 103
+                    // 135
+                    var bitmask = getValueBitmask(value, mask.length); // 136
                     return bitmask && mask.every(function (byte, i) {
-                      // 104
-                      return (bitmask[i] & byte) === byte; // 104
-                    }); // 104
-                  }; // 105
-                } // 106
-              }, // 99
-              $bitsAnySet: { // 108
+                      // 137
+                      return (bitmask[i] & byte) === byte; // 137
+                    }); // 137
+                  }; // 138
+                } // 139
+              }, // 132
+              $bitsAnySet: { // 141
                 compileElementSelector: function (operand) {
-                  // 109
-                  var mask = getOperandBitmask(operand, '$bitsAnySet'); // 110
+                  // 142
+                  var mask = getOperandBitmask(operand, '$bitsAnySet'); // 143
                   return function (value) {
-                    // 111
-                    var bitmask = getValueBitmask(value, mask.length); // 112
+                    // 144
+                    var bitmask = getValueBitmask(value, mask.length); // 145
                     return bitmask && mask.some(function (byte, i) {
-                      // 113
-                      return (~bitmask[i] & byte) !== byte; // 113
-                    }); // 113
-                  }; // 114
-                } // 115
-              }, // 108
-              $bitsAllClear: { // 117
+                      // 146
+                      return (~bitmask[i] & byte) !== byte; // 146
+                    }); // 146
+                  }; // 147
+                } // 148
+              }, // 141
+              $bitsAllClear: { // 150
                 compileElementSelector: function (operand) {
-                  // 118
-                  var mask = getOperandBitmask(operand, '$bitsAllClear'); // 119
+                  // 151
+                  var mask = getOperandBitmask(operand, '$bitsAllClear'); // 152
                   return function (value) {
-                    // 120
-                    var bitmask = getValueBitmask(value, mask.length); // 121
+                    // 153
+                    var bitmask = getValueBitmask(value, mask.length); // 154
                     return bitmask && mask.every(function (byte, i) {
-                      // 122
-                      return !(bitmask[i] & byte); // 122
-                    }); // 122
-                  }; // 123
-                } // 124
-              }, // 117
-              $bitsAnyClear: { // 126
+                      // 155
+                      return !(bitmask[i] & byte); // 155
+                    }); // 155
+                  }; // 156
+                } // 157
+              }, // 150
+              $bitsAnyClear: { // 159
                 compileElementSelector: function (operand) {
-                  // 127
-                  var mask = getOperandBitmask(operand, '$bitsAnyClear'); // 128
+                  // 160
+                  var mask = getOperandBitmask(operand, '$bitsAnyClear'); // 161
                   return function (value) {
-                    // 129
-                    var bitmask = getValueBitmask(value, mask.length); // 130
+                    // 162
+                    var bitmask = getValueBitmask(value, mask.length); // 163
                     return bitmask && mask.some(function (byte, i) {
-                      // 131
-                      return (bitmask[i] & byte) !== byte; // 131
-                    }); // 131
-                  }; // 132
-                } // 133
-              }, // 126
-              $regex: { // 135
+                      // 164
+                      return (bitmask[i] & byte) !== byte; // 164
+                    }); // 164
+                  }; // 165
+                } // 166
+              }, // 159
+              $regex: { // 168
                 compileElementSelector: function (operand, valueSelector) {
-                  // 136
+                  // 169
                   if (!(typeof operand === 'string' || operand instanceof RegExp)) {
-                    // 137
-                    throw Error('$regex has to be a string or RegExp'); // 138
-                  } // 139
+                    // 170
+                    throw Error('$regex has to be a string or RegExp'); // 171
+                  } // 172
                   //
-                  var regexp = void 0; // 141
+                  var regexp = void 0; // 174
                   //
                   if (valueSelector.$options !== undefined) {
-                    // 142
-                    // Options passed in $options (even the empty string) always overrides                                         // 143
-                    // options in the RegExp object itself.                                                                        // 144
-                    // Be clear that we only support the JS-supported options, not extended                                        // 146
-                    // ones (eg, Mongo supports x and s). Ideally we would implement x and s                                       // 147
-                    // by transforming the regexp, but not today...                                                                // 148
+                    // 175
+                    // Options passed in $options (even the empty string) always overrides                                         // 176
+                    // options in the RegExp object itself.                                                                        // 177
+                    // Be clear that we only support the JS-supported options, not extended                                        // 179
+                    // ones (eg, Mongo supports x and s). Ideally we would implement x and s                                       // 180
+                    // by transforming the regexp, but not today...                                                                // 181
                     if (/[^gim]/.test(valueSelector.$options)) {
-                      // 149
-                      throw new Error('Only the i, m, and g regexp options are supported'); // 150
-                    } // 151
+                      // 182
+                      throw new Error('Only the i, m, and g regexp options are supported'); // 183
+                    } // 184
                     //
-                    var source = operand instanceof RegExp ? operand.source : operand; // 153
-                    regexp = new RegExp(source, valueSelector.$options); // 154
+                    var source = operand instanceof RegExp ? operand.source : operand; // 186
+                    regexp = new RegExp(source, valueSelector.$options); // 187
                   } else if (operand instanceof RegExp) {
-                    // 155
-                    regexp = operand; // 156
+                    // 188
+                    regexp = operand; // 189
                   } else {
-                    // 157
-                    regexp = new RegExp(operand); // 158
-                  } // 159
+                    // 190
+                    regexp = new RegExp(operand); // 191
+                  } // 192
                   //
-                  return regexpElementMatcher(regexp); // 161
-                } // 162
-              }, // 135
-              $elemMatch: { // 164
-                dontExpandLeafArrays: true, // 165
+                  return regexpElementMatcher(regexp); // 194
+                } // 195
+              }, // 168
+              $elemMatch: { // 197
+                dontExpandLeafArrays: true, // 198
                 compileElementSelector: function (operand, valueSelector, matcher) {
-                  // 166
+                  // 199
                   if (!LocalCollection._isPlainObject(operand)) {
-                    // 167
-                    throw Error('$elemMatch need an object'); // 168
-                  } // 169
+                    // 200
+                    throw Error('$elemMatch need an object'); // 201
+                  } // 202
                   //
                   var isDocMatcher = !isOperatorObject(Object.keys(operand).filter(function (key) {
-                    // 171
-                    return !hasOwn.call(LOGICAL_OPERATORS, key); // 173
+                    // 204
+                    return !hasOwn.call(LOGICAL_OPERATORS, key); // 206
                   }).reduce(function (a, b) {
-                    // 173
-                    var _Object$assign; // 174
+                    // 206
+                    var _Object$assign; // 207
                     //
-                    return Object.assign(a, (_Object$assign = {}, _Object$assign[b] = operand[b], _Object$assign)); // 174
-                  }, {}), true); // 174
-                  var subMatcher = void 0; // 177
+                    return Object.assign(a, (_Object$assign = {}, _Object$assign[b] = operand[b], _Object$assign)); // 207
+                  }, {}), true); // 207
+                  var subMatcher = void 0; // 210
                   //
                   if (isDocMatcher) {
-                    // 178
-                    // This is NOT the same as compileValueSelector(operand), and not just                                         // 179
-                    // because of the slightly different calling convention.                                                       // 180
-                    // {$elemMatch: {x: 3}} means "an element has a field x:3", not                                                // 181
-                    // "consists only of a field x:3". Also, regexps and sub-$ are allowed.                                        // 182
-                    subMatcher = compileDocumentSelector(operand, matcher, { // 183
-                      inElemMatch: true // 184
-                    }); // 184
+                    // 211
+                    // This is NOT the same as compileValueSelector(operand), and not just                                         // 212
+                    // because of the slightly different calling convention.                                                       // 213
+                    // {$elemMatch: {x: 3}} means "an element has a field x:3", not                                                // 214
+                    // "consists only of a field x:3". Also, regexps and sub-$ are allowed.                                        // 215
+                    subMatcher = compileDocumentSelector(operand, matcher, { // 216
+                      inElemMatch: true // 217
+                    }); // 217
                   } else {
-                    // 185
-                    subMatcher = compileValueSelector(operand, matcher); // 186
-                  } // 187
+                    // 218
+                    subMatcher = compileValueSelector(operand, matcher); // 219
+                  } // 220
                   //
                   return function (value) {
-                    // 189
+                    // 222
                     if (!Array.isArray(value)) {
-                      // 190
-                      return false; // 191
-                    } // 192
+                      // 223
+                      return false; // 224
+                    } // 225
                     //
                     for (var i = 0; i < value.length; ++i) {
-                      // 194
-                      var arrayElement = value[i]; // 195
-                      var arg = void 0; // 196
+                      // 227
+                      var arrayElement = value[i]; // 228
+                      var arg = void 0; // 229
                       //
                       if (isDocMatcher) {
-                        // 197
-                        // We can only match {$elemMatch: {b: 3}} against objects.                                                 // 198
-                        // (We can also match against arrays, if there's numeric indices,                                          // 199
-                        // eg {$elemMatch: {'0.b': 3}} or {$elemMatch: {0: 3}}.)                                                   // 200
+                        // 230
+                        // We can only match {$elemMatch: {b: 3}} against objects.                                                 // 231
+                        // (We can also match against arrays, if there's numeric indices,                                          // 232
+                        // eg {$elemMatch: {'0.b': 3}} or {$elemMatch: {0: 3}}.)                                                   // 233
                         if (!isIndexable(arrayElement)) {
-                          // 201
-                          return false; // 202
-                        } // 203
+                          // 234
+                          return false; // 235
+                        } // 236
                         //
-                        arg = arrayElement; // 205
+                        arg = arrayElement; // 238
                       } else {
-                        // 206
-                        // dontIterate ensures that {a: {$elemMatch: {$gt: 5}}} matches                                            // 207
-                        // {a: [8]} but not {a: [[8]]}                                                                             // 208
-                        arg = [{ // 209
-                          value: arrayElement, // 209
-                          dontIterate: true // 209
-                        }]; // 209
-                      } // XXX support $near in $elemMatch by propagating $distance?                                               // 210
+                        // 239
+                        // dontIterate ensures that {a: {$elemMatch: {$gt: 5}}} matches                                            // 240
+                        // {a: [8]} but not {a: [[8]]}                                                                             // 241
+                        arg = [{ // 242
+                          value: arrayElement, // 242
+                          dontIterate: true // 242
+                        }]; // 242
+                      } // XXX support $near in $elemMatch by propagating $distance?                                               // 243
                       //
                       //
                       if (subMatcher(arg).result) {
-                        // 212
-                        return i; // specially understood to mean "use as arrayIndices"                                            // 213
-                      } // 214
-                    } // 215
+                        // 245
+                        return i; // specially understood to mean "use as arrayIndices"                                            // 246
+                      } // 247
+                    } // 248
                     //
-                    return false; // 217
-                  }; // 218
-                } // 219
-                // 164
+                    return false; // 250
+                  }; // 251
+                } // 252
+                // 197
               } }; // 17
-            // Operators that appear at the top level of a document selector.                                                      // 223
-            var LOGICAL_OPERATORS = { // 224
+            // Operators that appear at the top level of a document selector.                                                      // 256
+            var LOGICAL_OPERATORS = { // 257
               $and: function (subSelector, matcher, inElemMatch) {
-                // 225
-                return andDocumentMatchers(compileArrayOfDocumentSelectors(subSelector, matcher, inElemMatch)); // 226
-              }, // 229
+                // 258
+                return andDocumentMatchers(compileArrayOfDocumentSelectors(subSelector, matcher, inElemMatch)); // 259
+              }, // 262
               $or: function (subSelector, matcher, inElemMatch) {
-                // 231
+                // 264
                 var matchers = compileArrayOfDocumentSelectors(subSelector, matcher, inElemMatch); // Special case: if there is only one matcher, use it directly, *preserving*
-                // any arrayIndices it returns.                                                                                    // 239
+                // any arrayIndices it returns.                                                                                    // 272
                 //
                 if (matchers.length === 1) {
-                  // 240
-                  return matchers[0]; // 241
-                } // 242
+                  // 273
+                  return matchers[0]; // 274
+                } // 275
                 //
                 return function (doc) {
-                  // 244
+                  // 277
                   var result = matchers.some(function (fn) {
-                    // 245
-                    return fn(doc).result; // 245
-                  }); // $or does NOT set arrayIndices when it has multiple                                                        // 245
-                  // sub-expressions. (Tested against MongoDB.)                                                                    // 247
+                    // 278
+                    return fn(doc).result; // 278
+                  }); // $or does NOT set arrayIndices when it has multiple                                                        // 278
+                  // sub-expressions. (Tested against MongoDB.)                                                                    // 280
                   //
-                  return { // 248
-                    result: result // 248
-                  }; // 248
-                }; // 249
-              }, // 250
+                  return { // 281
+                    result: result // 281
+                  }; // 281
+                }; // 282
+              }, // 283
               $nor: function (subSelector, matcher, inElemMatch) {
-                // 252
-                var matchers = compileArrayOfDocumentSelectors(subSelector, matcher, inElemMatch); // 253
+                // 285
+                var matchers = compileArrayOfDocumentSelectors(subSelector, matcher, inElemMatch); // 286
                 return function (doc) {
-                  // 258
+                  // 291
                   var result = matchers.every(function (fn) {
-                    // 259
-                    return !fn(doc).result; // 259
-                  }); // Never set arrayIndices, because we only match if nothing in particular                                    // 259
-                  // 'matched' (and because this is consistent with MongoDB).                                                      // 261
+                    // 292
+                    return !fn(doc).result; // 292
+                  }); // Never set arrayIndices, because we only match if nothing in particular                                    // 292
+                  // 'matched' (and because this is consistent with MongoDB).                                                      // 294
                   //
-                  return { // 262
-                    result: result // 262
-                  }; // 262
-                }; // 263
-              }, // 264
+                  return { // 295
+                    result: result // 295
+                  }; // 295
+                }; // 296
+              }, // 297
               $where: function (selectorValue, matcher) {
-                // 266
-                // Record that *any* path may be used.                                                                             // 267
-                matcher._recordPathUsed(''); // 268
+                // 299
+                // Record that *any* path may be used.                                                                             // 300
+                matcher._recordPathUsed(''); // 301
                 //
-                matcher._hasWhere = true; // 269
+                matcher._hasWhere = true; // 302
                 //
                 if (!(selectorValue instanceof Function)) {
-                  // 271
-                  // XXX MongoDB seems to have more complex logic to decide where or or not                                        // 272
-                  // to add 'return'; not sure exactly what it is.                                                                 // 273
-                  selectorValue = Function('obj', "return " + selectorValue); // 274
-                } // We make the document available as both `this` and `obj`.                                                      // 275
-                // // XXX not sure what we should do if this throws                                                                // 278
+                  // 304
+                  // XXX MongoDB seems to have more complex logic to decide where or or not                                        // 305
+                  // to add 'return'; not sure exactly what it is.                                                                 // 306
+                  selectorValue = Function('obj', "return " + selectorValue); // 307
+                } // We make the document available as both `this` and `obj`.                                                      // 308
+                // // XXX not sure what we should do if this throws                                                                // 311
                 //
                 //
                 return function (doc) {
-                  // 279
-                  return { // 279
-                    result: selectorValue.call(doc, doc) // 279
-                  }; // 279
-                }; // 279
-              }, // 280
-              // This is just used as a comment in the query (in MongoDB, it also ends up in                                       // 282
-              // query logs); it has no effect on the actual selection.                                                            // 283
-              $comment: function () {
-                // 284
-                return function () {
-                  // 285
-                  return { // 285
-                    result: true // 285
-                  }; // 285
-                }; // 285
-              } // 286
-            }; // Operators that (unlike LOGICAL_OPERATORS) pertain to individual paths in a                                       // 224
-            // document, but (unlike ELEMENT_OPERATORS) do not have a simple definition as                                         // 290
-            // "match each branched value independently and combine with                                                           // 291
-            // convertElementMatcherToBranchedMatcher".                                                                            // 292
-            //
-            var VALUE_OPERATORS = { // 293
-              $eq: function (operand) {
-                // 294
-                return convertElementMatcherToBranchedMatcher(equalityElementMatcher(operand)); // 295
-              }, // 298
-              $not: function (operand, valueSelector, matcher) {
-                // 299
-                return invertBranchedMatcher(compileValueSelector(operand, matcher)); // 300
-              }, // 301
-              $ne: function (operand) {
-                // 302
-                return invertBranchedMatcher(convertElementMatcherToBranchedMatcher(equalityElementMatcher(operand))); // 303
-              }, // 306
-              $nin: function (operand) {
-                // 307
-                return invertBranchedMatcher(convertElementMatcherToBranchedMatcher(ELEMENT_OPERATORS.$in.compileElementSelector(operand)));
+                  // 312
+                  return { // 312
+                    result: selectorValue.call(doc, doc) // 312
+                  }; // 312
+                }; // 312
               }, // 313
+              // This is just used as a comment in the query (in MongoDB, it also ends up in                                       // 315
+              // query logs); it has no effect on the actual selection.                                                            // 316
+              $comment: function () {
+                // 317
+                return function () {
+                  // 318
+                  return { // 318
+                    result: true // 318
+                  }; // 318
+                }; // 318
+              } // 319
+            }; // Operators that (unlike LOGICAL_OPERATORS) pertain to individual paths in a                                       // 257
+            // document, but (unlike ELEMENT_OPERATORS) do not have a simple definition as                                         // 323
+            // "match each branched value independently and combine with                                                           // 324
+            // convertElementMatcherToBranchedMatcher".                                                                            // 325
+            //
+            var VALUE_OPERATORS = { // 326
+              $eq: function (operand) {
+                // 327
+                return convertElementMatcherToBranchedMatcher(equalityElementMatcher(operand)); // 328
+              }, // 331
+              $not: function (operand, valueSelector, matcher) {
+                // 332
+                return invertBranchedMatcher(compileValueSelector(operand, matcher)); // 333
+              }, // 334
+              $ne: function (operand) {
+                // 335
+                return invertBranchedMatcher(convertElementMatcherToBranchedMatcher(equalityElementMatcher(operand))); // 336
+              }, // 339
+              $nin: function (operand) {
+                // 340
+                return invertBranchedMatcher(convertElementMatcherToBranchedMatcher(ELEMENT_OPERATORS.$in.compileElementSelector(operand)));
+              }, // 346
               $exists: function (operand) {
-                // 314
+                // 347
                 var exists = convertElementMatcherToBranchedMatcher(function (value) {
-                  // 315
-                  return value !== undefined; // 316
-                }); // 316
-                return operand ? exists : invertBranchedMatcher(exists); // 318
-              }, // 319
-              // $options just provides options for $regex; its logic is inside $regex                                             // 320
+                  // 348
+                  return value !== undefined; // 349
+                }); // 349
+                return operand ? exists : invertBranchedMatcher(exists); // 351
+              }, // 352
+              // $options just provides options for $regex; its logic is inside $regex                                             // 353
               $options: function (operand, valueSelector) {
-                // 321
+                // 354
                 if (!hasOwn.call(valueSelector, '$regex')) {
-                  // 322
-                  throw Error('$options needs a $regex'); // 323
-                } // 324
+                  // 355
+                  throw Error('$options needs a $regex'); // 356
+                } // 357
                 //
-                return everythingMatcher; // 326
-              }, // 327
-              // $maxDistance is basically an argument to $near                                                                    // 328
+                return everythingMatcher; // 359
+              }, // 360
+              // $maxDistance is basically an argument to $near                                                                    // 361
               $maxDistance: function (operand, valueSelector) {
-                // 329
+                // 362
                 if (!valueSelector.$near) {
-                  // 330
-                  throw Error('$maxDistance needs a $near'); // 331
-                } // 332
+                  // 363
+                  throw Error('$maxDistance needs a $near'); // 364
+                } // 365
                 //
-                return everythingMatcher; // 334
-              }, // 335
+                return everythingMatcher; // 367
+              }, // 368
               $all: function (operand, valueSelector, matcher) {
-                // 336
+                // 369
                 if (!Array.isArray(operand)) {
-                  // 337
-                  throw Error('$all requires array'); // 338
-                } // Not sure why, but this seems to be what MongoDB does.                                                         // 339
+                  // 370
+                  throw Error('$all requires array'); // 371
+                } // Not sure why, but this seems to be what MongoDB does.                                                         // 372
                 //
                 //
                 if (operand.length === 0) {
-                  // 342
-                  return nothingMatcher; // 343
-                } // 344
+                  // 375
+                  return nothingMatcher; // 376
+                } // 377
                 //
                 var branchedMatchers = operand.map(function (criterion) {
-                  // 346
-                  // XXX handle $all/$elemMatch combination                                                                        // 347
+                  // 379
+                  // XXX handle $all/$elemMatch combination                                                                        // 380
                   if (isOperatorObject(criterion)) {
-                    // 348
-                    throw Error('no $ expressions in $all'); // 349
-                  } // This is always a regexp or equality selector.                                                               // 350
+                    // 381
+                    throw Error('no $ expressions in $all'); // 382
+                  } // This is always a regexp or equality selector.                                                               // 383
                   //
                   //
-                  return compileValueSelector(criterion, matcher); // 353
-                }); // andBranchedMatchers does NOT require all selectors to return true on the                                    // 354
-                // SAME branch.                                                                                                    // 357
+                  return compileValueSelector(criterion, matcher); // 386
+                }); // andBranchedMatchers does NOT require all selectors to return true on the                                    // 387
+                // SAME branch.                                                                                                    // 390
                 //
-                return andBranchedMatchers(branchedMatchers); // 358
-              }, // 359
+                return andBranchedMatchers(branchedMatchers); // 391
+              }, // 392
               $near: function (operand, valueSelector, matcher, isRoot) {
-                // 360
+                // 393
                 if (!isRoot) {
-                  // 361
-                  throw Error('$near can\'t be inside another $ operator'); // 362
-                } // 363
+                  // 394
+                  throw Error('$near can\'t be inside another $ operator'); // 395
+                } // 396
                 //
-                matcher._hasGeoQuery = true; // There are two kinds of geodata in MongoDB: legacy coordinate pairs and             // 365
-                // GeoJSON. They use different distance metrics, too. GeoJSON queries are                                          // 368
-                // marked with a $geometry property, though legacy coordinates can be                                              // 369
-                // matched using $geometry.                                                                                        // 370
+                matcher._hasGeoQuery = true; // There are two kinds of geodata in MongoDB: legacy coordinate pairs and             // 398
+                // GeoJSON. They use different distance metrics, too. GeoJSON queries are                                          // 401
+                // marked with a $geometry property, though legacy coordinates can be                                              // 402
+                // matched using $geometry.                                                                                        // 403
                 //
                 var maxDistance = void 0,
-                    // 371
+                    // 404
                 point = void 0,
-                    // 371
-                distance = void 0; // 371
+                    // 404
+                distance = void 0; // 404
                 //
                 if (LocalCollection._isPlainObject(operand) && hasOwn.call(operand, '$geometry')) {
-                  // 372
-                  // GeoJSON "2dsphere" mode.                                                                                      // 373
-                  maxDistance = operand.$maxDistance; // 374
-                  point = operand.$geometry; // 375
+                  // 405
+                  // GeoJSON "2dsphere" mode.                                                                                      // 406
+                  maxDistance = operand.$maxDistance; // 407
+                  point = operand.$geometry; // 408
                   //
                   distance = function (value) {
-                    // 376
-                    // XXX: for now, we don't calculate the actual distance between, say,                                          // 377
-                    // polygon and circle. If people care about this use-case it will get                                          // 378
-                    // a priority.                                                                                                 // 379
+                    // 409
+                    // XXX: for now, we don't calculate the actual distance between, say,                                          // 410
+                    // polygon and circle. If people care about this use-case it will get                                          // 411
+                    // a priority.                                                                                                 // 412
                     if (!value) {
-                      // 380
-                      return null; // 381
-                    } // 382
+                      // 413
+                      return null; // 414
+                    } // 415
                     //
                     if (!value.type) {
-                      // 384
-                      return GeoJSON.pointDistance(point, { // 385
-                        type: 'Point', // 387
-                        coordinates: pointToArray(value) // 387
-                      }); // 387
-                    } // 389
+                      // 417
+                      return GeoJSON.pointDistance(point, { // 418
+                        type: 'Point', // 420
+                        coordinates: pointToArray(value) // 420
+                      }); // 420
+                    } // 422
                     //
                     if (value.type === 'Point') {
-                      // 391
-                      return GeoJSON.pointDistance(point, value); // 392
-                    } // 393
+                      // 424
+                      return GeoJSON.pointDistance(point, value); // 425
+                    } // 426
                     //
-                    return GeoJSON.geometryWithinRadius(value, point, maxDistance) ? 0 : maxDistance + 1; // 395
-                  }; // 398
+                    return GeoJSON.geometryWithinRadius(value, point, maxDistance) ? 0 : maxDistance + 1; // 428
+                  }; // 431
                 } else {
-                  // 399
-                  maxDistance = valueSelector.$maxDistance; // 400
+                  // 432
+                  maxDistance = valueSelector.$maxDistance; // 433
                   //
                   if (!isIndexable(operand)) {
-                    // 402
-                    throw Error('$near argument must be coordinate pair or GeoJSON'); // 403
-                  } // 404
+                    // 435
+                    throw Error('$near argument must be coordinate pair or GeoJSON'); // 436
+                  } // 437
                   //
-                  point = pointToArray(operand); // 406
+                  point = pointToArray(operand); // 439
                   //
                   distance = function (value) {
-                    // 408
+                    // 441
                     if (!isIndexable(value)) {
-                      // 409
-                      return null; // 410
-                    } // 411
+                      // 442
+                      return null; // 443
+                    } // 444
                     //
-                    return distanceCoordinatePairs(point, value); // 413
-                  }; // 414
-                } // 415
+                    return distanceCoordinatePairs(point, value); // 446
+                  }; // 447
+                } // 448
                 //
                 return function (branchedValues) {
-                  // 417
-                  // There might be multiple points in the document that match the given                                           // 418
-                  // field. Only one of them needs to be within $maxDistance, but we need to                                       // 419
-                  // evaluate all of them and use the nearest one for the implicit sort                                            // 420
-                  // specifier. (That's why we can't just use ELEMENT_OPERATORS here.)                                             // 421
-                  //                                                                                                               // 422
-                  // Note: This differs from MongoDB's implementation, where a document will                                       // 423
-                  // actually show up *multiple times* in the result set, with one entry for                                       // 424
-                  // each within-$maxDistance branching point.                                                                     // 425
-                  var result = { // 426
-                    result: false // 426
-                  }; // 426
+                  // 450
+                  // There might be multiple points in the document that match the given                                           // 451
+                  // field. Only one of them needs to be within $maxDistance, but we need to                                       // 452
+                  // evaluate all of them and use the nearest one for the implicit sort                                            // 453
+                  // specifier. (That's why we can't just use ELEMENT_OPERATORS here.)                                             // 454
+                  //                                                                                                               // 455
+                  // Note: This differs from MongoDB's implementation, where a document will                                       // 456
+                  // actually show up *multiple times* in the result set, with one entry for                                       // 457
+                  // each within-$maxDistance branching point.                                                                     // 458
+                  var result = { // 459
+                    result: false // 459
+                  }; // 459
                   expandArraysInBranches(branchedValues).every(function (branch) {
-                    // 427
-                    // if operation is an update, don't skip branches, just return the first                                       // 428
-                    // one (#3599)                                                                                                 // 429
-                    var curDistance = void 0; // 430
+                    // 460
+                    // if operation is an update, don't skip branches, just return the first                                       // 461
+                    // one (#3599)                                                                                                 // 462
+                    var curDistance = void 0; // 463
                     //
                     if (!matcher._isUpdate) {
-                      // 431
+                      // 464
                       if (!((0, _typeof3.default)(branch.value) === 'object')) {
-                        // 432
-                        return true; // 433
-                      } // 434
+                        // 465
+                        return true; // 466
+                      } // 467
                       //
-                      curDistance = distance(branch.value); // Skip branches that aren't real points or are too far away.          // 436
+                      curDistance = distance(branch.value); // Skip branches that aren't real points or are too far away.          // 469
                       //
                       if (curDistance === null || curDistance > maxDistance) {
-                        // 439
-                        return true; // 440
-                      } // Skip anything that's a tie.                                                                             // 441
+                        // 472
+                        return true; // 473
+                      } // Skip anything that's a tie.                                                                             // 474
                       //
                       //
                       if (result.distance !== undefined && result.distance <= curDistance) {
-                        // 444
-                        return true; // 445
-                      } // 446
-                    } // 447
+                        // 477
+                        return true; // 478
+                      } // 479
+                    } // 480
                     //
-                    result.result = true; // 449
-                    result.distance = curDistance; // 450
+                    result.result = true; // 482
+                    result.distance = curDistance; // 483
                     //
                     if (branch.arrayIndices) {
-                      // 452
-                      result.arrayIndices = branch.arrayIndices; // 453
+                      // 485
+                      result.arrayIndices = branch.arrayIndices; // 486
                     } else {
-                      // 454
-                      delete result.arrayIndices; // 455
-                    } // 456
+                      // 487
+                      delete result.arrayIndices; // 488
+                    } // 489
                     //
-                    return !matcher._isUpdate; // 458
-                  }); // 459
-                  return result; // 461
-                }; // 462
-              } // 463
-            }; // NB: We are cheating and using this function to implement 'AND' for both                                          // 293
-            // 'document matchers' and 'branched matchers'. They both return result objects                                        // 467
-            // but the argument is different: for the former it's a whole doc, whereas for                                         // 468
-            // the latter it's an array of 'branched values'.                                                                      // 469
+                    return !matcher._isUpdate; // 491
+                  }); // 492
+                  return result; // 494
+                }; // 495
+              } // 496
+            }; // NB: We are cheating and using this function to implement 'AND' for both                                          // 326
+            // 'document matchers' and 'branched matchers'. They both return result objects                                        // 500
+            // but the argument is different: for the former it's a whole doc, whereas for                                         // 501
+            // the latter it's an array of 'branched values'.                                                                      // 502
             //
             function andSomeMatchers(subMatchers) {
-              // 470
+              // 503
               if (subMatchers.length === 0) {
-                // 471
-                return everythingMatcher; // 472
-              } // 473
+                // 504
+                return everythingMatcher; // 505
+              } // 506
               //
               if (subMatchers.length === 1) {
-                // 475
-                return subMatchers[0]; // 476
-              } // 477
+                // 508
+                return subMatchers[0]; // 509
+              } // 510
               //
               return function (docOrBranches) {
-                // 479
-                var match = {}; // 480
+                // 512
+                var match = {}; // 513
                 match.result = subMatchers.every(function (fn) {
-                  // 481
-                  var subResult = fn(docOrBranches); // Copy a 'distance' number out of the first sub-matcher that has             // 482
-                  // one. Yes, this means that if there are multiple $near fields in a                                             // 485
-                  // query, something arbitrary happens; this appears to be consistent with                                        // 486
-                  // Mongo.                                                                                                        // 487
+                  // 514
+                  var subResult = fn(docOrBranches); // Copy a 'distance' number out of the first sub-matcher that has             // 515
+                  // one. Yes, this means that if there are multiple $near fields in a                                             // 518
+                  // query, something arbitrary happens; this appears to be consistent with                                        // 519
+                  // Mongo.                                                                                                        // 520
                   //
                   if (subResult.result && subResult.distance !== undefined && match.distance === undefined) {
-                    // 488
-                    match.distance = subResult.distance; // 491
-                  } // Similarly, propagate arrayIndices from sub-matchers... but to match                                         // 492
-                  // MongoDB behavior, this time the *last* sub-matcher with arrayIndices                                          // 495
-                  // wins.                                                                                                         // 496
+                    // 521
+                    match.distance = subResult.distance; // 524
+                  } // Similarly, propagate arrayIndices from sub-matchers... but to match                                         // 525
+                  // MongoDB behavior, this time the *last* sub-matcher with arrayIndices                                          // 528
+                  // wins.                                                                                                         // 529
                   //
                   //
                   if (subResult.result && subResult.arrayIndices) {
-                    // 497
-                    match.arrayIndices = subResult.arrayIndices; // 498
-                  } // 499
+                    // 530
+                    match.arrayIndices = subResult.arrayIndices; // 531
+                  } // 532
                   //
-                  return subResult.result; // 501
-                }); // If we didn't actually match, forget any extra metadata we came up with.                                     // 502
+                  return subResult.result; // 534
+                }); // If we didn't actually match, forget any extra metadata we came up with.                                     // 535
                 //
                 if (!match.result) {
-                  // 505
-                  delete match.distance; // 506
-                  delete match.arrayIndices; // 507
-                } // 508
+                  // 538
+                  delete match.distance; // 539
+                  delete match.arrayIndices; // 540
+                } // 541
                 //
-                return match; // 510
-              }; // 511
-            } // 512
+                return match; // 543
+              }; // 544
+            } // 545
             //
-            var andDocumentMatchers = andSomeMatchers; // 514
-            var andBranchedMatchers = andSomeMatchers; // 515
+            var andDocumentMatchers = andSomeMatchers; // 547
+            var andBranchedMatchers = andSomeMatchers; // 548
             //
             function compileArrayOfDocumentSelectors(selectors, matcher, inElemMatch) {
-              // 517
+              // 550
               if (!Array.isArray(selectors) || selectors.length === 0) {
-                // 518
-                throw Error('$and/$or/$nor must be nonempty array'); // 519
-              } // 520
+                // 551
+                throw Error('$and/$or/$nor must be nonempty array'); // 552
+              } // 553
               //
               return selectors.map(function (subSelector) {
-                // 522
+                // 555
                 if (!LocalCollection._isPlainObject(subSelector)) {
-                  // 523
-                  throw Error('$or/$and/$nor entries need to be full objects'); // 524
-                } // 525
+                  // 556
+                  throw Error('$or/$and/$nor entries need to be full objects'); // 557
+                } // 558
                 //
-                return compileDocumentSelector(subSelector, matcher, { // 527
-                  inElemMatch: inElemMatch // 527
-                }); // 527
-              }); // 528
-            } // Takes in a selector that could match a full document (eg, the original                                            // 529
-            // selector). Returns a function mapping document->result object.                                                      // 532
-            //                                                                                                                     // 533
-            // matcher is the Matcher object we are compiling.                                                                     // 534
-            //                                                                                                                     // 535
-            // If this is the root document selector (ie, not wrapped in $and or the like),                                        // 536
-            // then isRoot is true. (This is used by $near.)                                                                       // 537
+                return compileDocumentSelector(subSelector, matcher, { // 560
+                  inElemMatch: inElemMatch // 560
+                }); // 560
+              }); // 561
+            } // Takes in a selector that could match a full document (eg, the original                                            // 562
+            // selector). Returns a function mapping document->result object.                                                      // 565
+            //                                                                                                                     // 566
+            // matcher is the Matcher object we are compiling.                                                                     // 567
+            //                                                                                                                     // 568
+            // If this is the root document selector (ie, not wrapped in $and or the like),                                        // 569
+            // then isRoot is true. (This is used by $near.)                                                                       // 570
             //
             //
             function compileDocumentSelector(docSelector, matcher) {
-              // 538
-              var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {}; // 538
+              // 571
+              var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {}; // 571
               var docMatchers = Object.keys(docSelector).map(function (key) {
-                // 539
-                var subSelector = docSelector[key]; // 540
+                // 572
+                var subSelector = docSelector[key]; // 573
                 //
                 if (key.substr(0, 1) === '$') {
-                  // 542
-                  // Outer operators are either logical operators (they recurse back into                                          // 543
-                  // this function), or $where.                                                                                    // 544
+                  // 575
+                  // Outer operators are either logical operators (they recurse back into                                          // 576
+                  // this function), or $where.                                                                                    // 577
                   if (!hasOwn.call(LOGICAL_OPERATORS, key)) {
-                    // 545
-                    throw new Error("Unrecognized logical operator: " + key); // 546
-                  } // 547
+                    // 578
+                    throw new Error("Unrecognized logical operator: " + key); // 579
+                  } // 580
                   //
-                  matcher._isSimple = false; // 549
-                  return LOGICAL_OPERATORS[key](subSelector, matcher, options.inElemMatch); // 550
-                } // Record this path, but only if we aren't in an elemMatcher, since in an                                        // 551
-                // elemMatch this is a path inside an object in an array, not in the doc                                           // 554
-                // root.                                                                                                           // 555
+                  matcher._isSimple = false; // 582
+                  return LOGICAL_OPERATORS[key](subSelector, matcher, options.inElemMatch); // 583
+                } // Record this path, but only if we aren't in an elemMatcher, since in an                                        // 584
+                // elemMatch this is a path inside an object in an array, not in the doc                                           // 587
+                // root.                                                                                                           // 588
                 //
                 //
                 if (!options.inElemMatch) {
-                  // 556
-                  matcher._recordPathUsed(key); // 557
-                } // Don't add a matcher if subSelector is a function -- this is to match                                          // 558
-                // the behavior of Meteor on the server (inherited from the node mongodb                                           // 561
-                // driver), which is to ignore any part of a selector which is a function.                                         // 562
+                  // 589
+                  matcher._recordPathUsed(key); // 590
+                } // Don't add a matcher if subSelector is a function -- this is to match                                          // 591
+                // the behavior of Meteor on the server (inherited from the node mongodb                                           // 594
+                // driver), which is to ignore any part of a selector which is a function.                                         // 595
                 //
                 //
                 if (typeof subSelector === 'function') {
-                  // 563
-                  return undefined; // 564
-                } // 565
+                  // 596
+                  return undefined; // 597
+                } // 598
                 //
-                var lookUpByIndex = makeLookupFunction(key); // 567
-                var valueMatcher = compileValueSelector(subSelector, matcher, options.isRoot); // 568
+                var lookUpByIndex = makeLookupFunction(key); // 600
+                var valueMatcher = compileValueSelector(subSelector, matcher, options.isRoot); // 601
                 return function (doc) {
-                  // 574
-                  return valueMatcher(lookUpByIndex(doc)); // 574
-                }; // 574
-              }).filter(Boolean); // 575
-              return andDocumentMatchers(docMatchers); // 577
-            } // 578
+                  // 607
+                  return valueMatcher(lookUpByIndex(doc)); // 607
+                }; // 607
+              }).filter(Boolean); // 608
+              return andDocumentMatchers(docMatchers); // 610
+            } // 611
             //
-            // Takes in a selector that could match a key-indexed value in a document; eg,                                         // 580
-            // {$gt: 5, $lt: 9}, or a regular expression, or any non-expression object (to                                         // 581
-            // indicate equality).  Returns a branched matcher: a function mapping                                                 // 582
-            // [branched value]->result object.                                                                                    // 583
+            // Takes in a selector that could match a key-indexed value in a document; eg,                                         // 613
+            // {$gt: 5, $lt: 9}, or a regular expression, or any non-expression object (to                                         // 614
+            // indicate equality).  Returns a branched matcher: a function mapping                                                 // 615
+            // [branched value]->result object.                                                                                    // 616
             function compileValueSelector(valueSelector, matcher, isRoot) {
-              // 584
+              // 617
               if (valueSelector instanceof RegExp) {
-                // 585
-                matcher._isSimple = false; // 586
-                return convertElementMatcherToBranchedMatcher(regexpElementMatcher(valueSelector)); // 587
-              } // 590
+                // 618
+                matcher._isSimple = false; // 619
+                return convertElementMatcherToBranchedMatcher(regexpElementMatcher(valueSelector)); // 620
+              } // 623
               //
               if (isOperatorObject(valueSelector)) {
-                // 592
-                return operatorBranchedMatcher(valueSelector, matcher, isRoot); // 593
-              } // 594
+                // 625
+                return operatorBranchedMatcher(valueSelector, matcher, isRoot); // 626
+              } // 627
               //
-              return convertElementMatcherToBranchedMatcher(equalityElementMatcher(valueSelector)); // 596
-            } // Given an element matcher (which evaluates a single value), returns a branched                                     // 599
-            // value (which evaluates the element matcher on all the branches and returns a                                        // 602
-            // more structured return value possibly including arrayIndices).                                                      // 603
+              return convertElementMatcherToBranchedMatcher(equalityElementMatcher(valueSelector)); // 629
+            } // Given an element matcher (which evaluates a single value), returns a branched                                     // 632
+            // value (which evaluates the element matcher on all the branches and returns a                                        // 635
+            // more structured return value possibly including arrayIndices).                                                      // 636
             //
             //
             function convertElementMatcherToBranchedMatcher(elementMatcher) {
-              // 604
-              var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {}; // 604
+              // 637
+              var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {}; // 637
               return function (branches) {
-                // 605
+                // 638
                 var expanded = options.dontExpandLeafArrays ? branches : expandArraysInBranches(branches, options.dontIncludeLeafArrays);
-                var match = {}; // 610
+                var match = {}; // 643
                 match.result = expanded.some(function (element) {
-                  // 611
+                  // 644
                   var matched = elementMatcher(element.value); // Special case for $elemMatch: it means "true, and use this as an array
-                  // index if I didn't already have one".                                                                          // 615
+                  // index if I didn't already have one".                                                                          // 648
                   //
                   if (typeof matched === 'number') {
-                    // 616
-                    // XXX This code dates from when we only stored a single array index                                           // 617
-                    // (for the outermost array). Should we be also including deeper array                                         // 618
-                    // indices from the $elemMatch match?                                                                          // 619
+                    // 649
+                    // XXX This code dates from when we only stored a single array index                                           // 650
+                    // (for the outermost array). Should we be also including deeper array                                         // 651
+                    // indices from the $elemMatch match?                                                                          // 652
                     if (!element.arrayIndices) {
-                      // 620
-                      element.arrayIndices = [matched]; // 621
-                    } // 622
+                      // 653
+                      element.arrayIndices = [matched]; // 654
+                    } // 655
                     //
-                    matched = true; // 624
-                  } // If some element matched, and it's tagged with array indices, include                                        // 625
-                  // those indices in our result object.                                                                           // 628
+                    matched = true; // 657
+                  } // If some element matched, and it's tagged with array indices, include                                        // 658
+                  // those indices in our result object.                                                                           // 661
                   //
                   //
                   if (matched && element.arrayIndices) {
-                    // 629
-                    match.arrayIndices = element.arrayIndices; // 630
-                  } // 631
+                    // 662
+                    match.arrayIndices = element.arrayIndices; // 663
+                  } // 664
                   //
-                  return matched; // 633
-                }); // 634
-                return match; // 636
-              }; // 637
-            } // Helpers for $near.                                                                                                // 638
+                  return matched; // 666
+                }); // 667
+                return match; // 669
+              }; // 670
+            } // Helpers for $near.                                                                                                // 671
             //
             //
             function distanceCoordinatePairs(a, b) {
-              // 641
-              var pointA = pointToArray(a); // 642
-              var pointB = pointToArray(b); // 643
-              return Math.hypot(pointA[0] - pointB[0], pointA[1] - pointB[1]); // 645
-            } // Takes something that is not an operator object and returns an element matcher                                     // 646
-            // for equality with that thing.                                                                                       // 649
+              // 674
+              var pointA = pointToArray(a); // 675
+              var pointB = pointToArray(b); // 676
+              return Math.hypot(pointA[0] - pointB[0], pointA[1] - pointB[1]); // 678
+            } // Takes something that is not an operator object and returns an element matcher                                     // 679
+            // for equality with that thing.                                                                                       // 682
             //
             //
             function equalityElementMatcher(elementSelector) {
-              // 650
+              // 683
               if (isOperatorObject(elementSelector)) {
-                // 651
-                throw Error('Can\'t create equalityValueSelector for operator object'); // 652
-              } // Special-case: null and undefined are equal (if you got undefined in there                                       // 653
-              // somewhere, or if you got it due to some branch being non-existent in the                                          // 656
-              // weird special case), even though they aren't with EJSON.equals.                                                   // 657
-              // undefined or null                                                                                                 // 658
+                // 684
+                throw Error('Can\'t create equalityValueSelector for operator object'); // 685
+              } // Special-case: null and undefined are equal (if you got undefined in there                                       // 686
+              // somewhere, or if you got it due to some branch being non-existent in the                                          // 689
+              // weird special case), even though they aren't with EJSON.equals.                                                   // 690
+              // undefined or null                                                                                                 // 691
               //
               //
               if (elementSelector == null) {
-                // 659
+                // 692
                 return function (value) {
-                  // 660
-                  return value == null; // 660
-                }; // 660
-              } // 661
+                  // 693
+                  return value == null; // 693
+                }; // 693
+              } // 694
               //
               return function (value) {
-                // 663
-                return LocalCollection._f._equal(elementSelector, value); // 663
-              }; // 663
-            } // 664
+                // 696
+                return LocalCollection._f._equal(elementSelector, value); // 696
+              }; // 696
+            } // 697
             //
             function everythingMatcher(docOrBranchedValues) {
-              // 666
-              return { // 667
-                result: true // 667
-              }; // 667
-            } // 668
+              // 699
+              return { // 700
+                result: true // 700
+              }; // 700
+            } // 701
             //
             function expandArraysInBranches(branches, skipTheArrays) {
-              // 670
-              var branchesOut = []; // 671
+              // 703
+              var branchesOut = []; // 704
               branches.forEach(function (branch) {
-                // 673
+                // 706
                 var thisIsArray = Array.isArray(branch.value); // We include the branch itself, *UNLESS* we it's an array that we're going
-                // to iterate and we're told to skip arrays.  (That's right, we include some                                       // 677
-                // arrays even skipTheArrays is true: these are arrays that were found via                                         // 678
-                // explicit numerical indices.)                                                                                    // 679
+                // to iterate and we're told to skip arrays.  (That's right, we include some                                       // 710
+                // arrays even skipTheArrays is true: these are arrays that were found via                                         // 711
+                // explicit numerical indices.)                                                                                    // 712
                 //
                 if (!(skipTheArrays && thisIsArray && !branch.dontIterate)) {
-                  // 680
-                  branchesOut.push({ // 681
-                    arrayIndices: branch.arrayIndices, // 681
-                    value: branch.value // 681
-                  }); // 681
-                } // 682
+                  // 713
+                  branchesOut.push({ // 714
+                    arrayIndices: branch.arrayIndices, // 714
+                    value: branch.value // 714
+                  }); // 714
+                } // 715
                 //
                 if (thisIsArray && !branch.dontIterate) {
-                  // 684
+                  // 717
                   branch.value.forEach(function (value, i) {
-                    // 685
-                    branchesOut.push({ // 686
-                      arrayIndices: (branch.arrayIndices || []).concat(i), // 687
-                      value: value // 688
-                    }); // 686
-                  }); // 690
-                } // 691
-              }); // 692
-              return branchesOut; // 694
-            } // 695
+                    // 718
+                    branchesOut.push({ // 719
+                      arrayIndices: (branch.arrayIndices || []).concat(i), // 720
+                      value: value // 721
+                    }); // 719
+                  }); // 723
+                } // 724
+              }); // 725
+              return branchesOut; // 727
+            } // 728
             //
-            // Helpers for $bitsAllSet/$bitsAnySet/$bitsAllClear/$bitsAnyClear.                                                    // 697
+            // Helpers for $bitsAllSet/$bitsAnySet/$bitsAllClear/$bitsAnyClear.                                                    // 730
             function getOperandBitmask(operand, selector) {
-              // 698
-              // numeric bitmask                                                                                                   // 699
-              // You can provide a numeric bitmask to be matched against the operand field.                                        // 700
-              // It must be representable as a non-negative 32-bit signed integer.                                                 // 701
-              // Otherwise, $bitsAllSet will return an error.                                                                      // 702
+              // 731
+              // numeric bitmask                                                                                                   // 732
+              // You can provide a numeric bitmask to be matched against the operand field.                                        // 733
+              // It must be representable as a non-negative 32-bit signed integer.                                                 // 734
+              // Otherwise, $bitsAllSet will return an error.                                                                      // 735
               if (Number.isInteger(operand) && operand >= 0) {
-                // 703
-                return new Uint8Array(new Int32Array([operand]).buffer); // 704
-              } // bindata bitmask                                                                                                 // 705
-              // You can also use an arbitrarily large BinData instance as a bitmask.                                              // 708
+                // 736
+                return new Uint8Array(new Int32Array([operand]).buffer); // 737
+              } // bindata bitmask                                                                                                 // 738
+              // You can also use an arbitrarily large BinData instance as a bitmask.                                              // 741
               //
               //
               if (EJSON.isBinary(operand)) {
-                // 709
-                return new Uint8Array(operand.buffer); // 710
-              } // position list                                                                                                   // 711
-              // If querying a list of bit positions, each <position> must be a non-negative                                       // 714
-              // integer. Bit positions start at 0 from the least significant bit.                                                 // 715
+                // 742
+                return new Uint8Array(operand.buffer); // 743
+              } // position list                                                                                                   // 744
+              // If querying a list of bit positions, each <position> must be a non-negative                                       // 747
+              // integer. Bit positions start at 0 from the least significant bit.                                                 // 748
               //
               //
               if (Array.isArray(operand) && operand.every(function (x) {
-                // 716
-                return Number.isInteger(x) && x >= 0; // 717
+                // 749
+                return Number.isInteger(x) && x >= 0; // 750
               })) {
-                // 717
-                var buffer = new ArrayBuffer((Math.max.apply(Math, (0, _toConsumableArray3.default)(operand)) >> 3) + 1); // 718
-                var view = new Uint8Array(buffer); // 719
+                // 750
+                var buffer = new ArrayBuffer((Math.max.apply(Math, (0, _toConsumableArray3.default)(operand)) >> 3) + 1); // 751
+                var view = new Uint8Array(buffer); // 752
                 operand.forEach(function (x) {
-                  // 721
-                  view[x >> 3] |= 1 << (x & 0x7); // 722
-                }); // 723
-                return view; // 725
-              } // bad operand                                                                                                     // 726
+                  // 754
+                  view[x >> 3] |= 1 << (x & 0x7); // 755
+                }); // 756
+                return view; // 758
+              } // bad operand                                                                                                     // 759
               //
               //
               throw Error("operand to " + selector + " must be a numeric bitmask (representable as a " + 'non-negative 32-bit signed integer), a bindata bitmask or an array with ' + 'bit positions (non-negative integers)');
-            } // 734
+            } // 767
             //
             function getValueBitmask(value, length) {
-              // 736
-              // The field value must be either numerical or a BinData instance. Otherwise,                                        // 737
-              // $bits... will not match the current document.                                                                     // 738
-              // numerical                                                                                                         // 740
+              // 769
+              // The field value must be either numerical or a BinData instance. Otherwise,                                        // 770
+              // $bits... will not match the current document.                                                                     // 771
+              // numerical                                                                                                         // 773
               if (Number.isSafeInteger(value)) {
-                // 741
-                // $bits... will not match numerical values that cannot be represented as a                                        // 742
-                // signed 64-bit integer. This can be the case if a value is either too                                            // 743
-                // large or small to fit in a signed 64-bit integer, or if it has a                                                // 744
-                // fractional component.                                                                                           // 745
-                var buffer = new ArrayBuffer(Math.max(length, 2 * Uint32Array.BYTES_PER_ELEMENT)); // 746
-                var view = new Uint32Array(buffer, 0, 2); // 750
-                view[0] = value % ((1 << 16) * (1 << 16)) | 0; // 751
-                view[1] = value / ((1 << 16) * (1 << 16)) | 0; // sign extension                                                   // 752
+                // 774
+                // $bits... will not match numerical values that cannot be represented as a                                        // 775
+                // signed 64-bit integer. This can be the case if a value is either too                                            // 776
+                // large or small to fit in a signed 64-bit integer, or if it has a                                                // 777
+                // fractional component.                                                                                           // 778
+                var buffer = new ArrayBuffer(Math.max(length, 2 * Uint32Array.BYTES_PER_ELEMENT)); // 779
+                var view = new Uint32Array(buffer, 0, 2); // 783
+                view[0] = value % ((1 << 16) * (1 << 16)) | 0; // 784
+                view[1] = value / ((1 << 16) * (1 << 16)) | 0; // sign extension                                                   // 785
                 //
                 if (value < 0) {
-                  // 755
-                  view = new Uint8Array(buffer, 2); // 756
+                  // 788
+                  view = new Uint8Array(buffer, 2); // 789
                   view.forEach(function (byte, i) {
-                    // 757
-                    view[i] = 0xff; // 758
-                  }); // 759
-                } // 760
+                    // 790
+                    view[i] = 0xff; // 791
+                  }); // 792
+                } // 793
                 //
-                return new Uint8Array(buffer); // 762
-              } // bindata                                                                                                         // 763
+                return new Uint8Array(buffer); // 795
+              } // bindata                                                                                                         // 796
               //
               //
               if (EJSON.isBinary(value)) {
-                // 766
-                return new Uint8Array(value.buffer); // 767
-              } // no match                                                                                                        // 768
+                // 799
+                return new Uint8Array(value.buffer); // 800
+              } // no match                                                                                                        // 801
               //
               //
-              return false; // 771
-            } // Actually inserts a key value into the selector document                                                           // 772
-            // However, this checks there is no ambiguity in setting                                                               // 775
-            // the value for the given key, throws otherwise                                                                       // 776
+              return false; // 804
+            } // Actually inserts a key value into the selector document                                                           // 805
+            // However, this checks there is no ambiguity in setting                                                               // 808
+            // the value for the given key, throws otherwise                                                                       // 809
             //
             //
             function insertIntoDocument(document, key, value) {
-              // 777
+              // 810
               Object.keys(document).forEach(function (existingKey) {
-                // 778
+                // 811
                 if (existingKey.length > key.length && existingKey.indexOf(key + ".") === 0 || key.length > existingKey.length && key.indexOf(existingKey + ".") === 0) {
                   throw new Error("cannot infer query fields to set, both paths '" + existingKey + "' and " + ("'" + key + "' are matched"));
                 } else if (existingKey === key) {
-                  // 787
-                  throw new Error("cannot infer query fields to set, path '" + key + "' is matched twice"); // 788
-                } // 791
-              }); // 792
-              document[key] = value; // 794
-            } // Returns a branched matcher that matches iff the given matcher does not.                                           // 795
-            // Note that this implicitly "deMorganizes" the wrapped function.  ie, it                                              // 798
-            // means that ALL branch values need to fail to match innerBranchedMatcher.                                            // 799
+                  // 820
+                  throw new Error("cannot infer query fields to set, path '" + key + "' is matched twice"); // 821
+                } // 824
+              }); // 825
+              document[key] = value; // 827
+            } // Returns a branched matcher that matches iff the given matcher does not.                                           // 828
+            // Note that this implicitly "deMorganizes" the wrapped function.  ie, it                                              // 831
+            // means that ALL branch values need to fail to match innerBranchedMatcher.                                            // 832
             //
             //
             function invertBranchedMatcher(branchedMatcher) {
-              // 800
+              // 833
               return function (branchValues) {
-                // 801
-                // We explicitly choose to strip arrayIndices here: it doesn't make sense to                                       // 802
-                // say "update the array element that does not match something", at least                                          // 803
-                // in mongo-land.                                                                                                  // 804
-                return { // 805
-                  result: !branchedMatcher(branchValues).result // 805
-                }; // 805
-              }; // 806
-            } // 807
+                // 834
+                // We explicitly choose to strip arrayIndices here: it doesn't make sense to                                       // 835
+                // say "update the array element that does not match something", at least                                          // 836
+                // in mongo-land.                                                                                                  // 837
+                return { // 838
+                  result: !branchedMatcher(branchValues).result // 838
+                }; // 838
+              }; // 839
+            } // 840
             //
             function isIndexable(obj) {
-              // 809
-              return Array.isArray(obj) || LocalCollection._isPlainObject(obj); // 810
-            } // 811
+              // 842
+              return Array.isArray(obj) || LocalCollection._isPlainObject(obj); // 843
+            } // 844
             //
             function isNumericKey(s) {
-              // 813
-              return (/^[0-9]+$/.test(s) // 814
+              // 846
+              return (/^[0-9]+$/.test(s) // 847
 
-              ); // 814
-            } // 815
+              ); // 847
+            } // 848
             //
             function isOperatorObject(valueSelector, inconsistentOK) {
-              // 820
+              // 853
               if (!LocalCollection._isPlainObject(valueSelector)) {
-                // 821
-                return false; // 822
-              } // 823
+                // 854
+                return false; // 855
+              } // 856
               //
-              var theseAreOperators = undefined; // 825
+              var theseAreOperators = undefined; // 858
               Object.keys(valueSelector).forEach(function (selKey) {
-                // 826
-                var thisIsOperator = selKey.substr(0, 1) === '$'; // 827
+                // 859
+                var thisIsOperator = selKey.substr(0, 1) === '$'; // 860
                 //
                 if (theseAreOperators === undefined) {
-                  // 829
-                  theseAreOperators = thisIsOperator; // 830
+                  // 862
+                  theseAreOperators = thisIsOperator; // 863
                 } else if (theseAreOperators !== thisIsOperator) {
-                  // 831
+                  // 864
                   if (!inconsistentOK) {
-                    // 832
-                    throw new Error("Inconsistent operator: " + JSON.stringify(valueSelector)); // 833
-                  } // 836
+                    // 865
+                    throw new Error("Inconsistent operator: " + JSON.stringify(valueSelector)); // 866
+                  } // 869
                   //
-                  theseAreOperators = false; // 838
-                } // 839
-              }); // 840
-              return !!theseAreOperators; // {} has no operators                                                                   // 842
-            } // 843
+                  theseAreOperators = false; // 871
+                } // 872
+              }); // 873
+              return !!theseAreOperators; // {} has no operators                                                                   // 875
+            } // 876
             //
-            // Helper for $lt/$gt/$lte/$gte.                                                                                       // 845
+            // Helper for $lt/$gt/$lte/$gte.                                                                                       // 878
             function makeInequality(cmpValueComparator) {
-              // 846
-              return { // 847
+              // 879
+              return { // 880
                 compileElementSelector: function (operand) {
-                  // 848
-                  // Arrays never compare false with non-arrays for any inequality.                                                // 849
-                  // XXX This was behavior we observed in pre-release MongoDB 2.5, but                                             // 850
-                  //     it seems to have been reverted.                                                                           // 851
-                  //     See https://jira.mongodb.org/browse/SERVER-11444                                                          // 852
+                  // 881
+                  // Arrays never compare false with non-arrays for any inequality.                                                // 882
+                  // XXX This was behavior we observed in pre-release MongoDB 2.5, but                                             // 883
+                  //     it seems to have been reverted.                                                                           // 884
+                  //     See https://jira.mongodb.org/browse/SERVER-11444                                                          // 885
                   if (Array.isArray(operand)) {
-                    // 853
+                    // 886
                     return function () {
-                      // 854
-                      return false; // 854
-                    }; // 854
-                  } // Special case: consider undefined and null the same (so true with                                            // 855
-                  // $gte/$lte).                                                                                                   // 858
+                      // 887
+                      return false; // 887
+                    }; // 887
+                  } // Special case: consider undefined and null the same (so true with                                            // 888
+                  // $gte/$lte).                                                                                                   // 891
                   //
                   //
                   if (operand === undefined) {
-                    // 859
-                    operand = null; // 860
-                  } // 861
+                    // 892
+                    operand = null; // 893
+                  } // 894
                   //
-                  var operandType = LocalCollection._f._type(operand); // 863
+                  var operandType = LocalCollection._f._type(operand); // 896
                   //
                   return function (value) {
-                    // 865
+                    // 898
                     if (value === undefined) {
-                      // 866
-                      value = null; // 867
-                    } // Comparisons are never true among things of different type (except                                         // 868
-                    // null vs undefined).                                                                                         // 871
+                      // 899
+                      value = null; // 900
+                    } // Comparisons are never true among things of different type (except                                         // 901
+                    // null vs undefined).                                                                                         // 904
                     //
                     //
                     if (LocalCollection._f._type(value) !== operandType) {
-                      // 872
-                      return false; // 873
-                    } // 874
+                      // 905
+                      return false; // 906
+                    } // 907
                     //
-                    return cmpValueComparator(LocalCollection._f._cmp(value, operand)); // 876
-                  }; // 877
-                } // 878
-              }; // 847
-            } // makeLookupFunction(key) returns a lookup function.                                                                // 880
-            //                                                                                                                     // 883
-            // A lookup function takes in a document and returns an array of matching                                              // 884
-            // branches.  If no arrays are found while looking up the key, this array will                                         // 885
-            // have exactly one branches (possibly 'undefined', if some segment of the key                                         // 886
-            // was not found).                                                                                                     // 887
-            //                                                                                                                     // 888
-            // If arrays are found in the middle, this can have more than one element, since                                       // 889
-            // we 'branch'. When we 'branch', if there are more key segments to look up,                                           // 890
-            // then we only pursue branches that are plain objects (not arrays or scalars).                                        // 891
-            // This means we can actually end up with no branches!                                                                 // 892
-            //                                                                                                                     // 893
-            // We do *NOT* branch on arrays that are found at the end (ie, at the last                                             // 894
-            // dotted member of the key). We just return that array; if you want to                                                // 895
-            // effectively 'branch' over the array's values, post-process the lookup                                               // 896
-            // function with expandArraysInBranches.                                                                               // 897
-            //                                                                                                                     // 898
-            // Each branch is an object with keys:                                                                                 // 899
-            //  - value: the value at the branch                                                                                   // 900
-            //  - dontIterate: an optional bool; if true, it means that 'value' is an array                                        // 901
-            //    that expandArraysInBranches should NOT expand. This specifically happens                                         // 902
-            //    when there is a numeric index in the key, and ensures the                                                        // 903
-            //    perhaps-surprising MongoDB behavior where {'a.0': 5} does NOT                                                    // 904
-            //    match {a: [[5]]}.                                                                                                // 905
-            //  - arrayIndices: if any array indexing was done during lookup (either due to                                        // 906
-            //    explicit numeric indices or implicit branching), this will be an array of                                        // 907
-            //    the array indices used, from outermost to innermost; it is falsey or                                             // 908
-            //    absent if no array index is used. If an explicit numeric index is used,                                          // 909
-            //    the index will be followed in arrayIndices by the string 'x'.                                                    // 910
-            //                                                                                                                     // 911
-            //    Note: arrayIndices is used for two purposes. First, it is used to                                                // 912
-            //    implement the '$' modifier feature, which only ever looks at its first                                           // 913
-            //    element.                                                                                                         // 914
-            //                                                                                                                     // 915
-            //    Second, it is used for sort key generation, which needs to be able to tell                                       // 916
-            //    the difference between different paths. Moreover, it needs to                                                    // 917
-            //    differentiate between explicit and implicit branching, which is why                                              // 918
-            //    there's the somewhat hacky 'x' entry: this means that explicit and                                               // 919
-            //    implicit array lookups will have different full arrayIndices paths. (That                                        // 920
-            //    code only requires that different paths have different arrayIndices; it                                          // 921
-            //    doesn't actually 'parse' arrayIndices. As an alternative, arrayIndices                                           // 922
-            //    could contain objects with flags like 'implicit', but I think that only                                          // 923
-            //    makes the code surrounding them more complex.)                                                                   // 924
-            //                                                                                                                     // 925
-            //    (By the way, this field ends up getting passed around a lot without                                              // 926
-            //    cloning, so never mutate any arrayIndices field/var in this package!)                                            // 927
-            //                                                                                                                     // 928
-            //                                                                                                                     // 929
-            // At the top level, you may only pass in a plain object or array.                                                     // 930
+                    return cmpValueComparator(LocalCollection._f._cmp(value, operand)); // 909
+                  }; // 910
+                } // 911
+              }; // 880
+            } // makeLookupFunction(key) returns a lookup function.                                                                // 913
+            //                                                                                                                     // 916
+            // A lookup function takes in a document and returns an array of matching                                              // 917
+            // branches.  If no arrays are found while looking up the key, this array will                                         // 918
+            // have exactly one branches (possibly 'undefined', if some segment of the key                                         // 919
+            // was not found).                                                                                                     // 920
+            //                                                                                                                     // 921
+            // If arrays are found in the middle, this can have more than one element, since                                       // 922
+            // we 'branch'. When we 'branch', if there are more key segments to look up,                                           // 923
+            // then we only pursue branches that are plain objects (not arrays or scalars).                                        // 924
+            // This means we can actually end up with no branches!                                                                 // 925
+            //                                                                                                                     // 926
+            // We do *NOT* branch on arrays that are found at the end (ie, at the last                                             // 927
+            // dotted member of the key). We just return that array; if you want to                                                // 928
+            // effectively 'branch' over the array's values, post-process the lookup                                               // 929
+            // function with expandArraysInBranches.                                                                               // 930
             //                                                                                                                     // 931
-            // See the test 'minimongo - lookup' for some examples of what lookup functions                                        // 932
-            // return.                                                                                                             // 933
+            // Each branch is an object with keys:                                                                                 // 932
+            //  - value: the value at the branch                                                                                   // 933
+            //  - dontIterate: an optional bool; if true, it means that 'value' is an array                                        // 934
+            //    that expandArraysInBranches should NOT expand. This specifically happens                                         // 935
+            //    when there is a numeric index in the key, and ensures the                                                        // 936
+            //    perhaps-surprising MongoDB behavior where {'a.0': 5} does NOT                                                    // 937
+            //    match {a: [[5]]}.                                                                                                // 938
+            //  - arrayIndices: if any array indexing was done during lookup (either due to                                        // 939
+            //    explicit numeric indices or implicit branching), this will be an array of                                        // 940
+            //    the array indices used, from outermost to innermost; it is falsey or                                             // 941
+            //    absent if no array index is used. If an explicit numeric index is used,                                          // 942
+            //    the index will be followed in arrayIndices by the string 'x'.                                                    // 943
+            //                                                                                                                     // 944
+            //    Note: arrayIndices is used for two purposes. First, it is used to                                                // 945
+            //    implement the '$' modifier feature, which only ever looks at its first                                           // 946
+            //    element.                                                                                                         // 947
+            //                                                                                                                     // 948
+            //    Second, it is used for sort key generation, which needs to be able to tell                                       // 949
+            //    the difference between different paths. Moreover, it needs to                                                    // 950
+            //    differentiate between explicit and implicit branching, which is why                                              // 951
+            //    there's the somewhat hacky 'x' entry: this means that explicit and                                               // 952
+            //    implicit array lookups will have different full arrayIndices paths. (That                                        // 953
+            //    code only requires that different paths have different arrayIndices; it                                          // 954
+            //    doesn't actually 'parse' arrayIndices. As an alternative, arrayIndices                                           // 955
+            //    could contain objects with flags like 'implicit', but I think that only                                          // 956
+            //    makes the code surrounding them more complex.)                                                                   // 957
+            //                                                                                                                     // 958
+            //    (By the way, this field ends up getting passed around a lot without                                              // 959
+            //    cloning, so never mutate any arrayIndices field/var in this package!)                                            // 960
+            //                                                                                                                     // 961
+            //                                                                                                                     // 962
+            // At the top level, you may only pass in a plain object or array.                                                     // 963
+            //                                                                                                                     // 964
+            // See the test 'minimongo - lookup' for some examples of what lookup functions                                        // 965
+            // return.                                                                                                             // 966
             //
             //
             function makeLookupFunction(key) {
-              // 934
-              var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {}; // 934
-              var parts = key.split('.'); // 935
-              var firstPart = parts.length ? parts[0] : ''; // 936
-              var lookupRest = parts.length > 1 && makeLookupFunction(parts.slice(1).join('.')); // 937
+              // 967
+              var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {}; // 967
+              var parts = key.split('.'); // 968
+              var firstPart = parts.length ? parts[0] : ''; // 969
+              var lookupRest = parts.length > 1 && makeLookupFunction(parts.slice(1).join('.')); // 970
               //
               var omitUnnecessaryFields = function (result) {
-                // 942
+                // 975
                 if (!result.dontIterate) {
-                  // 943
-                  delete result.dontIterate; // 944
-                } // 945
+                  // 976
+                  delete result.dontIterate; // 977
+                } // 978
                 //
                 if (result.arrayIndices && !result.arrayIndices.length) {
-                  // 947
-                  delete result.arrayIndices; // 948
-                } // 949
+                  // 980
+                  delete result.arrayIndices; // 981
+                } // 982
                 //
-                return result; // 951
-              }; // Doc will always be a plain object or an array.                                                                 // 952
-              // apply an explicit numeric index, an array.                                                                        // 955
+                return result; // 984
+              }; // Doc will always be a plain object or an array.                                                                 // 985
+              // apply an explicit numeric index, an array.                                                                        // 988
               //
               //
               return function (doc) {
-                // 956
-                var arrayIndices = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : []; // 956
+                // 989
+                var arrayIndices = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : []; // 989
                 //
                 if (Array.isArray(doc)) {
-                  // 957
-                  // If we're being asked to do an invalid lookup into an array (non-integer                                       // 958
-                  // or out-of-bounds), return no results (which is different from returning                                       // 959
-                  // a single undefined result, in that `null` equality checks won't match).                                       // 960
+                  // 990
+                  // If we're being asked to do an invalid lookup into an array (non-integer                                       // 991
+                  // or out-of-bounds), return no results (which is different from returning                                       // 992
+                  // a single undefined result, in that `null` equality checks won't match).                                       // 993
                   if (!(isNumericKey(firstPart) && firstPart < doc.length)) {
-                    // 961
-                    return []; // 962
-                  } // Remember that we used this array index. Include an 'x' to indicate that                                     // 963
-                  // the previous index came from being considered as an explicit array                                            // 966
-                  // index (not branching).                                                                                        // 967
+                    // 994
+                    return []; // 995
+                  } // Remember that we used this array index. Include an 'x' to indicate that                                     // 996
+                  // the previous index came from being considered as an explicit array                                            // 999
+                  // index (not branching).                                                                                        // 1000
                   //
                   //
-                  arrayIndices = arrayIndices.concat(+firstPart, 'x'); // 968
-                } // Do our first lookup.                                                                                          // 969
+                  arrayIndices = arrayIndices.concat(+firstPart, 'x'); // 1001
+                } // Do our first lookup.                                                                                          // 1002
                 //
                 //
-                var firstLevel = doc[firstPart]; // If there is no deeper to dig, return what we found.                            // 972
-                //                                                                                                                 // 975
-                // If what we found is an array, most value selectors will choose to treat                                         // 976
-                // the elements of the array as matchable values in their own right, but                                           // 977
-                // that's done outside of the lookup function. (Exceptions to this are $size                                       // 978
-                // and stuff relating to $elemMatch.  eg, {a: {$size: 2}} does not match {a:                                       // 979
-                // [[1, 2]]}.)                                                                                                     // 980
-                //                                                                                                                 // 981
-                // That said, if we just did an *explicit* array lookup (on doc) to find                                           // 982
-                // firstLevel, and firstLevel is an array too, we do NOT want value                                                // 983
-                // selectors to iterate over it.  eg, {'a.0': 5} does not match {a: [[5]]}.                                        // 984
-                // So in that case, we mark the return value as 'don't iterate'.                                                   // 985
+                var firstLevel = doc[firstPart]; // If there is no deeper to dig, return what we found.                            // 1005
+                //                                                                                                                 // 1008
+                // If what we found is an array, most value selectors will choose to treat                                         // 1009
+                // the elements of the array as matchable values in their own right, but                                           // 1010
+                // that's done outside of the lookup function. (Exceptions to this are $size                                       // 1011
+                // and stuff relating to $elemMatch.  eg, {a: {$size: 2}} does not match {a:                                       // 1012
+                // [[1, 2]]}.)                                                                                                     // 1013
+                //                                                                                                                 // 1014
+                // That said, if we just did an *explicit* array lookup (on doc) to find                                           // 1015
+                // firstLevel, and firstLevel is an array too, we do NOT want value                                                // 1016
+                // selectors to iterate over it.  eg, {'a.0': 5} does not match {a: [[5]]}.                                        // 1017
+                // So in that case, we mark the return value as 'don't iterate'.                                                   // 1018
                 //
                 if (!lookupRest) {
-                  // 986
-                  return [omitUnnecessaryFields({ // 987
-                    arrayIndices: arrayIndices, // 988
-                    dontIterate: Array.isArray(doc) && Array.isArray(firstLevel), // 989
-                    value: firstLevel // 990
-                  })]; // 987
-                } // We need to dig deeper.  But if we can't, because what we've found is not                                      // 992
-                // an array or plain object, we're done. If we just did a numeric index into                                       // 995
-                // an array, we return nothing here (this is a change in Mongo 2.5 from                                            // 996
-                // Mongo 2.4, where {'a.0.b': null} stopped matching {a: [5]}). Otherwise,                                         // 997
-                // return a single `undefined` (which can, for example, match via equality                                         // 998
-                // with `null`).                                                                                                   // 999
+                  // 1019
+                  return [omitUnnecessaryFields({ // 1020
+                    arrayIndices: arrayIndices, // 1021
+                    dontIterate: Array.isArray(doc) && Array.isArray(firstLevel), // 1022
+                    value: firstLevel // 1023
+                  })]; // 1020
+                } // We need to dig deeper.  But if we can't, because what we've found is not                                      // 1025
+                // an array or plain object, we're done. If we just did a numeric index into                                       // 1028
+                // an array, we return nothing here (this is a change in Mongo 2.5 from                                            // 1029
+                // Mongo 2.4, where {'a.0.b': null} stopped matching {a: [5]}). Otherwise,                                         // 1030
+                // return a single `undefined` (which can, for example, match via equality                                         // 1031
+                // with `null`).                                                                                                   // 1032
                 //
                 //
                 if (!isIndexable(firstLevel)) {
-                  // 1000
+                  // 1033
                   if (Array.isArray(doc)) {
-                    // 1001
-                    return []; // 1002
-                  } // 1003
+                    // 1034
+                    return []; // 1035
+                  } // 1036
                   //
-                  return [omitUnnecessaryFields({ // 1005
-                    arrayIndices: arrayIndices, // 1005
-                    value: undefined // 1005
-                  })]; // 1005
-                } // 1006
+                  return [omitUnnecessaryFields({ // 1038
+                    arrayIndices: arrayIndices, // 1038
+                    value: undefined // 1038
+                  })]; // 1038
+                } // 1039
                 //
-                var result = []; // 1008
+                var result = []; // 1041
                 //
                 var appendToResult = function (more) {
-                  // 1009
-                  result.push.apply(result, (0, _toConsumableArray3.default)(more)); // 1010
-                }; // Dig deeper: look up the rest of the parts on whatever we've found.                                           // 1011
-                // (lookupRest is smart enough to not try to do invalid lookups into                                               // 1014
-                // firstLevel if it's an array.)                                                                                   // 1015
+                  // 1042
+                  result.push.apply(result, (0, _toConsumableArray3.default)(more)); // 1043
+                }; // Dig deeper: look up the rest of the parts on whatever we've found.                                           // 1044
+                // (lookupRest is smart enough to not try to do invalid lookups into                                               // 1047
+                // firstLevel if it's an array.)                                                                                   // 1048
                 //
                 //
                 appendToResult(lookupRest(firstLevel, arrayIndices)); // If we found an array, then in *addition* to potentially treating the next
-                // part as a literal integer lookup, we should also 'branch': try to look up                                       // 1019
-                // the rest of the parts on each array element in parallel.                                                        // 1020
-                //                                                                                                                 // 1021
-                // In this case, we *only* dig deeper into array elements that are plain                                           // 1022
-                // objects. (Recall that we only got this far if we have further to dig.)                                          // 1023
-                // This makes sense: we certainly don't dig deeper into non-indexable                                              // 1024
-                // objects. And it would be weird to dig into an array: it's simpler to have                                       // 1025
-                // a rule that explicit integer indexes only apply to an outer array, not to                                       // 1026
-                // an array you find after a branching search.                                                                     // 1027
-                //                                                                                                                 // 1028
-                // In the special case of a numeric part in a *sort selector* (not a query                                         // 1029
-                // selector), we skip the branching: we ONLY allow the numeric part to mean                                        // 1030
-                // 'look up this index' in that case, not 'also look up this index in all                                          // 1031
-                // the elements of the array'.                                                                                     // 1032
+                // part as a literal integer lookup, we should also 'branch': try to look up                                       // 1052
+                // the rest of the parts on each array element in parallel.                                                        // 1053
+                //                                                                                                                 // 1054
+                // In this case, we *only* dig deeper into array elements that are plain                                           // 1055
+                // objects. (Recall that we only got this far if we have further to dig.)                                          // 1056
+                // This makes sense: we certainly don't dig deeper into non-indexable                                              // 1057
+                // objects. And it would be weird to dig into an array: it's simpler to have                                       // 1058
+                // a rule that explicit integer indexes only apply to an outer array, not to                                       // 1059
+                // an array you find after a branching search.                                                                     // 1060
+                //                                                                                                                 // 1061
+                // In the special case of a numeric part in a *sort selector* (not a query                                         // 1062
+                // selector), we skip the branching: we ONLY allow the numeric part to mean                                        // 1063
+                // 'look up this index' in that case, not 'also look up this index in all                                          // 1064
+                // the elements of the array'.                                                                                     // 1065
                 //
                 if (Array.isArray(firstLevel) && !(isNumericKey(parts[1]) && options.forSort)) {
-                  // 1033
+                  // 1066
                   firstLevel.forEach(function (branch, arrayIndex) {
-                    // 1035
+                    // 1068
                     if (LocalCollection._isPlainObject(branch)) {
-                      // 1036
-                      appendToResult(lookupRest(branch, arrayIndices.concat(arrayIndex))); // 1037
-                    } // 1038
-                  }); // 1039
-                } // 1040
+                      // 1069
+                      appendToResult(lookupRest(branch, arrayIndices.concat(arrayIndex))); // 1070
+                    } // 1071
+                  }); // 1072
+                } // 1073
                 //
-                return result; // 1042
-              }; // 1043
-            } // 1044
+                return result; // 1075
+              }; // 1076
+            } // 1077
             //
-            // Object exported only for unit testing.                                                                              // 1046
-            // Use it to export private functions to test in Tinytest.                                                             // 1047
-            MinimongoTest = { // 1048
-              makeLookupFunction: makeLookupFunction // 1048
-            }; // 1048
+            // Object exported only for unit testing.                                                                              // 1079
+            // Use it to export private functions to test in Tinytest.                                                             // 1080
+            MinimongoTest = { // 1081
+              makeLookupFunction: makeLookupFunction // 1081
+            }; // 1081
             //
             MinimongoError = function (message) {
-              // 1049
-              var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {}; // 1049
+              // 1082
+              var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {}; // 1082
               //
               if (typeof message === 'string' && options.field) {
-                // 1050
-                message += " for field '" + options.field + "'"; // 1051
-              } // 1052
+                // 1083
+                message += " for field '" + options.field + "'"; // 1084
+              } // 1085
               //
-              var error = new Error(message); // 1054
-              error.name = 'MinimongoError'; // 1055
-              return error; // 1056
-            }; // 1057
+              var error = new Error(message); // 1087
+              error.name = 'MinimongoError'; // 1088
+              return error; // 1089
+            }; // 1090
             //
             function nothingMatcher(docOrBranchedValues) {
-              // 1059
-              return { // 1060
-                result: false // 1060
-              }; // 1060
-            } // 1061
+              // 1092
+              return { // 1093
+                result: false // 1093
+              }; // 1093
+            } // 1094
             //
-            // Takes an operator object (an object with $ keys) and returns a branched                                             // 1063
-            // matcher for it.                                                                                                     // 1064
+            // Takes an operator object (an object with $ keys) and returns a branched                                             // 1096
+            // matcher for it.                                                                                                     // 1097
             function operatorBranchedMatcher(valueSelector, matcher, isRoot) {
-              // 1065
-              // Each valueSelector works separately on the various branches.  So one                                              // 1066
-              // operator can match one branch and another can match another branch.  This                                         // 1067
-              // is OK.                                                                                                            // 1068
+              // 1098
+              // Each valueSelector works separately on the various branches.  So one                                              // 1099
+              // operator can match one branch and another can match another branch.  This                                         // 1100
+              // is OK.                                                                                                            // 1101
               var operatorMatchers = Object.keys(valueSelector).map(function (operator) {
-                // 1069
-                var operand = valueSelector[operator]; // 1070
-                var simpleRange = ['$lt', '$lte', '$gt', '$gte'].includes(operator) && typeof operand === 'number'; // 1072
-                var simpleEquality = ['$ne', '$eq'].includes(operator) && operand !== Object(operand); // 1077
+                // 1102
+                var operand = valueSelector[operator]; // 1103
+                var simpleRange = ['$lt', '$lte', '$gt', '$gte'].includes(operator) && typeof operand === 'number'; // 1105
+                var simpleEquality = ['$ne', '$eq'].includes(operator) && operand !== Object(operand); // 1110
                 var simpleInclusion = ['$in', '$nin'].includes(operator) && Array.isArray(operand) && !operand.some(function (x) {
-                  return x === Object(x); // 1085
-                }); // 1085
+                  return x === Object(x); // 1118
+                }); // 1118
                 //
                 if (!(simpleRange || simpleInclusion || simpleEquality)) {
-                  // 1088
-                  matcher._isSimple = false; // 1089
-                } // 1090
+                  // 1121
+                  matcher._isSimple = false; // 1122
+                } // 1123
                 //
                 if (hasOwn.call(VALUE_OPERATORS, operator)) {
-                  // 1092
-                  return VALUE_OPERATORS[operator](operand, valueSelector, matcher, isRoot); // 1093
-                } // 1094
+                  // 1125
+                  return VALUE_OPERATORS[operator](operand, valueSelector, matcher, isRoot); // 1126
+                } // 1127
                 //
                 if (hasOwn.call(ELEMENT_OPERATORS, operator)) {
-                  // 1096
-                  var options = ELEMENT_OPERATORS[operator]; // 1097
+                  // 1129
+                  var options = ELEMENT_OPERATORS[operator]; // 1130
                   return convertElementMatcherToBranchedMatcher(options.compileElementSelector(operand, valueSelector, matcher), options);
-                } // 1102
+                } // 1135
                 //
-                throw new Error("Unrecognized operator: " + operator); // 1104
-              }); // 1105
-              return andBranchedMatchers(operatorMatchers); // 1107
-            } // paths - Array: list of mongo style paths                                                                          // 1108
-            // newLeafFn - Function: of form function(path) should return a scalar value to                                        // 1111
-            //                       put into list created for that path                                                           // 1112
-            // conflictFn - Function: of form function(node, path, fullPath) is called                                             // 1113
-            //                        when building a tree path for 'fullPath' node on                                             // 1114
-            //                        'path' was already a leaf with a value. Must return a                                        // 1115
-            //                        conflict resolution.                                                                         // 1116
-            // initial tree - Optional Object: starting tree.                                                                      // 1117
-            // @returns - Object: tree represented as a set of nested objects                                                      // 1118
+                throw new Error("Unrecognized operator: " + operator); // 1137
+              }); // 1138
+              return andBranchedMatchers(operatorMatchers); // 1140
+            } // paths - Array: list of mongo style paths                                                                          // 1141
+            // newLeafFn - Function: of form function(path) should return a scalar value to                                        // 1144
+            //                       put into list created for that path                                                           // 1145
+            // conflictFn - Function: of form function(node, path, fullPath) is called                                             // 1146
+            //                        when building a tree path for 'fullPath' node on                                             // 1147
+            //                        'path' was already a leaf with a value. Must return a                                        // 1148
+            //                        conflict resolution.                                                                         // 1149
+            // initial tree - Optional Object: starting tree.                                                                      // 1150
+            // @returns - Object: tree represented as a set of nested objects                                                      // 1151
             //
             //
             function pathsToTree(paths, newLeafFn, conflictFn) {
-              // 1119
-              var root = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {}; // 1119
+              // 1152
+              var root = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {}; // 1152
               paths.forEach(function (path) {
-                // 1120
-                var pathArray = path.split('.'); // 1121
-                var tree = root; // use .every just for iteration with break                                                       // 1122
+                // 1153
+                var pathArray = path.split('.'); // 1154
+                var tree = root; // use .every just for iteration with break                                                       // 1155
                 //
                 var success = pathArray.slice(0, -1).every(function (key, i) {
-                  // 1125
+                  // 1158
                   if (!hasOwn.call(tree, key)) {
-                    // 1126
-                    tree[key] = {}; // 1127
+                    // 1159
+                    tree[key] = {}; // 1160
                   } else if (tree[key] !== Object(tree[key])) {
-                    // 1128
+                    // 1161
                     tree[key] = conflictFn(tree[key], pathArray.slice(0, i + 1).join('.'), path); // break out of loop if we are failing for this path
                     //
                     if (tree[key] !== Object(tree[key])) {
-                      // 1136
-                      return false; // 1137
-                    } // 1138
-                  } // 1139
+                      // 1169
+                      return false; // 1170
+                    } // 1171
+                  } // 1172
                   //
-                  tree = tree[key]; // 1141
-                  return true; // 1143
-                }); // 1144
+                  tree = tree[key]; // 1174
+                  return true; // 1176
+                }); // 1177
                 //
                 if (success) {
-                  // 1146
-                  var lastKey = pathArray[pathArray.length - 1]; // 1147
+                  // 1179
+                  var lastKey = pathArray[pathArray.length - 1]; // 1180
                   //
                   if (hasOwn.call(tree, lastKey)) {
-                    // 1148
-                    tree[lastKey] = conflictFn(tree[lastKey], path, path); // 1149
+                    // 1181
+                    tree[lastKey] = conflictFn(tree[lastKey], path, path); // 1182
                   } else {
-                    // 1150
-                    tree[lastKey] = newLeafFn(path); // 1151
-                  } // 1152
-                } // 1153
-              }); // 1154
-              return root; // 1156
-            } // 1157
+                    // 1183
+                    tree[lastKey] = newLeafFn(path); // 1184
+                  } // 1185
+                } // 1186
+              }); // 1187
+              return root; // 1189
+            } // 1190
             //
-            // Makes sure we get 2 elements array and assume the first one to be x and                                             // 1159
-            // the second one to y no matter what user passes.                                                                     // 1160
-            // In case user passes { lon: x, lat: y } returns [x, y]                                                               // 1161
+            // Makes sure we get 2 elements array and assume the first one to be x and                                             // 1192
+            // the second one to y no matter what user passes.                                                                     // 1193
+            // In case user passes { lon: x, lat: y } returns [x, y]                                                               // 1194
             function pointToArray(point) {
-              // 1162
-              return Array.isArray(point) ? point.slice() : [point.x, point.y]; // 1163
-            } // Creating a document from an upsert is quite tricky.                                                               // 1164
-            // E.g. this selector: {"$or": [{"b.foo": {"$all": ["bar"]}}]}, should result                                          // 1167
-            // in: {"b.foo": "bar"}                                                                                                // 1168
-            // But this selector: {"$or": [{"b": {"foo": {"$all": ["bar"]}}}]} should throw                                        // 1169
-            // an error                                                                                                            // 1170
-            // Some rules (found mainly with trial & error, so there might be more):                                               // 1172
-            // - handle all childs of $and (or implicit $and)                                                                      // 1173
-            // - handle $or nodes with exactly 1 child                                                                             // 1174
-            // - ignore $or nodes with more than 1 child                                                                           // 1175
-            // - ignore $nor and $not nodes                                                                                        // 1176
-            // - throw when a value can not be set unambiguously                                                                   // 1177
-            // - every value for $all should be dealt with as separate $eq-s                                                       // 1178
-            // - threat all children of $all as $eq setters (=> set if $all.length === 1,                                          // 1179
-            //   otherwise throw error)                                                                                            // 1180
-            // - you can not mix '$'-prefixed keys and non-'$'-prefixed keys                                                       // 1181
-            // - you can only have dotted keys on a root-level                                                                     // 1182
-            // - you can not have '$'-prefixed keys more than one-level deep in an object                                          // 1183
-            // Handles one key/value pair to put in the selector document                                                          // 1185
+              // 1195
+              return Array.isArray(point) ? point.slice() : [point.x, point.y]; // 1196
+            } // Creating a document from an upsert is quite tricky.                                                               // 1197
+            // E.g. this selector: {"$or": [{"b.foo": {"$all": ["bar"]}}]}, should result                                          // 1200
+            // in: {"b.foo": "bar"}                                                                                                // 1201
+            // But this selector: {"$or": [{"b": {"foo": {"$all": ["bar"]}}}]} should throw                                        // 1202
+            // an error                                                                                                            // 1203
+            // Some rules (found mainly with trial & error, so there might be more):                                               // 1205
+            // - handle all childs of $and (or implicit $and)                                                                      // 1206
+            // - handle $or nodes with exactly 1 child                                                                             // 1207
+            // - ignore $or nodes with more than 1 child                                                                           // 1208
+            // - ignore $nor and $not nodes                                                                                        // 1209
+            // - throw when a value can not be set unambiguously                                                                   // 1210
+            // - every value for $all should be dealt with as separate $eq-s                                                       // 1211
+            // - threat all children of $all as $eq setters (=> set if $all.length === 1,                                          // 1212
+            //   otherwise throw error)                                                                                            // 1213
+            // - you can not mix '$'-prefixed keys and non-'$'-prefixed keys                                                       // 1214
+            // - you can only have dotted keys on a root-level                                                                     // 1215
+            // - you can not have '$'-prefixed keys more than one-level deep in an object                                          // 1216
+            // Handles one key/value pair to put in the selector document                                                          // 1218
             //
             //
             function populateDocumentWithKeyValue(document, key, value) {
-              // 1186
+              // 1219
               if (value && Object.getPrototypeOf(value) === Object.prototype) {
-                // 1187
-                populateDocumentWithObject(document, key, value); // 1188
+                // 1220
+                populateDocumentWithObject(document, key, value); // 1221
               } else if (!(value instanceof RegExp)) {
-                // 1189
-                insertIntoDocument(document, key, value); // 1190
-              } // 1191
-            } // Handles a key, value pair to put in the selector document                                                         // 1192
-            // if the value is an object                                                                                           // 1195
+                // 1222
+                insertIntoDocument(document, key, value); // 1223
+              } // 1224
+            } // Handles a key, value pair to put in the selector document                                                         // 1225
+            // if the value is an object                                                                                           // 1228
             //
             //
             function populateDocumentWithObject(document, key, value) {
-              // 1196
-              var keys = Object.keys(value); // 1197
+              // 1229
+              var keys = Object.keys(value); // 1230
               var unprefixedKeys = keys.filter(function (op) {
-                // 1198
-                return op[0] !== '$'; // 1198
-              }); // 1198
+                // 1231
+                return op[0] !== '$'; // 1231
+              }); // 1231
               //
               if (unprefixedKeys.length > 0 || !keys.length) {
-                // 1200
-                // Literal (possibly empty) object ( or empty object )                                                             // 1201
-                // Don't allow mixing '$'-prefixed with non-'$'-prefixed fields                                                    // 1202
+                // 1233
+                // Literal (possibly empty) object ( or empty object )                                                             // 1234
+                // Don't allow mixing '$'-prefixed with non-'$'-prefixed fields                                                    // 1235
                 if (keys.length !== unprefixedKeys.length) {
-                  // 1203
-                  throw new Error("unknown operator: " + unprefixedKeys[0]); // 1204
-                } // 1205
+                  // 1236
+                  throw new Error("unknown operator: " + unprefixedKeys[0]); // 1237
+                } // 1238
                 //
-                validateObject(value, key); // 1207
-                insertIntoDocument(document, key, value); // 1208
+                validateObject(value, key); // 1240
+                insertIntoDocument(document, key, value); // 1241
               } else {
-                // 1209
+                // 1242
                 Object.keys(value).forEach(function (op) {
-                  // 1210
-                  var object = value[op]; // 1211
+                  // 1243
+                  var object = value[op]; // 1244
                   //
                   if (op === '$eq') {
-                    // 1213
-                    populateDocumentWithKeyValue(document, key, object); // 1214
+                    // 1246
+                    populateDocumentWithKeyValue(document, key, object); // 1247
                   } else if (op === '$all') {
-                    // 1215
-                    // every value for $all should be dealt with as separate $eq-s                                                 // 1216
+                    // 1248
+                    // every value for $all should be dealt with as separate $eq-s                                                 // 1249
                     object.forEach(function (element) {
-                      // 1217
-                      return populateDocumentWithKeyValue(document, key, element); // 1217
-                    }); // 1217
-                  } // 1220
-                }); // 1221
-              } // 1222
-            } // Fills a document with certain fields from an upsert selector                                                      // 1223
+                      // 1250
+                      return populateDocumentWithKeyValue(document, key, element); // 1250
+                    }); // 1250
+                  } // 1253
+                }); // 1254
+              } // 1255
+            } // Fills a document with certain fields from an upsert selector                                                      // 1256
             //
             //
             function populateDocumentWithQueryFields(query) {
-              // 1226
-              var document = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {}; // 1226
+              // 1259
+              var document = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {}; // 1259
               //
               if (Object.getPrototypeOf(query) === Object.prototype) {
-                // 1227
-                // handle implicit $and                                                                                            // 1228
+                // 1260
+                // handle implicit $and                                                                                            // 1261
                 Object.keys(query).forEach(function (key) {
-                  // 1229
-                  var value = query[key]; // 1230
+                  // 1262
+                  var value = query[key]; // 1263
                   //
                   if (key === '$and') {
-                    // 1232
-                    // handle explicit $and                                                                                        // 1233
+                    // 1265
+                    // handle explicit $and                                                                                        // 1266
                     value.forEach(function (element) {
-                      // 1234
-                      return populateDocumentWithQueryFields(element, document); // 1234
-                    }); // 1234
+                      // 1267
+                      return populateDocumentWithQueryFields(element, document); // 1267
+                    }); // 1267
                   } else if (key === '$or') {
-                    // 1237
-                    // handle $or nodes with exactly 1 child                                                                       // 1238
+                    // 1270
+                    // handle $or nodes with exactly 1 child                                                                       // 1271
                     if (value.length === 1) {
-                      // 1239
-                      populateDocumentWithQueryFields(value[0], document); // 1240
-                    } // 1241
+                      // 1272
+                      populateDocumentWithQueryFields(value[0], document); // 1273
+                    } // 1274
                   } else if (key[0] !== '$') {
-                    // 1242
-                    // Ignore other '$'-prefixed logical selectors                                                                 // 1243
-                    populateDocumentWithKeyValue(document, key, value); // 1244
-                  } // 1245
-                }); // 1246
+                    // 1275
+                    // Ignore other '$'-prefixed logical selectors                                                                 // 1276
+                    populateDocumentWithKeyValue(document, key, value); // 1277
+                  } // 1278
+                }); // 1279
               } else {
-                // 1247
-                // Handle meteor-specific shortcut for selecting _id                                                               // 1248
+                // 1280
+                // Handle meteor-specific shortcut for selecting _id                                                               // 1281
                 if (LocalCollection._selectorIsId(query)) {
-                  // 1249
-                  insertIntoDocument(document, '_id', query); // 1250
-                } // 1251
-              } // 1252
+                  // 1282
+                  insertIntoDocument(document, '_id', query); // 1283
+                } // 1284
+              } // 1285
               //
-              return document; // 1254
-            } // 1255
+              return document; // 1287
+            } // 1288
             //
             function projectionDetails(fields) {
-              // 1263
-              // Find the non-_id keys (_id is handled specially because it is included                                            // 1264
-              // unless explicitly excluded). Sort the keys, so that our code to detect                                            // 1265
-              // overlaps like 'foo' and 'foo.bar' can assume that 'foo' comes first.                                              // 1266
+              // 1296
+              // Find the non-_id keys (_id is handled specially because it is included                                            // 1297
+              // unless explicitly excluded). Sort the keys, so that our code to detect                                            // 1298
+              // overlaps like 'foo' and 'foo.bar' can assume that 'foo' comes first.                                              // 1299
               var fieldsKeys = Object.keys(fields).sort(); // If _id is the only field in the projection, do not remove it, since it is
-              // required to determine if this is an exclusion or exclusion. Also keep an                                          // 1270
-              // inclusive _id, since inclusive _id follows the normal rules about mixing                                          // 1271
-              // inclusive and exclusive fields. If _id is not the only field in the                                               // 1272
-              // projection and is exclusive, remove it so it can be handled later by a                                            // 1273
-              // special case, since exclusive _id is always allowed.                                                              // 1274
+              // required to determine if this is an exclusion or exclusion. Also keep an                                          // 1303
+              // inclusive _id, since inclusive _id follows the normal rules about mixing                                          // 1304
+              // inclusive and exclusive fields. If _id is not the only field in the                                               // 1305
+              // projection and is exclusive, remove it so it can be handled later by a                                            // 1306
+              // special case, since exclusive _id is always allowed.                                                              // 1307
               //
               if (!(fieldsKeys.length === 1 && fieldsKeys[0] === '_id') && !(fieldsKeys.includes('_id') && fields._id)) {
-                // 1275
+                // 1308
                 fieldsKeys = fieldsKeys.filter(function (key) {
-                  // 1277
-                  return key !== '_id'; // 1277
-                }); // 1277
-              } // 1278
+                  // 1310
+                  return key !== '_id'; // 1310
+                }); // 1310
+              } // 1311
               //
-              var including = null; // Unknown                                                                                     // 1280
+              var including = null; // Unknown                                                                                     // 1313
               //
               fieldsKeys.forEach(function (keyPath) {
-                // 1282
-                var rule = !!fields[keyPath]; // 1283
+                // 1315
+                var rule = !!fields[keyPath]; // 1316
                 //
                 if (including === null) {
-                  // 1285
-                  including = rule; // 1286
-                } // This error message is copied from MongoDB shell                                                               // 1287
+                  // 1318
+                  including = rule; // 1319
+                } // This error message is copied from MongoDB shell                                                               // 1320
                 //
                 //
                 if (including !== rule) {
-                  // 1290
-                  throw MinimongoError('You cannot currently mix including and excluding fields.'); // 1291
-                } // 1294
-              }); // 1295
+                  // 1323
+                  throw MinimongoError('You cannot currently mix including and excluding fields.'); // 1324
+                } // 1327
+              }); // 1328
               var projectionRulesTree = pathsToTree(fieldsKeys, function (path) {
-                // 1297
-                return including; // 1299
+                // 1330
+                return including; // 1332
               }, function (node, path, fullPath) {
-                // 1299
-                // Check passed projection fields' keys: If you have two rules such as                                             // 1301
-                // 'foo.bar' and 'foo.bar.baz', then the result becomes ambiguous. If                                              // 1302
-                // that happens, there is a probability you are doing something wrong,                                             // 1303
-                // framework should notify you about such mistake earlier on cursor                                                // 1304
-                // compilation step than later during runtime.  Note, that real mongo                                              // 1305
-                // doesn't do anything about it and the later rule appears in projection                                           // 1306
-                // project, more priority it takes.                                                                                // 1307
-                //                                                                                                                 // 1308
-                // Example, assume following in mongo shell:                                                                       // 1309
-                // > db.coll.insert({ a: { b: 23, c: 44 } })                                                                       // 1310
-                // > db.coll.find({}, { 'a': 1, 'a.b': 1 })                                                                        // 1311
-                // {"_id": ObjectId("520bfe456024608e8ef24af3"), "a": {"b": 23}}                                                   // 1312
-                // > db.coll.find({}, { 'a.b': 1, 'a': 1 })                                                                        // 1313
-                // {"_id": ObjectId("520bfe456024608e8ef24af3"), "a": {"b": 23, "c": 44}}                                          // 1314
-                //                                                                                                                 // 1315
-                // Note, how second time the return set of keys is different.                                                      // 1316
-                var currentPath = fullPath; // 1317
-                var anotherPath = path; // 1318
+                // 1332
+                // Check passed projection fields' keys: If you have two rules such as                                             // 1334
+                // 'foo.bar' and 'foo.bar.baz', then the result becomes ambiguous. If                                              // 1335
+                // that happens, there is a probability you are doing something wrong,                                             // 1336
+                // framework should notify you about such mistake earlier on cursor                                                // 1337
+                // compilation step than later during runtime.  Note, that real mongo                                              // 1338
+                // doesn't do anything about it and the later rule appears in projection                                           // 1339
+                // project, more priority it takes.                                                                                // 1340
+                //                                                                                                                 // 1341
+                // Example, assume following in mongo shell:                                                                       // 1342
+                // > db.coll.insert({ a: { b: 23, c: 44 } })                                                                       // 1343
+                // > db.coll.find({}, { 'a': 1, 'a.b': 1 })                                                                        // 1344
+                // {"_id": ObjectId("520bfe456024608e8ef24af3"), "a": {"b": 23}}                                                   // 1345
+                // > db.coll.find({}, { 'a.b': 1, 'a': 1 })                                                                        // 1346
+                // {"_id": ObjectId("520bfe456024608e8ef24af3"), "a": {"b": 23, "c": 44}}                                          // 1347
+                //                                                                                                                 // 1348
+                // Note, how second time the return set of keys is different.                                                      // 1349
+                var currentPath = fullPath; // 1350
+                var anotherPath = path; // 1351
                 throw MinimongoError("both " + currentPath + " and " + anotherPath + " found in fields option, " + 'using both of them may trigger unexpected behavior. Did you mean to ' + 'use only one of them?');
-              }); // 1324
-              return { // 1326
-                including: including, // 1326
-                tree: projectionRulesTree // 1326
-              }; // 1326
-            } // 1327
+              }); // 1357
+              return { // 1359
+                including: including, // 1359
+                tree: projectionRulesTree // 1359
+              }; // 1359
+            } // 1360
             //
             function regexpElementMatcher(regexp) {
-              // 1330
+              // 1363
               return function (value) {
-                // 1331
+                // 1364
                 if (value instanceof RegExp) {
-                  // 1332
-                  return value.toString() === regexp.toString(); // 1333
-                } // Regexps only work against strings.                                                                            // 1334
+                  // 1365
+                  return value.toString() === regexp.toString(); // 1366
+                } // Regexps only work against strings.                                                                            // 1367
                 //
                 //
                 if (typeof value !== 'string') {
-                  // 1337
-                  return false; // 1338
-                } // Reset regexp's state to avoid inconsistent matching for objects with the                                      // 1339
-                // same value on consecutive calls of regexp.test. This happens only if the                                        // 1342
-                // regexp has the 'g' flag. Also note that ES6 introduces a new flag 'y' for                                       // 1343
-                // which we should *not* change the lastIndex but MongoDB doesn't support                                          // 1344
-                // either of these flags.                                                                                          // 1345
+                  // 1370
+                  return false; // 1371
+                } // Reset regexp's state to avoid inconsistent matching for objects with the                                      // 1372
+                // same value on consecutive calls of regexp.test. This happens only if the                                        // 1375
+                // regexp has the 'g' flag. Also note that ES6 introduces a new flag 'y' for                                       // 1376
+                // which we should *not* change the lastIndex but MongoDB doesn't support                                          // 1377
+                // either of these flags.                                                                                          // 1378
                 //
                 //
-                regexp.lastIndex = 0; // 1346
-                return regexp.test(value); // 1348
-              }; // 1349
-            } // 1350
+                regexp.lastIndex = 0; // 1379
+                return regexp.test(value); // 1381
+              }; // 1382
+            } // 1383
             //
-            // Validates the key in a path.                                                                                        // 1352
-            // Objects that are nested more then 1 level cannot have dotted fields                                                 // 1353
-            // or fields starting with '$'                                                                                         // 1354
+            // Validates the key in a path.                                                                                        // 1385
+            // Objects that are nested more then 1 level cannot have dotted fields                                                 // 1386
+            // or fields starting with '$'                                                                                         // 1387
             function validateKeyInPath(key, path) {
-              // 1355
+              // 1388
               if (key.includes('.')) {
-                // 1356
-                throw new Error("The dotted field '" + key + "' in '" + path + "." + key + " is not valid for storage."); // 1357
-              } // 1360
+                // 1389
+                throw new Error("The dotted field '" + key + "' in '" + path + "." + key + " is not valid for storage."); // 1390
+              } // 1393
               //
               if (key[0] === '$') {
-                // 1362
-                throw new Error("The dollar ($) prefixed field  '" + path + "." + key + " is not valid for storage."); // 1363
-              } // 1366
-            } // Recursively validates an object that is nested more than one level deep                                           // 1367
+                // 1395
+                throw new Error("The dollar ($) prefixed field  '" + path + "." + key + " is not valid for storage."); // 1396
+              } // 1399
+            } // Recursively validates an object that is nested more than one level deep                                           // 1400
             //
             //
             function validateObject(object, path) {
-              // 1370
+              // 1403
               if (object && Object.getPrototypeOf(object) === Object.prototype) {
-                // 1371
+                // 1404
                 Object.keys(object).forEach(function (key) {
-                  // 1372
-                  validateKeyInPath(key, path); // 1373
-                  validateObject(object[key], path + '.' + key); // 1374
-                }); // 1375
-              } // 1376
-            } // 1377
+                  // 1405
+                  validateKeyInPath(key, path); // 1406
+                  validateObject(object[key], path + '.' + key); // 1407
+                }); // 1408
+              } // 1409
+            } // 1410
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
           }, "cursor.js": function (_require4, _exports4, _module3) {
 
@@ -38477,85 +38520,85 @@ __meteor_runtime_config__ = {
                 if (!doc) {
                   // 428
                   throw new Error("insert requires an argument"); // 429
-                } // Shallow-copy the document and possibly generate an ID                                                  // 430
+                } // Make a shallow clone of the document, preserving its prototype.                                        // 430
                 //
                 //
-                doc = _.extend({}, doc); // 433
+                doc = Object.create(Object.getPrototypeOf(doc), Object.getOwnPropertyDescriptors(doc)); // 433
                 //
                 if ('_id' in doc) {
-                  // 435
+                  // 438
                   if (!doc._id || !(typeof doc._id === 'string' || doc._id instanceof Mongo.ObjectID)) {
-                    // 436
-                    throw new Error("Meteor requires document _id fields to be non-empty strings or ObjectIDs"); // 437
-                  } // 438
+                    // 439
+                    throw new Error("Meteor requires document _id fields to be non-empty strings or ObjectIDs"); // 442
+                  } // 444
                 } else {
-                  // 439
-                  var generateId = true; // Don't generate the id if we're the client and the 'outermost' call              // 440
-                  // This optimization saves us passing both the randomSeed and the id                                      // 443
-                  // Passing both is redundant.                                                                             // 444
+                  // 445
+                  var generateId = true; // Don't generate the id if we're the client and the 'outermost' call              // 446
+                  // This optimization saves us passing both the randomSeed and the id                                      // 449
+                  // Passing both is redundant.                                                                             // 450
                   //
                   if (this._isRemoteCollection()) {
-                    // 445
-                    var enclosing = DDP._CurrentMethodInvocation.get(); // 446
+                    // 451
+                    var enclosing = DDP._CurrentMethodInvocation.get(); // 452
                     //
                     if (!enclosing) {
-                      // 447
-                      generateId = false; // 448
-                    } // 449
-                  } // 450
+                      // 453
+                      generateId = false; // 454
+                    } // 455
+                  } // 456
                   //
                   if (generateId) {
-                    // 452
-                    doc._id = this._makeNewID(); // 453
-                  } // 454
-                } // On inserts, always return the id that we generated; on all other                                       // 455
-                // operations, just return the result from the collection.                                                  // 458
+                    // 458
+                    doc._id = this._makeNewID(); // 459
+                  } // 460
+                } // On inserts, always return the id that we generated; on all other                                       // 461
+                // operations, just return the result from the collection.                                                  // 464
                 //
                 //
                 var chooseReturnValueFromCollectionResult = function (result) {
-                  // 459
+                  // 465
                   if (doc._id) {
-                    // 460
-                    return doc._id; // 461
-                  } // XXX what is this for??                                                                               // 462
-                  // It's some iteraction between the callback to _callMutatorMethod and                                    // 465
-                  // the return value conversion                                                                            // 466
+                    // 466
+                    return doc._id; // 467
+                  } // XXX what is this for??                                                                               // 468
+                  // It's some iteraction between the callback to _callMutatorMethod and                                    // 471
+                  // the return value conversion                                                                            // 472
                   //
                   //
-                  doc._id = result; // 467
-                  return result; // 469
-                }; // 470
+                  doc._id = result; // 473
+                  return result; // 475
+                }; // 476
                 //
-                var wrappedCallback = wrapCallback(callback, chooseReturnValueFromCollectionResult); // 472
+                var wrappedCallback = wrapCallback(callback, chooseReturnValueFromCollectionResult); // 478
                 //
                 if (this._isRemoteCollection()) {
-                  // 474
-                  var result = this._callMutatorMethod("insert", [doc], wrappedCallback); // 475
+                  // 480
+                  var result = this._callMutatorMethod("insert", [doc], wrappedCallback); // 481
                   //
-                  return chooseReturnValueFromCollectionResult(result); // 476
-                } // it's my collection.  descend into the collection object                                                // 477
-                // and propagate any exception.                                                                             // 480
+                  return chooseReturnValueFromCollectionResult(result); // 482
+                } // it's my collection.  descend into the collection object                                                // 483
+                // and propagate any exception.                                                                             // 486
                 //
                 //
                 try {
-                  // 481
-                  // If the user provided a callback and the collection implements this                                     // 482
-                  // operation asynchronously, then queryRet will be undefined, and the                                     // 483
-                  // result will be returned through the callback instead.                                                  // 484
-                  var _result = this._collection.insert(doc, wrappedCallback); // 485
-                  //
-                  return chooseReturnValueFromCollectionResult(_result); // 486
-                } catch (e) {
                   // 487
-                  if (callback) {
-                    // 488
-                    callback(e); // 489
-                    return null; // 490
-                  } // 491
+                  // If the user provided a callback and the collection implements this                                     // 488
+                  // operation asynchronously, then queryRet will be undefined, and the                                     // 489
+                  // result will be returned through the callback instead.                                                  // 490
+                  var _result = this._collection.insert(doc, wrappedCallback); // 491
                   //
-                  throw e; // 492
-                } // 493
-              } // 494
+                  return chooseReturnValueFromCollectionResult(_result); // 492
+                } catch (e) {
+                  // 493
+                  if (callback) {
+                    // 494
+                    callback(e); // 495
+                    return null; // 496
+                  } // 497
+                  //
+                  throw e; // 498
+                } // 499
+              } // 500
               //
               return insert; // 426
             }(); /**                                                                                                        // 426
@@ -38573,67 +38616,67 @@ __meteor_runtime_config__ = {
                   */ //
             //
             Mongo.Collection.prototype.update = function () {
-              // 509
+              // 515
               function update(selector, modifier) {
-                // 509
+                // 515
                 for (var _len = arguments.length, optionsAndCallback = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-                  optionsAndCallback[_key - 2] = arguments[_key]; // 509
-                } // 509
+                  optionsAndCallback[_key - 2] = arguments[_key]; // 515
+                } // 515
                 //
                 var callback = popCallbackFromArgs(optionsAndCallback); // We've already popped off the callback, so we are left with an array
-                // of one or zero items                                                                                     // 513
+                // of one or zero items                                                                                     // 519
                 //
-                var options = _.clone(optionsAndCallback[0]) || {}; // 514
-                var insertedId = void 0; // 515
+                var options = _.clone(optionsAndCallback[0]) || {}; // 520
+                var insertedId = void 0; // 521
                 //
                 if (options && options.upsert) {
-                  // 516
-                  // set `insertedId` if absent.  `insertedId` is a Meteor extension.                                       // 517
+                  // 522
+                  // set `insertedId` if absent.  `insertedId` is a Meteor extension.                                       // 523
                   if (options.insertedId) {
-                    // 518
+                    // 524
                     if (!(typeof options.insertedId === 'string' || options.insertedId instanceof Mongo.ObjectID)) throw new Error("insertedId must be string or ObjectID");
-                    insertedId = options.insertedId; // 521
+                    insertedId = options.insertedId; // 527
                   } else if (!selector || !selector._id) {
-                    // 522
-                    insertedId = this._makeNewID(); // 523
-                    options.generatedId = true; // 524
-                    options.insertedId = insertedId; // 525
-                  } // 526
-                } // 527
+                    // 528
+                    insertedId = this._makeNewID(); // 529
+                    options.generatedId = true; // 530
+                    options.insertedId = insertedId; // 531
+                  } // 532
+                } // 533
                 //
-                selector = Mongo.Collection._rewriteSelector(selector, { // 529
-                  fallbackId: insertedId // 530
-                }); // 530
-                var wrappedCallback = wrapCallback(callback); // 532
+                selector = Mongo.Collection._rewriteSelector(selector, { // 535
+                  fallbackId: insertedId // 536
+                }); // 536
+                var wrappedCallback = wrapCallback(callback); // 538
                 //
                 if (this._isRemoteCollection()) {
-                  // 534
-                  var args = [selector, modifier, options]; // 535
-                  return this._callMutatorMethod("update", args, wrappedCallback); // 541
-                } // it's my collection.  descend into the collection object                                                // 542
-                // and propagate any exception.                                                                             // 545
+                  // 540
+                  var args = [selector, modifier, options]; // 541
+                  return this._callMutatorMethod("update", args, wrappedCallback); // 547
+                } // it's my collection.  descend into the collection object                                                // 548
+                // and propagate any exception.                                                                             // 551
                 //
                 //
                 try {
-                  // 546
-                  // If the user provided a callback and the collection implements this                                     // 547
-                  // operation asynchronously, then queryRet will be undefined, and the                                     // 548
-                  // result will be returned through the callback instead.                                                  // 549
-                  return this._collection.update(selector, modifier, options, wrappedCallback); // 550
-                } catch (e) {
                   // 552
+                  // If the user provided a callback and the collection implements this                                     // 553
+                  // operation asynchronously, then queryRet will be undefined, and the                                     // 554
+                  // result will be returned through the callback instead.                                                  // 555
+                  return this._collection.update(selector, modifier, options, wrappedCallback); // 556
+                } catch (e) {
+                  // 558
                   if (callback) {
-                    // 553
-                    callback(e); // 554
-                    return null; // 555
-                  } // 556
+                    // 559
+                    callback(e); // 560
+                    return null; // 561
+                  } // 562
                   //
-                  throw e; // 557
-                } // 558
-              } // 559
+                  throw e; // 563
+                } // 564
+              } // 565
               //
-              return update; // 509
-            }(); /**                                                                                                        // 509
+              return update; // 515
+            }(); /**                                                                                                        // 515
                   * @summary Remove documents from the collection                                                           //
                   * @locus Anywhere                                                                                         //
                   * @method remove                                                                                          //
@@ -38644,68 +38687,68 @@ __meteor_runtime_config__ = {
                   */ //
             //
             Mongo.Collection.prototype.remove = function () {
-              // 570
+              // 576
               function remove(selector, callback) {
-                // 570
-                selector = Mongo.Collection._rewriteSelector(selector); // 571
-                var wrappedCallback = wrapCallback(callback); // 573
+                // 576
+                selector = Mongo.Collection._rewriteSelector(selector); // 577
+                var wrappedCallback = wrapCallback(callback); // 579
                 //
                 if (this._isRemoteCollection()) {
-                  // 575
-                  return this._callMutatorMethod("remove", [selector], wrappedCallback); // 576
-                } // it's my collection.  descend into the collection object                                                // 577
-                // and propagate any exception.                                                                             // 580
+                  // 581
+                  return this._callMutatorMethod("remove", [selector], wrappedCallback); // 582
+                } // it's my collection.  descend into the collection object                                                // 583
+                // and propagate any exception.                                                                             // 586
                 //
                 //
                 try {
-                  // 581
-                  // If the user provided a callback and the collection implements this                                     // 582
-                  // operation asynchronously, then queryRet will be undefined, and the                                     // 583
-                  // result will be returned through the callback instead.                                                  // 584
-                  return this._collection.remove(selector, wrappedCallback); // 585
+                  // 587
+                  // If the user provided a callback and the collection implements this                                     // 588
+                  // operation asynchronously, then queryRet will be undefined, and the                                     // 589
+                  // result will be returned through the callback instead.                                                  // 590
+                  return this._collection.remove(selector, wrappedCallback); // 591
                 } catch (e) {
-                  // 586
+                  // 592
                   if (callback) {
-                    // 587
-                    callback(e); // 588
-                    return null; // 589
-                  } // 590
+                    // 593
+                    callback(e); // 594
+                    return null; // 595
+                  } // 596
                   //
-                  throw e; // 591
-                } // 592
-              } // 593
+                  throw e; // 597
+                } // 598
+              } // 599
               //
-              return remove; // 570
-            }(); // Determine if this collection is simply a minimongo representation of a real                             // 570
-            // database on another server                                                                                   // 596
+              return remove; // 576
+            }(); // Determine if this collection is simply a minimongo representation of a real                             // 576
+            // database on another server                                                                                   // 602
             //
             //
             Mongo.Collection.prototype._isRemoteCollection = function () {
-              // 597
+              // 603
               function _isRemoteCollection() {
-                // 597
-                // XXX see #MeteorServerNull                                                                                // 598
-                return this._connection && this._connection !== Meteor.server; // 599
-              } // 600
+                // 603
+                // XXX see #MeteorServerNull                                                                                // 604
+                return this._connection && this._connection !== Meteor.server; // 605
+              } // 606
               //
-              return _isRemoteCollection; // 597
-            }(); // Convert the callback to not return a result if there is an error                                        // 597
+              return _isRemoteCollection; // 603
+            }(); // Convert the callback to not return a result if there is an error                                        // 603
             //
             //
             function wrapCallback(callback, convertResult) {
-              // 603
+              // 609
               if (!callback) {
-                // 604
-                return; // 605
-              } // If no convert function was passed in, just use a "blank function"                                        // 606
+                // 610
+                return; // 611
+              } // If no convert function was passed in, just use a "blank function"                                        // 612
               //
               //
-              convertResult = convertResult || _.identity; // 609
+              convertResult = convertResult || _.identity; // 615
               return function (error, result) {
-                // 611
-                callback(error, !error && convertResult(result)); // 612
-              }; // 613
-            } /**                                                                                                           // 614
+                // 617
+                callback(error, !error && convertResult(result)); // 618
+              }; // 619
+            } /**                                                                                                           // 620
                * @summary Modify one or more documents in the collection, or insert one if no matching documents were found. Returns an object with keys `numberAffected` (the number of documents modified)  and `insertedId` (the unique _id of the document that was inserted, if any).
                * @locus Anywhere                                                                                            //
                * @param {MongoSelector} selector Specifies which documents to modify                                        //
@@ -38716,122 +38759,122 @@ __meteor_runtime_config__ = {
                */ //
             //
             Mongo.Collection.prototype.upsert = function () {
-              // 625
+              // 631
               function upsert(selector, modifier, options, callback) {
-                // 625
+                // 631
                 if (!callback && typeof options === "function") {
-                  // 627
-                  callback = options; // 628
-                  options = {}; // 629
-                } // 630
+                  // 633
+                  callback = options; // 634
+                  options = {}; // 635
+                } // 636
                 //
-                var updateOptions = _.extend({}, options, { // 632
-                  _returnObject: true, // 633
-                  upsert: true // 634
-                }); // 632
+                var updateOptions = _.extend({}, options, { // 638
+                  _returnObject: true, // 639
+                  upsert: true // 640
+                }); // 638
                 //
-                return this.update(selector, modifier, updateOptions, callback); // 637
-              } // 638
+                return this.update(selector, modifier, updateOptions, callback); // 643
+              } // 644
               //
-              return upsert; // 625
-            }(); // We'll actually design an index API later. For now, we just pass through to                              // 625
-            // Mongo's, but make it synchronous.                                                                            // 641
+              return upsert; // 631
+            }(); // We'll actually design an index API later. For now, we just pass through to                              // 631
+            // Mongo's, but make it synchronous.                                                                            // 647
             //
             //
             Mongo.Collection.prototype._ensureIndex = function (index, options) {
-              // 642
-              var self = this; // 643
-              if (!self._collection._ensureIndex) throw new Error("Can only call _ensureIndex on server collections"); // 644
-              //
-              self._collection._ensureIndex(index, options); // 646
-            }; // 647
-            //
-            Mongo.Collection.prototype._dropIndex = function (index) {
               // 648
               var self = this; // 649
-              if (!self._collection._dropIndex) throw new Error("Can only call _dropIndex on server collections"); // 650
+              if (!self._collection._ensureIndex) throw new Error("Can only call _ensureIndex on server collections"); // 650
               //
-              self._collection._dropIndex(index); // 652
+              self._collection._ensureIndex(index, options); // 652
             }; // 653
             //
-            Mongo.Collection.prototype._dropCollection = function () {
+            Mongo.Collection.prototype._dropIndex = function (index) {
               // 654
               var self = this; // 655
-              if (!self._collection.dropCollection) throw new Error("Can only call _dropCollection on server collections");
+              if (!self._collection._dropIndex) throw new Error("Can only call _dropIndex on server collections"); // 656
               //
-              self._collection.dropCollection(); // 658
+              self._collection._dropIndex(index); // 658
             }; // 659
             //
-            Mongo.Collection.prototype._createCappedCollection = function (byteSize, maxDocuments) {
+            Mongo.Collection.prototype._dropCollection = function () {
               // 660
               var self = this; // 661
+              if (!self._collection.dropCollection) throw new Error("Can only call _dropCollection on server collections");
+              //
+              self._collection.dropCollection(); // 664
+            }; // 665
+            //
+            Mongo.Collection.prototype._createCappedCollection = function (byteSize, maxDocuments) {
+              // 666
+              var self = this; // 667
               if (!self._collection._createCappedCollection) throw new Error("Can only call _createCappedCollection on server collections");
               //
-              self._collection._createCappedCollection(byteSize, maxDocuments); // 664
-            }; /**                                                                                                          // 665
+              self._collection._createCappedCollection(byteSize, maxDocuments); // 670
+            }; /**                                                                                                          // 671
                 * @summary Returns the [`Collection`](http://mongodb.github.io/node-mongodb-native/2.2/api/Collection.html) object corresponding to this collection from the [npm `mongodb` driver module](https://www.npmjs.com/package/mongodb) which is wrapped by `Mongo.Collection`.
                 * @locus Server                                                                                             //
                 */ //
             //
             Mongo.Collection.prototype.rawCollection = function () {
-              // 671
-              var self = this; // 672
+              // 677
+              var self = this; // 678
               //
               if (!self._collection.rawCollection) {
-                // 673
-                throw new Error("Can only call rawCollection on server collections"); // 674
-              } // 675
+                // 679
+                throw new Error("Can only call rawCollection on server collections"); // 680
+              } // 681
               //
-              return self._collection.rawCollection(); // 676
-            }; /**                                                                                                          // 677
+              return self._collection.rawCollection(); // 682
+            }; /**                                                                                                          // 683
                 * @summary Returns the [`Db`](http://mongodb.github.io/node-mongodb-native/2.2/api/Db.html) object corresponding to this collection's database connection from the [npm `mongodb` driver module](https://www.npmjs.com/package/mongodb) which is wrapped by `Mongo.Collection`.
                 * @locus Server                                                                                             //
                 */ //
             //
             Mongo.Collection.prototype.rawDatabase = function () {
-              // 683
-              var self = this; // 684
+              // 689
+              var self = this; // 690
               //
               if (!(self._driver.mongo && self._driver.mongo.db)) {
-                // 685
-                throw new Error("Can only call rawDatabase on server collections"); // 686
-              } // 687
+                // 691
+                throw new Error("Can only call rawDatabase on server collections"); // 692
+              } // 693
               //
-              return self._driver.mongo.db; // 688
-            }; /**                                                                                                          // 689
+              return self._driver.mongo.db; // 694
+            }; /**                                                                                                          // 695
                 * @summary Create a Mongo-style `ObjectID`.  If you don't specify a `hexString`, the `ObjectID` will generated randomly (not using MongoDB's ID construction rules).
                 * @locus Anywhere                                                                                           //
                 * @class                                                                                                    //
                 * @param {String} [hexString] Optional.  The 24-character hexadecimal contents of the ObjectID to create    //
                 */ //
             //
-            Mongo.ObjectID = MongoID.ObjectID; /**                                                                          // 698
+            Mongo.ObjectID = MongoID.ObjectID; /**                                                                          // 704
                                                 * @summary To create a cursor, use find. To access the documents in a cursor, use forEach, map, or fetch.
                                                 * @class                                                                    //
                                                 * @instanceName cursor                                                      //
                                                 */ //
-            Mongo.Cursor = LocalCollection.Cursor; /**                                                                      // 705
+            Mongo.Cursor = LocalCollection.Cursor; /**                                                                      // 711
                                                     * @deprecated in 0.9.1                                                  //
                                                     */ //
-            Mongo.Collection.Cursor = Mongo.Cursor; /**                                                                     // 710
+            Mongo.Collection.Cursor = Mongo.Cursor; /**                                                                     // 716
                                                      * @deprecated in 0.9.1                                                 //
                                                      */ //
-            Mongo.Collection.ObjectID = Mongo.ObjectID; /**                                                                 // 715
+            Mongo.Collection.ObjectID = Mongo.ObjectID; /**                                                                 // 721
                                                          * @deprecated in 0.9.1                                             //
                                                          */ //
-            Meteor.Collection = Mongo.Collection; // Allow deny stuff is now in the allow-deny package                      // 720
+            Meteor.Collection = Mongo.Collection; // Allow deny stuff is now in the allow-deny package                      // 726
             //
-            _.extend(Meteor.Collection.prototype, AllowDeny.CollectionPrototype); // 723
+            _.extend(Meteor.Collection.prototype, AllowDeny.CollectionPrototype); // 729
             //
             function popCallbackFromArgs(args) {
-              // 725
-              // Pull off any callback (or perhaps a 'callback' variable that was passed                                    // 726
-              // in undefined, like how 'upsert' does it).                                                                  // 727
+              // 731
+              // Pull off any callback (or perhaps a 'callback' variable that was passed                                    // 732
+              // in undefined, like how 'upsert' does it).                                                                  // 733
               if (args.length && (args[args.length - 1] === undefined || args[args.length - 1] instanceof Function)) {
-                // 728
-                return args.pop(); // 731
-              } // 732
-            } // 733
+                // 734
+                return args.pop(); // 737
+              } // 738
+            } // 739
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
           } } } } }, {
     "extensions": [".js", ".json"]
