@@ -224,7 +224,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                 });
             });
         });
-        
+
         this._categorySub = MeteorObservable.subscribe('categories', this._user).subscribe(() => {
             this._ngZone.run(() => {
                 this._categories = Categories.find({ section: this._itemSection }).zone();
@@ -402,6 +402,11 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                         this._currenciesFormGroup.addControl(r.currencyId, control);
                     }
 
+                    let _lCurrency = this._restaurantCurrencies.filter(cur => cur === r.currencyId);
+                    if (_lCurrency.length === 0) {
+                        this._restaurantCurrencies.push(r.currencyId);
+                    }
+
                     let _lCountry: Country = Countries.findOne({ _id: r.countryId });
                     if (_lCountry.itemsWithDifferentTax === true) {
                         this._showTaxes = true;
@@ -411,7 +416,10 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                             let controlTax: FormControl = new FormControl('0', [Validators.required]);
                             this._taxesFormGroup.addControl(r.currencyId, controlTax);
                         }
-                        this._restaurantTaxes.push(r.currencyId);
+                        let _lTax = this._restaurantTaxes.filter(tax => tax === r.currencyId);
+                        if (_lTax.length === 0) {
+                            this._restaurantTaxes.push(r.currencyId);
+                        }
                     }
                 });
             }
@@ -427,6 +435,8 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                     }
                 });
                 this._garnishFoodList = GarnishFoodCol.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).fetch();
+            } else {
+                this._showGarnishFood = false;
             }
 
             if (Additions.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).count() > 0) {
@@ -440,6 +450,8 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                     }
                 });
                 this._additionList = Additions.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).fetch();
+            } else {
+                this._showAddition = false;
             }
         } else {
             this._restaurantsSelectedCount = this._itemToEdit.restaurants.length;
@@ -477,6 +489,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                             let control: FormControl = new FormControl(p.price, [Validators.required]);
                             this._currenciesFormGroup.addControl(p.currencyId, control);
                         }
+                        this._restaurantCurrencies.push(p.currencyId);
                         if (p.itemTax !== undefined) {
                             this._showTaxes = true;
                             if (this._taxesFormGroup.contains(p.currencyId)) {
@@ -485,6 +498,7 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
                                 let controlTax: FormControl = new FormControl(p.itemTax, [Validators.required]);
                                 this._taxesFormGroup.addControl(p.currencyId, controlTax);
                             }
+                            this._restaurantTaxes.push(p.currencyId);
                         }
                     });
                 }
@@ -493,27 +507,55 @@ export class ItemEditionComponent implements OnInit, OnDestroy {
             if (GarnishFoodCol.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).count() > 0) {
                 this._showGarnishFood = true;
                 GarnishFoodCol.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).fetch().forEach((gar) => {
-                    if (this._garnishFormGroup.contains(gar._id)) {
-                        this._garnishFormGroup.controls[gar._id].setValue(true);
+                    let garnishF: GarnishFood = gar;
+                    let find = this._itemGarnishFood.filter(g => g == garnishF._id);
+
+                    if (find.length > 0) {
+                        if (this._garnishFormGroup.contains(gar._id)) {
+                            this._garnishFormGroup.controls[gar._id].setValue(true);
+                        } else {
+                            let control: FormControl = new FormControl(true);
+                            this._garnishFormGroup.addControl(gar._id, control);
+                        }
                     } else {
-                        let control: FormControl = new FormControl(true);
-                        this._garnishFormGroup.addControl(gar._id, control);
+                        if (this._garnishFormGroup.contains(gar._id)) {
+                            this._garnishFormGroup.controls[gar._id].setValue(false);
+                        } else {
+                            let control: FormControl = new FormControl(false);
+                            this._garnishFormGroup.addControl(gar._id, control);
+                        }
                     }
                 });
                 this._garnishFoodList = GarnishFoodCol.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).fetch();
+            } else {
+                this._showGarnishFood = false;
             }
 
             if (Additions.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).count() > 0) {
                 this._showAddition = true;
-                Additions.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).fetch().forEach((ad) => {
-                    if (this._additionsFormGroup.contains(ad._id)) {
-                        this._additionsFormGroup.controls[ad._id].setValue(true);
+                Additions.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).fetch().forEach((add) => {
+                    let addition: Addition = add;
+                    let findAdd = this._itemAdditions.filter(d => d == addition._id);
+
+                    if (findAdd.length > 0) {
+                        if (this._additionsFormGroup.contains(add._id)) {
+                            this._additionsFormGroup.controls[add._id].setValue(true);
+                        } else {
+                            let control: FormControl = new FormControl(true);
+                            this._additionsFormGroup.addControl(add._id, control);
+                        }
                     } else {
-                        let control: FormControl = new FormControl(true);
-                        this._additionsFormGroup.addControl(ad._id, control);
+                        if (this._additionsFormGroup.contains(add._id)) {
+                            this._additionsFormGroup.controls[add._id].setValue(false);
+                        } else {
+                            let control: FormControl = new FormControl(false);
+                            this._additionsFormGroup.addControl(add._id, control);
+                        }
                     }
                 });
                 this._additionList = Additions.collection.find({ 'restaurants.restaurantId': { $in: _restaurantSectionsIds } }).fetch();
+            } else {
+                this._showAddition = false;
             }
         }
     }
