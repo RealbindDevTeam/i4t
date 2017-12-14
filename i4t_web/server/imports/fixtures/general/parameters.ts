@@ -16,7 +16,6 @@ export function loadParameters() {
             { _id: '1000', name: 'payu_payments_url_test', value: 'https://sandbox.api.payulatam.com/payments-api/4.0/service.cgi', description: 'url for connect test payu payments API' },
             { _id: '2000', name: 'payu_reports_url_test', value: 'https://sandbox.api.payulatam.com/reports-api/4.0/service.cgi', description: 'url for connect test payu reports API' },
             { _id: '3000', name: 'ip_public_service_url', value: 'https://api.ipify.org?format=json', description: 'url for retrieve the client public ip' },
-            { _id: '4000', name: 'payu_pay_info_url_test', value: 'http://104.196.37.221:9000/', description: 'url for retrieve credentials for test payu payment' },
             { _id: '1100', name: 'company_name', value: 'Realbind S.A.S', description: 'Realbind company name for invoice' },
             { _id: '1150', name: 'company_phone', value: 'Tel: (57 1) 6959537', description: 'Realbind phone' },
             { _id: '1200', name: 'company_address', value: 'Cra 6 # 58-43 Of 201', description: 'Realbind company address' },
@@ -29,6 +28,7 @@ export function loadParameters() {
             { _id: '1540', name: 'company_agent_retainer', value: 'No somos agentes retenedores de IVA e ICA', description: 'Realbind iva and ica agent retention in Colombia' },
             { _id: '1550', name: 'invoice_generated_msg', value: 'Factura emitida por computador', description: 'Invoice message for invoice' },
             { _id: '1600', name: 'iurest_url', value: 'https://www.iurest.com', description: 'iurest url page' },
+            { _id: '1650', name: 'iurest_url_short', value: 'www.iurest.com', description: 'iurest url page short' },
             { _id: '1700', name: 'facebook_link', value: 'https://www.facebook.com', description: 'facebook link for iurest' },
             { _id: '1800', name: 'twitter_link', value: 'https://www.twitter.com', description: 'twitter link for iurest' },
             { _id: '1900', name: 'instagram_link', value: 'https://www.instagram.com', description: 'instagram link for iurest' },
@@ -37,15 +37,13 @@ export function loadParameters() {
             { _id: '3200', name: 'ip_public_service_url3', value: 'https://ifconfig.co/json', description: 'url for retrieve the client public ip #3' },
             { _id: '9000', name: 'payu_is_prod', value: 'false', description: 'Flag to enable to prod payu payment' },
             { _id: '9100', name: 'payu_test_state', value: 'APPROVED', description: 'Test state for payu payment transaction' },
-            { _id: '9200', name: 'payu_reference_code', value: 'MON_P_', description: 'Prefix for reference code on payu transactions' },
+            { _id: '9200', name: 'payu_reference_code', value: 'M0N_P_', description: 'Prefix for reference code on payu transactions' },
             { _id: '2100', name: 'max_user_penalties', value: '3', description: 'Max number of user penalties' },
             { _id: '2200', name: 'penalty_days', value: '30', description: 'User penalty days' },
             { _id: '8000', name: 'date_test_monthly_pay', value: "November 1, 2017", description: 'Date test for monthly payment of iurest service' },
             { _id: '10000', name: 'payu_payments_url_prod', value: 'https://api.payulatam.com/payments-api/4.0/service.cgi', description: 'url for connect prod payu payments API' },
-            { _id: '20000', name: 'payu_reports_url_prod', value: 'https://api.payulatam.com/reports-api/4.0/service.cgi', description: 'url for connect prod payu reports API' },
-            { _id: '40000', name: 'payu_pay_info_url_prod', value: 'http://104.196.37.221:9000/', description: 'url for retrieve credentials for prod payu payment' },
+            { _id: '20000', name: 'payu_reports_url_prod', value: 'https://api.payulatam.com/reports-api/4.0/service.cgi', description: 'url for connect prod payu reports API' }
         ];
-
         parameters.forEach((parameter: Parameter) => Parameters.insert(parameter));
     }
 }

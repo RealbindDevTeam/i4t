@@ -381,25 +381,15 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
      * This function gets custPayInfo credentials
      */
     getPayInfo() {
-        let payInfoUrl: string;
 
-        if (this.isProd) {
-            payInfoUrl = Parameters.findOne({ name: 'payu_pay_info_url_prod' }).value;
-        } else {
-            payInfoUrl = Parameters.findOne({ name: 'payu_pay_info_url_test' }).value;
+        try {
+            this.fillAuthorizationCaptureObject(this._payuPaymentService.al, this._payuPaymentService.ak, this._payuPaymentService.ai, this._payuPaymentService.mi);
+        } catch (e) {
+            let errorMsg = this.itemNameTraduction('PAYU_PAYMENT_FORM.UNAVAILABLE_PAYMENT');
+            this.openDialog(this.titleMsg, '', errorMsg, '', this.btnAcceptLbl, false);
+            this._loading = false;
+            this._router.navigate(['/app/monthly-payment']);
         }
-
-        this._payuPaymentService.getCusPayInfo(payInfoUrl).subscribe(
-            payInfo => {
-                this.fillAuthorizationCaptureObject(payInfo.al, payInfo.ak, payInfo.ai, payInfo.mi);
-            },
-            error => {
-                let errorMsg = this.itemNameTraduction('PAYU_PAYMENT_FORM.UNAVAILABLE_PAYMENT');
-                this.openDialog(this.titleMsg, '', errorMsg, '', this.btnAcceptLbl, false);
-                this._loading = false;
-                this._router.navigate(['/app/monthly-payment']);
-            }
-        );
     }
 
     /**
@@ -689,142 +679,6 @@ export class PayuPaymentFormComponent implements OnInit, OnDestroy {
             MeteorObservable.call('generateInvoiceInfo', payment_history, Meteor.userId()).subscribe();
         }
     }
-
-    /**
-     * This function generate the register for invoice
-     */
-
-    /**
-    generateInvoiceInfo(_paymentHistoryId: string) {
-        let var_resolution: string;
-        let var_prefix: string;
-        let var_start_value: number;
-        let var_current_value: number;
-        let var_end_value: number;
-        let var_start_date: Date;
-        let var_end_date: Date;
-        let var_enable_two: boolean;
-        let var_start_new: boolean;
-
-        let invoiceInfo = InvoicesInfo.findOne({ country_id: this._selectedCountry._id });
-        if (invoiceInfo) {
-            if (invoiceInfo.enable_two == false) {
-                if (invoiceInfo.start_new_value == true) {
-                    var_current_value = invoiceInfo.start_value_one;
-                    var_enable_two = false;
-                    var_start_new = false;
-                } else {
-                    var_current_value = invoiceInfo.current_value + 1;
-                    if (var_current_value == invoiceInfo.end_value_one) {
-                        var_enable_two = true;
-                        var_start_new = true;
-                    } else {
-                        var_enable_two = false;
-                        var_start_new = false;
-                    }
-                }
-                var_resolution = invoiceInfo.resolution_one;
-                var_prefix = invoiceInfo.prefix_one;
-                var_start_value = invoiceInfo.start_value_one;
-                var_end_value = invoiceInfo.end_value_one;
-                var_start_date = invoiceInfo.start_date_one;
-                var_end_date = invoiceInfo.end_date_one;
-            } else {
-                if (invoiceInfo.start_new_value == true) {
-                    var_current_value = invoiceInfo.start_value_two;
-                    var_enable_two = true;
-                    var_start_new = false;
-                } else {
-                    var_current_value = invoiceInfo.current_value + 1;
-                    if (var_current_value == invoiceInfo.end_value_two) {
-                        var_enable_two = false;
-                        var_start_new = true;
-                    } else {
-                        var_enable_two = true;
-                        var_start_new = false;
-                    }
-                }
-                var_resolution = invoiceInfo.resolution_two;
-                var_prefix = invoiceInfo.prefix_two;
-                var_start_value = invoiceInfo.start_value_two;
-                var_end_value = invoiceInfo.end_value_two;
-                var_start_date = invoiceInfo.start_date_two;
-                var_end_date = invoiceInfo.end_date_two;
-            }
-
-            InvoicesInfo.collection.update({ _id: invoiceInfo._id },
-                {
-                    $set: {
-                        current_value: var_current_value,
-                        enable_two: var_enable_two,
-                        start_new_value: var_start_new
-                    }
-                });
-
-            let company_name = Parameters.findOne({ name: 'company_name' }).value;
-            let company_address = Parameters.findOne({ name: 'company_address' }).value;
-            let company_phone = Parameters.findOne({ name: 'company_phone' }).value;
-            let company_country = Parameters.findOne({ name: 'company_country' }).value;
-            let company_city = Parameters.findOne({ name: 'company_city' }).value;
-            let company_nit = Parameters.findOne({ name: 'company_nit' }).value;
-            let company_regime = Parameters.findOne({ name: 'company_regime' }).value;
-            let company_contribution = Parameters.findOne({ name: 'company_contribution' }).value;
-            let company_retainer = Parameters.findOne({ name: 'company_retainer' }).value;
-            let company_agent_retainer = Parameters.findOne({ name: 'company_agent_retainer' }).value;
-            let invoice_generated_msg = Parameters.findOne({ name: 'invoice_generated_msg' }).value;
-
-            let company_info: CompanyInfo = {
-                name: company_name,
-                address: company_address,
-                phone: company_phone,
-                country: company_country,
-                city: company_city,
-                nit: company_nit,
-                regime: company_regime,
-                contribution: company_contribution,
-                retainer: company_retainer,
-                agent_retainter: company_agent_retainer,
-                resolution_number: var_resolution,
-                resolution_prefix: var_prefix,
-                resolution_start_date: var_start_date,
-                resolution_end_date: var_end_date,
-                resolution_start_value: var_start_value.toString(),
-                resolution_end_value: var_end_value.toString()
-            };
-
-            let client_info: ClientInfo = {
-                name: Meteor.user().profile.first_name + ' ' + Meteor.user().profile.last_name,
-                address: this._selectedAddress,
-                city: this._selectedCity,
-                country: this.itemNameTraduction(this._selectedCountry.name),
-                identification: this._selectedDniNumber,
-                phone: this._selectedPhone,
-                email: Meteor.user().emails[0].address
-            };
-
-            IurestInvoices.collection.insert({
-                creation_user: Meteor.userId(),
-                creation_date: new Date(),
-                payment_history_id: _paymentHistoryId,
-                country_id: this._selectedCountry._id,
-                number: var_current_value.toString(),
-                generation_date: new Date(),
-                payment_method: this.itemNameTraduction('PAYU_PAYMENT_FORM.CC_PAYMENT_METHOD'),
-                description: this.itemNameTraduction('PAYU_PAYMENT_FORM.DESCRIPTION'),
-                period: this._firstMonthDay.getDate() + '/' + (this._firstMonthDay.getMonth() + 1) + '/' + this._firstMonthDay.getFullYear() +
-                    ' - ' + this._lastMonthDay.getDate() + '/' + (this._lastMonthDay.getMonth() + 1) + '/' + this._lastMonthDay.getFullYear(),
-                amount_no_iva: this.getReturnBase().toString(),
-                subtotal: this.getReturnBase().toString(),
-                iva: this.getValueTax().toString(),
-                total: this._valueToPay.toString(),
-                currency: this._currency,
-                company_info: company_info,
-                client_info: client_info,
-                generated_computer_msg: invoice_generated_msg
-            });
-        }
-    }
-     */
 
     /**
      * This function gets the tax value according to the value

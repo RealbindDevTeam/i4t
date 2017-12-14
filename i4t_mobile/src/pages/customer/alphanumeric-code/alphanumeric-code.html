@@ -7,7 +7,11 @@
 </ion-header>
 
 <ion-content padding align="center">
-    <div class="img">
+    <div showWhen="android" class="img">
+        <img src="assets/img/computer.png">
+    </div>
+
+    <div showWhen="ios" class="img" style="height:50%">
         <img src="assets/img/computer.png">
     </div>
 
@@ -22,7 +26,7 @@
                     <ion-label stacked></ion-label>
                     <ion-input text-uppercase text-center formControlName="qrCode" style="font-size: 3.8rem; font-weight: 500"></ion-input>
                 </ion-item>
-                <ion-label >{{_error_msg}}</ion-label>
+                <ion-label>{{_error_msg}}</ion-label>
             </ion-list>
 
             <button ion-button block outline [disabled]="!_ordersForm.valid" type="submit">

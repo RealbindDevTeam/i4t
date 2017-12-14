@@ -2,11 +2,16 @@ import { Injectable, NgZone } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CcRequestColombia, CusPayInfo } from '../../../../../both/models/payment/cc-request-colombia.model';
+import { CcRequestColombia } from '../../../../../both/models/payment/cc-request-colombia.model';
 import { Parameters } from '../../../../../both/collections/general/parameter.collection';
 
 @Injectable()
 export class PayuPaymentService {
+
+    private _al: string = Meteor.settings.public.custpayinfo.al;
+    private _ak: string = Meteor.settings.public.custpayinfo.ak;
+    private _mi: string = Meteor.settings.public.custpayinfo.mi;
+    private _ai: number = Meteor.settings.public.custpayinfo.ai;
 
     private payuReportsApiURI: string;
 
@@ -79,12 +84,22 @@ export class PayuPaymentService {
         return this.http.get(url).map(response => response).catch(this.handleError);
     }
 
-    /**
-    * This function get CusPayInfo
-    */
-    getCusPayInfo(url: string): Observable<CusPayInfo> {
-        return this.http.get(url).map(response => response as CusPayInfo[]).catch(this.handleError);
+    get al(): string {
+        return this._al;
     }
+
+    get ak(): string {
+        return this._ak;
+    }
+
+    get mi(): string {
+        return this._mi;
+    }
+
+    get ai(): number {
+        return this._ai;
+    }
+
 
     /**
      * This function emits the error generated in http request

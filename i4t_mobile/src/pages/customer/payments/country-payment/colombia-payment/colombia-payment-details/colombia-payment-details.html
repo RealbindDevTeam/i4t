@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <ion-card *ngFor="let order of _orders | async">
+    <ion-card style="height: 82%;overflow: scroll;" *ngFor="let order of _orders | async">
         <ion-card-content>
             <ion-item text-wrap>
                 <ion-thumbnail item-left>
@@ -30,7 +30,6 @@
                     <ion-icon name="repeat"></ion-icon>
                 </button>
             </ion-item>
-
             <order-detail-pay-info [orderId]="order._id" [restaurantId]="order.restaurantId" [currency]="_currency"></order-detail-pay-info>
         </ion-card-content>
     </ion-card>
