@@ -1530,6 +1530,7 @@
         "CURRENCY_ACCEPTED": "Currency accepted",
         "LOCATION": "Location",
         "ADDRESS": "Address",
-        "READ_MORE": "Read more"
+        "READ_MORE": "Read more",
+        "READ_LESS": "Read less"
     }
 }

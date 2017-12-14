@@ -36,7 +36,7 @@
                 <mat-card-content>
                     <p *ngIf="!_showExtended">{{restaurantProfile.restaurant_description.substring(0, 450)}}</p>
                     <p *ngIf="_showExtended">{{restaurantProfile.restaurant_description}}</p>
-                    <button *ngIf="_showReadMore" mat-button color="primary" (click)="extendDescription()">{{'RESTAURANT_PROFILE_DETAIL.READ_MORE' | translate}}</button>
+                    <button *ngIf="_showReadMore" mat-button color="primary" (click)="extendDescription()">{{_btnLabel}}</button>
                 </mat-card-content>
             </mat-card>
             <mat-card class="photos">
@@ -123,6 +123,15 @@
                     </mat-card-content>
                 </mat-card>
             </div>
+            <mat-card>
+                <mat-card-title>{{'RESTAURANT_PROFILE_DETAIL.LOCATION' | translate}}</mat-card-title>
+                <mat-card-content>
+                    <p>{{'RESTAURANT_PROFILE_DETAIL.ADDRESS' | translate}}: {{restaurant.address}}</p>
+                    <agm-map [latitude]="restaurantProfile.location.lat" [longitude]="restaurantProfile.location.lng">
+                        <agm-marker [latitude]="restaurantProfile.location.lat" [longitude]="restaurantProfile.location.lng"></agm-marker>
+                    </agm-map>
+                </mat-card-content>
+            </mat-card>
         </ng-template>
     </span>
 </div>

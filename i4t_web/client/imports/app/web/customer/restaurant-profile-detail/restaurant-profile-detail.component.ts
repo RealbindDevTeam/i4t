@@ -47,6 +47,7 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
     private _descriptionAux: string;
     private _showReadMore: boolean = true;
     private _showExtended: boolean = false;
+    private _btnLabel: string;
 
     /**
      * RestaurantProFileDetailComponent Constructor
@@ -125,6 +126,8 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
                     this._restaurantsProfile = RestaurantsProfile.find({ restaurant_id: this.restaurantId }).zone();
                 });
             });
+
+            this._btnLabel = this.itemNameTraduction('RESTAURANT_PROFILE_DETAIL.READ_MORE');
         } else {
             if (Meteor.user() !== undefined && Meteor.user() !== null) {
                 this._router.navigate(['/app/orders']);
@@ -217,11 +220,16 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
             }
         }
     }
-    
+
     /**
      * Function to extend the restaurant description
      */
-    extendDescription(_restaurantDescription) {
+    extendDescription() {
+        if(this._showExtended){
+            this._btnLabel = this.itemNameTraduction('RESTAURANT_PROFILE_DETAIL.READ_MORE');
+        }else {
+            this._btnLabel = this.itemNameTraduction('RESTAURANT_PROFILE_DETAIL.READ_LESS');
+        }
         this._showExtended = !this._showExtended;
     }
 

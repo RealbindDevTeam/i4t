@@ -1530,6 +1530,7 @@
         "CURRENCY_ACCEPTED": "Moneda aceptada",
         "LOCATION": "Ubicación",
         "ADDRESS": "Dirección",
-        "READ_MORE": "Leer más"
+        "READ_MORE": "Leer más",
+        "READ_LESS": "Leer menos"
     }
 }
