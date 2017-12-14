@@ -1,23 +1,10 @@
-//@import "public/css/animate";
 
-$sidenav-primary-color : #F5F5F5;
-$sidenav-secondary-color : #EEEEEE;
-$menu-navegation-color : #F5F5F5;
-
-$sidenav-width: 225px;
-
-.img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+img.br {
+    border-radius: 0 !important;
 }
 
 .mat-sidenav-focus-trap>.cdk-focus-trap-content{
     overflow-y: hidden;
-}
-
-.color-button-icon {
-    color: white;
 }
 
 .quantity-count{
@@ -48,6 +35,17 @@ $sidenav-width: 225px;
     width: 100%;
 }
 
+img.order {
+    width: 45px;
+}
+
+@media only screen and (min-width: 600px) {
+    img.custom {
+        width: 80px !important;
+        height: 80px !important;
+    }
+}
+
 @media only screen and (max-width: 600px) {
     .customer-order {
         height: 100%;
@@ -59,9 +57,6 @@ $sidenav-width: 225px;
     }
 }
 
-.order-icon {
-    margin-right: 1%;
-}
 
 .order-code {
     margin-right: 1rem;
@@ -71,13 +66,6 @@ $sidenav-width: 225px;
     float: right;
 }
 
-.item-image {
-    flex-shrink: 0;
-    width: 4rem;
-    height: 4rem;
-    border-radius: 0;
-}
-
 .item-unavailable {
     color: #D50000;
     font-weight: bold;
@@ -85,12 +73,6 @@ $sidenav-width: 225px;
 
 .item-icon {
     color:#D50000;
-}
-
-.other-order {
-    background-color: #114B5F;
-    color: white;
-    margin-bottom: 1%;
 }
 
 .available-button{
@@ -118,12 +100,7 @@ mat-tab-group {
     font-size: smaller;
 }
 
-.order-item-garnishFood{
-    display: inline-block;
-    color: darkgoldenrod;
-}
-
-.order-item-additions{
+.order-item {
     display: inline-block;
     color: darkgoldenrod;
 }
