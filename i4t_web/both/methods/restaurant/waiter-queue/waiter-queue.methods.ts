@@ -87,12 +87,13 @@ if (Meteor.isServer) {
         } else {
           Meteor.call('jobRemove', queueName, job._doc._id, data_detail, usr_id_enabled);
         }
+        callback();
       } else {
         Meteor.call('jobRemove', queueName, job._doc._id, data_detail, usr_id_enabled);
-        console.log('200 (processJobs) - WaiterCallDetails is undefined');
+        Meteor.call('processJobs', job, callback, queueName);
+        //console.log('200 (processJobs) - WaiterCallDetails is undefined');
         //throw new Meteor.Error('200 (processJobs) - WaiterCallDetails is undefined');
       }
-      callback();
     },
 
     /**
