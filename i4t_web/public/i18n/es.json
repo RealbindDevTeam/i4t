@@ -1008,7 +1008,8 @@
         "PRICE": "Precio: ",
         "CLOSE_PAYMENTS": "Cerrar pagos recibidos",
         "GARNISH_FOOD": "Guarnición",
-        "ADDITION": "Adición"
+        "ADDITION": "Adición",
+        "ERROR": "Error cerrando los pagos"
     },
     "MONTHLY_CONFIG": {
         "TITLE": "Configurar restaurantes y mesas",

@@ -70,11 +70,11 @@
   </mat-card-content>
 </mat-card>
 <mat-card *ngFor="let garnishFood of _garnishFoodCol | async" class="cards">
-  <mat-card-title class="card-title">{{garnishFood.name}}</mat-card-title>
   <mat-card-subtitle class="card-subtitle">
     <label class="prices">{{'GARNISHFOOD.PRICES' | translate}}</label>&emsp;-&emsp;
     <label class="taxes">{{'GARNISHFOOD.TAXES' | translate}}</label>
   </mat-card-subtitle>
+  <mat-card-title class="card-title">{{garnishFood.name}}</mat-card-title>
   <mat-card-content>
     <div class="card-garnishfood-price">{{showGarnishFoodPrices(garnishFood.prices)}}</div>
     <div class="card-garnishfood-tax">{{showGarnishFoodTaxes(garnishFood.prices)}}</div>    

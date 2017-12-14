@@ -1008,7 +1008,8 @@
         "PRICE": "Price: ",
         "CLOSE_PAYMENTS": "Close received payments ",
         "GARNISH_FOOD": "Side dishes",
-        "ADDITION": "Addition"
+        "ADDITION": "Addition",
+        "ERROR": "Error closing payments"
     },
     "MONTHLY_CONFIG": {
         "TITLE": "Configure restaurants and tables",

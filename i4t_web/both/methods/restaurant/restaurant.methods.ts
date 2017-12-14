@@ -188,11 +188,13 @@ if (Meteor.isServer) {
         },
 
         restaurantExitWithOrdersInInvalidStatus: function (_pUserId: string, _pCurrentRestaurant: string, _pCurrentTable: string) {
-            Orders.find({
+            let _orderIds: string[] = [];
+            Orders.collection.find({
                 creation_user: _pUserId, restaurantId: _pCurrentRestaurant, tableId: _pCurrentTable,
                 status: { $in: ['ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED'] }
             }).fetch().forEach((order) => {
                 Orders.update({ _id: order._id }, { $set: { markedToCancel: true, modification_date: new Date() } });
+                _orderIds.push(order._id);
             });
             var data: any = {
                 restaurants: _pCurrentRestaurant,
@@ -209,6 +211,12 @@ if (Meteor.isServer) {
             if (isWaiterCalls === 0) {
                 Meteor.call('findQueueByRestaurant', data);
             }
+            WaiterCallDetails.collection.find({
+                restaurant_id: _pCurrentRestaurant, table_id: _pCurrentTable,
+                type: 'SEND_ORDER', status: { $in: ['waiting', 'completed'] }, order_id: { $in: _orderIds }
+            }).fetch().forEach((call) => {
+                Meteor.call('closeWaiterCall', call );
+            });
         },
 
         cancelOrderToRestaurantExit: function (_pOrder: Order, _pCall: WaiterCallDetail, _pWaiterId: string) {
@@ -225,7 +233,7 @@ if (Meteor.isServer) {
                 markedToCancel: { $in: [true, false] }, status: { $in: ['ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED'] }
             }).fetch().length;
             if (_lOrdersToCancel === 0) {
-                Meteor.call('closeCall', _pCall, _pWaiterId);
+                Meteor.call('closeWaiterCall', _pCall);
             }
         }
     });
