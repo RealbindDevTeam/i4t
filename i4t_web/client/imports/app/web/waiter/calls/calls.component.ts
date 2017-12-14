@@ -112,7 +112,7 @@ export class CallsComponent implements OnInit, OnDestroy {
             if (result.success) {
                 this._loading = true;
                 setTimeout(() => {
-                    MeteorObservable.call('closeCall', _call, Meteor.userId()).subscribe(() => {
+                    MeteorObservable.call('closeWaiterCall', _call).subscribe(() => {
                         this._loading = false;
                     });
                 }, 1500);

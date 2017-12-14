@@ -162,7 +162,7 @@ if (Meteor.isServer) {
     closeCall: function (_jobDetail: WaiterCallDetail, _waiter_id: string) {
       Job.getJob(_jobDetail.queue, _jobDetail.job_id, function (err, job) {
         job.remove(function (err, result) {
-          WaiterCallDetails.update({ job_id: _jobDetail.job_id },
+          WaiterCallDetails.update({ _id: _jobDetail._id },
             {
               $set: { "status": "closed", modification_user: _waiter_id, modification_date: new Date() }
             });
@@ -186,9 +186,29 @@ if (Meteor.isServer) {
             }
           }
 
-          let usr_detail = UserDetails.findOne({ user_id: _waiter_id });
-          let jobs = usr_detail.jobs - 1;
-          UserDetails.update({ user_id: _waiter_id }, { $set: { "enabled": true, "jobs": jobs } });
+          let usr_detail: UserDetail = UserDetails.findOne({ user_id: _waiter_id });
+          if (usr_detail) {
+            let jobs = usr_detail.jobs - 1;
+            UserDetails.update({ _id: usr_detail._id }, { $set: { "enabled": true, "jobs": jobs } });
+          }
+        });
+      });
+      return;
+    },
+
+    closeWaiterCall: function (_jobDetail: WaiterCallDetail) {
+      Job.getJob(_jobDetail.queue, _jobDetail.job_id, function (err, job) {
+        job.remove(function (err, result) {
+          WaiterCallDetails.update({ _id: _jobDetail._id },
+            {
+              $set: { "status": "closed", modification_user: _jobDetail.waiter_id, modification_date: new Date() }
+            });
+
+          let usr_detail: UserDetail = UserDetails.findOne({ user_id: _jobDetail.waiter_id });
+          if (usr_detail) {
+            let jobs = usr_detail.jobs - 1;
+            UserDetails.update({ _id: usr_detail._id }, { $set: { "enabled": true, "jobs": jobs } });
+          }
         });
       });
       return;
