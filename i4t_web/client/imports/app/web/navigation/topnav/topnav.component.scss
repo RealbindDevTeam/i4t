@@ -29,6 +29,10 @@ mat-toolbar {
   display: none;
 }
 
+div.profile {
+  display: none;
+}
+
 @media only screen and (max-width: 600px){
   .li{
     width: 100%;
@@ -50,6 +54,11 @@ mat-toolbar {
   .buttom-profile {
     display: block;
     padding: 0 40px 0 0;
+  }
+
+  div.profile {
+    display: block;
+    margin-right: 20px;
   }
 }
 
