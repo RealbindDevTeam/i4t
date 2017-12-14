@@ -278,7 +278,9 @@
         "ORDERS": "Orders",
         "WAITER_CALL": "Waiter/waitress call",
         "CALLS": "Calls",
-        "SETTINGS": "Settings"
+        "SETTINGS": "Settings",
+        "TABLES": "Tables",
+        "RESTAURANT_EXIT": "Leave Restaurant"
     },
     "PROMOTIONS": {
         "PROMOTION_CREATION": "Creation promotion",

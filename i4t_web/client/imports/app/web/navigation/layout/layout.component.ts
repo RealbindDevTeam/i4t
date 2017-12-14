@@ -54,13 +54,14 @@ export class LayoutComponent implements OnInit, OnDestroy {
    * ngOnInit Implementation. Is validated user role to load layout corresponding
    */
   ngOnInit() {
-    MeteorObservable.call('getRole').subscribe((role) => {
+    /*MeteorObservable.call('getRole').subscribe((role) => {
       if(role !== "400"){
         this.showSidenav();
       }
     }, (error) => {
       alert(`Failed to to load layout ${error}`);
-    });
+    });*/
+    this.showSidenav();
   }
 
   /**
