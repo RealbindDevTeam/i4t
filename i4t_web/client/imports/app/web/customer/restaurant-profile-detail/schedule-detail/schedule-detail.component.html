@@ -1,6 +1,6 @@
-<mat-card>
-    <mat-card-title style="text-align: -webkit-center;">{{'SCHEDULE.SCHEDULE' | translate}}</mat-card-title>
-    <mat-card-content>
+
+    <h2 style="text-align: -webkit-center;">{{'SCHEDULE.SCHEDULE' | translate}}</h2>
+    
         <table class="centered striped" style="width: 100%;" cellspacing="0">
             <thead>
                 <tr>
@@ -60,8 +60,6 @@
                 </tr>
             </tbody>                        
         </table>
-        <div align="center" style="padding-top: 10px">
+        <mat-dialog-actions>
             <button mat-raised-button class="secondary-button" type="button" (click)="_dialogRef.close()">{{'SCHEDULE.CLOSE' | translate}}</button>
-        </div>
-    </mat-card-content>
-</mat-card>
+        </mat-dialog-actions>
