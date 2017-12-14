@@ -39,8 +39,8 @@
             </div>
         </div>
     </div>
-    <div style="width: 90%; margin: 0 auto" *ngIf=" userDetail.current_restaurant === '' && userDetail.current_table === '' ">
-        <mat-card mat-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
+    <div *ngIf=" userDetail.current_restaurant === '' && userDetail.current_table === '' ">
+        <mat-card mat-cell="12">
             <mat-card-content>
                 <div class="card_initial">
                     <div class="card_initial has-image">
