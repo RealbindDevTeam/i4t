@@ -1,63 +1,60 @@
 
 <div *ngFor="let or of _ordersTable | async; let in = index">
-    <mat-toolbar class="customer-order" (click)="showOthersOrderDetail(or,in)">
-        <img class="order" src="/images/my-orders.png">
-        <div class="mt-div">
-            <span>{{'ORDER_TRANS.ORDERS' | translate}} # {{or.code}}</span>
-            <span>{{'ORDER_TRANS.TOTAL' | translate}}: {{or.totalPayment}} {{_currencyCode}}</span>
-            <span>{{'ORDER_TRANS.STATUS' | translate}}: {{or.status | translate}}</span>
-            <button mat-raised-button class="primary-button" (click)="markOrderToPay(or)">{{'ORDER_TRANS.PAY' | translate}}</button>
-        </div>
-    </mat-toolbar>
-
     <mat-list (click)="showOthersOrderDetail(or,in)">
-        <mat-list-item>
-            <img mat-list-icon src="/images/my-orders.png">
+        <mat-list-item class="box-shadow wm">
+            <img mat-list-avatar class="order custom br" src="/images/my-orders.png">
             <h4 mat-line>{{'ORDER_TRANS.ORDERS' | translate}} # {{or.code}}</h4>
             <p mat-line>{{'ORDER_TRANS.TOTAL' | translate}}: {{or.totalPayment}} {{_currencyCode}}</p>
             <p mat-line>{{'ORDER_TRANS.STATUS' | translate}}: {{or.status | translate}}</p>
-            <button mat-raised-button class="primary-button" (click)="markOrderToPay(or)">{{'ORDER_TRANS.PAY' | translate}}</button>
+            <button mat-mini-fab class="fbs" (click)="markOrderToPay(or)">
+                <mat-icon class="md-24">attach_money</mat-icon>
+            </button>
+            <button mat-raised-button class="primary-button bs" (click)="markOrderToPay(or)">{{'ORDER_TRANS.PAY' | translate}}</button>
         </mat-list-item>
         <mat-divider></mat-divider>
     </mat-list>
 
-    <mat-card *ngIf="_orderOthersIndex == in">
-        <mat-card-content>
-            <mat-list *ngIf="(or.items.length > 0)">
-                <span *ngFor="let item of _items | async">
-                    <span *ngFor="let it of or.items">
-                        <ng-template [ngIf]="item._id === it.itemId">
-                            <mat-list-item>
-                                <img mat-list-avatar class="custom br" *ngIf="item.image" src="{{ item.image.url }}">
-                                <img mat-list-avatar class="custom br" *ngIf="!item.image" src="/images/default-plate.png">
-                                <h4 mat-line>{{item.name}}</h4>
-                                <h5 mat-line>
-                                    {{'ORDER_TRANS.PRICE' | translate}}: {{it.paymentItem}} {{_currencyCode}} - {{'ORDER_TRANS.QUANT' | translate}} {{it.quantity}}
-                                    <div *ngIf="it.garnishFood.length > 0" class="order-item"> - {{'ORDER_TRANS.GARNISH_FOOD' | translate}}: {{it.garnishFood.length}}</div>
-                                    <div *ngIf="it.additions.length > 0" class="order-item"> - {{'ORDER_TRANS.ADDITIONS' | translate}}: {{it.additions.length}}</div>
-                                </h5>
-                            </mat-list-item>
-                            <mat-divider></mat-divider>
-                        </ng-template>
-                    </span>
-                </span>
-            </mat-list>
-            <mat-list *ngIf="(or.additions.length > 0)">
-                <span *ngFor="let addition of _additions | async">
-                    <span *ngFor="let ad of or.additions">
-                        <ng-template [ngIf]="addition._id === ad.additionId">
-                            <mat-list-item>
-                                <img mat-list-avatar class="custom br" src="/images/default-plate.png">
-                                <h4 mat-line>{{addition.name}} <div class="addition-message">({{'ORDER_TRANS.ADDITION' | translate}})</div></h4>
-                                <p mat-line>{{'ORDER_TRANS.PRICE' | translate}}: {{ad.paymentAddition}} {{_currencyCode}} - {{'ORDER_TRANS.QUANT' | translate}} {{ad.quantity}}</p>
-                            </mat-list-item>
-                            <mat-divider></mat-divider>
-                        </ng-template>
-                    </span>
-                </span>
-            </mat-list>
-        </mat-card-content>
-    </mat-card>
+    <ng-template [ngIf]="_orderOthersIndex == in">
+        <mat-card>
+            <mat-card-content>
+                <mat-list>
+                    <div *ngIf="(or.items.length > 0)">
+                        <div *ngFor="let item of _items | async">
+                            <div *ngFor="let it of or.items">
+                                <ng-template [ngIf]="item._id === it.itemId">
+                                    <mat-list-item>
+                                        <img mat-list-avatar class="custom br" *ngIf="item.image" src="{{ item.image.url }}">
+                                        <img mat-list-avatar class="custom br" *ngIf="!item.image" src="/images/default-plate.png">
+                                        <h4 mat-line>{{item.name}}</h4>
+                                        <p mat-line>{{'ORDER_TRANS.PRICE' | translate}}: {{it.paymentItem}} {{_currencyCode}} - {{'ORDER_TRANS.QUANT' | translate}} {{it.quantity}}</p>
+                                        <p mat-line *ngIf="it.garnishFood.length > 0">{{'ORDER_TRANS.GARNISH_FOOD' | translate}}: {{it.garnishFood.length}}</p>
+                                        <p mat-line *ngIf="it.additions.length > 0">{{'ORDER_TRANS.ADDITIONS' | translate}}: {{it.additions.length}}</p>
+                                    </mat-list-item>
+                                    <mat-divider></mat-divider>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="(or.additions.length > 0)">
+                        <div *ngFor="let addition of _additions | async">
+                            <div *ngFor="let ad of or.additions">
+                                <ng-template [ngIf]="addition._id === ad.additionId">
+                                    <mat-list-item>
+                                        <img mat-list-avatar class="custom br" src="/images/default-plate.png">
+                                        <h4 mat-line>{{addition.name}}</h4>
+                                        <h4 mat-line>({{'ORDER_TRANS.ADDITION' | translate}})</h4>
+                                        <p mat-line>{{'ORDER_TRANS.PRICE' | translate}}: {{ad.paymentAddition}} {{_currencyCode}} - {{'ORDER_TRANS.QUANT' | translate}} {{ad.quantity}}</p>
+                                    </mat-list-item>
+                                    <mat-divider></mat-divider>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+    </ng-template>
 </div>
 
 <mat-dialog-actions>
