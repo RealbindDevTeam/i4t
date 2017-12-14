@@ -33,6 +33,7 @@ export class TableComponent implements OnInit, OnDestroy {
 
   private restaurants: Observable<Restaurant[]>;
   private tables: Observable<Table[]>;
+  private tables2: Table[];
 
   selectedRestaurantValue: string;
   private restaurantCode: string = '';
@@ -124,12 +125,12 @@ export class TableComponent implements OnInit, OnDestroy {
 
   changeRestaurantFilter(_pRestaurant) {
     if (_pRestaurant == 'All') {
-      this.tables = Tables.find({ creation_user: Meteor.userId() }).zone();
+      this.tables2 = Tables.collection.find({ creation_user: Meteor.userId() }).fetch();
       this.enable_print = true;
       this.tooltip_msg = this.itemNameTraduction('TABLES.MSG_TOOLTIP');
     } else {
       this.restaurant_name = Restaurants.findOne({ _id: _pRestaurant }).name;
-      this.tables = Tables.find({ restaurantId: _pRestaurant, creation_user: Meteor.userId() }).zone();
+      this.tables2 = Tables.collection.find({ restaurantId: _pRestaurant, creation_user: Meteor.userId() }).fetch();
       this.enable_print = false;
       this.tooltip_msg = "";
       this.show_cards = true;
@@ -175,34 +176,31 @@ export class TableComponent implements OnInit, OnDestroy {
 
     if (this.all_checked) {
 
-      this.tables.forEach(table => {
-        table.forEach(table2 => {
-          auxStr = table2._number.toString();
-          countVar += 1;
+      this.tables2.forEach(table2 => {
+        auxStr = table2._number.toString();
+        countVar += 1;
 
-          if ((countVar % 2) == 1) {
-            qr_pdf.setFontSize(16);
-            qr_pdf.rect(55, 25, 90, 90); // empty square
-            qr_pdf.text(70, 33, tableStr + auxStr);
-            qr_pdf.addImage(table2.QR_URI, 'JPEG', 70, 37, 60, 60);
-            qr_pdf.text(70, 105, codeStr + table2.QR_code);
-            qr_pdf.setFontSize(13);
-            qr_pdf.text(85, 112, iurest_url);
-          } else {
-            qr_pdf.setFontSize(16);
-            qr_pdf.rect(55, 150, 90, 90); // empty square
-            qr_pdf.text(70, 158, tableStr + auxStr);
-            qr_pdf.addImage(table2.QR_URI, 'JPEG', 70, 162, 60, 60);
-            qr_pdf.text(70, 230, codeStr + table2.QR_code);
-            qr_pdf.setFontSize(13);
-            qr_pdf.text(85, 237, iurest_url);
-            qr_pdf.addPage();
-          }
-        });
-        qr_pdf.output('save', this.restaurant_name.substr(0, 15) + '_' + file_name + '.pdf');
+        if ((countVar % 2) == 1) {
+          qr_pdf.setFontSize(16);
+          qr_pdf.rect(55, 25, 90, 90); // empty square
+          qr_pdf.text(70, 33, tableStr + auxStr);
+          qr_pdf.addImage(table2.QR_URI, 'JPEG', 70, 37, 60, 60);
+          qr_pdf.text(70, 105, codeStr + table2.QR_code);
+          qr_pdf.setFontSize(13);
+          qr_pdf.text(85, 112, iurest_url);
+        } else {
+          qr_pdf.setFontSize(16);
+          qr_pdf.rect(55, 150, 90, 90); // empty square
+          qr_pdf.text(70, 158, tableStr + auxStr);
+          qr_pdf.addImage(table2.QR_URI, 'JPEG', 70, 162, 60, 60);
+          qr_pdf.text(70, 230, codeStr + table2.QR_code);
+          qr_pdf.setFontSize(13);
+          qr_pdf.text(85, 237, iurest_url);
+          qr_pdf.addPage();
+        }
       });
+      qr_pdf.output('save', this.restaurant_name.substr(0, 15) + '_' + file_name + '.pdf');
       this.tables_selected = [];
-      //qr_pdf.output('save', this.restaurant_name.substr(0, 15) + '_' + file_name + '.pdf');
     } else if (!this.all_checked && this.tables_selected.length > 0) {
       this.tables_selected.forEach(table2 => {
         auxStr = table2._number.toString();

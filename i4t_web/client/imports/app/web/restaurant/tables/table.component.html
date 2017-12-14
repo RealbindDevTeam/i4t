@@ -46,7 +46,7 @@
 </div>
 <br/>
 <div *ngIf="show_cards">
-    <mat-card id="qr-card" *ngFor="let table of tables | async" style="display: inline-block; margin-right: 20px; width:250px">
+    <mat-card id="qr-card" *ngFor="let table of tables2" style="display: inline-block; margin-right: 20px; width:250px">
         <mat-card-header>
             <mat-card-title *ngFor="let rest of restaurants | async">
                 <div *ngIf="rest._id == table.restaurantId">
