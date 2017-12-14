@@ -1,5 +1,5 @@
 <div *ngFor="let userDetail of _userDetails | async">
-    <div class="user-detail" *ngIf=" userDetail.current_restaurant !== '' && userDetail.current_table !== '' ">
+    <div *ngIf=" userDetail.current_restaurant !== '' && userDetail.current_table !== '' ">
         <div *ngFor="let table of _tables | async">
             <div *ngIf="table._id === userDetail.current_table">
                 <mat-card *ngIf="_showWaiterCard">
@@ -16,7 +16,7 @@
                 <mat-card mat-cell="12" class="demo-card demo-basic">
                     <mat-card-content>
                         <div class="card_initial">
-                            <div class="card_initial has-image" style="margin: auto;">
+                            <div class="card_initial has-image">
                                 <div class="card_initial-image-container">
                                     <img class="card_initial-image" 
                                         src="/images/sections.png"/>
