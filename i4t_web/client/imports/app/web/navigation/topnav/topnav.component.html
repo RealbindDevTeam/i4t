@@ -27,8 +27,6 @@
 
   <span class="app-flex-filler"></span>
 
-  <c-customer-menu *ngIf="!_showToggleSidenav" (menuname)="getMenuName($event)"></c-customer-menu>
-
   <div *ngIf="_showMenuButton" class="buttom-profile">
     <button *ngIf="!_showToggleSidenav" mat-icon-button [mat-menu-trigger-for]="menu" id="user-dropdown-toggler" style="padding: 0;">
       <img class="profile-img" mat-list-avatar src="{{ getUserImage() }}"> {{ _userName }}

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
@@ -71,7 +71,8 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy {
     constructor(private _translate: TranslateService,
         public _dialogRef: MatDialogRef<any>,
         private _ngZone: NgZone,
-        private _userLanguageService: UserLanguageService) {
+        private _userLanguageService: UserLanguageService,
+        private _snackBar: MatSnackBar) {
         _translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         _translate.setDefaultLang('en');
     }
@@ -232,14 +233,43 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy {
     closePayments(): void {
         this._loading = true;
         setTimeout(() => {
-            MeteorObservable.call('closePay', this.call.restaurant_id, this.call.table_id, this.call).subscribe(() => {
-                this._loading = false;
-                let _lPaymentsNoReceived = Payments.collection.find({ restaurantId: this.call.restaurant_id, tableId: this.call.table_id, status: 'PAYMENT.NO_PAID', received: false }).count();
-                if (_lPaymentsNoReceived === 0) {
+            this.closePay().then((result) => {
+                if (result) {
+                    let _lPaymentsNoReceived = Payments.collection.find({ restaurantId: this.call.restaurant_id, tableId: this.call.table_id, status: 'PAYMENT.NO_PAID', received: false }).count();
+                    this._loading = false;
+                    if (_lPaymentsNoReceived === 0) {
+                        this.close();
+                    }
+                } else {
+                    this._loading = false;
+                    let _lMessage: string = this.itemNameTraduction('PAYMENT_CONFIRM.ERROR');
+                    this._snackBar.open(_lMessage, '', { duration: 3000 });
                     this.close();
                 }
+            }).catch((err) => {
+                this._loading = false;
+                let _lMessage: string = this.itemNameTraduction('PAYMENT_CONFIRM.ERROR');
+                this._snackBar.open(_lMessage, '', { duration: 3000 });
+                this.close();
             });
         }, 1500);
+    }
+
+    /**
+     * Promise to close pay
+     */
+    closePay(): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            try {
+                MeteorObservable.call('closePay', this.call.restaurant_id, this.call.table_id, this.call).subscribe(() => {
+                    resolve(true);
+                }, (error) => {
+                    resolve(false);
+                });
+            } catch (e) {
+                reject(e);
+            }
+        });
     }
 
     /**
@@ -281,6 +311,10 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy {
         return _pAddition.restaurants.filter(a => a.restaurantId === this.call.restaurant_id)[0].price * _pOrderItemQuantity;
     }
 
+    /**
+     * Return Payment method name
+     * @param {string} _pPayId
+     */
     getPaymentMethod(_pPayId: string): string {
         let _lPayment = PaymentMethods.findOne({ _id: _pPayId });
         if (_lPayment) {
@@ -288,6 +322,18 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy {
         } else {
             return '';
         }
+    }
+
+    /**
+     * Function to translate information
+     * @param {string} _itemName
+     */
+    itemNameTraduction(_itemName: string): string {
+        var _wordTraduced: string;
+        this._translate.get(_itemName).subscribe((res: string) => {
+            _wordTraduced = res;
+        });
+        return _wordTraduced;
     }
 
     /**

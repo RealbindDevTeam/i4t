@@ -244,7 +244,7 @@ export function loadMenus() {
             {
                 _id: "5000",
                 is_active: true,
-                name: "MENUS.PAYMENTS",
+                name: "MENUS.PAYMENTS.PAYMENTS",
                 url: "/app/payments",
                 icon_name: "local_atm",
                 order: 5000
@@ -288,6 +288,22 @@ export function loadMenus() {
                 url: "/app/settings",
                 icon_name: "settings",
                 order: 10000
+            },
+            {
+                _id: "11000",
+                is_active: true,
+                name: "MENUS.TABLES",
+                url: "/app/table-change",
+                icon_name: "compare_arrows",
+                order: 11000
+            },
+            {
+                _id: "12000",
+                is_active: true,
+                name: "MENUS.RESTAURANT_EXIT",
+                url: "/app/restaurant-exit",
+                icon_name: "exit_to_app",
+                order: 12000
             },
         ];
         menus.forEach((menu: Menu) => Menus.insert(menu));

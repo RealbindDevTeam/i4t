@@ -278,7 +278,9 @@
         "ORDERS": "Orders",
         "WAITER_CALL": "Waiter/waitress call",
         "CALLS": "Calls",
-        "SETTINGS": "Settings"
+        "SETTINGS": "Settings",
+        "TABLES": "Tables",
+        "RESTAURANT_EXIT": "Leave Restaurant"
     },
     "PROMOTIONS": {
         "PROMOTION_CREATION": "Creation promotion",
@@ -1006,7 +1008,8 @@
         "PRICE": "Price: ",
         "CLOSE_PAYMENTS": "Close received payments ",
         "GARNISH_FOOD": "Side dishes",
-        "ADDITION": "Addition"
+        "ADDITION": "Addition",
+        "ERROR": "Error closing payments"
     },
     "MONTHLY_CONFIG": {
         "TITLE": "Configure restaurants and tables",
@@ -1527,6 +1530,8 @@
         "PAYMENT_METHODS": "Payment methods",
         "CURRENCY_ACCEPTED": "Currency accepted",
         "LOCATION": "Location",
-        "ADDRESS": "Address"
+        "ADDRESS": "Address",
+        "READ_MORE": "Read more",
+        "READ_LESS": "Read less"
     }
 }

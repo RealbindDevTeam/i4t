@@ -87,12 +87,13 @@ if (Meteor.isServer) {
         } else {
           Meteor.call('jobRemove', queueName, job._doc._id, data_detail, usr_id_enabled);
         }
+        callback();
       } else {
         Meteor.call('jobRemove', queueName, job._doc._id, data_detail, usr_id_enabled);
-        console.log('200 (processJobs) - WaiterCallDetails is undefined');
+        Meteor.call('processJobs', job, callback, queueName);
+        //console.log('200 (processJobs) - WaiterCallDetails is undefined');
         //throw new Meteor.Error('200 (processJobs) - WaiterCallDetails is undefined');
       }
-      callback();
     },
 
     /**
@@ -104,22 +105,24 @@ if (Meteor.isServer) {
      */
     jobRemove(pQueueName, pJobId, pDataDetail, pEnabled) {
       Job.getJob(pQueueName, pJobId, function (err, job) {
-        job.cancel();
-        job.remove(function (err, result) {
-          if (result) {
-            if (pDataDetail !== null && pDataDetail !== undefined) {
-              var data: any = {
-                job_id: job._doc._id,
-                restaurants: pDataDetail.restaurant_id,
-                tables: pDataDetail.table_id,
-                user: pDataDetail.user_id,
-                waiter_id: pEnabled,
-                status: 'waiting'
-              };
-              Meteor.call('waiterCall', pQueueName, true, data);
+        if (job) {
+          job.cancel();
+          job.remove(function (err, result) {
+            if (result) {
+              if (pDataDetail !== null && pDataDetail !== undefined) {
+                var data: any = {
+                  job_id: job._doc._id,
+                  restaurants: pDataDetail.restaurant_id,
+                  tables: pDataDetail.table_id,
+                  user: pDataDetail.user_id,
+                  waiter_id: pEnabled,
+                  status: 'waiting'
+                };
+                Meteor.call('waiterCall', pQueueName, true, data);
+              }
             }
-          }
-        });
+          });
+        }
       });
     },
 
@@ -162,7 +165,7 @@ if (Meteor.isServer) {
     closeCall: function (_jobDetail: WaiterCallDetail, _waiter_id: string) {
       Job.getJob(_jobDetail.queue, _jobDetail.job_id, function (err, job) {
         job.remove(function (err, result) {
-          WaiterCallDetails.update({ job_id: _jobDetail.job_id },
+          WaiterCallDetails.update({ _id: _jobDetail._id },
             {
               $set: { "status": "closed", modification_user: _waiter_id, modification_date: new Date() }
             });
@@ -186,9 +189,29 @@ if (Meteor.isServer) {
             }
           }
 
-          let usr_detail = UserDetails.findOne({ user_id: _waiter_id });
-          let jobs = usr_detail.jobs - 1;
-          UserDetails.update({ user_id: _waiter_id }, { $set: { "enabled": true, "jobs": jobs } });
+          let usr_detail: UserDetail = UserDetails.findOne({ user_id: _waiter_id });
+          if (usr_detail) {
+            let jobs = usr_detail.jobs - 1;
+            UserDetails.update({ _id: usr_detail._id }, { $set: { "enabled": true, "jobs": jobs } });
+          }
+        });
+      });
+      return;
+    },
+
+    closeWaiterCall: function (_jobDetail: WaiterCallDetail) {
+      Job.getJob(_jobDetail.queue, _jobDetail.job_id, function (err, job) {
+        job.remove(function (err, result) {
+          WaiterCallDetails.update({ _id: _jobDetail._id },
+            {
+              $set: { "status": "closed", modification_user: _jobDetail.waiter_id, modification_date: new Date() }
+            });
+
+          let usr_detail: UserDetail = UserDetails.findOne({ user_id: _jobDetail.waiter_id });
+          if (usr_detail) {
+            let jobs = usr_detail.jobs - 1;
+            UserDetails.update({ _id: usr_detail._id }, { $set: { "enabled": true, "jobs": jobs } });
+          }
         });
       });
       return;

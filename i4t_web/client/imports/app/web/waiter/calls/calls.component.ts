@@ -112,7 +112,7 @@ export class CallsComponent implements OnInit, OnDestroy {
             if (result.success) {
                 this._loading = true;
                 setTimeout(() => {
-                    MeteorObservable.call('closeCall', _call, Meteor.userId()).subscribe(() => {
+                    MeteorObservable.call('closeWaiterCall', _call).subscribe(() => {
                         this._loading = false;
                     });
                 }, 1500);
@@ -126,9 +126,7 @@ export class CallsComponent implements OnInit, OnDestroy {
      */
     showPayment(_call: WaiterCallDetail) {
         this._mdDialogRef = this._mdDialog.open(PaymentConfirmComponent, {
-            disableClose: true,
-            width: '55%',
-            height: '70%'
+            disableClose: true
         });
         this._mdDialogRef.componentInstance.call = _call;
         this._mdDialogRef.afterClosed().subscribe(result => {
@@ -142,9 +140,7 @@ export class CallsComponent implements OnInit, OnDestroy {
      */
     showSendOrder(_call: WaiterCallDetail): void {
         this._mdDialogRef = this._mdDialog.open(SendOrderConfirmComponent, {
-            disableClose: true,
-            width: '55%',
-            height: '70%'
+            disableClose: true
         });
         this._mdDialogRef.componentInstance.call = _call;
         this._mdDialogRef.afterClosed().subscribe(result => {
@@ -157,9 +153,7 @@ export class CallsComponent implements OnInit, OnDestroy {
      */
     showUserExitTable(_call: WaiterCallDetail): void {
         this._mdDialogRef = this._mdDialog.open(RestaurantExitConfirmComponent, {
-            disableClose: true,
-            width: '55%',
-            height: '70%'
+            disableClose: true
         });
         this._mdDialogRef.componentInstance.call = _call;
         this._mdDialogRef.afterClosed().subscribe(result => {

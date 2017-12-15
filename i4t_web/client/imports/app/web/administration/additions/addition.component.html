@@ -70,11 +70,11 @@
   </mat-card-content>
 </mat-card>
 <mat-card *ngFor="let addition of _additions | async" class="cards">
-  <mat-card-title class="card-title">{{addition.name}}</mat-card-title>
   <mat-card-subtitle class="card-subtitle">
     <label class="prices">{{'ADDITIONS.PRICES' | translate}}</label>&emsp;-&emsp;
     <label class="taxes">{{'ADDITIONS.TAXES' | translate}}</label>
   </mat-card-subtitle>
+  <mat-card-title class="card-title">{{addition.name}}</mat-card-title>
   <mat-card-content>
     <div class="card-addition-price">{{showAdditionPrices(addition.prices)}}</div>
     <div class="card-addition-tax">{{showAdditionTaxes(addition.prices)}}</div>    

@@ -135,7 +135,6 @@ export class OrderPaymentTranslateComponent implements OnInit, OnDestroy {
     open() {
         this._dialogRef = this._dialog.open(OrderToTranslateComponent, {
             disableClose: true,
-            width: '70%'
         });
         this._dialogRef.componentInstance._restaurantId = this._restaurantId;
         this._dialogRef.componentInstance._tableId = this._tableId;

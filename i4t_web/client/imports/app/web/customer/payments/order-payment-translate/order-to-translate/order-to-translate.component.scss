@@ -1,4 +1,5 @@
-.other-order {
+
+.customer-order {
     background-color: white;
     color: rgba(0,0,0,0.87);
     font-size: 14px;
@@ -7,32 +8,77 @@
     box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
 }
 
-.order-code {
-    margin-right: 1rem;
+.mt-div {
+    width: 100%;
+}
+.mt-div span{
+    margin-right: 16px;
 }
 
-.order-status {
-    float: right;
+mat-list.box-shadow {
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
-.item-image {
-    border-radius: 0;
+mat-list-item.box-shadow {
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
-.pay-button {
-    margin-left: 5%;
+mat-list-item.wm {
+    margin: 0;
 }
 
-.order-icon {
-    margin-right: 1%;
+img.order {
+    display: none;
 }
 
-.order-item-garnishFood{
-    display: inline-block;
-    color: darkgoldenrod;
+img.br {
+    border-radius: 0 !important;
 }
 
-.order-item-additions{
+.bs {
+    display: none;
+}
+
+.fbs {
+    display: none;
+}
+
+@media only screen and (min-width: 600px) {
+    img.order {
+        display: block;
+    }
+
+    img.custom {
+        width: 80px !important;
+        height: 80px !important;
+    }
+
+    .bs {
+        display: block;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .customer-order {
+        height: 100%;
+    }
+
+    .mt-div {
+        padding: 16px;
+        display: grid;
+    }
+
+    .fbs {
+        display: block;
+        background: #EF5350;
+    }
+}
+
+.card_initial {
+    margin: 0;
+}
+
+.order-item {
     display: inline-block;
     color: darkgoldenrod;
 }

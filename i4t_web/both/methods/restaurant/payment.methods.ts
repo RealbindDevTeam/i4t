@@ -25,15 +25,17 @@ if (Meteor.isServer) {
             _paymentsNotReceived = Payments.collection.find({ restaurantId: _restaurantId, tableId: _tableId, status: 'PAYMENT.NO_PAID', received: false }).count();
 
             _paymentsToPay.fetch().forEach((pay) => {
+                let _orderOwner: number = 0;
                 pay.orders.forEach((order) => {
                     Orders.update({ _id: order }, { $set: { status: 'ORDER_STATUS.CLOSED' } });
                 });
                 Payments.update({ _id: pay._id }, { $set: { status: 'PAYMENT.PAID' } });
-                let orderOwner = Orders.collection.find({
+
+                _orderOwner = Orders.collection.find({
                     creation_user: pay.creation_user, status:
                         { $in: ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED', 'ORDER_STATUS.DELIVERED', 'ORDER_STATUS.PENDING_CONFIRM'] }
                 }).count();
-                if (orderOwner === 0) {
+                if (_orderOwner === 0) {
                     _userDetail = UserDetails.findOne({ user_id: pay.creation_user });
                     UserDetails.update({ _id: _userDetail._id }, { $set: { current_restaurant: '', current_table: '' } });
                     let currentTable = Tables.findOne({ _id: _tableId });
@@ -59,7 +61,7 @@ if (Meteor.isServer) {
             }
 
             if (_paymentsNotReceived === 0) {
-                Meteor.call('closeCall', _call, Meteor.userId());
+                Meteor.call('closeWaiterCall', _call);
             }
         }
     });
