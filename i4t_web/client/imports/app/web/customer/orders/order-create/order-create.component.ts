@@ -367,15 +367,6 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * @param {boolean} _boolean 
      */
     viewItemDetail(_boolean: boolean): void {
-        /*var card = document.getElementById("item-selected");
-
-        if (!_boolean) {
-            card.style.width = "396px";
-        } else {
-            card.style.width = "0";
-            card.removeAttribute("style");
-        }*/
-
         var card = document.getElementById("item-selected");
         if (!_boolean) {
             card.classList.add('item-detail-show');
@@ -390,14 +381,6 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
      * @param {boolean} _boolean 
      */
     viewAdditionDetail(_boolean: boolean): void {
-        /*var card = document.getElementById("addition-detail");
-
-        if (!_boolean) {
-            card.style.width = "396px";
-        } else {
-            card.style.width = "0";
-            card.removeAttribute("style");
-        }*/
         var card = document.getElementById("addition-detail");
         if (card) {
             if (!_boolean) {

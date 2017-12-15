@@ -203,9 +203,14 @@
         </div>
 
         <div id="addition-detail" class="item-detail">
-            <div class="header-detail" #headerDetailCard>
+            <!--div class="header-detail" #headerDetailCard>
                 <label>{{'ORDER_CREATE.ADDITIONS' | translate}}</label>
                 <button class="btn-close" mat-raised-button (click)="viewAdditionDetail(true)">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+            </div-->
+            <div class="header-detail-static">
+                <button class="btn-close" mat-raised-button (click)="viewItemDetail(true)">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
             </div>
