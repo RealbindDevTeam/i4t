@@ -6,7 +6,7 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content style="overflow:scroll">
     <div *ngIf="(_orders | async)?.length <= 0" style="padding: 0 16px;">
         <div class="img">
             <img src="assets/img/orders-detail.png">
@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <ion-card style="height: 82%;overflow: scroll;" *ngFor="let order of _orders | async">
+    <ion-card *ngFor="let order of _orders | async">
         <ion-card-content>
             <ion-item text-wrap>
                 <ion-thumbnail item-left>
