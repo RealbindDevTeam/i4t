@@ -142,23 +142,6 @@ export class TopnavComponent implements OnInit, OnDestroy {
         this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
       });
     });
-
-    /*
-    MeteorObservable.call('getRole').subscribe((role) => {
-      if (role === "400") {
-        this._itemsTopMenu = 'customer';
-        this.showMenuName = true;
-        this._showMenuButton = true;
-        this.menuName = this.itemNameTraduction('TOPNAV.ORDERS');
-      } else {
-        this._showToggleSidenav = true;
-        this.showMenuName = false;
-        this._showMenuButton = false;
-      }
-    }, (error) => {
-      alert(`Failed to to load layout ${error}`);
-    });
-    */
     this._showToggleSidenav = true;
     this.showMenuName = false;
     this._showMenuButton = false;
@@ -211,10 +194,6 @@ export class TopnavComponent implements OnInit, OnDestroy {
   toggleSidenav() {
     this._navigation.setSidenavOpened(!this._sidenavOpened);
   }
-
-  /*searchFocus() {
-    this._searchVal = this._searchValOld;
-  }*/
 
   toggleSearch(input: HTMLInputElement) {
     this._searchToggled = !this._searchToggled;
