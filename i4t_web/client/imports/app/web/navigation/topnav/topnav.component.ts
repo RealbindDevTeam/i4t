@@ -193,12 +193,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
 
   toggleSidenav() {
     this._navigation.setSidenavOpened(!this._sidenavOpened);
-    //alert(!this._sidenavOpened);
   }
-
-  /*searchFocus() {
-    this._searchVal = this._searchValOld;
-  }*/
 
   toggleSearch(input: HTMLInputElement) {
     this._searchToggled = !this._searchToggled;
