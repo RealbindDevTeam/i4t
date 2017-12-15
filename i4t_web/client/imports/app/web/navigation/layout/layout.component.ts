@@ -9,6 +9,7 @@ import { Menus } from '../../../../../../both/collections/auth/menu.collection';
 import { Menu } from '../../../../../../both/models/auth/menu.model';
 import { MenuItem } from '../menu-item';
 import { TranslateService } from '@ngx-translate/core';
+import { console } from 'meteor/tools';
 
 @Component({
   templateUrl: './layout.component.html',
@@ -54,21 +55,17 @@ export class LayoutComponent implements OnInit, OnDestroy {
    * ngOnInit Implementation. Is validated user role to load layout corresponding
    */
   ngOnInit() {
-    MeteorObservable.call('getRole').subscribe((role) => {
-      if(role !== "400"){
-        this.showSidenav();
-      }
-    }, (error) => {
-      alert(`Failed to to load layout ${error}`);
-    });
+    this.showSidenav();
   }
 
   /**
    * This method bundle the Sidenav functionality
    */
   showSidenav(){
+    //alert(this._navigation.mediumScreenAndDown);
     if(this._navigation.mediumScreenAndDown) {
       this.sideNav.close();
+      this.sidenavToggle(false);
     }
 
     let lastWindowSize: number = 0;

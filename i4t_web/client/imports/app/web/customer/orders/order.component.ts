@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -11,7 +11,7 @@ import { Tables } from '../../../../../../both/collections/restaurant/table.coll
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
-import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
+import { UserDetail, UserDetailImage } from '../../../../../../both/models/auth/user-detail.model';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 
 @Component({
@@ -29,6 +29,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     private _userDetailsSub: Subscription;
     private _restaurantSub: Subscription;
 
+    private _userDetails: Observable<UserDetail[]>;
     private _currentRestaurant: Restaurant;
     private _currentQRCode: string;
     private titleMsg: string;
@@ -68,6 +69,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
         });
         this._userDetailsSub = MeteorObservable.subscribe('getUserDetailsByUser', this._user).subscribe(() => {
             this._ngZone.run(() => {
+                this._userDetails = UserDetails.find({ user_id: this._user }).zone();
+                this._userDetails.subscribe(() => { this.validateUser(); });
                 let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: this._user });
                 if (_lUserDetail.current_restaurant !== "" && _lUserDetail.current_table !== "") {
                     this._restaurantSub = MeteorObservable.subscribe('getRestaurantByCurrentUser', this._user).subscribe(() => {
@@ -162,6 +165,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
         this._showNewOrderButton = false;
     }
 
+    /**
+     * Function to validate if order creation finish
+     * @param {any} _event 
+     */
     validateFinishOrderCreation(_event: any): void {
         if (_event) {
             this._showOrderCreation = false;
@@ -171,6 +178,20 @@ export class OrdersComponent implements OnInit, OnDestroy {
             this._showOrderCreation = true;
             this._showOrderList = false;
             this._showNewOrderButton = false;
+        }
+    }
+
+    /**
+     * Validate user status
+     */
+    validateUser(): void {
+        let _user: UserDetail = UserDetails.findOne({ user_id: this._user });
+        if (_user) {
+            if (_user.current_restaurant === '' && _user.current_table === '') {
+                this._showAlphanumericCodeCard = true;
+                this._showOrderList = false;
+                this._showNewOrderButton = false;
+            }
         }
     }
 
