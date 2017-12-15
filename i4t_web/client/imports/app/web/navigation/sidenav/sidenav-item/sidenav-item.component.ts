@@ -11,7 +11,7 @@ import { UserLanguageService } from '../../../../shared/services/user-language.s
 @Component({
   selector: 'c-sidenav-item',
   templateUrl: './sidenav-item.component.html',
-  styleUrls: [ './sidenav-item.component.scss' ],
+  styleUrls: ['./sidenav-item.component.scss'],
 })
 export class SidenavItemComponent implements AfterViewInit, OnDestroy {
   @ViewChildren(SidenavItemComponent) children: QueryList<SidenavItemComponent>;
@@ -34,14 +34,15 @@ export class SidenavItemComponent implements AfterViewInit, OnDestroy {
 
   /**
    * SidenavItemComponent Constructor
-   * @param {NavigationService} _navigation
-   * @param {Router} _router 
-   * @param {ActivatedRoute} _activatedRoute 
-   * @param {TranslateService} _translate 
-   * @param {UserLanguageService} _userLanguageService 
+   * 
+   * @param _navigation 
+   * @param _activatedRoute 
+   * @param _translate 
+   * @param _userLanguageService 
+   * @param cdRef 
+   * @param translate 
    */
   constructor(private _navigation: NavigationService,
-    private _router: Router,
     private _activatedRoute: ActivatedRoute,
     private _translate: TranslateService,
     private _userLanguageService: UserLanguageService,
@@ -50,7 +51,7 @@ export class SidenavItemComponent implements AfterViewInit, OnDestroy {
 
     this._userLang = navigator.language.split('-')[0];
     translate.setDefaultLang('en');
-    translate.use( this._userLang );
+    translate.use(this._userLang);
   }
 
   ngAfterViewInit() {
@@ -146,6 +147,13 @@ export class SidenavItemComponent implements AfterViewInit, OnDestroy {
       }
     } else {
       this.toggleDropdown(!this._active);
+    }
+    this.mediumScreenAndUp();
+  }
+
+  mediumScreenAndUp() {
+    if (this._navigation.mediumScreenAndDown) {
+      this._navigation.setSidenavOpened(false);
     }
   }
 
