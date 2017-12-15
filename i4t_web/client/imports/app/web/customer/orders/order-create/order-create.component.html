@@ -5,8 +5,10 @@
                 <mat-form-field style="display: block">
                     <mat-select placeholder="{{'ORDER_CREATE.SEARCH_MENU' | translate}}">
                         <mat-option (click)="showAllItems()">{{'ORDER_CREATE.SHOW_ALL' | translate}}</mat-option>
-                        <mat-option *ngFor="let sec of _sectionsFilter | async" (click)="changeSection(sec._id)" value="{{sec._id}}">{{sec.name}}</mat-option>
-                        <mat-option *ngIf="_showAdditionsOption" (click)="showAdditions()">{{'ORDER_CREATE.ADDITIONS' | translate}}</mat-option>
+                        <mat-optgroup *ngFor="let menu of _orderMenus" [label]="menu.title">
+                            <mat-option *ngFor="let children of menu.children" [value]="children.iurestId" (click)="evaluateId(children.iurestId)">{{ children.title }}</mat-option>
+                        </mat-optgroup>
+                        <mat-option *ngIf="_showAdditionsOption" (click)="evaluateId({'type':'Ad'})">{{'ORDER_CREATE.ADDITIONS' | translate}}</mat-option>
                     </mat-select>
                 </mat-form-field>
 
