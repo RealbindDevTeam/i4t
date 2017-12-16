@@ -553,7 +553,9 @@
         "SEARCH_TABLES": "Selecciona el restaurante para mostrar las mesas asociadas",
         "MSG_INITIAL": "Crea las mesas con el código QR asociado",
         "TABLES_SEARCH": "Búscar mesas",
-        "FILE_NAME": "mesas"
+        "FILE_NAME": "mesas",
+        "SELECT_TABLES": "Selecciona el restaurante para ver las mesas.",
+        "NO_TABLE_SELECTED": "No has seleccionado un restaurante."
     },
     "GO_TO_STORE": {
         "CLIENT": {
@@ -846,8 +848,8 @@
             "WAITER_ATTEND": "En un momento un mesero te atenderá en tu mesa",
             "VIEW_ORDERS_DETAIL": "Consulta el detalle de tus ordenes",
             "VIEW_DETAIL": "Ver detalle",
-            "ADD_ORDER": "Agregar ordenes",
-            "ADD_ORDER_MSG": "Agrega o elimina ordenes para tu pago",
+            "ADD_ORDER": "Invitación de amigos",
+            "ADD_ORDER_MSG": "Invita o acepta invitaciones de tus amigos",
             "VIEW_ORDER_DETAILS": "En esta página puedes ver tus ordenes y su detalle",
             "IN_PROCESS_PAYMENT": "En Proceso de pago",
             "RETURN_ORDER": "Devolver orden",
@@ -973,8 +975,8 @@
         "ORDERS_TO_PAY_TITLE": "Ordenes pendientes para agregar a tu pago",
         "THE_USER": "El usuario ",
         "WANTS_PAY": " desea pagar la orden ",
-        "AGREE": ", usted esta de acuerdo?",
-        "DIALOG_TITLE": "Confirmar traslado de orden"
+        "AGREE": ", estas de acuerdo?",
+        "DIALOG_TITLE": "Confirmar invitación"
     },
     "ORDER_TRANS": {
         "ORDERS": "Orden",
