@@ -79,7 +79,7 @@ export class OrdersPage implements OnInit, OnDestroy {
     }
 
     ionViewWillEnter() {
-        //this.removeSubscriptions();
+        this.removeSubscriptions();
         this.init();
     }
 
@@ -371,10 +371,11 @@ export class OrdersPage implements OnInit, OnDestroy {
     }
 
     ionViewWillLeave() {
-        this.removeSubscriptions();
+        //this.removeSubscriptions();
     }
 
     ionViewWillUnload() {
+        this.removeSubscriptions();
     }
 
     ngOnDestroy() {
