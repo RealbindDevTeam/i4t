@@ -40,7 +40,6 @@ export class SectionsPage implements OnInit, OnDestroy {
   private _subcategorySub: Subscription;
   private _items;
   private _itemSub: Subscription;
-  private _restaurantThumbSub: Subscription;
   private _additions;
   private _additionsSub: Subscription;
   private _table;
@@ -150,7 +149,6 @@ export class SectionsPage implements OnInit, OnDestroy {
     if(this._categorySub){this._categorySub.unsubscribe();}
     if(this._subcategorySub){this._subcategorySub.unsubscribe();}
     if(this._itemSub){this._itemSub.unsubscribe();}
-    if(this._restaurantThumbSub){this._restaurantThumbSub.unsubscribe();}
     if(this._additionsSub){this._additionsSub.unsubscribe();}
     if(this._tablesSub){this._tablesSub.unsubscribe();}
     }

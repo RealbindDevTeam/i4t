@@ -53,6 +53,7 @@ export class Menu {
   }
 
   ngOnInit() {
+    this.removeSubscriptions();
     this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe();
     this._userDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', Meteor.userId()).subscribe();
   }
@@ -141,15 +142,15 @@ export class Menu {
   getUserImage(): string {
     let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: Meteor.userId() });
     if (_lUserDetail) {
-        let _lUserDetailImage: UserDetailImage = _lUserDetail.image;
-        if (_lUserDetailImage) {
-            return _lUserDetailImage.url;
-        } else {
-            return 'assets/img/user_default_image.png';
-        }
+      let _lUserDetailImage: UserDetailImage = _lUserDetail.image;
+      if (_lUserDetailImage) {
+        return _lUserDetailImage.url;
+      } else {
+        return 'assets/img/user_default_image.png';
+      }
     }
     else {
-        return 'assets/img/user_default_image.png';
+      return 'assets/img/user_default_image.png';
     }
   }
 
