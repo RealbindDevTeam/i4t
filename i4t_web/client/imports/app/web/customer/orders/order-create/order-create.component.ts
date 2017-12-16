@@ -71,6 +71,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     private _currencyCode: string;
     private titleMsg: string;
     private btnAcceptLbl: string;
+    private _showAdditionsOption: boolean = false;
 
     private _orderMenus: OrderMenu[] = [];
     private orderMenuSetup: OrderMenu[] = [];
@@ -216,7 +217,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
 
         let _lAdditions: number = Additions.collection.find({}).count();
         if (_lAdditions > 0) {
-            this.orderMenuSetup.push(new OrderMenu(this.itemNameTraduction('ORDER_CREATE.ADDITIONS'), { id: 9999, type: 'Ad' }, []));
+            this._showAdditionsOption = true;
         }
 
         this._navigation.setOrderMenus(this.orderMenuSetup);

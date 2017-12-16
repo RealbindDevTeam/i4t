@@ -105,22 +105,24 @@ if (Meteor.isServer) {
      */
     jobRemove(pQueueName, pJobId, pDataDetail, pEnabled) {
       Job.getJob(pQueueName, pJobId, function (err, job) {
-        job.cancel();
-        job.remove(function (err, result) {
-          if (result) {
-            if (pDataDetail !== null && pDataDetail !== undefined) {
-              var data: any = {
-                job_id: job._doc._id,
-                restaurants: pDataDetail.restaurant_id,
-                tables: pDataDetail.table_id,
-                user: pDataDetail.user_id,
-                waiter_id: pEnabled,
-                status: 'waiting'
-              };
-              Meteor.call('waiterCall', pQueueName, true, data);
+        if (job) {
+          job.cancel();
+          job.remove(function (err, result) {
+            if (result) {
+              if (pDataDetail !== null && pDataDetail !== undefined) {
+                var data: any = {
+                  job_id: job._doc._id,
+                  restaurants: pDataDetail.restaurant_id,
+                  tables: pDataDetail.table_id,
+                  user: pDataDetail.user_id,
+                  waiter_id: pEnabled,
+                  status: 'waiting'
+                };
+                Meteor.call('waiterCall', pQueueName, true, data);
+              }
             }
-          }
-        });
+          });
+        }
       });
     },
 
