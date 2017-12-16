@@ -22,7 +22,6 @@ export class AddOrderPaymentPage implements OnInit, OnDestroy {
     
   private _ordersSubscription           : Subscription;
   private _itemsSubscription            : Subscription;
-  private _itemImageThumbsSubscription  : Subscription;
   private _ordersTable   : any;
   private _items         : any;
   private _restaurantId  : string;
@@ -67,8 +66,6 @@ export class AddOrderPaymentPage implements OnInit, OnDestroy {
     this._itemsSubscription = MeteorObservable.subscribe( 'itemsByRestaurant', this._restaurantId ).subscribe( () => {
       this._items = Items.find( { } ).zone();
     });
-
-    this._itemImageThumbsSubscription = MeteorObservable.subscribe( 'itemImageThumbsByRestaurant', this._restaurantId ).subscribe();
   }
 
   /**
@@ -182,6 +179,5 @@ export class AddOrderPaymentPage implements OnInit, OnDestroy {
   removeSubscriptions():void{
     if( this._ordersSubscription ){ this._ordersSubscription.unsubscribe(); }
     if( this._itemsSubscription ){ this._itemsSubscription.unsubscribe(); }
-    if( this._itemImageThumbsSubscription ){ this._itemImageThumbsSubscription.unsubscribe(); }
   }
 }

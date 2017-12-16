@@ -19,6 +19,7 @@ let jsPDF = require('jspdf');
     templateUrl: './customer-payments-history.component.html',
     styleUrls: ['./customer-payments-history.component.scss']
 })
+
 export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
 
     private _invoicesHistorySubscription: Subscription;
@@ -28,6 +29,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
     public _dialogRef: MatDialogRef<any>;
     private titleMsg: string;
     private btnAcceptLbl: string;
+    private panelOpenState: boolean = false;
 
     /**
      * CustomerPaymentsHistoryComponent component
@@ -377,7 +379,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             author: this.itemNameTraduction('PAYMENTS_HISTORY.SOFTWARE_BY_REALBIND'),
         });
 
-        if(_pInvoice.legal_information.prefix_name){
+        if (_pInvoice.legal_information.prefix_name) {
             pdf.save(_pInvoice.legal_information.prefix_name + '_' + _pInvoice.legal_information.number + '_' + this.dateFormater(_pInvoice.creation_date, false) + '.pdf');
         } else {
             pdf.save(_pInvoice.legal_information.number + '_' + this.dateFormater(_pInvoice.creation_date, false) + '.pdf');

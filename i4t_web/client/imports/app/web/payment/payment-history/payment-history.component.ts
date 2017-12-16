@@ -474,7 +474,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
             qr_pdf.setFontStyle('bold');
             qr_pdf.text(invoice_lbl, 15, 45);
             qr_pdf.setFontStyle('normal');
-            qr_pdf.text(number_lbl + iurest_invoice.number, 15, 50);
+            qr_pdf.text(number_lbl + iurest_invoice.company_info.resolution_prefix + '-' + iurest_invoice.number, 15, 50);
 
             let dateFormated = iurest_invoice.creation_date.getDate() + '/' + (iurest_invoice.creation_date.getMonth() + 1) + '/' + iurest_invoice.creation_date.getFullYear();
             qr_pdf.text(date_lbl + dateFormated, 15, 55);
