@@ -211,13 +211,13 @@
                 <div *ngIf="_showOrderItemDetail">
                     <div *ngFor="let item of _itemsToShowDetail | async">
                         <div class="header-detail-static">
-                            <button class="btn-close" mat-raised-button (click)="viewItemDetail(true)">
+                            <button class="btn-close" mat-raised-button (click)="viewItemDetail('item-selected',true)">
                                 <i class="fa fa-times" aria-hidden="true"></i>
                             </button>
                         </div>
                         <div id="mt" class="header-detail header-detail-hide">
                             <label>{{item.name}}</label>
-                            <button class="btn-close" mat-raised-button (click)="viewItemDetail(true)">
+                            <button class="btn-close" mat-raised-button (click)="viewItemDetail('item-selected',true)">
                                 <i class="fa fa-times" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -299,9 +299,8 @@
         </div>
         <div id="addition-detail" class="item-detail">
             <div *ngFor="let add of _additionDetails | async">
-                <div class="header-detail" #headerDetailCard>
-                    <label>{{'ORDER_LIST.ADDITIONS' | translate}}</label>
-                    <button class="btn-close" mat-raised-button (click)="viewAdditionDetail(true)">
+                <div class="header-detail-static pr">
+                    <button class="btn-close" mat-raised-button (click)="viewItemDetail('addition-detail', true)">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </button>
                 </div>
