@@ -415,6 +415,7 @@ export class ColombiaPaymentsPage implements OnInit, OnDestroy {
     if (this._restaurantsSubscription) { this._restaurantsSubscription.unsubscribe(); }
     if (this._waiterCallsPaySubscription) { this._waiterCallsPaySubscription.unsubscribe(); }
     if (this._ordersTransSubscription) { this._ordersTransSubscription.unsubscribe(); }
+    if (this._paymentSubscription) { this._paymentSubscription.unsubscribe(); }
   }
 
 }
