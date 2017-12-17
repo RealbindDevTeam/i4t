@@ -21,23 +21,33 @@ if (Meteor.isServer) {
             let _paymentsToPay: any;
             let _paymentsNotReceived: number = 0;
             let _countOrders: number = 0;
+            let _userIds: string[] = [];
 
             _paymentsToPay = Payments.collection.find({ restaurantId: _restaurantId, tableId: _tableId, status: 'PAYMENT.NO_PAID', received: true });
             _paymentsNotReceived = Payments.collection.find({ restaurantId: _restaurantId, tableId: _tableId, status: 'PAYMENT.NO_PAID', received: false }).count();
 
             _paymentsToPay.fetch().forEach((pay) => {
-                let _orderOwner: number = 0;
                 pay.orders.forEach((order) => {
                     Orders.update({ _id: order }, { $set: { status: 'ORDER_STATUS.CLOSED' } });
                 });
                 Payments.update({ _id: pay._id }, { $set: { status: 'PAYMENT.PAID' } });
+                _userIds.push(pay.creation_user);
 
+                let _lAccountTable: Account = Accounts.findOne({ tableId: _tableId, status: 'OPEN' });
+                if (_lAccountTable) {
+                    Accounts.update({ _id: _lAccountTable._id }, { $set: { total_payment: (_lAccountTable.total_payment - pay.totalOrdersPrice) } });
+                }
+                Meteor.call('invoiceGenerating', pay);
+            });
+
+            _userIds.forEach((user) => {
+                let _orderOwner: number = 0;
                 _orderOwner = Orders.collection.find({
-                    creation_user: pay.creation_user, status:
+                    creation_user: user, status:
                         { $in: ['ORDER_STATUS.REGISTERED', 'ORDER_STATUS.IN_PROCESS', 'ORDER_STATUS.PREPARED', 'ORDER_STATUS.DELIVERED', 'ORDER_STATUS.PENDING_CONFIRM'] }
                 }).count();
                 if (_orderOwner === 0) {
-                    let _userDetail: UserDetail = UserDetails.findOne({ user_id: pay.creation_user });
+                    let _userDetail: UserDetail = UserDetails.findOne({ user_id: user });
                     if (_userDetail) {
                         let _usersUpdated: number = UserDetails.collection.update({ _id: _userDetail._id }, { $set: { current_restaurant: '', current_table: '' } });
                         if (_usersUpdated > 0) {
@@ -48,14 +58,6 @@ if (Meteor.isServer) {
                         }
                     }
                 }
-
-                let _lAccountTable: Account = Accounts.findOne({ tableId: _tableId, status: 'OPEN' });
-                if (_lAccountTable) {
-                    Accounts.update({ _id: _lAccountTable._id }, { $set: { total_payment: (_lAccountTable.total_payment - pay.totalOrdersPrice) } });
-                }
-
-                //Invoice generate
-                Meteor.call('invoiceGenerating', pay);
             });
 
             _countOrders = Orders.collection.find({
