@@ -279,8 +279,9 @@
         "WAITER_CALL": "Waiter/waitress call",
         "CALLS": "Calls",
         "SETTINGS": "Settings",
-        "TABLES": "Tables",
-        "RESTAURANT_EXIT": "Leave Restaurant"
+        "TABLES": "Change table",
+        "RESTAURANT_EXIT": "Leave Restaurant",
+        "PAYMENT_HISTORY": "Payment history"
     },
     "PROMOTIONS": {
         "PROMOTION_CREATION": "Creation promotion",
@@ -552,7 +553,9 @@
         "SEARCH_TABLES": "Select the restaurant to show the associated tables",
         "MSG_INITIAL": "Create the tables with the asociated QR Code",
         "TABLES_SEARCH": "Tables search",
-        "FILE_NAME": "tables"
+        "FILE_NAME": "tables",
+        "SELECT_TABLES": "Select the restaurant to search tables.",
+        "NO_TABLE_SELECTED": "You have not selected a restaurant."
     },
     "GO_TO_STORE": {
         "CLIENT": {
@@ -845,8 +848,8 @@
             "WAITER_ATTEND": "A waiter/waitress will attend at your table soon",
             "VIEW_ORDERS_DETAIL": "View your order details",
             "VIEW_DETAIL": "View Detail",
-            "ADD_ORDER": "Add Order",
-            "ADD_ORDER_MSG": "Add or delete orders for your payment",
+            "ADD_ORDER": "Friends invitations",
+            "ADD_ORDER_MSG": "Invite or accept friends invitations",
             "VIEW_ORDER_DETAILS": "On this page you can see your orders and details",
             "IN_PROCESS_PAYMENT": "In Payment process",
             "RETURN_ORDER": "Return order",
@@ -973,7 +976,7 @@
         "THE_USER": "The user ",
         "WANTS_PAY": " wants to pay the order ",
         "AGREE": ", Do you agree?",
-        "DIALOG_TITLE": "Confirm transfer"
+        "DIALOG_TITLE": "Confirm invitation"
     },
     "ORDER_TRANS": {
         "ORDERS": "Order",
@@ -1199,15 +1202,15 @@
         "INVOICE_GENERATED_BY": "FACTURA EMITIDA POR COMPUTADOR"
     },
     "ADMIN_SIGNUP": {
-        "HOME_CONTENT" : {
-            "TITLE" : "It improves the service of your restaurant and the attention to your clients with our system",
-            "SUB_TITLE" : "It reduces time receiving and delivering the orders of your diners"
+        "HOME_CONTENT": {
+            "TITLE": "It improves the service of your restaurant and the attention to your clients with our system",
+            "SUB_TITLE": "It reduces time receiving and delivering the orders of your diners"
         },
-        "ABOUT_CONTENT" : {
-            "MSG_1" : "Add the detailed information of the menu, in order to the clients can see it, and ordering from his phones, tablets or computers",
-            "MSG_2" : "Creating collaborators and assign them a role (chef, waiter/waitress or supervisor) to interact with the system",
-            "MSG_3" : "You can use the complete free service by limited time, later you pay that you need.",
-            "REF" : "Pricing"
+        "ABOUT_CONTENT": {
+            "MSG_1": "Add the detailed information of the menu, in order to the clients can see it, and ordering from his phones, tablets or computers",
+            "MSG_2": "Creating collaborators and assign them a role (chef, waiter/waitress or supervisor) to interact with the system",
+            "MSG_3": "You can use the complete free service by limited time, later you pay that you need.",
+            "REF": "Pricing"
         },
         "SLOGAN": "Administrator register",
         "USERNAME": "Username",
@@ -1258,23 +1261,23 @@
         "LABEL_LEGAL_END": "you agree the terms and conditions.",
         "GENERAL_INFO": "Personal information",
         "USER_PASSWD": "User and password",
-        "PAYMENT_PLAN_INFO" : {
-            "HOW_ITS_WORKS" : "How its works?",
-            "FIRST_DAYS_TITLE" : "First days",
-            "FIRST_DAYS_CONTENT" : "Starting from the restaurant register day to the first day of the next month. you can able to use iurest completely free.",
-            "FIRST_DAYS_SUGGEST" : "We recommend that you register in the first days of the month in order to enjoy more the service.",
-            "ABOUT_MONTHLY_PAYMENT" : "About monthly payment",
-            "ABOUT_MONTHLY_PAYMENT_TEXT_1" : "Starting from 1 to 5 of each month, after you configure the number of tables that will be use by restaurant, you can able to pay just for the restaurants and tables that you are going to use in that month.",
-            "ABOUT_MONTHLY_PAYMENT_TEXT_2" : "Keep in mind that changing the configuration of your restaurants and number of tables the value will change.",
-            "ABOUT_MONTHLY_PAYMENT_TEXT_3" : "The charge is:",
-            "ABOUT_MONTHLY_PAYMENT_TEXT_4" : "The price by restaurant",
-            "ABOUT_MONTHLY_PAYMENT_TEXT_5" : "The unit price of table * number of tables by restaurant",
-            "REACTIVATE_IUREST_SERVICE" : "Reactivate iurest service",
-            "REACTIVATE_IUREST_SERVICE_CONTENT" : "If you can't able to pay in the normal payment period (1 to 5 of each month), you have the possibility to reactivate your restaurants in the remaining days of the month, the charge will be made for the total price of the month.",
-            "CALCULATOR" : "Pricing calculator",
-            "RESTAURANT_PRICE" : "Price by restaurant",
-            "TABLE_PRICE" : "Unit price of table",
-            "TOTAL" : "Total"
+        "PAYMENT_PLAN_INFO": {
+            "HOW_ITS_WORKS": "How its works?",
+            "FIRST_DAYS_TITLE": "First days",
+            "FIRST_DAYS_CONTENT": "Starting from the restaurant register day to the first day of the next month. you can able to use iurest completely free.",
+            "FIRST_DAYS_SUGGEST": "We recommend that you register in the first days of the month in order to enjoy more the service.",
+            "ABOUT_MONTHLY_PAYMENT": "About monthly payment",
+            "ABOUT_MONTHLY_PAYMENT_TEXT_1": "Starting from 1 to 5 of each month, after you configure the number of tables that will be use by restaurant, you can able to pay just for the restaurants and tables that you are going to use in that month.",
+            "ABOUT_MONTHLY_PAYMENT_TEXT_2": "Keep in mind that changing the configuration of your restaurants and number of tables the value will change.",
+            "ABOUT_MONTHLY_PAYMENT_TEXT_3": "The charge is:",
+            "ABOUT_MONTHLY_PAYMENT_TEXT_4": "The price by restaurant",
+            "ABOUT_MONTHLY_PAYMENT_TEXT_5": "The unit price of table * number of tables by restaurant",
+            "REACTIVATE_IUREST_SERVICE": "Reactivate iurest service",
+            "REACTIVATE_IUREST_SERVICE_CONTENT": "If you can't able to pay in the normal payment period (1 to 5 of each month), you have the possibility to reactivate your restaurants in the remaining days of the month, the charge will be made for the total price of the month.",
+            "CALCULATOR": "Pricing calculator",
+            "RESTAURANT_PRICE": "Price by restaurant",
+            "TABLE_PRICE": "Unit price of table",
+            "TOTAL": "Total"
         }
     },
     "ADMIN_DASHBOARD": {
@@ -1474,7 +1477,7 @@
             "CURRENT_RESOLUTION_TITLE": "Current resolution information",
             "NEXT_RESOLUTION_TITLE": "Next resolution information",
             "IS_RETAINING_AGENT": "Is retaining agent",
-            "MESSAGE": "In simplified regime, the DIAN number and date are not mandatory. You can leave these fields empty and continue with the prefix and numbering."            
+            "MESSAGE": "In simplified regime, the DIAN number and date are not mandatory. You can leave these fields empty and continue with the prefix and numbering."
         }
     },
     "RESTAURANT_PROFILE": {
