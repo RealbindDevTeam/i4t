@@ -64,18 +64,20 @@ if (Meteor.isServer) {
         var usr_id_enabled: UserDetail = Meteor.call('validateWaiterEnabled', data_detail.restaurant_id, restaurant.max_jobs, data_detail.table_id);
         if (usr_id_enabled) {
           Job.getJob(queueName, job._doc._id, function (err, job) {
-            job.done(function (err, result) { });
-            //Storage of turns the restaurants by date
-            var toDate = new Date().toLocaleDateString();
-            RestaurantTurns.update({ restaurant_id: data_detail.restaurant_id, creation_date: { $gte: new Date(toDate) } },
-              {
-                $set: { last_waiter_id: usr_id_enabled.user_id, modification_user: 'SYSTEM', modification_date: new Date(), }
-              });
-            //Waiter call detail update in completed state
-            WaiterCallDetails.update({ job_id: job._doc._id },
-              {
-                $set: { "waiter_id": usr_id_enabled.user_id, "status": "completed" }
-              });
+            if (job) {
+              job.done(function (err, result) { });
+              //Storage of turns the restaurants by date
+              var toDate = new Date().toLocaleDateString();
+              RestaurantTurns.update({ restaurant_id: data_detail.restaurant_id, creation_date: { $gte: new Date(toDate) } },
+                {
+                  $set: { last_waiter_id: usr_id_enabled.user_id, modification_user: 'SYSTEM', modification_date: new Date(), }
+                });
+              //Waiter call detail update in completed state
+              WaiterCallDetails.update({ job_id: job._doc._id },
+                {
+                  $set: { "waiter_id": usr_id_enabled.user_id, "status": "completed" }
+                });
+            }
           });
           //Waiter update of current jobs and state
           let usr_jobs: number = usr_id_enabled.jobs + 1;

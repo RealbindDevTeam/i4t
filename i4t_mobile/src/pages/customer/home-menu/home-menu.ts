@@ -61,6 +61,7 @@ export class HomeMenu implements OnInit, OnDestroy {
      * ngOnInit Implementation
      */
     ngOnInit() {
+        this.removeSubscriptions();
         this._translate.use(this._userLanguageService.getLanguage(Meteor.user()));
         this._userSubscription = MeteorObservable.subscribe('getUserSettings').subscribe(() => {
             this._ngZone.run(() => {
