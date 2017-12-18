@@ -1,89 +1,73 @@
 <div *ngFor="let userDetail of _usersDetails | async">
-    <div *ngFor="let order of _orders | async" class="order">
-        <div *ngIf="order.creation_user === userDetail.user_id && order.restaurantId === userDetail.current_restaurant && order.tableId === userDetail.current_table && order.markedToCancel === true">
-            <h2 mat-dialog-title>
-                {{'EXIT_TABLE_CONFIRM.CUSTOMER' | translate}}: {{ getUserName(userDetail.user_id) }}
-                <p mat-dialog-title>{{'EXIT_TABLE_CONFIRM.TABLE' | translate}} {{_tableNumber}}</p>
-            </h2>
-            <mat-dialog-content>
-                <mat-list>
-                    <mat-list-item>
-                        <h4 mat-line>{{'EXIT_TABLE_CONFIRM.ORDER' | translate}} {{order.code}}</h4>
-                        <p mat-line>{{'EXIT_TABLE_CONFIRM.STATUS' | translate}}: {{order.status | translate}}</p>
-                        <button mat-icon-button color="warn">
-                            <mat-icon class="md-24 fab-button" aria-label="cancel" (click)="cancelOrderToExitTable(order)">cancel</mat-icon>
-                        </button>
-                        <button mat-raised-button class="primary-button" *ngIf="order.status !== 'ORDER_STATUS.CANCELED'" (click)="cancelOrderToExitTable(order)">{{'EXIT_TABLE_CONFIRM.CANCEL_ORDER' | translate}}</button>
-                    </mat-list-item>
-                </mat-list>
-                <mat-divider></mat-divider>
-            </mat-dialog-content>
-            <span *ngFor="let it of order.items">
-                <span *ngFor="let item of _items | async">
-                    <ng-template [ngIf]="it.itemId === item._id">
-                        <mat-list>
-                            <mat-list-item>
-                                <mat-icon mat-list-icon>folder</mat-icon>
-                                <h4 mat-line>{{it.quantity}} - {{item.name}}</h4>
-                                <p *ngIf="it.observations" mat-line>{{'EXIT_TABLE_CONFIRM.OBSERVATIONS' | translate}}: {{it.observations}}</p>
-                                <p *ngIf="(it.garnishFood.length <= 0)" mat-line>{{'EXIT_TABLE_CONFIRM.NO_GARNISH_FOOD' | translate}}</p>
-                                <p *ngIf="(it.additions.length <= 0)" mat-line>{{'EXIT_TABLE_CONFIRM.NO_ADDITIONS' | translate}}</p>
-                            </mat-list-item>
-                            
-                            <ng-template [ngIf]="(it.garnishFood.length > 0)" class="garnish-food">
+        <div *ngFor="let order of _orders | async" class="order">
+            <div *ngIf="order.creation_user === userDetail.user_id && order.restaurantId === userDetail.current_restaurant && order.tableId === userDetail.current_table && order.markedToCancel === true">
+                <h2 mat-dialog-title>
+                    {{'EXIT_TABLE_CONFIRM.CUSTOMER' | translate}}: {{ getUserName(userDetail.user_id) }}
+                    <p mat-dialog-title>{{'EXIT_TABLE_CONFIRM.TABLE' | translate}} {{_tableNumber}}</p>
+                </h2>
+                <mat-dialog-content>
+                    <mat-list>
+                        <mat-list-item>
+                            <h4 mat-line>{{'EXIT_TABLE_CONFIRM.ORDER' | translate}} {{order.code}}</h4>
+                            <p mat-line>{{'EXIT_TABLE_CONFIRM.STATUS' | translate}}: {{order.status | translate}}</p>
+                            <button mat-icon-button color="warn">
+                                <mat-icon class="md-24 fab-button" aria-label="cancel" (click)="cancelOrderToExitTable(order)">cancel</mat-icon>
+                            </button>
+                            <button mat-raised-button class="primary-button" *ngIf="order.status !== 'ORDER_STATUS.CANCELED'" (click)="cancelOrderToExitTable(order)">{{'EXIT_TABLE_CONFIRM.CANCEL_ORDER' | translate}}</button>
+                        </mat-list-item>
+                    </mat-list>
+                    <mat-divider></mat-divider>
+                </mat-dialog-content>
+                <span *ngFor="let it of order.items">
+                    <span *ngFor="let item of _items | async">
+                        <ng-template [ngIf]="it.itemId === item._id">
+                            <mat-list>
                                 <mat-list-item>
-                                    <mat-icon mat-list-icon>folder</mat-icon>
-                                    <h4 mat-line>{{'EXIT_TABLE_CONFIRM.GARNISH_FOOD' | translate}}</h4>
-                                    <span *ngFor="let garnish of _garnishFood | async">
+                                    <mat-icon mat-list-icon>bookmark_border</mat-icon>
+                                    <h4 mat-line>{{it.quantity}} - {{item.name}}</h4>
+                                    <p *ngIf="it.observations" mat-line>{{'EXIT_TABLE_CONFIRM.OBSERVATIONS' | translate}}: {{it.observations}}</p>
+                                    <span mat-line *ngFor="let garnish of _garnishFood | async">
                                         <span *ngFor="let gar of it.garnishFood">
                                             <ng-template [ngIf]="gar === garnish._id">
-                                                <p mat-line> {{garnish.name}}</p>
+                                                <p mat-line class="list">{{it.quantity}} {{garnish.name}}</p>
                                             </ng-template>
                                         </span>
                                     </span>
-                                </mat-list-item>
-                                <mat-divider></mat-divider>
-                            </ng-template>
-                            <ng-template [ngIf]="it.additions.length > 0" class="garnish-food">
-                                <mat-list-item>
-                                    <mat-icon mat-list-icon>folder</mat-icon>
-                                    <h4 mat-line>{{'EXIT_TABLE_CONFIRM.ADDITIONS' | translate}}</h4>
-                                    <span *ngFor="let addition of _additions | async">
+                                    <span mat-line *ngFor="let addition of _additions | async">
                                         <span *ngFor="let add of it.additions">
                                             <ng-template [ngIf]="add === addition._id">
-                                                <p mat-line>{{it.quantity}} {{addition.name}}</p>  
+                                                <p mat-line class="list">{{it.quantity}} {{addition.name}}</p>  
                                             </ng-template>
                                         </span>
                                     </span>
                                 </mat-list-item>
                                 <mat-divider></mat-divider>
-                            </ng-template>
-                        </mat-list>
-                    </ng-template>
-                </span>
-            </span>
-            <mat-list>
-                <span *ngFor="let addit of _additions | async">
-                    <span *ngFor="let ad of order.additions">
-                        <ng-template [ngIf]="addit._id === ad.additionId">
-                            <mat-list-item>
-                                <mat-icon mat-list-icon>folder</mat-icon>
-                                <h4 mat-line>{{ad.quantity}} {{'EXIT_TABLE_CONFIRM.ADDITION' | translate}}</h4>
-                                <h4 mat-line>{{addit.name}}</h4>
-                            </mat-list-item>
-                            <mat-divider></mat-divider>
+                            </mat-list>
                         </ng-template>
                     </span>
                 </span>
-            </mat-list>
+                <mat-list>
+                    <span *ngFor="let addit of _additions | async">
+                        <span *ngFor="let ad of order.additions">
+                            <ng-template [ngIf]="addit._id === ad.additionId">
+                                <mat-list-item>
+                                    <mat-icon mat-list-icon>bookmark_border</mat-icon>
+                                    <h4 mat-line>{{ad.quantity}} {{'EXIT_TABLE_CONFIRM.ADDITION' | translate}}</h4>
+                                    <p mat-line>{{addit.name}}</p>
+                                </mat-list-item>
+                                <mat-divider></mat-divider>
+                            </ng-template>
+                        </span>
+                    </span>
+                </mat-list>
+            </div>
         </div>
     </div>
-</div>
-
-<mat-dialog-actions>
-    <button mat-raised-button class="secondary-button" (click)="close()">{{ 'CLOSE' | translate }}</button>
-</mat-dialog-actions>
-
-<div class="loading" *ngIf="_loading">
-    <mat-spinner></mat-spinner>
-</div>
+    
+    <mat-dialog-actions>
+        <button mat-raised-button class="secondary-button" (click)="close()">{{ 'CLOSE' | translate }}</button>
+    </mat-dialog-actions>
+    
+    <div class="loading" *ngIf="_loading">
+        <mat-spinner></mat-spinner>
+    </div>
