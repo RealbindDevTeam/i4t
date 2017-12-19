@@ -8,7 +8,7 @@
                 <ng-template [ngIf]="it.itemId === item._id">
                     <h2 class="name">{{it.quantity}} - {{item.name}}</h2>
                     <p *ngIf="it.observations" class="observations">{{ 'SEND_ORDER.OBSERVATIONS' | translate }}: {{it.observations}}</p>
-                    <p *ngIf="(it.garnishFood.length <= 0)" class="no-garnish">{{ 'SEND_ORDER.NO_GARNISH_FOOD' | translate }}</p>
+                    <p *ngIf="(it.garnishFood.length <= 0)"></p>
                     <div *ngIf="(it.garnishFood.length > 0)" class="garnish-food">
                         <p class="garnish-title">{{ 'SEND_ORDER.GARNISH_FOOD' | translate }}:</p>
                         <span *ngFor="let garnish of _garnishFood | async">
@@ -19,7 +19,7 @@
                             </span>
                         </span>
                     </div>
-                    <p class="no-addition" *ngIf="(it.additions.length <= 0)">- {{ 'SEND_ORDER.NO_ADDITIONS' | translate }}</p>
+                    <p *ngIf="(it.additions.length <= 0)"></p>
                     <div *ngIf="(it.additions.length > 0)" class="addition">
                         <p class="addition-title">{{ 'SEND_ORDER.ADDITIONS' | translate }}:</p>
                         <span *ngFor="let addition of _additions | async">

@@ -576,7 +576,9 @@
         "MSG_INITIAL": "Vincula a todos tus colaboradores de a cuerdo al rol que desempeña",
         "BTN": "Registrar colaborador",
         "TABLE_INIT": "Mesa inicial",
-        "TABLE_END": "Mesa final"
+        "TABLE_END": "Mesa final",
+        "PASSWORD": "Contraseña",
+        "PASSWORD_MSG": "Asigna una nueva contraseña a tu colaborador en caso de ser necesario"
     },
     "COLLABORATORS_REGISTER": {
         "COLLABORATORS_LABEL": "Colaborador",

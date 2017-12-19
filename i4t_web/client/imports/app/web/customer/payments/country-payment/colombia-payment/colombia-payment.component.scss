@@ -22,6 +22,9 @@
     }
 }
 
+.payment-methods{
+    width: 100%;
+}
 
 @media only screen and (max-width: 600px) {
     .show-btn {
@@ -44,8 +47,11 @@
         color: #114b5f;
         font-weight: 500 !important;
     }
-}
 
+    .payment-methods{
+        width: 30%;
+    }
+}
 
 .card-subtitle{
     font-size: 1rem;
