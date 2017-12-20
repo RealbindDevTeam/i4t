@@ -48,20 +48,14 @@
         </div>
         <div id="item-selected" class="item-detail animated">
             <div *ngFor="let itemDet of _itemDetail | async">
-                <!--div class="header-detail" #headerDetailCard>
-                            <label>{{itemDet.name}}</label>
-                            <button class="btn-close" mat-raised-button (click)="viewItemDetail(true)">
-                                <i class="fa fa-times" aria-hidden="true"></i>
-                            </button>
-                        </div-->
                 <div class="header-detail-static">
-                    <button class="btn-close" mat-raised-button (click)="viewItemDetail(true)">
+                    <button class="btn-close" mat-raised-button (click)="viewItemDetail('item-selected', true)">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </button>
                 </div>
                 <div id="mt" class="header-detail header-detail-hide">
                     <label>{{itemDet.name}}</label>
-                    <button class="btn-close" mat-raised-button (click)="viewItemDetail(true)">
+                    <button class="btn-close" mat-raised-button (click)="viewItemDetail('item-selected', true)">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </button>
                 </div>
@@ -102,9 +96,8 @@
             </div>
         </div>
         <div id="addition-detail" class="item-detail animated">
-            <div class="header-detail" #headerDetailCard>
-                <label>{{'ORDER_CREATE.ADDITIONS' | translate}}</label>
-                <button class="btn-close" mat-raised-button (click)="viewAdditionDetail(true)">
+            <div class="header-detail-static pr">
+                <button class="btn-close" mat-raised-button (click)="viewItemDetail('addition-detail', true)">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
             </div>

@@ -35,6 +35,14 @@ img.br {
     width: 100%;
 }
 
+.pr{
+    position: relative;
+}
+
+mat-list-item {
+    height: auto !important;
+}
+
 img.order {
     width: 45px;
 }
@@ -43,6 +51,14 @@ img.order {
     img.custom {
         width: 80px !important;
         height: 80px !important;
+    }
+
+    mat-list-item {
+        margin: 12px 8px 0;
+    }
+
+    .divider{
+        margin-left: 122px;
     }
 }
 
