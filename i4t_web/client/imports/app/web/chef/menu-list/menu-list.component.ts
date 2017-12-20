@@ -173,8 +173,8 @@ export class MenuListComponent implements OnInit, OnDestroy {
      */
     showAdditions(): void {
         this.showAllItems();
-        this.viewItemDetail(true);
-        this.viewAdditionDetail(false);
+        this.viewItemDetail('item-selected', true);
+        this.viewItemDetail('addition-detail', false);
     }
 
     /**
@@ -183,8 +183,8 @@ export class MenuListComponent implements OnInit, OnDestroy {
      */
     showItemInformation(_pItem: Item): void {
         this._itemDetail = Items.find({ _id: _pItem._id }).zone();
-        this.viewAdditionDetail(true);
-        this.viewItemDetail(false);
+        this.viewItemDetail('addition-detail', true);
+        this.viewItemDetail('item-selected', false);
     }
 
     /**
@@ -206,31 +206,16 @@ export class MenuListComponent implements OnInit, OnDestroy {
 
     /**
      * This function allow view item detail
-     * @param {boolean} _boolean 
+     * @param _pDiv 
+     * @param _boolean 
      */
-    viewItemDetail(_boolean: boolean): void {
-        var card = document.getElementById("item-selected");
+    viewItemDetail(_pDiv: string, _boolean: boolean): void {
+        var card = document.getElementById(_pDiv);
         if (!_boolean) {
             card.classList.add('item-detail-show');
             card.classList.remove('item-detail-hidden');
         } else {
             card.classList.add('item-detail-hidden');
-        }
-    }
-
-    /**
-     * This function allow view additions
-     * @param {boolean} _boolean 
-     */
-    viewAdditionDetail(_boolean: boolean): void {
-        var card = document.getElementById("addition-detail");
-        if (card) {
-            if (!_boolean) {
-                card.classList.add('item-detail-show');
-                card.classList.remove('item-detail-hidden');
-            } else {
-                card.classList.add('item-detail-hidden');
-            }
         }
     }
 

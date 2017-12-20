@@ -1,19 +1,7 @@
-/*
-.divider{
-    margin-left: 7rem; 
-    width:80%
-}
-*/
-
 img.custom {
     border-radius: 0 !important;
-}
-
-@media only screen and (min-width: 600px) {
-    img.custom {
-        width: 80px !important;
-        height: 80px !important;
-    }
+    width: 80px !important;
+    height: 80px !important;
 }
 
 .total-pay{
@@ -33,21 +21,31 @@ img.custom {
     display: inline
 }
 
-.element{
-    margin-left: 7rem;
+.di {
+    display: flex;
+    margin: 24px 16px 0;
 }
 
-.element-price{
-    display: inline;
+.dic {
+    display: block;
+    margin-left: 16px;
 }
 
-.element-quantity{
-    display: inline;
-    margin-left: 2rem;
+.dic h2{
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
 }
 
-.element-total-price{
-    display: inline;
-    margin-left: 3rem;
-    color: black;
+.did p{
+    margin-right: 16px;
+}
+
+@media only screen and (min-width: 600px) {
+    .did p{
+        display: -webkit-inline-box;
+    }
+
+    .divider{
+        margin-left: 122px;
+    }
 }

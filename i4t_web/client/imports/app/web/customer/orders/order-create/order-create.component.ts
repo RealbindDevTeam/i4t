@@ -261,8 +261,8 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         } else if (_any.type === 'Ad') {
             this.showAllItems();
             this._additionsDetailFormGroup.reset();
-            this.viewItemDetail(true);
-            this.viewAdditionDetail(false);
+            this.viewItemDetail('item-selected',true);
+            this.viewItemDetail('addition-detail', false);
         }
     }
 
@@ -282,8 +282,8 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         this._finalPrice = this.getItemPrice(_pItem);
         this._unitPrice = this.getItemPrice(_pItem);
         this.resetItemDetailVariables();
-        this.viewAdditionDetail(true);
-        this.viewItemDetail(false);
+        this.viewItemDetail('addition-detail',true);
+        this.viewItemDetail('item-selected', false);
     }
 
     /**
@@ -350,7 +350,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
             }, (error) => {
                 this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             });
-            this.viewItemDetail(true);
+            this.viewItemDetail('item-selected', true);
         }
     }
 
@@ -364,19 +364,11 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
 
     /**
      * This function allow view item detail
-     * @param {boolean} _boolean 
+     * @param _pDiv 
+     * @param _boolean 
      */
-    viewItemDetail(_boolean: boolean): void {
-        /*var card = document.getElementById("item-selected");
-
-        if (!_boolean) {
-            card.style.width = "396px";
-        } else {
-            card.style.width = "0";
-            card.removeAttribute("style");
-        }*/
-
-        var card = document.getElementById("item-selected");
+    viewItemDetail(_pDiv: string, _boolean: boolean): void {
+        var card = document.getElementById(_pDiv);
         if (!_boolean) {
             card.classList.add('item-detail-show');
             card.classList.remove('item-detail-hidden');
@@ -384,31 +376,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
             card.classList.add('item-detail-hidden');
         }
     }
-
-    /**
-     * This function allow view additions
-     * @param {boolean} _boolean 
-     */
-    viewAdditionDetail(_boolean: boolean): void {
-        /*var card = document.getElementById("addition-detail");
-
-        if (!_boolean) {
-            card.style.width = "396px";
-        } else {
-            card.style.width = "0";
-            card.removeAttribute("style");
-        }*/
-        var card = document.getElementById("addition-detail");
-        if (card) {
-            if (!_boolean) {
-                card.classList.add('item-detail-show');
-                card.classList.remove('item-detail-hidden');
-            } else {
-                card.classList.add('item-detail-hidden');
-            }
-        }
-    }
-
+    
     /**
      * Reset item detail Variables
      */
