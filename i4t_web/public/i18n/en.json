@@ -576,7 +576,9 @@
         "MSG_INITIAL": "Link to all the employees according to the role they play",
         "BTN": "Employees register",
         "TABLE_INIT": "From table",
-        "TABLE_END": "To table "
+        "TABLE_END": "To table ",
+        "PASSWORD": "Password",
+        "PASSWORD_MSG": "Assigning a new password to your employee if is necessary"
     },
     "COLLABORATORS_REGISTER": {
         "COLLABORATORS_LABEL": "Employee",

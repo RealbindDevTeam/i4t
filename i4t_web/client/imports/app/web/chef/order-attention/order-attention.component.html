@@ -65,7 +65,7 @@
                                 <ng-template [ngIf]="item._id === it.itemId">
                                     <h2 class="name">{{it.quantity}} - {{item.name}}</h2>
                                     <p *ngIf="it.observations" class="observations">{{'ORDER_ATTENTION.OBSERVATIONS' | translate}}: {{it.observations}}</p>
-                                    <p *ngIf="(it.garnishFood.length <= 0)" class="no-garnish">{{'ORDER_ATTENTION.NO_GARNISH_FOOD' | translate}}</p>
+                                    <p *ngIf="(it.garnishFood.length <= 0)"></p>
                                     <div *ngIf="(it.garnishFood.length > 0)" class="garnish-food">
                                         <p class="garnish-title">{{'ORDER_ATTENTION.GARNISH_FOOD' | translate}}:</p>
                                         <span *ngFor="let garnish of _garnishFoodCol | async">
@@ -76,7 +76,7 @@
                                             </span>
                                         </span>
                                     </div>
-                                    <p class="no-addition" *ngIf="(it.additions.length <= 0)">- {{'ORDER_ATTENTION.NO_ADDITIONS' | translate}}</p>
+                                    <p *ngIf="(it.additions.length <= 0)"></p>
                                     <div *ngIf="(it.additions.length > 0)" class="addition">
                                         <p class="addition-title">{{'ORDER_ATTENTION.ADDITIONS' | translate}}:</p>
                                         <span *ngFor="let addition of _additions | async">
@@ -134,7 +134,7 @@
                                 <ng-template [ngIf]="item._id === it.itemId">
                                     <h2 class="name">{{it.quantity}} - {{item.name}}</h2>
                                     <p *ngIf="it.observations" class="observations">{{'ORDER_ATTENTION.OBSERVATIONS' | translate}}: {{it.observations}}</p>
-                                    <p *ngIf="(it.garnishFood.length <= 0)" class="no-garnish">{{'ORDER_ATTENTION.NO_GARNISH_FOOD' | translate}}</p>
+                                    <p *ngIf="(it.garnishFood.length <= 0)"></p>
                                     <div *ngIf="(it.garnishFood.length > 0)" class="garnish-food">
                                         <p class="garnish-title">{{'ORDER_ATTENTION.GARNISH_FOOD' | translate}}:</p>
                                         <span *ngFor="let garnish of _garnishFoodCol | async">
@@ -145,7 +145,7 @@
                                             </span>
                                         </span>
                                     </div>
-                                    <p class="no-addition" *ngIf="(it.additions.length <= 0)">- {{'ORDER_ATTENTION.NO_ADDITIONS' | translate}}</p>
+                                    <p *ngIf="(it.additions.length <= 0)"></p>
                                     <div *ngIf="(it.additions.length > 0)" class="addition">
                                         <p class="addition-title">{{'ORDER_ATTENTION.ADDITIONS' | translate}}:</p>
                                         <span *ngFor="let addition of _additions | async">
@@ -199,7 +199,7 @@
                                 <ng-template [ngIf]="item._id === it.itemId">
                                     <h2 class="name">{{it.quantity}} - {{item.name}}</h2>
                                     <p *ngIf="it.observations" class="observations">{{'ORDER_ATTENTION.OBSERVATIONS' | translate}}: {{it.observations}}</p>
-                                    <p *ngIf="(it.garnishFood.length <= 0)" class="no-garnish">{{'ORDER_ATTENTION.NO_GARNISH_FOOD' | translate}}</p>
+                                    <p *ngIf="(it.garnishFood.length <= 0)"></p>
                                     <div *ngIf="(it.garnishFood.length > 0)" class="garnish-food">
                                         <p class="garnish-title">{{'ORDER_ATTENTION.GARNISH_FOOD' | translate}}:</p>
                                         <span *ngFor="let garnish of _garnishFoodCol | async">
@@ -210,7 +210,7 @@
                                             </span>
                                         </span>
                                     </div>
-                                    <p class="no-addition" *ngIf="(it.additions.length <= 0)">- {{'ORDER_ATTENTION.NO_ADDITIONS' | translate}}</p>
+                                    <p *ngIf="(it.additions.length <= 0)"></p>
                                     <div *ngIf="(it.additions.length > 0)" class="addition">
                                         <p class="addition-title">{{'ORDER_ATTENTION.ADDITIONS' | translate}}:</p>
                                         <span *ngFor="let addition of _additions | async">
