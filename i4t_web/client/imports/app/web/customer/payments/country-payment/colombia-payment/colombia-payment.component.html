@@ -65,7 +65,7 @@
                             </div>
                         </div>
 
-                        <mat-form-field>
+                        <mat-form-field class="payment-methods">
                             <mat-select placeholder="{{'PAYMENTS.COLOMBIA.SELECT_PAYMENT_METHOD' | translate}}" [(ngModel)]="_paymentMethodId">
                                 <mat-option *ngFor="let paymentMethod of _paymentMethods | async" (click)="setPaymentMethod(paymentMethod._id);" value="{{paymentMethod._id}}">{{paymentMethod.name | translate}}</mat-option>
                             </mat-select>

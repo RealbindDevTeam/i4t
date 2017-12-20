@@ -90,6 +90,8 @@ export class SupervisorCollaboratorsEditionComponent implements OnInit, OnDestro
             confirmPassword: [],
             table_init: [this.selectUserDetail.table_assignment_init],
             table_end: [this.selectUserDetail.table_assignment_end],
+            new_password: new FormControl('', [Validators.minLength(8), Validators.maxLength(20)]),
+            confirm_new_password: new FormControl('', [Validators.minLength(8), Validators.maxLength(20)]),
         });
         this._tableInit = this.selectUserDetail.table_assignment_init;
         this._tableEnd = this.selectUserDetail.table_assignment_end;
@@ -149,61 +151,70 @@ export class SupervisorCollaboratorsEditionComponent implements OnInit, OnDestro
     updateUser() {
         if (Meteor.userId()) {
             if (this._collaboratorEditionForm.valid) {
-                if (this._collaboratorEditionForm.value.password == this._collaboratorEditionForm.value.confirmPassword) {
-                    if (this._collaboratorEditionForm.valid) {
+                if (this._collaboratorEditionForm.valid) {
 
-                        if (this._collaboratorEditionForm.value.role === '200') {
+                    if (this._collaboratorEditionForm.value.role === '200') {
 
-                            if (this._disabledTablesAssignment || (this._collaboratorEditionForm.value.table_init === 0 && this._collaboratorEditionForm.value.table_end === 0)) {
-                                this._collaboratorEditionForm.value.table_end = Tables.collection.find({}).count();
-                                if (this._collaboratorEditionForm.value.table_end > 0) {
-                                    this._collaboratorEditionForm.value.table_init = 1;
-                                }
-                            }
-                            if (!this._disabledTablesAssignment && this._collaboratorEditionForm.value.table_end < this._collaboratorEditionForm.value.table_init) {
-                                this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.SELECT_RANGE_VALID_TABLES');
-                                this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
-                                return;
+                        if (this._disabledTablesAssignment || (this._collaboratorEditionForm.value.table_init === 0 && this._collaboratorEditionForm.value.table_end === 0)) {
+                            this._collaboratorEditionForm.value.table_end = Tables.collection.find({}).count();
+                            if (this._collaboratorEditionForm.value.table_end > 0) {
+                                this._collaboratorEditionForm.value.table_init = 1;
                             }
                         }
+                        if (!this._disabledTablesAssignment && this._collaboratorEditionForm.value.table_end < this._collaboratorEditionForm.value.table_init) {
+                            this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.SELECT_RANGE_VALID_TABLES');
+                            this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
+                            return;
+                        }
+                    }
 
-                        Users.update({ _id: this.selectUser._id }, {
+                    Users.update({ _id: this.selectUser._id }, {
+                        $set: {
+                            profile: {
+                                first_name: this._collaboratorEditionForm.value.name,
+                                last_name: this._collaboratorEditionForm.value.last_name,
+                                language_code: this.selectUser.profile.language_code,
+                                image: this.selectUser.profile.image
+                            }
+                        }
+                    });
+                    if (this._collaboratorEditionForm.value.role === '200') {
+                        UserDetails.update({ _id: this.selectUserDetail._id }, {
                             $set: {
-                                profile: {
-                                    first_name: this._collaboratorEditionForm.value.name,
-                                    last_name: this._collaboratorEditionForm.value.last_name,
-                                    language_code: this.selectUser.profile.language_code,
-                                    image: this.selectUser.profile.image
-                                }
+                                restaurant_work: this.selectUserDetail.restaurant_work,
+                                birthdate: this._collaboratorEditionForm.value.birthdate,
+                                phone: this._collaboratorEditionForm.value.phone,
+                                table_assignment_init: Number.parseInt(this._collaboratorEditionForm.value.table_init.toString()),
+                                table_assignment_end: Number.parseInt(this._collaboratorEditionForm.value.table_end.toString())
                             }
                         });
-                        if (this._collaboratorEditionForm.value.role === '200') {
-                            UserDetails.update({ _id: this.selectUserDetail._id }, {
-                                $set: {
-                                    restaurant_work: this.selectUserDetail.restaurant_work,
-                                    birthdate: this._collaboratorEditionForm.value.birthdate,
-                                    phone: this._collaboratorEditionForm.value.phone,
-                                    table_assignment_init: Number.parseInt(this._collaboratorEditionForm.value.table_init.toString()),
-                                    table_assignment_end: Number.parseInt(this._collaboratorEditionForm.value.table_end.toString())
-                                }
-                            });
+                    } else {
+                        UserDetails.update({ _id: this.selectUserDetail._id }, {
+                            $set: {
+                                restaurant_work: this.selectUserDetail.restaurant_work,
+                                birthdate: this._collaboratorEditionForm.value.birthdate,
+                                phone: this._collaboratorEditionForm.value.phone
+                            }
+                        });
+                    }
+                    if (this._collaboratorEditionForm.value.new_password !== '' && this._collaboratorEditionForm.value.confirm_new_password !== '') {
+                        if (this._collaboratorEditionForm.value.new_password !== this._collaboratorEditionForm.value.confirm_new_password) {
+                            this._message = this.itemNameTraduction('SIGNUP.PASSWORD_NOT_MATCH');
+                            this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
                         } else {
-                            UserDetails.update({ _id: this.selectUserDetail._id }, {
-                                $set: {
-                                    restaurant_work: this.selectUserDetail.restaurant_work,
-                                    birthdate: this._collaboratorEditionForm.value.birthdate,
-                                    phone: this._collaboratorEditionForm.value.phone
-                                }
+                            MeteorObservable.call('changeUserPassword', this.selectUser._id, this._collaboratorEditionForm.value.new_password).subscribe(() => {
+                                this._dialogRef.close();
+                                this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.MESSAGE_COLLABORATOR_EDIT');
+                                this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
+                                this.cancel();
                             });
                         }
+                    } else {
                         this._dialogRef.close();
                         this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.MESSAGE_COLLABORATOR_EDIT');
                         this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
                         this.cancel();
                     }
-                } else {
-                    this._message = this.itemNameTraduction('SIGNUP.PASSWORD_NOT_MATCH');
-                    this.openDialog(this.titleMsg, '', this._message, '', this.btnAcceptLbl, false);
                 }
             } else {
                 this._message = this.itemNameTraduction('COLLABORATORS_REGISTER.MESSAGE_FORM_INVALID');

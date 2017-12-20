@@ -41,7 +41,7 @@ if (Meteor.isServer) {
             let position = Meteor.call('getRandomInt', 0, restaurant.queue.length - 1);
             if ( restaurant.queue[position] !== "" ) {
                 queueName = "queue" + position;
-                Meteor.call("queueValidate", queueName, function(err, result){
+                Meteor.call("queueValidate", queueName, _data, (err, result) => {
                     if(err){
                         throw new Error("Error on Queue validating");
                     } else {
@@ -60,7 +60,7 @@ if (Meteor.isServer) {
      * This Meteor Method validate if exist queue in the collection
      * @param { string } _queue
      */
-    queueValidate : function ( _queue : string ) {
+    queueValidate : function ( _queue : string, _data : any ) {
         let queueNew        : QueueName = { name : _queue };;
         let queues          : Queue = Queues.findOne({});        
         if(queues){       
@@ -69,11 +69,11 @@ if (Meteor.isServer) {
                 Queues.update({ _id : queues._id }, 
                     { $addToSet : { queues :  queueNew }
                 });
-                Meteor.call('initProcessJobs', queueNew);
+                Meteor.call('initProcessJobs', queueNew, _data);
             }
         } else {                   
             Queues.insert( { queues : [ queueNew ] } );
-            Meteor.call('initProcessJobs', queueNew);
+            Meteor.call('initProcessJobs', queueNew, _data);
         }
     },
 
@@ -81,7 +81,7 @@ if (Meteor.isServer) {
      * This Meteor Method startup the queue and process jobs
      * @param { string } _queue
      */
-    initProcessJobs( element : QueueName){
+    initProcessJobs( element : QueueName, _data : any){
         let queueCollection = JobCollection(element.name);
         queueCollection.startJobServer();
         var workers = queueCollection.processJobs(
@@ -93,7 +93,7 @@ if (Meteor.isServer) {
                 prefetch: 1
             },
             function (job, callback) {
-                Meteor.call('processJobs', job, callback, element.name);
+                Meteor.call('processJobs', job, callback, element.name, _data);
             }
         );
     }
