@@ -112,25 +112,26 @@
                                                         <mat-icon class="item-icon">visibility</mat-icon>
                                                     </button>
                                                 </mat-list-item>
-                                                <mat-divider></mat-divider>
+                                                <mat-divider class="divider"></mat-divider>
                                             </ng-template>
                                         </span>
                                     </span>
-                                </mat-list>
-                                <mat-list *ngIf="(or.additions.length > 0)">
-                                    <span *ngFor="let addition of _additions | async">
-                                        <span *ngFor="let ad of or.additions">
-                                            <ng-template [ngIf]="addition._id === ad.additionId">
-                                                <mat-list-item>
-                                                    <img mat-list-avatar class="custom br" src="/images/default_addition.png">
-                                                    <h4 mat-line>{{addition.name}} <div style="display: inline-block;font-size: smaller;">({{'ORDER_LIST.ADDITION' | translate}})</div></h4>
-                                                    <p mat-line>{{'ORDER_LIST.PRICE' | translate}}: {{ad.paymentAddition}} {{_currencyCode}} - {{'ORDER_LIST.QUANT' | translate}} {{ad.quantity}}</p>
-                                                    <button mat-icon-button *ngIf="or.status === 'ORDER_STATUS.REGISTERED'" (click)="showAdditionsDetail(ad)">
-                                                        <mat-icon class="item-icon">mode_edit</mat-icon>
-                                                    </button>
-                                                </mat-list-item>
-                                                <mat-divider></mat-divider>
-                                            </ng-template>
+                                    
+                                    <span *ngIf="(or.additions.length > 0)">
+                                        <span *ngFor="let addition of _additions | async">
+                                            <span *ngFor="let ad of or.additions">
+                                                <ng-template [ngIf]="addition._id === ad.additionId">
+                                                    <mat-list-item>
+                                                        <img mat-list-avatar class="custom br" src="/images/default_addition.png">
+                                                        <h4 mat-line>{{addition.name}} <div style="display: inline-block;font-size: smaller;">({{'ORDER_LIST.ADDITION' | translate}})</div></h4>
+                                                        <p mat-line>{{'ORDER_LIST.PRICE' | translate}}: {{ad.paymentAddition}} {{_currencyCode}} - {{'ORDER_LIST.QUANT' | translate}} {{ad.quantity}}</p>
+                                                        <button mat-icon-button *ngIf="or.status === 'ORDER_STATUS.REGISTERED'" (click)="showAdditionsDetail(ad)">
+                                                            <mat-icon class="item-icon">mode_edit</mat-icon>
+                                                        </button>
+                                                    </mat-list-item>
+                                                    <mat-divider class="divider"></mat-divider>
+                                                </ng-template>
+                                            </span>
                                         </span>
                                     </span>
                                 </mat-list>
@@ -174,22 +175,22 @@
                                                         <mat-icon class="item-icon">visibility</mat-icon>
                                                     </button>
                                                 </mat-list-item>
-                                                <mat-divider></mat-divider>
+                                                <mat-divider class="divider"></mat-divider>
                                             </ng-template>
                                         </span>
                                     </span>
-                                </mat-list>
-                                <mat-list *ngIf="(or.additions.length > 0)">
-                                    <span *ngFor="let addition of _additions | async">
-                                        <span *ngFor="let ad of or.additions">
-                                            <ng-template [ngIf]="addition._id === ad.additionId">
-                                                <mat-list-item>
-                                                    <img mat-list-avatar class="custom br" src="/images/default_addition.png">
-                                                    <h4 mat-line>{{addition.name}} <div class="addition-message">({{'ORDER_LIST.ADDITION' | translate}})</div></h4>
-                                                    <p mat-line>{{'ORDER_LIST.PRICE' | translate}}: {{ad.paymentAddition}} {{_currencyCode}} - {{'ORDER_LIST.QUANT' | translate}} {{ad.quantity}}</p>
-                                                </mat-list-item>
-                                                <mat-divider></mat-divider>
-                                            </ng-template>
+                                    <span *ngIf="(or.additions.length > 0)">
+                                        <span *ngFor="let addition of _additions | async">
+                                            <span *ngFor="let ad of or.additions">
+                                                <ng-template [ngIf]="addition._id === ad.additionId">
+                                                    <mat-list-item>
+                                                        <img mat-list-avatar class="custom br" src="/images/default_addition.png">
+                                                        <h4 mat-line>{{addition.name}} <div class="addition-message">({{'ORDER_LIST.ADDITION' | translate}})</div></h4>
+                                                        <p mat-line>{{'ORDER_LIST.PRICE' | translate}}: {{ad.paymentAddition}} {{_currencyCode}} - {{'ORDER_LIST.QUANT' | translate}} {{ad.quantity}}</p>
+                                                    </mat-list-item>
+                                                    <mat-divider class="divider"></mat-divider>
+                                                </ng-template>
+                                            </span>
                                         </span>
                                     </span>
                                 </mat-list>

@@ -40,7 +40,7 @@ img.br {
 }
 
 mat-list-item {
-    height: auto;
+    height: auto !important;
 }
 
 img.order {
@@ -51,6 +51,14 @@ img.order {
     img.custom {
         width: 80px !important;
         height: 80px !important;
+    }
+
+    mat-list-item {
+        margin: 12px 8px 0;
+    }
+
+    .divider{
+        margin-left: 122px;
     }
 }
 
