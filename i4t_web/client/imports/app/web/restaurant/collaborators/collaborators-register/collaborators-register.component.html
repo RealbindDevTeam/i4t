@@ -107,16 +107,6 @@
                             <tr>
                                 <td>
                                     <mat-form-field style="width: 100%">
-                                        <input matInput style="width: 60%"  formControlName="email" placeholder="{{'EMAIL' | translate}}" name="email"/>
-                                    </mat-form-field>
-                                    <!--div *ngIf="_collaboratorRegisterForm.controls['email'].hasError('invalidEmailAddress') && _collaboratorRegisterForm.controls['email'].touched" class="error-message">{{'SIGNUP.REQUIRED_EMAIL' | translate}}</div-->
-                                    <div *ngIf="_collaboratorRegisterForm.controls['email'].hasError('minlength') && _collaboratorRegisterForm.controls['email'].touched" class="error-message">{{'SIGNUP.MIN_LENGTH_EMAIL' | translate}}</div>
-                                    <div *ngIf="_collaboratorRegisterForm.controls['email'].hasError('maxlength') && _collaboratorRegisterForm.controls['email'].touched" class="error-message">{{'SIGNUP.MAX_LENGTH_EMAIL' | translate}}</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <mat-form-field style="width: 100%">
                                         <input matInput style="width: 60%"  formControlName="password" placeholder="{{'PASSWORD' | translate}}" name="password" required type="password"/>
                                     </mat-form-field>
                                     <div *ngIf="_collaboratorRegisterForm.controls['password'].hasError('required') && _collaboratorRegisterForm.controls['password'].touched" class="error-message">{{'SIGNUP.REQUIRED_PASSWORD' | translate}}</div>

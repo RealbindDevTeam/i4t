@@ -6,7 +6,7 @@
     <mat-checkbox (change)="markPaymentsAsReceived($event)">{{ 'PAYMENT_CONFIRM.MARK_PAYMENTS' | translate }}</mat-checkbox>
 </div>
 
-<div *ngFor="let payment of _payments | async; let inPay = index">
+<div *ngFor="let payment of _payments | async; let inPay = index" class="general-info">
     <mat-card-content>
         <div class="ui">
             <h3>{{ getUserName(payment.userId) }}</h3>
