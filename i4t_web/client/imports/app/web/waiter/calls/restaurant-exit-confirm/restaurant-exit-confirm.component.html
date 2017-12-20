@@ -9,9 +9,7 @@
                 <mat-card-content>
                     <div class="order-info">
                         <h2 class="order-status">{{'EXIT_TABLE_CONFIRM.ORDER' | translate}} # {{order.code}} - {{'EXIT_TABLE_CONFIRM.STATUS' | translate}}: {{order.status | translate}}</h2>
-                        <div *ngIf="order.status !== 'ORDER_STATUS.CANCELED'" class="cancel-order-button">
-                            <button mat-raised-button class="primary-button" (click)="cancelOrderToExitTable(order)">{{'EXIT_TABLE_CONFIRM.CANCEL_ORDER' | translate}}</button>
-                        </div>
+                        <button mat-raised-button *ngIf="order.status !== 'ORDER_STATUS.CANCELED'" class="primary-button" (click)="cancelOrderToExitTable(order)">{{'EXIT_TABLE_CONFIRM.CANCEL_ORDER' | translate}}</button>
                     </div>
                     <mat-divider></mat-divider>
                     <span *ngFor="let it of order.items">
@@ -19,7 +17,7 @@
                             <ng-template [ngIf]="it.itemId === item._id">
                                 <h2 class="name">{{it.quantity}} - {{item.name}}</h2>
                                 <p *ngIf="it.observations" class="observations">{{'EXIT_TABLE_CONFIRM.OBSERVATIONS' | translate}}: {{it.observations}}</p>
-                                <p *ngIf="(it.garnishFood.length <= 0)" class="no-garnish">{{'EXIT_TABLE_CONFIRM.NO_GARNISH_FOOD' | translate}}</p>
+                                <p *ngIf="(it.garnishFood.length <= 0)"></p>
                                 <div *ngIf="(it.garnishFood.length > 0)" class="garnish-food">
                                     <p class="garnish-title">{{'EXIT_TABLE_CONFIRM.GARNISH_FOOD' | translate}}:</p>
                                     <span *ngFor="let garnish of _garnishFood | async">
@@ -30,7 +28,7 @@
                                         </span>
                                     </span>
                                 </div>
-                                <p class="no-addition" *ngIf="(it.additions.length <= 0)">- {{'EXIT_TABLE_CONFIRM.NO_ADDITIONS' | translate}}</p>
+                                <p *ngIf="(it.additions.length <= 0)"></p>
                                 <div *ngIf="(it.additions.length > 0)" class="addition">
                                     <p class="addition-title">{{'EXIT_TABLE_CONFIRM.ADDITIONS' | translate}}:</p>
                                     <span *ngFor="let addition of _additions | async">

@@ -109,13 +109,19 @@ export class RestaurantMenuPage implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-
+        this.removeSubscriptions();
     }
 
     /**
    * Remove all subscriptions
    */
     removeSubscriptions(): void {
-
+        if (this._userRestaurantSubscription) { this._userRestaurantSubscription.unsubscribe(); }
+        if (this._userDetailSubscription) { this._userDetailSubscription.unsubscribe(); }
+        if (this._sectionsSubscription) { this._sectionsSubscription.unsubscribe(); }
+        if (this._categoriesSubscription) { this._categoriesSubscription.unsubscribe(); }
+        if (this._subcategoriesSubscription) { this._subcategoriesSubscription.unsubscribe(); }
+        if (this._itemsSubscription) { this._itemsSubscription.unsubscribe(); }
+        if (this._additionsSubscription) { this._additionsSubscription.unsubscribe(); }
     }
 }
