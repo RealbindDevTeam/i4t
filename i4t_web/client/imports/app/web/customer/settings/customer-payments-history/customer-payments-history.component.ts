@@ -163,6 +163,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         y = this.calculateY(y, 10);
         pdf.text(x, y, '==========================================', alignCenter);
 
+
         pdf.setFontType("bold");
         y = this.calculateY(y, 15);
         pdf.text(despcriptionTitle, 10, y);
@@ -171,6 +172,8 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         pdf.setFontType("normal");
 
         y = this.calculateY(y, 20);
+
+
         _pInvoice.items.forEach((item) => {
             let splitItemName = pdf.splitTextToSize(item.item_name, 100);
             pdf.text(10, y, splitItemName);
@@ -220,6 +223,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             }
         });
 
+
         _pInvoice.additions.forEach((addition) => {
             let splitItemAddition = pdf.splitTextToSize(addition.addition_name, 100);
             pdf.text(10, y, splitItemAddition);
@@ -235,8 +239,10 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             }
         });
 
+        console.log('>>> ' + y);
+
         if (_pInvoice.legal_information.regime === 'regime_co') {
-            y = this.calculateY(y, 20);
+            y = this.calculateY(y, 10);
             pdf.setFontType("bold");
             pdf.text(80, y, 'SubTotal');
             pdf.text(200, y, (_pInvoice.total_order).toFixed(2) + ' ' + _pInvoice.currency, alignRight);
@@ -287,7 +293,8 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
 
         y = this.calculateY(y, 20);
         pdf.text(x, y, '==========================================', alignCenter);
-
+       
+        
         y = this.calculateY(y, 10);
         pdf.setFontType("bold");
         if (_pInvoice.legal_information.regime === 'regime_co') {
@@ -296,12 +303,12 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             pdf.text(x, y, 'RÉGIMEN SIMPLIFICADO', alignCenter);
         }
         pdf.setFontType("normal");
-
+ 
         if (_pInvoice.legal_information.invoice_resolution && _pInvoice.legal_information.invoice_resolution_date) {
             y = this.calculateY(y, 10);
             pdf.text(x, y, 'Res. DIAN No. ' + _pInvoice.legal_information.invoice_resolution + ' del ' + this.dateFormater(_pInvoice.legal_information.invoice_resolution_date, false), alignCenter);
         }
-
+ 
         if (_pInvoice.legal_information.prefix) {
             y = this.calculateY(y, 10);
             pdf.text(x, y, 'HABILITA FAC: ' + _pInvoice.legal_information.prefix_name + '-' + _pInvoice.legal_information.numeration_from + ' AL ' + _pInvoice.legal_information.prefix_name + '-' + _pInvoice.legal_information.numeration_to, alignCenter);
@@ -309,7 +316,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             y = this.calculateY(y, 10);
             pdf.text(x, y, 'HABILITA FAC: ' + _pInvoice.legal_information.numeration_from + ' AL ' + _pInvoice.legal_information.numeration_to, alignCenter);
         }
-
+ 
         if (_pInvoice.legal_information.is_big_contributor) {
             y = this.calculateY(y, 10);
             let splitIsBigContributor = pdf.splitTextToSize('Grandes contribuyentes según Res.No. ' + _pInvoice.legal_information.big_contributor_resolution + ' del ' + this.dateFormater(_pInvoice.legal_information.big_contributor_date, false), widthText);
@@ -320,7 +327,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             pdf.text(x, y, 'No somos grandes contribuyentes', alignCenter);
             y = this.calculateY(y, 10);
         }
-
+ 
         if (_pInvoice.legal_information.is_self_accepting) {
             let splitIsSelfAccepting = pdf.splitTextToSize('Autorretenedores según Res.No. ' + _pInvoice.legal_information.self_accepting_resolution + ' del ' + this.dateFormater(_pInvoice.legal_information.self_accepting_date, false), widthText);
             pdf.text(splitIsSelfAccepting, x, y, alignCenter);
@@ -329,7 +336,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             pdf.text(x, y, 'No somos Autorretenedores', alignCenter);
             y = this.calculateY(y, 10);
         }
-
+ 
         if (_pInvoice.legal_information.is_retaining_agent) {
             let splitRetainingAgent = pdf.splitTextToSize('Agentes Retenedores de IVA e ICA', widthText);
             pdf.text(splitRetainingAgent, x, y, alignCenter);
@@ -339,15 +346,15 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             pdf.text(splitRetainingAgent, x, y, alignCenter);
             y = this.calculateY(y, 10);
         }
-
+ 
         pdf.text(x, y, '==========================================', alignCenter);
-
+ 
         if (_pInvoice.legal_information.text_at_the_end !== null && _pInvoice.legal_information.text_at_the_end !== undefined
             && _pInvoice.legal_information.text_at_the_end.length > 0) {
             y = this.calculateY(y, 10);
             let splitFinalText = pdf.splitTextToSize(_pInvoice.legal_information.text_at_the_end, widthText);
             pdf.text(splitFinalText, x, y, alignCenter);
-
+ 
             if (_pInvoice.legal_information.text_at_the_end.length >= 145) {
                 y = this.calculateY(y, 40);
             } else if (_pInvoice.legal_information.text_at_the_end.length >= 97 && _pInvoice.legal_information.text_at_the_end.length <= 144) {
@@ -359,6 +366,9 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             }
             pdf.text(x, y, '==========================================', alignCenter);
         }
+ 
+
+        console.log('ya comienza en ' + y);
 
         y = this.calculateY(y, 10);
         pdf.text(x, y, 'Desarrollado por Realbind S.A.S', alignCenter);
@@ -373,6 +383,8 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         y = this.calculateY(y, 10);
 
         pdf.text(x, y, 'FACTURA EMITIDA POR COMPUTADOR', alignCenter);
+
+        console.log('ya termina en ' + y);
 
         pdf.setProperties({
             title: this.itemNameTraduction('PAYMENTS_HISTORY.INVOICE_SALE'),
@@ -403,27 +415,81 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
      */
     calculateHeight(_pInvoice: Invoice, _pCountryId: string): number {
         let quantRows: number = 0;
-        let heightPage: number = 340;
+        let heightPage: number = 220;
 
         if (_pCountryId === '1900') {
+            console.log('items > ' + _pInvoice.items.length);
+            //quantRows = quantRows + _pInvoice.items.length;
+
+            _pInvoice.items.forEach((item) => {
+                if (item.item_name.length <= 23) {
+                    quantRows = quantRows + 1;
+                } else if (item.item_name.length > 23 && item.item_name.length <= 46) {
+                    quantRows = quantRows + 2;
+                } else {
+                    console.log('item.item_name.length');
+                    quantRows = quantRows + 3;
+                }
+
+                if (item.garnish_food.length > 0) {
+                    item.garnish_food.forEach((garnish) => {
+                        if (garnish.garnish_food_name.length <= 23) {
+                            quantRows = quantRows + 1;
+                        } else if (garnish.garnish_food_name.length > 23 && garnish.garnish_food_name.length <= 46) {
+                            quantRows = quantRows + 2;
+                        } else {
+                            console.log('garnish.garnish_food_name.length');
+                            quantRows = quantRows + 3;
+                        }
+                    });
+                }
+
+                if (item.additions.length > 0) {
+                    item.additions.forEach(addition => {
+                        if (addition.addition_name.length <= 23) {
+                            quantRows = quantRows + 1;
+                        } else if (addition.addition_name.length > 23 && addition.addition_name.length <= 46) {
+                            quantRows = quantRows + 2;
+                        } else {
+                            console.log('addition.addition_name.length');
+                            quantRows = quantRows + 3;
+                        }
+                    });
+                }
+
+            });
+
+            _pInvoice.additions.forEach((addition) => {
+                if (addition.addition_name.length <= 23) {
+                    quantRows = quantRows + 1;
+                } else if (addition.addition_name.length > 23 && addition.addition_name.length <= 46) {
+                    quantRows = quantRows + 2;
+                } else {
+                    console.log('addition.addition_name.length');
+                    quantRows = quantRows + 3;
+                }
+            });
+
+
             if (_pInvoice.legal_information.regime === 'regime_co') {
                 quantRows = quantRows + 22;
             } else if (_pInvoice.legal_information.regime === 'regime_si') {
                 quantRows = quantRows + 17;
             }
 
+            /*
             if (_pInvoice.legal_information.is_big_contributor) {
                 quantRows = quantRows + 2;
             } else {
                 quantRows = quantRows + 1;
             }
-
+ 
             if (_pInvoice.legal_information.is_self_accepting) {
                 quantRows = quantRows + 2;
             } else {
                 quantRows = quantRows + 1;
             }
-
+ 
             if (_pInvoice.legal_information.text_at_the_end !== null && _pInvoice.legal_information.text_at_the_end !== undefined
                 && _pInvoice.legal_information.text_at_the_end.length > 0) {
                 quantRows = quantRows + 1;
@@ -438,15 +504,10 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
                 }
                 quantRows = quantRows + 1;
             }
-
-            quantRows = quantRows + _pInvoice.items.length;
-            quantRows = quantRows + _pInvoice.additions.length;
-            _pInvoice.items.forEach((item) => {
-                quantRows = quantRows + item.garnish_food.length;
-                quantRows = quantRows + item.additions.length;
-            });
-
-            heightPage = heightPage + (quantRows * 4);
+ */
+            console.log('quantRows' + quantRows);
+            heightPage = heightPage + (quantRows * 9);
+            console.log('heightPage > ' + heightPage);
         } else {
             quantRows = quantRows + _pInvoice.items.length;
             quantRows = quantRows + _pInvoice.additions.length;
@@ -457,6 +518,8 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
 
             heightPage = heightPage + (quantRows * 30);
         }
+
+        heightPage = heightPage + 60;
         return heightPage;
     }
 
