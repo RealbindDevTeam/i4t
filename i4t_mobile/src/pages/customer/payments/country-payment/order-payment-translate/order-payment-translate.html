@@ -71,9 +71,9 @@
                 <div *ngFor="let orderPendingConfirmation of _ordersWithPendingConfirmation | async">
                     <div *ngIf="orderPendingConfirmation.creation_user != _currentUserId">
                             <div class="item-divider-custom" style="width: 90%;"></div>
-                        <button ion-item>
+                        <div>
                             <order-payment-detail [orderCon]="orderPendingConfirmation" [ordersConfirm]="false" [currency]="_currency"></order-payment-detail>
-                        </button>
+                        </div>
                     </div>
                 </div>
             </ion-list>
