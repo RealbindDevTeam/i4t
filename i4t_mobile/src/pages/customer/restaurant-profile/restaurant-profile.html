@@ -24,7 +24,7 @@
     </ion-fab>
 
     <span *ngFor="let restaurantProfile of _restaurantsProfiles | async">
-        <ion-slides *ngIf="restaurantProfile.images.length > 0" zoom>
+        <ion-slides *ngIf="restaurantProfile.images?.length > 0" zoom>
             <ion-slide *ngFor="let restProfileImgeThumb of restaurantProfile.images">
                 <img src="{{restProfileImgeThumb.url}}"/>
             </ion-slide>
@@ -52,10 +52,10 @@
                 </button>
             </ion-list>
 
-            <p *ngIf="_restaurantProfile?.restaurant_description.length <= 20" class="margin">
+            <p *ngIf="_restaurantProfile?.restaurant_description?.length <= 20" class="margin">
                 {{_restaurantProfile?.restaurant_description}}
             </p>
-            <div *ngIf="_restaurantProfile?.restaurant_description.length > 20">
+            <div *ngIf="_restaurantProfile?.restaurant_description?.length > 20">
                 <p *ngIf="!_showDescription" class="margin">
                     {{_restaurantProfile?.restaurant_description.substring(0, 70)}}...
                 </p>
