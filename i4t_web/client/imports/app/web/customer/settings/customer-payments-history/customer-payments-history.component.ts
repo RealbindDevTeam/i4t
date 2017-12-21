@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { Invoice } from '../../../../../../../both/models/restaurant/invoice.model';
+import { Invoice, InvoiceLegalInformation } from '../../../../../../../both/models/restaurant/invoice.model';
 import { Invoices } from '../../../../../../../both/collections/restaurant/invoice.collection';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
@@ -129,13 +129,12 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         y = this.calculateY(y, 10);
         pdf.setFontType("bold");
         pdf.text(splitRestaurantName, x, y, alignCenter);
-        if (_pInvoice.restaurant_name.length >= 68) {
-            y = this.calculateY(y, 30);
-        } else if (_pInvoice.restaurant_name.length >= 35 && _pInvoice.restaurant_name.length <= 67) {
+        if (_pInvoice.restaurant_name.length >= 40) {
             y = this.calculateY(y, 20);
-        } else if (_pInvoice.restaurant_name.length <= 34) {
+        } else {
             y = this.calculateY(y, 10);
         }
+
         pdf.setFontType("normal");
         pdf.text(splitAddress, x, y, alignCenter);
         if (_pInvoice.restaurant_address.length > maxLength) {
@@ -163,7 +162,6 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         y = this.calculateY(y, 10);
         pdf.text(x, y, '==========================================', alignCenter);
 
-
         pdf.setFontType("bold");
         y = this.calculateY(y, 15);
         pdf.text(despcriptionTitle, 10, y);
@@ -172,7 +170,6 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         pdf.setFontType("normal");
 
         y = this.calculateY(y, 20);
-
 
         _pInvoice.items.forEach((item) => {
             let splitItemName = pdf.splitTextToSize(item.item_name, 100);
@@ -223,7 +220,6 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             }
         });
 
-
         _pInvoice.additions.forEach((addition) => {
             let splitItemAddition = pdf.splitTextToSize(addition.addition_name, 100);
             pdf.text(10, y, splitItemAddition);
@@ -238,8 +234,6 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
                 y = this.calculateY(y, 30);
             }
         });
-
-        console.log('>>> ' + y);
 
         if (_pInvoice.legal_information.regime === 'regime_co') {
             y = this.calculateY(y, 10);
@@ -293,8 +287,6 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
 
         y = this.calculateY(y, 20);
         pdf.text(x, y, '==========================================', alignCenter);
-       
-        
         y = this.calculateY(y, 10);
         pdf.setFontType("bold");
         if (_pInvoice.legal_information.regime === 'regime_co') {
@@ -303,58 +295,93 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             pdf.text(x, y, 'RÉGIMEN SIMPLIFICADO', alignCenter);
         }
         pdf.setFontType("normal");
- 
         if (_pInvoice.legal_information.invoice_resolution && _pInvoice.legal_information.invoice_resolution_date) {
             y = this.calculateY(y, 10);
-            pdf.text(x, y, 'Res. DIAN No. ' + _pInvoice.legal_information.invoice_resolution + ' del ' + this.dateFormater(_pInvoice.legal_information.invoice_resolution_date, false), alignCenter);
+            pdf.text(x, y, 'Res. DIAN No. ' + _pInvoice.legal_information.invoice_resolution + ' de ' + this.dateFormater(_pInvoice.legal_information.invoice_resolution_date, false), alignCenter);
         }
- 
+
+        let auxNumeration = this.getNumerationLabel(_pInvoice.legal_information);
         if (_pInvoice.legal_information.prefix) {
+            let splitNumeration = pdf.splitTextToSize(auxNumeration, widthText);
+            if (auxNumeration.length >= 68) {
+                y = this.calculateY(y, 20);
+            } else if (auxNumeration.length >= 35 && auxNumeration.length <= 67) {
+                y = this.calculateY(y, 10);
+            }
+            pdf.text(x, y, splitNumeration, alignCenter);
             y = this.calculateY(y, 10);
-            pdf.text(x, y, 'HABILITA FAC: ' + _pInvoice.legal_information.prefix_name + '-' + _pInvoice.legal_information.numeration_from + ' AL ' + _pInvoice.legal_information.prefix_name + '-' + _pInvoice.legal_information.numeration_to, alignCenter);
         } else {
+            let splitNumeration = pdf.splitTextToSize(auxNumeration, widthText);
+            if (auxNumeration.length >= 68) {
+                y = this.calculateY(y, 20);
+            } else if (auxNumeration.length >= 35 && auxNumeration.length <= 67) {
+                y = this.calculateY(y, 10);
+            }
+            pdf.text(x, y, splitNumeration, alignCenter);
             y = this.calculateY(y, 10);
-            pdf.text(x, y, 'HABILITA FAC: ' + _pInvoice.legal_information.numeration_from + ' AL ' + _pInvoice.legal_information.numeration_to, alignCenter);
         }
- 
+
+        let auxBigContributor = this.getBigContributorLabel(_pInvoice.legal_information);
         if (_pInvoice.legal_information.is_big_contributor) {
-            y = this.calculateY(y, 10);
-            let splitIsBigContributor = pdf.splitTextToSize('Grandes contribuyentes según Res.No. ' + _pInvoice.legal_information.big_contributor_resolution + ' del ' + this.dateFormater(_pInvoice.legal_information.big_contributor_date, false), widthText);
+            let splitIsBigContributor = pdf.splitTextToSize(auxBigContributor, widthText);
+            if (auxBigContributor.length >= 68) {
+                y = this.calculateY(y, 20);
+            } else if (auxBigContributor.length >= 35 && auxBigContributor.length <= 67) {
+                y = this.calculateY(y, 10);
+            }
             pdf.text(splitIsBigContributor, x, y, alignCenter);
-            y = this.calculateY(y, 20);
-        } else {
             y = this.calculateY(y, 10);
-            pdf.text(x, y, 'No somos grandes contribuyentes', alignCenter);
+        } else {
+            let splitIsBigContributor = pdf.splitTextToSize(auxBigContributor, widthText);
+            if (auxBigContributor.length >= 68) {
+                y = this.calculateY(y, 20);
+            } else if (auxBigContributor.length >= 35 && auxBigContributor.length <= 67) {
+                y = this.calculateY(y, 10);
+            }
+            pdf.text(splitIsBigContributor, x, y, alignCenter);
             y = this.calculateY(y, 10);
         }
- 
+
+        let auxSelfAccepting = this.getSelfAcceptingLabel(_pInvoice.legal_information);
         if (_pInvoice.legal_information.is_self_accepting) {
-            let splitIsSelfAccepting = pdf.splitTextToSize('Autorretenedores según Res.No. ' + _pInvoice.legal_information.self_accepting_resolution + ' del ' + this.dateFormater(_pInvoice.legal_information.self_accepting_date, false), widthText);
+            let splitIsSelfAccepting = pdf.splitTextToSize(auxSelfAccepting, widthText);
+            if (auxSelfAccepting.length >= 68) {
+                y = this.calculateY(y, 20);
+            } else if (auxSelfAccepting.length >= 35 && auxSelfAccepting.length <= 67) {
+                y = this.calculateY(y, 10);
+            }
             pdf.text(splitIsSelfAccepting, x, y, alignCenter);
-            y = this.calculateY(y, 20);
+            y = this.calculateY(y, 10);
         } else {
-            pdf.text(x, y, 'No somos Autorretenedores', alignCenter);
+            let splitIsSelfAccepting = pdf.splitTextToSize(auxSelfAccepting, widthText);
+            if (auxSelfAccepting.length >= 68) {
+                y = this.calculateY(y, 20);
+            } else if (auxSelfAccepting.length >= 35 && auxSelfAccepting.length <= 67) {
+                y = this.calculateY(y, 10);
+            }
+            pdf.text(auxSelfAccepting, x, y, alignCenter);
             y = this.calculateY(y, 10);
         }
- 
+
         if (_pInvoice.legal_information.is_retaining_agent) {
             let splitRetainingAgent = pdf.splitTextToSize('Agentes Retenedores de IVA e ICA', widthText);
+            y = this.calculateY(y, 10);
             pdf.text(splitRetainingAgent, x, y, alignCenter);
             y = this.calculateY(y, 20);
         } else {
             let splitRetainingAgent = pdf.splitTextToSize('No somos Agentes Retenedores de IVA e ICA', widthText);
-            pdf.text(splitRetainingAgent, x, y, alignCenter);
             y = this.calculateY(y, 10);
+            pdf.text(splitRetainingAgent, x, y, alignCenter);
+            y = this.calculateY(y, 20);
         }
- 
         pdf.text(x, y, '==========================================', alignCenter);
- 
+
         if (_pInvoice.legal_information.text_at_the_end !== null && _pInvoice.legal_information.text_at_the_end !== undefined
             && _pInvoice.legal_information.text_at_the_end.length > 0) {
             y = this.calculateY(y, 10);
             let splitFinalText = pdf.splitTextToSize(_pInvoice.legal_information.text_at_the_end, widthText);
             pdf.text(splitFinalText, x, y, alignCenter);
- 
+
             if (_pInvoice.legal_information.text_at_the_end.length >= 145) {
                 y = this.calculateY(y, 40);
             } else if (_pInvoice.legal_information.text_at_the_end.length >= 97 && _pInvoice.legal_information.text_at_the_end.length <= 144) {
@@ -366,9 +393,8 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             }
             pdf.text(x, y, '==========================================', alignCenter);
         }
- 
 
-        console.log('ya comienza en ' + y);
+
 
         y = this.calculateY(y, 10);
         pdf.text(x, y, 'Desarrollado por Realbind S.A.S', alignCenter);
@@ -383,8 +409,6 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         y = this.calculateY(y, 10);
 
         pdf.text(x, y, 'FACTURA EMITIDA POR COMPUTADOR', alignCenter);
-
-        console.log('ya termina en ' + y);
 
         pdf.setProperties({
             title: this.itemNameTraduction('PAYMENTS_HISTORY.INVOICE_SALE'),
@@ -418,9 +442,6 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         let heightPage: number = 220;
 
         if (_pCountryId === '1900') {
-            console.log('items > ' + _pInvoice.items.length);
-            //quantRows = quantRows + _pInvoice.items.length;
-
             _pInvoice.items.forEach((item) => {
                 if (item.item_name.length <= 23) {
                     quantRows = quantRows + 1;
@@ -445,7 +466,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
                 }
 
                 if (item.additions.length > 0) {
-                    item.additions.forEach(addition => {
+                    item.additions.forEach((addition) => {
                         if (addition.addition_name.length <= 23) {
                             quantRows = quantRows + 1;
                         } else if (addition.addition_name.length > 23 && addition.addition_name.length <= 46) {
@@ -456,7 +477,6 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
                         }
                     });
                 }
-
             });
 
             _pInvoice.additions.forEach((addition) => {
@@ -470,26 +490,51 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
                 }
             });
 
-
-            if (_pInvoice.legal_information.regime === 'regime_co') {
-                quantRows = quantRows + 22;
-            } else if (_pInvoice.legal_information.regime === 'regime_si') {
-                quantRows = quantRows + 17;
+            let auxNumeration = this.getNumerationLabel(_pInvoice.legal_information);
+            if (_pInvoice.legal_information.prefix) {
+                if (auxNumeration.length >= 68) {
+                    quantRows = quantRows + 2;
+                } else if (auxNumeration.length >= 35 && auxNumeration.length <= 67) {
+                    quantRows = quantRows + 1;
+                }
+            } else {
+                if (auxNumeration.length >= 68) {
+                    quantRows = quantRows + 2;
+                } else if (auxNumeration.length >= 35 && auxNumeration.length <= 67) {
+                    quantRows = quantRows + 1;
+                }
             }
 
-            /*
+            let auxBigContributor = this.getBigContributorLabel(_pInvoice.legal_information);
             if (_pInvoice.legal_information.is_big_contributor) {
-                quantRows = quantRows + 2;
+                if (auxBigContributor.length >= 68) {
+                    quantRows = quantRows + 2;
+                } else if (auxBigContributor.length >= 35 && auxBigContributor.length <= 67) {
+                    quantRows = quantRows + 1;
+                }
             } else {
-                quantRows = quantRows + 1;
+                if (auxBigContributor.length >= 68) {
+                    quantRows = quantRows + 2;
+                } else if (auxBigContributor.length >= 35 && auxBigContributor.length <= 67) {
+                    quantRows = quantRows + 1;
+                }
             }
- 
+
+            let auxSelfAccepting = this.getSelfAcceptingLabel(_pInvoice.legal_information);
             if (_pInvoice.legal_information.is_self_accepting) {
-                quantRows = quantRows + 2;
+                if (auxSelfAccepting.length >= 68) {
+                    quantRows = quantRows + 2;
+                } else if (auxSelfAccepting.length >= 35 && auxSelfAccepting.length <= 67) {
+                    quantRows = quantRows + 1;
+                }
             } else {
-                quantRows = quantRows + 1;
+                if (auxSelfAccepting.length >= 68) {
+                    quantRows = quantRows + 2;
+                } else if (auxSelfAccepting.length >= 35 && auxSelfAccepting.length <= 67) {
+                    quantRows = quantRows + 1;
+                }
             }
- 
+
             if (_pInvoice.legal_information.text_at_the_end !== null && _pInvoice.legal_information.text_at_the_end !== undefined
                 && _pInvoice.legal_information.text_at_the_end.length > 0) {
                 quantRows = quantRows + 1;
@@ -504,10 +549,8 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
                 }
                 quantRows = quantRows + 1;
             }
- */
-            console.log('quantRows' + quantRows);
-            heightPage = heightPage + (quantRows * 9);
-            console.log('heightPage > ' + heightPage);
+
+            heightPage = heightPage + (quantRows * 10);
         } else {
             quantRows = quantRows + _pInvoice.items.length;
             quantRows = quantRows + _pInvoice.additions.length;
@@ -515,13 +558,51 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
                 quantRows = quantRows + item.garnish_food.length;
                 quantRows = quantRows + item.additions.length;
             });
-
             heightPage = heightPage + (quantRows * 30);
         }
-
-        heightPage = heightPage + 60;
+        heightPage = heightPage + 195;
         return heightPage;
     }
+
+    /**
+     * This function gets the numeratio label 
+     */
+    getNumerationLabel(_pInvoiceLegal: InvoiceLegalInformation): string {
+        let auxNumeration: string;
+        if (_pInvoiceLegal.prefix) {
+            auxNumeration = 'HABILITA FAC: ' + _pInvoiceLegal.prefix_name + '-' + _pInvoiceLegal.numeration_from + ' al ' + _pInvoiceLegal.prefix_name + '-' + _pInvoiceLegal.numeration_to;
+        } else {
+            auxNumeration = 'HABILITA FAC: ' + _pInvoiceLegal.numeration_from + ' al ' + _pInvoiceLegal.numeration_to;
+        }
+        return auxNumeration;
+    }
+
+    /**
+     * This function gets the big contributor label
+     */
+    getBigContributorLabel(_pInvoiceLegal: InvoiceLegalInformation): string {
+        let auxBigContributor: string;
+        if (_pInvoiceLegal.is_big_contributor) {
+            auxBigContributor = 'Grandes contribuyentes según Res.No. ' + _pInvoiceLegal.big_contributor_resolution + ' de ' + this.dateFormater(_pInvoiceLegal.big_contributor_date, false);
+        } else {
+            auxBigContributor = 'No somos grandes contribuyentes';
+        }
+        return auxBigContributor;
+    }
+
+    /**
+     * This function gets self accepting label
+     */
+    getSelfAcceptingLabel(_pInvoiceLegal: InvoiceLegalInformation): string {
+        let auxSelfAccepting: string;
+        if (_pInvoiceLegal.is_self_accepting) {
+            auxSelfAccepting = 'Autorretenedores según Res.No. ' + _pInvoiceLegal.self_accepting_resolution + ' de ' + this.dateFormater(_pInvoiceLegal.self_accepting_date, false);
+        } else {
+            auxSelfAccepting = 'No somos Autorretenedores';
+        }
+        return auxSelfAccepting;
+    }
+
 
     /**
      * Allow return date format
