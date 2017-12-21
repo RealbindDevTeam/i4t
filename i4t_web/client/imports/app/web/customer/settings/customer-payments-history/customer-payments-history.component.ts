@@ -394,8 +394,6 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
             pdf.text(x, y, '==========================================', alignCenter);
         }
 
-
-
         y = this.calculateY(y, 10);
         pdf.text(x, y, 'Desarrollado por Realbind S.A.S', alignCenter);
 
@@ -562,6 +560,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
 
     /**
      * This function gets the numeratio label 
+     * @param {InvoiceLegalInformation} _pInvoiceLegal
      */
     getNumerationLabel(_pInvoiceLegal: InvoiceLegalInformation): string {
         let auxNumeration: string;
@@ -575,6 +574,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
 
     /**
      * This function gets the big contributor label
+     * @param {InvoiceLegalInformation} _pInvoiceLegal
      */
     getBigContributorLabel(_pInvoiceLegal: InvoiceLegalInformation): string {
         let auxBigContributor: string;
@@ -588,6 +588,7 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
 
     /**
      * This function gets self accepting label
+     * @param {InvoiceLegalInformation} _pInvoiceLegal
      */
     getSelfAcceptingLabel(_pInvoiceLegal: InvoiceLegalInformation): string {
         let auxSelfAccepting: string;
@@ -598,7 +599,6 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
         }
         return auxSelfAccepting;
     }
-
 
     /**
      * Allow return date format

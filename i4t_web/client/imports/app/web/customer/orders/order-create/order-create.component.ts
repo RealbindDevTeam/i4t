@@ -261,7 +261,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         } else if (_any.type === 'Ad') {
             this.showAllItems();
             this._additionsDetailFormGroup.reset();
-            this.viewItemDetail('item-selected',true);
+            this.viewItemDetail('item-selected', true);
             this.viewItemDetail('addition-detail', false);
         }
     }
@@ -282,7 +282,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         this._finalPrice = this.getItemPrice(_pItem);
         this._unitPrice = this.getItemPrice(_pItem);
         this.resetItemDetailVariables();
-        this.viewItemDetail('addition-detail',true);
+        this.viewItemDetail('addition-detail', true);
         this.viewItemDetail('item-selected', false);
     }
 
@@ -376,7 +376,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
             card.classList.add('item-detail-hidden');
         }
     }
-    
+
     /**
      * Reset item detail Variables
      */
@@ -556,7 +556,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         }, (error) => {
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
         });
-        this.viewAdditionDetail(true);
+        this.viewItemDetail('addition-detail', true);
     }
 
     /**
