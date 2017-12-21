@@ -28,8 +28,8 @@ export interface Invoice extends CollectionObject {
 export interface InvoiceItem {
     item_name: string;
     quantity: number;
-    garnish_food: string[];
-    additions: string[];
+    garnish_food: InvoiceItemGarnish[];
+    additions: InvoiceItemAddition[];
     price: number;
 }
 
@@ -40,6 +40,23 @@ export interface InvoiceAddition {
     addition_name: string;
     quantity: number;
     price: number;
+}
+
+
+/**
+ * Item addition Model
+ */
+export interface InvoiceItemAddition {
+    addition_name: string,
+    price: number
+}
+
+/**
+ * Item garnish Model
+ */
+export interface InvoiceItemGarnish {
+    garnish_food_name: string,
+    price: number
 }
 
 /**
@@ -66,5 +83,5 @@ export interface InvoiceLegalInformation {
     self_accepting_date?: Date;
     text_at_the_end?: string;
     number?: string;
-    is_retaining_agent: boolean;
+    is_retaining_agent?: boolean;
 }

@@ -7,8 +7,11 @@
                         <mat-list-item>
                             <img mat-list-avatar class="image" src="/images/waiter.png">
                             <h2 mat-line class="card-title">{{'EXIT_TABLE.WAITER_ON_THE_WAY' | translate}}</h2>
-                            <p mat-line class="card-waiter-msg">{{'EXIT_TABLE.CANCEL_ORDERS_MSG' | translate}}</p>            
-                            <button mat-raised-button class="primary-button card-button" (click)="cancelWaiterCall(userDetail.current_restaurant, userDetail.current_table)">{{'EXIT_TABLE.CANCEL_CALL' | translate}}</button> 
+                            <p mat-line class="card-waiter-msg">{{'EXIT_TABLE.CANCEL_ORDERS_MSG' | translate}}</p>
+                            <button mat-icon-button color="warn">
+                                <mat-icon class="md-24 fab-button" aria-label="cancel" (click)="cancelWaiterCall(userDetail.current_restaurant, userDetail.current_table)">cancel</mat-icon>
+                            </button>
+                            <button mat-raised-button class="primary-button" (click)="cancelWaiterCall(userDetail.current_restaurant, userDetail.current_table)">{{'EXIT_TABLE.CANCEL_CALL' | translate}}</button> 
                         </mat-list-item>
                     </mat-list>
                 </mat-card>
