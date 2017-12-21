@@ -448,7 +448,6 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
                 } else if (item.item_name.length > 23 && item.item_name.length <= 46) {
                     quantRows = quantRows + 2;
                 } else {
-                    console.log('item.item_name.length');
                     quantRows = quantRows + 3;
                 }
 
@@ -459,7 +458,6 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
                         } else if (garnish.garnish_food_name.length > 23 && garnish.garnish_food_name.length <= 46) {
                             quantRows = quantRows + 2;
                         } else {
-                            console.log('garnish.garnish_food_name.length');
                             quantRows = quantRows + 3;
                         }
                     });
@@ -472,7 +470,6 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
                         } else if (addition.addition_name.length > 23 && addition.addition_name.length <= 46) {
                             quantRows = quantRows + 2;
                         } else {
-                            console.log('addition.addition_name.length');
                             quantRows = quantRows + 3;
                         }
                     });
@@ -485,7 +482,6 @@ export class CustomerPaymentsHistoryComponent implements OnInit, OnDestroy {
                 } else if (addition.addition_name.length > 23 && addition.addition_name.length <= 46) {
                     quantRows = quantRows + 2;
                 } else {
-                    console.log('addition.addition_name.length');
                     quantRows = quantRows + 3;
                 }
             });
