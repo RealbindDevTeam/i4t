@@ -1441,7 +1441,8 @@
         "YEAR_FILTER": "Year",
         "MONTH_FILTER": "Month",
         "SELECT_RESTAURANT": "Select restaurant",
-        "NO_INVOICES": "There are no invoices"
+        "NO_INVOICES": "There are no invoices",
+        "INVOICE_LBL": "Sales invoice: "
     },
     "RESTAURANT_LEGALITY": {
         "COLOMBIA": {
