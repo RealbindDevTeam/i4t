@@ -55,9 +55,9 @@
                     <mat-card-title>{{'RESTAURANT_PROFILE_DETAIL.CONTACT' | translate}}</mat-card-title>
                     <mat-card-content>
                         <mat-list>
-                            <mat-list-item>
+                            <mat-list-item *ngIf="restaurantProfile.social_networks">
                                 <div class="schedule-social-networks">
-                                    <div *ngIf="restaurantProfile.social_networks" class="social-networks">
+                                    <div class="social-networks">
                                         <button *ngIf="restaurantProfile.social_networks.facebook" mat-icon-button (click)="openFacebookLink(restaurantProfile.social_networks.facebook)">
                                             <i class="fa fa-facebook fa-2x cust-facebook" aria-hidden="true"></i>
                                         </button>
@@ -127,7 +127,7 @@
                 <mat-card-title>{{'RESTAURANT_PROFILE_DETAIL.LOCATION' | translate}}</mat-card-title>
                 <mat-card-content>
                     <p>{{'RESTAURANT_PROFILE_DETAIL.ADDRESS' | translate}}: {{restaurant.address}}</p>
-                    <agm-map [latitude]="restaurantProfile.location.lat" [longitude]="restaurantProfile.location.lng">
+                    <agm-map [latitude]="restaurantProfile.location.lat" [longitude]="restaurantProfile.location.lng" [mapDraggable]="false" [minZoom]="19" [maxZoom]="19" [zoomControl]="false">
                         <agm-marker [latitude]="restaurantProfile.location.lat" [longitude]="restaurantProfile.location.lng"></agm-marker>
                     </agm-map>
                 </mat-card-content>
