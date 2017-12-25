@@ -1,11 +1,11 @@
 import { Restaurants } from '../../../both/collections/restaurant/restaurant.collection';
 import { UserDetails } from '../../../both/collections/auth/user-detail.collection';
-import { Sections } from '../../../both/collections/administration/section.collection';
-import { Categories } from '../../../both/collections/administration/category.collection';
-import { Subcategories } from '../../../both/collections/administration/subcategory.collection';
-import { Additions } from '../../../both/collections/administration/addition.collection';
-import { Items } from '../../../both/collections/administration/item.collection';
-import { GarnishFoodCol } from '../../../both/collections/administration/garnish-food.collection';
+import { Sections } from '../../../both/collections/menu/section.collection';
+import { Categories } from '../../../both/collections/menu/category.collection';
+import { Subcategories } from '../../../both/collections/menu/subcategory.collection';
+import { Additions } from '../../../both/collections/menu/addition.collection';
+import { Items } from '../../../both/collections/menu/item.collection';
+import { GarnishFoodCol } from '../../../both/collections/menu/garnish-food.collection';
 import { PaymentMethods } from '../../../both/collections/general/paymentMethod.collection';
 import { PaymentsHistory } from '../../../both/collections/payment/payment-history.collection';
 import { Accounts } from '../../../both/collections/restaurant/account.collection';
@@ -16,9 +16,9 @@ import { WaiterCallDetails } from '../../../both/collections/restaurant/waiter-c
 import { CcPaymentMethods } from '../../../both/collections/payment/cc-payment-methods.collection';
 import { PaymentTransactions } from '../../../both/collections/payment/payment-transaction.collection';
 import { Invoices } from '../../../both/collections/restaurant/invoice.collection';
-import { Cities } from '../../../both/collections/settings/city.collection';
-import { Countries } from '../../../both/collections/settings/country.collection';
-import { Languages } from '../../../both/collections/settings/language.collection';
+import { Cities } from '../../../both/collections/general/city.collection';
+import { Countries } from '../../../both/collections/general/country.collection';
+import { Languages } from '../../../both/collections/general/language.collection';
 
 export function createdbindexes(){
 

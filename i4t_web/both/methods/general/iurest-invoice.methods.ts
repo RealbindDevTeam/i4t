@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { PaymentsHistory } from '../../collections/payment/payment-history.collection';
 import { UserDetails } from '../../collections/auth/user-detail.collection';
-import { Countries } from '../../collections/settings/country.collection';
-import { Cities } from '../../collections/settings/city.collection';
+import { Countries } from '../../collections/general/country.collection';
+import { Cities } from '../../collections/general/city.collection';
 import { InvoicesInfo } from '../../collections/payment/invoices-info.collection';
 import { IurestInvoices } from '../../collections/payment/iurest-invoices.collection';
 import { Parameters } from '../../collections/general/parameter.collection';

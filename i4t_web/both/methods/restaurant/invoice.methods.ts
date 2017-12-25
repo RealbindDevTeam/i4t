@@ -4,9 +4,9 @@ import { Invoices } from '../../collections/restaurant/invoice.collection';
 import { Restaurants, RestaurantsLegality } from '../../collections/restaurant/restaurant.collection';
 import { Tables } from '../../collections/restaurant/table.collection';
 import { Orders } from '../../collections/restaurant/order.collection';
-import { Items } from '../../collections/administration/item.collection';
-import { GarnishFoodCol } from '../../collections/administration/garnish-food.collection';
-import { Additions } from '../../collections/administration/addition.collection';
+import { Items } from '../../collections/menu/item.collection';
+import { GarnishFoodCol } from '../../collections/menu/garnish-food.collection';
+import { Additions } from '../../collections/menu/addition.collection';
 import { Currencies } from "../../collections/general/currency.collection";
 import { PaymentMethods } from "../../collections/general/paymentMethod.collection";
 
