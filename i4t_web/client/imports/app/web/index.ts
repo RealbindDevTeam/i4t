@@ -92,6 +92,7 @@ import { ScheduleDetailComponent } from './customer/restaurant-profile-detail/sc
 import { PaymentPlanInfo } from './auth/payment-plan-info/payment-plan-info.component';
 import { ImageService } from './services/general/image.service';
 import { PayuPaymentService } from './services/payment/payu-payment.service';
+import { AfterRestaurantCreationComponent } from './administrator/administration/restaurant/register/after-restaurant-creation/after-restaurant-creation.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -186,7 +187,8 @@ export const MODAL_DIALOG_DECLARATIONS = [
     RestaurantExitConfirmComponent,
     PenalizeCustomerComponent,
     ScheduleDetailComponent,
-    PaymentPlanInfo
+    PaymentPlanInfo,
+    AfterRestaurantCreationComponent
 ];
 
 export const SERVICES_DECLARATIONS = [

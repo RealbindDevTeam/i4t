@@ -10,6 +10,7 @@
                                     <mat-card-title>{{'RESTAURANT_REGISTER.GENERAL_INFO' | translate}}</mat-card-title>
                                     <mat-card-subtitle>{{'RESTAURANT_REGISTER.GENERAL_INFO_TEXT' | translate}}</mat-card-subtitle>
                                     <mat-card-content>
+                                            <button mat-raised-button (click)="openDialogAfterRestaurantRegister()">{{'FINISH' | translate}}</button>
                                         <div style="margin-top: 3%;">
                                             <mat-form-field style="width: 48%;">
                                                 <mat-select formControlName="country" placeholder="{{'RESTAURANT_REGISTER.SELECT_COUNTRY' | translate}}" [(ngModel)]="_selectedCountryValue">

@@ -28,6 +28,7 @@ import { Addition, AdditionPrice, AdditionRestaurant } from '../../../../../../.
 import { GarnishFood, GarnishFoodPrice, GarnishFoodRestaurant } from '../../../../../../../../both/models/menu/garnish-food.model';
 import { Additions } from '../../../../../../../../both/collections/menu/addition.collection';
 import { GarnishFoodCol } from '../../../../../../../../both/collections/menu/garnish-food.collection';
+import { AfterRestaurantCreationComponent } from './after-restaurant-creation/after-restaurant-creation.component';
 
 import * as QRious from 'qrious';
 
@@ -640,6 +641,10 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
 
             }
         });
+    }
+
+    openDialogAfterRestaurantRegister(){
+        this._mdDialogRef = this._mdDialog.open(AfterRestaurantCreationComponent);
     }
 
     /**
