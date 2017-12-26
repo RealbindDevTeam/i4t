@@ -3,10 +3,10 @@ import { App, NavController, NavParams, AlertController, LoadingController } fro
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, Observable } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
-import { Additions } from 'i4t_web/both/collections/administration/addition.collection';
+import { Additions } from 'i4t_web/both/collections/menu/addition.collection';
 import { Order, OrderAddition } from 'i4t_web/both/models/restaurant/order.model';
 import { UserDetails } from 'i4t_web/both/collections/auth/user-detail.collection';
-import { Items } from 'i4t_web/both/collections/administration/item.collection';
+import { Items } from 'i4t_web/both/collections/menu/item.collection';
 import { Restaurant } from 'i4t_web/both/models/restaurant/restaurant.model';
 import { Restaurants } from 'i4t_web/both/collections/restaurant/restaurant.collection';
 import { Tables } from 'i4t_web/both/collections/restaurant/table.collection';
