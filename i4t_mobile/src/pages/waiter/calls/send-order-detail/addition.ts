@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
-import { Additions } from 'i4t_web/both/collections/administration/addition.collection';
+import { Additions } from 'i4t_web/both/collections/menu/addition.collection';
 
 @Component({
     selector: 'additions-send-order-component',

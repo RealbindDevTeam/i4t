@@ -1,11 +1,11 @@
 import { Component, Input, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs'
 import { Subscription } from 'rxjs';
-import { Addition } from 'i4t_web/both/models/administration/addition.model';
-import { Additions } from 'i4t_web/both/collections/administration/addition.collection';
+import { Addition } from 'i4t_web/both/models/menu/addition.model';
+import { Additions } from 'i4t_web/both/collections/menu/addition.collection';
 import { Orders } from 'i4t_web/both/collections/restaurant/order.collection';
-import { GarnishFood } from 'i4t_web/both/models/administration/garnish-food.model';
-import { GarnishFoodCol } from 'i4t_web/both/collections/administration/garnish-food.collection';
+import { GarnishFood } from 'i4t_web/both/models/menu/garnish-food.model';
+import { GarnishFoodCol } from 'i4t_web/both/collections/menu/garnish-food.collection';
 import { Restaurants } from 'i4t_web/both/collections/restaurant/restaurant.collection';
 
 /*

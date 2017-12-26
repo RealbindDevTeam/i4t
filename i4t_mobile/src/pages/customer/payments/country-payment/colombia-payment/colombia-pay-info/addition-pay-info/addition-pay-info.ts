@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { Additions } from 'i4t_web/both/collections/administration/addition.collection';
+import { Additions } from 'i4t_web/both/collections/menu/addition.collection';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
 
