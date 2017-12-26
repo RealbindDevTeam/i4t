@@ -2,10 +2,10 @@ import { Component, ElementRef, OnInit, HostListener, ViewEncapsulation } from '
 import { NavigationService } from './navigation/navigation.service';
 import { Router, Event, NavigationStart, NavigationEnd } from '@angular/router';
 import 'hammerjs';
-import { OrderNavigationService } from './customer/orders/order-navigation/order-navigation.service';
-import { UserLanguageService } from '../shared/services/user-language.service';
-import { ImageService } from '../shared/services/image.service';
-import { PayuPaymentService } from '../shared/services/payu-payment.service';
+import { OrderNavigationService } from './services/navigation/order-navigation.service';
+import { UserLanguageService } from './services/general/user-language.service';
+import { ImageService } from './services/general/image.service';
+import { PayuPaymentService } from './services/payment/payu-payment.service';
 
 @Component({
     selector: 'app',

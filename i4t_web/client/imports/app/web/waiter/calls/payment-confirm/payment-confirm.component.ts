@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
+import { UserLanguageService } from '../../../services/general/user-language.service';
 import { Payment } from '../../../../../../../both/models/restaurant/payment.model';
 import { Payments } from '../../../../../../../both/collections/restaurant/payment.collection';
 import { Order } from '../../../../../../../both/models/restaurant/order.model';
@@ -13,17 +13,17 @@ import { Users } from '../../../../../../../both/collections/auth/user.collectio
 import { User } from '../../../../../../../both/models/auth/user.model';
 import { Currency } from '../../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
-import { Item } from '../../../../../../../both/models/administration/item.model';
-import { Items } from '../../../../../../../both/collections/administration/item.collection';
+import { Item } from '../../../../../../../both/models/menu/item.model';
+import { Items } from '../../../../../../../both/collections/menu/item.collection';
 import { PaymentMethod } from '../../../../../../../both/models/general/paymentMethod.model';
 import { PaymentMethods } from '../../../../../../../both/collections/general/paymentMethod.collection';
 import { Table } from '../../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
 import { WaiterCallDetail } from '../../../../../../../both/models/restaurant/waiter-call-detail.model';
-import { Additions } from '../../../../../../../both/collections/administration/addition.collection';
-import { Addition } from '../../../../../../../both/models/administration/addition.model';
-import { GarnishFood } from '../../../../../../../both/models/administration/garnish-food.model';
-import { GarnishFoodCol } from '../../../../../../../both/collections/administration/garnish-food.collection';
+import { Additions } from '../../../../../../../both/collections/menu/addition.collection';
+import { Addition } from '../../../../../../../both/models/menu/addition.model';
+import { GarnishFood } from '../../../../../../../both/models/menu/garnish-food.model';
+import { GarnishFoodCol } from '../../../../../../../both/collections/menu/garnish-food.collection';
 
 @Component({
     selector: 'payment-confirm',

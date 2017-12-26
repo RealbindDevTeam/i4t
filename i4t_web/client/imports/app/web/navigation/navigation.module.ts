@@ -16,7 +16,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ChefMenuComponent } from './menu-partials/chef/chef-menu.component';
 import { CustomerMenuComponent } from './menu-partials/customer/customer-menu.component';
 import { WaiterMenuComponent } from './menu-partials/waiter/waiter-menu.component';
-import { UserLanguageService } from '../../shared/services/user-language.service';
+import { UserLanguageService } from '../services/general/user-language.service';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/i18n/', '.json');
