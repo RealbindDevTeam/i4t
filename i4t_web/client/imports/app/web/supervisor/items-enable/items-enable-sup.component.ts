@@ -13,7 +13,7 @@ import { UserDetails } from '../../../../../../both/collections/auth/user-detail
 @Component({
     selector: 'item-enable-sup',
     templateUrl: './items-enable-sup.component.html',
-    styleUrls: ['../item.component.scss']
+    styleUrls: ['./items-enable-sup.component.scss']
 })
 export class ItemEnableSupComponent implements OnInit, OnDestroy {
 

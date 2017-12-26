@@ -15,7 +15,7 @@ import { Subcategories } from '../../../../../../../both/collections/menu/subcat
 import { Item } from '../../../../../../../both/models/menu/item.model';
 import { Items } from '../../../../../../../both/collections/menu/item.collection';
 import { OrderMenu } from '../order-navigation/order-menu';
-import { OrderNavigationService } from '../order-navigation/order-navigation.service';
+import { OrderNavigationService } from '../../../services/navigation/order-navigation.service';
 import { GarnishFood } from '../../../../../../../both/models/menu/garnish-food.model';
 import { GarnishFoodCol } from '../../../../../../../both/collections/menu/garnish-food.collection';
 import { Addition } from '../../../../../../../both/models/menu/addition.model';

@@ -9,7 +9,7 @@ import { AlertConfirmComponent } from '../../general/alert-confirm/alert-confirm
 @Component({
     selector: 'reset-password',
     templateUrl: './reset-password.web.component.html',
-    styleUrls: [ './auth.component.scss' ]
+    styleUrls: [ '../auth.component.scss' ]
 })
 export class ResetPasswordWebComponent {
 
