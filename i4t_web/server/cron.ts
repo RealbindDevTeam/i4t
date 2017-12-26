@@ -1,5 +1,5 @@
 import { SyncedCron } from 'meteor/percolate:synced-cron';
-import { Countries } from '../both/collections/settings/country.collection';
+import { Countries } from '../both/collections/general/country.collection';
 import { Email } from 'meteor/email';
 
 export function createCrons() {

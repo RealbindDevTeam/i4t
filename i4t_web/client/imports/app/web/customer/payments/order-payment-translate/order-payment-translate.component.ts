@@ -5,7 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { Meteor } from 'meteor/meteor';
 import { Router } from '@angular/router';
 import { MatDialogRef, MatDialog } from '@angular/material';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
+import { UserLanguageService } from '../../../services/general/user-language.service';
 import { OrderToTranslateComponent } from './order-to-translate/order-to-translate.component';
 import { Order, OrderTranslateInfo } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';

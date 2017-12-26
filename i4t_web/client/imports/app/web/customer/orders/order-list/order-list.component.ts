@@ -6,15 +6,15 @@ import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
 import { Router } from "@angular/router";
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
+import { UserLanguageService } from '../../../services/general/user-language.service';
 import { Order, OrderItem, OrderAddition } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
-import { Item } from '../../../../../../../both/models/administration/item.model';
-import { Items } from '../../../../../../../both/collections/administration/item.collection';
-import { GarnishFood } from '../../../../../../../both/models/administration/garnish-food.model';
-import { GarnishFoodCol } from '../../../../../../../both/collections/administration/garnish-food.collection';
-import { Addition } from '../../../../../../../both/models/administration/addition.model';
-import { Additions } from '../../../../../../../both/collections/administration/addition.collection';
+import { Item } from '../../../../../../../both/models/menu/item.model';
+import { Items } from '../../../../../../../both/collections/menu/item.collection';
+import { GarnishFood } from '../../../../../../../both/models/menu/garnish-food.model';
+import { GarnishFoodCol } from '../../../../../../../both/collections/menu/garnish-food.collection';
+import { Addition } from '../../../../../../../both/models/menu/addition.model';
+import { Additions } from '../../../../../../../both/collections/menu/addition.collection';
 import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
@@ -223,44 +223,21 @@ export class OrdersListComponent implements OnInit, OnDestroy {
             this._showOtherOrders = true;
         }
         this._showDetails = false;
-        this.viewItemDetail(true);
+        this.viewItemDetail('item-selected', true);
     }
     
     /**
-     * Function to view item detail
-     * @param {boolean} _boolean 
+     * This function allow view item detail
+     * @param _pDiv 
+     * @param _boolean 
      */
-    viewItemDetail(_boolean: boolean): void {
-        /*var card = document.getElementById("item-selected");
-        if (!_boolean) {
-            card.style.width = "396px";
-        } else {
-            card.style.width = "0";
-            card.removeAttribute("style");
-        }
-        */
-
-        var card = document.getElementById("item-selected");
+    viewItemDetail(_pDiv: string, _boolean: boolean): void {
+        var card = document.getElementById(_pDiv);
         if (!_boolean) {
             card.classList.add('item-detail-show');
             card.classList.remove('item-detail-hidden');
         } else {
             card.classList.add('item-detail-hidden');
-        }
-    }
-
-    /**
-     * This function allow view additions
-     * @param {boolean} _boolean 
-     */
-    viewAdditionDetail(_boolean: boolean): void {
-        var card = document.getElementById("addition-detail");
-
-        if (!_boolean) {
-            card.style.width = "396px";
-        } else {
-            card.style.width = "0";
-            card.removeAttribute("style");
         }
     }
 
@@ -313,7 +290,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                         }
                     });
                 }
-                this.viewItemDetail(true);
+                this.viewItemDetail('item-selected' ,true);
                 let _lMessage: string = this.itemNameTraduction('ORDER_LIST.ITEM_DELETED');
                 this.snackBar.open(_lMessage, '', {
                     duration: 2500
@@ -369,7 +346,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                         }
                     });
                 }
-                this.viewAdditionDetail(true);
+                this.viewItemDetail('addition-detail', true);
                 let _lMessage: string = this.itemNameTraduction('ORDER_LIST.ADDITION_DELETED');
                 this.snackBar.open(_lMessage, '', {
                     duration: 2500
@@ -403,8 +380,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
 
         this._showOrderItemDetail = false;
         this._showDetails = true;
-        this.viewAdditionDetail(true);
-        this.viewItemDetail(true);
+        this.viewItemDetail('addition-detail', true);
+        this.viewItemDetail('item-selected', true);
     }
 
     /**
@@ -426,8 +403,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
 
         this._showOrderItemDetail = false;
         this._showDetails = true;
-        this.viewAdditionDetail(true);
-        this.viewItemDetail(true);
+        this.viewItemDetail('addition-detail', true);
+        this.viewItemDetail('item-selected', true);
     }
 
     /**
@@ -449,8 +426,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         this.prepareAdditionsToEdit();
 
         this._showOrderItemDetail = true;
-        this.viewAdditionDetail(true);
-        this.viewItemDetail(false);
+        this.viewItemDetail('addition-detail', true);
+        this.viewItemDetail('item-selected', false);
     }
 
     /**
@@ -466,8 +443,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         let control: FormControl = new FormControl(_pAdition.quantity, [Validators.minLength(1), Validators.maxLength(2)]);
         this._additionsDetailFormGroup.addControl(_pAdition.additionId, control);
         this._additionDetails = Additions.find({ _id: _pAdition.additionId }).zone();
-        this.viewItemDetail(true);
-        this.viewAdditionDetail(false);
+        this.viewItemDetail('item-selected', true);
+        this.viewItemDetail('addition-detail', false);
     }
 
     /**
@@ -707,7 +684,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
             );
             this._currentOrder = Orders.findOne({ _id: this._currentOrder._id });
             this._showOrderItemDetail = false;
-            this.viewItemDetail(true);
+            this.viewItemDetail('item-selected', true);
             let _lMessage: string = this.itemNameTraduction('ORDER_LIST.ITEM_EDITED');
             this.snackBar.open(_lMessage, '', {
                 duration: 2500
@@ -767,7 +744,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
             }
         );
         this._currentOrder = Orders.findOne({ _id: this._currentOrder._id });
-        this.viewAdditionDetail(true);
+        this.viewItemDetail('addition-detail', true);
+
         let _lMessage: string = this.itemNameTraduction('ORDER_LIST.ADDITION_EDITED');
         this.snackBar.open(_lMessage, '', {
             duration: 2500
@@ -819,7 +797,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                 } else {
                     this.openDialog(this.titleMsg, '', this.itemNameTraduction("ORDER_LIST.ORDER_CANT_CANCEL"), '', this.btnAcceptLbl, false);
                 }
-                this.viewItemDetail(true);
+                this.viewItemDetail('item-selected', true);
             }
         });
     }
@@ -874,7 +852,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                 } else {
                     this.openDialog(this.titleMsg, '', this.itemNameTraduction("ORDER_LIST.ORDER_CANT_CONFIRM"), '', this.btnAcceptLbl, false);
                 }
-                this.viewItemDetail(true);
+                this.viewItemDetail('item-selected', true);
                 this._orderCustomerIndex = -1;
             }
         });

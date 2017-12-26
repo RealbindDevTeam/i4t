@@ -4,8 +4,8 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { PageScrollService, PageScrollInstance, PageScrollConfig } from 'ngx-page-scroll';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
-import { Language } from '../../../../../both/models/settings/language.model';
-import { Languages } from '../../../../../both/collections/settings/language.collection';
+import { Language } from '../../../../../both/models/general/language.model';
+import { Languages } from '../../../../../both/collections/general/language.collection';
 
 @Component({
     selector: 'landing-page',

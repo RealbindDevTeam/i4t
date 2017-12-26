@@ -5,21 +5,21 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { Section } from '../../../../../../../both/models/administration/section.model';
-import { Sections } from '../../../../../../../both/collections/administration/section.collection';
-import { Category } from '../../../../../../../both/models/administration/category.model';
-import { Categories } from '../../../../../../../both/collections/administration/category.collection';
-import { Subcategory } from '../../../../../../../both/models/administration/subcategory.model';
-import { Subcategories } from '../../../../../../../both/collections/administration/subcategory.collection';
-import { Item } from '../../../../../../../both/models/administration/item.model';
-import { Items } from '../../../../../../../both/collections/administration/item.collection';
+import { UserLanguageService } from '../../../services/general/user-language.service';
+import { Section } from '../../../../../../../both/models/menu/section.model';
+import { Sections } from '../../../../../../../both/collections/menu/section.collection';
+import { Category } from '../../../../../../../both/models/menu/category.model';
+import { Categories } from '../../../../../../../both/collections/menu/category.collection';
+import { Subcategory } from '../../../../../../../both/models/menu/subcategory.model';
+import { Subcategories } from '../../../../../../../both/collections/menu/subcategory.collection';
+import { Item } from '../../../../../../../both/models/menu/item.model';
+import { Items } from '../../../../../../../both/collections/menu/item.collection';
 import { OrderMenu } from '../order-navigation/order-menu';
-import { OrderNavigationService } from '../order-navigation/order-navigation.service';
-import { GarnishFood } from '../../../../../../../both/models/administration/garnish-food.model';
-import { GarnishFoodCol } from '../../../../../../../both/collections/administration/garnish-food.collection';
-import { Addition } from '../../../../../../../both/models/administration/addition.model';
-import { Additions } from '../../../../../../../both/collections/administration/addition.collection';
+import { OrderNavigationService } from '../../../services/navigation/order-navigation.service';
+import { GarnishFood } from '../../../../../../../both/models/menu/garnish-food.model';
+import { GarnishFoodCol } from '../../../../../../../both/collections/menu/garnish-food.collection';
+import { Addition } from '../../../../../../../both/models/menu/addition.model';
+import { Additions } from '../../../../../../../both/collections/menu/addition.collection';
 import { Order, OrderItem, OrderAddition } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
 import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
@@ -261,8 +261,8 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         } else if (_any.type === 'Ad') {
             this.showAllItems();
             this._additionsDetailFormGroup.reset();
-            this.viewItemDetail(true);
-            this.viewAdditionDetail(false);
+            this.viewItemDetail('item-selected', true);
+            this.viewItemDetail('addition-detail', false);
         }
     }
 
@@ -282,8 +282,8 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         this._finalPrice = this.getItemPrice(_pItem);
         this._unitPrice = this.getItemPrice(_pItem);
         this.resetItemDetailVariables();
-        this.viewAdditionDetail(true);
-        this.viewItemDetail(false);
+        this.viewItemDetail('addition-detail', true);
+        this.viewItemDetail('item-selected', false);
     }
 
     /**
@@ -350,7 +350,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
             }, (error) => {
                 this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
             });
-            this.viewItemDetail(true);
+            this.viewItemDetail('item-selected', true);
         }
     }
 
@@ -364,48 +364,16 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
 
     /**
      * This function allow view item detail
-     * @param {boolean} _boolean 
+     * @param _pDiv 
+     * @param _boolean 
      */
-    viewItemDetail(_boolean: boolean): void {
-        /*var card = document.getElementById("item-selected");
-
-        if (!_boolean) {
-            card.style.width = "396px";
-        } else {
-            card.style.width = "0";
-            card.removeAttribute("style");
-        }*/
-
-        var card = document.getElementById("item-selected");
+    viewItemDetail(_pDiv: string, _boolean: boolean): void {
+        var card = document.getElementById(_pDiv);
         if (!_boolean) {
             card.classList.add('item-detail-show');
             card.classList.remove('item-detail-hidden');
         } else {
             card.classList.add('item-detail-hidden');
-        }
-    }
-
-    /**
-     * This function allow view additions
-     * @param {boolean} _boolean 
-     */
-    viewAdditionDetail(_boolean: boolean): void {
-        /*var card = document.getElementById("addition-detail");
-
-        if (!_boolean) {
-            card.style.width = "396px";
-        } else {
-            card.style.width = "0";
-            card.removeAttribute("style");
-        }*/
-        var card = document.getElementById("addition-detail");
-        if (card) {
-            if (!_boolean) {
-                card.classList.add('item-detail-show');
-                card.classList.remove('item-detail-hidden');
-            } else {
-                card.classList.add('item-detail-hidden');
-            }
         }
     }
 
@@ -588,7 +556,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
         }, (error) => {
             this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
         });
-        this.viewAdditionDetail(true);
+        this.viewItemDetail('addition-detail', true);
     }
 
     /**

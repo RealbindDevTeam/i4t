@@ -4,19 +4,19 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { MatDialogRef, MatDialog } from '@angular/material';
-import { UserLanguageService } from '../../../shared/services/user-language.service';
-import { Section } from '../../../../../../both/models/administration/section.model';
-import { Sections } from '../../../../../../both/collections/administration/section.collection';
-import { Category } from '../../../../../../both/models/administration/category.model';
-import { Categories } from '../../../../../../both/collections/administration/category.collection';
-import { Subcategory } from '../../../../../../both/models/administration/subcategory.model';
-import { Subcategories } from '../../../../../../both/collections/administration/subcategory.collection';
-import { Item } from '../../../../../../both/models/administration/item.model';
-import { Items } from '../../../../../../both/collections/administration/item.collection';
-import { GarnishFood } from '../../../../../../both/models/administration/garnish-food.model';
-import { GarnishFoodCol } from '../../../../../../both/collections/administration/garnish-food.collection';
-import { Addition } from '../../../../../../both/models/administration/addition.model';
-import { Additions } from '../../../../../../both/collections/administration/addition.collection';
+import { UserLanguageService } from '../../services/general/user-language.service';
+import { Section } from '../../../../../../both/models/menu/section.model';
+import { Sections } from '../../../../../../both/collections/menu/section.collection';
+import { Category } from '../../../../../../both/models/menu/category.model';
+import { Categories } from '../../../../../../both/collections/menu/category.collection';
+import { Subcategory } from '../../../../../../both/models/menu/subcategory.model';
+import { Subcategories } from '../../../../../../both/collections/menu/subcategory.collection';
+import { Item } from '../../../../../../both/models/menu/item.model';
+import { Items } from '../../../../../../both/collections/menu/item.collection';
+import { GarnishFood } from '../../../../../../both/models/menu/garnish-food.model';
+import { GarnishFoodCol } from '../../../../../../both/collections/menu/garnish-food.collection';
+import { Addition } from '../../../../../../both/models/menu/addition.model';
+import { Additions } from '../../../../../../both/collections/menu/addition.collection';
 import { Currencies } from '../../../../../../both/collections/general/currency.collection';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
@@ -173,8 +173,8 @@ export class MenuListComponent implements OnInit, OnDestroy {
      */
     showAdditions(): void {
         this.showAllItems();
-        this.viewItemDetail(true);
-        this.viewAdditionDetail(false);
+        this.viewItemDetail('item-selected', true);
+        this.viewItemDetail('addition-detail', false);
     }
 
     /**
@@ -183,8 +183,8 @@ export class MenuListComponent implements OnInit, OnDestroy {
      */
     showItemInformation(_pItem: Item): void {
         this._itemDetail = Items.find({ _id: _pItem._id }).zone();
-        this.viewAdditionDetail(true);
-        this.viewItemDetail(false);
+        this.viewItemDetail('addition-detail', true);
+        this.viewItemDetail('item-selected', false);
     }
 
     /**
@@ -206,31 +206,16 @@ export class MenuListComponent implements OnInit, OnDestroy {
 
     /**
      * This function allow view item detail
-     * @param {boolean} _boolean 
+     * @param _pDiv 
+     * @param _boolean 
      */
-    viewItemDetail(_boolean: boolean): void {
-        var card = document.getElementById("item-selected");
+    viewItemDetail(_pDiv: string, _boolean: boolean): void {
+        var card = document.getElementById(_pDiv);
         if (!_boolean) {
             card.classList.add('item-detail-show');
             card.classList.remove('item-detail-hidden');
         } else {
             card.classList.add('item-detail-hidden');
-        }
-    }
-
-    /**
-     * This function allow view additions
-     * @param {boolean} _boolean 
-     */
-    viewAdditionDetail(_boolean: boolean): void {
-        var card = document.getElementById("addition-detail");
-        if (card) {
-            if (!_boolean) {
-                card.classList.add('item-detail-show');
-                card.classList.remove('item-detail-hidden');
-            } else {
-                card.classList.add('item-detail-hidden');
-            }
         }
     }
 

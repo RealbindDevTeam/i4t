@@ -17,13 +17,13 @@ import { WEB_DECLARATIONS, MODAL_DIALOG_DECLARATIONS, SERVICES_DECLARATIONS } fr
 
 import { NavigationModule } from './web/navigation/navigation.module';
 
-import { RouteGuard } from './web/auth/navigation/route-guard.service';
-import { CustomerGuard } from './web/auth/navigation/customer-guard.service';
-import { AdminGuard } from './web/auth/navigation/admin-guard.service';
-import { WaiterGuard } from './web/auth/navigation/waiter-guard.service';
-import { SupervisorGuard } from './web/auth/navigation/supervisor-guard.service';
-import { ChefGuard } from './web/auth/navigation/chef-guard.service';
-import { CashierGuard } from './web/auth/navigation/cashier-guard.service';
+import { RouteGuard } from './web/services/navigation/route-guard.service';
+import { CustomerGuard } from './web/services/navigation/customer-guard.service';
+import { AdminGuard } from './web/services/navigation/admin-guard.service';
+import { WaiterGuard } from './web/services/navigation/waiter-guard.service';
+import { SupervisorGuard } from './web/services/navigation/supervisor-guard.service';
+import { ChefGuard } from './web/services/navigation/chef-guard.service';
+import { CashierGuard } from './web/services/navigation/cashier-guard.service';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/i18n/', '.json');
