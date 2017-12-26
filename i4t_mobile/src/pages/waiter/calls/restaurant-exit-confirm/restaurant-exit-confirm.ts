@@ -8,7 +8,7 @@ import { Orders } from 'i4t_web/both/collections/restaurant/order.collection';
 import { Order } from 'i4t_web/both/models/restaurant/order.model';
 import { Users } from 'i4t_web/both/collections/auth/user.collection';
 import { Tables } from 'i4t_web/both/collections/restaurant/table.collection';
-import { Additions } from 'i4t_web/both/collections/administration/addition.collection';
+import { Additions } from 'i4t_web/both/collections/menu/addition.collection';
 import { Table } from 'i4t_web/both/models/restaurant/table.model';
 import { UserLanguageServiceProvider } from '../../../../providers/user-language-service/user-language-service';
 

@@ -2,8 +2,8 @@ import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angu
 import { Order, OrderItem } from 'i4t_web/both/models/restaurant/order.model';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
-import { Items } from 'i4t_web/both/collections/administration/item.collection';
-import { ItemRestaurant } from 'i4t_web/both/models/administration/item.model';
+import { Items } from 'i4t_web/both/collections/menu/item.collection';
+import { ItemRestaurant } from 'i4t_web/both/models/menu/item.model';
 
 @Component({
     selector: 'order-item-detail',
