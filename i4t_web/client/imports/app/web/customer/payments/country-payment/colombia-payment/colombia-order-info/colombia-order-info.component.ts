@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatDialogRef, MatDialog } from '@angular/material';
-import { UserLanguageService } from '../../../../../../shared/services/user-language.service';
+import { UserLanguageService } from '../../../../../services/general/user-language.service';
 import { Orders } from '../../../../../../../../../both/collections/restaurant/order.collection';
 import { Order, OrderTranslateInfo } from '../../../../../../../../../both/models/restaurant/order.model';
 import { UserDetails } from '../../../../../../../../../both/collections/auth/user-detail.collection';
@@ -17,12 +17,12 @@ import { Currency } from '../../../../../../../../../both/models/general/currenc
 import { Currencies } from '../../../../../../../../../both/collections/general/currency.collection';
 import { Users } from '../../../../../../../../../both/collections/auth/user.collection';
 import { User } from '../../../../../../../../../both/models/auth/user.model';
-import { Items } from '../../../../../../../../../both/collections/administration/item.collection';
-import { Item } from '../../../../../../../../../both/models/administration/item.model';
-import { GarnishFood } from '../../../../../../../../../both/models/administration/garnish-food.model';
-import { GarnishFoodCol } from '../../../../../../../../../both/collections/administration/garnish-food.collection';
-import { Addition } from '../../../../../../../../../both/models/administration/addition.model';
-import { Additions } from '../../../../../../../../../both/collections/administration/addition.collection';
+import { Items } from '../../../../../../../../../both/collections/menu/item.collection';
+import { Item } from '../../../../../../../../../both/models/menu/item.model';
+import { GarnishFood } from '../../../../../../../../../both/models/menu/garnish-food.model';
+import { GarnishFoodCol } from '../../../../../../../../../both/collections/menu/garnish-food.collection';
+import { Addition } from '../../../../../../../../../both/models/menu/addition.model';
+import { Additions } from '../../../../../../../../../both/collections/menu/addition.collection';
 import { AlertConfirmComponent } from '../../../../../../web/general/alert-confirm/alert-confirm.component';
 
 @Component({

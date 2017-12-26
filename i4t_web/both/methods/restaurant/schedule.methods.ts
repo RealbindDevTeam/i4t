@@ -1,5 +1,5 @@
 import { SyncedCron } from 'meteor/percolate:synced-cron';
-import { Countries } from '../../collections/settings/country.collection';
+import { Countries } from '../../collections/general/country.collection';
 
 if (Meteor.isServer) {
 

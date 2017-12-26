@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, OnDestroy, Input, ViewChildren, QueryList, Output, EventEmitter } from '@angular/core';
 import { OrderMenu } from './order-menu';
-import { OrderNavigationService } from './order-navigation.service';
+import { OrderNavigationService } from '../../../services/navigation/order-navigation.service';
 import { Subscription } from 'rxjs';
 
 @Component({

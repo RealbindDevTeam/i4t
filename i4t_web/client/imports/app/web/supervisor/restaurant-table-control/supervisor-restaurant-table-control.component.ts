@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { UserLanguageService } from '../../../shared/services/user-language.service';
+import { UserLanguageService } from '../../services/general/user-language.service';
 import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
 import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
 import { Table } from '../../../../../../both/models/restaurant/table.model';

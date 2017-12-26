@@ -2,9 +2,9 @@ import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Observable, Subscription } from 'rxjs';
-import { UserLanguageService } from '../../../shared/services/user-language.service';
-import { Countries } from '../../../../../../both/collections/settings/country.collection';
-import { Country } from '../../../../../../both/models/settings/country.model';
+import { UserLanguageService } from '../../services/general/user-language.service';
+import { Countries } from '../../../../../../both/collections/general/country.collection';
+import { Country } from '../../../../../../both/models/general/country.model';
 import { Currency } from '../../../../../../both/models/general/currency.model';
 import { Currencies } from '../../../../../../both/collections/general/currency.collection';
 

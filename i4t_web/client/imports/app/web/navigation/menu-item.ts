@@ -1,4 +1,4 @@
-import {StringUtils} from '../../shared/utils/string-utils';
+import {StringUtils} from '../general/utils/string-utils';
 import {NavigationService} from './navigation.service';
 import {SidenavItemComponent} from './sidenav/sidenav-item/sidenav-item.component';
 export class MenuItem {
