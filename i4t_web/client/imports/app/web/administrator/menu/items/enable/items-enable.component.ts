@@ -4,9 +4,9 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { Item } from '../../../../../../../both/models/administration/item.model';
-import { Items } from '../../../../../../../both/collections/administration/item.collection';
+import { UserLanguageService } from '../../../../services/general/user-language.service';
+import { Item } from '../../../../../../../../both/models/menu/item.model';
+import { Items } from '../../../../../../../../both/collections/menu/item.collection';
 import { EnableConfirmComponent } from './enable-confirm/enable-confirm.component';
 
 @Component({

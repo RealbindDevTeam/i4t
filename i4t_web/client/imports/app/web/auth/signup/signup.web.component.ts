@@ -4,15 +4,15 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { Accounts } from 'meteor/accounts-base';
 import { TranslateService } from '@ngx-translate/core';
-import { CustomValidators } from '../../../../../both/shared-components/validators/custom-validator';
-import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
-import { UserProfile } from '../../../../../both/models/auth/user-profile.model';
-import { AuthClass } from './auth.class';
+import { CustomValidators } from '../../../../../../both/shared-components/validators/custom-validator';
+import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
+import { UserProfile } from '../../../../../../both/models/auth/user-profile.model';
+import { AuthClass } from '../auth.class';
 
 @Component({
     selector: 'signup',
     templateUrl: './signup.web.component.html',
-    styleUrls: [ './auth.component.scss' ]
+    styleUrls: [ '../auth.component.scss' ]
 })
 export class SignupWebComponent extends AuthClass implements OnInit {
 

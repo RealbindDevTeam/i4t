@@ -3,11 +3,11 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { MeteorObservable } from "meteor-rxjs";
 import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { UserLanguageService } from '../../../../../shared/services/user-language.service';
-import { Restaurant } from '../../../../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants } from '../../../../../../../../both/collections/restaurant/restaurant.collection';
-import { Item } from '../../../../../../../../both/models/administration/item.model';
-import { Items } from '../../../../../../../../both/collections/administration/item.collection';
+import { UserLanguageService } from '../../../../../services/general/user-language.service';
+import { Restaurant } from '../../../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants } from '../../../../../../../../../both/collections/restaurant/restaurant.collection';
+import { Item } from '../../../../../../../../../both/models/menu/item.model';
+import { Items } from '../../../../../../../../../both/collections/menu/item.collection';
 
 @Component({
     selector: 'enable-confirm',

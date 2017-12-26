@@ -1,12 +1,12 @@
 import { Component, AfterViewInit, OnDestroy, Input, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MenuItem } from '../../menu-item';
-import { StringUtils } from '../../../../shared/utils/string-utils';
+import { StringUtils } from '../../../general/utils/string-utils';
 import { NavigationService } from '../../navigation.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
+import { UserLanguageService } from '../../../services/general/user-language.service';
 
 @Component({
   selector: 'c-sidenav-item',

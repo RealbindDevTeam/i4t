@@ -6,16 +6,16 @@ import { MatDialogRef, MatDialog } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
 import { MatSnackBar } from '@angular/material';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { GarnishFoodCol } from '../../../../../../../both/collections/administration/garnish-food.collection';
-import { GarnishFood, GarnishFoodRestaurant, GarnishFoodPrice } from '../../../../../../../both/models/administration/garnish-food.model';
-import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
-import { Currency } from '../../../../../../../both/models/general/currency.model';
-import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
-import { Country } from '../../../../../../../both/models/settings/country.model';
-import { Countries } from '../../../../../../../both/collections/settings/country.collection';
-import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
+import { UserLanguageService } from '../../../../services/general/user-language.service';
+import { GarnishFoodCol } from '../../../../../../../../both/collections/menu/garnish-food.collection';
+import { GarnishFood, GarnishFoodRestaurant, GarnishFoodPrice } from '../../../../../../../../both/models/menu/garnish-food.model';
+import { Restaurant } from '../../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants } from '../../../../../../../../both/collections/restaurant/restaurant.collection';
+import { Currency } from '../../../../../../../../both/models/general/currency.model';
+import { Currencies } from '../../../../../../../../both/collections/general/currency.collection';
+import { Country } from '../../../../../../../../both/models/general/country.model';
+import { Countries } from '../../../../../../../../both/collections/general/country.collection';
+import { AlertConfirmComponent } from '../../../../../web/general/alert-confirm/alert-confirm.component';
 
 @Component({
     selector: 'garnishFood-edit',

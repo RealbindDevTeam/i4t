@@ -3,15 +3,15 @@ import { MatDialogRef, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { MeteorObservable } from "meteor-rxjs";
 import { Observable, Subscription } from "rxjs";
-import { Restaurant } from "../../../../../../both/models/restaurant/restaurant.model";
-import { Restaurants } from "../../../../../../both/collections/restaurant/restaurant.collection";
-import { User } from '../../../../../../both/models/auth/user.model';
-import { Users } from '../../../../../../both/collections/auth/user.collection';
-import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
-import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
-import { Role } from '../../../../../../both/models/auth/role.model';
-import { Roles } from '../../../../../../both/collections/auth/role.collection';
-import { SupervisorCollaboratorsEditionComponent } from './collaborators-edition/supervisor-collaborators-edition.component';
+import { Restaurant } from "../../../../../../../both/models/restaurant/restaurant.model";
+import { Restaurants } from "../../../../../../../both/collections/restaurant/restaurant.collection";
+import { User } from '../../../../../../../both/models/auth/user.model';
+import { Users } from '../../../../../../../both/collections/auth/user.collection';
+import { UserDetail } from '../../../../../../../both/models/auth/user-detail.model';
+import { UserDetails } from '../../../../../../../both/collections/auth/user-detail.collection';
+import { Role } from '../../../../../../../both/models/auth/role.model';
+import { Roles } from '../../../../../../../both/collections/auth/role.collection';
+import { SupervisorCollaboratorsEditionComponent } from '../edition/supervisor-collaborators-edition.component';
 
 @Component({
     selector: 'supervisor-collaborators',

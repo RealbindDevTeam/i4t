@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PickOptions } from '../../../../../both/models/general/pick-options.model';
+import { PickOptions } from '../../../../../../both/models/general/pick-options.model';
 import * as filestack from 'filestack-js';
 
 @Injectable()

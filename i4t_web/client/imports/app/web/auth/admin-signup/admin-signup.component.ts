@@ -3,17 +3,17 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
-import { CustomValidators } from '../../../../../both/shared-components/validators/custom-validator';
+import { CustomValidators } from '../../../../../../both/shared-components/validators/custom-validator';
 import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
-import { PaymentPlanInfo } from "./payment-plan-info/payment-plan-info.component";
-import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
-import { Countries } from '../../../../../both/collections/settings/country.collection';
-import { Country } from '../../../../../both/models/settings/country.model';
-import { City } from '../../../../../both/models/settings/city.model';
-import { Cities } from '../../../../../both/collections/settings/city.collection';
-import { UserProfile } from '../../../../../both/models/auth/user-profile.model';
-import { AuthClass } from './auth.class';
+import { PaymentPlanInfo } from "../payment-plan-info/payment-plan-info.component";
+import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
+import { Countries } from '../../../../../../both/collections/general/country.collection';
+import { Country } from '../../../../../../both/models/general/country.model';
+import { City } from '../../../../../../both/models/general/city.model';
+import { Cities } from '../../../../../../both/collections/general/city.collection';
+import { UserProfile } from '../../../../../../both/models/auth/user-profile.model';
+import { AuthClass } from '../auth.class';
 
 @Component({
     selector: 'admin-signup',

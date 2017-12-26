@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { CustomValidators } from '../../../../../../both/shared-components/validators/custom-validator';
+import { CustomValidators } from '../../../../../../../both/shared-components/validators/custom-validator';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { MatDialogRef, MatDialog } from '@angular/material';
-import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
-import { RecoverConfirmComponent } from './recover-confirm.component';
+import { AlertConfirmComponent } from '../../../general/alert-confirm/alert-confirm.component';
+import { RecoverConfirmComponent } from '../recover-confirm/recover-confirm.component';
 
 @Component({
     selector: 'recover',

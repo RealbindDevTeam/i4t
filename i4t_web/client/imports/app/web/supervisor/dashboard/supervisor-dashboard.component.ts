@@ -3,19 +3,19 @@ import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { UserLanguageService } from '../../shared/services/user-language.service';
-import { Restaurant } from '../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants } from '../../../../../both/collections/restaurant/restaurant.collection';
-import { UserDetail } from '../../../../../both/models/auth/user-detail.model';
-import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
-import { Tables } from '../../../../../both/collections/restaurant/table.collection';
-import { Items } from '../../../../../both/collections/administration/item.collection';
-import { Payment } from '../../../../../both/models/restaurant/payment.model';
-import { Payments } from '../../../../../both/collections/restaurant/payment.collection';
-import { Order, OrderItem, OrderAddition } from '../../../../../both/models/restaurant/order.model';
-import { Orders } from '../../../../../both/collections/restaurant/order.collection';
-import { Currency } from '../../../../../both/models/general/currency.model';
-import { Currencies } from '../../../../../both/collections/general/currency.collection';
+import { UserLanguageService } from '../../services/general/user-language.service';
+import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
+import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
+import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
+import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
+import { Items } from '../../../../../../both/collections/menu/item.collection';
+import { Payment } from '../../../../../../both/models/restaurant/payment.model';
+import { Payments } from '../../../../../../both/collections/restaurant/payment.collection';
+import { Order, OrderItem, OrderAddition } from '../../../../../../both/models/restaurant/order.model';
+import { Orders } from '../../../../../../both/collections/restaurant/order.collection';
+import { Currency } from '../../../../../../both/models/general/currency.model';
+import { Currencies } from '../../../../../../both/collections/general/currency.collection';
 
 @Component({
     selector: 'supervisor-dashboard',

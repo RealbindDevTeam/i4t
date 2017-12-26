@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject } from 'rxjs';
-import { OrderMenu } from './order-menu';
+import { OrderMenu } from '../../customer/orders/order-navigation/order-menu';
 
 @Injectable()
 export class OrderNavigationService {

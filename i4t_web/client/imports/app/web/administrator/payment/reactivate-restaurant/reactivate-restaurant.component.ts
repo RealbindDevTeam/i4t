@@ -4,17 +4,17 @@ import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
-import { UserLanguageService } from '../../../shared/services/user-language.service';
-import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
-import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
-import { Currencies } from '../../../../../../both/collections/general/currency.collection';
-import { Currency } from '../../../../../../both/models/general/currency.model';
-import { Countries } from '../../../../../../both/collections/settings/country.collection';
-import { Country } from '../../../../../../both/models/settings/country.model';
-import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
-import { Table } from '../../../../../../both/models/restaurant/table.model';
-import { Parameters } from '../../../../../../both/collections/general/parameter.collection';
-import { Parameter } from '../../../../../../both/models/general/parameter.model';
+import { UserLanguageService } from '../../../services/general/user-language.service';
+import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
+import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
+import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
+import { Currency } from '../../../../../../../both/models/general/currency.model';
+import { Countries } from '../../../../../../../both/collections/general/country.collection';
+import { Country } from '../../../../../../../both/models/general/country.model';
+import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
+import { Table } from '../../../../../../../both/models/restaurant/table.model';
+import { Parameters } from '../../../../../../../both/collections/general/parameter.collection';
+import { Parameter } from '../../../../../../../both/models/general/parameter.model';
 
 @Component({
     selector: 'reactivate-restaurant',

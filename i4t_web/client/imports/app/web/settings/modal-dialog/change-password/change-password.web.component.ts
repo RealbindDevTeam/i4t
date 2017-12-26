@@ -3,7 +3,7 @@ import { MatDialogRef, MatDialog } from '@angular/material';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Accounts } from 'meteor/accounts-base';
 import { TranslateService } from '@ngx-translate/core';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
+import { UserLanguageService } from '../../../services/general/user-language.service';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
 
 @Component({

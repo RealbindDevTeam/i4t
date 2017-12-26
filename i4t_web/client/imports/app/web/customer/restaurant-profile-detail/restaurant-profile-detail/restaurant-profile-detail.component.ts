@@ -6,18 +6,18 @@ import { TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
-import { UserLanguageService } from '../../../shared/services/user-language.service';
-import { Restaurant, RestaurantProfile, RestaurantProfileImage } from '../../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants, RestaurantsProfile } from '../../../../../../both/collections/restaurant/restaurant.collection';
-import { Country } from '../../../../../../both/models/settings/country.model';
-import { Countries } from '../../../../../../both/collections/settings/country.collection';
-import { City } from '../../../../../../both/models/settings/city.model';
-import { Cities } from '../../../../../../both/collections/settings/city.collection';
-import { Currency } from '../../../../../../both/models/general/currency.model';
-import { Currencies } from '../../../../../../both/collections/general/currency.collection';
-import { PaymentMethod } from '../../../../../../both/models/general/paymentMethod.model';
-import { PaymentMethods } from '../../../../../../both/collections/general/paymentMethod.collection';
-import { ScheduleDetailComponent } from './schedule-detail/schedule-detail.component';
+import { UserLanguageService } from '../../../services/general/user-language.service';
+import { Restaurant, RestaurantProfile, RestaurantProfileImage } from '../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants, RestaurantsProfile } from '../../../../../../../both/collections/restaurant/restaurant.collection';
+import { Country } from '../../../../../../../both/models/general/country.model';
+import { Countries } from '../../../../../../../both/collections/general/country.collection';
+import { City } from '../../../../../../../both/models/general/city.model';
+import { Cities } from '../../../../../../../both/collections/general/city.collection';
+import { Currency } from '../../../../../../../both/models/general/currency.model';
+import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
+import { PaymentMethod } from '../../../../../../../both/models/general/paymentMethod.model';
+import { PaymentMethods } from '../../../../../../../both/collections/general/paymentMethod.collection';
+import { ScheduleDetailComponent } from '../schedule-detail/schedule-detail.component';
 
 @Component({
     selector: 'restaurant-profile-detail',

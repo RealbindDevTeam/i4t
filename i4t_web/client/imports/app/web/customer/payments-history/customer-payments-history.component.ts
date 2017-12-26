@@ -3,14 +3,14 @@ import { MeteorObservable } from "meteor-rxjs";
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { MatDialogRef, MatDialog } from '@angular/material';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { Invoice, InvoiceLegalInformation } from '../../../../../../../both/models/restaurant/invoice.model';
-import { Invoices } from '../../../../../../../both/collections/restaurant/invoice.collection';
-import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
-import { UserDetails } from '../../../../../../../both/collections/auth/user-detail.collection';
-import { UserDetail } from '../../../../../../../both/models/auth/user-detail.model';
-import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
+import { UserLanguageService } from '../../services/general/user-language.service';
+import { Invoice, InvoiceLegalInformation } from '../../../../../../both/models/restaurant/invoice.model';
+import { Invoices } from '../../../../../../both/collections/restaurant/invoice.collection';
+import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
+import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
+import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
+import { AlertConfirmComponent } from '../../general/alert-confirm/alert-confirm.component';
 
 let jsPDF = require('jspdf');
 

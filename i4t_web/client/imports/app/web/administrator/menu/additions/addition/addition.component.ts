@@ -7,19 +7,19 @@ import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { MatSnackBar } from '@angular/material';
-import { UserLanguageService } from '../../../shared/services/user-language.service';
-import { Additions } from '../../../../../../both/collections/administration/addition.collection';
-import { Addition, AdditionRestaurant, AdditionPrice } from '../../../../../../both/models/administration/addition.model';
-import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
-import { Currency } from '../../../../../../both/models/general/currency.model';
-import { Currencies } from '../../../../../../both/collections/general/currency.collection';
-import { AdditionEditComponent } from './additions-edit/addition-edit.component';
-import { Country } from '../../../../../../both/models/settings/country.model';
-import { Countries } from '../../../../../../both/collections/settings/country.collection';
-import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
-import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
-import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
+import { UserLanguageService } from '../../../../services/general/user-language.service';
+import { Additions } from '../../../../../../../../both/collections/menu/addition.collection';
+import { Addition, AdditionRestaurant, AdditionPrice } from '../../../../../../../../both/models/menu/addition.model';
+import { Restaurant } from '../../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants } from '../../../../../../../../both/collections/restaurant/restaurant.collection';
+import { Currency } from '../../../../../../../../both/models/general/currency.model';
+import { Currencies } from '../../../../../../../../both/collections/general/currency.collection';
+import { AdditionEditComponent } from '../addition-edit/addition-edit.component';
+import { Country } from '../../../../../../../../both/models/general/country.model';
+import { Countries } from '../../../../../../../../both/collections/general/country.collection';
+import { AlertConfirmComponent } from '../../../../../web/general/alert-confirm/alert-confirm.component';
+import { UserDetails } from '../../../../../../../../both/collections/auth/user-detail.collection';
+import { UserDetail } from '../../../../../../../../both/models/auth/user-detail.model';
 
 @Component({
     selector: 'addition',

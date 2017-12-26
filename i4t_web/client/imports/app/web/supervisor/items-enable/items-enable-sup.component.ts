@@ -4,11 +4,11 @@ import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { Item } from '../../../../../../../both/models/administration/item.model';
-import { Items } from '../../../../../../../both/collections/administration/item.collection';
-import { UserDetail } from '../../../../../../../both/models/auth/user-detail.model';
-import { UserDetails } from '../../../../../../../both/collections/auth/user-detail.collection';
+import { UserLanguageService } from '../../services/general/user-language.service';
+import { Item } from '../../../../../../both/models/menu/item.model';
+import { Items } from '../../../../../../both/collections/menu/item.collection';
+import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
+import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 
 @Component({
     selector: 'item-enable-sup',

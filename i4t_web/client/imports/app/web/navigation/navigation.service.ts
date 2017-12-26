@@ -3,7 +3,7 @@ import {Subject, BehaviorSubject} from 'rxjs';
 import {MenuItem} from './menu-item';
 import {MatDialog} from '@angular/material';
 import {menuItemSetup} from './menu-setup';
-import {StringUtils} from '../../shared/utils/string-utils';
+import {StringUtils} from '../general/utils/string-utils';
 import {AppConfigOptions} from '../../app.config.options';
 
 @Injectable()

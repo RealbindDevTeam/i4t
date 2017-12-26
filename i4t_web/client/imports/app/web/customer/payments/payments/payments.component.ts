@@ -4,11 +4,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Meteor } from 'meteor/meteor';
-import { UserLanguageService } from '../../../shared/services/user-language.service';
-import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
-import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
-import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
+import { UserLanguageService } from '../../../services/general/user-language.service';
+import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
+import { UserDetails } from '../../../../../../../both/collections/auth/user-detail.collection';
+import { UserDetail } from '../../../../../../../both/models/auth/user-detail.model';
 
 @Component({
     selector: 'payments',

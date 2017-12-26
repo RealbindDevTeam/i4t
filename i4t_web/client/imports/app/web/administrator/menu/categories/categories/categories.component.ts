@@ -7,17 +7,17 @@ import { MatDialogRef, MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { MatSnackBar } from '@angular/material';
-import { UserLanguageService } from '../../../shared/services/user-language.service';
-import { Categories } from '../../../../../../both/collections/administration/category.collection';
-import { Category } from '../../../../../../both/models/administration/category.model';
-import { Sections } from '../../../../../../both/collections/administration/section.collection';
-import { Section } from '../../../../../../both/models/administration/section.model';
-import { CategoriesEditComponent } from './categories-edit/categories-edit.component';
-import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
-import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
-import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
-import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
+import { UserLanguageService } from '../../../../services/general/user-language.service';
+import { Categories } from '../../../../../../../../both/collections/menu/category.collection';
+import { Category } from '../../../../../../../../both/models/menu/category.model';
+import { Sections } from '../../../../../../../../both/collections/menu/section.collection';
+import { Section } from '../../../../../../../../both/models/menu/section.model';
+import { CategoriesEditComponent } from '../categories-edit/categories-edit.component';
+import { Restaurant } from '../../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants } from '../../../../../../../../both/collections/restaurant/restaurant.collection';
+import { AlertConfirmComponent } from '../../../../../web/general/alert-confirm/alert-confirm.component';
+import { UserDetails } from '../../../../../../../../both/collections/auth/user-detail.collection';
+import { UserDetail } from '../../../../../../../../both/models/auth/user-detail.model';
 
 @Component({
     selector: 'category',

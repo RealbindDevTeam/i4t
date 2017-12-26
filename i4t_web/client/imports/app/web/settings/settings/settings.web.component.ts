@@ -4,21 +4,21 @@ import { MatDialogRef, MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription, Observable } from 'rxjs';
-import { UserLanguageService } from '../../../shared/services/user-language.service';
-import { Countries } from '../../../../../../both/collections/settings/country.collection';
-import { Country } from '../../../../../../both/models/settings/country.model';
-import { City } from '../../../../../../both/models/settings/city.model';
-import { Cities } from '../../../../../../both/collections/settings/city.collection';
-import { Language } from '../../../../../../both/models/settings/language.model';
-import { Languages } from '../../../../../../both/collections/settings/language.collection';
+import { UserLanguageService } from '../../services/general/user-language.service';
+import { Countries } from '../../../../../../both/collections/general/country.collection';
+import { Country } from '../../../../../../both/models/general/country.model';
+import { City } from '../../../../../../both/models/general/city.model';
+import { Cities } from '../../../../../../both/collections/general/city.collection';
+import { Language } from '../../../../../../both/models/general/language.model';
+import { Languages } from '../../../../../../both/collections/general/language.collection';
 import { Users } from '../../../../../../both/collections/auth/user.collection';
 import { User } from '../../../../../../both/models/auth/user.model';
 import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
 import { UserDetail, UserDetailImage } from '../../../../../../both/models/auth/user-detail.model';
-import { ChangeEmailWebComponent } from './modal-dialog/change-email.web.component';
-import { ChangePasswordWebComponent } from '../../../web/customer/settings/modal-dialog/change-password.web.component';
+import { ChangeEmailWebComponent } from '../modal-dialog/change-email/change-email.web.component';
+import { ChangePasswordWebComponent } from '../modal-dialog/change-password/change-password.web.component';
 import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
-import { ImageService } from '../../../shared/services/image.service';
+import { ImageService } from '../../services/general/image.service';
 
 @Component({
     selector: 'settings',

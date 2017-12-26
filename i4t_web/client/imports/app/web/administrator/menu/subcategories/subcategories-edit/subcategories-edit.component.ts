@@ -6,12 +6,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { MatSnackBar } from '@angular/material';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { Subcategories } from '../../../../../../../both/collections/administration/subcategory.collection';
-import { Subcategory } from '../../../../../../../both/models/administration/subcategory.model';
-import { Categories } from '../../../../../../../both/collections/administration/category.collection';
-import { Category } from '../../../../../../../both/models/administration/category.model';
-import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
+import { UserLanguageService } from '../../../../services/general/user-language.service';
+import { Subcategories } from '../../../../../../../../both/collections/menu/subcategory.collection';
+import { Subcategory } from '../../../../../../../../both/models/menu/subcategory.model';
+import { Categories } from '../../../../../../../../both/collections/menu/category.collection';
+import { Category } from '../../../../../../../../both/models/menu/category.model';
+import { AlertConfirmComponent } from '../../../../../web/general/alert-confirm/alert-confirm.component';
 
 @Component({
     selector: 'subcategory-edit',

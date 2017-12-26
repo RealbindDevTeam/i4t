@@ -3,19 +3,19 @@ import { MatDialogRef, MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { MeteorObservable } from "meteor-rxjs";
 import { Subscription } from "rxjs";
-import { UserLanguageService } from '../../../shared/services/user-language.service';
-import { Restaurants } from "../../../../../../both/collections/restaurant/restaurant.collection";
-import { Tables } from '../../../../../../both/collections/restaurant/table.collection';
-import { WaiterCallDetail } from '../../../../../../both/models/restaurant/waiter-call-detail.model';
-import { WaiterCallDetails } from '../../../../../../both/collections/restaurant/waiter-call-detail.collection';
-import { User } from '../../../../../../both/models/auth/user.model';
-import { Users } from '../../../../../../both/collections/auth/user.collection';
-import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
-import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
-import { CallCloseConfirmComponent } from './call-close-confirm/call-close-confirm.component';
-import { PaymentConfirmComponent } from './payment-confirm/payment-confirm.component';
-import { SendOrderConfirmComponent } from './send-order-confirm/send-order-confirm.component';
-import { RestaurantExitConfirmComponent } from './restaurant-exit-confirm/restaurant-exit-confirm.component';
+import { UserLanguageService } from '../../../services/general/user-language.service';
+import { Restaurants } from "../../../../../../../both/collections/restaurant/restaurant.collection";
+import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
+import { WaiterCallDetail } from '../../../../../../../both/models/restaurant/waiter-call-detail.model';
+import { WaiterCallDetails } from '../../../../../../../both/collections/restaurant/waiter-call-detail.collection';
+import { User } from '../../../../../../../both/models/auth/user.model';
+import { Users } from '../../../../../../../both/collections/auth/user.collection';
+import { UserDetail } from '../../../../../../../both/models/auth/user-detail.model';
+import { UserDetails } from '../../../../../../../both/collections/auth/user-detail.collection';
+import { CallCloseConfirmComponent } from '../call-close-confirm/call-close-confirm.component';
+import { PaymentConfirmComponent } from '../payment-confirm/payment-confirm.component';
+import { SendOrderConfirmComponent } from '../send-order-confirm/send-order-confirm.component';
+import { RestaurantExitConfirmComponent } from '../restaurant-exit-confirm/restaurant-exit-confirm.component';
 
 @Component({
     selector: 'calls',

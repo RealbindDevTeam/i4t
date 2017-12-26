@@ -2,7 +2,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
+import { UserLanguageService } from '../../../services/general/user-language.service';
 import { MeteorObservable } from 'meteor-rxjs';
 import { CustomValidators } from '../../../../../../../both/shared-components/validators/custom-validator';
 import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';

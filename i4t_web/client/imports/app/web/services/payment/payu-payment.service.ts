@@ -2,8 +2,8 @@ import { Injectable, NgZone } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CcRequestColombia } from '../../../../../both/models/payment/cc-request-colombia.model';
-import { Parameters } from '../../../../../both/collections/general/parameter.collection';
+import { CcRequestColombia } from '../../../../../../both/models/payment/cc-request-colombia.model';
+import { Parameters } from '../../../../../../both/collections/general/parameter.collection';
 
 @Injectable()
 export class PayuPaymentService {

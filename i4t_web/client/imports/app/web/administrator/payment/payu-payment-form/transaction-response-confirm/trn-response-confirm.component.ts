@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MeteorObservable } from "meteor-rxjs";
 import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
+import { UserLanguageService } from '../../../../services/general/user-language.service';
 
 @Component({
     selector: 'transaction-response-confirm',

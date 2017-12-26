@@ -6,16 +6,16 @@ import { MatDialogRef, MatDialog } from '@angular/material';
 import { Observable } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
 import { MatSnackBar } from '@angular/material';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { Additions } from '../../../../../../../both/collections/administration/addition.collection';
-import { Addition, AdditionRestaurant, AdditionPrice } from '../../../../../../../both/models/administration/addition.model';
-import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
-import { Currency } from '../../../../../../../both/models/general/currency.model';
-import { Currencies } from '../../../../../../../both/collections/general/currency.collection';
-import { Country } from '../../../../../../../both/models/settings/country.model';
-import { Countries } from '../../../../../../../both/collections/settings/country.collection';
-import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
+import { UserLanguageService } from '../../../../services/general/user-language.service';
+import { Additions } from '../../../../../../../../both/collections/menu/addition.collection';
+import { Addition, AdditionRestaurant, AdditionPrice } from '../../../../../../../../both/models/menu/addition.model';
+import { Restaurant } from '../../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants } from '../../../../../../../../both/collections/restaurant/restaurant.collection';
+import { Currency } from '../../../../../../../../both/models/general/currency.model';
+import { Currencies } from '../../../../../../../../both/collections/general/currency.collection';
+import { Country } from '../../../../../../../../both/models/general/country.model';
+import { Countries } from '../../../../../../../../both/collections/general/country.collection';
+import { AlertConfirmComponent } from '../../../../../web/general/alert-confirm/alert-confirm.component';
 
 @Component({
     selector: 'addition-edit',

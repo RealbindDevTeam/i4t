@@ -6,12 +6,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { Meteor } from 'meteor/meteor';
 import { MatSnackBar } from '@angular/material';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
-import { Sections } from '../../../../../../../both/collections/administration/section.collection';
-import { Section } from '../../../../../../../both/models/administration/section.model';
-import { Restaurant } from '../../../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants } from '../../../../../../../both/collections/restaurant/restaurant.collection';
-import { AlertConfirmComponent } from '../../../../web/general/alert-confirm/alert-confirm.component';
+import { UserLanguageService } from '../../../../services/general/user-language.service';
+import { Sections } from '../../../../../../../../both/collections/menu/section.collection';
+import { Section } from '../../../../../../../../both/models/menu/section.model';
+import { Restaurant } from '../../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants } from '../../../../../../../../both/collections/restaurant/restaurant.collection';
+import { AlertConfirmComponent } from '../../../../general/alert-confirm/alert-confirm.component';
 
 @Component({
     selector: 'section-edit',

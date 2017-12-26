@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
+import { UserLanguageService } from '../../../services/general/user-language.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RestaurantProfile } from '../../../../../../../both/models/restaurant/restaurant.model';
 

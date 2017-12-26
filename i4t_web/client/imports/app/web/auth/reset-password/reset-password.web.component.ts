@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { CustomValidators } from '../../../../../both/shared-components/validators/custom-validator';
-import { AlertConfirmComponent } from '../../web/general/alert-confirm/alert-confirm.component';
+import { CustomValidators } from '../../../../../../both/shared-components/validators/custom-validator';
+import { AlertConfirmComponent } from '../../general/alert-confirm/alert-confirm.component';
 
 @Component({
     selector: 'reset-password',

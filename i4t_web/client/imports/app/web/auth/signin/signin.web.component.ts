@@ -4,14 +4,14 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { RecoverWebComponent } from './recover-password/recover.web.component';
-import { UserDetails } from '../../../../../both/collections/auth/user-detail.collection';
-import { AuthClass } from './auth.class';
+import { RecoverWebComponent } from '../recover-password/recover/recover.web.component';
+import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
+import { AuthClass } from '../auth.class';
 
 @Component({
     selector: 'signin',
     templateUrl: './signin.web.component.html',
-    styleUrls: [ './auth.component.scss' ]
+    styleUrls: [ '../auth.component.scss' ]
 })
 export class SigninWebComponent extends AuthClass implements OnInit {
 

@@ -6,17 +6,17 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Meteor } from 'meteor/meteor';
 import { MatDialogRef, MatDialog } from '@angular/material';
-import { UserLanguageService } from '../../../shared/services/user-language.service';
-import { Item, ItemPrice } from '../../../../../../both/models/administration/item.model';
-import { Items } from '../../../../../../both/collections/administration/item.collection';
-import { ItemEditionComponent } from './items-edition/item-edition.component';
-import { Currency } from '../../../../../../both/models/general/currency.model';
-import { Currencies } from '../../../../../../both/collections/general/currency.collection';
-import { Restaurant } from '../../../../../../both/models/restaurant/restaurant.model';
-import { Restaurants } from '../../../../../../both/collections/restaurant/restaurant.collection';
-import { AlertConfirmComponent } from '../../../web/general/alert-confirm/alert-confirm.component';
-import { UserDetails } from '../../../../../../both/collections/auth/user-detail.collection';
-import { UserDetail } from '../../../../../../both/models/auth/user-detail.model';
+import { UserLanguageService } from '../../../../services/general/user-language.service';
+import { Item, ItemPrice } from '../../../../../../../../both/models/menu/item.model';
+import { Items } from '../../../../../../../../both/collections/menu/item.collection';
+import { ItemEditionComponent } from '../edition/item-edition.component';
+import { Currency } from '../../../../../../../../both/models/general/currency.model';
+import { Currencies } from '../../../../../../../../both/collections/general/currency.collection';
+import { Restaurant } from '../../../../../../../../both/models/restaurant/restaurant.model';
+import { Restaurants } from '../../../../../../../../both/collections/restaurant/restaurant.collection';
+import { AlertConfirmComponent } from '../../../../general/alert-confirm/alert-confirm.component';
+import { UserDetails } from '../../../../../../../../both/collections/auth/user-detail.collection';
+import { UserDetail } from '../../../../../../../../both/models/auth/user-detail.model';
 
 @Component({
     selector: 'item',

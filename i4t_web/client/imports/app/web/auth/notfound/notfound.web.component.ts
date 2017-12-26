@@ -1,6 +1,6 @@
 import { Component, NgZone, ViewContainerRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { UserLanguageService } from '../../shared/services/user-language.service';
+import { UserLanguageService } from '../../services/general/user-language.service';
 
 @Component({
     selector: 'notfound',

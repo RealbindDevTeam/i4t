@@ -4,20 +4,20 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatDialogRef } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
+import { UserLanguageService } from '../../../services/general/user-language.service';
 import { WaiterCallDetail } from '../../../../../../../both/models/restaurant/waiter-call-detail.model';
 import { Order } from '../../../../../../../both/models/restaurant/order.model';
 import { Orders } from '../../../../../../../both/collections/restaurant/order.collection';
 import { Users } from '../../../../../../../both/collections/auth/user.collection';
 import { User } from '../../../../../../../both/models/auth/user.model';
-import { Item } from '../../../../../../../both/models/administration/item.model';
-import { Items } from '../../../../../../../both/collections/administration/item.collection';
+import { Item } from '../../../../../../../both/models/menu/item.model';
+import { Items } from '../../../../../../../both/collections/menu/item.collection';
 import { Table } from '../../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
-import { Addition } from '../../../../../../../both/models/administration/addition.model';
-import { Additions } from '../../../../../../../both/collections/administration/addition.collection';
-import { GarnishFood } from '../../../../../../../both/models/administration/garnish-food.model';
-import { GarnishFoodCol } from '../../../../../../../both/collections/administration/garnish-food.collection';
+import { Addition } from '../../../../../../../both/models/menu/addition.model';
+import { Additions } from '../../../../../../../both/collections/menu/addition.collection';
+import { GarnishFood } from '../../../../../../../both/models/menu/garnish-food.model';
+import { GarnishFoodCol } from '../../../../../../../both/collections/menu/garnish-food.collection';
 
 @Component({
     selector: 'send-order-confirm',

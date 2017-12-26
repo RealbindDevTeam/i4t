@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { MeteorObservable } from 'meteor-rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
-import { UserLanguageService } from '../../../../shared/services/user-language.service';
+import { UserLanguageService } from '../../../services/general/user-language.service';
 import { CustomValidators } from '../../../../../../../both/shared-components/validators/custom-validator';
 import { Role } from '../../../../../../../both/models/auth/role.model';
 import { Roles } from '../../../../../../../both/collections/auth/role.collection';
