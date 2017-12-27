@@ -14,18 +14,28 @@
 
     <mat-card *ngIf="(_restaurantsProfile | async)?.length <= 0" mat-cell="12">
         <mat-card-content>
-            <div class="card_initial">
-                <div class="card_initial has-image">
-                    <div class="card_initial-image-container">
-                        <img class="card_initial-image" src="/images/restaurantes.png" />
-                    </div>
-                    <div class="card_initial-copy">
-                        <div class="card_initial-tagline">
-                            {{'RESTAURANT_PROFILE_DETAIL.NO_PROFILE' | translate}}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <mat-list>
+                <h3 md-subheader *ngIf="(_restaurantPaymentMethods | async)?.length > 0">{{'RESTAURANT_PROFILE_DETAIL.PAYMENT_METHODS' | translate}}</h3>
+                <mat-list-item *ngFor="let paymentMethod of _restaurantPaymentMethods | async">
+                    <img matListAvatar class="payment-thumb" src="{{ getPaymentMethodImg( paymentMethod.name ) }}">
+                    <span>{{paymentMethod.name | translate}}</span>
+                </mat-list-item>
+
+                <mat-list-item *ngIf="restaurant.phone">
+                    <mat-icon mat-list-icon class="icon cust-icon">call</mat-icon>
+                    <span>{{restaurant.indicative}} {{restaurant.phone}}</span>
+                </mat-list-item>
+
+                <mat-list-item *ngIf="!restaurant.phone">
+                    <mat-icon mat-list-icon class="icon cust-icon">call</mat-icon>
+                    <span>{{'RESTAURANT_PROFILE_DETAIL.NO_PHONE' | translate}}</span>
+                </mat-list-item>
+
+                <mat-list-item>
+                    <mat-icon mat-list-icon class="icon cust-icon">place</mat-icon>
+                    <span>{{'RESTAURANT_PROFILE_DETAIL.ADDRESS' | translate}}: {{restaurant.address}}</span>
+                </mat-list-item>
+            </mat-list>
         </mat-card-content>
     </mat-card>
 
@@ -127,7 +137,8 @@
                 <mat-card-title>{{'RESTAURANT_PROFILE_DETAIL.LOCATION' | translate}}</mat-card-title>
                 <mat-card-content>
                     <p>{{'RESTAURANT_PROFILE_DETAIL.ADDRESS' | translate}}: {{restaurant.address}}</p>
-                    <agm-map [latitude]="restaurantProfile.location.lat" [longitude]="restaurantProfile.location.lng" [mapDraggable]="false" [minZoom]="19" [maxZoom]="19" [zoomControl]="false">
+                    <agm-map [latitude]="restaurantProfile.location.lat" [longitude]="restaurantProfile.location.lng" [mapDraggable]="false"
+                        [minZoom]="19" [maxZoom]="19" [zoomControl]="false">
                         <agm-marker [latitude]="restaurantProfile.location.lat" [longitude]="restaurantProfile.location.lng"></agm-marker>
                     </agm-map>
                 </mat-card-content>

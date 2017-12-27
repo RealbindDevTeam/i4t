@@ -1,13 +1,25 @@
-<!--div class="order-form-1">
-        <div class="order-form-2">
-            <div class="menu-items">
-                <div class="menu-items-content">
-                    <div class="items"-->
+<mat-card *ngIf="!_thereItems">
+    <mat-card-content>
+        <div class="card_initial">
+            <div class="card_initial has-image">
+                <div class="card_initial-image-container">
+                    <img class="card_initial-image" src="/images/item.png" />
+                </div>
+                <div class="card_initial-copy">
+                    <div class="card_initial-tagline">
+                        {{'ITEMS.MESSAGE' | translate}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
 <div class="dpa">
     <div class="dcf">
         <div class="dc">
             <div class="dmpc">
-                <mat-form-field style="display: block">
+                <mat-form-field *ngIf="_thereItems" style="display: block">
                     <mat-select placeholder="{{'ORDER_CREATE.SEARCH_MENU' | translate}}">
                         <mat-option (click)="showAllItems()">{{'ORDER_CREATE.SHOW_ALL' | translate}}</mat-option>
                         <mat-option *ngFor="let sec of _sectionsFilter | async" (click)="changeSection(sec._id)" value="{{sec._id}}">{{sec.name}}</mat-option>
@@ -118,4 +130,3 @@
         </div>
     </div>
 </div>
-<!--/div-->
