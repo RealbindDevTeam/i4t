@@ -28,8 +28,10 @@ import { Addition, AdditionPrice, AdditionRestaurant } from '../../../../../../.
 import { GarnishFood, GarnishFoodPrice, GarnishFoodRestaurant } from '../../../../../../../../both/models/menu/garnish-food.model';
 import { Additions } from '../../../../../../../../both/collections/menu/addition.collection';
 import { GarnishFoodCol } from '../../../../../../../../both/collections/menu/garnish-food.collection';
+import { AfterRestaurantCreationComponent } from './after-restaurant-creation/after-restaurant-creation.component';
 
 import * as QRious from 'qrious';
+import { UserDetails } from 'both/collections/auth/user-detail.collection';
 
 @Component({
     selector: 'restaurant-register',
@@ -49,6 +51,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _paymentMethodsSub: Subscription;
     private _additionsSub: Subscription;
     private _garnishFoodSub: Subscription;
+    private _usrDetailSubscription: Subscription;
 
     private _countries: Observable<Country[]>;
     private _cities: Observable<City[]>;
@@ -80,6 +83,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
     private _tipValue: number = 0;
 
     private max_table_number: number;
+    private showRestCreation: boolean;
 
     /**
      * RestaurantRegisterComponent constructor
@@ -149,6 +153,13 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         this._lastMonthDay = new Date(this._currentDate.getFullYear(), this._currentDate.getMonth() + 1, 0);
 
         this._restaurantForm.get('tables_number').disable();
+
+        this._usrDetailSubscription = MeteorObservable.subscribe('getUserDetailsByUser', this._user).subscribe(()=>{
+            let _lUsrDetail = UserDetails.findOne({user_id : this._user});
+            if(_lUsrDetail) {
+                this.showRestCreation = _lUsrDetail.show_after_rest_creation;
+            }
+        });
     }
 
     /**
@@ -162,6 +173,7 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
         if (this._paymentMethodsSub) { this._paymentMethodsSub.unsubscribe(); }
         if (this._additionsSub) { this._additionsSub.unsubscribe(); }
         if (this._garnishFoodSub) { this._garnishFoodSub.unsubscribe(); }
+        if (this._usrDetailSubscription) { this._usrDetailSubscription.unsubscribe(); }
     }
 
     /**
@@ -477,6 +489,10 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
                 }
 
                 resolve(_lNewRestaurant);
+
+                if(this.showRestCreation){
+                    this.openDialogAfterRestaurantRegister();
+                }
             } catch (e) {
                 reject(e);
             }
@@ -640,6 +656,10 @@ export class RestaurantRegisterComponent implements OnInit, OnDestroy {
 
             }
         });
+    }
+
+    openDialogAfterRestaurantRegister(){
+        this._mdDialogRef = this._mdDialog.open(AfterRestaurantCreationComponent);
     }
 
     /**
