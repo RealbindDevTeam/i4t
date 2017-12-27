@@ -46,16 +46,17 @@ agm-map {
         .payment-info {
             font-size: 1rem;
 
-            .payment-thumb {
-                width: 25px; 
-                height: 25px;
-            }
-
+            
             .payment-name {
                 font-size: 1rem;
             }
         }
     }
+}
+
+.payment-thumb {
+    width: 25px; 
+    height: 25px;
 }
 
 .photos {

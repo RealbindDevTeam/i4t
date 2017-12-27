@@ -57,6 +57,7 @@ export class MenuListComponent implements OnInit, OnDestroy {
     private titleMsg: string;
     private btnAcceptLbl: string;
     private _showAdditionsOption: boolean = false;
+    private _thereItems: boolean = true;
 
     /**
      * MenuListComponent Constructor
@@ -102,6 +103,8 @@ export class MenuListComponent implements OnInit, OnDestroy {
         this._itemsSub = MeteorObservable.subscribe('getItemsByRestaurantWork', this._user).subscribe(() => {
             this._ngZone.run(() => {
                 this._items = Items.find({}).zone();
+                this.countItems();
+                this._items.subscribe(() => { this.countItems(); });
             });
         });
         this._garnishFoodSub = MeteorObservable.subscribe('garnishFoodByRestaurantWork', this._user).subscribe(() => {
@@ -137,6 +140,14 @@ export class MenuListComponent implements OnInit, OnDestroy {
                 this._currencyCode = Currencies.findOne({}).code + ' ';
             });
         });
+    }
+
+    /**
+     * Count items
+     */
+    countItems(): void {
+        let _lItems: number = Items.collection.find({}).count();
+        _lItems > 0 ? this._thereItems = true : this._thereItems = false;
     }
 
     /**

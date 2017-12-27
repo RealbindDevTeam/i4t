@@ -110,7 +110,10 @@ export class RestaurantProfilePage implements OnInit, OnDestroy {
      * Load map whit restaurant location
      */
     loadMap() {
-        if (this._restaurantProfile.location.lat && this._restaurantProfile.location.lng) {
+        if (this._restaurantProfile &&
+            this._restaurantProfile.location &&
+            this._restaurantProfile.location.lat &&
+            this._restaurantProfile.location.lng) {
 
             let mapOptions: GoogleMapOptions = {
                 camera: {

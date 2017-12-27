@@ -7,7 +7,7 @@
         </mat-card-header>
     </mat-card>
 
-    <mat-card mat-cell="12" class="demo-card demo-basic" *ngIf="!_thereAreRestaurants">
+    <mat-card mat-cell="12" *ngIf="!_thereAreRestaurants">
         <mat-card-content>
             <div class="card_initial">
                 <div class="card_initial has-image">
@@ -30,7 +30,7 @@
         </mat-card-content>
     </mat-card>
     
-    <mat-card *ngIf="_thereAreRestaurants && !_thereAreItems" mat-cell="12" class="demo-card demo-basic" style="width: 90%; margin: 0 auto">
+    <mat-card *ngIf="_thereAreRestaurants && !_thereAreItems" mat-cell="12">
         <mat-card-content>
             <div class="card_initial">
                 <div class="card_initial has-image">
