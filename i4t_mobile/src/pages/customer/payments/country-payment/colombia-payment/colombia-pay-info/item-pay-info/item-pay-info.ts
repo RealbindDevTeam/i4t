@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Currencies } from 'i4t_web/both/collections/general/currency.collection';
-import { Items } from 'i4t_web/both/collections/administration/item.collection';
+import { Items } from 'i4t_web/both/collections/menu/item.collection';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Subscription } from 'rxjs';
 
