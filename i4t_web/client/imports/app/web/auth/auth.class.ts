@@ -40,23 +40,17 @@ export class AuthClass {
      * This function creates an iurest user with facebook info
      */
     loginWithFacebook() {
-        let respLogin = this.devicesValidate();
-        if (respLogin) {
-            Meteor.loginWithFacebook({ requestPermissions: ['public_profile', 'email'] }, (err) => {
-                let error: string;
-                error = 'SIGNUP.ERROR';
-                this.zone.run(() => {
-                    if (err) {
-                        this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
-                    } else {
-                        this.insertUserDetail();
-                    }
-                });
+        Meteor.loginWithFacebook({ requestPermissions: ['public_profile', 'email'] }, (err) => {
+            let error: string;
+            error = 'SIGNUP.ERROR';
+            this.zone.run(() => {
+                if (err) {
+                    this.openDialog(this.titleMsg, '', error, '', this.btnAcceptLbl, false);
+                } else {
+                    this.insertUserDetail();
+                }
             });
-        }
-        else {
-            this.router.navigate(['go-to-store', 't'], { skipLocationChange: true });
-        }
+        });
     }
 
     /**
