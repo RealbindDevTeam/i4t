@@ -11,9 +11,9 @@ import { Accounts } from '../../../../both/collections/restaurant/account.collec
  * Meteor publication payments with userId condition
  * @param {string} _userId
  */
-Meteor.publish( 'getUserPayments', function( _userId: string ){
-    check( _userId, String );
-    return Payments.find( { creation_user: _userId } );
+Meteor.publish('getUserPayments', function (_userId: string) {
+    check(_userId, String);
+    return Payments.find({ creation_user: _userId });
 });
 
 /**
@@ -21,10 +21,10 @@ Meteor.publish( 'getUserPayments', function( _userId: string ){
  * @param {string} _userId
  * @param {string} _restaurantId
  */
-Meteor.publish( 'getUserPaymentsByRestaurant', function( _userId: string, _restaurantId: string ) {
-    check( _userId, String );
-    check( _restaurantId, String );
-    return Payments.find( { creation_user: _userId, restaurantId: _restaurantId } );
+Meteor.publish('getUserPaymentsByRestaurant', function (_userId: string, _restaurantId: string) {
+    check(_userId, String);
+    check(_restaurantId, String);
+    return Payments.find({ creation_user: _userId, restaurantId: _restaurantId });
 });
 
 /**
@@ -34,17 +34,19 @@ Meteor.publish( 'getUserPaymentsByRestaurant', function( _userId: string, _resta
  * @param {string} _tableId
  * @param {string[]} _status
  */
-Meteor.publish( 'getUserPaymentsByRestaurantAndTable', function( _userId: string, _restaurantId: string, _tableId: string, _status: string[] ) {
-    check( _userId, String );
-    check( _restaurantId, String );
-    check( _tableId, String );
+Meteor.publish('getUserPaymentsByRestaurantAndTable', function (_userId: string, _restaurantId: string, _tableId: string, _status: string[]) {
+    check(_userId, String);
+    check(_restaurantId, String);
+    check(_tableId, String);
     let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
-    if( _lUserDetail ){
-        let _lAccount: Account = Accounts.findOne({restaurantId: _lUserDetail.current_restaurant, 
-                                                    tableId: _lUserDetail.current_table,
-                                                    status: 'OPEN'});
-        if( _lAccount ){
-            return Payments.find( { creation_user: _userId, restaurantId: _restaurantId, tableId: _tableId, accountId: _lAccount._id, status: { $in: _status } } );
+    if (_lUserDetail) {
+        let _lAccount: Account = Accounts.findOne({
+            restaurantId: _lUserDetail.current_restaurant,
+            tableId: _lUserDetail.current_table,
+            status: 'OPEN'
+        });
+        if (_lAccount) {
+            return Payments.find({ creation_user: _userId, restaurantId: _restaurantId, tableId: _tableId, accountId: _lAccount._id, status: { $in: _status } });
         } else {
             return;
         }
@@ -58,16 +60,28 @@ Meteor.publish( 'getUserPaymentsByRestaurantAndTable', function( _userId: string
  * @param {string} _restaurantId
  * @param {string} _tableId
  */
-Meteor.publish( 'getPaymentsToWaiter', function( _restaurantId: string, _tableId: string ) {
-    check( _restaurantId, String );
-    check( _tableId, String );
-    return Payments.find( { restaurantId: _restaurantId, tableId: _tableId, status: 'PAYMENT.NO_PAID' } );
+Meteor.publish('getPaymentsToWaiter', function (_restaurantId: string, _tableId: string) {
+    check(_restaurantId, String);
+    check(_tableId, String);
+    return Payments.find({ restaurantId: _restaurantId, tableId: _tableId, status: 'PAYMENT.NO_PAID' });
 });
 
 /**
  * Meteor publication payments with restaurant Ids
  * @param {string[]} _pRestaurantIds
  */
-Meteor.publish( 'getPaymentsByRestaurantIds', function( _pRestaurantIds: string[] ) {
-    return Payments.find( { restaurantId: { $in: _pRestaurantIds }, status: 'PAYMENT.PAID', received: true } );
+Meteor.publish('getPaymentsByRestaurantIds', function (_pRestaurantIds: string[]) {
+    return Payments.find({ restaurantId: { $in: _pRestaurantIds }, status: 'PAYMENT.PAID', received: true });
+});
+
+
+/**
+ * Meteor publication for change payments by waiter
+ * @param {string} _restaurantId
+ * @param {string} _tableId
+ */
+Meteor.publish('getPaymentsForChange', function (_restaurantId: string, _tableId: string) {
+    check(_restaurantId, String);
+    check(_tableId, String);
+    return Payments.find({ restaurantId: _restaurantId, tableId: _tableId, received: false, status: 'PAYMENT.NO_PAID' });
 });

@@ -188,7 +188,20 @@ export class PaymentConfirmComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Close PaymentConfirm Dialog
+     *  Cancel the operation of PaymentConfirm Dialog
+     */
+    cancel(_pPayment: Payment): void {
+        Payments.update(_pPayment._id, {
+            $set: {
+                received: false
+            }
+        });
+        this._dialogRef.close();
+    }
+
+
+    /**
+     * Close the PaymentConfirm dialog
      */
     close(): void {
         this._dialogRef.close();

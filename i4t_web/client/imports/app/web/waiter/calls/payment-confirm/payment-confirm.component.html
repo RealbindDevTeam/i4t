@@ -88,7 +88,7 @@
     </mat-card-content>
     
     <mat-card-actions class="mobile">
-        <button mat-raised-button class="secondary-button" (click)="close()">{{ 'CANCEL' | translate }}</button>
+        <button mat-raised-button class="secondary-button" (click)="cancel(payment)">{{ 'CANCEL' | translate }}</button>
         <button mat-raised-button *ngIf="!_payAllowed" disabled>{{ 'PAYMENT_CONFIRM.CLOSE_PAYMENTS' | translate }}</button>
         <button mat-raised-button *ngIf="_payAllowed" class="primary-button" (click)="closePayments()">{{ 'PAYMENT_CONFIRM.CLOSE_PAYMENTS' | translate }}</button>
     </mat-card-actions>

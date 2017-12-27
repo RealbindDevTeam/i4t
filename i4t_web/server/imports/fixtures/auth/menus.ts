@@ -312,6 +312,14 @@ export function loadMenus() {
                 url: "/app/customer-payments-history",
                 icon_name: "payment",
                 order: 19000
+            },
+            {
+                _id: "9500",
+                is_active: true,
+                name: "MENUS.PAYMENTS_CHANGE",
+                url: "/app/payments-change",
+                icon_name: "create",
+                order: 9500
             }
         ];
         menus.forEach((menu: Menu) => Menus.insert(menu));

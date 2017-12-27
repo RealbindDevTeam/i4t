@@ -92,6 +92,7 @@ import { ScheduleDetailComponent } from './customer/restaurant-profile-detail/sc
 import { PaymentPlanInfo } from './auth/payment-plan-info/payment-plan-info.component';
 import { ImageService } from './services/general/image.service';
 import { PayuPaymentService } from './services/payment/payu-payment.service';
+import { PaymentsChangeComponent } from './waiter/calls/payments-change/payments-change.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -156,7 +157,8 @@ export const WEB_DECLARATIONS = [
     RestaurantLegalityComponent,
     ColombiaLegalityComponent,
     RestaurantProfileComponent,
-    RestaurantProFileDetailComponent
+    RestaurantProFileDetailComponent,
+    PaymentsChangeComponent
 ];
 
 export const MODAL_DIALOG_DECLARATIONS = [

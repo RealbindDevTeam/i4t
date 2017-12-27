@@ -281,7 +281,8 @@
         "SETTINGS": "Ajustes",
         "TABLES": "Cambiar mesa",
         "RESTAURANT_EXIT": "Salir del Restaurante",
-        "PAYMENT_HISTORY": "Historial de pagos"
+        "PAYMENT_HISTORY": "Historial de pagos",
+        "PAYMENTS_CHANGE": "Cambio de pagos"
     },
     "PROMOTIONS": {
         "PROMOTION_CREATION": "Creación de promociones",
@@ -1539,5 +1540,11 @@
         "ADDRESS": "Dirección",
         "READ_MORE": "Leer más",
         "READ_LESS": "Leer menos"
+    },
+    "PAYMENTS_CHANGE": {
+        "TITLE": "Cambiar pagos",
+        "SUBTITLE": "Selecciona la mesa para ver los pagos asociados",
+        "SELECT_PLACEHOLDER": "Selecciona mesa",
+        "TABLE": "Mesa No. "
     }
 }

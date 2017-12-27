@@ -59,6 +59,7 @@ import { InvoicesDownloadPage } from './web/administrator/administration/invoice
 import { RestaurantProfileComponent } from './web/administrator/administration/restaurant/profile/restaurant-profile.component';
 import { RestaurantProFileDetailComponent } from './web/customer/restaurant-profile-detail/restaurant-profile-detail/restaurant-profile-detail.component';
 import { ColombiaOrderInfoComponent } from './web/customer/payments/country-payment/colombia-payment/colombia-order-info/colombia-order-info.component';
+import { PaymentsChangeComponent } from './web/waiter/calls/payments-change/payments-change.component';
 
 export const routes: Route[] = [
     {
@@ -107,7 +108,8 @@ export const routes: Route[] = [
             { path: 'invoices-download', component: InvoicesDownloadPage, canActivate: [AdminGuard] },
             { path: 'restaurant-profile', component: RestaurantProfileComponent, canActivate: [AdminGuard] },
             { path: 'restaurant-detail', component: RestaurantProFileDetailComponent },
-            { path: 'restaurant-detail/:param1', component: RestaurantProFileDetailComponent }
+            { path: 'restaurant-detail/:param1', component: RestaurantProFileDetailComponent },
+            { path: 'payments-change', component: PaymentsChangeComponent, canActivate: [WaiterGuard] }
         ]
     },
     { path: '', component: LandingPageComponent },

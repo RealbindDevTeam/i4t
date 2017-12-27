@@ -281,7 +281,8 @@
         "SETTINGS": "Settings",
         "TABLES": "Change table",
         "RESTAURANT_EXIT": "Leave Restaurant",
-        "PAYMENT_HISTORY": "Payment history"
+        "PAYMENT_HISTORY": "Payment history",
+        "PAYMENTS_CHANGE": "Payments change"
     },
     "PROMOTIONS": {
         "PROMOTION_CREATION": "Creation promotion",
@@ -1539,5 +1540,11 @@
         "ADDRESS": "Address",
         "READ_MORE": "Read more",
         "READ_LESS": "Read less"
+    },
+    "PAYMENTS_CHANGE": {
+        "TITLE": "Payments change",
+        "SUBTITLE": "Select the table to show the associated payments",
+        "SELECT_PLACEHOLDER": "Select table",
+        "TABLE": "Table No. "
     }
 }

@@ -16,7 +16,7 @@ export function loadRoles() {
             is_active: true,
             name: "ROLE.WAITER",
             description: "restaurant waiter",
-            menus: ["8000","9000", "20000"],
+            menus: ["8000","9000", "20000", "9500"],
             user_prefix: 'wa'
         },{
             _id: "300",

@@ -89,7 +89,9 @@ export class RestaurantProfilePage implements OnInit, OnDestroy {
             this._ngZone.run(() => {
                 this._restaurantsProfiles = RestaurantsProfile.find({ restaurant_id: this._restaurantParam._id }).zone();
                 this._restaurantProfile = RestaurantsProfile.findOne({ restaurant_id: this._restaurantParam._id });
-                this.loadMap();
+                if (this._restaurantProfile) {
+                    this.loadMap();
+                }
             });
         });
     }
