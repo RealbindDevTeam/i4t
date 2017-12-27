@@ -6,7 +6,7 @@
 }
 
 .di img {
-    width: 150px;
+    width: 100px;
 }
 
 .mat-step-icon-cust {
@@ -21,13 +21,15 @@
     border-radius: 50%;
 }
 
-.mat-stepper-horizontal-line {
-    border-top-width: 1px;
-    border-top-style: solid;
-    flex: auto;
-    height: 0;
-    margin: 0 -16px;
-    min-width: 32px;
+mat-dialog-actions{
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+}
+
+mat-checkbox {
+    margin-right: 10px;
 }
 
 @media only screen and (min-width: 600px) {
