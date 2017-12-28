@@ -6,6 +6,7 @@ import { UserDetails } from '../../../../both/collections/auth/user-detail.colle
 import { UserDetail } from '../../../../both/models/auth/user-detail.model';
 import { Account } from '../../../../both/models/restaurant/account.model';
 import { Accounts } from '../../../../both/collections/restaurant/account.collection';
+import { Observable } from 'rxjs';
 
 /**
  * Meteor publication payments with userId condition
@@ -80,8 +81,49 @@ Meteor.publish('getPaymentsByRestaurantIds', function (_pRestaurantIds: string[]
  * @param {string} _restaurantId
  * @param {string} _tableId
  */
-Meteor.publish('getPaymentsForChange', function (_restaurantId: string, _tableId: string) {
-    check(_restaurantId, String);
-    check(_tableId, String);
-    return Payments.find({ restaurantId: _restaurantId, tableId: _tableId, received: false, status: 'PAYMENT.NO_PAID' });
+Meteor.publish('getPaymentsForChange', function (_userId: string) {
+    check(_userId, String);
+    let _lAccounts: string[] = [];
+    let _accountAux: Observable<Account[]>;
+    let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
+    if (_lUserDetail.restaurant_work !== '' || _lUserDetail.restaurant_work !== undefined || _lUserDetail.restaurant_work !== null) {
+        _accountAux = Accounts.find({ restaurantId: _lUserDetail.restaurant_work, status: 'OPEN' });
+        _accountAux.subscribe(() => {
+            Accounts.find({ restaurantId: _lUserDetail.restaurant_work, status: 'OPEN' }).fetch().forEach(function <Account>(restaurant, index, arr) {
+                _lAccounts.push(restaurant._id);
+            });
+        })
+        if (_lAccounts.length > 0) {
+            return Payments.find({ accountId: { $in: _lAccounts }, restaurantId: _lUserDetail.restaurant_work, received: false, status: 'PAYMENT.NO_PAID' });
+        } else {
+            return;
+        }
+    } else {
+        return;
+    }
+});
+
+
+
+/**
+* Meteor publication for change payments by waiter 
+*/
+Meteor["publishComposite"]('getPaymentsForChangeComposite', function (_userId: string) {
+    check(_userId, String);
+    let _lUserDetail: UserDetail = UserDetails.findOne({ user_id: _userId });
+
+    if (_lUserDetail.restaurant_work !== '' || _lUserDetail.restaurant_work !== undefined || _lUserDetail.restaurant_work !== null) {
+        return {
+            find() {
+                return Accounts.find({ restaurantId: _lUserDetail.restaurant_work, status: 'OPEN' });
+            },
+            children: [{
+                find(account) {
+                    return Payments.find({ accountId: account._id, restaurantId: _lUserDetail.restaurant_work, received: false, status: 'PAYMENT.NO_PAID' });
+                }
+            }]
+        }
+    } else {
+        return;
+    }
 });

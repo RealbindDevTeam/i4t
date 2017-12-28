@@ -9,6 +9,8 @@ import { Table } from '../../../../../../../both/models/restaurant/table.model';
 import { Tables } from '../../../../../../../both/collections/restaurant/table.collection';
 import { Payment } from '../../../../../../../both/models/restaurant/payment.model';
 import { Payments } from '../../../../../../../both/collections/restaurant/payment.collection';
+import { Account } from '../../../../../../../both/models/restaurant/account.model';
+import { Accounts } from '../../../../../../../both/collections/restaurant/account.collection';
 
 @Component({
     selector: 'payments-change',
@@ -22,6 +24,10 @@ export class PaymentsChangeComponent implements OnInit, OnDestroy {
     private _user = Meteor.userId();
     private tables: Observable<Table[]>;
     private tableSub: Subscription;
+    private payments: Observable<Payment[]>;
+    private paymentSub: Subscription;
+    private accounts: Observable<Account[]>;
+    private accountSub: Subscription;
 
     private selected = '';
     private aux: string;
@@ -50,6 +56,12 @@ export class PaymentsChangeComponent implements OnInit, OnDestroy {
             this._ngZone.run(() => {
                 this.tables = Tables.find({});
             });
+        });
+
+        this.paymentSub = MeteorObservable.subscribe('getPaymentsForChangeComposite', this._user).subscribe(() => {
+            this._ngZone.run(() => {
+                this.payments = Payments.find({});
+            })
         });
     }
 
