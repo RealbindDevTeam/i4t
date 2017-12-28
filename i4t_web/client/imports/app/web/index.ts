@@ -93,6 +93,7 @@ import { PaymentPlanInfo } from './auth/payment-plan-info/payment-plan-info.comp
 import { ImageService } from './services/general/image.service';
 import { PayuPaymentService } from './services/payment/payu-payment.service';
 import { AfterRestaurantCreationComponent } from './administrator/administration/restaurant/register/after-restaurant-creation/after-restaurant-creation.component';
+import { LightBoxComponent } from './customer/restaurant-profile-detail/lightbox/lightbox.component';
 
 export const WEB_DECLARATIONS = [
     AppComponent,
@@ -188,7 +189,8 @@ export const MODAL_DIALOG_DECLARATIONS = [
     PenalizeCustomerComponent,
     ScheduleDetailComponent,
     PaymentPlanInfo,
-    AfterRestaurantCreationComponent
+    AfterRestaurantCreationComponent,
+    LightBoxComponent
 ];
 
 export const SERVICES_DECLARATIONS = [

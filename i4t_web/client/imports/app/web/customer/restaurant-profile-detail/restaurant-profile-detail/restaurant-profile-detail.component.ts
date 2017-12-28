@@ -18,6 +18,7 @@ import { Currencies } from '../../../../../../../both/collections/general/curren
 import { PaymentMethod } from '../../../../../../../both/models/general/paymentMethod.model';
 import { PaymentMethods } from '../../../../../../../both/collections/general/paymentMethod.collection';
 import { ScheduleDetailComponent } from '../schedule-detail/schedule-detail.component';
+import { LightBoxComponent } from '../lightbox/lightbox.component';
 
 @Component({
     selector: 'restaurant-profile-detail',
@@ -243,6 +244,15 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
             _wordTraduced = res;
         });
         return _wordTraduced;
+    }
+
+    openLightBoxComponent( _pUrl : string ){
+        this._dialogRef = this._dialog.open(LightBoxComponent, {
+            disableClose: false,
+            data: {
+                url: _pUrl
+            }
+        });
     }
 
     /**

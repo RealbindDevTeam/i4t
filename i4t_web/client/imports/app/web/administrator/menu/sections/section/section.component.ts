@@ -18,7 +18,7 @@ import { UserDetails } from '../../../../../../../../both/collections/auth/user-
 import { UserDetail } from '../../../../../../../../both/models/auth/user-detail.model';
 
 @Component({
-    selector: 'section',
+    selector: 'sections',
     templateUrl: './section.component.html',
     styleUrls: ['./section.component.scss']
 })
