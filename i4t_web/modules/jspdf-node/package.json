@@ -1,0 +1,33 @@
+{
+  "_inBundle": false,
+  "_location": "/jspdf-node",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "name": "jspdf",
+    "escapedName": "jspdf",
+    "saveSpec": null
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "files": [
+    "index.js",
+    "plugins/*.js"
+  ],
+  "keywords": [
+    "pdf",
+    "node"
+  ],
+  "name": "jspdf-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {}
+}
