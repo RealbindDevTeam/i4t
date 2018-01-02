@@ -19,6 +19,7 @@ import { PaymentMethod } from '../../../../../../../both/models/general/paymentM
 import { PaymentMethods } from '../../../../../../../both/collections/general/paymentMethod.collection';
 import { ScheduleDetailComponent } from '../schedule-detail/schedule-detail.component';
 import { LightBoxComponent } from '../lightbox/lightbox.component';
+import { console } from 'meteor/tools';
 
 @Component({
     selector: 'restaurant-profile-detail',
@@ -226,9 +227,9 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
      * Function to extend the restaurant description
      */
     extendDescription() {
-        if(this._showExtended){
+        if (this._showExtended) {
             this._btnLabel = this.itemNameTraduction('RESTAURANT_PROFILE_DETAIL.READ_MORE');
-        }else {
+        } else {
             this._btnLabel = this.itemNameTraduction('RESTAURANT_PROFILE_DETAIL.READ_LESS');
         }
         this._showExtended = !this._showExtended;
@@ -246,11 +247,12 @@ export class RestaurantProFileDetailComponent implements OnInit, OnDestroy {
         return _wordTraduced;
     }
 
-    openLightBoxComponent( _pUrl : string ){
+    openLightBoxComponent(_pImages: RestaurantProfileImage[], _pIndex: number) {
         this._dialogRef = this._dialog.open(LightBoxComponent, {
             disableClose: false,
             data: {
-                url: _pUrl
+                images: _pImages,
+                index: _pIndex
             }
         });
     }
