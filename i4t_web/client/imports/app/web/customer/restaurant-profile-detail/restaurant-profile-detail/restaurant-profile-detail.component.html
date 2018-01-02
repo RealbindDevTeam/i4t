@@ -54,7 +54,9 @@
                 <div *ngIf="restaurantProfile.images">
                     <p *ngIf="restaurantProfile.images.length <= 0">{{'RESTAURANT_PROFILE_DETAIL.NO_PHOTOS' | translate}}</p>
                     <mat-card-content class="content">
-                        <img *ngFor="let restProfileImgeThumb of restaurantProfile.images" md-card-image class="img-thumb" src="{{restProfileImgeThumb.url}}">
+                        <button *ngFor="let restProfileImgeThumb of restaurantProfile.images; let i = index" mat-button class="img-wp">
+                            <img md-card-image class="img-thumb" src="{{restProfileImgeThumb.url}}" (click)="openLightBoxComponent(restaurantProfile.images, i)">
+                        </button>
                     </mat-card-content>
                 </div>
                 <p *ngIf="!restaurantProfile.images">{{'RESTAURANT_PROFILE_DETAIL.NO_PHOTOS' | translate}}</p>
